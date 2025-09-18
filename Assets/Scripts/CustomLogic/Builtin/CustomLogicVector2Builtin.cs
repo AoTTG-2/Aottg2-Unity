@@ -8,24 +8,18 @@ namespace CustomLogic
         private Vector2 _value;
 
         [CLConstructor]
-        public CustomLogicVector2Builtin(object[] parameterValues)
+        public CustomLogicVector2Builtin() { }
+
+        [CLConstructor]
+        public CustomLogicVector2Builtin(float xy)
         {
-            float x = 0;
-            float y = 0;
+            _value = new Vector2(xy, xy);
+        }
 
-            if (parameterValues.Length == 1)
-            {
-                x = parameterValues[0].UnboxToFloat();
-                y = x;
-            }
-            else if (parameterValues.Length > 1)
-            {
-                x = parameterValues[0].UnboxToFloat();
-                y = parameterValues[1].UnboxToFloat();
-            }
-
+        [CLConstructor]
+        public CustomLogicVector2Builtin(float x, float y)
+        {
             _value = new Vector2(x, y);
-
         }
 
         public CustomLogicVector2Builtin(Vector2 value)
@@ -118,7 +112,9 @@ namespace CustomLogic
         [CLMethod]
         public static float SignedAngle(CustomLogicVector2Builtin from, CustomLogicVector2Builtin to) => Vector2.SignedAngle(from, to);
 
-        /// <inheritdoc cref="Vector2.SmoothDamp(Vector2, Vector2, ref Vector2, float, float, float)"/>
+        /// <summary>
+        /// Smoothly transitions the current vector position towards the target vector position using the currentVelocity as state. smoothTime and maxSpeed adjust the aggressiveness of the motion.
+        /// </summary>
         [CLMethod]
         public static CustomLogicVector2Builtin SmoothDamp(CustomLogicVector2Builtin current, CustomLogicVector2Builtin target, CustomLogicVector2Builtin currentVelocity, float smoothTime, float maxSpeed) => Vector2.SmoothDamp(current, target, ref currentVelocity._value, smoothTime, maxSpeed);
 

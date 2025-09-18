@@ -1,20 +1,21 @@
+using System.Collections.Generic;
 using ApplicationManagers;
-using Cameras;
 using Characters;
 using GameManagers;
 using Settings;
-using System.Collections.Generic;
-using UI;
 using UnityEngine;
 
 namespace CustomLogic
 {
     /// <summary>
+    /// Represents a human character.
     /// Only character owner can modify fields and call functions unless otherwise specified.
     /// </summary>
     /// <code>
-    /// function OnCharacterSpawn(character) {
-    ///     if (character.IsMainCharacter && character.Type == "Human") {
+    /// function OnCharacterSpawn(character)
+    /// {
+    ///     if (character.IsMainCharacter &amp;&amp; character.Type == "Human")
+    ///     {
     ///         character.SetWeapon("Blade");
     ///         character.SetSpecial("Potato");
     ///         character.CurrentGas = character.MaxGas / 2;
@@ -31,19 +32,6 @@ namespace CustomLogic
             Human = human;
         }
 
-        [CLProperty(description: "The human's name")]
-        public string Name {
-            get => Human.Name;
-            set => Human.Name = value;
-        }
-
-        [CLProperty(description: "The human's guild")]
-        public string Guild {
-            get => Human.Guild;
-            set => Human.Guild = value;
-        }
-
-        // Add CLProperties for the above setField/getField 
         [CLProperty(description: "The weapon the human is using")]
         public string Weapon
         {
@@ -56,6 +44,18 @@ namespace CustomLogic
         {
             get => Human.CurrentSpecial;
             set => SetSpecial(value);
+        }
+
+        [CLProperty(description: "The normalized cooldown time of the special. Has a range of 0 to 1.")]
+        public float SpecialCooldownTime
+        {
+            get => Human.Special == null ? 0f : Human.Special.GetCooldownRatio();
+            set
+            {
+                if (Human.Special == null) return;
+                var v = Mathf.Max(0f, value);
+                Human.Special.SetCooldownRatio(v);
+            }
         }
 
         [CLProperty(description: "The cooldown of the special")]
@@ -139,7 +139,7 @@ namespace CustomLogic
                 {
                     bool bladeWasEnabled = bladeWeapon.CurrentDurability > 0f;
                     bladeWeapon.CurrentDurability = Mathf.Max(Mathf.Min(bladeWeapon.MaxDurability, value.UnboxToFloat()), 0);
-                    if (bladeWeapon.CurrentDurability == 0f)
+                    if (bladeWeapon.CurrentDurability >= 0f)
                     {
                         Human.ToggleBlades(false);
                         if (bladeWasEnabled)
@@ -338,7 +338,6 @@ namespace CustomLogic
         [CLProperty(description: "If the human is carried.")]
         public bool IsCarried => Human.CarryState == HumanCarryState.Carry;
 
-        // Add CLMethods for the above setField/getField
         [CLMethod(description: "Refills the gas of the human")]
         public bool Refill()
         {
@@ -378,25 +377,53 @@ namespace CustomLogic
                 Human.HookRight.DisableAnyHook();
         }
 
-        [CLMethod(description: "Mounts the human on a map object")]
-        public void MountMapObject(CustomLogicMapObjectBuiltin mapObject, CustomLogicVector3Builtin positionOffset, CustomLogicVector3Builtin rotationOffset)
+        [CLMethod(description: "Position of the left hook, null if there is no hook.")]
+        public CustomLogicVector3Builtin LeftHookPosition()
         {
             if (Human.IsMine())
-                Human.Mount(mapObject.Value, positionOffset.Value, rotationOffset.Value);
+            {
+                Vector3 hook = Human.HookLeft.GetHookPosition();
+                if (hook != null)
+                {
+                    return new CustomLogicVector3Builtin(hook);
+                }
+            }
+            return null;
+        }
+
+        [CLMethod(description: "Position of the right hook, null if there is no hook.")]
+        public CustomLogicVector3Builtin RightHookPosition()
+        {
+            if (Human.IsMine())
+            {
+                Vector3 hook = Human.HookRight.GetHookPosition();
+                if (hook != null)
+                {
+                    return new CustomLogicVector3Builtin(hook);
+                }
+            }
+            return null;
+        }
+
+        [CLMethod(description: "Mounts the human on a map object")]
+        public void MountMapObject(CustomLogicMapObjectBuiltin mapObject, CustomLogicVector3Builtin positionOffset, CustomLogicVector3Builtin rotationOffset, bool canMountedAttack = false)
+        {
+            if (Human.IsMine())
+                Human.Mount(mapObject.Value, positionOffset.Value, rotationOffset.Value, canMountedAttack);
         }
 
         [CLMethod(description: "Mounts the human on a transform")]
-        public void MountTransform(CustomLogicTransformBuiltin transform, CustomLogicVector3Builtin positionOffset, CustomLogicVector3Builtin rotationOffset)
+        public void MountTransform(CustomLogicTransformBuiltin transform, CustomLogicVector3Builtin positionOffset, CustomLogicVector3Builtin rotationOffset, bool canMountedAttack = false)
         {
             if (Human.IsMine())
-                Human.Mount(transform.Value, positionOffset.Value, rotationOffset.Value);
+                Human.Mount(transform.Value, positionOffset.Value, rotationOffset.Value, canMountedAttack);
         }
 
         [CLMethod(description: "Unmounts the human")]
-        public void Unmount()
+        public void Unmount(bool immediate = true)
         {
             if (Human.IsMine())
-                Human.Unmount(true);
+                Human.Unmount(immediate);
         }
 
         [CLMethod(description: "Sets the special of the human")]
@@ -416,7 +443,11 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod(description: "Sets the weapon of the human")]
+        /// <summary>
+        /// Sets the weapon of the human
+        /// </summary>
+        /// <param name="weapon">Name of the weapon. Available weapons: "Blade", "AHSS", "APG", "Thunderspear"</param>
+        [CLMethod]
         public void SetWeapon(string weapon)
         {
             if (!Human.IsMine())

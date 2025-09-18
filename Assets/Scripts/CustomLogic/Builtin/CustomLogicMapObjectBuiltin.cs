@@ -1,13 +1,8 @@
-using System.Collections.Generic;
-using UnityEngine;
 using Map;
-using Utility;
-using System.ComponentModel;
+using System.Collections.Generic;
 using System.Linq;
-using UnityEngine.Rendering;
-using UnityEngine.UIElements;
-using UnityEngine.AI;
-using CustomLogic;
+using UnityEngine;
+using Utility;
 
 namespace CustomLogic
 {
@@ -18,10 +13,12 @@ namespace CustomLogic
     partial class CustomLogicMapObjectBuiltin : BuiltinClassInstance
     {
         public MapObject Value;
+        private CustomLogicRigidbodyBuiltin _rigidBody;
         private Vector3 _internalRotation;
         private Vector3 _internalLocalRotation;
         private bool _needSetRotation = true;
         private bool _needSetLocalRotation = true;
+        private Dictionary<string, BuiltinComponentInstance> _builtinCache;
 
         public CustomLogicMapObjectBuiltin(MapObject obj)
         {
@@ -37,7 +34,7 @@ namespace CustomLogic
             get => new CustomLogicVector3Builtin(Value.GameObject.transform.position);
             set => Value.GameObject.transform.position = value.Value;
         }
-        
+
         [CLProperty(description: "The local position of the object")]
         public CustomLogicVector3Builtin LocalPosition
         {
@@ -273,7 +270,7 @@ namespace CustomLogic
         public string Tag
         {
             get => Value.GameObject.tag;
-            set => Value.GameObject.tag = value;
+            set => MapLoader.RegisterTag(value, Value);
         }
 
         [CLProperty(description: "The layer of the object")]
@@ -304,7 +301,26 @@ namespace CustomLogic
         [CLMethod(description: "Set whether a component is enabled")]
         public void SetComponentEnabled(string name, bool enabled)
         {
-            Value.FindComponentInstance(name).Enabled = enabled;
+            var clComp = Value.FindComponentInstance(name);
+            if (clComp != null)
+            {
+                clComp.Enabled = enabled;
+            }
+            else
+            {
+                if (_builtinCache == null)
+                {
+                    return;
+                }
+                if (_builtinCache.TryGetValue(name, out var builtinComp))
+                {
+                    builtinComp.Enabled = enabled;
+                }
+                else
+                {
+                    throw new System.Exception($"Component '{name}' not found on MapObject '{Value.ScriptObject.Name}'.");
+                }
+            }
         }
 
         [CLMethod(description: "Set whether all components are enabled")]
@@ -313,6 +329,11 @@ namespace CustomLogic
             foreach (var instance in Value.ComponentInstances)
             {
                 instance.Enabled = enabled;
+            }
+
+            foreach (var comp in _builtinCache.Values)
+            {
+                comp.Enabled = enabled;
             }
         }
 
@@ -453,7 +474,6 @@ namespace CustomLogic
             MapLoader.MapTargetables.Add(targetable);
             return new CustomLogicMapTargetableBuiltin(go, targetable);
         }
-
 
         [CLMethod(description: "Get a child object by name")]
         public CustomLogicMapObjectBuiltin GetChild(string name)
@@ -639,243 +659,108 @@ namespace CustomLogic
             return result;
         }
 
-        /// <summary>
-        /// Add a builtin component to the object.
-        /// Components: Daylight, PointLight, Tag, Rigidbody, CustomPhysicsMaterial, NavMeshObstacle
-        /// </summary>
-        /// <example>
-        /// # Add a Daylight component
-        /// AddBuiltinComponent("Daylight", new Color(255, 255, 255), 1.0f, true);
-        /// 
-        /// # Add a PointLight component
-        /// AddBuiltinComponent("PointLight", new Color(255, 255, 255), 1.0f, 10.0f);
-        /// 
-        /// # Add a Tag component
-        /// AddBuiltinComponent("Tag", "MyTag");
-        /// 
-        /// # Add a Rigidbody component
-        /// AddBuiltinComponent("Rigidbody", 1.0f, new Vector3(0, -9.81f, 0), true, true);
-        /// 
-        /// # Add a CustomPhysicsMaterial component
-        /// AddBuiltinComponent("CustomPhysicsMaterial", true);
-        /// 
-        /// # Add a NavMeshObstacle component
-        /// AddBuiltinComponent("NavMeshObstacle", true);
-        /// </example>
-        [CLMethod(description: "Add builtin component")]
-        public void AddBuiltinComponent(object componentName = null, object parameter1 = null, object parameter2 = null, object parameter3 = null, object parameter4 = null)
-        {
-            string name = (string)componentName;
-            if (name == "Daylight")
-            {
-                var light = Value.GameObject.AddComponent<Light>();
-                light.type = LightType.Directional;
-                light.color = ((CustomLogicColorBuiltin)parameter1).Value.ToColor();
-                light.intensity = parameter2.UnboxToFloat();
-                light.shadows = LightShadows.Soft;
-                light.shadowStrength = 0.8f;
-                light.shadowBias = 0.2f;
-                bool weatherControlled = (bool)parameter3;
-                if (weatherControlled)
-                    MapLoader.Daylight.Add(light);
-                MapLoader.RegisterMapLight(light, true);
-            }
-            else if (name == "PointLight")
-            {
-                var light = Value.GameObject.AddComponent<Light>();
-                light.type = LightType.Point;
-                light.color = ((CustomLogicColorBuiltin)parameter1).Value.ToColor();
-                light.intensity = parameter2.UnboxToFloat();
-                light.range = parameter3.UnboxToFloat();
-                light.shadows = LightShadows.None;
-                light.renderMode = LightRenderMode.ForcePixel;
-                light.bounceIntensity = 0f;
-                MapLoader.RegisterMapLight(light, false);
-            }
-            else if (name == "Tag")
-            {
-                var tag = (string)parameter1;
-                MapLoader.RegisterTag(tag, Value);
-            }
-            else if (name == "Rigidbody")
-            {
-                float mass = parameter1.UnboxToFloat();
-                Vector3 gravity = ((CustomLogicVector3Builtin)parameter2).Value;
-                var rigidbody = Value.GameObject.AddComponent<Rigidbody>();
-                rigidbody.mass = mass;
-                var force = Value.GameObject.AddComponent<ConstantForce>();
-                force.force = gravity;
-                rigidbody.useGravity = false;
-                rigidbody.freezeRotation = (bool)parameter3;
-
-                var interpolate = (bool)parameter4;
-                rigidbody.interpolation = interpolate
-                    ? RigidbodyInterpolation.Interpolate
-                    : RigidbodyInterpolation.None;
-            }
-            else if (name == "CustomPhysicsMaterial")
-            {
-                var customPhysicsMaterial = Value.GameObject.AddComponent<CustomPhysicsMaterial>();
-                customPhysicsMaterial.Setup((bool)parameter1);
-            }
-            else if (name == "NavMeshObstacle")
-            {
-                bool carveOnlyStationary = (bool)parameter1;
-                var navMeshObstacleGo = new GameObject("NavMeshObstacle");
-                navMeshObstacleGo.transform.parent = Value.GameObject.transform;
-
-                navMeshObstacleGo.transform.localPosition = Vector3.zero;
-
-                var navMeshObstacle = navMeshObstacleGo.AddComponent<NavMeshObstacle>();
-                navMeshObstacle.carving = true;
-                navMeshObstacle.carveOnlyStationary = carveOnlyStationary;
-
-                Bounds bounds = Value.colliderCache[0].bounds;
-                foreach (var collider in Value.colliderCache)
-                {
-                    bounds.Encapsulate(collider.bounds);
-                }
-
-                navMeshObstacle.size = bounds.size;
-                navMeshObstacle.center = bounds.center;
-
-                navMeshObstacle.center = navMeshObstacle.center - Value.GameObject.transform.position;
-
-            }
-        }
-
         [CLMethod(description: "Whether or not the object has the given tag")]
         public bool HasTag(string tag)
         {
             return MapLoader.HasTag(Value, tag);
         }
 
-        [CLMethod(Description = "Read a builtin component")]
-        public object ReadBuiltinComponent(string name, string param)
+        [CLMethod(description: "Add a builtin component to the MapObject")]
+        public object AddBuiltinComponent(string name)
         {
-            if (name == "Rigidbody")
+            // Add the component and add to cache.
+            if (_builtinCache == null)
             {
-                var rigidbody = Value.GameObject.GetComponent<Rigidbody>();
-                if (param == "Velocity")
-                {
-                    return new CustomLogicVector3Builtin(rigidbody.velocity);
-                }
-                else if (param == "AngularVelocity")
-                {
-                    return new CustomLogicVector3Builtin(rigidbody.angularVelocity);
-                }
+                _builtinCache = new Dictionary<string, BuiltinComponentInstance>();
             }
-            return null;
-        }
-
-        [CLMethod(description: "Update a builtin component")]
-        public void UpdateBuiltinComponent(object componentName = null, object parameter1 = null, object parameter2 = null, object parameter3 = null, object parameter4 = null)
-        {
-            string name = (string)componentName;
-            string param = (string)parameter1;
-            if (name == "Rigidbody")
+            if (_builtinCache.ContainsKey(name))
             {
-                var rigidbody = Value.GameObject.GetComponent<Rigidbody>();
-                if (param == "SetVelocity")
+                throw new System.Exception($"MapObject already has a {name} component.");
+            }
+
+            if (name == "DayLight")
+            {
+                _builtinCache[name] = new CustomLogicLightBuiltin(this, LightType.Directional);
+            }
+            else if (name == "PointLight")
+            {
+                _builtinCache[name] = new CustomLogicLightBuiltin(this, LightType.Point);
+            }
+            else if (name == "SpotLight")
+            {
+                _builtinCache[name] = new CustomLogicLightBuiltin(this, LightType.Spot);
+            }
+            else if (name == "Rigidbody")
+            {
+                if (Value.ScriptObject.Static)
                 {
-                    Vector3 velocity = ((CustomLogicVector3Builtin)parameter2).Value;
-                    rigidbody.velocity = velocity;
+                    throw new System.Exception("AddRigidbody cannot be called on a static MapObject.");
                 }
-                else if (param == "AddForce")
-                {
-                    Vector3 force = ((CustomLogicVector3Builtin)parameter2).Value;
-                    ForceMode mode = ForceMode.Acceleration;
-                    if (parameter3 != null)
-                    {
-                        string forceMode = (string)parameter3;
-                        switch (forceMode)
-                        {
-                            case "Force":
-                                mode = ForceMode.Force;
-                                break;
-                            case "Acceleration":
-                                mode = ForceMode.Acceleration;
-                                break;
-                            case "Impulse":
-                                mode = ForceMode.Impulse;
-                                break;
-                            case "VelocityChange":
-                                mode = ForceMode.VelocityChange;
-                                break;
-                        }
-                    }
-                    if (parameter4 != null)
-                    {
-                        Vector3 position = ((CustomLogicVector3Builtin)parameter4).Value;
-                        rigidbody.AddForceAtPosition(force, position, mode);
-                    }
-                    else
-                    {
-                        rigidbody.AddForce(force, mode);
-                    }
-                }
-                else if (param == "AddTorque")
-                {
-                    Vector3 force = ((CustomLogicVector3Builtin)parameter2).Value;
-                    ForceMode mode = ForceMode.Acceleration;
-                    if (parameter3 != null)
-                    {
-                        string forceMode = (string)parameter3;
-                        switch (forceMode)
-                        {
-                            case "Force":
-                                mode = ForceMode.Force;
-                                break;
-                            case "Acceleration":
-                                mode = ForceMode.Acceleration;
-                                break;
-                            case "Impulse":
-                                mode = ForceMode.Impulse;
-                                break;
-                            case "VelocityChange":
-                                mode = ForceMode.VelocityChange;
-                                break;
-                        }
-                    }
-                    rigidbody.AddTorque(force, mode);
-                }
+                _rigidBody = new CustomLogicRigidbodyBuiltin(this);
+                _builtinCache[name] = _rigidBody;
             }
             else if (name == "CustomPhysicsMaterial")
             {
-                var customPhysicsMaterial = Value.GameObject.GetComponent<CustomPhysicsMaterial>();
-                if (param == "StaticFriction")
-                {
-                    customPhysicsMaterial.StaticFriction = parameter2.UnboxToFloat();
-                }
-                if (param == "DynamicFriction")
-                {
-                    customPhysicsMaterial.DynamicFriction = parameter2.UnboxToFloat();
-                }
-                if (param == "Bounciness")
-                {
-                    customPhysicsMaterial.Bounciness = parameter2.UnboxToFloat();
-                }
+                _builtinCache[name] = new CustomLogicPhysicsMaterialBuiltin(this);
+            }
+            else if (name == "NavMeshObstacle")
+            {
+                _builtinCache[name] = new CustomLogicNavmeshObstacleBuiltin(this);
+            }
+            else if (name == "Lod")
+            {
+                _builtinCache[name] = new CustomLogicLodBuiltin(this);
+            }
+            else
+            {
+                throw new System.Exception($"Unknown builtin component: {name}");
+            }
+            return _builtinCache[name];
+        }
 
-                var isFrictionCombine = param == "FrictionCombine";
-                var isBounceCombine = param == "BounceCombine";
-                if (isFrictionCombine || isBounceCombine)
-                {
-                    var combine = parameter2 switch
-                    {
-                        "Minimum" => PhysicMaterialCombine.Minimum,
-                        "Multiply" => PhysicMaterialCombine.Multiply,
-                        "Maximum" => PhysicMaterialCombine.Maximum,
-                        _ => PhysicMaterialCombine.Average
-                    };
+        [CLMethod(description: "Gets a builtin component to the MapObject")]
+        public object GetBuiltinComponent(string name)
+        {
+            if (_builtinCache == null || !_builtinCache.ContainsKey(name))
+            {
+                return null;
+            }
+            return _builtinCache[name];
+        }
 
-                    if (isFrictionCombine)
-                        customPhysicsMaterial.FrictionCombine = combine;
-                    else
-                        customPhysicsMaterial.BounceCombine = combine;
-
-                }
+        [CLMethod(description: "Remove a builtin component from the MapObject")]
+        public void RemoveBuiltinComponent(string name)
+        {
+            if (_builtinCache == null || !_builtinCache.ContainsKey(name))
+            {
+                throw new System.Exception($"MapObject does not have a {name} component.");
+            }
+            _builtinCache[name].Unload();
+            _builtinCache.Remove(name);
+            if (name == "Rigidbody")
+            {
+                _rigidBody = null;
             }
         }
+
+        [CLMethod(description: "Serialize the current object to a csv.")]
+        public string ConvertToCSV()
+        {
+            return Value.ScriptObject.Serialize();
+        }
+
+        // Prop to get RigidBody
+        [CLProperty(description: "The Rigidbody component of the MapObject, is null if not added.")]
+        public CustomLogicRigidbodyBuiltin Rigidbody
+        {
+            get
+            {
+                return _rigidBody;
+            }
+        }
+
+        [CLProperty(description: "The NetworkView attached to the MapObject, is null if not initialized yet.")]
+        public CustomLogicNetworkViewBuiltin NetworkView { get; set; }
 
         private void AssertRendererGet()
         {

@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace CustomLogic
 {
+    /// <summary>
+    /// Represents a transform.
+    /// </summary>
     [CLType(Name = "Transform", Abstract = true)]
     partial class CustomLogicTransformBuiltin : BuiltinClassInstance, ICustomLogicEquals
     {
@@ -16,6 +19,7 @@ namespace CustomLogic
         private Dictionary<string, AnimationClip> _animatorClips;
 
         private readonly Animation _animation;
+        private readonly Animator _animator;
         private readonly AudioSource _audioSource;
         private readonly ParticleSystem _particleSystem;
 
@@ -23,7 +27,9 @@ namespace CustomLogic
         {
             Value = transform;
 
+            _animator = Value.GetComponent<Animator>();
             _animation = Value.GetComponent<Animation>();
+            _animator = Value.GetComponent<Animator>();
             _audioSource = Value.GetComponent<AudioSource>();
             _particleSystem = Value.GetComponent<ParticleSystem>();
         }
@@ -86,14 +92,24 @@ namespace CustomLogic
         public CustomLogicQuaternionBuiltin QuaternionRotation
         {
             get => Value.rotation;
-            set => Value.rotation = value.Value;
+            set
+            {
+                _needSetLocalRotation = true;
+                _needSetRotation = true;
+                Value.rotation = value.Value;
+            }
         }
 
         [CLProperty("Gets or sets the quaternion local rotation of the transform.")]
         public CustomLogicQuaternionBuiltin QuaternionLocalRotation
         {
             get => Value.localRotation;
-            set => Value.localRotation = value.Value;
+            set
+            {
+                _needSetLocalRotation = true;
+                _needSetRotation = true;
+                Value.localRotation = value.Value;
+            }
         }
 
         [CLProperty("Gets or sets the scale of the transform.")]
@@ -124,6 +140,35 @@ namespace CustomLogic
             set => Value.right = value.Value;
         }
 
+        [CLProperty("Sets the parent of the transform")]
+        public CustomLogicTransformBuiltin Parent
+        {
+            get => Value.parent != null ? new CustomLogicTransformBuiltin(Value.parent) : null;
+            set
+            {
+                if (value == null)
+                    Value.SetParent(null);
+                else
+                    Value.SetParent(value.Value);
+
+                _needSetLocalRotation = true;
+                _needSetRotation = true;
+            }
+        }
+
+        [CLProperty("Gets the name of the transform.")]
+        public string Name
+        {
+            get => Value.name;
+        }
+
+        [CLProperty("Gets the Physics Layer of the transform.")]
+        public int Layer
+        {
+            get => Value.gameObject.layer;
+            set => Value.gameObject.layer = value;
+        }
+
         [CLMethod("Gets the transform of the specified child.")]
         public CustomLogicTransformBuiltin GetTransform(string name)
         {
@@ -142,46 +187,113 @@ namespace CustomLogic
             return listBuiltin;
         }
 
+        [CLMethod("Checks if the given animation is playing.")]
+        public bool IsPlayingAnimation(string anim)
+        {
+            if (_animation != null)
+            {
+                return _animation.IsPlaying(anim);
+            }
+            if (_animator != null)
+            {
+                anim = anim.Replace('.', '_');
+                return _currentAnimation == anim;
+            }
+            return false;
+        }
+
         [CLMethod("Plays the specified animation.")]
         public void PlayAnimation(string anim, float fade = 0.1f)
         {
-            var animation = Value.GetComponent<Animation>();    // TODO: Cache this value or find a way to avoid calling GetComponent every time.
-            if (animation != null) {
-                if (!animation.IsPlaying(anim))
-                    animation.CrossFade(anim, fade);
+            if (_animation != null)
+            {
+                if (!_animation.IsPlaying(anim))
+                    _animation.CrossFade(anim, fade);
                 return;
             }
-            var animator = Value.GetComponent<Animator>();
-            if (animator != null)
+            if (_animator != null)
             {
                 anim = anim.Replace('.', '_');
                 if (_currentAnimation != anim)
                 {
-                    animator.CrossFade(anim, fade);
+                    _animator.CrossFade(anim, fade);
                     _currentAnimation = anim;
                 }
             }
         }
 
+        [CLMethod("Plays the specified animation starting from a normalized time.")]
+        public void PlayAnimationAt(string anim, float normalizedTime, float fade = 0.1f)
+        {
+            if (_animation != null)
+            {
+                if (!_animation.IsPlaying(anim))
+                {
+                    _animation.CrossFade(anim, fade);
+                    _animation[anim].normalizedTime = normalizedTime;
+                }
+                return;
+            }
+
+            if (_animator != null)
+            {
+                anim = anim.Replace('.', '_');
+                if (_currentAnimation != anim)
+                {
+                    _animator.CrossFade(anim, fade, 0, normalizedTime);
+                    _currentAnimation = anim;
+                }
+            }
+        }
+
+        [CLMethod("Sets the animation playback speed")]
+        public void SetAnimationSpeed(float speed)
+        {
+            if (_animation != null)
+            {
+                foreach (AnimationState state in _animation)
+                    state.speed = speed;
+
+                return;
+            }
+
+            if (_animator != null)
+                _animator.speed = speed;
+        }
+
         [CLMethod("Gets the length of the specified animation.")]
         public float GetAnimationLength(string anim)
         {
-            var animation = Value.GetComponent<Animation>();    // TODO: Cache this value or find a way to avoid calling GetComponent every time.
-            if (animation != null)
-                return animation[anim].length;
-            var animator = Value.GetComponent<Animator>();  // TODO: Cache this value or find a way to avoid calling GetComponent every time.
-            if (animator != null)
+            if (_animation != null)
+                return _animation[anim].length;
+            if (_animator != null)
             {
                 anim = anim.Replace('.', '_');
                 if (_animatorClips == null)
                 {
                     _animatorClips = new Dictionary<string, AnimationClip>();
-                    foreach (AnimationClip clip in animator.runtimeAnimatorController.animationClips)
+                    foreach (AnimationClip clip in _animator.runtimeAnimatorController.animationClips)
                         _animatorClips[clip.name.Replace('.', '_')] = clip;
                 }
                 return _animatorClips[anim].length;
             }
             return -1;
+        }
+
+        // Get/Set Audio volume
+        [CLMethod("Gets the audio sound if a clip exists.")]
+        public float GetSoundVolume()
+        {
+            if (_audioSource != null)
+                return _audioSource.volume;
+            return -1;
+        }
+
+        [CLMethod("Sets the audio sound if a clip exists.")]
+        public void SetSoundVolume(float volume)
+        {
+            if (_audioSource != null)
+                _audioSource.volume = volume;
         }
 
         [CLMethod("Plays the sound.")]
@@ -220,19 +332,58 @@ namespace CustomLogic
         [CLMethod] public CustomLogicVector3Builtin TransformPoint(CustomLogicVector3Builtin point) => Value.TransformPoint(point);
 
         /// <inheritdoc cref="Transform.Rotate(Vector3)"/>
-        [CLMethod] public void Rotate(CustomLogicVector3Builtin rotation) => Value.Rotate(rotation);
+        [CLMethod]
+        public void Rotate(CustomLogicVector3Builtin rotation)
+        {
+            Value.Rotate(rotation);
+            _needSetLocalRotation = true;
+            _needSetRotation = true;
+        }
 
         /// <inheritdoc cref="Transform.RotateAround(Vector3, Vector3, float)"/>
-        [CLMethod] public void RotateAround(CustomLogicVector3Builtin point, CustomLogicVector3Builtin axis, float angle) => Value.RotateAround(point.Value, axis.Value, angle);
+        [CLMethod]
+        public void RotateAround(CustomLogicVector3Builtin point, CustomLogicVector3Builtin axis, float angle)
+        {
+            _needSetLocalRotation = true;
+            _needSetRotation = true;
+            Value.RotateAround(point.Value, axis.Value, angle);
+        }
 
         /// <inheritdoc cref="Transform.LookAt(Vector3)"/>
-        [CLMethod] public void LookAt(CustomLogicVector3Builtin target) => Value.LookAt(target);
+        [CLMethod]
+        public void LookAt(CustomLogicVector3Builtin target)
+        {
+            _needSetLocalRotation = true;
+            _needSetRotation = true;
+            Value.LookAt(target);
+        }
 
         [CLMethod("Sets the enabled state of all child renderers.")]
         public void SetRenderersEnabled(bool enabled)
         {
             foreach (var renderer in Value.GetComponentsInChildren<Renderer>())
                 renderer.enabled = enabled;
+        }
+
+        [CLMethod("Gets colliders of the transform.")]
+        public CustomLogicListBuiltin GetColliders(bool recursive = false)
+        {
+            var listBuiltin = new CustomLogicListBuiltin();
+            if (recursive)
+            {
+                foreach (var collider in Value.gameObject.GetComponentsInChildren<Collider>())
+                {
+                    listBuiltin.List.Add(new CustomLogicColliderBuiltin(new object[] { collider }));
+                }
+            }
+            else
+            {
+                foreach (var collider in Value.gameObject.GetComponents<Collider>())
+                {
+                    listBuiltin.List.Add(new CustomLogicColliderBuiltin(new object[] { collider }));
+                }
+            }
+            return listBuiltin;
         }
 
         public static implicit operator CustomLogicTransformBuiltin(Transform value) => new CustomLogicTransformBuiltin(value);

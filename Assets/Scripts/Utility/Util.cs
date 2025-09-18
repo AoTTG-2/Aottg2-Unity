@@ -1,19 +1,15 @@
-using Settings;
+using Characters;
+using Photon.Pun;
+using Photon.Realtime;
 using SimpleJSONFixed;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using UnityEngine;
-using Characters;
 using System.Text.RegularExpressions;
-using Photon.Pun;
-using Photon.Realtime;
-using System.Globalization;
+using UnityEngine;
 using UnityEngine.AI;
-using System.Collections.Specialized;
-using System.IO;
 
 namespace Utility
 {
@@ -41,6 +37,11 @@ namespace Utility
         public static float LinearMap(float x, float inMin, float inMax, float outMin, float outMax)
         {
             return (x - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
+        }
+
+        public static float ClampedLinearMap(float x, float inMin, float inMax, float outMin, float outMax)
+        {
+            return Mathf.Clamp((x - inMin) * (outMax - outMin) / (inMax - inMin) + outMin, outMin, outMax);
         }
 
         public static BaseCharacter FindCharacterByViewId(int viewId)
@@ -89,7 +90,7 @@ namespace Utility
             return obj.AddComponent<T>();
         }
 
-        public static HashSet<T> RemoveNull<T>(HashSet<T> set) where T: UnityEngine.Object
+        public static HashSet<T> RemoveNull<T>(HashSet<T> set) where T : UnityEngine.Object
         {
             set.RemoveWhere(e => !e);
             return set;
@@ -134,6 +135,12 @@ namespace Utility
         {
             for (int i = 0; i < frames; i++)
                 yield return new WaitForEndOfFrame();
+        }
+
+        public static IEnumerator YieldForFrames(int frames)
+        {
+            for (int i = 0; i < frames; i++)
+                yield return null;
         }
 
         public static string[] EnumToStringArray<T>()
@@ -300,15 +307,15 @@ namespace Utility
         {
             return $"<{tag}={value}>{text}</{tag}>";
         }
-        
+
         public static Quaternion ConstrainedToX(Quaternion rotation) =>
-            Quaternion.Euler(rotation.eulerAngles.x, 0f,  0f);
-        
+            Quaternion.Euler(rotation.eulerAngles.x, 0f, 0f);
+
         public static Quaternion ConstrainedToY(Quaternion rotation) =>
-            Quaternion.Euler(0f, rotation.eulerAngles.y,  0f);
-        
+            Quaternion.Euler(0f, rotation.eulerAngles.y, 0f);
+
         public static Quaternion ConstrainedToZ(Quaternion rotation) =>
-            Quaternion.Euler(0f, 0f,  rotation.eulerAngles.z);
+            Quaternion.Euler(0f, 0f, rotation.eulerAngles.z);
 
         public static List<KeyValuePair<float, string>> _titanSizes = new List<KeyValuePair<float, string>>()
         {
@@ -317,7 +324,7 @@ namespace Utility
             new KeyValuePair<float, string>(2f, "avgTitan"),
             new KeyValuePair<float, string>(3f, "maxTitan")
         };
-        
+
         public static List<int> GetAllTitanAgentIds()
         {
             // for each _titanSize in _titanSizes, return GetNavMeshAgentID(_titanSize.Value), if its null, remove
@@ -349,7 +356,7 @@ namespace Utility
                     sizeToUse = _titanSizes[i].Key;
                     name = _titanSizes[i].Value;
                 }
-                    
+
             }
 
             int agentId = GetNavMeshAgentID(name).Value;

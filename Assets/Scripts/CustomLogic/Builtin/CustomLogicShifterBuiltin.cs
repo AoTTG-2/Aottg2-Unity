@@ -4,13 +4,17 @@ using Controllers;
 namespace CustomLogic
 {
     /// <summary>
+    /// Represents a Shifter character.
     /// Only character owner can modify fields and call functions unless otherwise specified.
     /// </summary>
     /// <code>
-    /// function OnCharacterSpawn(character) {
-    ///     if (character.IsMine && character.Type == "Shifter") {
+    /// function OnCharacterSpawn(character)
+    /// {
+    ///     if (character.IsMine &amp;&amp; character.Type == "Shifter")
+    ///     {
     ///         character.Size = 2;
-    ///         if (Network.MyPlayer.Status == "Alive" && Network.MyPlayer.Character.Type == "Human") {
+    ///         if (Network.MyPlayer.Status == "Alive" &amp;&amp; Network.MyPlayer.Character.Type == "Human")
+    ///         {
     ///             character.Target(Network.MyPlayer, 10);
     ///         }
     ///     }
@@ -26,20 +30,6 @@ namespace CustomLogic
         {
             Shifter = shifter;
             Controller = shifter.GetComponent<BaseTitanAIController>();
-        }
-
-        [CLProperty("Shifter's name.")]
-        public string Name
-        {
-            get => Shifter.Name;
-            set => Shifter.Name = value;
-        }
-
-        [CLProperty("Shifter's guild.")]
-        public string Guild
-        {
-            get => Shifter.Guild;
-            set => Shifter.Guild = value;
         }
 
         [CLProperty("Shifter's size.")]
@@ -160,6 +150,13 @@ namespace CustomLogic
             set { if (Shifter.IsMine() && Shifter.AI) Controller._usePathfinding = value; }
         }
 
+        [CLProperty("Enable/Disable AI Behavior (Shifter will not attack/target but pathfinding/move methods will still work).")]
+        public bool AIEnabled
+        {
+            get => Shifter.IsMine() && Shifter.AI && Controller.AIEnabled;
+            set { if (Shifter.IsMine() && Shifter.AI) Controller.AIEnabled = value; }
+        }
+
         [CLProperty("The shifter's nape position.")]
         public CustomLogicVector3Builtin NapePosition => new CustomLogicVector3Builtin(Shifter.BaseTitanCache.NapeHurtbox.transform.position);
 
@@ -175,6 +172,26 @@ namespace CustomLogic
         {
             if (Shifter.IsMine() && !Shifter.Dead && Shifter.AI)
                 Controller.MoveTo(position.Value, range, ignoreEnemies);
+        }
+
+        [CLMethod("Causes the (AI) shifter to move towards a position. If ignoreEnemies is true, will not engage enemies along the way.")]
+        public void MoveToExact(CustomLogicVector3Builtin position, float timeoutPadding = 1)
+        {
+            if (Shifter.IsMine() && !Shifter.Dead && Shifter.AI)
+                Controller.MoveToExact(position.Value, timeoutPadding);
+        }
+
+        [CLMethod(description: "Sort the list using a custom method, expects a method with the signature int method(a,b)")]
+        public void MoveToExactCallback(UserMethod method, CustomLogicVector3Builtin position, float range = 10, float timeoutPadding = 1)
+        {
+            if (Shifter.IsMine() && !Shifter.Dead && Shifter.AI)
+            {
+                Controller.MoveToExactCallback(
+                    () => CustomLogicManager.Evaluator.EvaluateMethod(method, new object[] { this }),
+                    position.Value,
+                    range,
+                    timeoutPadding);
+            }
         }
 
         [CLMethod("Causes the (AI) shifter to target an enemy character or MapTargetable for focusTime seconds. If focusTime is 0 it will use the default focus time.")]
@@ -215,6 +232,13 @@ namespace CustomLogic
         {
             if (Shifter.IsMine() && !Shifter.Dead)
                 Shifter.Cripple(time);
+        }
+
+        [CLMethod("Causes the shifter to perform the given attack, if able.")]
+        public void Attack(string attack)
+        {
+            if (Shifter.IsMine() && !Shifter.Dead && Shifter.CanAttack())
+                Shifter.Attack(attack);
         }
     }
 }

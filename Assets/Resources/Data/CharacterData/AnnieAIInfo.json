@@ -60,7 +60,7 @@
 			"AttackBite": 0.1,
 			"AttackGrab*": 0.1,
 			"AttackComboBlind": 0.0
-		},
+		}
 	},
 	"Training": {
 		"DetectRange": 0,

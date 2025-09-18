@@ -1,10 +1,8 @@
 ﻿using ApplicationManagers;
 using Cameras;
 using System;
-using System.Linq;
 using UI;
 using UnityEngine;
-using UnityStandardAssets.ImageEffects;
 using Utility;
 
 namespace Settings

@@ -203,8 +203,13 @@ namespace CustomLogic
             return Player == other;
         }
 
+        public override int GetHashCode()
+        {
+            return Player.GetHashCode();
+        }
+
         public bool __Eq__(object self, object other) => self.Equals(other);
 
-        public int __Hash__() => Player.GetHashCode();
+        public int __Hash__() => this.GetHashCode();
     }
 }

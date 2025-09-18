@@ -36,6 +36,7 @@ namespace UI
             _scoreLabel = go.transform.Find("ScoreLabel").GetComponent<Text>();
             _backgroundLabel = go.transform.Find("ScoreLabel/BackgroundLabel").GetComponent<Text>();
             _image = go.GetComponent<RawImage>();
+            go.transform.parent.Find("Border").gameObject.SetActive(false);
         }
 
         public void Show(string killer, string victim, int score, string weapon)

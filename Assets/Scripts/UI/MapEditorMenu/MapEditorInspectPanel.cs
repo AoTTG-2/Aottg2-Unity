@@ -1,22 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine.UI;
-using UnityEngine;
-using Settings;
-using System.Collections;
-using ApplicationManagers;
+﻿using ApplicationManagers;
+using CustomLogic;
 using GameManagers;
-using Characters;
 using Map;
 using MapEditor;
+using Settings;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
 using Utility;
-using UnityEngine.EventSystems;
-using System.Globalization;
-using CustomLogic;
-using static UnityEngine.Rendering.DebugUI;
-using UnityEngine.UIElements;
 
 namespace UI
 {
@@ -79,13 +71,32 @@ namespace UI
             return false;
         }
 
+        public void CopyID()
+        {
+            GUIUtility.systemCopyBuffer = this._mapObject.ScriptObject.Id.ToString();
+        }
+
+        public void CopyAssetCSV()
+        {
+            string serialized = this._mapObject.ScriptObject.Serialize();
+            GUIUtility.systemCopyBuffer = serialized;
+        }
+
         public void Show(MapObject mapObject)
         {
             base.Show();
             _mapObject = mapObject;
             SyncSettings();
             ElementStyle style = new ElementStyle(fontSize: 18, titleWidth: 80f, spacing: 10f, themePanel: ThemePanel);
-            var label = ElementFactory.CreateDefaultLabel(SinglePanel, style, "Object Id: " + _mapObject.ScriptObject.Id.ToString() + " | " + "Asset: " + _mapObject.ScriptObject.Asset, alignment: TextAnchor.MiddleLeft);
+            var topGroup = ElementFactory.CreateHorizontalGroup(SinglePanel, 20f, TextAnchor.MiddleLeft);
+            ElementFactory.CreateIconButton(topGroup.transform, style, "Icons/Navigation/CopyIcon", onClick: () => CopyAssetCSV());
+
+            var topGroupVert = ElementFactory.CreateVerticalGroup(topGroup.transform, 10f, TextAnchor.UpperLeft);
+            var idLabel = ElementFactory.CreateTextButton(topGroupVert.transform, style, "Id: " + _mapObject.ScriptObject.Id.ToString(), onClick: () => CopyID());
+            var assetLabel = ElementFactory.CreateTextButton(topGroupVert.transform, style, "Asset: " + _mapObject.ScriptObject.Asset, onClick: () => CopyAssetCSV());  // This will eventually allow swapping asset.
+
+            // var label = ElementFactory.CreateDefaultLabel(topGroup.transform, style, "Id: " + _mapObject.ScriptObject.Id.ToString() + "\n" + "Asset: " + _mapObject.ScriptObject.Asset, alignment: TextAnchor.MiddleLeft);
+            // label.GetComponent<Text>().horizontalOverflow = HorizontalWrapMode.Wrap;    // Doesn't stop the object from consuming icon space.
             var group = ElementFactory.CreateHorizontalGroup(SinglePanel, 20f, TextAnchor.MiddleLeft).transform;
             style.TitleWidth = 45f;
             ElementFactory.CreateToggleSetting(group, style, _active, "Active", elementWidth: 25f, elementHeight: 25f, onValueChanged: () => OnChange());
@@ -160,7 +171,7 @@ namespace UI
                         onChangeColor: () => OnChange(), elementHeight: 25f);
                 }
                 group = ElementFactory.CreateHorizontalGroup(SinglePanel, 20f, TextAnchor.MiddleLeft).transform;
-                label = ElementFactory.CreateDefaultLabel(group, style, "Texture", alignment: TextAnchor.MiddleLeft);
+                var label = ElementFactory.CreateDefaultLabel(group, style, "Texture", alignment: TextAnchor.MiddleLeft);
                 label.GetComponent<LayoutElement>().preferredWidth = 160f;
                 ElementFactory.CreateDefaultButton(group, style, _texture.Value, onClick: () => OnButtonClick("Texture"));
                 ElementFactory.CreateInputSetting(SinglePanel, style, _tilingX, "Tiling X", elementWidth: inputWidth, elementHeight: 35f, onEndEdit: () => OnChange());
@@ -304,7 +315,7 @@ namespace UI
                 var material = (MapScriptDefaultTiledMaterial)script.Material;
                 _tilingX.Value = material.Tiling.x;
                 _tilingY.Value = material.Tiling.y;
-            }    
+            }
             else if (typeof(MapScriptBasicMaterial).IsAssignableFrom(script.Material.GetType()))
             {
                 var material = (MapScriptBasicMaterial)script.Material;

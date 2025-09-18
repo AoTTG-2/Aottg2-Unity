@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using Characters;
+﻿using Characters;
+using UnityEngine;
 
 namespace Map
 {
@@ -8,6 +8,7 @@ namespace Map
         private Transform _transform;
         private Vector3 _center;
 
+        public GameObject GameObject => _transform.gameObject;
         public string Team { get; set; }
         public bool Enabled { get; set; } = true;
 

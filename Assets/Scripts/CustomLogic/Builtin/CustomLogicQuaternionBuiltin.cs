@@ -2,21 +2,24 @@
 
 namespace CustomLogic
 {
-    /// <code>
-    /// # Quaternion takes four floats X, Y, Z and W as parameters when initializing. 
-    /// quaternion = Quaternion(0.5, 0.5, 0.5, 0.5);
-    /// </code>
+    /// <summary>
+    /// Represents a quaternion.
+    /// </summary>
     [CLType(Name = "Quaternion", Static = true)]
     partial class CustomLogicQuaternionBuiltin : BuiltinClassInstance, ICustomLogicMathOperators, ICustomLogicEquals, ICustomLogicCopyable
     {
         public Quaternion Value = Quaternion.identity;
 
         [CLConstructor]
-        public CustomLogicQuaternionBuiltin(object[] parameterValues)
+        public CustomLogicQuaternionBuiltin() { }
+
+        /// <summary>
+        /// Creates a new Quaternion from the given values.
+        /// </summary>
+        [CLConstructor]
+        public CustomLogicQuaternionBuiltin(float x, float y, float z, float w)
         {
-            if (parameterValues.Length == 0)
-                return;
-            Value = new Quaternion(parameterValues[0].UnboxToFloat(), parameterValues[1].UnboxToFloat(), parameterValues[2].UnboxToFloat(), parameterValues[3].UnboxToFloat());
+            Value = new Quaternion(x, y, z, w);
         }
 
         public CustomLogicQuaternionBuiltin(Quaternion value)
@@ -85,11 +88,12 @@ namespace CustomLogic
         [CLMethod] public static CustomLogicQuaternionBuiltin FromEuler(CustomLogicVector3Builtin euler) => Quaternion.Euler(euler);
 
         /// <inheritdoc cref="Quaternion.LookRotation(Vector3, Vector3)"/>
-        [CLMethod] public static CustomLogicQuaternionBuiltin LookRotation(CustomLogicVector3Builtin forward, CustomLogicVector3Builtin upwards = null)
+        [CLMethod]
+        public static CustomLogicQuaternionBuiltin LookRotation(CustomLogicVector3Builtin forward, CustomLogicVector3Builtin upwards = null)
         {
             if (upwards == null)
-                return Quaternion.LookRotation(forward);
-            return Quaternion.LookRotation(forward, upwards);
+                return new CustomLogicQuaternionBuiltin(Quaternion.LookRotation(forward));
+            return new CustomLogicQuaternionBuiltin(Quaternion.LookRotation(forward, upwards));
         }
 
         /// <inheritdoc cref="Quaternion.FromToRotation(Vector3, Vector3)"/>
@@ -113,9 +117,7 @@ namespace CustomLogic
             return new CustomLogicQuaternionBuiltin(value);
         }
 
-        [CLMethod]
         public object __Add__(object self, object other) => throw CustomLogicUtils.OperatorException(nameof(__Add__), self, other);
-        [CLMethod]
         public object __Sub__(object self, object other) => throw CustomLogicUtils.OperatorException(nameof(__Sub__), self, other);
 
         [CLMethod]
@@ -129,7 +131,6 @@ namespace CustomLogic
             };
         }
 
-        [CLMethod]
         public object __Div__(object self, object other) => throw CustomLogicUtils.OperatorException(nameof(__Div__), self, other);
 
         [CLMethod]

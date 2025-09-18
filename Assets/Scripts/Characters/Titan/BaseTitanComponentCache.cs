@@ -21,9 +21,14 @@ namespace Characters
         public BaseHitbox HandRHitbox;
         public BaseHitbox FootLHitbox;
         public BaseHitbox FootRHitbox;
+        public BaseHitbox SteamHitbox;
+        public BaseHitbox ForearmLHitbox;
+        public BaseHitbox ForearmRHitbox;
         public Collider EyesHurtbox;
         public Collider LegLHurtbox;
         public Collider LegRHurtbox;
+        public Collider HandLHurtbox;
+        public Collider HandRHurtbox;
         public List<Collider> ToggleColliders = new List<Collider>();
         public List<BaseHitbox> Hitboxes = new List<BaseHitbox>();
         public List<Collider> Hurtboxes = new List<Collider>();
@@ -59,16 +64,26 @@ namespace Characters
                     LegLHurtbox = c;
                 else if (name == "LegRHurtbox")
                     LegRHurtbox = c;
+                else if (name == "HandLHurtbox")
+                    HandLHurtbox = c;
+                else if (name == "HandRHurtbox")
+                    HandRHurtbox = c;
                 else if (name == "MouthHitbox")
                     MouthHitbox = BaseHitbox.Create(character, go, c);
                 else if (name == "HandLHitbox")
                     HandLHitbox = BaseHitbox.Create(character, go, c);
                 else if (name == "HandRHitbox")
                     HandRHitbox = BaseHitbox.Create(character, go, c);
+                else if (name == "ForearmLHitbox")
+                    ForearmLHitbox = BaseHitbox.Create(character, go, c);
+                else if (name == "ForearmRHitbox")
+                    ForearmRHitbox = BaseHitbox.Create(character, go, c);
                 else if (name == "FootLHitbox")
                     FootLHitbox = BaseHitbox.Create(character, go, c);
                 else if (name == "FootRHitbox")
                     FootRHitbox = BaseHitbox.Create(character, go, c);
+                else if (name == "SteamHitbox")
+                    SteamHitbox = BaseHitbox.Create(character, go, c);
                 else if (name == "SitPushbox")
                     SitPushbox = c;
             }

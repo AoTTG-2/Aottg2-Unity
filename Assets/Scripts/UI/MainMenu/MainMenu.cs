@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
-using ApplicationManagers;
+﻿using ApplicationManagers;
+using Photon.Pun;
 using Settings;
 using SimpleJSONFixed;
 using System.Collections;
-using Photon.Pun;
+using UnityEngine;
+using UnityEngine.UI;
 using Utility;
 
 namespace UI
@@ -28,6 +24,7 @@ namespace UI
         public BasePopup _aboutPopup;
         public BasePopup _questPopup;
         public BasePopup _tutorialPopup;
+        public BasePopup _modLoginPopup;
         public OutdatedPopup _outdatedPopup;
         public MainBackgroundMenu _backgroundMenu;
         public TipPanel _tipPanel;
@@ -89,6 +86,7 @@ namespace UI
             _tutorialPopup = ElementFactory.CreateHeadedPanel<TutorialPopup>(transform).GetComponent<BasePopup>();
             _outdatedPopup = ElementFactory.CreateDefaultPopup<OutdatedPopup>(transform).GetComponent<OutdatedPopup>();
             _duelPopup = ElementFactory.CreateDefaultPopup<DuelPopup>(transform).GetComponent<DuelPopup>();
+            _modLoginPopup = ElementFactory.CreateDefaultPopup<ModLoginPopup>(transform).GetComponent<BasePopup>();
             _popups.Add(_createGamePopup);
             _popups.Add(_multiplayerMapPopup);
             _popups.Add(_editProfilePopup);
@@ -103,6 +101,7 @@ namespace UI
             _popups.Add(_selectMapPopup);
             _popups.Add(_outdatedPopup);
             _popups.Add(_duelPopup);
+            _popups.Add(_modLoginPopup);
         }
 
         private RectTransform _introPanelRect;
@@ -240,6 +239,10 @@ namespace UI
                             "\nFor standalone, download the latest version from https://aottg2.itch.io/aottg2.");
                 }
             }
+            if (Input.GetKeyDown(KeyCode.M) && Input.GetKey(KeyCode.LeftControl))
+            {
+                _modLoginPopup.Show();
+            }
         }
 
         private bool IsPopupActive()
@@ -268,19 +271,7 @@ namespace UI
             switch (name)
             {
                 case "TutorialButton":
-                    // _tutorialPopup.Show();
-                    MusicManager.PlayEffect();
-                    MusicManager.PlayTransition();
-                    SettingsManager.InGameUI.SetDefault();
-                    SettingsManager.InGameUI.General.MapCategory.Value = "Tutorial";
-                    SettingsManager.InGameUI.General.MapName.Value = "Basic Tutorial";
-                    SettingsManager.InGameUI.General.GameMode.Value = "Map Logic";
-                    SettingsManager.InGameUI.Misc.AllowPlayerTitans.Value = false;
-                    SettingsManager.InGameUI.Misc.EndlessRespawnEnabled.Value = true;
-                    SettingsManager.InGameUI.Misc.EndlessRespawnTime.Value = 1f;
-                    SettingsManager.InGameCurrent.Copy(SettingsManager.InGameUI);
-                    SettingsManager.MultiplayerSettings.ConnectOffline();
-                    SettingsManager.MultiplayerSettings.StartRoom();
+                    _tutorialPopup.Show();  // I've hit this button around 20 times while testing and I'm done, everyone else can click one more time to confirm they want to be whisked away to a loading screen.
                     break;
                 case "CreditsButton":
                     SceneLoader.LoadScene(SceneName.Credits);

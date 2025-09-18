@@ -25,12 +25,7 @@ namespace CustomLogic
         [CLMethod("Equivalent to C# string.format(string, List<string>).")]
         public static string FormatFromList(string str, CustomLogicListBuiltin list)
         {
-            var strList = new List<string>();
-            foreach (var obj in list.List)
-            {
-                strList.Add((string)obj);
-            }
-            return string.Format(str, strList);
+            return string.Format(str, list.List.ToArray());
         }
 
         [CLMethod("Split the string into a list. Can pass in either a string to split on or a list of strings to split on, the last optional param can remove all empty entries.")]

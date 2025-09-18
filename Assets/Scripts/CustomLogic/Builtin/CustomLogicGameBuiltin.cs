@@ -105,7 +105,12 @@ namespace CustomLogic
                     foreach (var shifter in _inGameManager.Shifters)
                     {
                         if (shifter != null && (!shifter.Dead || shifter.TransformingToHuman))
-                            list.List.Add(new CustomLogicShifterBuiltin(shifter));
+                        {
+                            if (shifter is WallColossalShifter)
+                                list.List.Add(new CustomLogicWallColossalBuiltin((WallColossalShifter)shifter));
+                            else
+                                list.List.Add(new CustomLogicShifterBuiltin(shifter));
+                        }
                     }
                     _cachedLists["Shifters"] = list;
                 }
@@ -124,7 +129,12 @@ namespace CustomLogic
                     foreach (var shifter in _inGameManager.Shifters)
                     {
                         if (shifter != null && shifter.AI && (!shifter.Dead || shifter.TransformingToHuman))
-                            list.List.Add(new CustomLogicShifterBuiltin(shifter));
+                        {
+                            if (shifter is WallColossalShifter)
+                                list.List.Add(new CustomLogicWallColossalBuiltin((WallColossalShifter)shifter));
+                            else
+                                list.List.Add(new CustomLogicShifterBuiltin(shifter));
+                        }
                     }
                     _cachedLists["AIShifters"] = list;
                 }
@@ -143,7 +153,12 @@ namespace CustomLogic
                     foreach (var shifter in _inGameManager.Shifters)
                     {
                         if (shifter != null && !shifter.AI && (!shifter.Dead || shifter.TransformingToHuman))
-                            list.List.Add(new CustomLogicShifterBuiltin(shifter));
+                        {
+                            if (shifter is WallColossalShifter)
+                                list.List.Add(new CustomLogicWallColossalBuiltin((WallColossalShifter)shifter));
+                            else
+                                list.List.Add(new CustomLogicShifterBuiltin(shifter));
+                        }
                     }
                     _cachedLists["PlayerShifters"] = list;
                 }
@@ -285,12 +300,16 @@ namespace CustomLogic
         [CLMethod(description: "Print a debug statement to the console")]
         public void Debug(object message)
         {
+            if (message == null)
+                message = "null";
             DebugConsole.Log(message.ToString(), true);
         }
 
         [CLMethod(description: "Print a message to the chat")]
         public void Print(object message)
         {
+            if (message == null)
+                message = "null";
             ChatManager.AddLine(message.ToString(), ChatTextColor.System);
         }
 
@@ -407,8 +426,10 @@ namespace CustomLogic
         {
             if (PhotonNetwork.IsMasterClient)
             {
-                var shifter = new CustomLogicShifterBuiltin(_inGameManager.SpawnAIShifter(type));
-                return shifter;
+                var shifter = _inGameManager.SpawnAIShifter(type);
+                if (type == "WallColossal")
+                    return new CustomLogicWallColossalBuiltin((WallColossalShifter)shifter);
+                return new CustomLogicShifterBuiltin(shifter);
             }
             return null;
         }
@@ -418,88 +439,132 @@ namespace CustomLogic
         {
             if (PhotonNetwork.IsMasterClient)
             {
-                var shifter = new CustomLogicShifterBuiltin(_inGameManager.SpawnAIShifterAt(type, position.Value, rotationY));
-                return shifter;
+                var shifter = _inGameManager.SpawnAIShifterAt(type, position.Value, rotationY);
+                if (type == "WallColossal")
+                    return new CustomLogicWallColossalBuiltin((WallColossalShifter)shifter);
+                return new CustomLogicShifterBuiltin(shifter);
             }
             return null;
         }
 
-        [CLMethod(description: "Spawn a projectile")]
-        public void SpawnProjectile(object[] parameters)
+        /// <summary>
+        /// Spawn a projectile.
+        /// Note: `extraParam` and `extraParam2` are optional. They may or may not be used depending on the value of `projectileName`
+        /// </summary>
+        /// <param name="projectileName">Name of the projectile. Valid values are: "Thunderspear", "CannonBall", "Flare", "BladeThrow", "SmokeBomb", "Rock1"</param>
+        /// <param name="position">Spawn position</param>
+        /// <param name="rotation">Spawn rotation</param>
+        /// <param name="velocity">Spawn velocity</param>
+        /// <param name="gravity">Spawn gravity</param>
+        /// <param name="liveTime">Live time of the projectile</param>
+        /// <param name="team">The team that the projectile belongs to</param>
+        /// <param name="extraParam">
+        /// Optional. Type depends on projectile:
+        /// >   - Thunderspear: float (explosion radius)
+        /// >   - Flare: Color (flare color)
+        /// >   - Rock1: float (rock size)
+        /// >   - Others: unused</param>
+        /// <param name="extraParam2">
+        /// Optional. Type depends on projectile:
+        /// >   - Thunderspear: Color (projectile color)
+        /// >   - Others: unused
+        /// </param>
+        [CLMethod]
+        public void SpawnProjectile(string projectileName, CustomLogicVector3Builtin position, CustomLogicVector3Builtin rotation, CustomLogicVector3Builtin velocity, CustomLogicVector3Builtin gravity, float liveTime, string team, object extraParam = null, object extraParam2 = null)
         {
-            string projectileName = (string)parameters[0];
-            Vector3 position = ((CustomLogicVector3Builtin)parameters[1]).Value;
-            Vector3 rotation = ((CustomLogicVector3Builtin)parameters[2]).Value;
-            Vector3 velocity = ((CustomLogicVector3Builtin)parameters[3]).Value;
-            Vector3 gravity = ((CustomLogicVector3Builtin)parameters[4]).Value;
-            float liveTime = parameters[5].UnboxToFloat();
-            string team = (string)parameters[6];
             object[] settings = null;
             if (projectileName == ProjectilePrefabs.Thunderspear)
             {
-                float radius = parameters[7].UnboxToFloat();
-                Color color = ((CustomLogicColorBuiltin)parameters[8]).Value.ToColor();
+                float radius = CustomLogicEvaluator.ConvertTo<float>(extraParam);
+                Color color = CustomLogicEvaluator.ConvertTo<CustomLogicColorBuiltin>(extraParam2).Value.ToColor();
                 settings = new object[] { radius, color, false };
             }
             else if (projectileName == ProjectilePrefabs.Flare)
             {
-                Color color = ((CustomLogicColorBuiltin)parameters[7]).Value.ToColor();
+                Color color = CustomLogicEvaluator.ConvertTo<CustomLogicColorBuiltin>(extraParam).Value.ToColor();
                 settings = new object[] { color };
             }
-            else if (projectileName == ProjectilePrefabs.Rock1)
+            else if (projectileName == ProjectilePrefabs.Rock1 || projectileName == ProjectilePrefabs.Rock2)
             {
-                float size = parameters[7].UnboxToFloat();
+                float size = CustomLogicEvaluator.ConvertTo<float>(extraParam);
                 settings = new object[] { size };
             }
             ProjectileSpawner.Spawn(projectileName, position, Quaternion.Euler(rotation), velocity, gravity, liveTime, -1, team, settings);
         }
 
-        [CLMethod(description: "Spawn a projectile with an owner")]
-        public void SpawnProjectileWithOwner(object[] parameters)
+        /// <summary>
+        /// Spawn a projectile with an owner.
+        /// Note: `extraParam` and `extraParam2` are optional. They may or may not be used depending on the value of `projectileName`
+        /// </summary>
+        /// <param name="projectileName">Name of the projectile. Valid values are: "Thunderspear", "CannonBall", "Flare", "BladeThrow", "SmokeBomb", "Rock1"</param>
+        /// <param name="position">Spawn position</param>
+        /// <param name="rotation">Spawn rotation</param>
+        /// <param name="velocity">Spawn velocity</param>
+        /// <param name="gravity">Spawn gravity</param>
+        /// <param name="liveTime">Live time of the projectile</param>
+        /// <param name="owner">The character that the projectile belongs to</param>
+        /// <param name="extraParam">
+        /// Optional. Type depends on projectile:
+        /// >   - Thunderspear: float (explosion radius)
+        /// >   - Flare: Color (flare color)
+        /// >   - Rock1: float (rock size)
+        /// >   - Others: unused</param>
+        /// <param name="extraParam2">
+        /// Optional. Type depends on projectile:
+        /// >   - Thunderspear: Color (projectile color)
+        /// >   - Others: unused
+        /// </param>
+        [CLMethod]
+        public void SpawnProjectileWithOwner(string projectileName, CustomLogicVector3Builtin position, CustomLogicVector3Builtin rotation, CustomLogicVector3Builtin velocity, CustomLogicVector3Builtin gravity, float liveTime, CustomLogicCharacterBuiltin owner, object extraParam = null, object extraParam2 = null)
         {
-            string projectileName = (string)parameters[0];
-            Vector3 position = ((CustomLogicVector3Builtin)parameters[1]).Value;
-            Vector3 rotation = ((CustomLogicVector3Builtin)parameters[2]).Value;
-            Vector3 velocity = ((CustomLogicVector3Builtin)parameters[3]).Value;
-            Vector3 gravity = ((CustomLogicVector3Builtin)parameters[4]).Value;
-            float liveTime = parameters[5].UnboxToFloat();
-            BaseCharacter character = ((CustomLogicCharacterBuiltin)parameters[6]).Character;
+            BaseCharacter character = owner.Character;
             object[] settings = null;
             if (projectileName == ProjectilePrefabs.Thunderspear)
             {
-                float radius = parameters[7].UnboxToFloat();
-                Color color = ((CustomLogicColorBuiltin)parameters[8]).Value.ToColor();
+                float radius = CustomLogicEvaluator.ConvertTo<float>(extraParam);
+                Color color = CustomLogicEvaluator.ConvertTo<CustomLogicColorBuiltin>(extraParam2).Value.ToColor();
                 settings = new object[] { radius, color, false };
             }
             else if (projectileName == ProjectilePrefabs.Flare)
             {
-                Color color = ((CustomLogicColorBuiltin)parameters[7]).Value.ToColor();
+                Color color = CustomLogicEvaluator.ConvertTo<CustomLogicColorBuiltin>(extraParam).Value.ToColor();
                 settings = new object[] { color };
+            }
+            else if (projectileName == ProjectilePrefabs.Rock1 || projectileName == ProjectilePrefabs.Rock2)
+            {
+                float size = CustomLogicEvaluator.ConvertTo<float>(extraParam);
+                settings = new object[] { size };
             }
             ProjectileSpawner.Spawn(projectileName, position, Quaternion.Euler(rotation), velocity, gravity, liveTime, character.photonView.ViewID,
                 character.Team, settings);
         }
 
-        [CLMethod(description: "Spawn an effect")]
-        public void SpawnEffect(object[] parameters)
+        /// <summary>
+        /// Spawns an effect.
+        /// </summary>
+        /// <param name="effectName">Name of the effect. Effect names can be found [here](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/refs/heads/main/Assets/Scripts/Effects/EffectPrefabs.cs) (left-hand variable name)</param>
+        /// <param name="position">Spawn position</param>
+        /// <param name="rotation">Spawn rotation</param>
+        /// <param name="scale">Spawn scale</param>
+        /// <param name="tsExplodeColor">Thunderspear explode color (Only valid when `effectName` is "ThunderspearExplode")</param>
+        /// <param name="tsKillSound">
+        /// Optional. Thunderspear explode sound (Only valid when `effectName` is "ThunderspearExplode"). Valid values are: "Kill", "Air", "Ground", "ArmorHit", "CloseShot", "MaxRangeShot"
+        /// </param>
+        [CLMethod]
+        public void SpawnEffect(string effectName, CustomLogicVector3Builtin position, CustomLogicVector3Builtin rotation, float scale, CustomLogicColorBuiltin tsExplodeColor = null, string tsKillSound = null)
         {
-            string effectName = (string)parameters[0];
             var field = typeof(EffectPrefabs).GetField(effectName);
             if (field == null)
                 return;
             effectName = (string)field.GetValue(null);
-            Vector3 position = ((CustomLogicVector3Builtin)parameters[1]).Value;
-            Vector3 rotation = ((CustomLogicVector3Builtin)parameters[2]).Value;
-            float scale = parameters[3].UnboxToFloat();
             object[] settings = null;
             if (effectName == EffectPrefabs.ThunderspearExplode)
             {
-                Color color = ((CustomLogicColorBuiltin)parameters[4]).Value.ToColor();
+                Color color = tsExplodeColor.Value.ToColor();
                 TSKillType killSound = TSKillType.Kill;
-                if (parameters.Length > 5)
+                if (tsKillSound != null)
                 {
-                    string killSoundName = (string)(parameters[5]);
-                    killSound = killSoundName switch
+                    killSound = tsKillSound switch
                     {
                         "Air" => TSKillType.Air,
                         "Ground" => TSKillType.Ground,
@@ -513,36 +578,6 @@ namespace CustomLogic
             }
             EffectSpawner.Spawn(effectName, position, Quaternion.Euler(rotation), scale, true, settings);
         }
-
-        // [CLMethod(description: "Spawn an effect")]
-        // public void SpawnEffect(string effectName, CustomLogicVector3Builtin position, CustomLogicVector3Builtin rotation, float scale, object[] parameters)
-        // {
-        //     var field = typeof(EffectPrefabs).GetField(effectName);
-        //     if (field == null)
-        //         return;
-        //     effectName = (string)field.GetValue(null);
-        //     object[] settings = null;
-        //     if (effectName == EffectPrefabs.ThunderspearExplode)
-        //     {
-        //         Color color = ((CustomLogicColorBuiltin)parameters[0]).Value.ToColor();
-        //         TSKillType killSound = TSKillType.Kill;
-        //         if (parameters.Length > 1)
-        //         {
-        //             string killSoundName = (string)(parameters[1]);
-        //             killSound = killSoundName switch
-        //             {
-        //                 "Air" => TSKillType.Air,
-        //                 "Ground" => TSKillType.Ground,
-        //                 "ArmorHit" => TSKillType.ArmorHit,
-        //                 "CloseShot" => TSKillType.CloseShot,
-        //                 "MaxRangeShot" => TSKillType.MaxRangeShot,
-        //                 _ => TSKillType.Kill
-        //             };
-        //         }
-        //         settings = new object[] { color, killSound };
-        //     }
-        //     EffectSpawner.Spawn(effectName, position, Quaternion.Euler(rotation), scale, true, settings);
-        // }
 
         [CLMethod(description: "Spawn a player")]
         public void SpawnPlayer(CustomLogicPlayerBuiltin player, bool force)

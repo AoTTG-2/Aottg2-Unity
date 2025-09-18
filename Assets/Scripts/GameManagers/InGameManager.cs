@@ -346,6 +346,8 @@ namespace GameManagers
                 if (GlobalPause)
                     RPCManager.PhotonView.RPC("PauseGameRPC", player, new object[0]);
             }
+            if (ChatManager.HasActivePlayerSuggestions())
+                ChatManager.RefreshPlayerSuggestions();
         }
 
         public void OnNotifyPlayerJoined(Player player)
@@ -356,6 +358,8 @@ namespace GameManagers
                 string line = player.GetCustomProperty(PlayerProperty.Name) + ChatManager.GetColorString(" has joined the room.", ChatTextColor.System);
                 ChatManager.AddLine(line);
             }
+            if (ChatManager.HasActivePlayerSuggestions())
+                ChatManager.RefreshPlayerSuggestions();
         }
 
         public override void OnPlayerLeftRoom(Player player)
@@ -388,6 +392,8 @@ namespace GameManagers
                 VoiceChatVolumeMultiplier.Remove(player.ActorNumber);
 
             AnticheatManager.ResetVoteKicks(player);
+            if (ChatManager.HasActivePlayerSuggestions())
+                ChatManager.RefreshPlayerSuggestions();
         }
 
         public override void OnMasterClientSwitched(Player newMasterClient)
@@ -406,8 +412,6 @@ namespace GameManagers
             if (data.Length > 1000)
                 return;
             AllPlayerInfo[info.Sender.ActorNumber].DeserializeFromJsonString(StringCompression.Decompress(data));
-            if (AnticheatManager.BanList.Contains(AllPlayerInfo[info.Sender.ActorNumber].Profile.ID.Value))
-                AnticheatManager.KickPlayer(info.Sender, false);
         }
 
         public static void OnGameSettingsRPC(byte[] data, PhotonMessageInfo info)
@@ -827,6 +831,8 @@ namespace GameManagers
                 prefab = CharacterPrefabs.ArmoredShifter;
             else if (type == "Eren")
                 prefab = CharacterPrefabs.ErenShifter;
+            else if (type == "WallColossal")
+                prefab = CharacterPrefabs.WallColossal;
             if (prefab == "")
                 return null;
             var shifter = (BaseShifter)CharacterSpawner.Spawn(prefab, position, rotation);

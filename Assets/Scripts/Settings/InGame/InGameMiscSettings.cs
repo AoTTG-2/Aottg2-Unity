@@ -1,6 +1,4 @@
-﻿using GameManagers;
-
-namespace Settings
+﻿namespace Settings
 {
     class InGameMiscSettings : BaseSettingsContainer
     {
@@ -26,6 +24,9 @@ namespace Settings
         public BoolSetting ClearKDROnRestart = new BoolSetting(true);
         public BoolSetting GlobalMinimapDisable = new BoolSetting(false);
         public BoolSetting RealismMode = new BoolSetting(false);
+        public FloatSetting RealismImpactThreshold = new FloatSetting(130f, minValue: 50f);
+        public FloatSetting RealismMaxReel = new FloatSetting(120f, minValue: 0f);
+        public FloatSetting RealismMaxSpeed = new FloatSetting(250f, minValue: 100f);
         public BoolSetting CustomStats = new BoolSetting(true);
         public BoolSetting CustomPerks = new BoolSetting(true);
         public StringSetting Motd = new StringSetting(string.Empty, maxLength: 1000);

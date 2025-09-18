@@ -1,14 +1,18 @@
 ﻿using Characters;
 using Controllers;
+using Map;
 
 namespace CustomLogic
 {
     /// <summary>
+    /// Represents a Titan character.
     /// Only character owner can modify fields and call functions unless otherwise specified.
     /// </summary>
     /// <code>
-    /// function OnCharacterSpawn(character) {
-    ///     if (character.IsMine && character.Type == "Titan") {
+    /// function OnCharacterSpawn(character)
+    /// {
+    ///     if (character.IsMine &amp;&amp; character.Type == "Titan")
+    ///     {
     ///         character.Size = 3;
     ///         character.DetectRange = 1000;
     ///         character.Blind();
@@ -25,20 +29,6 @@ namespace CustomLogic
         {
             Titan = titan;
             Controller = Titan.GetComponent<BaseTitanAIController>();
-        }
-
-        [CLProperty("Titans's name.")]
-        public string Name
-        {
-            get => Titan.Name;
-            set => Titan.Name = value;
-        }
-
-        [CLProperty("Titans's guild.")]
-        public string Guild
-        {
-            get => Titan.Guild;
-            set => Titan.Guild = value;
         }
 
         [CLProperty("Titan's size.")]
@@ -207,17 +197,51 @@ namespace CustomLogic
         public void Target(object enemyObj, float focus)
         {
             if (IsAlive() && Titan.AI == false)
-            // if (name == "Name")
-            //     Character.Name = (string)value;
-            // else if (name == "Guild")
-            //     Character.Guild = (string)value;
-            // if (!Titan.IsMine())
                 return;
 
             ITargetable enemy = enemyObj is CustomLogicMapTargetableBuiltin mapTargetable
                                     ? mapTargetable.Value
                                     : ((CustomLogicCharacterBuiltin)enemyObj).Character;
             Controller.SetEnemy(enemy, focus);
+        }
+
+        [CLMethod("Gets the target currently focused by this character. Returns null if no target is set.")]
+        public object GetTarget()
+        {
+            if (IsAlive() && Titan.AI == false)
+                return null;
+
+
+            ITargetable enemy = Controller.GetEnemy();
+
+            if (enemy == null)
+                return null;
+
+            if (enemy is CustomLogicMapTargetableBuiltin)
+            {
+                MapTargetable mapTargetable1 = (MapTargetable)enemy;
+                return new CustomLogicMapTargetableBuiltin(mapTargetable1.GameObject, mapTargetable1);
+            }
+            else if (enemy is Human)
+            {
+                return new CustomLogicHumanBuiltin((Human)enemy);
+            }
+            else if (enemy is WallColossalShifter)
+            {
+                return new CustomLogicWallColossalBuiltin((WallColossalShifter)enemy);
+            }
+            else if (enemy is BaseShifter)
+            {
+                return new CustomLogicShifterBuiltin((BaseShifter)enemy);
+            }
+            else if (enemy is BasicTitan)
+            {
+                return new CustomLogicTitanBuiltin((BasicTitan)enemy);
+            }
+            else
+            {
+                return null;
+            }
         }
 
         [CLMethod("Causes the (AI) titan to idle for time seconds before beginning to wander. During idle the titan will not react or move at all.")]

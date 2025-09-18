@@ -1,15 +1,14 @@
-﻿using ApplicationManagers;
+using ApplicationManagers;
 using CustomLogic;
 using GameManagers;
 using Map;
 using Photon.Pun;
 using Settings;
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using UI;
 using UnityEngine;
 using Utility;
-using UI;
 
 namespace Characters
 {
@@ -261,9 +260,18 @@ namespace Characters
                 float noise = (midpoint - midDiff) / (float)midpoint;
                 noise = Mathf.Pow(noise, 0.5f);
                 float max = ((rndFactor + velocity.magnitude) * 0.0015f) * noise;
-                Vector3 noisePosition = Anchor.position + new Vector3(UnityEngine.Random.Range(-max, max), UnityEngine.Random.Range(-max, max), UnityEngine.Random.Range(-max, max));
-                noisePosition += (v1 * ((float)i / (float)vertex)) - (Vector3.up * rndFactor * 0.05f * noise) - (velocity * 0.001f * noise * rndFactor);
-                _renderer.SetPosition(i, noisePosition);
+
+                // Use deterministic sine wave instead of random for stable rope physics
+                float time = Time.time * 2f;
+                float sineX = Mathf.Sin(time + i * 0.5f) * max * 0.3f;
+                float sineY = Mathf.Sin(time * 1.2f + i * 0.7f) * max * 0.3f;
+                float sineZ = Mathf.Sin(time * 0.8f + i * 0.3f) * max * 0.3f;
+                Vector3 deterministicOffset = new Vector3(sineX, sineY, sineZ);
+                Vector3 basePosition = deterministicOffset + Anchor.position;
+                Vector3 segmentPosition = basePosition + (v1 * ((float)i / (float)vertex));
+                Vector3 gravityOffset = (Vector3.up * rndFactor) * 0.05f * noise;
+                Vector3 velocityOffset = (velocity * 0.001f) * noise * rndFactor;
+                _renderer.SetPosition(i, segmentPosition - gravityOffset - velocityOffset);
             }
             _renderer.SetPosition(vertex - 1, position);
             _endSprite.transform.position = position + v1.normalized * 0.1f;
@@ -431,7 +439,7 @@ namespace Characters
         }
 
 
-        protected void FixedUpdate()
+        public void FixedUpdateMock()
         {
             _usingDeathTimer = false;
             if (State == HookState.Hooking)

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using Utility;
 
@@ -12,11 +10,8 @@ namespace CustomLogic
         public Vector3 Value;
 
         /// <summary>
-        /// Default constructor. Initializes the Vector3 to (0, 0, 0).
+        /// Default constructor, Initializes the Vector3 to (0, 0, 0).
         /// </summary>
-        /// <code>
-        /// myVector3 = Vector3();
-        /// </code>
         [CLConstructor]
         public CustomLogicVector3Builtin()
         {
@@ -24,23 +19,26 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// Default constructor. Initializes the Vector3 to (xyz, xyz, xyz).
+        /// Initializes the Vector3 to (xyz, xyz, xyz).
         /// </summary>
-        /// <code>
-        /// myVector3 = Vector3(10); # -> Vector3(10, 10, 10)
-        /// </code>
         [CLConstructor]
         public CustomLogicVector3Builtin(float xyz)
         {
             Value = new Vector3(xyz, xyz, xyz);
         }
 
+        /// <summary>
+        /// Initializes the Vector3 to (x, y, 0).
+        /// </summary>
         [CLConstructor]
         public CustomLogicVector3Builtin(float x, float y)
         {
             Value = new Vector3(x, y, 0);
         }
 
+        /// <summary>
+        /// Initializes the Vector3 to (x, y, z).
+        /// </summary>
         [CLConstructor]
         public CustomLogicVector3Builtin(float x, float y, float z)
         {
@@ -117,7 +115,7 @@ namespace CustomLogic
 
         /// <inheritdoc cref="Vector3.Angle"/>
         [CLMethod]
-        public static float Angle(CustomLogicVector3Builtin from, CustomLogicVector3Builtin to) => Vector3.Angle(from, to);
+        public static float Angle(CustomLogicVector3Builtin from, CustomLogicVector3Builtin to) => Vector3.Angle(from.Value, to.Value);
 
         /// <inheritdoc cref="Vector3.ClampMagnitude"/>
         [CLMethod]
@@ -159,9 +157,14 @@ namespace CustomLogic
         [CLMethod]
         public static CustomLogicVector3Builtin Normalize(CustomLogicVector3Builtin value) => Vector3.Normalize(value);
 
-        /// <inheritdoc cref="Vector3.OrthoNormalize(ref Vector3, ref Vector3)"/>
+        /// <summary>
+        /// Makes vectors normalized and orthogonal to each other.
+        /// Normalizes normal. Normalizes tangent and makes sure it is orthogonal to normal (that is, angle between them is 90 degrees).
+        /// Honestly just go look up the unity docs for this one idk.
+        /// This one uses references so the Vectors will be modified in place.
+        /// </summary>
         [CLMethod]
-        public static void OrthoNormalize(CustomLogicVector3Builtin a, CustomLogicVector3Builtin b) => Vector3.OrthoNormalize(ref a.Value, ref b.Value);
+        public static void OrthoNormalize(CustomLogicVector3Builtin normal, CustomLogicVector3Builtin tangent) => Vector3.OrthoNormalize(ref normal.Value, ref tangent.Value);
 
         /// <inheritdoc cref="Vector3.Project"/>
         [CLMethod]
@@ -191,7 +194,9 @@ namespace CustomLogic
         [CLMethod]
         public static CustomLogicVector3Builtin SlerpUnclamped(CustomLogicVector3Builtin a, CustomLogicVector3Builtin b, float t) => Vector3.SlerpUnclamped(a, b, t);
 
-        /// <inheritdoc cref="Vector3.SmoothDamp(Vector3, Vector3, ref Vector3, float, float, float)"/>
+        /// <summary>
+        /// Smoothly damps current towards target with currentVelocity as state. smoothTime and maxSpeed control how aggressive the transition is.
+        /// </summary>
         [CLMethod]
         public static CustomLogicVector3Builtin SmoothDamp(CustomLogicVector3Builtin current, CustomLogicVector3Builtin target, CustomLogicVector3Builtin currentVelocity, float smoothTime, float maxSpeed) => Vector3.SmoothDamp(current, target, ref currentVelocity.Value, smoothTime, maxSpeed);
 
@@ -205,6 +210,8 @@ namespace CustomLogic
         [CLMethod, Obsolete("Use multiply operator instead")]
         public CustomLogicVector3Builtin Scale(object scale)
         {
+            if (scale is int iScale)
+                return new CustomLogicVector3Builtin(Value * iScale);
             if (scale is float fScale)
                 return new CustomLogicVector3Builtin(Value * fScale);
             if (scale is CustomLogicVector3Builtin v3Scale)

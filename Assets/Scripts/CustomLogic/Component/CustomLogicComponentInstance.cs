@@ -1,6 +1,4 @@
 using Map;
-using System.Collections.Generic;
-using System.Globalization;
 using UnityEngine;
 using Utility;
 
@@ -20,6 +18,14 @@ namespace CustomLogic
             NetworkView = networkView;
         }
 
+        public CustomLogicComponentInstance(string name, CustomLogicMapObjectBuiltin obj, MapScriptComponent script,
+            CustomLogicNetworkViewBuiltin networkView) : base(name)
+        {
+            MapObject = obj;
+            _script = script;
+            NetworkView = networkView;
+        }
+
         public void LoadVariables()
         {
             Variables.Add("MapObject", MapObject);
@@ -30,7 +36,7 @@ namespace CustomLogic
                 var arr = param.Split(':');
                 string name = arr[0];
                 string value = arr[1];
-                if (Variables.ContainsKey(name))
+                if (Variables.ContainsKey(name) && name != "Type")
                 {
                     Variables[name] = DeserializeValue(Variables[name], value);
                 }
@@ -44,30 +50,30 @@ namespace CustomLogic
         }
 
         [CLCallbackAttribute]
-        public void OnCollisionStay(BuiltinClassInstance other)
+        public void OnCollisionStay(BuiltinClassInstance other, BuiltinClassInstance collision = null)
         {
             if (!Enabled)
                 return;
 
-            CustomLogicManager.Evaluator?.EvaluateMethod(this, "OnCollisionStay", new object[] { other });
+            CustomLogicManager.Evaluator?.EvaluateMethod(this, "OnCollisionStay", new object[] { other, collision });
         }
 
         [CLCallbackAttribute]
-        public void OnCollisionEnter(BuiltinClassInstance other)
+        public void OnCollisionEnter(BuiltinClassInstance other, BuiltinClassInstance collision = null)
         {
             if (!Enabled)
                 return;
 
-            CustomLogicManager.Evaluator.EvaluateMethod(this, "OnCollisionEnter", new object[] { other });
+            CustomLogicManager.Evaluator.EvaluateMethod(this, "OnCollisionEnter", new object[] { other, collision });
         }
 
         [CLCallbackAttribute]
-        public void OnCollisionExit(BuiltinClassInstance other)
+        public void OnCollisionExit(BuiltinClassInstance other, BuiltinClassInstance collision = null)
         {
             if (!Enabled)
                 return;
 
-            CustomLogicManager.Evaluator.EvaluateMethod(this, "OnCollisionExit", new object[] { other });
+            CustomLogicManager.Evaluator.EvaluateMethod(this, "OnCollisionExit", new object[] { other, collision });
         }
 
         [CLCallbackAttribute]

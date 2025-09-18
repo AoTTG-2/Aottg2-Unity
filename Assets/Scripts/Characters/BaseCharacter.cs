@@ -1,20 +1,20 @@
-using UnityEngine;
 using ApplicationManagers;
-using GameManagers;
-using Utility;
-using System.Collections.Generic;
-using Settings;
-using System.Collections;
-using CustomLogic;
-using UI;
 using Cameras;
+using CustomLogic;
+using GameManagers;
 using Photon.Pun;
 using Photon.Realtime;
+using Settings;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using UI;
+using UnityEngine;
+using Utility;
 
 namespace Characters
 {
-    class BaseCharacter: Photon.Pun.MonoBehaviourPunCallbacks, ITargetable
+    class BaseCharacter : Photon.Pun.MonoBehaviourPunCallbacks, ITargetable
     {
         protected virtual int DefaultMaxHealth => 1;
         protected virtual Vector3 Gravity => Vector3.down * 20f;
@@ -25,7 +25,8 @@ namespace Characters
         public float MaxSoundDistance = 500f;
         protected float _disableKinematicTimeLeft = 0f;
 
-        public string Name { 
+        public string Name
+        {
             get
             {
                 return RichTextName;
@@ -194,7 +195,7 @@ namespace Characters
         public virtual void Init(bool ai, string team)
         {
             AI = ai;
-            
+
             if (!ai)
             {
                 Name = PhotonNetwork.LocalPlayer.GetStringProperty(PlayerProperty.Name).StripIllegalRichText();
@@ -386,6 +387,66 @@ namespace Characters
                 CrossFade(animation, fadeTime, startTime);
         }
 
+        // Modified enumeration error.
+        //bool _animationStopped;
+        //public void ContinueAnimations()
+        //{
+        //    if (!_animationStopped)
+        //        return;
+        //    _animationStopped = false;
+        //    Cache.PhotonView.RPC("ContinueAnimationsRPC", RpcTarget.All, new object[0]);
+        //}
+
+        //[PunRPC]
+        //public void ContinueAnimationsRPC(PhotonMessageInfo info)
+        //{
+        //    if (info.Sender != Cache.PhotonView.Owner)
+        //        return;
+        //    Animation.SetSpeedAll(1f);
+        //    string animationName = GetCurrentAnimation();
+        //    if (animationName != "")
+        //        PlayAnimation(animationName);
+        //}
+
+        //public void PauseAnimations()
+        //{
+        //    if (_animationStopped)
+        //        return;
+        //    _animationStopped = true;
+        //    Cache.PhotonView.RPC("PauseAnimationsRPC", RpcTarget.All, new object[0]);
+        //}
+
+        //[PunRPC]
+        //public void PauseAnimationsRPC(PhotonMessageInfo info)
+        //{
+        //    if (info.Sender != Cache.PhotonView.Owner)
+        //        return;
+        //    Animation.SetSpeedAll(0f);
+        //}
+
+        public float GetAnimationSpeed(string animation)
+        {
+            return Animation.GetSpeed(animation);
+        }
+
+        public void SetAnimationSpeed(string animation, float speed)
+        {
+            Cache.PhotonView.RPC("SetAnimationSpeedRPC", RpcTarget.All, new object[2] { animation, speed });
+        }
+
+        public void SetAnimationSpeedNonRPC(string animation, float speed)
+        {
+            Animation.SetSpeed(animation, speed);
+        }
+
+        [PunRPC]
+        public void SetAnimationSpeedRPC(string animation, float speed, PhotonMessageInfo info)
+        {
+            if (info.Sender != Cache.PhotonView.Owner)
+                return;
+            Animation.SetSpeed(animation, speed);
+        }
+
         [PunRPC]
         public void CrossFadeRPC(string animation, float fadeTime, float startTime, PhotonMessageInfo info)
         {
@@ -421,20 +482,58 @@ namespace Characters
         }
 
         [PunRPC]
-        public void PlaySoundRPC(string sound, PhotonMessageInfo info)
+        public virtual void PlaySoundRPC(string sound, PhotonMessageInfo info)
         {
             if (info.Sender != null && info.Sender != Cache.PhotonView.Owner)
                 return;
             if (!SoundsEnabled)
                 return;
             if (Cache.AudioSources.ContainsKey(sound))
+            {
                 Cache.AudioSources[sound].Play();
+            }
         }
 
         public void StopSound(string sound)
         {
             if (IsMine())
                 Cache.PhotonView.RPC("StopSoundRPC", RpcTarget.All, new object[] { sound });
+        }
+
+        public void FadeSound(string sound, float volume, float time)
+        {
+            if (IsMine())
+                Cache.PhotonView.RPC("FadeSoundRPC", RpcTarget.All, new object[] { sound, volume, time });
+        }
+
+        [PunRPC]
+        public virtual void FadeSoundRPC(string sound, float volume, float time, PhotonMessageInfo info)
+        {
+            if (info.Sender != null && info.Sender != Cache.PhotonView.Owner)
+                return;
+            if (!SoundsEnabled)
+                return;
+            if (Cache.AudioSources.ContainsKey(sound))
+            {
+                var source = Cache.AudioSources[sound];
+                if (time <= 0f)
+                {
+                    source.volume = volume;
+                    return;
+                }
+                float volumeIncrement = (volume - source.volume);
+                StartCoroutine(FadeSoundOverTime(source, volumeIncrement, time));
+            }
+        }
+
+        IEnumerator FadeSoundOverTime(AudioSource source, float volumeIncrement, float time)
+        {
+            while (time >= 0f)
+            {
+                time -= 0.1f;
+                source.volume += volumeIncrement * 0.1f;
+                yield return new WaitForSeconds(0.1f);
+            }
         }
 
         [PunRPC]
@@ -474,7 +573,7 @@ namespace Characters
             if (CurrentHealth <= 0f)
             {
                 if (CustomLogicManager.Evaluator != null && CustomLogicManager.Evaluator.DefaultShowKillFeed)
-                    RPCManager.PhotonView.RPC("ShowKillFeedRPC", RpcTarget.All, new object[] { name, Name, damage, type});
+                    RPCManager.PhotonView.RPC("ShowKillFeedRPC", RpcTarget.All, new object[] { name, Name, damage, type });
                 Cache.PhotonView.RPC("NotifyDieRPC", RpcTarget.All, new object[] { viewId, name });
             }
         }
@@ -586,6 +685,27 @@ namespace Characters
                 Cache.PhotonView.RPC("GetKilledRPC", Cache.PhotonView.Owner, new object[] { name });
         }
 
+        public virtual void BlowAway(Vector3 source, float force, float maxDistance)
+        {
+            if (!Dead)
+                Cache.PhotonView.RPC("BlowAwayRPC", Cache.PhotonView.Owner, new object[] { source, force, maxDistance });
+        }
+
+        [PunRPC]
+        public virtual void BlowAwayRPC(Vector3 source, float force, float maxDistance)
+        {
+            if (!Dead && IsMine())
+            {
+                if (Vector3.Distance(Cache.Transform.position, source) <= maxDistance)
+                {
+                    Vector3 direction = (Cache.Transform.position - source).normalized;
+                    if (Grounded && direction.y >= 0f)
+                        Cache.Rigidbody.AddForce(Vector3.up * Mathf.Min(10f, force), ForceMode.VelocityChange);
+                    Cache.Rigidbody.AddForce(direction * force, ForceMode.VelocityChange);
+                }
+            }
+        }
+
         protected virtual void Awake()
         {
             if (SceneLoader.CurrentGameManager is InGameManager)
@@ -673,7 +793,7 @@ namespace Characters
 
         protected virtual void CheckGround()
         {
-            
+
             JustGrounded = false;
             if (CheckRaycastIgnoreTriggers(Cache.Transform.position + Vector3.up * 0.1f, -Vector3.up, GroundDistance, GroundMask.value))
             {
@@ -797,8 +917,8 @@ namespace Characters
         {
             return new List<Renderer>();
         }
-     
-        protected void AddRendererIfExists(List<Renderer> renderers, GameObject go, bool multiple=false)
+
+        protected void AddRendererIfExists(List<Renderer> renderers, GameObject go, bool multiple = false)
         {
             if (go != null)
             {

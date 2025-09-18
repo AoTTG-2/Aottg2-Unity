@@ -72,7 +72,14 @@ namespace CustomSkins
 
         protected virtual bool IsValidPart()
         {
-            return _renderers.Count > 0 && _renderers[0] != null;
+            if (_renderers == null || _renderers.Count == 0)
+                return false;
+            foreach (Renderer renderer in _renderers)
+            {
+                if (renderer != null)
+                    return true;
+            }
+            return false;
         }
 
         protected virtual void DisableRenderers()
@@ -81,21 +88,35 @@ namespace CustomSkins
                 SetMaterial(MaterialCache.TransparentMaterial);
             else
             {
-                foreach (Renderer renderer in _renderers)
-                    renderer.enabled = false;
+                if (_renderers != null)
+                {
+                    foreach (Renderer renderer in _renderers)
+                    {
+                        if (renderer != null)
+                            renderer.enabled = false;
+                    }
+                }
             }
         }
 
         protected virtual void SetMaterial(Material material)
         {
-            foreach (Renderer renderer in _renderers)
+            if (_renderers != null)
             {
-                renderer.material = material;
+                foreach (Renderer renderer in _renderers)
+                {
+                    if (renderer != null)
+                        renderer.material = material;
+                }
             }
         }
 
         protected virtual Material SetNewTexture(Texture2D texture)
         {
+            if (_renderers == null || _renderers.Count == 0 || _renderers[0] == null)
+                return null;
+            if (_renderers[0].material == null)
+                return null;
             _renderers[0].material.mainTexture = texture;
             if (_textureScale != _defaultTextureScale)
             {
@@ -105,6 +126,31 @@ namespace CustomSkins
             }
             SetMaterial(_renderers[0].material);
             return _renderers[0].material;
+        }
+        
+        public string GetRendererId()
+        {
+            return _rendererId;
+        }
+        
+        public void ResetToDefault()
+        {
+            if (!IsValidPart())
+                return;
+            if (_renderers == null)
+                return;
+            
+            foreach (Renderer renderer in _renderers)
+            {
+                if (renderer != null)
+                {
+                    renderer.enabled = true;
+                    if (renderer.sharedMaterial != null)
+                    {
+                        renderer.material = renderer.sharedMaterial;
+                    }
+                }
+            }
         }
     }
 }

@@ -2,12 +2,17 @@
 component NavMeshObstacle
 {
     Description = "Adds a navMeshObstacle to the object";
+    AutoScale = true;
+
     _nav = null;
 
     function Init()
     {
         # Add the component like how we add Rigidbody
-        _nav = self.MapObject.AddBuiltinComponent("NavMeshObstacle", false);
+        self._nav = self.MapObject.AddBuiltinComponent("NavMeshObstacle");
+        self._nav.Carving = true;
+        self._nav.CarveOnlyStationary = false;
+        self._nav.AutoScale();
     }
 }
 
@@ -173,14 +178,16 @@ component Floater
 
                     bForce = Vector3(0, gScale * Math.Abs(gravity.Y) * dMult - wdForce.Y, 0);
                     #Game.DrawRay(point, bForce, Color(0, 255, 0, 255), 1);
-                    self._rb.AddForceWithModeAtPoint(bForce, point, "Acceleration");
+                    #self._rb.AddForceWithModeAtPoint(bForce, point, "Acceleration");
+                    self._rb.AddForceOptimized(bForce, self._rb.ForceModeAcceleration, point);
 
                     wdForce = velocity.Scale(self.Drag * -1 * Time.TickTime);
-                    self._rb.AddForceWithMode(bForce, "VeclocityChange");
+                    #self._rb.AddForceWithMode(bForce, "Acceleration");
+                    self._rb.AddForceOptimized(bForce, self._rb.ForceModeAcceleration);
 
-                    ag = self._rb.GetAngularVelocity();
+                    ag = self._rb.AngularVelocity;
                     agdForce = ag.Scale(self.AngularDrag * -1 * Time.TickTime * dMult);
-                    self._rb.AddTorque(agdForce, "VelocityChange");
+                    self._rb.AddTorqueOptimized(agdForce, self._rb.ForceModeVelocityChange);
                 }
             }
         }
@@ -260,12 +267,12 @@ component WaterPhysics
         }
         elif (other.Type == "MapObject")
         {
-            body = other.GetComponent("Rigidbody");
+            body = other.GetBuiltinComponent("Rigidbody");
             if (body == null)
             {
                 return Vector3(0, 0, 0);
             }
-            return body.GetVelocity();
+            return body.Velocity;
         }
         return Vector3(0, 0, 0);
     }
@@ -278,7 +285,7 @@ component WaterPhysics
         }
         elif (other.Type == "MapObject")
         {
-            body = other.GetComponent("Rigidbody");
+            body = other.GetBuiltinComponent("Rigidbody");
             if (body == null)
             {
                 return 1;
@@ -296,10 +303,10 @@ component WaterPhysics
         }
         elif (other.Type == "MapObject")
         {
-            body = other.GetComponent("Rigidbody");
+            body = other.GetBuiltinComponent("Rigidbody");
             if (body != null)
             {
-                body.SetVelocity(velocity);
+                body.Velocity = velocity;
             }
         }
     }
@@ -312,7 +319,7 @@ component WaterPhysics
         }
         elif (other.Type == "MapObject")
         {
-            body = other.GetComponent("Rigidbody");
+            body = other.GetBuiltinComponent("Rigidbody");
             if (body != null)
             {
                 return true;
@@ -591,15 +598,15 @@ component VelocityZone
             {
                 mapDir = self.MapObject.Right;
             }
-            
-            mapDir = mapDir.Scale(self.Speed);
+
+            mapDir = mapDir * self.Speed;
             appliedForce = appliedForce + mapDir;
         }
 
         if (self.UseObject)
         {
             direction = velocity.Normalized;
-            direction = direction.Scale(self.Magnitude);
+            direction = direction * self.Magnitude;
             appliedForce = appliedForce + direction;
         }
         if (self.UseVector)
@@ -1089,13 +1096,16 @@ component CustomPhysicsMaterial
     BounceCombine = "Average";
     BounceCombineDropbox = "Average, Minimum, Multiply, Maximum";
 
+    _material = null;
+
     function Init()
     {
         self.StaticFriction = Math.Max(0.0, self.StaticFriction);
         self.DynamicFriction = Math.Max(0.0, self.DynamicFriction);
         self.Bounciness = Math.Clamp(self.Bounciness, 0.0, 1.0);
         
-        self.MapObject.AddBuiltinComponent("CustomPhysicsMaterial", self.IncludeChildren);
+        self._material = self.MapObject.AddBuiltinComponent("CustomPhysicsMaterial");
+        self._material.Setup(self.IncludeChildren);
         self.SetStaticFriction(self.StaticFriction);
         self.SetDynamicFriction(self.DynamicFriction);
         self.SetBounciness(self.Bounciness);
@@ -1105,27 +1115,47 @@ component CustomPhysicsMaterial
     
     function SetStaticFriction(value)
     {
-        self.MapObject.UpdateBuiltinComponent("CustomPhysicsMaterial", "StaticFriction", value);
+        self._material.StaticFriction = value;
     }
     
     function SetDynamicFriction(value)
     {
-        self.MapObject.UpdateBuiltinComponent("CustomPhysicsMaterial", "DynamicFriction", value);
+        self._material.DynamicFriction = value;
     }
         
     function SetBounciness(value)
     {
-        self.MapObject.UpdateBuiltinComponent("CustomPhysicsMaterial", "Bounciness", value);
+        self._material.Bounciness = value;
     }
     
+    function GetEnumValue(value)
+    {
+        if (value == "Average")
+        {
+            return self._material.FrictionCombineAverage;
+        }
+        elif (value == "Minimum")
+        {
+            return self._material.FrictionCombineMinimum;
+        }
+        elif (value == "Maximum")
+        {
+            return self._material.FrictionCombineMaximum;
+        }
+        elif (value == "Multiply")
+        {
+            return self._material.FrictionCombineMultiply;
+        }
+    }
+
     function SetFrictionCombine(value)
     {
-        self.MapObject.UpdateBuiltinComponent("CustomPhysicsMaterial", "FrictionCombine", value);
+        self._material.FrictionCombine = self.GetEnumValue(value);
     }
         
     function SetBounceCombine(value)
     {
-        self.MapObject.UpdateBuiltinComponent("CustomPhysicsMaterial", "BounceCombine", value);
+        self._material.BounceCombine = self.GetEnumValue(value);
     }
 }
 
@@ -1897,10 +1927,37 @@ component Daylight
     Color = Color(255, 255, 255, 255);
     Intensity = 1.0;
     WeatherControlled = true;
+    ShadowType = "Soft";
+    ShadowTypeDropbox = "None,Soft,Hard";
+    ShadowStrength = 0.8;
+
+    _light = null;
 
     function Init()
     {
-        self.MapObject.AddBuiltinComponent("Daylight", self.Color, self.Intensity, self.WeatherControlled);
+        #self.MapObject.AddBuiltinComponent("Daylight", self.Color, self.Intensity, self.WeatherControlled);
+        self._light = self.MapObject.AddBuiltinComponent("DayLight");
+        self._light.WeatherControlled = self.WeatherControlled;
+        self._light.Color = self.Color;
+        self._light.Intensity = self.Intensity;
+        self._light.ShadowType = self.ParseEnum(self.ShadowType);
+        self._light.ShadowStrength = self.ShadowStrength;
+    }
+
+    function ParseEnum(value)
+    {
+        if (value == "None")
+        {
+            return self._light.ShadowTypeNone;
+        }
+        elif (value == "Soft")
+        {
+            return self._light.ShadowTypeSoft;
+        }
+        elif (value == "Hard")
+        {
+            return self._light.ShadowTypeHard;
+        }
     }
 }
 
@@ -1911,9 +1968,41 @@ component PointLight
     Intensity = 1.0;
     Range = 10.0;
 
+    _light = null;
+
     function Init()
     {
-        self.MapObject.AddBuiltinComponent("PointLight", self.Color, self.Intensity, self.Range);
+        #self.MapObject.AddBuiltinComponent("PointLight", self.Color, self.Intensity, self.Range);
+        self._light = self.MapObject.AddBuiltinComponent("PointLight");
+        self._light.Color = self.Color;
+        self._light.Intensity = self.Intensity;
+        self._light.Range = self.Range;
+        self._light.ShadowType = self._light.ShadowTypeNone; # Point lights do not support shadows
+        self._light.BounceIntensity = 0.0; # Point lights do not support bounce intensity
+    }
+}
+
+# internal
+component SpotLight
+{
+    Color = Color(255, 255, 255, 255);
+    Intensity = 1.0;
+    Range = 10.0;
+    Angle = 30.0;
+
+
+    _light = null;
+
+    function Init()
+    {
+        #self.MapObject.AddBuiltinComponent("PointLight", self.Color, self.Intensity, self.Range);
+        self._light = self.MapObject.AddBuiltinComponent("SpotLight");
+        self._light.Color = self.Color;
+        self._light.Intensity = self.Intensity;
+        self._light.Range = self.Range;
+        self._light.SpotAngle = self.Angle;
+        self._light.ShadowType = self._light.ShadowTypeNone; # Point lights do not support shadows
+        self._light.BounceIntensity = 0.0; # Point lights do not support bounce intensity
     }
 }
 
@@ -1927,42 +2016,54 @@ component Rigidbody
 
     function Init()
     {
-        self.MapObject.AddBuiltinComponent("Rigidbody", self.Mass, self.Gravity, self.FreezeRotation, self.Interpolate);
+        # self.MapObject.AddBuiltinComponent("Rigidbody", self.Mass, self.Gravity, self.FreezeRotation, self.Interpolate);
+        self.MapObject.AddBuiltinComponent("Rigidbody"); # self.Mass, self.Gravity, self.FreezeRotation, self.Interpolate);
+        self.MapObject.Rigidbody.Mass = self.Mass;
+        self.MapObject.Rigidbody.Gravity = self.Gravity;
+        self.MapObject.Rigidbody.FreezeAllRotations = self.FreezeRotation;
+        self.MapObject.Rigidbody.Interpolate = self.Interpolate;
     }
 
     function SetVelocity(velocity)
     {
-        self.MapObject.UpdateBuiltinComponent("Rigidbody", "SetVelocity", velocity);
+        # self.MapObject.UpdateBuiltinComponent("Rigidbody", "SetVelocity", velocity);
+        self.MapObject.Rigidbody.Velocity = velocity;
     }
 
     function AddForce(force)
     {
-        self.MapObject.UpdateBuiltinComponent("Rigidbody", "AddForce", force);
+        # self.MapObject.UpdateBuiltinComponent("Rigidbody", "AddForce", force);
+        self.MapObject.Rigidbody.AddForceOptimized(force);
     }
 
     function AddForceWithMode(force, mode)
     {
-        self.MapObject.UpdateBuiltinComponent("Rigidbody", "AddForce", force, mode);
+        # self.MapObject.UpdateBuiltinComponent("Rigidbody", "AddForce", force, mode);
+        self.MapObject.Rigidbody.AddForce(force, mode);
     }
 
     function AddForceWithModeAtPoint(force, point, mode)
     {
-        self.MapObject.UpdateBuiltinComponent("Rigidbody", "AddForce", force, mode, point);
+        # self.MapObject.UpdateBuiltinComponent("Rigidbody", "AddForce", force, mode, point);
+        self.MapObject.Rigidbody.AddForce(force, mode, point);
     }
 
     function AddTorque(force, mode)
     {
-        self.MapObject.UpdateBuiltinComponent("Rigidbody", "AddTorque", force, mode);
+        # self.MapObject.UpdateBuiltinComponent("Rigidbody", "AddTorque", force, mode);
+        self.MapObject.Rigidbody.AddTorque(force, mode);
     }
 
     function GetVelocity()
     {
-        return self.MapObject.ReadBuiltinComponent("Rigidbody", "Velocity");
+        # return self.MapObject.ReadBuiltinComponent("Rigidbody", "Velocity");
+        return self.MapObject.Rigidbody.Velocity;
     }
 
     function GetAngularVelocity()
     {
-        return self.MapObject.ReadBuiltinComponent("Rigidbody", "AngularVelocity");
+        # return self.MapObject.ReadBuiltinComponent("Rigidbody", "AngularVelocity");
+        return self.MapObject.Rigidbody.AngularVelocity;
     }
 }
 
@@ -1973,7 +2074,7 @@ component Tag
 
     function Init()
     {
-        self.MapObject.AddBuiltinComponent("Tag", self.Name);
+        self.MapObject.Tag = self.Name;
     }
 }
 
@@ -2315,6 +2416,7 @@ component Dummy
 component Wagon
 {
     MoveForce = 20.0;
+    JumpVelocity = 20.0;
     MaxMoveSpeed = 50.0;
     RotateSpeed = 3.0;
     CanSupply = true;
@@ -2334,10 +2436,13 @@ component Wagon
     _leftSitTransform = null;
     _rightSitTransform = null;
     _supplyTimesLeft = 0;
+    _jumpCoolDown = 0.0;
+    _delayUnmount = false; # Avoid key conflicts with dash
 
     function Init()
     {
         self._horse = self.MapObject.GetTransform("Horse");
+        self._horse.Layer = 17; # NPC
         self.MapObject.AddSphereCollider("Region", "Characters", Vector3.Zero, 10.0);
         self._rigidbody = self.MapObject.GetComponent("Rigidbody");
         self._leftWheel = self.MapObject.GetTransform("Carriage/Wheels/LeftWheelPivot");
@@ -2385,7 +2490,7 @@ component Wagon
             human = Network.MyPlayer.Character;
             if (human != null && human.Type == "Human")
             {
-                human.MountTransform(self._horse, Vector3(0, 1.95, 0), Vector3.Zero);
+                human.MountTransform(self._horse, Vector3(0, 1.95, 0), Vector3.Zero, Game.GetMiscSetting("HorsebackCombat"));
                 self._human = human;
             }
         }
@@ -2401,7 +2506,7 @@ component Wagon
             {
                 if (!self._inUse && !self._riding && !other.IsMounted)
                 {
-                    UI.SetLabelForTime("MiddleCenter", "Press " + Input.GetKeyName("Interaction/Interact") + " to drive wagon.", 0.1);
+                    UI.SetLabelForTime("MiddleCenter", "Press " + Input.GetKeyName("Human/HorseMount") + " to drive wagon.", 0.1);
                     self._collidingHuman = other;
                     self._collidingDrive = true;
                 }
@@ -2468,6 +2573,12 @@ component Wagon
             self._rightWheel.Rotate(Vector3(rightWheelRotation, 0, 0));
 
         }
+
+        if (self._delayUnmount)
+        {
+            self._delayUnmount = false;
+            self._human.Unmount(false);
+        }
     }
 
     function OnFrame()
@@ -2476,42 +2587,59 @@ component Wagon
         {
             if (self._inUse)
             {
-                if (self._human.HasTargetDirection)
+                if (self.NetworkView.Owner.Character == null || self.NetworkView.Owner.Character.Type != "Human" || self.NetworkView.Owner.Character.MountedTransform != self._horse)
+                {
+                    self.NetworkView.Transfer(Network.MasterClient);
+                    self._inUse = false;
+                    return;
+                }
+                ySpeed = self._rigidbody.GetVelocity().Y;
+                FrameFactor = Time.FrameTime/0.007;
+                if (ySpeed <= 0.1 && self._jumpCoolDown > 0)
+                {
+                    self._jumpCoolDown -= Time.FrameTime;
+                }
+                if (Input.GetKeyDown("Human/HorseJump") && self._jumpCoolDown <= 0 && Math.Abs(ySpeed) < 0.1)
+                {
+                    velocity = self._rigidbody.GetVelocity();
+                    velocity.Y = self.JumpVelocity;
+                    self._rigidbody.SetVelocity(velocity);
+                    self._jumpCoolDown = 1;
+                }
+                elif (self._human.HasTargetDirection && self._jumpCoolDown <= 0 && Math.Abs(ySpeed) < 0.1)
                 {
                     self.MapObject.Forward = Vector3.Lerp(self.MapObject.Forward, self._human.TargetDirection, self.RotateSpeed * Time.FrameTime);
-                    self._rigidbody.AddForce(self.MapObject.Forward * self.MoveForce);
+                    self._rigidbody.AddForce(self.MapObject.Forward * self.MoveForce * FrameFactor);
                     velocity = self._rigidbody.GetVelocity();
                     self._rigidbody.SetVelocity(velocity.Normalized * Math.Min(velocity.Magnitude, self.MaxMoveSpeed));
                 }
                 else
                 {
                     velocity = self._rigidbody.GetVelocity();
-                    if (velocity.Magnitude < 1)
+                    vh = Vector3(velocity.X, 0.0, velocity.Z);
+                    if (vh.Magnitude < 1)
                     {
                         self._rigidbody.SetVelocity(Vector3.Up * velocity.Y);
                     }
-                    else
+                    elif (Math.Abs(velocity.Y) < 0.1 && self._jumpCoolDown <= 0)
                     {
-                        self._rigidbody.AddForce(-0.5 * velocity.Normalized * velocity.Magnitude);
+                        self._rigidbody.AddForce(-0.5 * vh);
                     }
                 }
-                if (self._rigidbody.GetVelocity().Magnitude > 1)
+                if (self._human.State == "Idle")
                 {
-                    self._human.PlayAnimation("Armature|horse_run");
+                    if (self._rigidbody.GetVelocity().Magnitude > 1)
+                    {
+                        self._human.PlayAnimation("Armature|horse_run");
+                    }
+                    else
+                    {
+                        self._human.PlayAnimation("Armature|horse_idle");
+                    }
                 }
-                else
+                if (Input.GetKeyDown("Human/HorseMount"))
                 {
-                    self._human.PlayAnimation("Armature|horse_idle");
-                }
-                if (Input.GetKeyDown("Interaction/Interact"))
-                {
-                    self._human.Unmount();
-                    self.NetworkView.Transfer(Network.MasterClient);
-                    self._inUse = false;
-                    return;
-                }
-                if (self.NetworkView.Owner.Character == null || self.NetworkView.Owner.Character.Type != "Human" || self.NetworkView.Owner.Character.MountedTransform != self._horse)
-                {
+                    self._delayUnmount = true;
                     self.NetworkView.Transfer(Network.MasterClient);
                     self._inUse = false;
                     return;
@@ -2520,13 +2648,14 @@ component Wagon
             else
             {
                 velocity = self._rigidbody.GetVelocity();
-                if (velocity.Magnitude < 1)
+                vh = Vector3(velocity.X, 0.0, velocity.Z);
+                if (vh.Magnitude < 1)
                 {
                     self._rigidbody.SetVelocity(Vector3.Up * velocity.Y);
                 }
-                else
+                elif (Math.Abs(velocity.Y) < 0.1 && self._jumpCoolDown <= 0)
                 {
-                    self._rigidbody.AddForce(-0.5 * velocity.Normalized * velocity.Magnitude);
+                    self._rigidbody.AddForce(-0.5 * vh);
                 }
             }
         }
@@ -2549,14 +2678,14 @@ component Wagon
         }
         if (self._collidingHuman != null)
         {
-            if (Input.GetKeyDown("Interaction/Interact"))
+            if (Input.GetKeyDown("Human/HorseMount"))
             {
                 if (self._collidingDrive && !self._inUse)
                 {
                     if (self.NetworkView.Owner == Network.MyPlayer) 
                     {
                         self._inUse = true;
-                        self._collidingHuman.MountTransform(self._horse, Vector3(0, 1.95, 0), Vector3.Zero);
+                        self._collidingHuman.MountTransform(self._horse, Vector3(0, 1.95, 0), Vector3.Zero, Game.GetMiscSetting("HorsebackCombat"));
                         self._human = self._collidingHuman;
                     }
                     else
@@ -2564,7 +2693,10 @@ component Wagon
                         self.NetworkView.SendMessage(self.NetworkView.Owner, "request");
                     }
                 }
-                elif (self._collidingGas && !self._inUse)
+            }
+            elif(Input.GetKeyDown("Interaction/Interact"))
+            {
+                if (self._collidingGas && !self._inUse)
                 {
                     if (self._collidingHuman.Refill(true))
                     {
