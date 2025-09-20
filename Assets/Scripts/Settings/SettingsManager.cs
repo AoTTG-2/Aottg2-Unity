@@ -1,8 +1,4 @@
-﻿using Settings;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System;
 
 namespace Settings
 {
@@ -26,6 +22,7 @@ namespace Settings
         public static MapEditorSettings MapEditorSettings;
         public static SoundSettings SoundSettings;
         public static EmoteSettings EmoteSettings;
+        public static AdvancedSettings AdvancedSettings;
 
         public static event Action OnSettingsChanged;
 
@@ -49,6 +46,7 @@ namespace Settings
             MapEditorSettings = new MapEditorSettings();
             SoundSettings = new SoundSettings();
             EmoteSettings = new EmoteSettings();
+            AdvancedSettings = new AdvancedSettings();
         }
 
         public static void NotifySettingsChanged()
