@@ -62,7 +62,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccf1aba9553839d41ae37dd52e9ebcce, type: 3}
   m_Name: MotionBlur
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   mode:
     m_OverrideState: 0
     m_Value: 0
@@ -155,13 +155,13 @@ MonoBehaviour:
     m_Value: 2.5
   aperture:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 2.6
   focalLength:
     m_OverrideState: 1
-    m_Value: 4
+    m_Value: 33
   bladeCount:
     m_OverrideState: 0
-    m_Value: 5
+    m_Value: 3
   bladeCurvature:
     m_OverrideState: 0
     m_Value: 1
@@ -280,7 +280,7 @@ MonoBehaviour:
     m_Value: 1.6
   intensity:
     m_OverrideState: 1
-    m_Value: 5
+    m_Value: 1
   scatter:
     m_OverrideState: 1
     m_Value: 0.2635
@@ -507,7 +507,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97c23e3b12dc18c42a140437e53d3951, type: 3}
   m_Name: Tonemapping
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   mode:
     m_OverrideState: 1
     m_Value: 2
@@ -547,7 +547,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81180773991d8724ab7f2d216912b564, type: 3}
   m_Name: ChromaticAberration
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   intensity:
     m_OverrideState: 1
     m_Value: 0.1
