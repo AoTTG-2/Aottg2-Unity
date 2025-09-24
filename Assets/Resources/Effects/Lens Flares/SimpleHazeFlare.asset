@@ -18,7 +18,7 @@ MonoBehaviour:
     positionOffset: {x: 0, y: 0}
     angularOffset: 0
     translationScale: {x: 1, y: 1}
-    m_LocalIntensity: 0.1
+    m_LocalIntensity: 0.05
     lensFlareTexture: {fileID: 0}
     uniformScale: 288.31
     sizeXY: {x: 1, y: 1}
@@ -26,7 +26,7 @@ MonoBehaviour:
     m_Count: 5
     preserveAspectRatio: 0
     rotation: 0
-    tint: {r: 0.9960785, g: 0.69411767, b: 0.34117648, a: 1}
+    tint: {r: 1, g: 0.4172136, b: 0, a: 1}
     blendMode: 0
     autoRotate: 1
     flareType: 1
