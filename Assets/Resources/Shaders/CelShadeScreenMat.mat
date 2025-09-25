@@ -45,23 +45,14 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Float: 0.06
-    - _Float_1: 2.5
+    - _Float: 0.5
     - _Fullscreen_AlphaBlendOperation: 0
     - _Fullscreen_BlendMode: 1
     - _Fullscreen_ColorBlendOperation: 0
-    - _Fullscreen_DepthWrite: 1
+    - _Fullscreen_DepthWrite: 0
     - _Fullscreen_DstAlphaBlend: 10
     - _Fullscreen_DstColorBlend: 10
     - _Fullscreen_SrcAlphaBlend: 1
     - _Fullscreen_SrcColorBlend: 5
-    - _Normal_Thr: 2
-    - _Size: 0.9
-    - _bright: 1.8
-    - _depthmerge: 12000
-    - _div: 0.00001
-    - _mult: 0.25
-    - _sat: 1.1
-    m_Colors:
-    - _Vector2: {r: 14.2, g: 29.18, b: 0, a: 0}
+    m_Colors: []
   m_BuildTextureStacks: []
