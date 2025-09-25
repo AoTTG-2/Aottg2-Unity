@@ -159,7 +159,7 @@ Material:
     - _LightingEnabled: 0
     - _Metallic: 0
     - _Mode: 1
-    - _Multiply: 3
+    - _Multiply: 12
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _QueueControl: 0
@@ -174,7 +174,7 @@ Material:
     - _Surface: 1
     - _UVSec: 0
     - _Use_Alpha_Map: 0
-    - _Use_Emit_Texture: 0
+    - _Use_Emit_Texture: 1
     - _WorkflowMode: 1
     - _ZTest: 4
     - _ZWrite: 1
@@ -182,7 +182,7 @@ Material:
     m_Colors:
     - _CameraFadeParams: {r: 0, g: Infinity, b: 0, a: 0}
     - _Color: {r: 1, g: 0.5851395, b: 0, a: 1}
-    - _Color2: {r: 0, g: 0, b: 0, a: 0}
+    - _Color2: {r: 0.8784314, g: 0.45882353, b: 0, a: 1}
     - _ColorAddSubDiff: {r: 1, g: 0, b: 0, a: 0}
     - _ColorTweak: {r: 0, g: 0, b: 0, a: 0}
     - _EmissionColor: {r: 0.9716981, g: 0.33034694, b: 0, a: 1}

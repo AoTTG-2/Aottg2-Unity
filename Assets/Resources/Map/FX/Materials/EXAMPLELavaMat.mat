@@ -129,7 +129,7 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _EmitScrollSpeed: -0.05
-    - _EmitStrength: 1.5
+    - _EmitStrength: 6
     - _Frame_Count: 0
     - _GlossMapScale: 1
     - _Glossiness: 0.5

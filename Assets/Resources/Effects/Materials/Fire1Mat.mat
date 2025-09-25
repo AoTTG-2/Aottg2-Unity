@@ -147,7 +147,7 @@ Material:
     - _LightingEnabled: 0
     - _Metallic: 0
     - _Mode: 0
-    - _Multiply: 8
+    - _Multiply: 16
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _QueueControl: 1
