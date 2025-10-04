@@ -8,6 +8,8 @@ class Main
 
     _enabled = false;
     _gameEnded = false;
+    _titanSpawnPointsA = null;
+    _titanSpawnPointsB = null;
 
     function OnGameStart()
     {
@@ -125,7 +127,7 @@ class Main
         }
     }
 
-    coroutine CheckIfTeamPlayersAreDead(team)
+    coroutine CheckIfTeamPlayersAreDead()
     {
         wait 0.3;
 
