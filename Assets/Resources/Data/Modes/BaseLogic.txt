@@ -978,7 +978,7 @@ component DestructibleTrigger
     function DestroyObject()
     {
         # Spawn effect if exists
-        if (self.HasDestroyEffect)
+        if (self.HasDestroyEffect && Network.IsMasterClient)
         {
             for (object in self._targets)
             {
