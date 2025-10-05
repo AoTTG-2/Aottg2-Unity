@@ -11,6 +11,9 @@
 					"Name": "Forest2"
 				},
 				{
+					"Name": "Forest2-optimized"
+				},
+				{
 					"Name": "Forest3"
 				},
 				{
@@ -204,6 +207,10 @@
 				{
 					"Category": "General",
 					"Name": "Forest2"
+				},
+				{
+					"Category": "General",
+					"Name": "Forest2-optimized"
 				},
 				{
 					"Category": "General",
