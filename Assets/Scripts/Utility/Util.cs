@@ -459,5 +459,39 @@ namespace Utility
                 main.startSpeedMultiplier = scale;
             }
         }
+
+        /// <summary>
+        /// Splits a command-line argument string into individual arguments,
+        /// treating quoted strings as single arguments.
+        /// Handles both single (') and double (") quotes.
+        /// </summary>
+        public static List<string> SplitArguments(string commandLine)
+        {
+            if (string.IsNullOrWhiteSpace(commandLine))
+                return new List<string>();
+
+            var args = new List<string>();
+
+            // Regex matches:
+            //  1. Quoted strings: "..." or '...'
+            //  2. Or unquoted sequences of non-whitespace characters
+            var pattern = @"([""'])(?:(?=(\\?))\2.)*?\1|[^\s]+";
+
+            foreach (Match match in Regex.Matches(commandLine, pattern))
+            {
+                string value = match.Value;
+
+                // Remove outer quotes if present
+                if ((value.StartsWith("\"") && value.EndsWith("\"")) ||
+                    (value.StartsWith("'") && value.EndsWith("'")))
+                {
+                    value = value.Substring(1, value.Length - 2);
+                }
+
+                args.Add(value);
+            }
+
+            return args;
+        }
     }
 }
