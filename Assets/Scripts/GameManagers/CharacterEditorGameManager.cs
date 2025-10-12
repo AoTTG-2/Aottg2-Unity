@@ -18,25 +18,53 @@ namespace GameManagers
 {
     class CharacterEditorGameManager : BaseGameManager
     {
-        public HumanDummy Character;
+        public static bool HumanMode = true;
+        public DummyHuman Human;
+        public DummyTitan Titan;
+        public DummyCharacter Character;
         private static string PreviewFolderPath = FolderPaths.Documents + "/CharacterPreviews";
         private GameObject platform;
 
         protected override void Awake()
         {
             base.Awake();
-            platform = ResourceManager.InstantiateAsset<GameObject>(ResourcePaths.Map, "Geometry/Prefabs/Cuboid", 
+            platform = ResourceManager.InstantiateAsset<GameObject>(ResourcePaths.Map, "Geometry/Prefabs/Cuboid",
                 Vector3.down * 0.05f, Quaternion.identity);
             platform.transform.localScale = new Vector3(2f, 0.1f, 2f);
             platform.GetComponent<Renderer>().material = (Material)ResourceManager.LoadAsset(ResourcePaths.Map, "Materials/TransparentMaterial");
             platform.GetComponent<Renderer>().material.color = new Color(1f, 1f, 1f, 0.2f);
-            GameObject go = ResourceManager.InstantiateAsset<GameObject>(ResourcePaths.Characters, "Human/Prefabs/HumanPlayer", Vector3.zero, Quaternion.identity);
-            Character = go.AddComponent<HumanDummy>();
-            go.GetComponent<Human>().enabled = false;
-            go.GetComponent<HumanMovementSync>().enabled = false;
             SettingsManager.HumanCustomSettings.CustomSets.SelectedSetIndex.Value = 0;
-            Character.Setup.Load((HumanCustomSet)SettingsManager.HumanCustomSettings.CustomSets.GetSelectedSet(), HumanWeapon.Blade, false);
-            Character.Idle();
+            SettingsManager.TitanCustomSettings.TitanCustomSets.SelectedSetIndex.Value = 0;
+            Utility.CharacterPreviewGenerator.InitializePreviewSystem();
+            ReinstantiateCharacter();
+        }
+
+        public void ReinstantiateCharacter()
+        {
+            if (Character != null)
+                Destroy(Character.gameObject);
+            if (HumanMode)
+            {
+                GameObject go = ResourceManager.InstantiateAsset<GameObject>(ResourcePaths.Characters, "Human/Prefabs/HumanPlayer", Vector3.zero, Quaternion.identity);
+                Human = go.AddComponent<DummyHuman>();
+                go.GetComponent<Human>().enabled = false;
+                go.GetComponent<HumanMovementSync>().enabled = false;
+                Human.Setup.Load((HumanCustomSet)SettingsManager.HumanCustomSettings.CustomSets.GetSelectedSet(), HumanWeapon.Blade, false);
+                Human.Idle();
+                Character = Human;
+            }
+            else
+            {
+                var set = (TitanCustomSet)SettingsManager.TitanCustomSettings.TitanCustomSets.GetSelectedSet();
+                int body = set.Body.Value;
+                GameObject go = ResourceManager.InstantiateAsset<GameObject>(ResourcePaths.Characters, CharacterPrefabs.BasicTitanPrefix + body, Vector3.zero, Quaternion.identity);
+                Titan = go.AddComponent<DummyTitan>();
+                go.GetComponent<BasicTitan>().enabled = false;
+                go.GetComponent<BasicTitanMovementSync>().enabled = false;
+                Titan.Setup.Load(set);
+                Titan.Idle();
+                Character = Titan;
+            }
         }
 
         public void GeneratePreviews()
@@ -44,10 +72,13 @@ namespace GameManagers
             if (!Directory.Exists(PreviewFolderPath))
                 Directory.CreateDirectory(PreviewFolderPath);
             platform.SetActive(false);
-            StartCoroutine(GeneratePreviewsCoroutine());
+            if (HumanMode)
+                StartCoroutine(GenerateHumanPreviewsCoroutine());
+            else
+                StartCoroutine(GenerateTitanPreviewsCoroutine());
         }
 
-        private IEnumerator GeneratePreviewsCoroutine()
+        private IEnumerator GenerateHumanPreviewsCoroutine()
         {
             var set = new HumanCustomSet();
             set.Hair.Value = "HairM8";
@@ -55,7 +86,7 @@ namespace GameManagers
             for (int i = 0; i < HumanSetup.EyeCount; i++)
             {
                 set.Eye.Value = i;
-                Character.Setup.Load(set, HumanWeapon.Blade, false);
+                Human.Setup.Load(set, HumanWeapon.Blade, false);
                 yield return new WaitForEndOfFrame();
                 Screenshot(870f, 500f, 172f, 172f, "Eye" + i.ToString());
             }
@@ -66,7 +97,7 @@ namespace GameManagers
                     set.Face.Value = "FaceNone";
                 else
                     set.Face.Value = "Face" + i.ToString();
-                Character.Setup.Load(set, HumanWeapon.Blade, false);
+                Human.Setup.Load(set, HumanWeapon.Blade, false);
                 yield return new WaitForEndOfFrame();
                 Screenshot(870f, 470f, 172f, 172f, set.Face.Value);
             }
@@ -77,7 +108,7 @@ namespace GameManagers
                     set.Glass.Value = "GlassNone";
                 else
                     set.Glass.Value = "Glass" + i.ToString();
-                Character.Setup.Load(set, HumanWeapon.Blade, false);
+                Human.Setup.Load(set, HumanWeapon.Blade, false);
                 yield return new WaitForEndOfFrame();
                 Screenshot(870f, 500f, 172f, 172f, set.Glass.Value);
             }
@@ -85,14 +116,14 @@ namespace GameManagers
             for (int i = 0; i < HumanSetup.HairMCount; i++)
             {
                 set.Hair.Value = "HairM" + i.ToString();
-                Character.Setup.Load(set, HumanWeapon.Blade, false);
+                Human.Setup.Load(set, HumanWeapon.Blade, false);
                 yield return new WaitForEndOfFrame();
                 Screenshot(816f, 510f, 280f, 280f, set.Hair.Value);
             }
             for (int i = 0; i < HumanSetup.HairFCount; i++)
             {
                 set.Hair.Value = "HairF" + i.ToString();
-                Character.Setup.Load(set, HumanWeapon.Blade, false);
+                Human.Setup.Load(set, HumanWeapon.Blade, false);
                 yield return new WaitForEndOfFrame();
                 yield return new WaitForEndOfFrame();
                 Screenshot(816f, 510f, 280f, 280f, set.Hair.Value);
@@ -104,31 +135,32 @@ namespace GameManagers
                     set.Hat.Value = "HatNone";
                 else
                     set.Hat.Value = "Hat" + i.ToString();
-                Character.Setup.Load(set, HumanWeapon.Blade, false);
+                Human.Setup.Load(set, HumanWeapon.Blade, false);
                 yield return new WaitForEndOfFrame();
                 Screenshot(796f, 570f, 320f, 320f, set.Hat.Value);
             }
             set.Hat.Value = "HatNone";
-            Character.transform.rotation = Quaternion.Euler(new Vector3(0f, -180f, 0f));
+            Human.transform.rotation = Quaternion.Euler(new Vector3(0f, -180f, 0f));
             for (int i = -1; i < HumanSetup.BackCount; i++)
             {
                 if (i == -1)
                     set.Back.Value = "BackNone";
                 else
                     set.Back.Value = "Back" + i.ToString();
-                Character.Setup.Load(set, HumanWeapon.Blade, false);
+                Human.Setup.Load(set, HumanWeapon.Blade, false);
+                yield return new WaitForSeconds(1f);
                 yield return new WaitForEndOfFrame();
                 Screenshot(776f, 300f, 360f, 360f, set.Back.Value);
             }
             set.Back.Value = "BackNone";
-            Character.transform.rotation = Quaternion.identity;
+            Human.transform.rotation = Quaternion.identity;
             for (int i = -1; i < HumanSetup.HeadCount; i++)
             {
                 if (i == -1)
                     set.Head.Value = "HeadNone";
                 else
                     set.Head.Value = "Head" + i.ToString();
-                Character.Setup.Load(set, HumanWeapon.Blade, false);
+                Human.Setup.Load(set, HumanWeapon.Blade, false);
                 yield return new WaitForEndOfFrame();
                 Screenshot(801f, 470f, 310f, 310f, set.Head.Value);
             }
@@ -137,7 +169,7 @@ namespace GameManagers
             for (int i = 0; i < HumanSetup.CostumeMCount; i++)
             {
                 set.Costume.Value = i;
-                Character.Setup.Load(set, HumanWeapon.Blade, false);
+                Human.Setup.Load(set, HumanWeapon.Blade, false);
                 yield return new WaitForEndOfFrame();
                 Screenshot(826f, 250f, 260f, 260f, "CostumeM" + i.ToString());
             }
@@ -146,18 +178,55 @@ namespace GameManagers
             for (int i = 0; i < HumanSetup.CostumeFCount; i++)
             {
                 set.Costume.Value = i;
-                Character.Setup.Load(set, HumanWeapon.Blade, false);
+                Human.Setup.Load(set, HumanWeapon.Blade, false);
                 yield return new WaitForEndOfFrame();
                 Screenshot(826f, 250f, 260f, 260f, "CostumeF" + i.ToString());
             }
             foreach (HumanCustomSet preset in SettingsManager.HumanCustomSettings.Costume1Sets.GetSets().GetItems())
             {
-                Character.Setup.Load(preset, HumanWeapon.Blade, false);
+                Human.Setup.Load(preset, HumanWeapon.Blade, false);
                 yield return new WaitForEndOfFrame();
                 yield return new WaitForEndOfFrame();
-                Screenshot(746f, 360f, 420f, 420f, "Preset" + preset.Name.Value);
+                Screenshot(746f, 360f, 420f, 420f, "Preset" + preset.UniqueId.Value);
             }
             Screenshot(450f, 360f, 128f, 128f, "PresetNone");
+        }
+
+        private IEnumerator GenerateTitanPreviewsCoroutine()
+        {
+            var set = (TitanCustomSet)SettingsManager.TitanCustomSettings.TitanCustomSets.GetSelectedSet();
+            set.SetDefault();
+            for (int i = 0; i < BasicTitanSetup.EyeCount; i++)
+            {
+                set.Eye.Value = i;
+                ReinstantiateCharacter();
+                yield return new WaitForEndOfFrame();
+                Screenshot(876f, 570f, 172f, 172f, "Eye" + i.ToString());
+            }
+            set.SetDefault();
+            for (int i = 0; i < BasicTitanSetup.HeadCount; i++)
+            {
+                set.Head.Value = i;
+                ReinstantiateCharacter();
+                yield return new WaitForEndOfFrame();
+                Screenshot(852f, 580f, 220f, 220f, "Head" + i.ToString());
+            }
+            set.SetDefault();
+            foreach (string hair in BasicTitanSetup.AllHairs)
+            {
+                set.Hair.Value = hair;
+                ReinstantiateCharacter();
+                yield return new WaitForEndOfFrame();
+                Screenshot(820f, 560f, 280f, 280f, hair);
+            }
+            set.SetDefault();
+            for (int i = 0; i < BasicTitanSetup.BodyCount; i++)
+            {
+                set.Body.Value = i;
+                ReinstantiateCharacter();
+                yield return new WaitForEndOfFrame();
+                Screenshot(766f, 220f, 380f, 380f, "Body" + i.ToString());
+            }
         }
 
         private void Screenshot(float x, float y, float w, float h, string file)

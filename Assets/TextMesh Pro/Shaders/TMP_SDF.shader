@@ -167,7 +167,7 @@ SubShader {
 			UNITY_TRANSFER_INSTANCE_ID(input,output);
 			UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
 
-			float bold = step(input.texcoord1.y, 0);
+			float bold = 0.3;
 
 			float4 vert = input.position;
 			vert.x += _VertexOffsetX;
@@ -305,7 +305,15 @@ SubShader {
 			clip(faceColor.a - 0.001);
 		#endif
 
-  		return faceColor * input.color.a;
+		#if UNITY_COLORSPACE_GAMMA
+			return faceColor * input.color.a;
+		#else
+			// Only convert the color channels, leave alpha alone
+			float4 colorLinear = faceColor;
+			colorLinear.rgb = GammaToLinearSpace(faceColor.rgb);
+			return colorLinear * input.color.a;
+		#endif
+
 		}
 
 		ENDCG

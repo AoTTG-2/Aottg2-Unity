@@ -1,19 +1,15 @@
-using Settings;
+using Characters;
+using Photon.Pun;
+using Photon.Realtime;
 using SimpleJSONFixed;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using UnityEngine;
-using Characters;
 using System.Text.RegularExpressions;
-using Photon.Pun;
-using Photon.Realtime;
-using System.Globalization;
+using UnityEngine;
 using UnityEngine.AI;
-using System.Collections.Specialized;
-using System.IO;
 
 namespace Utility
 {
@@ -41,6 +37,11 @@ namespace Utility
         public static float LinearMap(float x, float inMin, float inMax, float outMin, float outMax)
         {
             return (x - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
+        }
+
+        public static float ClampedLinearMap(float x, float inMin, float inMax, float outMin, float outMax)
+        {
+            return Mathf.Clamp((x - inMin) * (outMax - outMin) / (inMax - inMin) + outMin, outMin, outMax);
         }
 
         public static BaseCharacter FindCharacterByViewId(int viewId)
@@ -89,7 +90,7 @@ namespace Utility
             return obj.AddComponent<T>();
         }
 
-        public static HashSet<T> RemoveNull<T>(HashSet<T> set) where T: UnityEngine.Object
+        public static HashSet<T> RemoveNull<T>(HashSet<T> set) where T : UnityEngine.Object
         {
             set.RemoveWhere(e => !e);
             return set;
@@ -98,6 +99,12 @@ namespace Utility
         public static HashSet<T> RemoveNullOrDead<T>(HashSet<T> set) where T : BaseCharacter
         {
             set.RemoveWhere(e => !e || e.Dead);
+            return set;
+        }
+
+        public static HashSet<T> RemoveNullOrDeadDetections<T>(HashSet<T> set) where T : BaseDetection
+        {
+            set.RemoveWhere(e => e.IsNullOrDead());
             return set;
         }
 
@@ -128,6 +135,12 @@ namespace Utility
         {
             for (int i = 0; i < frames; i++)
                 yield return new WaitForEndOfFrame();
+        }
+
+        public static IEnumerator YieldForFrames(int frames)
+        {
+            for (int i = 0; i < frames; i++)
+                yield return null;
         }
 
         public static string[] EnumToStringArray<T>()
@@ -173,9 +186,19 @@ namespace Utility
             return new Vector3(a.x * b.x, a.y * b.y, a.z * b.z);
         }
 
+        public static Vector2 MultiplyVectors(Vector2 a, Vector2 b)
+        {
+            return new Vector2(a.x * b.x, a.y * b.y);
+        }
+
         public static Vector3 DivideVectors(Vector3 a, Vector3 b)
         {
             return new Vector3(a.x / b.x, a.y / b.y, a.z / b.z);
+        }
+
+        public static Vector2 DivideVectors(Vector2 a, Vector2 b)
+        {
+            return new Vector2(a.x / b.x, a.y / b.y);
         }
 
         public static List<List<T>> GroupItems<T>(List<T> items, int groupSize)
@@ -284,15 +307,15 @@ namespace Utility
         {
             return $"<{tag}={value}>{text}</{tag}>";
         }
-        
+
         public static Quaternion ConstrainedToX(Quaternion rotation) =>
-            Quaternion.Euler(rotation.eulerAngles.x, 0f,  0f);
-        
+            Quaternion.Euler(rotation.eulerAngles.x, 0f, 0f);
+
         public static Quaternion ConstrainedToY(Quaternion rotation) =>
-            Quaternion.Euler(0f, rotation.eulerAngles.y,  0f);
-        
+            Quaternion.Euler(0f, rotation.eulerAngles.y, 0f);
+
         public static Quaternion ConstrainedToZ(Quaternion rotation) =>
-            Quaternion.Euler(0f, 0f,  rotation.eulerAngles.z);
+            Quaternion.Euler(0f, 0f, rotation.eulerAngles.z);
 
         public static List<KeyValuePair<float, string>> _titanSizes = new List<KeyValuePair<float, string>>()
         {
@@ -301,7 +324,7 @@ namespace Utility
             new KeyValuePair<float, string>(2f, "avgTitan"),
             new KeyValuePair<float, string>(3f, "maxTitan")
         };
-        
+
         public static List<int> GetAllTitanAgentIds()
         {
             // for each _titanSize in _titanSizes, return GetNavMeshAgentID(_titanSize.Value), if its null, remove
@@ -323,6 +346,7 @@ namespace Utility
 
         public static NavMeshBuildSettings GetAgentSettingsCorrected(float size)
         {
+            // determine the size to use based on if the size is greater than the current size but less than the next
             string name = "minTitan";
             float sizeToUse = 0.5f;
             for (int i = 0; i < _titanSizes.Count; i++)
@@ -332,7 +356,7 @@ namespace Utility
                     sizeToUse = _titanSizes[i].Key;
                     name = _titanSizes[i].Value;
                 }
-                    
+
             }
 
             int agentId = GetNavMeshAgentID(name).Value;
@@ -394,6 +418,46 @@ namespace Utility
 
             // Handle wrap-around
             return (4294967.295 - sentTime) + serverTime;
+        }
+
+        private static bool ForceScalableParticleSystemMinMaxCurveMode(ParticleSystem.MinMaxCurve curve, out ParticleSystem.MinMaxCurve newCurve, float scale = 1.0f)
+        {
+            switch (curve.mode)
+            {
+                case ParticleSystemCurveMode.Constant:
+                    newCurve = new ParticleSystem.MinMaxCurve(scale, AnimationCurve.Linear(0.0f, curve.constant, 1.0f, curve.constant));
+                    return true;
+                case ParticleSystemCurveMode.TwoConstants:
+                    newCurve = new ParticleSystem.MinMaxCurve(scale, AnimationCurve.Linear(0.0f, curve.constantMin, 1.0f, curve.constantMax));
+                    return true;
+                default:
+                    newCurve = curve;
+                    return false;
+            }
+        }
+
+        public static void ScaleParticleStartSize(ParticleSystem.MainModule main, float scale)
+        {
+            if (ForceScalableParticleSystemMinMaxCurveMode(main.startSize, out var newCurve, scale))
+            {
+                main.startSize = newCurve;
+            }
+            else
+            {
+                main.startSizeMultiplier = scale;
+            }
+        }
+
+        public static void ScaleParticleStartSpeed(ParticleSystem.MainModule main, float scale)
+        {
+            if (ForceScalableParticleSystemMinMaxCurveMode(main.startSpeed, out var newCurve, scale))
+            {
+                main.startSpeed = newCurve;
+            }
+            else
+            {
+                main.startSpeedMultiplier = scale;
+            }
         }
     }
 }

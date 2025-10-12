@@ -38,6 +38,8 @@ namespace UI
             ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.BloodSplatterEnabled, UIManager.GetLocale(cat, sub, "BloodSplatterEnabled"));
             ElementFactory.CreateDropdownSetting(DoublePanelLeft, style, settings.WeaponTrail, UIManager.GetLocale(cat, sub, "WeaponTrail"),
                 UIManager.GetLocaleArray(cat, sub, "WeaponTrailOptions"), elementWidth: 200f);
+            ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.WeaponTrailHold, UIManager.GetLocale(cat, sub, "WeaponTrailHold"), tooltip: UIManager.GetLocale(cat, sub, "WeaponTrailHoldTooltip"));
+            ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.WeaponFireEffect, UIManager.GetLocale(cat, sub, "WeaponFireEffect"), tooltip: UIManager.GetLocale(cat, sub, "WeaponFireEffectTooltip"));
             ElementFactory.CreateDropdownSetting(DoublePanelRight, style, settings.TextureQuality, UIManager.GetLocale(cat, sub, "TextureQuality"),
                 UIManager.GetLocaleArray(cat, sub, "TextureQualityOptions"), elementWidth: 200f);
             ElementFactory.CreateDropdownSetting(DoublePanelRight, style, settings.ShadowQuality, UIManager.GetLocale(cat, sub, "ShadowQuality"),
@@ -58,7 +60,7 @@ namespace UI
                UIManager.GetLocaleArray(cat, sub, "AmbientOcclusionOptions"), elementWidth: 200f);
             ElementFactory.CreateDropdownSetting(DoublePanelRight, style, settings.Bloom, UIManager.GetLocale(cat, sub, "Bloom"),
                UIManager.GetLocaleArray(cat, sub, "BloomOptions"), elementWidth: 200f);
-            ElementFactory.CreateDropdownSetting(DoublePanelRight, style, settings.ChromaticAberration, UIManager.GetLocale(cat, sub, "ChromaticAberration"),
+            ElementFactory.CreateDropdownSetting(DoublePanelRight, style, settings.ChromaticAberrationFX, UIManager.GetLocale(cat, sub, "ChromaticAberration"),
                UIManager.GetLocaleArray(cat, sub, "ChromaticAberrationOptions"), elementWidth: 200f);
             ElementFactory.CreateDropdownSetting(DoublePanelRight, style, settings.ColorGrading, UIManager.GetLocale(cat, sub, "ColorGrading"),
                UIManager.GetLocaleArray(cat, sub, "ColorGradingOptions"), elementWidth: 200f);

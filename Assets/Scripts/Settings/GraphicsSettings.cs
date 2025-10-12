@@ -1,10 +1,8 @@
 ﻿using ApplicationManagers;
 using Cameras;
 using System;
-using System.Linq;
 using UI;
 using UnityEngine;
-using UnityStandardAssets.ImageEffects;
 using Utility;
 
 namespace Settings
@@ -29,6 +27,8 @@ namespace Settings
         public IntSetting AnisotropicFiltering = new IntSetting((int)AnisotropicLevel.Low);
         public IntSetting WeatherEffects = new IntSetting((int)WeatherEffectLevel.High);
         public IntSetting WeaponTrail = new IntSetting((int)WeaponTrailMode.All);
+        public BoolSetting WeaponTrailHold = new BoolSetting(false);
+        public BoolSetting WeaponFireEffect = new BoolSetting(true);
         public BoolSetting WindEffectEnabled = new BoolSetting(true);
         public BoolSetting BloodSplatterEnabled = new BoolSetting(true);
         public BoolSetting NapeBloodEnabled = new BoolSetting(true);
@@ -37,7 +37,7 @@ namespace Settings
         // Post Processing
         public IntSetting AmbientOcclusion = new IntSetting((int)AmbientOcclusionLevel.Off, minValue: 0, maxValue: (int)Util.EnumMaxValue<AmbientOcclusionLevel>());
         public IntSetting Bloom = new IntSetting((int)BloomLevel.Low, minValue: 0, maxValue: (int)Util.EnumMaxValue<BloomLevel>());
-        public IntSetting ChromaticAberration = new IntSetting((int)ChromaticAberrationLevel.Off, minValue: 0, maxValue: (int)Util.EnumMaxValue<ChromaticAberrationLevel>());
+        public IntSetting ChromaticAberrationFX = new IntSetting((int)ChromaticAberrationLevel.Off, minValue: 0, maxValue: (int)Util.EnumMaxValue<ChromaticAberrationLevel>());
         public IntSetting ColorGrading = new IntSetting((int)ColorGradingLevel.Off, minValue: 0, maxValue: (int)Util.EnumMaxValue<ColorGradingLevel>());
         public IntSetting AutoExposure = new IntSetting((int)AutoExposureLevel.On, minValue: 0, maxValue: (int)Util.EnumMaxValue<AutoExposureLevel>());
         public IntSetting DepthOfField = new IntSetting((int)DepthOfFieldLevel.Off, minValue: 0, maxValue: (int)Util.EnumMaxValue<DepthOfFieldLevel>());
@@ -85,7 +85,7 @@ namespace Settings
                 postProcessingManager.ApplySettings(
                     (AmbientOcclusionLevel)AmbientOcclusion.Value,
                     (BloomLevel)Bloom.Value,
-                    (ChromaticAberrationLevel)ChromaticAberration.Value,
+                    (ChromaticAberrationLevel)ChromaticAberrationFX.Value,
                     (ColorGradingLevel)ColorGrading.Value,
                     (AutoExposureLevel)AutoExposure.Value,
                     (DepthOfFieldLevel)DepthOfField.Value,
@@ -118,7 +118,7 @@ namespace Settings
                 MotionBlur.Value = (int)MotionBlurLevel.Off;
                 ColorGrading.Value = (int)ColorGradingLevel.Off;
                 DepthOfField.Value = (int)DepthOfFieldLevel.Off;
-                ChromaticAberration.Value = (int)ChromaticAberrationLevel.Off;
+                ChromaticAberrationFX.Value = (int)ChromaticAberrationLevel.Off;
                 AmbientOcclusion.Value = (int)AmbientOcclusionLevel.Off;
                 WaterFX.Value = (int)WaterFXLevel.Low;
                 AutoExposure.Value = (int)AutoExposureLevel.Off;
@@ -138,7 +138,7 @@ namespace Settings
                 MotionBlur.Value = (int)MotionBlurLevel.Off;
                 ColorGrading.Value = (int)ColorGradingLevel.Off;
                 DepthOfField.Value = (int)DepthOfFieldLevel.Off;
-                ChromaticAberration.Value = (int)ChromaticAberrationLevel.Off;
+                ChromaticAberrationFX.Value = (int)ChromaticAberrationLevel.Off;
                 AmbientOcclusion.Value = (int)AmbientOcclusionLevel.Off;
                 WaterFX.Value = (int)WaterFXLevel.Low;
                 AutoExposure.Value = (int)AutoExposureLevel.On;
@@ -158,7 +158,7 @@ namespace Settings
                 MotionBlur.Value = (int)MotionBlurLevel.Off;
                 ColorGrading.Value = (int)ColorGradingLevel.Off;
                 DepthOfField.Value = (int)DepthOfFieldLevel.Off;
-                ChromaticAberration.Value = (int)ChromaticAberrationLevel.Low;
+                ChromaticAberrationFX.Value = (int)ChromaticAberrationLevel.Off;
                 AmbientOcclusion.Value = (int)AmbientOcclusionLevel.Off;
                 WaterFX.Value = (int)WaterFXLevel.Medium;
                 AutoExposure.Value = (int)AutoExposureLevel.On;
@@ -178,7 +178,7 @@ namespace Settings
                 MotionBlur.Value = (int)MotionBlurLevel.Off;
                 ColorGrading.Value = (int)ColorGradingLevel.Off;
                 DepthOfField.Value = (int)DepthOfFieldLevel.Off;
-                ChromaticAberration.Value = (int)ChromaticAberrationLevel.Low;
+                ChromaticAberrationFX.Value = (int)ChromaticAberrationLevel.Off;
                 AmbientOcclusion.Value = (int)AmbientOcclusionLevel.Off;
                 WaterFX.Value = (int)WaterFXLevel.High;
                 AutoExposure.Value = (int)AutoExposureLevel.On;
@@ -198,7 +198,7 @@ namespace Settings
                 MotionBlur.Value = (int)MotionBlurLevel.Off;
                 ColorGrading.Value = (int)ColorGradingLevel.Off;
                 DepthOfField.Value = (int)DepthOfFieldLevel.Off;
-                ChromaticAberration.Value = (int)ChromaticAberrationLevel.Low;
+                ChromaticAberrationFX.Value = (int)ChromaticAberrationLevel.Off;
                 AmbientOcclusion.Value = (int)AmbientOcclusionLevel.Off;
                 WaterFX.Value = (int)WaterFXLevel.High;
                 AutoExposure.Value = (int)AutoExposureLevel.On;

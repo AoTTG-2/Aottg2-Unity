@@ -12,7 +12,7 @@ namespace UI
         protected override string DefaultCategoryPanel => "General";
         protected string[] _categories = new string[] { "General", "Interaction", "Human", "Titan", "AnnieShifter", "ErenShifter" };
 
-        public void CreateGategoryDropdown(Transform panel)
+        public void CreateCategoryDropdown(Transform panel)
         {
             ElementStyle style = new ElementStyle(titleWidth: 140f, themePanel: ThemePanel);
             ElementFactory.CreateDropdownSetting(panel, style, _currentCategoryPanelName, "Category", _categories, elementWidth: 260f,

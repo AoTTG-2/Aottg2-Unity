@@ -199,7 +199,7 @@ namespace Photon.Voice
             }
         }
 
-        public bool JoinRoom(string roomName, string[] expectedUsers = null, string password = null, string hash = null)
+        public bool JoinRoom(string roomName, string[] expectedUsers = null, string password = null, string hash = null, string sessionID = null)
         {
             if (string.IsNullOrEmpty(roomName))
             {
@@ -211,16 +211,20 @@ namespace Photon.Voice
             opParams.ExpectedUsers = expectedUsers;
             opParams.Password = password;
             opParams.Hash = hash;
+            opParams.SessionID = sessionID;
             return Client.OpJoinRoom(opParams);
         }
 
-        public bool CreateRoom(string roomName, RoomOptions roomOptions = null, TypedLobby typedLobby = null, string[] expectedUsers = null)
+        public bool CreateRoom(string roomName, RoomOptions roomOptions = null, TypedLobby typedLobby = null, string[] expectedUsers = null, string hash = null,
+            string sessionID = null)
         {
             EnterRoomParams opParams = new EnterRoomParams();
             opParams.RoomName = roomName;
             opParams.RoomOptions = roomOptions;
             opParams.Lobby = typedLobby;
             opParams.ExpectedUsers = expectedUsers;
+            opParams.Hash = hash;
+            opParams.SessionID = sessionID;
             return Client.OpCreateRoom(opParams);
         }
 

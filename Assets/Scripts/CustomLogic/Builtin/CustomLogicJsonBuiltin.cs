@@ -1,41 +1,54 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using Utility;
 using SimpleJSONFixed;
 
 namespace CustomLogic
 {
-    class CustomLogicJsonBuiltin: CustomLogicBaseBuiltin
+    /// <summary>
+    /// Serializes and deserializes primitive and struct values from and to json strings.
+    /// Supports float, int, string, bool, Vector3, Quaternion, Color, Dict, and List.
+    /// Dict and List must contain only the supported types, and can be nested.
+    /// </summary>
+    [CLType(Name = "Json", Static = true, Abstract = true)]
+    partial class CustomLogicJsonBuiltin : BuiltinClassInstance
     {
-        public CustomLogicJsonBuiltin() : base("Json")
+        [CLConstructor]
+        public CustomLogicJsonBuiltin()
         {
         }
 
-        public override object CallMethod(string methodName, List<object> parameters)
+        [CLMethod(description: "Loads a json string into a custom logic object")]
+        public static object LoadFromString(string json)
         {
-            if (methodName == "LoadFromString")
+            string jsonTrim = json.Trim();
+            JSONNode jsonNode;
+            try
             {
-                string str = ((string)parameters[0]).Trim();
-                JSONNode json;
-                try
-                {
-                    json = JSON.Parse((string)parameters[0]);
-                }
-                catch
-                {
-                    json = new JSONString(str);
-                }
-                return LoadJSON(json);
+                jsonNode = JSON.Parse(json);
             }
-            if (methodName == "SaveToString")
+            catch
             {
-                var json = SaveJSON(parameters[0]);
-                return json.ToString(aIndent: 4);
+                jsonNode = new JSONString(jsonTrim);
             }
-            return base.CallMethod(methodName, parameters);
+            try
+            {
+                return LoadJSON(jsonNode);
+            }
+            catch
+            {
+                return null;
+            }
+
         }
 
-        protected object LoadJSON(JSONNode json)
+        [CLMethod(description: "Saves a custom logic object into a json string")]
+        public static string SaveToString(object obj)
+        {
+            JSONNode json = SaveJSON(obj);
+            return json.ToString(aIndent: 4);
+        }
+
+        protected static object LoadJSON(JSONNode json)
         {
             if (json.IsArray)
             {
@@ -87,7 +100,7 @@ namespace CustomLogic
             throw new System.Exception("Loading invalid json format.");
         }
 
-        protected JSONNode SaveJSON(object obj)
+        protected static JSONNode SaveJSON(object obj)
         {
             if (obj == null)
                 return new JSONString("null:null");

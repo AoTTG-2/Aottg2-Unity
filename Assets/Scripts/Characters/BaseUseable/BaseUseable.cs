@@ -39,6 +39,12 @@ namespace Characters
         {
             return Mathf.Clamp(Cooldown - (Time.time - _lastUseTime), 0f, Cooldown);
         }
+
+        public void SetCooldownRatio(float ratio)
+        {
+            SetCooldownLeft(Cooldown * Mathf.Clamp(ratio, 0f, 1f));
+        }
+
         public float GetCooldownRatio()
         {
             if (!HasUsesLeft())

@@ -116,6 +116,11 @@ namespace Settings
             }
             else if (from is StringSetting)
                 ((StringSetting)(object)to).MaxLength = ((StringSetting)(object)from).MaxLength;
+            else if (from is NameSetting)
+            {
+                ((NameSetting)(object)to).MaxLength = ((NameSetting)(object)from).MaxLength;
+                ((NameSetting)(object)to).MaxStrippedLength = ((NameSetting)(object)from).MaxStrippedLength;
+            }
         }
 
         private void CopyDefaultLimits(T to)

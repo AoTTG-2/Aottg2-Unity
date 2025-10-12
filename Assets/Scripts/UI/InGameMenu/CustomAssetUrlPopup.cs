@@ -9,7 +9,7 @@ namespace UI
     class CustomAssetUrlPopup: PromptPopup
     {
         protected override string Title => UIManager.GetLocaleCommon("Confirm");
-        protected override float Width => 450f;
+        protected override float Width => 500f;
         protected override float Height => 250f;
         protected override int VerticalPadding => 30;
         protected override int HorizontalPadding => 30;

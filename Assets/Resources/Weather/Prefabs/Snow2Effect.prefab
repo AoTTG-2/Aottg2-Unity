@@ -4777,7 +4777,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 91b0536619aee4df7ad046366b684697, type: 2}
+  - {fileID: 2100000, guid: 10907c30e7e94479299b13a29a324909, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4802,7 +4802,7 @@ ParticleSystemRenderer:
   m_MeshDistribution: 0
   m_SortMode: 0
   m_MinParticleSize: 0
-  m_MaxParticleSize: 50
+  m_MaxParticleSize: 500
   m_CameraVelocityScale: 0
   m_VelocityScale: 0
   m_LengthScale: 1.1
@@ -9888,7 +9888,7 @@ ParticleSystemRenderer:
   m_MeshDistribution: 0
   m_SortMode: 0
   m_MinParticleSize: 0
-  m_MaxParticleSize: 50
+  m_MaxParticleSize: 500
   m_CameraVelocityScale: 0
   m_VelocityScale: 0
   m_LengthScale: 1

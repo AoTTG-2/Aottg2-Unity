@@ -6,6 +6,9 @@ using CustomSkins;
 using ApplicationManagers;
 using Map;
 using Settings;
+using UnityEditor;
+using System.Linq;
+using UnityEngine.Rendering;
 
 namespace MapEditor
 {
@@ -14,10 +17,12 @@ namespace MapEditor
         private Transform _lineX;
         private Transform _lineY;
         private Transform _lineZ;
+        private Transform _center;
         private Color SelectedColor = Color.white;
         private Color LineXColor = Color.red;
         private Color LineYColor = Color.yellow;
         private Color LineZColor = Color.blue;
+        private Color CenterColor = new Color(120, 120, 120);
         private Transform _activeLine;
         private Vector3 _previousMousePoint;
         private Vector3 _currentScaleAmount;
@@ -41,6 +46,7 @@ namespace MapEditor
             _lineX = _transform.Find("LineX");
             _lineY = _transform.Find("LineY");
             _lineZ = _transform.Find("LineZ");
+            _center = _transform.Find("Center");
             ResetColors();
         }
 
@@ -58,21 +64,53 @@ namespace MapEditor
             }
         }
 
+        protected bool ContainsCenter(RaycastHit[] hits)
+        {
+
+            foreach (RaycastHit hit in hits)
+            {
+                if (hit.collider.transform == _center)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         protected void Update()
         {
+            base.Update();
             var camera = SceneLoader.CurrentCamera;
-            float distance = Vector3.Distance(camera.Cache.Transform.position, _transform.position);
-            _transform.localScale = Vector3.one * distance / 200f;
             var mouseKey = SettingsManager.InputSettings.MapEditor.Select;
             if (_activeLine == null)
             {
-                RaycastHit hit;
-                if (!_menu.IsMouseUI && mouseKey.GetKeyDown() && Physics.Raycast(camera.Camera.ScreenPointToRay(Input.mousePosition), out hit, 100000f, PhysicsLayer.GetMask(PhysicsLayer.MapEditorGizmo)))
+                if (!_menu.IsMouseUI && mouseKey.GetKeyDown())
                 {
-                    _activeLine = hit.collider.transform;
-                    ResetColors();
-                    SetLineColor(_activeLine, SelectedColor);
-                    _previousMousePoint = hit.point;
+                    RaycastHit[] hits = Physics.RaycastAll(camera.Camera.ScreenPointToRay(Input.mousePosition), 100000f, PhysicsLayer.GetMask(PhysicsLayer.MapEditorGizmo));
+                    if (ContainsCenter(hits))
+                    {
+                        _activeLine = _center;
+                        ResetColors();
+                        SetLineColor(_activeLine, SelectedColor);
+                        SetLineColor(_lineX, SelectedColor);
+                        SetLineColor(_lineY, SelectedColor);
+                        SetLineColor(_lineZ, SelectedColor);
+                        _previousMousePoint = hits.First(hit => hit.collider.transform == _center).point;
+                    }
+                    else
+                    {
+                        foreach (RaycastHit hit in hits)
+                        {
+                            if (hit.collider.transform == _lineX || hit.collider.transform == _lineY || hit.collider.transform == _lineZ)
+                            {
+                                _activeLine = hit.collider.transform;
+                                ResetColors();
+                                SetLineColor(_activeLine, SelectedColor);
+                                _previousMousePoint = hit.point;
+                                break;
+                            }
+                        }
+                    }
                 }
 
                 _currentScaleAmount = Vector3.zero;
@@ -92,9 +130,14 @@ namespace MapEditor
                         direction = Vector3.right;
                     else if (_activeLine == _lineY)
                         direction = Vector3.up;
-                    else
+                    else if (_activeLine == _lineZ)
                         direction = Vector3.forward;
-                    drag = direction * Vector3.Dot(drag, _activeLine.right);
+                    else
+                        direction = Vector3.one;
+                    if (_activeLine == _center)
+                        drag = direction * Vector3.Dot(drag, camera.transform.right);
+                    else
+                        drag = direction * Vector3.Dot(drag, _activeLine.right);
                     Vector3 frameDelta = drag * 0.1f;
 
                     if (_gameManager.Snap)
@@ -120,6 +163,15 @@ namespace MapEditor
                             frameDelta.z = Mathf.Round(_currentScaleAmount.z / snap) * snap;
                             _currentScaleAmount.z %= snap;
                         }
+
+                        if (direction == Vector3.one && Mathf.Abs(_currentScaleAmount.x) > snap)
+                        {
+                            frameDelta.x= Mathf.Round(_currentScaleAmount.x / snap) * snap;
+                            frameDelta.y = Mathf.Round(_currentScaleAmount.x / snap) * snap;
+                            frameDelta.z = Mathf.Round(_currentScaleAmount.x / snap) * snap;
+                            _currentScaleAmount.x %= snap;
+                        }
+
                     }
                     
                     ScaleSelectedObjects(frameDelta);
@@ -163,14 +215,15 @@ namespace MapEditor
             SetLineColor(_lineX, LineXColor);
             SetLineColor(_lineY, LineYColor);
             SetLineColor(_lineZ, LineZColor);
+            SetLineColor(_center, CenterColor, renderQueue: 4000);
         }
 
-        private void SetLineColor(Transform line, Color color)
+        private void SetLineColor(Transform line, Color color, int renderQueue=3111)
         {
             foreach (Renderer renderer in line.GetComponentsInChildren<Renderer>())
             {
                 renderer.material.color = color;
-                renderer.material.renderQueue = 3111;
+                renderer.material.renderQueue = renderQueue;
             }
         }
     }

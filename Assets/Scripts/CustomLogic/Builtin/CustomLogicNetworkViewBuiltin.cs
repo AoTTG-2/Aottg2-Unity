@@ -1,39 +1,101 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-using Map;
-using GameManagers;
-using Utility;
+﻿using Map;
 using Photon.Pun;
+using System.Collections.Generic;
+using UnityEngine;
+using Utility;
 
 namespace CustomLogic
 {
-    class CustomLogicNetworkViewBuiltin: CustomLogicBaseBuiltin
+    /// <summary>
+    /// Represents a network view on a map object that has the "networked" flag.
+    /// Note1: messages sent from a mapobjects network view are not component scoped, all components will receive the same message.
+    /// If you intend for a mapobject to have multiple message sending components, preface the message with the component name to determine scope.
+    /// Note2: Rooms and Players have bandwidth limits, exceeding the limits via CL will result in either the player being kicked or the room being shut down.
+    /// When possible, use basic message passing for state sync and then run logic locally instead of repeatedly sending state over the network. Also
+    /// avoid cases where message sending increases heavily with the number of players in the room.
+    /// </summary>
+    /// <code>
+    /// # The following is for a component scoped object, in general this is bad practice if the component is widely used.
+    /// # OnPlayerJoin, every object with this component will send a message to the player that joined, if you use 100 objects with this, 100 messages will be sent.
+    /// # Preferred practice for this sort of case is to have a either Main handle the single message pass or have a single ManagerComponent that handles the message pass
+    /// # and defers the value to all registered components.
+    /// KillCount = 0;
+    /// 
+    /// function OnNetworkMessage(player, message, sentServerTime) {
+    ///     if (player.ID == Network.MasterClient.ID) {
+    ///         self.KillCount == Convert.ToInt(message);
+    ///     }
+    /// }
+    /// 
+    /// function OnCharacterDie(victim, killer, killerName) {
+    ///     self.KillCount += 1;
+    /// }
+    /// 
+    /// function OnPlayerJoined(player) {
+    ///     if (Network.IsMasterClient) {
+    ///         self.NetworkView.SendMessage(player, Convert.ToString(self.KillCount));
+    ///     }
+    /// }
+    /// 
+    /// # Good Practice would be to have a single component that handles the message pass and defers the value to all registered components.
+    /// TODO: Bother someone for good practice example - maybe move this into Networking Summary Page.
+    /// </code>
+    [CLType(Name = "NetworkView", Abstract = true)]
+    partial class CustomLogicNetworkViewBuiltin : BuiltinClassInstance
     {
-        public MapObject MapObject;
+        public readonly MapObject MapObject;
         public CustomLogicPhotonSync Sync;
         public int OwnerId = -1;
-        List<CustomLogicComponentInstance> _classInstances = new List<CustomLogicComponentInstance>();
-        List<object> _streamObjs;
 
-        public CustomLogicNetworkViewBuiltin(MapObject obj): base("NetworkView")
+        private List<object> _streamObjects;
+        private readonly List<CustomLogicComponentInstance> _classInstances = new List<CustomLogicComponentInstance>();
+        private bool _isTransformSynced = true;
+
+
+        [CLConstructor]
+        public CustomLogicNetworkViewBuiltin(MapObject obj)
         {
             MapObject = obj;
+        }
+
+        [CLProperty("Whether or not the object's Transform is synced. If PhotonSync is not initialized yet, it will defer until it is set.")]
+        public bool SyncTransforms
+        {
+            get => _isTransformSynced;
+            set
+            {
+                _isTransformSynced = value;
+                if (Sync != null)
+                    Sync.SyncTransforms = value;
+            }
+        }
+
+        [CLProperty("The network view's owner.")]
+        public CustomLogicPlayerBuiltin Owner
+        {
+            get
+            {
+                if (Sync == null)
+                    return null;
+                return new CustomLogicPlayerBuiltin(Sync.photonView.Owner);
+            }
         }
 
         public void OnSecond()
         {
             if (PhotonNetwork.IsMasterClient)
             {
-                if (OwnerId >= 0 && OwnerId != PhotonNetwork.LocalPlayer.ActorNumber)
-                {
-                    var player = Util.FindPlayerById(OwnerId);
-                    if (player == null)
-                    {
-                        var go = PhotonNetwork.Instantiate("Game/CustomLogicPhotonSyncPrefab", Vector3.zero, Quaternion.identity, 0);
-                        var photonView = go.GetComponent<CustomLogicPhotonSync>();
-                        photonView.Init(MapObject.ScriptObject.Id);
-                    }
-                }
+                // Ownership transfer should be handled by the PhotonSync.
+                //if (OwnerId >= 0 && OwnerId != PhotonNetwork.LocalPlayer.ActorNumber)
+                //{
+                //    var player = Util.FindPlayerById(OwnerId);
+                //    if (player == null)
+                //    {
+                //        var go = PhotonNetwork.Instantiate("Game/CustomLogicPhotonSyncPrefab", Vector3.zero, Quaternion.identity, 0);
+                //        var photonView = go.GetComponent<CustomLogicPhotonSync>();
+                //        photonView.Init(MapObject.ScriptObject.Id);
+                //    }
+                //}
             }
         }
 
@@ -42,11 +104,34 @@ namespace CustomLogic
             _classInstances.Add(instance);
         }
 
+        public void OnNetworkTransfer(CustomLogicPlayerBuiltin oldOwner, CustomLogicPlayerBuiltin newOwner)
+        {
+            if (MapObject.GameObject != null)
+            {
+                foreach (var instance in _classInstances)
+                    CustomLogicManager.Evaluator.EvaluateMethod(instance, "OnNetworkTransfer", new object[] { oldOwner, newOwner });
+            }
+        }
+
+        public void SetSyncDynamic(CustomLogicPhotonSync sync)
+        {
+            Sync = sync;
+            OwnerId = sync.photonView.Owner.ActorNumber;
+            Sync.SyncTransforms = _isTransformSynced;
+
+            var linkedMapObjectClass = CustomLogicManager.Evaluator.IdToMapObjectBuiltin[this.MapObject.ScriptObject.Id];
+            if (linkedMapObjectClass != null)
+            {
+                linkedMapObjectClass.NetworkView = this;
+            }
+        }
+
         public void SetSync(CustomLogicPhotonSync sync)
         {
             int oldId = OwnerId;
             Sync = sync;
             OwnerId = sync.photonView.Owner.ActorNumber;
+            Sync.SyncTransforms = _isTransformSynced;
             if (oldId >= 0)
             {
                 var oldPlayer = Util.FindPlayerById(oldId);
@@ -57,24 +142,30 @@ namespace CustomLogic
                 if (MapObject.GameObject != null)
                 {
                     foreach (var instance in _classInstances)
-                        CustomLogicManager.Evaluator.EvaluateMethod(instance, "OnNetworkTransfer", new List<object>() { oldOwner, newOwner });
+                        CustomLogicManager.Evaluator.EvaluateMethod(instance, "OnNetworkTransfer", new object[] { oldOwner, newOwner });
                 }
+            }
+
+            var linkedMapObjectClass = CustomLogicManager.Evaluator.IdToMapObjectBuiltin[this.MapObject.ScriptObject.Id];
+            if (linkedMapObjectClass != null)
+            {
+                linkedMapObjectClass.NetworkView = this;
             }
         }
 
         public void SendNetworkStream(PhotonStream stream)
         {
-            _streamObjs = new List<object>();            
+            _streamObjects = new List<object>();
             foreach (var instance in _classInstances)
             {
                 CustomLogicManager.Evaluator.EvaluateMethod(instance, "SendNetworkStream");
             }
-            stream.SendNext(_streamObjs.ToArray());
+            stream.SendNext(_streamObjects.ToArray());
         }
 
         public void OnNetworkStream(object[] objs)
         {
-            _streamObjs = new List<object>(objs);
+            _streamObjects = new List<object>(objs);
             if (MapObject.GameObject == null)
                 return;
             foreach (var instance in _classInstances)
@@ -89,83 +180,79 @@ namespace CustomLogic
                 return;
             foreach (var instance in _classInstances)
             {
-                CustomLogicManager.Evaluator.EvaluateMethod(instance, "OnNetworkMessage", new List<object>() { player, message, sentServerTime });
+                CustomLogicManager.Evaluator.EvaluateMethod(instance, "OnNetworkMessage", new object[] { player, message, sentServerTime });
             }
         }
 
-        public override object CallMethod(string methodName, List<object> parameters)
+        [CLMethod("Owner only. Transfer ownership of this NetworkView to another player.")]
+        public void Transfer(CustomLogicPlayerBuiltin player)
         {
-            if (methodName == "Transfer")
+            if (Sync.photonView.IsMine)
             {
-                if (Sync.photonView.IsMine)
-                {
-                    var player = (CustomLogicPlayerBuiltin)parameters[0];
-                    if (player.Player != PhotonNetwork.LocalPlayer)
-                    {
-                        RPCManager.PhotonView.RPC("TransferNetworkViewRPC", player.Player, new object[] { MapObject.ScriptObject.Id });
-                        PhotonNetwork.Destroy(Sync.gameObject);
-                    }
-                }
-                return null;
+                Sync.Transfer(player);
             }
-            if (methodName == "SendMessage")
-            {
-                var target = (CustomLogicPlayerBuiltin)parameters[0];
-                string msg = (string)parameters[1];
-                Sync.SendMessage(target.Player, msg);
-                return null;
-            }
-            if (methodName == "SendMessageAll")
-            {
-                string msg = (string)parameters[0];
-                Sync.SendMessageAll(msg);
-                return null;
-            }
-            if (methodName == "SendMessageOthers")
-            {
-                string msg = (string)parameters[0];
-                Sync.SendMessageOthers(msg);
-                return null;
-            }
-            if (methodName == "SendStream")
-            {
-                var obj = parameters[0];
-                obj = SerializeStreamObj(obj);
-                _streamObjs.Add(obj);
-                return null;
-            }
-            if (methodName == "ReceiveStream")
-            {
-                var obj = _streamObjs[0];
-                obj = DeserializeStreamObj(obj);
-                _streamObjs.RemoveAt(0);
-                return obj;
-            }
-            return base.CallMethod(methodName, parameters);
         }
 
-        public override object GetField(string name)
+        [CLMethod("Send a message to a target player. This will be received in any of the MapObject attached components through the OnNetworkMessage callback.")]
+        public void SendMessage(CustomLogicPlayerBuiltin target, string msg)
         {
-            if (name == "Owner")
-            {
-                if (Sync == null)
-                    return null;
-                return new CustomLogicPlayerBuiltin(Sync.photonView.Owner);
-            }
-            return base.GetField(name);
+            Sync.SendMessage(target.Player, msg);
         }
 
-        protected object SerializeStreamObj(object obj)
+        [CLMethod("Send a message to all players including myself.")]
+        public void SendMessageAll(string msg)
         {
-            if (obj is CustomLogicVector3Builtin)
-                return ((CustomLogicVector3Builtin)obj).Value;
+            Sync.SendMessageAll(msg);
+        }
+
+        [CLMethod("Send a message to players excluding myself.")]
+        public void SendMessageOthers(string msg)
+        {
+            Sync.SendMessageOthers(msg);
+        }
+
+        /// <summary>
+        /// Send an object to the network sync stream.
+        /// This represents sending data from the object owner to all non-owner observers,
+        /// and should only be called in the SendNetworkStream callback in the attached component.
+        /// It only works with some object types: primitives and Vector3.
+        /// </summary>
+        [CLMethod]
+        public void SendStream(object obj)
+        {
+            obj = SerializeStreamObj(obj);
+            _streamObjects.Add(obj);
+        }
+
+        /// <summary>
+        /// Receive an object through the network sync stream.
+        /// This represents receiving data from the object owner as a non-owner observer,
+        /// and should only be called in the OnNetworkStream callback.
+        /// </summary>
+        [CLMethod]
+        public object ReceiveStream()
+        {
+            var obj = _streamObjects[0];
+            obj = DeserializeStreamObj(obj);
+            _streamObjects.RemoveAt(0);
             return obj;
         }
 
-        protected object DeserializeStreamObj(object obj)
+        private static object SerializeStreamObj(object obj)
+        {
+            if (obj is CustomLogicVector3Builtin)
+                return ((CustomLogicVector3Builtin)obj).Value;
+            if (obj is CustomLogicQuaternionBuiltin)
+                return ((CustomLogicQuaternionBuiltin)obj).Value;
+            return obj;
+        }
+
+        private static object DeserializeStreamObj(object obj)
         {
             if (obj is Vector3)
                 return new CustomLogicVector3Builtin((Vector3)obj);
+            if (obj is CustomLogicQuaternionBuiltin)
+                return new CustomLogicQuaternionBuiltin((Quaternion)obj);
             return obj;
         }
     }

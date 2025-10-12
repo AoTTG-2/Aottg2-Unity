@@ -82,7 +82,7 @@ namespace Characters
             _idleTimeLeft -= Time.deltaTime;
             if (_idleTimeLeft > 0f)
                 return;
-            if (!Cache.Animation.IsPlaying(HorseAnimations.Idle0))
+            if (!Animation.IsPlaying(HorseAnimations.Idle0))
             {
                 CrossFade(HorseAnimations.Idle0, 0.1f);
                 _idleTimeLeft = UnityEngine.Random.Range(6f, 9f);
@@ -114,7 +114,7 @@ namespace Characters
         private void IdleOneShot(string animation)
         {
             CrossFade(animation, 0.1f);
-            _idleTimeLeft = Cache.Animation[animation].length;
+            _idleTimeLeft = Animation.GetLength(animation);
         }
 
         private void Update()
@@ -169,8 +169,9 @@ namespace Characters
             }
         }
 
-        private void FixedUpdate()
+        protected override void FixedUpdate()
         {
+            base.FixedUpdate();
             if (IsMine())
             {
                 if (_owner == null || _owner.Dead)
@@ -217,28 +218,29 @@ namespace Characters
             {
                 if (_owner == null || _owner.Dead)
                     return;
+                bool humanActing = _owner.State != HumanState.Idle;
                 if (Cache.Rigidbody.velocity.magnitude > 8f)
                 {
                     CrossFadeIfNotPlaying(HorseAnimations.Run, 0.1f);
-                    if (_owner.MountState == HumanMountState.Horse)
+                    if (_owner.MountState == HumanMountState.Horse && !humanActing)
                         _owner.CrossFadeIfNotPlaying(HumanAnimations.HorseRun, 0.1f);
                     _idleTimeLeft = 0f;
                 }
                 else if (Cache.Rigidbody.velocity.magnitude > 1f)
                 {
                     CrossFadeIfNotPlaying(HorseAnimations.Walk, 0.1f);
-                    if (_owner.MountState == HumanMountState.Horse)
+                    if (_owner.MountState == HumanMountState.Horse && !humanActing)
                         _owner.CrossFadeIfNotPlaying(HumanAnimations.HorseIdle, 0.1f);
                     _idleTimeLeft = 0f;
                 }
                 else
                 {
                     UpdateIdle();
-                    if (_owner.MountState == HumanMountState.Horse)
+                    if (_owner.MountState == HumanMountState.Horse && !humanActing)
                         _owner.CrossFadeIfNotPlaying(HumanAnimations.HorseIdle, 0.1f);
                 }
             }
-            if (Cache.Animation.IsPlaying(HorseAnimations.Run) && Grounded)
+            if (Animation.IsPlaying(HorseAnimations.Run) && Grounded)
             {
                 ToggleDust(true);
                 if (SettingsManager.SoundSettings.HorseSoundEffect.Value)

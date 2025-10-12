@@ -1,4 +1,4 @@
-﻿using Settings;
+using Settings;
 using UnityEngine;
 using Photon;
 using Characters;
@@ -44,12 +44,14 @@ namespace Projectiles
         Vector3 _startPosition = Vector3.zero;
         bool _isAA = false;
         float _embedTime;
+        bool _usesEmbed = false;
         public static Color CritColor = new Color(0.475f, 0.7f, 1f);
 
         protected override void SetupSettings(object[] settings)
         {
             _radius = (float)settings[0];
             _color = (Color)settings[1];
+            _usesEmbed = (bool)settings[2];
             _lastPosition = transform.position;
             _startPosition = transform.position;
         }
@@ -74,11 +76,22 @@ namespace Projectiles
         {
             if (photonView.IsMine && !Disabled)
             {
+                // Check if we're in ThunderspearPVP mode and BombCollision (bouncy) is enabled
+                if (SettingsManager.InGameCurrent.Misc.ThunderspearPVP.Value && SettingsManager.AbilitySettings.BombCollision.Value)
+                {
+                    // Bouncing behavior - reflect velocity off the collision surface
+                    Vector3 reflectedVelocity = Vector3.Reflect(_rigidbody.velocity, collision.contacts[0].normal);
+                    _rigidbody.velocity = reflectedVelocity * 0.8f; // Apply some energy loss on bounce
+                    _velocity = _rigidbody.velocity;
+                    return; // Don't proceed with normal collision logic
+                }
+                
+                // Original collision logic for all other cases
                 _wasImpact = true;
                 _rigidbody.velocity = Vector3.zero;
                 foreach (Collider c in _colliders)
                     c.enabled = false;
-                if (SettingsManager.InGameCurrent.Misc.ThunderspearPVP.Value)
+                if (SettingsManager.InGameCurrent.Misc.ThunderspearPVP.Value || !_usesEmbed)
                 {
                     Explode();
                 }
@@ -257,7 +270,7 @@ namespace Projectiles
                         human.GetHit("", 100, "Thunderspear", "");
                     else
                     {
-                        var damage = CalculateDamage();
+                        var damage = CalculateDamage(true);
                         human.GetHit(_owner, damage, "Thunderspear", "");
                         ((InGameMenu)UIManager.CurrentMenu).ShowKillScore(damage);
                         ((InGameCamera)SceneLoader.CurrentCamera).TakeSnapshot(human.Cache.Transform.position, damage);
@@ -281,13 +294,12 @@ namespace Projectiles
             return soundPriority;
         }
 
-        int CalculateDamage()
+        int CalculateDamage(bool dmgOverride=false)
         {
             float multiplier = CharacterData.HumanWeaponInfo["Thunderspear"]["DamageMultiplier"].AsFloat;
             if (SettingsManager.InGameCurrent.Misc.ThunderspearPVP.Value)
                 multiplier = 1f;
-            int damage = Mathf.Max((int)(InitialPlayerVelocity.magnitude * 10f *
-            multiplier), 10);
+            int damage = Mathf.Max((int)(InitialPlayerVelocity.magnitude * 10f * multiplier), 10);
             if (_owner != null && _owner is Human)
             {
                 var human = (Human)_owner;

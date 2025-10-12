@@ -13,6 +13,7 @@ namespace Characters
         private string AccessoriesPath = "Human/Parts/Accessories/Prefabs/";
         private string HairsPath = "Human/Parts/Hairs/Prefabs/";
         private string WeaponsPath = "Human/Parts/Weapons/Prefabs/";
+        private string FacePath = "Human/Parts/Face/Prefabs/";
 
         public HumanSetupMeshes(HumanSetup setup)
         {
@@ -29,10 +30,12 @@ namespace Characters
             string mesh = left ? "character_hand_l" : "character_hand_r";
             if (_setup.Weapon == HumanWeapon.Blade)
                 mesh += "_0";
-            else if (_setup.Weapon == HumanWeapon.AHSS || _setup.Weapon == HumanWeapon.APG)
+            else if (_setup.Weapon == HumanWeapon.AHSS)
                 mesh += "_ah_0";
             else if (_setup.Weapon == HumanWeapon.Thunderspear)
                 mesh += "_ts";
+            else if (_setup.Weapon == HumanWeapon.APG)
+                mesh += "_empty";
             return CostumesPath + mesh;
         }
 
@@ -52,7 +55,11 @@ namespace Characters
 
         public string Get3dmgMesh()
         {
-            return AccessoriesPath + ((_setup.Weapon == HumanWeapon.AHSS || _setup.Weapon == HumanWeapon.APG) ? "3dmg_2" : "3dmg");
+            if (_setup.Weapon == HumanWeapon.AHSS)
+                return AccessoriesPath + "3dmg_2";
+            else if (_setup.Weapon == HumanWeapon.APG)
+                return AccessoriesPath + "3dmg_3";
+            return AccessoriesPath + "3dmg";
         }
 
         public string GetBeltMesh()
@@ -69,8 +76,10 @@ namespace Characters
 
         public string GetWeaponMesh(bool left)
         {
-            if (_setup.Weapon == HumanWeapon.AHSS || _setup.Weapon == HumanWeapon.APG)
+            if (_setup.Weapon == HumanWeapon.AHSS)
                 return WeaponsPath + (left ? "character_gun_l_0" : "character_gun_r_0");
+            else if (_setup.Weapon == HumanWeapon.APG)
+                return WeaponsPath + (left ? "apg_L" : "apg_R");
             else if (_setup.Weapon == HumanWeapon.Thunderspear)
                 return WeaponsPath + (left ? "thunderspear_l" : "thunderspear_r");
             return WeaponsPath + (left ? "blade_L" : "blade_R");
@@ -105,17 +114,21 @@ namespace Characters
 
         public string GetEyeMesh()
         {
-            return AccessoriesPath + "char_eyes";
+            return FacePath + "char_eyes";
         }
 
-        public string GetFaceMesh()
+        public string GetFaceMesh(string prefab)
         {
-            return AccessoriesPath + "char_face";
+            if (prefab != string.Empty)
+                return FacePath + prefab;
+            return FacePath + "char_face";
         }
 
-        public string GetGlassMesh()
+        public string GetGlassMesh(string prefab)
         {
-            return AccessoriesPath + "char_glasses";
+            if (prefab != string.Empty)
+                return FacePath + prefab;
+            return FacePath + "char_glasses";
         }
 
         public string GetHairMesh()

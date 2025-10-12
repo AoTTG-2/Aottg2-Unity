@@ -132,6 +132,15 @@ MonoBehaviour:
   - AnnounceRPC
   - ConfirmCarryRPC
   - BlowAwayRPC
+  - PrivateChatRPC
+  - ToggleBladeFireRPC
+  - ContinueAnimationsRPC
+  - PauseAnimationsRPC
+  - SetAnimationSpeedRPC
+  - SetHandHealthRPC
+  - FadeSoundRPC
+  - InitDynamic
+  - InitDynamicRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

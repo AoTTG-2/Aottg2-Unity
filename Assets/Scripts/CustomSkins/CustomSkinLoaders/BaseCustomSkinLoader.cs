@@ -36,13 +36,22 @@ namespace CustomSkins
         protected void AddRendererIfExists(List<Renderer> renderers, GameObject obj)
         {
             if (obj != null)
-                renderers.Add(obj.GetComponent<Renderer>());
+                renderers.Add(obj.GetComponentInChildren<Renderer>());
         }
 
         protected void AddAllRenderers(List<Renderer> renderers, GameObject obj)
         {
             foreach (Renderer renderer in obj.GetComponentsInChildren<Renderer>())
                 renderers.Add(renderer);
+        }
+
+        protected void AddAllRenderersIfExists(List<Renderer> renderers, GameObject obj)
+        {
+            if (obj != null)
+            {
+                foreach (Renderer renderer in obj.GetComponentsInChildren<Renderer>())
+                    renderers.Add(renderer);
+            }
         }
 
         protected void AddRenderersContainingName(List<Renderer> renderers, GameObject obj, string name)

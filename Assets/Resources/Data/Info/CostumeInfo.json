@@ -1,10 +1,10 @@
 {
-	"EyeCount": 28,
-	"FaceCount": 13,
-	"GlassCount": 9,
-	"BackCount": 3,
+	"EyeCount": 48,
+	"FaceCount": 14,
+	"GlassCount": 10,
+	"BackCount": 8,
 	"HeadCount": 8,
-	"HatCount": 14,
+	"HatCount": 17,
 	"Costume": {
 		"Male": [
 			{
@@ -230,6 +230,18 @@
 			},
 			{
 				"Texture": "hair_erwin"
+			},
+			{
+				"Texture": "hair_kuklo"
+			},
+			{
+				"Texture": "hair_marlowe"
+			},
+			{
+				"Texture": "hair_bertholdt"
+			},
+			{
+				"Texture": "hair_eld"
 			}
 		],
 		"Female": [
@@ -271,7 +283,14 @@
 			},
 			{
 				"Texture": "hair_mikasa2"
+			},
+			{
+				"Texture": "hair_historia"
 			}
 		]
-	}
+	},
+	"UniqueItem": [
+		"Glass9",
+		"Face13"
+	]
 }

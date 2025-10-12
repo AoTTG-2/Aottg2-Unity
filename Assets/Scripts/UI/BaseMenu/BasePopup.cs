@@ -96,7 +96,7 @@ namespace UI
             FinishHide();
         }
 
-        protected void OnDisable()
+        protected virtual void OnDisable()
         {
             IsActive = false;
         }

@@ -1,0 +1,10 @@
+{
+	"banned_regex": [
+		"[nN][iI1][gG][gG][eE3][rR]",
+		"[fF][aA][gG][gG][oO0][tT]"
+	],
+	"banned_char": [
+	"卐",
+	"卍"
+	]
+}

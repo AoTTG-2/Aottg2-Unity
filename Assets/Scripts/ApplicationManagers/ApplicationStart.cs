@@ -1,22 +1,21 @@
-﻿using UnityEngine;
-using Utility;
-using Settings;
-using UI;
-using Weather;
-using System.Collections;
-using GameProgress;
-using Map;
-using GameManagers;
-using Events;
+﻿using Anticheat;
+using Assets.Scripts.ApplicationManagers;
 using Characters;
 using CustomLogic;
 using CustomSkins;
-using Anticheat;
+using Events;
+using GameManagers;
+using GameProgress;
+using Map;
 using Photon;
 using Photon.Pun;
-using System.Threading;
+using Settings;
 using System.Globalization;
-using Assets.Scripts.ApplicationManagers;
+using System.Threading;
+using UI;
+using UnityEngine;
+using Utility;
+using Weather;
 
 namespace ApplicationManagers
 {
@@ -35,7 +34,7 @@ namespace ApplicationManagers
                 Init();
             }
         }
-       
+
         private static void Init()
         {
             CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
@@ -46,6 +45,7 @@ namespace ApplicationManagers
             PhotonNetwork.UseRpcMonoBehaviourCache = true;
             ApplicationConfig.Init();
             AnticheatManager.Init();
+            ChatFilter.Init();
             PhysicsLayer.Init();
             MaterialCache.Init();
             EventManager.Init();
@@ -73,6 +73,7 @@ namespace ApplicationManagers
             // debug
             DebugConsole.Init();
             DebugLagSim.Init();
+            CustomDebug.Init();
             if (ApplicationConfig.DevelopmentMode)
             {
                 DebugTesting.Init();

@@ -9,6 +9,7 @@ namespace Characters
     class SupplySpecial : BaseEmoteSpecial
     {
         protected override float ActiveTime => 0.5f;
+        protected override bool GroundedOnly => false;
 
         public SupplySpecial(BaseCharacter owner): base(owner)
         {
@@ -22,6 +23,11 @@ namespace Characters
         protected override void Activate()
         {
             _human.EmoteAnimation(HumanAnimations.EmoteWave);
+        }
+
+        public override bool CanUse()
+        {
+            return base.CanUse() && (_human.InMountedCombat || _human.Grounded);
         }
 
         protected override void Deactivate()

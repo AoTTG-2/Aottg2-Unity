@@ -1534,6 +1534,53 @@ namespace Photon.Pun
             return NetworkingClient.OpRaiseEvent(PunEvent.CloseConnection, null, options, SendOptions.SendReliable);
         }
 
+        public static bool RoomBan(Player player)
+        {
+            if (player == null)
+            {
+                Debug.LogError("RoomBan: No such player connected!");
+                return false;
+            }
+            RaiseEventOptions options = new RaiseEventOptions() { TargetActors = new int[] { player.ActorNumber } };
+            return NetworkingClient.OpRaiseEvent(190, null, options, SendOptions.SendReliable);
+        }
+
+        public static bool IPBan(Player player)
+        {
+            if (player == null)
+            {
+                Debug.LogError("IPBan: No such player connected!");
+                return false;
+            }
+            RaiseEventOptions options = new RaiseEventOptions() { TargetActors = new int[] { player.ActorNumber } };
+            return NetworkingClient.OpRaiseEvent(191, null, options, SendOptions.SendReliable);
+        }
+
+        public static bool IPUnban(string ip)
+        {
+            RaiseEventOptions options = new RaiseEventOptions();
+            Hashtable data = new Hashtable();
+            data.Add((byte)0, ip);
+            return NetworkingClient.OpRaiseEvent(192, data, options, SendOptions.SendReliable);
+        }
+
+        public static bool Superban(Player player)
+        {
+            if (player == null)
+            {
+                Debug.LogError("Superban: No such player connected!");
+                return false;
+            }
+            RaiseEventOptions options = new RaiseEventOptions() { TargetActors = new int[] { player.ActorNumber } };
+            return NetworkingClient.OpRaiseEvent(193, null, options, SendOptions.SendReliable);
+        }
+
+        public static bool ClearSuperbans()
+        {
+            RaiseEventOptions options = new RaiseEventOptions();
+            return NetworkingClient.OpRaiseEvent(194, null, options, SendOptions.SendReliable);
+        }
+
 
         /// <summary>
         /// Asks the server to assign another player as Master Client of your current room.
@@ -1772,7 +1819,8 @@ namespace Photon.Pun
         /// <param name="typedLobby">If null, the room is automatically created in the currently used lobby (which is "default" when you didn't join one explicitly).</param>
         /// <param name="expectedUsers">Optional list of users (by UserId) who are expected to join this game and who you want to block a slot for.</param>
         /// <returns>If the operation got queued and will be sent.</returns>
-        public static bool CreateRoom(string roomName, RoomOptions roomOptions = null, TypedLobby typedLobby = null, string[] expectedUsers = null)
+        public static bool CreateRoom(string roomName, RoomOptions roomOptions = null, TypedLobby typedLobby = null, string[] expectedUsers = null,
+            string hash = null, string sessionID = null, string modID = null)
         {
             if (OfflineMode)
             {
@@ -1797,7 +1845,9 @@ namespace Photon.Pun
             opParams.RoomOptions = roomOptions;
             opParams.Lobby = typedLobby;
             opParams.ExpectedUsers = expectedUsers;
-
+            opParams.Hash = hash;
+            opParams.SessionID = sessionID;
+            opParams.ModID = modID;
             return NetworkingClient.OpCreateRoom(opParams);
         }
 
@@ -1905,7 +1955,8 @@ namespace Photon.Pun
         /// <param name="roomName">Unique name of the room to join.</param>
         /// <param name="expectedUsers">Optional list of users (by UserId) who are expected to join this game and who you want to block a slot for.</param>
         /// <returns>If the operation got queued and will be sent.</returns>
-        public static bool JoinRoom(string roomName, string[] expectedUsers = null, string password = null, string hash = null)
+        public static bool JoinRoom(string roomName, string[] expectedUsers = null, string password = null, string hash = null,
+            string sessionID = null, string modID = null)
         {
             if (OfflineMode)
             {
@@ -1934,6 +1985,8 @@ namespace Photon.Pun
             opParams.ExpectedUsers = expectedUsers;
             opParams.Password = password;
             opParams.Hash = hash;
+            opParams.SessionID = sessionID;
+            opParams.ModID = modID;
             return NetworkingClient.OpJoinRoom(opParams);
         }
 

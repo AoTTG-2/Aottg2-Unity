@@ -13,8 +13,8 @@ using Utility;
 
 static class MiscExtensions
 {
-    static readonly string HexPattern = @"(\[)[\w]{6}(\])";
-    static readonly string ColorTagPattern = @"(<color=#)[\w]{6}(\>)";
+    static readonly string HexPattern = @"(\[)([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})(\])";
+    static readonly string ColorTagPattern = @"(<color=#)([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})(>)";
     static readonly string ColorEndPattern = @"(</color>)";
     static readonly string TagPattern = @"<\/?[^>]+>";
     static readonly string SizePattern = @"<\/?size.*?>";
@@ -25,6 +25,50 @@ static class MiscExtensions
     static readonly Regex ColorEndRegex = new Regex(ColorEndPattern);
     static readonly Regex TagRegex = new Regex(TagPattern);
     static readonly Regex IllegalStyleRegex = new Regex(SizePattern + "|" + MaterialPattern + "|" + QuadPattern);
+    private static readonly Regex NamedColorTagRegex = new Regex(@"<color=(\w+)>", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
+    public static readonly Dictionary<string, string> NamedColorHex = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+    {
+        { "aqua",  "#00ffffff" },
+        { "cyan",  "#00ffffff" },
+        { "brown", "#a52a2aff" },
+        { "darkblue", "#0000a0ff" },
+        { "fuchsia", "#ff00ffff" },
+        { "magenta", "#ff00ffff" },
+        { "grey",  "#808080ff" },
+        { "lightblue", "#add8e6ff" },
+        { "lime",  "#00ff00ff" },
+        { "maroon", "#800000ff" },
+        { "navy",  "#000080ff" },
+        { "olive", "#808000ff" },
+        { "silver","#c0c0c0ff" },
+        { "teal",  "#008080ff" },
+    };
+
+    public static string ResolveNamedColorHex(string name)
+    {
+        if (string.IsNullOrEmpty(name)) return null;
+        if (NamedColorHex.TryGetValue(name, out string hex))
+        {
+            return hex.StartsWith("#") ? hex.Substring(1) : hex;
+        }
+        return null;
+    }
+
+    public static string ReplaceNamedColorTags(string input)
+    {
+        if (string.IsNullOrEmpty(input)) return input;
+        return NamedColorTagRegex.Replace(input, match =>
+        {
+            string name = match.Groups[1].Value;
+            string hex = ResolveNamedColorHex(name);
+            if (!string.IsNullOrEmpty(hex))
+            {
+                return "<color=#" + hex + ">";
+            }
+            return match.Value;
+        });
+    }
 
     public static bool GetActive(this GameObject target)
     {

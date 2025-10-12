@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 21482f8d178bb9c4ba0ed75e4f54be1f
+AssemblyDefinitionImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 148136
+  packageName: EZSoftBone
+  packageVersion: 1.6.0
+  assetPath: Assets/EZhex1991/EZSoftBone/Editor/EZhex1991.EZSoftBone.Editor.asmdef
+  uploadId: 458587

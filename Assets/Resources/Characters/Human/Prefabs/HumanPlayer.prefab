@@ -16541,6 +16541,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65d92b4fed4bf3b41b3222f4457d158b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  FootstepsEnabled: 1
+  SoundsEnabled: 1
+  MaxFootstepDistance: 200
+  MaxSoundDistance: 500
   RichTextName: 
   VisibleName: 
   Guild: 
@@ -16554,6 +16558,7 @@ MonoBehaviour:
   CurrentHealth: 0
   Team: 
   MovementSync: {fileID: 0}
+  CurrentSpeed: 0
   Grounded: 0
   JustGrounded: 0
   TargetAngle: 0
@@ -16573,12 +16578,18 @@ MonoBehaviour:
   MountedTransform: {fileID: 0}
   MountedPositionOffset: {x: 0, y: 0, z: 0}
   MountedRotationOffset: {x: 0, y: 0, z: 0}
+  _lastMountedPosition: {x: 0, y: 0, z: 0}
+  _mountedVelocity: {x: 0, y: 0, z: 0}
   CancelHookLeftKey: 0
   CancelHookRightKey: 0
   CancelHookBothKey: 0
   CanDodge: 1
   IsInvincible: 1
   InvincibleTimeLeft: 0
+  CanMountedAttack: 0
+  InMountedCombat: 0
+  IsAttackableState: 0
+  IsRefillable: 0
   ReelInAxis: 0
   ReelOutAxis: 0
   ReelOutScrollTimeLeft: 0
@@ -16623,7 +16634,7 @@ MonoBehaviour:
   ObservedComponentsFoldoutOpen: 1
   Group: 0
   prefixField: -1
-  Synchronization: 3
+  Synchronization: 1
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:

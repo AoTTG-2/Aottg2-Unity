@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1760743011259206910}
-  - component: {fileID: 5854878129054601603}
+  - component: {fileID: 5285555088228226920}
   m_Layer: 9
   m_Name: FootLHitbox
   m_TagString: Untagged
@@ -25,15 +25,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2660914041937030075}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.00000004470347, y: -0.00000015040854, z: -0.0000017745181, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.023642065, y: -0.8286387, z: -0.5592352, w: 0.0074134516}
+  m_LocalPosition: {x: 0.013475904, y: -0.1629146, z: -0.40452868}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8190768624280372075}
+  m_Father: {fileID: 8190768624280371989}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &5854878129054601603
-CapsuleCollider:
+--- !u!135 &5285555088228226920
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -50,10 +50,8 @@ CapsuleCollider:
   m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Radius: 0.6
-  m_Height: 0.8
-  m_Direction: 1
   m_Center: {x: 0, y: 0.2, z: 0.1}
 --- !u!1 &2776540235445977547
 GameObject:
@@ -172,7 +170,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8180993915242590396}
-  - component: {fileID: 7961249707193750001}
+  - component: {fileID: 6673588733795096724}
   m_Layer: 9
   m_Name: FootRHitbox
   m_TagString: Untagged
@@ -195,8 +193,8 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8190768624280372011}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &7961249707193750001
-CapsuleCollider:
+--- !u!135 &6673588733795096724
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -213,10 +211,8 @@ CapsuleCollider:
   m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Radius: 0.6
-  m_Height: 0.8
-  m_Direction: 1
   m_Center: {x: 0, y: 0.2, z: 0.1}
 --- !u!1 &7507072317096880184
 GameObject:
@@ -515,6 +511,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9500000, guid: 7df1b1380bf4c2347b2342585b58bc3a, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: cd3b6d73fbfa32d448642b2d308572dd, type: 2}
+    - target: {fileID: 9500000, guid: 7df1b1380bf4c2347b2342585b58bc3a, type: 3}
+      propertyPath: m_CullingMode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9500000, guid: 7df1b1380bf4c2347b2342585b58bc3a, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 11100000, guid: 7df1b1380bf4c2347b2342585b58bc3a, type: 3}
       propertyPath: m_Animation
       value: 
@@ -623,7 +631,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 400056, guid: 7df1b1380bf4c2347b2342585b58bc3a, type: 3}
       insertIndex: 1
       addedObject: {fileID: 7844306296283055940}
-    - targetCorrespondingSourceObject: {fileID: 400096, guid: 7df1b1380bf4c2347b2342585b58bc3a, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 400030, guid: 7df1b1380bf4c2347b2342585b58bc3a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1760743011259206910}
     - targetCorrespondingSourceObject: {fileID: 400032, guid: 7df1b1380bf4c2347b2342585b58bc3a, type: 3}
@@ -983,8 +991,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bffc411424859d4e91a073b25a8853d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: 
+  FootstepsEnabled: 1
+  SoundsEnabled: 1
+  MaxFootstepDistance: 200
+  MaxSoundDistance: 500
+  RichTextName: 
+  VisibleName: 
   Guild: 
+  FeedKillerName: 
+  FeedVictimName: 
   Dead: 0
   CustomDamageEnabled: 0
   CustomDamage: 0
@@ -992,6 +1007,8 @@ MonoBehaviour:
   MaxHealth: 0
   CurrentHealth: 0
   Team: 
+  MovementSync: {fileID: 0}
+  CurrentSpeed: 0
   Grounded: 0
   JustGrounded: 0
   TargetAngle: 0
@@ -1004,6 +1021,7 @@ MonoBehaviour:
   HoldHuman: {fileID: 0}
   HoldHumanLeft: 0
   Size: 1
+  ClimbCooldown: 0.5
   StunTime: 0.3
   ActionPause: 0.2
   AttackPause: 0.2
@@ -1022,7 +1040,11 @@ MonoBehaviour:
   JumpForce: 0
   RotateSpeed: 0
   TurnSpeed: 0
+  LeftArmDisabled: 0
+  RightArmDisabled: 0
+  _jumpDirection: {x: 0, y: 0, z: 0}
   _stateTimeLeft: 0
+  EnableAI: 1
   TransformingToHuman: 0
   PreviousHumanGas: 0
   DeathAnimationLength: 2
@@ -1083,7 +1105,7 @@ MonoBehaviour:
   ObservedComponentsFoldoutOpen: 1
   Group: 0
   prefixField: -1
-  Synchronization: 3
+  Synchronization: 1
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
@@ -1311,6 +1333,11 @@ CapsuleCollider:
   m_Height: 0.49183834
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0.05}
+--- !u!4 &8190768624280371989 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 400030, guid: 7df1b1380bf4c2347b2342585b58bc3a, type: 3}
+  m_PrefabInstance: {fileID: 8190768624280246667}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8190768624280371995 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400016, guid: 7df1b1380bf4c2347b2342585b58bc3a, type: 3}
@@ -1329,10 +1356,5 @@ Transform:
 --- !u!4 &8190768624280372019 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400056, guid: 7df1b1380bf4c2347b2342585b58bc3a, type: 3}
-  m_PrefabInstance: {fileID: 8190768624280246667}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &8190768624280372075 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 400096, guid: 7df1b1380bf4c2347b2342585b58bc3a, type: 3}
   m_PrefabInstance: {fileID: 8190768624280246667}
   m_PrefabAsset: {fileID: 0}

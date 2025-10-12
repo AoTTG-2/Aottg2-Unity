@@ -1,7 +1,6 @@
 ﻿using ApplicationManagers;
-using UnityEngine;
-using Utility;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Characters
 {
@@ -50,8 +49,14 @@ namespace Characters
         {
             if (_activeHook != null)
                 return _activeHook.GetHookPosition();
-            Debug.Log("Warning: zero hook position");
             return Vector3.zero;
+        }
+
+        public bool IsHookOffset()
+        {
+            if (_activeHook != null)
+                return _activeHook.HasOffset;
+            return false;
         }
 
         public Transform GetHookParent()
@@ -99,6 +104,12 @@ namespace Characters
         protected override void ActiveFixedUpdate()
         {
             StartHook();
+        }
+
+        public void FixedUpdateMock()
+        {
+            if (_activeHook == null) return;
+            _activeHook.FixedUpdateMock();
         }
 
         private void StartHook()

@@ -1,135 +1,114 @@
-﻿using ApplicationManagers;
+﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 using Utility;
 
 namespace CustomLogic
 {
-    class CustomLogicStringBuiltin: CustomLogicBaseBuiltin
+    /// <summary>
+    /// String manipulation functions.
+    /// </summary>
+    [CLType(Name = "String", Static = true, Abstract = true)]
+    partial class CustomLogicStringBuiltin : BuiltinClassInstance
     {
-        public CustomLogicStringBuiltin(): base("String")
+        [CLConstructor]
+        public CustomLogicStringBuiltin() { }
+
+        [CLProperty("Returns the newline character.")]
+        public static string Newline => "\n";
+
+        [CLMethod("Formats a float to a string with the specified number of decimal places.")]
+        public static string FormatFloat(float val, int decimals)
         {
+            return Util.FormatFloat(val, decimals);
         }
 
-        public override object CallMethod(string name, List<object> parameters)
+        [CLMethod("Equivalent to C# string.format(string, List<string>).")]
+        public static string FormatFromList(string str, CustomLogicListBuiltin list)
         {
-            if (name == "FormatFloat")
-                return Util.FormatFloat(parameters[0].UnboxToFloat(), (int)parameters[1]);
-            if (name == "FormatFromList")
-            {
-                string str = (string)parameters[0];
-                var list = (CustomLogicListBuiltin)parameters[1];
-                List<string> strList = new List<string>();
-                foreach (var obj in list.List)
-                {
-                    strList.Add((string)obj);
-                }
-                return string.Format(str, strList.ToArray());
-            }
-            if (name == "Split")
-            {
-                if (parameters.Count < 2 || parameters.Count > 3)
-                    throw new System.Exception("Invalid number of parameters for Split (string, string, [OPT]removeEmpty), (string, list, [OPT]removeEmpty)");
-                System.StringSplitOptions options = System.StringSplitOptions.None;
+            return string.Format(str, list.List.ToArray());
+        }
 
-                if (parameters.Count == 3)
-                {
-                    options = (bool)parameters[2] ? System.StringSplitOptions.RemoveEmptyEntries : System.StringSplitOptions.None;
-                }
+        [CLMethod("Split the string into a list. Can pass in either a string to split on or a list of strings to split on, the last optional param can remove all empty entries.")]
+        public static CustomLogicListBuiltin Split(string toSplit, object splitter, bool removeEmptyEntries = false)
+        {
+            var options = removeEmptyEntries
+                ? System.StringSplitOptions.RemoveEmptyEntries
+                : System.StringSplitOptions.None;
 
-                string stringToSplit = (string)parameters[0];
-                CustomLogicListBuiltin list = new CustomLogicListBuiltin();
-                if (parameters[1] is string)
+            var list = new CustomLogicListBuiltin();
+            if (splitter is string separator)
+            {
+                if (separator.Length == 1)
                 {
-                    string separator = (string)parameters[1];
-                    if (separator.Length == 1)
-                    {
-                        foreach (string str in stringToSplit.Split(separator[0], options))
-                            list.List.Add(str);
-                    }
-                    else
-                    {
-                        foreach (string str in stringToSplit.Split(separator, options))
-                            list.List.Add(str);
-                    }
+                    foreach (var str in toSplit.Split(separator[0], options))
+                        list.List.Add(str);
                 }
                 else
                 {
-                    CustomLogicListBuiltin separatorList = (CustomLogicListBuiltin)parameters[1];
-                    string[] separators = new string[separatorList.List.Count];
-                    for (int i = 0; i < separatorList.List.Count; i++)
-                        separators[i] = (string)separatorList.List[i];
-                    foreach (string str in stringToSplit.Split(separators, options))
+                    foreach (var str in toSplit.Split(separator, options))
                         list.List.Add(str);
                 }
-                return list;
             }
-            if (name == "Join")
+            else
             {
-                var list = (CustomLogicListBuiltin)parameters[0];
-                string separator = (string)parameters[1];
-                List<string> strList = new List<string>();
-                foreach (var obj in list.List)
-                {
-                    strList.Add((string)obj);
-                }
-                return string.Join(separator, strList.ToArray());
+                var separatorList = (CustomLogicListBuiltin)splitter;
+                var separators = new string[separatorList.List.Count];
+                for (var i = 0; i < separatorList.List.Count; i++)
+                    separators[i] = (string)separatorList.List[i];
+                foreach (var str in toSplit.Split(separators, options))
+                    list.List.Add(str);
             }
-            if (name == "Substring")
-            {
-                string str = (string)parameters[0];
-                int startIndex = (int)parameters[1];
-                return str.Substring(startIndex);
-            }
-            if (name == "SubstringWithLength")
-            {
-                string str = (string)parameters[0];
-                int startIndex = (int)parameters[1];
-                int length = (int)parameters[2];
-                return str.Substring(startIndex, length);
-            }
-            if (name == "Length")
-            {
-                string str = (string)parameters[0];
-                return str.Length;
-            }
-            if (name == "Replace")
-            {
-                string str = (string)parameters[0];
-                string replace = (string)parameters[1];
-                string with = (string)parameters[2];
-                return str.Replace(replace, with);
-            }
-            if (name == "Contains")
-            {
-                string str = (string)parameters[0];
-                string contains = (string)parameters[1];
-                return str.Contains(contains);
-            }
-            if (name == "StartsWith")
-                return ((string)parameters[0]).StartsWith((string)parameters[1]);
-            if (name == "EndsWith")
-                return ((string)parameters[0]).EndsWith((string)parameters[1]);
-            if (name == "Trim")
-                return ((string)parameters[0]).Trim();
-            if (name == "Insert")
-                return ((string)parameters[0]).Insert((int)parameters[2], (string)parameters[1]);
-            if (name == "Capitalize")
-                return ((string)parameters[0]).UpperFirstLetter();
-            if (name == "ToUpper")
-                return ((string)parameters[0]).ToUpper();
-            if (name == "ToLower")
-                return ((string)parameters[0]).ToLower();
-            if (name == "IndexOf")
-                return ((string)parameters[0]).IndexOf((string)parameters[1]);
-            return base.CallMethod(name, parameters);
+            return list;
         }
 
-        public override object GetField(string name)
+        [CLMethod("Joins a list of strings into a single string with the specified separator.")]
+        public static string Join(CustomLogicListBuiltin list, string separator)
         {
-            if (name == "Newline")
-                return "\n";
-            return base.GetField(name);
+            var strList = new List<string>();
+            foreach (var obj in list.List)
+            {
+                strList.Add((string)obj);
+            }
+            return string.Join(separator, strList.ToArray());
         }
+
+        [CLMethod("Returns a substring starting from the specified index.")]
+        public static string Substring(string str, int startIndex) => str.Substring(startIndex);
+
+        [CLMethod("Returns a substring of the specified length starting from the specified start index.")]
+        public static string SubstringWithLength(string str, int startIndex, int length) => str.Substring(startIndex, length);
+
+        [CLMethod("Length of the string.")]
+        public static int Length(string str) => str.Length;
+
+        [CLMethod("Replaces all occurrences of a substring with another substring.")]
+        public static string Replace(string str, string replace, string with) => str.Replace(replace, with);
+
+        [CLMethod("Checks if the string contains the specified substring.")]
+        public static bool Contains(string str, string match) => str.Contains(match);
+
+        [CLMethod("Checks if the string starts with the specified substring.")]
+        public static bool StartsWith(string str, string match) => str.StartsWith(match);
+
+        [CLMethod("Checks if the string ends with the specified substring.")]
+        public static bool EndsWith(string str, string match) => str.EndsWith(match);
+
+        [CLMethod("Trims whitespace from the start and end of the string.")]
+        public static string Trim(string str) => str.Trim();
+
+        [CLMethod("Inserts a substring at the specified index.")]
+        public static string Insert(string str, string insert, int index) => str.Insert(index, insert);
+
+        [CLMethod("Capitalizes the first letter of the string.")]
+        public static string Capitalize(string str) => str.UpperFirstLetter();
+
+        [CLMethod("Converts the string to uppercase.")]
+        public static string ToUpper(string str) => str.ToUpper();
+
+        [CLMethod("Converts the string to lowercase.")]
+        public static string ToLower(string str) => str.ToLower();
+
+        [CLMethod("Returns the index of the given string.")]
+        public static int IndexOf(string str, string substring) => str.IndexOf(substring, StringComparison.Ordinal);
     }
 }

@@ -1,13 +1,9 @@
-﻿using System;
-using System.IO;
-using System.Runtime.InteropServices;
-using UnityEngine;
-using System.Collections;
-using Utility;
-using Settings;
-using UI;
+﻿using Settings;
+using System;
 using System.Collections.Generic;
-using GameManagers;
+using UI;
+using UnityEngine;
+using Utility;
 
 namespace ApplicationManagers
 {

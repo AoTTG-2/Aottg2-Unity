@@ -23,10 +23,12 @@ namespace CustomLogic
                 builtin = new CustomLogicHumanBuiltin((Human)character);
             else if (character is BasicTitan)
                 builtin = new CustomLogicTitanBuiltin((BasicTitan)character);
+            else if (character is WallColossalShifter)
+                builtin = new CustomLogicWallColossalBuiltin((WallColossalShifter)character);
             else if (character is BaseShifter)
                 builtin = new CustomLogicShifterBuiltin((BaseShifter)character);
             foreach (var classInstance in _classInstances)
-                classInstance.OnGetHit(builtin, name, damage, type, position);
+                classInstance.OnGetHit(builtin, name, damage, type, new CustomLogicVector3Builtin(position));
         }
 
         public void GetHooked(Human human, Vector3 position, bool left)
@@ -94,7 +96,7 @@ namespace CustomLogic
         }
 
 
-        public static CustomLogicBaseBuiltin GetBuiltin(Collider other)
+        public static BuiltinClassInstance GetBuiltin(Collider other)
         {
             if (other == null || other.transform == null)
                 return null;
@@ -104,11 +106,13 @@ namespace CustomLogic
             var character = root.GetComponent<BaseCharacter>();
             if (character != null)
             {
-                CustomLogicBaseBuiltin builtin = null;
+                BuiltinClassInstance builtin = null;
                 if (character is Human)
                     builtin = new CustomLogicHumanBuiltin((Human)character);
                 else if (character is BasicTitan)
                     builtin = new CustomLogicTitanBuiltin((BasicTitan)character);
+                else if (character is WallColossalShifter)
+                    builtin = new CustomLogicWallColossalBuiltin((WallColossalShifter)character);
                 else if (character is BaseShifter)
                     builtin = new CustomLogicShifterBuiltin((BaseShifter)character);
                 return builtin;

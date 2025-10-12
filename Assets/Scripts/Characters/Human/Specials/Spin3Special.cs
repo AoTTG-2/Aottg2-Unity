@@ -23,6 +23,10 @@ namespace Characters
 
         protected override void Activate()
         {
+            if (_human.MountState != HumanMountState.None)
+            {
+                _human.Unmount(true);
+            }
             _stage = 0;
             _human.HookLeft.DisableAnyHook();
             _human.HookRight.DisableAnyHook();
@@ -46,7 +50,7 @@ namespace Characters
                 return;
             }
             base.ActiveFixedUpdate();
-            if (_human.Cache.Animation.IsPlaying(HumanAnimations.SpecialLevi))
+            if (_human.Animation.IsPlaying(HumanAnimations.SpecialLevi))
             {
                 float time = GetAnimationTime();
                 if (_human.Grounded && time > 0.4f && time < 0.61f)
@@ -96,7 +100,7 @@ namespace Characters
 
         protected float GetAnimationTime()
         {
-            return _human.Cache.Animation[HumanAnimations.SpecialLevi].normalizedTime;
+            return _human.Animation.GetNormalizedTime(HumanAnimations.SpecialLevi);
         }
     }
 }

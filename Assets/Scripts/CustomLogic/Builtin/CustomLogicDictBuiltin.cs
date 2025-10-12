@@ -1,89 +1,100 @@
 ﻿using System.Collections.Generic;
 using System.Text;
-using UnityEngine;
 
 namespace CustomLogic
 {
-    class CustomLogicDictBuiltin: CustomLogicBaseBuiltin
+    // TODO: Make dict lookup constant time
+    // TODO: Keys and Values does not need to create a new list every time
+    /// <summary>
+    /// Collection of key-value pairs.
+    /// Keys must be unique.
+    /// </summary>
+    [CLType(Name = "Dict")]
+    partial class CustomLogicDictBuiltin : BuiltinClassInstance
     {
-        public Dictionary<object, object> Dict = new Dictionary<object, object>();
+        public readonly Dictionary<object, object> Dict;
 
-        public CustomLogicDictBuiltin(): base("Dict")
+        /// <summary>
+        /// Creates an empty dictionary
+        /// </summary>
+        [CLConstructor]
+        public CustomLogicDictBuiltin()
         {
+            Dict = new Dictionary<object, object>();
         }
 
-        public override object CallMethod(string methodName, List<object> parameters)
+        /// <summary>
+        /// Creates a dictionary with the specified capacity
+        /// </summary>
+        [CLConstructor]
+        public CustomLogicDictBuiltin(int capacity)
         {
-            if (methodName == "Clear")
-            {
-                Dict.Clear();
-                return null;
-            }
-            if (methodName == "Get")
-            {
-                var key = GetDictKey(parameters[0]);
-                if (key != null)
-                    return Dict[key];
-                if (parameters.Count > 1)
-                    return parameters[1];
-                throw new System.Exception("No dict key found: " + parameters[0]);
-            }
-            if (methodName == "Set")
-            {
-                object key = parameters[0];
-                var dictKey = GetDictKey(key);
-                if (dictKey != null)
-                    Dict[dictKey] = parameters[1];
-                else
-                    Dict.Add(key, parameters[1]);
-                return null;
-            }
-            if (methodName == "Remove")
-            {
-                var dictKey = GetDictKey(parameters[0]);
-                if (dictKey != null)
-                    Dict.Remove(dictKey);
-                return null;
-            }
-            if (methodName == "Contains")
-            {
-                return GetDictKey(parameters[0]) != null;
-            }
-            return base.CallMethod(methodName, parameters);
+            Dict = new Dictionary<object, object>(capacity);
         }
 
-        private object GetDictKey(object key)
+        [CLProperty(description: "Number of elements in the dictionary")]
+        public int Count => Dict.Count;
+
+        [CLProperty(description: "Keys in the dictionary")]
+        public CustomLogicListBuiltin Keys => new CustomLogicListBuiltin { List = new List<object>(Dict.Keys) };
+
+        [CLProperty(description: "Values in the dictionary")]
+        public CustomLogicListBuiltin Values => new CustomLogicListBuiltin { List = new List<object>(Dict.Values) };
+
+        [CLMethod(description: "Clears the dictionary")]
+        public void Clear()
         {
-            foreach (var dictKey in Dict.Keys)
-            {
-                if (CustomLogicManager.Evaluator.CheckEquals(dictKey, key))
-                    return dictKey;
-            }
-            return null;
+            Dict.Clear();
         }
 
-        public override object GetField(string name)
+        /// <summary>
+        /// Gets a value from the dictionary
+        /// </summary>
+        /// <param name="key">The key of the value to get</param>
+        /// <param name="defaultValue">The value to return if the key is not found</param>
+        /// <returns>The value associated with the key, or the default value if the key is not found</returns>
+        [CLMethod]
+        public object Get(object key, object defaultValue = null)
         {
-            if (name == "Keys")
-            {
-                CustomLogicListBuiltin list = new CustomLogicListBuiltin();
-                list.List = new List<object>(Dict.Keys);
-                return list;
-            }
-            if (name == "Values")
-            {
-                CustomLogicListBuiltin list = new CustomLogicListBuiltin();
-                list.List = new List<object>(Dict.Values);
-                return list;
-            }
-            if (name == "Count")
-                return Dict.Count;
-            return base.GetField(name);
+            if (Dict.ContainsKey(key))
+                return Dict[key];
+            return defaultValue;
         }
 
-        public override void SetField(string name, object value)
+        /// <summary>
+        /// Sets a value in the dictionary
+        /// </summary>
+        /// <param name="key">The key of the value to set</param>
+        /// <param name="value">The value to set</param>
+        [CLMethod]
+        public void Set(object key, object value)
         {
-            base.SetField(name, value);
+            if (Dict.ContainsKey(key))
+                Dict[key] = value;
+            else
+                Dict.Add(key, value);
+        }
+
+        /// <summary>
+        /// Removes a value from the dictionary
+        /// </summary>
+        /// <param name="key">The key of the value to remove</param>
+        [CLMethod]
+        public void Remove(object key)
+        {
+            if (Dict.ContainsKey(key))
+                Dict.Remove(key);
+        }
+
+        /// <summary>
+        /// Checks if the dictionary contains a key
+        /// </summary>
+        /// <param name="key">The key to check</param>
+        /// <returns>True if the dictionary contains the key, false otherwise</returns>
+        [CLMethod]
+        public bool Contains(object key)
+        {
+            return Dict.ContainsKey(key);
         }
 
         public override string ToString()
@@ -100,10 +111,10 @@ namespace CustomLogic
 
                 if (i != Dict.Count - 1)
                     builder.Append(", ");
-                
+
                 i++;
             }
-            
+
             builder.Append("}");
             return builder.ToString();
 

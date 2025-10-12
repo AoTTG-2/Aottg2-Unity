@@ -15,7 +15,7 @@ namespace UI
             base.Setup(parent);
             SettingsKeybindsPanel keybindsPanel = (SettingsKeybindsPanel)parent;
             SettingsPopup settingsPopup = (SettingsPopup)keybindsPanel.Parent;
-            keybindsPanel.CreateGategoryDropdown(DoublePanelLeft);
+            keybindsPanel.CreateCategoryDropdown(DoublePanelLeft);
             string cat = settingsPopup.LocaleCategory;
             ElementStyle style = new ElementStyle(titleWidth: 140f, themePanel: ThemePanel);
             string sub = keybindsPanel.GetCurrentCategoryName().Replace(" ", "");
@@ -29,6 +29,8 @@ namespace UI
                 ElementFactory.CreateToggleSetting(DoublePanelRight, style, SettingsManager.InputSettings.Human.WallSlideDash,
                 UIManager.GetLocale(cat, "Keybinds.Human", "WallSlideDash"), tooltip: UIManager.GetLocale(cat, "Keybinds.Human", "WallSlideDashTooltip"));
 
+                ElementFactory.CreateDropdownSetting(DoublePanelLeft, style, SettingsManager.InputSettings.Human.WallSlideAttach, UIManager.GetLocale(cat, "Keybinds.Human", "WallSlideAttach"),
+                UIManager.GetLocaleArray(cat, "Keybinds.Human", "WallSlideAttachOptions"), tooltip: UIManager.GetLocale(cat, sub, "WallSlideAttachTooltip"), elementWidth: 160f);
 
                 ElementFactory.CreateToggleSetting(DoublePanelRight, style, SettingsManager.InputSettings.Human.AutoUseGas,
                 UIManager.GetLocale(cat, "Keybinds.Human", "AutoUseGas"), tooltip: UIManager.GetLocale(cat, "Keybinds.Human", "AutoUseGasTooltip"));
@@ -48,6 +50,8 @@ namespace UI
             {
                 ElementFactory.CreateToggleSetting(DoublePanelRight, style, SettingsManager.InputSettings.General.TapScoreboard,
                     UIManager.GetLocale(cat, "Keybinds.General", "TapScoreboard"), tooltip: UIManager.GetLocale(cat, "Keybinds.General", "TapScoreboardTooltip"));
+                ElementFactory.CreateToggleSetting(DoublePanelRight, style, SettingsManager.InputSettings.General.TapMap,
+                    UIManager.GetLocale(cat, "Keybinds.General", "TapMap"), tooltip: UIManager.GetLocale(cat, "Keybinds.General", "TapMapTooltip"));
             }
         }
 
@@ -61,6 +65,8 @@ namespace UI
             {
                 BaseSetting setting = (BaseSetting)entry.Value;
                 string name = (string)entry.Key;
+                if (isTitan && name == "CoverNape1")
+                    name = "CoverNape";
                 if (setting.GetType() == typeof(KeybindSetting))
                 {
                     Transform side = count < (container.Settings.Count / 2) ? DoublePanelLeft : DoublePanelRight;

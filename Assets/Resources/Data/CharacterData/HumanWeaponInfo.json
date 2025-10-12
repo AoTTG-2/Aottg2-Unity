@@ -14,9 +14,9 @@
 		"Embed1TimeMultiplier": 0.00016667,
 		"Embed1TimeMin": 0.00,
 		"Embed1TimeMax": 0.05,
-		"Embed2TimeTotal": 1.0,
-		"Embed2TimeMultiplier": 0.01,
-		"AATriggerRange": 20.0,
+		"Embed2TimeTotal": 2.0,
+		"Embed2TimeMultiplier": 0.02,
+		"AATriggerRange": 15.0,
 		"Radius": 5.0,
 		"RadiusEmbed1Multiplier": 1.8,
 		"RadiusEmbed2Multiplier": 0.8,
@@ -33,7 +33,7 @@
 		"DamageMultiplier": 0.7,
 		"RestrictAngle": 360,
 		"RestrictAngleEmbed1": 360,
-		"RestrictAngleEmbed2": 60
+		"RestrictAngleEmbed2": 75
 	},
 	"AHSS": {
 		"Range": 25,
@@ -81,6 +81,7 @@
 		"InitialPullForce": 0.1,
 		"ConstantPullForce": 0.0,
 		"InitialVelocityLoss": 0.9,
-		"ConstantVelocityLoss": 0.2
+		"ConstantVelocityLoss": 0.2,
+		"DamageMultiplier": 1.0
 	}
 }

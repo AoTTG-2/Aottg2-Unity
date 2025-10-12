@@ -11,6 +11,9 @@
 					"Name": "Forest2"
 				},
 				{
+					"Name": "Forest2-optimized"
+				},
+				{
 					"Name": "Forest3"
 				},
 				{
@@ -18,6 +21,9 @@
 				},
 				{
 					"Name": "City2"
+				},
+				{
+					"Name": "Trost1"
 				},
 				{
 					"Name": "Utgard1"
@@ -62,7 +68,7 @@
 					"Name": "Shiganshina"
 				},
 				{
-					"Name": "Trost"
+					"Name": "Trost2"
 				},
 				{
 					"Name": "Futuristic Forest"
@@ -73,6 +79,51 @@
 			"Name": "Mission",
 			"IncludedModes": ["Map Logic"],
 			"Maps": [
+				{
+					"Name": "Annie",
+					"MiscSettings": {
+						"AllowThunderspears": false,
+						"AllowAHSS": false,
+						"AllowAPG": false,
+						"AllowShifterSpecials": false
+					}
+				},
+				{
+					"Name": "Colossal",
+					"MiscSettings": {
+						"AllowThunderspears": false,
+						"AllowAHSS": false,
+						"AllowAPG": false,
+						"AllowShifterSpecials": false
+					}
+				},
+				{
+					"Name": "Outside The Walls",
+					"MiscSettings": {
+						"Horses": true,
+						"HorsebackCombat": false,
+						"AllowPlayerTitans": false,
+						"AllowShifters": false
+					}
+				},
+				{
+					"Name": "Trost Defense",
+					"MiscSettings": {
+						"AllowPlayerTitans": false,
+						"AllowShifterSpecials": false,
+						"AllowShifters": false,
+						"EndlessRespawnEnabled": true
+					}
+				},
+				{
+					"Name": "Trost Legacy",
+					"MiscSettings": {
+						"AllowPlayerTitans": false,
+						"AllowShifterSpecials": false,
+						"AllowShifters": false,
+						"EndlessRespawnEnabled": true
+					}
+				},
 				{
 					"Name": "Christmas Waves",
 					"MiscSettings": {
@@ -93,32 +144,6 @@
 						"AllowThunderspears": false,
 						"AllowShifterSpecials": false,
 						"GlobalMinimapDisable": true
-					}
-				},
-				{
-					"Name": "Annie",
-					"MiscSettings": {
-						"AllowThunderspears": false,
-						"AllowAHSS": false,
-						"AllowAPG": false,
-						"AllowShifterSpecials": false
-					}
-				},
-				{
-					"Name": "Outside The Walls",
-					"MiscSettings": {
-						"Horses": true,
-						"AllowPlayerTitans": false,
-						"AllowShifters": false
-					}
-				},
-				{
-					"Name": "Trost Defense",
-					"MiscSettings": {
-						"AllowPlayerTitans": false,
-						"AllowShifterSpecials": false,
-						"AllowShifters": false,
-						"EndlessRespawnEnabled": true
 					}
 				},
 				{
@@ -182,6 +207,10 @@
 				{
 					"Category": "General",
 					"Name": "Forest2"
+				},
+				{
+					"Category": "General",
+					"Name": "Forest2-optimized"
 				},
 				{
 					"Category": "General",
@@ -349,13 +378,13 @@
 	],
 	"GameModes": [
 		{
-			"Name": "Survive"
-		},
-		{
 			"Name": "Waves",
 			"MiscSettings": {
 				"AllowPlayerTitans": false
 			}
+		},
+		{
+			"Name": "Survive"
 		},
 		{
 			"Name": "Endless"

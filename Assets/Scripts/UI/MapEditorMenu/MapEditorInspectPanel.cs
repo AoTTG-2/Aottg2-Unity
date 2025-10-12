@@ -1,22 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine.UI;
-using UnityEngine;
-using Settings;
-using System.Collections;
-using ApplicationManagers;
+﻿using ApplicationManagers;
+using CustomLogic;
 using GameManagers;
-using Characters;
 using Map;
 using MapEditor;
+using Settings;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
 using Utility;
-using UnityEngine.EventSystems;
-using System.Globalization;
-using CustomLogic;
-using static UnityEngine.Rendering.DebugUI;
-using UnityEngine.UIElements;
 
 namespace UI
 {
@@ -32,7 +24,7 @@ namespace UI
         protected override bool ScrollBar => true;
         private MapEditorGameManager _gameManager;
         private MapEditorMenu _menu;
-        private MapObject _mapObject;
+        public MapObject _mapObject;
         private IntSetting _parent = new IntSetting();
         private StringSetting _name = new StringSetting();
         private BoolSetting _active = new BoolSetting();
@@ -79,13 +71,32 @@ namespace UI
             return false;
         }
 
+        public void CopyID()
+        {
+            GUIUtility.systemCopyBuffer = this._mapObject.ScriptObject.Id.ToString();
+        }
+
+        public void CopyAssetCSV()
+        {
+            string serialized = this._mapObject.ScriptObject.Serialize();
+            GUIUtility.systemCopyBuffer = serialized;
+        }
+
         public void Show(MapObject mapObject)
         {
             base.Show();
             _mapObject = mapObject;
             SyncSettings();
             ElementStyle style = new ElementStyle(fontSize: 18, titleWidth: 80f, spacing: 10f, themePanel: ThemePanel);
-            var label = ElementFactory.CreateDefaultLabel(SinglePanel, style, "Object Id: " + _mapObject.ScriptObject.Id.ToString() + " | " + "Asset: " + _mapObject.ScriptObject.Asset, alignment: TextAnchor.MiddleLeft);
+            var topGroup = ElementFactory.CreateHorizontalGroup(SinglePanel, 20f, TextAnchor.MiddleLeft);
+            ElementFactory.CreateIconButton(topGroup.transform, style, "Icons/Navigation/CopyIcon", onClick: () => CopyAssetCSV());
+
+            var topGroupVert = ElementFactory.CreateVerticalGroup(topGroup.transform, 10f, TextAnchor.UpperLeft);
+            var idLabel = ElementFactory.CreateTextButton(topGroupVert.transform, style, "Id: " + _mapObject.ScriptObject.Id.ToString(), onClick: () => CopyID());
+            var assetLabel = ElementFactory.CreateTextButton(topGroupVert.transform, style, "Asset: " + _mapObject.ScriptObject.Asset, onClick: () => CopyAssetCSV());  // This will eventually allow swapping asset.
+
+            // var label = ElementFactory.CreateDefaultLabel(topGroup.transform, style, "Id: " + _mapObject.ScriptObject.Id.ToString() + "\n" + "Asset: " + _mapObject.ScriptObject.Asset, alignment: TextAnchor.MiddleLeft);
+            // label.GetComponent<Text>().horizontalOverflow = HorizontalWrapMode.Wrap;    // Doesn't stop the object from consuming icon space.
             var group = ElementFactory.CreateHorizontalGroup(SinglePanel, 20f, TextAnchor.MiddleLeft).transform;
             style.TitleWidth = 45f;
             ElementFactory.CreateToggleSetting(group, style, _active, "Active", elementWidth: 25f, elementHeight: 25f, onValueChanged: () => OnChange());
@@ -160,7 +171,7 @@ namespace UI
                         onChangeColor: () => OnChange(), elementHeight: 25f);
                 }
                 group = ElementFactory.CreateHorizontalGroup(SinglePanel, 20f, TextAnchor.MiddleLeft).transform;
-                label = ElementFactory.CreateDefaultLabel(group, style, "Texture", alignment: TextAnchor.MiddleLeft);
+                var label = ElementFactory.CreateDefaultLabel(group, style, "Texture", alignment: TextAnchor.MiddleLeft);
                 label.GetComponent<LayoutElement>().preferredWidth = 160f;
                 ElementFactory.CreateDefaultButton(group, style, _texture.Value, onClick: () => OnButtonClick("Texture"));
                 ElementFactory.CreateInputSetting(SinglePanel, style, _tilingX, "Tiling X", elementWidth: inputWidth, elementHeight: 35f, onEndEdit: () => OnChange());
@@ -304,7 +315,7 @@ namespace UI
                 var material = (MapScriptDefaultTiledMaterial)script.Material;
                 _tilingX.Value = material.Tiling.x;
                 _tilingY.Value = material.Tiling.y;
-            }    
+            }
             else if (typeof(MapScriptBasicMaterial).IsAssignableFrom(script.Material.GetType()))
             {
                 var material = (MapScriptBasicMaterial)script.Material;
@@ -355,19 +366,19 @@ namespace UI
             if (script.GetPosition() != newPosition)
             {
                 _mapObject.GameObject.transform.position = newPosition;
-                _gameManager.NewCommand(new TransformPositionCommand(new List<MapObject>() { _mapObject }));
+                _gameManager.NewCommand(new TransformPositionCommand(new List<MapObject>() { _mapObject }), false);
             }
             var newRotation = new Vector3(_rotationX.Value, _rotationY.Value, _rotationZ.Value);
             if (script.GetRotation() != newRotation)
             {
                 _mapObject.GameObject.transform.rotation = Quaternion.Euler(newRotation);
-                _gameManager.NewCommand(new TransformRotationCommand(new List<MapObject>() { _mapObject }));
+                _gameManager.NewCommand(new TransformRotationCommand(new List<MapObject>() { _mapObject }), false);
             }
             var newScale = new Vector3(_scaleX.Value, _scaleY.Value, _scaleZ.Value);
             if (script.GetScale() != newScale)
             {
                 _mapObject.GameObject.transform.localScale = Util.MultiplyVectors(_mapObject.BaseScale, newScale);
-                _gameManager.NewCommand(new TransformScaleCommand(new List<MapObject>() { _mapObject }));
+                _gameManager.NewCommand(new TransformScaleCommand(new List<MapObject>() { _mapObject }), false);
             }
             script.CollideMode = _collideMode.Value;
             script.CollideWith = _collideWith.Value;
@@ -482,58 +493,6 @@ namespace UI
                 return string.Join("/", new string[] { vector.x.ToString(), vector.y.ToString(), vector.z.ToString() });
             }
             return string.Empty;
-        }
-
-        private void Update()
-        {
-            return;
-            if (Input.GetKeyDown(KeyCode.Tab))
-            {
-                var system = EventSystem.current;
-                var selected = system.currentSelectedGameObject;
-                if (selected == null || (selected.transform.parent != SinglePanel && selected.transform.parent.parent != SinglePanel)
-                    || selected.GetComponent<InputField>() == null)
-                    return;
-                var selectable = selected.GetComponent<Selectable>();
-                if (selectable == null)
-                    return;
-                var nextRight = selectable.FindSelectableOnRight();
-                var nextDown = selectable.FindSelectableOnDown();
-                while (nextRight != null || nextDown != null)
-                {
-                    Debug.Log(nextRight);
-                    if (nextRight != null)
-                    {
-                        var inputField = nextRight.GetComponent<InputField>();
-                        if (inputField != null)
-                        {
-                            inputField.OnPointerClick(new PointerEventData(system));
-                            system.SetSelectedGameObject(nextRight.gameObject, new BaseEventData(system));
-                            return;
-                        }
-                    }
-                    else if (nextDown != null)
-                    {
-                        var inputField = nextDown.GetComponent<InputField>();
-                        if (inputField != null)
-                        {
-                            inputField.OnPointerClick(new PointerEventData(system));
-                            system.SetSelectedGameObject(nextDown.gameObject, new BaseEventData(system));
-                            return;
-                        }
-                    }
-                    if (nextRight != null)
-                    {
-                        nextRight = nextRight.FindSelectableOnRight();
-                        nextDown = nextRight.FindSelectableOnDown();
-                    }
-                    else
-                    {
-                        nextRight = nextDown.FindSelectableOnRight();
-                        nextDown = nextDown.FindSelectableOnDown();
-                    }
-                }
-            }
         }
     }
 }

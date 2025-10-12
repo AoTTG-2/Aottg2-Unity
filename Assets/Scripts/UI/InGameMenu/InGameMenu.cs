@@ -14,10 +14,7 @@ using Cameras;
 using CustomLogic;
 using Photon.Pun;
 using Photon.Realtime;
-using UnityEngine.Rendering;
 using System.Linq;
-using Photon.Pun.UtilityScripts;
-using JetBrains.Annotations;
 
 namespace UI
 {
@@ -42,6 +39,7 @@ namespace UI
         public BasePopup _characterPopup;
         public BasePopup _characterChangePopup;
         public BasePopup _scoreboardPopup;
+        public BasePopup _mapPopup;
         public BasePopup _selectMapPopup;
         public SkillTooltipPopup SkillTooltipPopup;
         public CustomAssetUrlPopup _customAssetUrlPopup;
@@ -109,7 +107,7 @@ namespace UI
         {
             // Create the top left HUD layout group, add the telemetry, kdr, and topleftlabel will be created after this and added to the group
             var panel = ElementFactory.InstantiateAndSetupPanel<TopLeftHUD>(transform, "Prefabs/InGame/TopLeftHUD");
-            ElementFactory.SetAnchor(panel, TextAnchor.UpperLeft, TextAnchor.UpperLeft, new Vector2(0f, 0f));
+            ElementFactory.SetAnchor(panel, TextAnchor.UpperLeft, TextAnchor.UpperLeft, new Vector2(10f, -8f)); // -8 to make it level with top center label which would be 2 pixels higher if y-offset is -10
             TopLeftHud = panel;
             KDRReference = panel.GetComponent<TopLeftHUD>().kdrAndLabel;
             panel.SetActive(true); // ????
@@ -137,18 +135,25 @@ namespace UI
             return (CustomPopup)_customPopups[name];
         }
 
+        public bool IsCustomPopupActive(string name)
+        {
+            if (!_customPopups.ContainsKey(name))
+                return false;
+            return _customPopups[name].IsActive;
+        }
+
+        public List<string> GetAllCustomPopups()
+        {
+            return _customPopups.Keys.ToList();
+        }
+
         public void SetupMinimap()
         {
+            _minimapPanel = ElementFactory.InstantiateAndBind(transform, "Minimap/Prefabs/MinimapPanel");
+            ElementFactory.SetAnchor(_minimapPanel, TextAnchor.UpperRight, TextAnchor.UpperRight, new Vector2(-10f, -10f));
+            _minimapPanel.AddComponent<MinimapScaler>();
+            _minimapPanel.SetActive(false);
             gameObject.AddComponent<MinimapHandler>();
-            if (SettingsManager.GeneralSettings.MinimapEnabled.Value)
-            {
-                _minimapPanel = ElementFactory.InstantiateAndBind(transform, "Minimap/Prefabs/MinimapPanel");
-                ElementFactory.SetAnchor(_minimapPanel, TextAnchor.UpperRight, TextAnchor.UpperRight, new Vector2(-10f, -10f));
-                _minimapPanel.AddComponent<MinimapScaler>();
-                _minimapPanel.SetActive(false);
-            }
-            else
-                GetComponent<MinimapHandler>().Disable();
         }
 
         public void SetupSnapshot()
@@ -203,7 +208,8 @@ namespace UI
             _killFeedBigPopup = ElementFactory.CreateDefaultPopup<KillFeedBigPopup>(transform);
             _killFeedBigPopup.gameObject.AddComponent<KillFeedScaler>();
             ElementFactory.SetAnchor(_killFeedBigPopup.gameObject, TextAnchor.UpperCenter, TextAnchor.MiddleCenter, new Vector2(0f, -120f));
-            for (int i = 0; i < 4; i++)
+            int feedCount = SettingsManager.UISettings.KillFeedCount.Value - 1;
+            for (int i = 0; i < feedCount; i++)
             {
                 float y = -162f - i * 35f;
                 var popup = ElementFactory.CreateDefaultPopup<KillFeedSmallPopup>(transform);
@@ -225,18 +231,20 @@ namespace UI
         {
             _characterPopup = ElementFactory.CreateDefaultPopup<CharacterPopup>(transform);
             _scoreboardPopup = ElementFactory.CreateDefaultPopup<ScoreboardPopup>(transform);
+            _mapPopup = ElementFactory.CreateDefaultPopup<MapPopup>(transform);
             _cutsceneDialoguePanel = ElementFactory.CreateDefaultPopup<CutsceneDialoguePanel>(transform);
             ElementFactory.SetAnchor(_cutsceneDialoguePanel.gameObject, TextAnchor.LowerCenter, TextAnchor.LowerCenter, new Vector2(0f, 100f));
             _popups.Add(_characterPopup);
             _popups.Add(_scoreboardPopup);
+            _popups.Add(_mapPopup);
             _gameManager = (InGameManager)SceneLoader.CurrentGameManager;
-            if (_minimapPanel != null)
-            {
-                if (SettingsManager.GeneralSettings.MinimapEnabled.Value && !SettingsManager.InGameCurrent.Misc.GlobalMinimapDisable.Value && !SettingsManager.InGameCurrent.Misc.RealismMode.Value)
-                    _minimapPanel.SetActive(true);
-                else
-                    GetComponent<MinimapHandler>().Disable();
-            }
+            if (_minimapPanel != null && SettingsManager.GeneralSettings.MinimapEnabled.Value && AllowMap())
+                _minimapPanel.SetActive(true);
+        }
+
+        public bool AllowMap()
+        {
+            return (!SettingsManager.InGameCurrent.Misc.GlobalMinimapDisable.Value && !SettingsManager.InGameCurrent.Misc.RealismMode.Value);
         }
 
         public static bool InMenu()
@@ -281,6 +289,27 @@ namespace UI
             else if (!enabled)
             {
                 _scoreboardPopup.Hide();
+                if (fromClick)
+                    SkipAHSSInput = true;
+            }
+        }
+
+        public void ToggleMapMenu()
+        {
+            SetMapMenu(!_mapPopup.gameObject.activeSelf, false);
+            ToggleUI(true);
+        }
+
+        public void SetMapMenu(bool enabled, bool fromClick)
+        {
+            if (enabled && !InMenu() && AllowMap())
+            {
+                HideAllMenus();
+                _mapPopup.Show();
+            }
+            else if (!enabled)
+            {
+                _mapPopup.Hide();
                 if (fromClick)
                     SkipAHSSInput = true;
             }
@@ -355,6 +384,9 @@ namespace UI
 
         public void ShowKillFeed(string killer, string victim, int score, string weapon)
         {
+            int feedCount = SettingsManager.UISettings.KillFeedCount.Value;
+            if (feedCount <= 0)
+                return;
             if (_killFeedBigPopup.TimeLeft > 0f)
             {
                 ShowKillFeedPushSmall(_killFeedBigPopup.Killer, _killFeedBigPopup.Victim, _killFeedBigPopup.Score, 
@@ -380,6 +412,13 @@ namespace UI
             _killScorePopup.Show(score);
             _killScoreTimeLeft = 3f;
             StylebarHandler.OnHit(score);
+        }
+
+        public int GetStylebarRank()
+        {
+            if (StylebarHandler != null)
+                return StylebarHandler.GetRank();
+            return 0;
         }
 
         public void SetLabel(string label, string message, float time)
@@ -484,7 +523,7 @@ namespace UI
                     spectating = "Prev: " + ChatManager.GetColorString(input.SpectatePreviousPlayer.ToString(), ChatTextColor.System) + ", ";
                     spectating += "Next: " + ChatManager.GetColorString(input.SpectateNextPlayer.ToString(), ChatTextColor.System) + ", ";
                     spectating += "Join: " + ChatManager.GetColorString(input.ChangeCharacter.ToString(), ChatTextColor.System) + ", ";
-                    spectating += "Free Cam: " + ChatManager.GetColorString(input.ChangeCamera.ToString(), ChatTextColor.System);
+                    spectating += $"{camera.SpecMode.Current()}: " + ChatManager.GetColorString(input.ChangeCamera.ToString(), ChatTextColor.System);
                 }
                 if (camera._follow != null && camera._follow != _gameManager.CurrentCharacter)
                 {
@@ -619,7 +658,7 @@ namespace UI
                 loadout = " APG ";
             else if (loadout == HumanLoadout.AHSS)
                 loadout = " AHSS ";
-            else if (loadout == HumanLoadout.Thunderspears)
+            else if (loadout == HumanLoadout.Thunderspear)
                 loadout = " TS ";
             else
                 loadout = string.Empty;

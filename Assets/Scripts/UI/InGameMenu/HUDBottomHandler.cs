@@ -39,6 +39,15 @@ namespace UI
         private float _reloadAnimationTimeLeft = 0f;
         private float _shootAnimationTimeLeft = 0f;
 
+        // Health
+        private Image _healthImage;
+        private float _healthTimeLeft = 0f;
+
+        // Perk
+        private Image _perkCDImage;
+        private Image _perkCDBackgroundImage;
+        private float _perkCDTimeLeft = 0f;
+
         // blades
         private Image _bladeFillLeft;
         private Image _bladeFillRight;
@@ -185,6 +194,14 @@ namespace UI
                 _gasFillRight = _hudBottom.transform.Find("GasFillRight").GetComponent<Image>();
                 _gasBackground = _hudBottom.transform.Find("GasBackground").GetComponent<Image>();
                 _currentSpecialIcon = "";
+
+                _healthImage = _hudBottom.transform.Find("HealthBar").GetComponent<Image>();
+                _healthImage.enabled = false;
+                _perkCDImage = _hudBottom.transform.Find("PerkCDTimer").GetComponent<Image>();
+                _perkCDBackgroundImage = _hudBottom.transform.Find("PerkCDTimerBackground").GetComponent<Image>();
+                _perkCDBackgroundImage.enabled = false;
+                _perkCDImage.enabled = false;
+
             }
             else if (_character is BasicTitan)
             {
@@ -325,6 +342,8 @@ namespace UI
                 _shootAnimationTimeLeft -= Time.deltaTime;
                 UpdateHumanSpecial();
                 UpdateGas();
+                UpdatePerkTimer();
+
                 if (_human.Weapon is BladeWeapon)
                     UpdateBlade();
                 else if (_human.Weapon is APGWeapon)
@@ -368,6 +387,37 @@ namespace UI
             {
                 animator.Update(0f);
                 animator.speed = 1f;
+            }
+        }
+
+        private void UpdatePerkTimer()
+        {
+            float ratio = 0;
+            if (!_human.Stats.VerticalDashPerk.PerkEnabled && !_human.Stats.OmniDashPerk.PerkEnabled)
+            {
+                _perkCDImage.enabled = false;
+                _perkCDBackgroundImage.enabled = false;
+                return;
+            }
+            else if (_human.Stats.OmniDashPerk.PerkEnabled)
+            {
+                ratio = _human.Stats.OmniDashPerk.GetCooldownRatio();
+            }
+            else if (_human.Stats.VerticalDashPerk.PerkEnabled)
+            {
+                ratio = _human.Stats.VerticalDashPerk.GetCooldownRatio();
+            }
+
+            if (ratio <= 0f || ratio == 1f)
+            {
+                _perkCDImage.enabled = false;
+                _perkCDBackgroundImage.enabled = false;
+            }
+            else
+            {
+                _perkCDImage.enabled = true;
+                _perkCDBackgroundImage.enabled = true;
+                _perkCDImage.fillAmount = ratio;
             }
         }
 

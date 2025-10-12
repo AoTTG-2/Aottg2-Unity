@@ -1,11 +1,12 @@
-﻿using ApplicationManagers;
+using ApplicationManagers;
 using CustomLogic;
 using GameManagers;
 using Map;
 using Photon.Pun;
 using Settings;
-using System.Collections;
+using System;
 using System.Collections.Generic;
+using UI;
 using UnityEngine;
 using Utility;
 
@@ -19,6 +20,7 @@ namespace Characters
         public Transform HookParent;
         protected bool _hasHookParent;
         public LineRenderer _renderer;
+        public bool HasOffset = false;
         protected bool _left;
         protected Human _owner;
         protected int _id;
@@ -30,11 +32,24 @@ namespace Characters
         protected float _currentLiveTime = 0f;
         protected ParticleSystem _particles;
         protected GameObject _endSprite;
-        private static LayerMask HookMask = PhysicsLayer.GetMask(PhysicsLayer.Human, PhysicsLayer.TitanPushbox, PhysicsLayer.EntityDetection,
+        private static LayerMask HookMask = PhysicsLayer.GetMask(PhysicsLayer.Human, PhysicsLayer.TitanPushbox, PhysicsLayer.ProjectileDetection,
             PhysicsLayer.MapObjectProjectiles, PhysicsLayer.MapObjectEntities, PhysicsLayer.MapObjectAll);
         protected float _tiling;
         protected float _lastLength;
         protected float _maxLiveTime;
+
+
+        private bool _usingDeathTimer = false;
+        private Vector3 _lastGoodHookPoint = Vector3.zero;
+        private bool _firstDeathFrame = true;
+        private float _deathTimerOffset = 0.6f;
+
+        private void ResetState()
+        {
+            _usingDeathTimer = false;
+            _lastGoodHookPoint = Vector3.zero;
+            _firstDeathFrame = true;
+        }
 
         public static Hook CreateHook(Human owner, bool left, int id, float maxLiveTime, bool gun = false)
         {
@@ -65,8 +80,7 @@ namespace Characters
         protected void Awake()
         {
             _renderer = gameObject.AddComponent<LineRenderer>();
-            _renderer.material = ResourceManager.InstantiateAsset<Material>(ResourcePaths.Map, "Materials/BasicMaterial", true);
-            _renderer.material.color = Color.black;
+            _renderer.material = ResourceManager.InstantiateAsset<Material>(ResourcePaths.Characters, "Human/Particles/Materials/HookMat", true);
             _renderer.positionCount = 0;
             _particles = ResourceManager.InstantiateAsset<GameObject>(ResourcePaths.Characters, "Human/Particles/Prefabs/HookParticle", true)
                 .GetComponent<ParticleSystem>();
@@ -161,17 +175,20 @@ namespace Characters
             _hasHookParent = false;
             if (transform != null)
             {
+                ResetState();
                 HookParent = transform;
                 _hookPosition = transform.InverseTransformPoint(position);
                 _hasHookParent = true;
                 _lastWorldHookPosition = position;
                 HookCharacter = transform.root.GetComponent<BaseCharacter>();
 
-                if (SettingsManager.InGameCurrent.Misc.RealismMode.Value)
+                if (SettingsManager.InGameCurrent.Misc.HookDamageMultiplier.Value > 0)
                 {
-                    if (HookCharacter != null && HookCharacter is Human && !TeamInfo.SameTeam(HookCharacter, _owner))
+                    if (HookCharacter != null && HookCharacter is Human && !TeamInfo.SameTeam(HookCharacter, _owner) && _owner.IsMine())
                     {
-                        HookCharacter.GetKilled(_owner.Name + "'s hook");
+                        var damage = Math.Max(10, (int)(_owner.CurrentSpeed * SettingsManager.InGameCurrent.Misc.HookDamageMultiplier.Value));
+                        ((InGameMenu)UIManager.CurrentMenu).ShowKillScore(damage);
+                        HookCharacter.GetHit(_owner, damage, "Hook", "");
                     }
                 }
             }
@@ -243,9 +260,18 @@ namespace Characters
                 float noise = (midpoint - midDiff) / (float)midpoint;
                 noise = Mathf.Pow(noise, 0.5f);
                 float max = ((rndFactor + velocity.magnitude) * 0.0015f) * noise;
-                Vector3 noisePosition = Anchor.position + new Vector3(Random.Range(-max, max), Random.Range(-max, max), Random.Range(-max, max));
-                noisePosition += (v1 * ((float)i / (float)vertex)) - (Vector3.up * rndFactor * 0.05f * noise) - (velocity * 0.001f * noise * rndFactor);
-                _renderer.SetPosition(i, noisePosition);
+
+                // Use deterministic sine wave instead of random for stable rope physics
+                float time = Time.time * 2f;
+                float sineX = Mathf.Sin(time + i * 0.5f) * max * 0.3f;
+                float sineY = Mathf.Sin(time * 1.2f + i * 0.7f) * max * 0.3f;
+                float sineZ = Mathf.Sin(time * 0.8f + i * 0.3f) * max * 0.3f;
+                Vector3 deterministicOffset = new Vector3(sineX, sineY, sineZ);
+                Vector3 basePosition = deterministicOffset + Anchor.position;
+                Vector3 segmentPosition = basePosition + (v1 * ((float)i / (float)vertex));
+                Vector3 gravityOffset = (Vector3.up * rndFactor) * 0.05f * noise;
+                Vector3 velocityOffset = (velocity * 0.001f) * noise * rndFactor;
+                _renderer.SetPosition(i, segmentPosition - gravityOffset - velocityOffset);
             }
             _renderer.SetPosition(vertex - 1, position);
             _endSprite.transform.position = position + v1.normalized * 0.1f;
@@ -290,6 +316,7 @@ namespace Characters
         {
             if (_owner.IsMine())
             {
+                HasOffset = false;
                 _hookPosition += _baseVelocity * Time.deltaTime * 50f + _relativeVelocity * Time.deltaTime;
                 Vector3 start = _nodes[_nodes.Count - 1];
                 if (_nodes.Count > 1)
@@ -303,9 +330,9 @@ namespace Characters
                     RaycastHit finalHit = hitArr[0];
                     foreach (RaycastHit hit in hitArr)
                     {
-                        if (hit.collider.gameObject.layer == PhysicsLayer.EntityDetection)
+                        if (hit.collider.gameObject.layer == PhysicsLayer.ProjectileDetection)
                         {
-                            hit.collider.gameObject.GetComponent<TitanEntityDetection>().RegisterHook(this);
+                            hit.collider.gameObject.GetComponent<TitanProjectileDetection>().RegisterHook(this);
                             continue;
                         }
                         if (hit.collider.gameObject == _owner.gameObject)
@@ -332,27 +359,24 @@ namespace Characters
                         else
                         {
                             var go = obj;
-                            while (!MapLoader.GoToMapObject.ContainsKey(go))
+                            var collisionHandler = go.GetComponent<CustomLogicCollisionHandler>();
+                            if (collisionHandler != null)
+                                collisionHandler.GetHooked(_owner, finalHit.point, _left);
+                            var mapObject = MapLoader.GetMapObject(go);
+                            if (mapObject != null)
                             {
-                                if (go == null)
-                                    break;
-                                var parent = go.transform.parent;
-                                if (parent == null)
-                                    break;
-                                go = parent.gameObject;
-                            }
-                            if (MapLoader.GoToMapObject.ContainsKey(go))
-                            {
-                                MapObject mapObject = MapLoader.GoToMapObject[go];
                                 if (mapObject.ScriptObject.Static)
-                                    SetHooked(finalHit.point + new Vector3(0f, 0.1f, 0f));
+                                {
+                                    HasOffset = Vector3.Angle(Vector3.up, finalHit.normal) < 10f;
+                                    if (HasOffset)
+                                        SetHooked(finalHit.point + new Vector3(0f, 0.1f, 0f));  // Try and only add the offset if directly on a flat plane.
+                                    else
+                                        SetHooked(finalHit.point);
+                                }
                                 else if (mapObject.RuntimeCreated)
                                     SetHooked(finalHit.point, obj.transform);
                                 else
                                     SetHooked(finalHit.point, obj.transform, -1, mapObject.ScriptObject.Id);
-                                var collisionHandler = mapObject.GameObject.GetComponent<CustomLogicCollisionHandler>();
-                                if (collisionHandler != null)
-                                    collisionHandler.GetHooked(_owner, finalHit.point, _left);
                             }
                             else
                                 SetHooked(finalHit.point);
@@ -372,6 +396,34 @@ namespace Characters
             }
         }
 
+        protected void FixedUpdateHooked()
+        {
+            if (_owner.IsMine() && _hasHookParent)
+            {
+                if (HookParent == null || (HookCharacter != null && HookCharacter.Dead && HookCharacter is Human))
+                    SetHookState(HookState.DisablingHooked);
+
+                // Hook timer for titan death
+                if (HookParent != null && HookCharacter != null && HookCharacter is BasicTitan titan)
+                {
+                    if (titan.Dead)
+                    {
+                        float timer = titan.DeathTimeElapsed();
+                        if (timer >= 0 && timer < _deathTimerOffset)
+                        {
+                            if (_firstDeathFrame)
+                            {
+                                _lastGoodHookPoint = HookParent.TransformPoint(_hookPosition);
+                                _lastWorldHookPosition = _lastGoodHookPoint;
+                                _firstDeathFrame = false;
+                            }
+                            _usingDeathTimer = true;
+                        }
+                    }
+                }
+            }
+        }
+
         protected void Update()
         {
             if (State == HookState.Hooking)
@@ -387,20 +439,15 @@ namespace Characters
         }
 
 
-        protected void FixedUpdate()
+        public void FixedUpdateMock()
         {
+            _usingDeathTimer = false;
             if (State == HookState.Hooking)
                 FixedUpdateHooking();
             if (State == HookState.Hooking || State == HookState.Hooked)
                 _particles.transform.position = GetHookPosition();
             if (State == HookState.Hooked)
-            {
-                if (_hasHookParent)
-                {
-                    if (HookParent == null || (HookCharacter != null && HookCharacter.Dead && HookCharacter is Human))
-                        SetHookState(HookState.DisablingHooked);
-                }
-            }
+                FixedUpdateHooked();
         }
 
         public Vector3 GetHookPosition()
@@ -408,7 +455,10 @@ namespace Characters
             if (_hasHookParent)
             {
                 if (HookParent != null)
-                    _lastWorldHookPosition = HookParent.TransformPoint(_hookPosition);
+                    if (_usingDeathTimer)
+                        _lastWorldHookPosition = _lastGoodHookPoint;
+                    else
+                        _lastWorldHookPosition = HookParent.TransformPoint(_hookPosition);
                 return _lastWorldHookPosition;
             }
             return _hookPosition;

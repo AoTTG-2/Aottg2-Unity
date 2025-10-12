@@ -8,6 +8,8 @@ class Main
 
     _enabled = false;
     _gameEnded = false;
+    _titanSpawnPointsA = null;
+    _titanSpawnPointsB = null;
 
     function OnGameStart()
     {
@@ -27,6 +29,14 @@ class Main
             self._enabled = true;
             self._titanSpawnPointsA = Map.FindMapObjectsByName("Titan A");
             self._titanSpawnPointsB = Map.FindMapObjectsByName("Titan B");
+
+            if (self._titanSpawnPointsA.Count <= 0 || self._titanSpawnPointsB.Count <= 0)
+            {
+                Game.Print("<b><color=#f75348>[Error]: </color></b>Missing Titan spawn points. Are you on a cage fight map?");
+                self._enabled = false;
+                return;
+            }
+
             self.SpawnTitans(self._redTitans, self._titanSpawnPointsA);
             self.SpawnTitans(self._blueTitans, self._titanSpawnPointsB);
 
@@ -117,7 +127,7 @@ class Main
         }
     }
 
-    coroutine CheckIfTeamPlayersAreDead(team)
+    coroutine CheckIfTeamPlayersAreDead()
     {
         wait 0.3;
 
@@ -179,6 +189,10 @@ class Main
 
     function SpawnTitans(list, spawnPoints)
     {
+        if (spawnPoints.Count <= 0)
+        {
+            return;
+        }
         randomSpawnPoint = false;
         if (self.StartTitans > spawnPoints.Count)
         {

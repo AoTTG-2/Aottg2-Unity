@@ -16,6 +16,8 @@ namespace UI
 {
     class UIManager : MonoBehaviour
     {
+        private const string InternalPrefix = "internal://";
+
         private static Dictionary<string, JSONObject> _languages = new Dictionary<string, JSONObject>();
         private string _arabicLanguageName;
         private static Dictionary<string, JSONObject> _uiThemes = new Dictionary<string, JSONObject>();
@@ -26,17 +28,21 @@ namespace UI
         public static LoadingMenu LoadingMenu;
         public static float CurrentCanvasScale = 1f;
         public static List<string> AvailableProfileIcons = new List<string>();
-        public static float LastFrameTime = 0.0f;
+        public static List<string> AvailableEmojis = new List<string>();
+        public static HashSet<string> AnimatedEmojis = new HashSet<string>();
         public static bool NeedResizeText = false;
         public static bool NeedResizeTextSecondFrame = false;
         private static Dictionary<string, AudioSource> _sounds = new Dictionary<string, AudioSource>();
+        private static int _lastFPS = 0;
+        private static float _currentFrameTime = 0f;
+        private static float _currentFrameCount = 0;
+        private static float _maxFrameTime = 0.5f;
 
         public static void Init()
         {
             _instance = SingletonFactory.CreateSingleton(_instance);
             LoadLanguages();
             LoadUIThemes();
-            LoadEmojis();
             LoadProfileIcons();
             _currentUITheme = SettingsManager.UISettings.UITheme.Value;
             LoadingMenu = ElementFactory.CreateMenu<LoadingMenu>("Prefabs/Panels/BackgroundMenu");
@@ -78,19 +84,16 @@ namespace UI
             return string.Empty;
         }
 
-        private static void LoadEmojis()
-        {
-            foreach (string emoji in EmoteHandler.AvailableEmojis)
-                EmoteHandler.EmojiTextures.Add(emoji, ResourceManager.LoadAsset(ResourcePaths.UI, "Icons/Emojis/Emoji" + emoji) as Texture2D);
-
-            EmoteHandler.EmojiTextures.Add("Speaking", ResourceManager.LoadAsset(ResourcePaths.UI, "Icons/Emojis/" + "Speaking") as Texture2D);
-        }
-
         private static void LoadProfileIcons()
         {
             var node = JSON.Parse(ResourceManager.LoadText(ResourcePaths.Info, "ProfileIconInfo"));
             foreach (var profileIcon in node["Icons"])
                 AvailableProfileIcons.Add(profileIcon.Value);
+            node = JSON.Parse(ResourceManager.LoadText(ResourcePaths.Info, "EmoteInfo"));
+            foreach (var emoteIcon in node["AllEmojis"])
+                AvailableEmojis.Add(emoteIcon.Value);
+            foreach (var emoteIcon in node["AnimatedEmojis"])
+                AnimatedEmojis.Add(emoteIcon.Value);
         }
 
         private static void LoadSounds()
@@ -115,7 +118,12 @@ namespace UI
             else if (sceneName == SceneName.InGame)
                 CurrentMenu = ElementFactory.CreateDefaultMenu<InGameMenu>();
             else if (sceneName == SceneName.CharacterEditor)
-                CurrentMenu = ElementFactory.CreateDefaultMenu<CharacterEditorMenu>();
+            {
+                if (CharacterEditorGameManager.HumanMode)
+                    CurrentMenu = ElementFactory.CreateDefaultMenu<CharacterEditorHumanMenu>();
+                else
+                    CurrentMenu = ElementFactory.CreateDefaultMenu<CharacterEditorTitanMenu>();
+            }
             else if (sceneName == SceneName.MapEditor)
                 CurrentMenu = ElementFactory.CreateDefaultMenu<MapEditorMenu>();
             else if (sceneName == SceneName.SnapshotViewer)
@@ -197,6 +205,93 @@ namespace UI
         public static string[] GetLocaleCommonArray(string item)
         {
             return GetLocaleArray("Common", item);
+        }
+
+        /// <summary>
+        /// Gets all localized strings for a specific category from all available languages.
+        /// Returns a dictionary where keys are language names and values are dictionaries of localized strings.
+        /// Use 'internal://' prefix for internal localization files, otherwise treats as external files.
+        /// </summary>
+        public static Dictionary<string, Dictionary<string, string>> GetLocaleCategoryStrings(string pattern)
+        {
+            if (pattern.StartsWith(InternalPrefix))
+            {
+                return GetInternalLocaleCategoryStrings(pattern.Substring(InternalPrefix.Length));
+            }
+
+            return GetExternalLocaleCategoryStrings(pattern);
+        }
+
+        private static Dictionary<string, Dictionary<string, string>> GetInternalLocaleCategoryStrings(string category)
+        {
+            var result = new Dictionary<string, Dictionary<string, string>>();
+
+            foreach (var lang in _languages)
+            {
+                if (!lang.Value.HasKey(category)) continue;
+
+                var strings = new Dictionary<string, string>();
+                foreach (string key in lang.Value[category].Keys)
+                {
+                    if (lang.Value[category][key].IsString)
+                    {
+                        string value = lang.Value[category][key].Value;
+                        if (lang.Key == _instance._arabicLanguageName)
+                            value = value.ReverseString();
+                        strings[key] = value;
+                    }
+                }
+                result[lang.Key] = strings;
+            }
+
+            return result;
+        }
+
+        private static Dictionary<string, Dictionary<string, string>> GetExternalLocaleCategoryStrings(string uniqueName)
+        {
+            var result = new Dictionary<string, Dictionary<string, string>>();
+
+            string basePath = FolderPaths.CustomLocale + "/" + uniqueName;
+            if (!Directory.Exists(basePath))
+                throw new Exception("Failed to find localization files: " + basePath);
+
+            var files = Directory.GetFiles(basePath, "*.json");
+            if (files.Length == 0)
+                throw new Exception("Failed to find localization files: " + basePath);
+
+            foreach (string file in files)
+            {
+                try
+                {
+                    JSONObject json = (JSONObject)JSON.Parse(File.ReadAllText(file));
+                    if (!json.HasKey("Name"))
+                        continue;
+
+                    string languageName = json["Name"].Value;
+                    var strings = new Dictionary<string, string>();
+
+                    foreach (string key in json.Keys)
+                    {
+                        if (key == "Name") continue;
+
+                        if (json[key].IsString)
+                        {
+                            string value = json[key].Value;
+                            if (languageName == _instance._arabicLanguageName)
+                                value = value.ReverseString();
+                            strings[key] = value;
+                        }
+                    }
+
+                    result[languageName] = strings;
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError($"Failed to load external locale file {file}: {e.Message}");
+                }
+            }
+
+            return result;
         }
 
         public static string[] GetLanguages()
@@ -349,7 +444,14 @@ namespace UI
 
         private void Update()
         {
-            LastFrameTime += (Time.unscaledDeltaTime - LastFrameTime) * 0.1f;
+            _currentFrameTime += Time.deltaTime;
+            _currentFrameCount += 1;
+            if (_currentFrameTime >= _maxFrameTime)
+            {
+                _lastFPS = (int)Math.Round(_currentFrameCount / _currentFrameTime);
+                _currentFrameTime = 0f;
+                _currentFrameCount = 0;
+            }
             if (CurrentMenu != null && NeedResizeText && CurrentMenu.gameObject != null)
             {
                 NeedResizeText = false;
@@ -370,9 +472,7 @@ namespace UI
 
         public static int GetFPS()
         {
-            if (LastFrameTime <= 0)
-                return 0;
-            return (int)Math.Round(1.0f / LastFrameTime);
+            return _lastFPS;
         }
     }
 

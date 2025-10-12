@@ -1,16 +1,13 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-using Weather;
-using UI;
-using Map;
-using Effects;
+﻿using ApplicationManagers;
 using CustomLogic;
-using ApplicationManagers;
-using Characters;
+using Effects;
+using Map;
 using Photon.Pun;
 using Spawnables;
-using System.Collections;
-using Utility;
+using System.Collections.Generic;
+using UI;
+using UnityEngine;
+using Weather;
 
 namespace GameManagers
 {
@@ -142,7 +139,7 @@ namespace GameManagers
         }
 
         [PunRPC]
-        public void StopVoiceRPC(PhotonMessageInfo Info) 
+        public void StopVoiceRPC(PhotonMessageInfo Info)
         {
             EmoteHandler.OnStopVoiceRPC(Info);
         }
@@ -201,7 +198,7 @@ namespace GameManagers
         public void SendMessageRPC(string message, PhotonMessageInfo info)
         {
             if (CustomLogicManager.Evaluator != null)
-                CustomLogicManager.Evaluator.OnNetworkMessage(info.Sender, message, info.SentServerTimestamp);
+                CustomLogicManager.Evaluator.OnNetworkMessage(info.Sender, message, info.SentServerTime);
         }
 
         [PunRPC]
@@ -255,6 +252,12 @@ namespace GameManagers
         public void TestRPC(Color c)
         {
             Debug.Log(c);
+        }
+
+        [PunRPC]
+        public void PrivateChatRPC(string message, int targetID, PhotonMessageInfo info)
+        {
+            ChatManager.OnPrivateChatRPC(message, targetID, info);
         }
 
         void Awake()

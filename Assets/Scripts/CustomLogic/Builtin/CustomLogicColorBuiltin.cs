@@ -1,95 +1,133 @@
-﻿using System.Collections.Generic;
-using Unity.VisualScripting;
+﻿using Unity.VisualScripting;
 using UnityEngine;
 using Utility;
 using ColorUtility = UnityEngine.ColorUtility;
 
 namespace CustomLogic
 {
-    class CustomLogicColorBuiltin : CustomLogicStructBuiltin
+    /// <summary>
+    /// Represents a color. Every component is in the range [0, 255].
+    /// </summary>
+    /// <remarks>
+    /// Implements `__Copy__` which means that this class will act like a struct.
+    /// </remarks>
+    /// <code>
+    /// Game.Print(color.ToHexString()) // Prints the color in hex format
+    /// </code>
+    [CLType(Name = "Color", Static = true, Description = "")]
+    partial class CustomLogicColorBuiltin : BuiltinClassInstance, ICustomLogicEquals, ICustomLogicCopyable, ICustomLogicMathOperators, ICustomLogicToString
     {
         public Color255 Value = new Color255();
 
-        public CustomLogicColorBuiltin(List<object> parameterValues) : base("Color")
-        {
-            var color = new Color255();
-            
-            if (parameterValues.Count == 1)
-            {
-                if (ColorUtility.TryParseHtmlString((string)parameterValues[0], out var c))
-                    color = new Color255(c);
-            }
-            else if (parameterValues.Count == 3)
-            {
-                color = new Color255((int)parameterValues[0], (int)parameterValues[1], (int)parameterValues[2]);
-            }
-            else if (parameterValues.Count == 4)
-            {
-                color = new Color255((int)parameterValues[0], (int)parameterValues[1], 
-                    (int)parameterValues[2], (int)parameterValues[3]);
-            }
+        /// <summary>
+        /// Default constructor, creates a white color.
+        /// </summary>
+        [CLConstructor]
+        public CustomLogicColorBuiltin() { }
 
-            Value = color;
+        /// <summary>
+        /// Creates a color from a hex string
+        /// </summary>
+        [CLConstructor]
+        public CustomLogicColorBuiltin(string hexString)
+        {
+            if (ColorUtility.TryParseHtmlString(hexString, out var c))
+                Value = new Color255(c);
         }
 
-        public CustomLogicColorBuiltin(Color255 value) : base("Color")
+        /// <summary>
+        /// Creates a color from RGB
+        /// </summary>
+        [CLConstructor]
+        public CustomLogicColorBuiltin(int r, int g, int b)
+        {
+            Value = new Color255(r, g, b);
+        }
+
+        /// <summary>
+        /// Creates a color from RGBA
+        /// </summary>
+        [CLConstructor]
+        public CustomLogicColorBuiltin(int r, int g, int b, int a)
+        {
+            Value = new Color255(r, g, b, a);
+        }
+
+
+        public CustomLogicColorBuiltin(Color color)
+        {
+            Value = new Color255(color);
+        }
+
+        public CustomLogicColorBuiltin(Color255 value)
         {
             Value = value;
         }
 
-        public override object CallMethod(string methodName, List<object> parameters)
+        [CLProperty(Description = "Red component of the color")]
+        public int R
         {
-            if (methodName == "ToHexString")
-            {
-                return Value.ToColor().ToHexString();
-            }
-            if (methodName == "Gradient")
-            {
-                // Expects two colors and a float
-                var a = (CustomLogicColorBuiltin)parameters[0];
-                var b = (CustomLogicColorBuiltin)parameters[1];
-                var ac = a.Value.ToColor();
-                var bc = b.Value.ToColor();
-                var t = (float)parameters[2];
-
-                var colors = new GradientColorKey[2];
-                colors[0] = new GradientColorKey(ac, 0f);
-                colors[1] = new GradientColorKey(bc, 1f);
-
-                var alphas = new GradientAlphaKey[2];
-                alphas[0] = new GradientAlphaKey(ac.a, ac.a);
-                alphas[1] = new GradientAlphaKey(bc.a, bc.a);
-
-                return new CustomLogicColorBuiltin(Color255.Gradient(colors, alphas, GradientMode.Blend, t));
-            }
-            return base.CallMethod(methodName, parameters);
+            get => Value.R;
+            set => Value.R = value;
         }
 
-        public override object GetField(string name)
+        [CLProperty(Description = "Green component of the color")]
+        public int G
         {
-            if (name == "R")
-                return Value.R;
-            if (name == "G")
-                return Value.G;
-            if (name == "B")
-                return Value.B;
-            if (name == "A")
-                return Value.A;
-            return base.GetField(name);
+            get => Value.G;
+            set => Value.G = value;
         }
 
-        public override void SetField(string name, object value)
+        [CLProperty(Description = "Blue component of the color")]
+        public int B
         {
-            if (name == "R")
-                Value.R = (int)value;
-            else if (name == "G")
-                Value.G = (int)value;
-            else if (name == "B")
-                Value.B = (int)value;
-            else if (name == "A")
-                Value.A = (int)value;
-            else
-                base.SetField(name, value);
+            get => Value.B;
+            set => Value.B = value;
+        }
+
+        [CLProperty(Description = "Alpha component of the color")]
+        public int A
+        {
+            get => Value.A;
+            set => Value.A = value;
+        }
+
+        [CLMethod(Description = "Converts the color to a hex string")]
+        public string ToHexString()
+        {
+            return Value.ToColor().ToHexString();
+        }
+
+        /// <summary>
+        /// Linearly interpolates between colors `a` and `b` by `t`
+        /// </summary>
+        /// <param name="a">Color to interpolate from</param>
+        /// <param name="b">Color to interpolate to</param>
+        /// <param name="t">Interpolation factor. 0 = `a`, 1 = `b`</param>
+        /// <returns>A new color between `a` and `b`</returns>
+        [CLMethod]
+        public static CustomLogicColorBuiltin Lerp(CustomLogicColorBuiltin a, CustomLogicColorBuiltin b, float t)
+        {
+            return new CustomLogicColorBuiltin(Color255.Lerp(a.Value, b.Value, t));
+        }
+
+        [CLMethod(Description = "Creates a gradient color from two colors")]
+        public static CustomLogicColorBuiltin Gradient(CustomLogicColorBuiltin a, CustomLogicColorBuiltin b, float t)
+        {
+            // TODO: isn't this the same as Lerp?
+
+            var colors = new GradientColorKey[2];
+            colors[0] = new GradientColorKey(a.Value.ToColor(), 0f);
+            colors[1] = new GradientColorKey(b.Value.ToColor(), 1f);
+            var alphas = new GradientAlphaKey[2];
+            alphas[0] = new GradientAlphaKey(a.Value.ToColor().a, a.Value.ToColor().a);
+            alphas[1] = new GradientAlphaKey(b.Value.ToColor().a, b.Value.ToColor().a);
+            return new CustomLogicColorBuiltin(Color255.Gradient(colors, alphas, GradientMode.Blend, t));
+        }
+
+        public override int GetHashCode()
+        {
+            return Value.GetHashCode();
         }
 
         public override bool Equals(object obj)
@@ -105,10 +143,98 @@ namespace CustomLogic
             return $"({Value.R}, {Value.G}, {Value.B}, {Value.A})";
         }
 
-        public override CustomLogicStructBuiltin Copy()
+        public CustomLogicColorBuiltin Copy()
         {
             var value = new Color255(Value.R, Value.G, Value.B, Value.A);
             return new CustomLogicColorBuiltin(value);
+        }
+
+        [CLMethod]
+        public bool __Eq__(object self, object other)
+        {
+            return (self, other) switch
+            {
+                (CustomLogicColorBuiltin a, CustomLogicColorBuiltin b) => a.Value == b.Value,
+                _ => false
+            };
+        }
+
+        [CLMethod]
+        public int __Hash__()
+        {
+            return Value.GetHashCode();
+        }
+
+        [CLMethod]
+        public object __Copy__()
+        {
+            return new CustomLogicColorBuiltin(new Color255(Value.R, Value.G, Value.B, Value.A));
+        }
+
+        [CLMethod]
+        public string __Str__()
+        {
+            return ToString();
+        }
+
+        [CLMethod]
+        public object __Add__(object self, object other)
+        {
+            return (self, other) switch
+            {
+                (CustomLogicColorBuiltin a, CustomLogicColorBuiltin b) => new CustomLogicColorBuiltin(new Color255(
+                    Mathf.Clamp(a.R + b.R, 0, 255),
+                    Mathf.Clamp(a.G + b.G, 0, 255),
+                    Mathf.Clamp(a.B + b.B, 0, 255),
+                    Mathf.Clamp(a.A + b.A, 0, 255)
+                )),
+                _ => throw CustomLogicUtils.OperatorException(nameof(__Add__), self, other)
+            };
+        }
+
+        [CLMethod]
+        public object __Sub__(object self, object other)
+        {
+            return (self, other) switch
+            {
+                (CustomLogicColorBuiltin a, CustomLogicColorBuiltin b) => new CustomLogicColorBuiltin(new Color255(
+                    Mathf.Clamp(a.R - b.R, 0, 255),
+                    Mathf.Clamp(a.G - b.G, 0, 255),
+                    Mathf.Clamp(a.B - b.B, 0, 255),
+                    Mathf.Clamp(a.A - b.A, 0, 255)
+                )),
+                _ => throw CustomLogicUtils.OperatorException(nameof(__Sub__), self, other)
+            };
+        }
+
+        [CLMethod]
+        public object __Mul__(object self, object other)
+        {
+            return (self, other) switch
+            {
+                (CustomLogicColorBuiltin a, CustomLogicColorBuiltin b) => new CustomLogicColorBuiltin(new Color255(
+                    Mathf.Clamp(a.R * b.R, 0, 255),
+                    Mathf.Clamp(a.G * b.G, 0, 255),
+                    Mathf.Clamp(a.B * b.B, 0, 255),
+                    Mathf.Clamp(a.A * b.A, 0, 255)
+                )),
+                _ => throw CustomLogicUtils.OperatorException(nameof(__Mul__), self, other)
+            };
+        }
+
+        [CLMethod]
+        public object __Div__(object self, object other)
+        {
+            return (self, other) switch
+            {
+                (CustomLogicColorBuiltin a, CustomLogicColorBuiltin b) => new CustomLogicColorBuiltin(new Color255(
+                    Mathf.Clamp(a.R / b.R, 0, 255),
+                    Mathf.Clamp(a.G / b.G, 0, 255),
+                    Mathf.Clamp(a.B / b.B, 0, 255),
+                    Mathf.Clamp(a.A / b.A, 0, 255)
+                )),
+                _ => throw CustomLogicUtils.OperatorException(nameof(__Div__), self, other)
+            };
         }
     }
 }

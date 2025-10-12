@@ -1,12 +1,8 @@
 ﻿using Settings;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.UI;
 
 namespace UI
 {
-    class SettingsGeneralPanel: SettingsCategoryPanel
+    class SettingsGeneralPanel : SettingsCategoryPanel
     {
         protected override bool ScrollBar => true;
         public override void Setup(BasePanel parent = null)
@@ -42,7 +38,7 @@ namespace UI
               sliderWidth: 135f, decimalPlaces: 3);
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.InvertMouse, UIManager.GetLocale(cat, sub, "InvertMouse"));
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.MinimapEnabled, UIManager.GetLocale(cat, sub, "MinimapEnabled"));
-            ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.MinimapHeight, UIManager.GetLocale(cat, sub, "MinimapHeight"),
+            ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.MinimapCameraHeight, UIManager.GetLocale(cat, sub, "MinimapHeight"),
                 elementWidth: 100f);
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.SnapshotsEnabled, UIManager.GetLocale(cat, sub, "SnapshotsEnabled"));
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.SnapshotsShowInGame, UIManager.GetLocale(cat, sub, "SnapshotsShowInGame"));
@@ -51,6 +47,6 @@ namespace UI
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.SkipCutscenes, UIManager.GetLocale(cat, sub, "SkipCutscenes"));
             ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.OriginalCameraDeadzone, UIManager.GetLocale(cat, sub, "OriginalCameraDeadzone"));
             ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.OriginalCameraSpeed, UIManager.GetLocale(cat, sub, "OriginalCameraSpeed"));
-}   
+        }
     }
 }

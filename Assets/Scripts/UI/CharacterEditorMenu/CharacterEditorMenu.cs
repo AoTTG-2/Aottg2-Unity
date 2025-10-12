@@ -13,70 +13,38 @@ namespace UI
 {
     class CharacterEditorMenu: BaseMenu
     {
-        private CharacterEditorCostumePanel _costumePanel;
-        private CharacterEditorStatsPanel _statsPanel;
-        private CharacterEditorPreviewPanel _previewPanel;
-        public CharacterEditorEditStatsPopup _editStatsPopup;
-        public CharacterEditorEditPerksPopup _editPerksPopup;
-        public HumanDummy Character;
-        public IntSetting Weapon = new IntSetting((int)HumanWeapon.Blade);
+        public CharacterEditorGameManager _gameManager;
 
         public override void Setup()
         {
             base.Setup();
-            Character = ((CharacterEditorGameManager)SceneLoader.CurrentGameManager).Character;
+            _gameManager = (CharacterEditorGameManager)SceneLoader.CurrentGameManager;
             RebuildPanels(true);
             ResetCharacter();
         }
-
-        protected override void SetupPopups()
+        
+        public virtual bool IsPopupActive()
         {
-            base.SetupPopups();
-            _editStatsPopup = ElementFactory.CreateDefaultPopup<CharacterEditorEditStatsPopup>(transform, false);
-            _editPerksPopup = ElementFactory.CreateDefaultPopup<CharacterEditorEditPerksPopup>(transform, false);
+            return SelectListPopup.IsActive || IconPickPopup.IsActive;
         }
 
-        public bool IsPopupActive()
+        public virtual void RebuildPanels(bool costumePopup)
         {
-            return SelectListPopup.IsActive || IconPickPopup.IsActive || _editStatsPopup.IsActive || _editPerksPopup.IsActive;
+           
         }
 
-        public void RebuildPanels(bool costumePopup)
+        public virtual void ResetCharacter(bool fullReset = false)
         {
-            if (_costumePanel != null)
-            {
-                Destroy(_costumePanel.gameObject);
-                Destroy(_statsPanel.gameObject);
-                Destroy(_previewPanel.gameObject);
-                Destroy(_editStatsPopup.gameObject);
-                Destroy(_editPerksPopup.gameObject);
-            }
-            _costumePanel = ElementFactory.CreateHeadedPanel<CharacterEditorCostumePanel>(transform, enabled: true).GetComponent<CharacterEditorCostumePanel>();
-            _statsPanel = ElementFactory.CreateHeadedPanel<CharacterEditorStatsPanel>(transform, enabled: true).GetComponent<CharacterEditorStatsPanel>();
-            _previewPanel = ElementFactory.CreateHeadedPanel<CharacterEditorPreviewPanel>(transform, enabled: true).GetComponent<CharacterEditorPreviewPanel>();
-            ElementFactory.SetAnchor(_costumePanel.gameObject, TextAnchor.UpperLeft, TextAnchor.UpperLeft, new Vector2(20f, -20f));
-            ElementFactory.SetAnchor(_statsPanel.gameObject, TextAnchor.UpperRight, TextAnchor.UpperRight, new Vector2(-20f, -20f));
-            ElementFactory.SetAnchor(_previewPanel.gameObject, TextAnchor.UpperRight, TextAnchor.UpperRight, new Vector2(-20f, -450f));
-            _editStatsPopup = ElementFactory.CreateDefaultPopup<CharacterEditorEditStatsPopup>(transform, false);
-            _editPerksPopup = ElementFactory.CreateDefaultPopup<CharacterEditorEditPerksPopup>(transform, false);
         }
 
-        public void ResetCharacter(bool changeAnimation = false)
+        public virtual float GetMinMouseX()
         {
-            var newSet = (HumanCustomSet)SettingsManager.HumanCustomSettings.CustomSets.GetSelectedSet();
-            Character.Setup.Load(newSet, (HumanWeapon)Weapon.Value, false);
-            if (changeAnimation)
-                Character.Idle();
+            return 0f;
         }
 
-        public float GetMinMouseX()
+        public virtual float GetMaxMouseX()
         {
-            return _costumePanel.GetPhysicalWidth() + 20f;
-        }
-
-        public float GetMaxMouseX()
-        {
-            return Screen.width - _statsPanel.GetPhysicalWidth() - 20f;
+            return Screen.width;
         }
     }
 }

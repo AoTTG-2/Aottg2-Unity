@@ -11,11 +11,21 @@ using UnityEngine;
 
 namespace CustomLogic
 {
-    class CustomLogicUIBuiltin: CustomLogicBaseBuiltin
+    /// <summary>
+    /// UI label functions.
+    /// </summary>
+    [CLType(Name = "UI", Static = true, Abstract = true)]
+    partial class CustomLogicUIBuiltin : BuiltinClassInstance
     {
-        private Dictionary<string, string> _lastSetLabels = new Dictionary<string, string>();
+        private static readonly Dictionary<string, string> LastSetLabels = new();
 
-        public CustomLogicUIBuiltin(): base("UI")
+        private static readonly object[] SetLabelRpcArgs = new object[3];
+        private const string SetLabelRpc = nameof(RPCManager.SetLabelRPC);
+
+        private static InGameMenu Menu => (InGameMenu)UIManager.CurrentMenu;
+
+        [CLConstructor]
+        public CustomLogicUIBuiltin()
         {
         }
 
@@ -23,155 +33,167 @@ namespace CustomLogic
         {
             if (PhotonNetwork.IsMasterClient)
             {
-                foreach (string key in _lastSetLabels.Keys)
-                    RPCManager.PhotonView.RPC("SetLabelRPC", player, new object[] { key, _lastSetLabels[key], 0f });
+                foreach (var key in LastSetLabels.Keys)
+                {
+                    SetLabelRpcArgs[0] = key;
+                    SetLabelRpcArgs[1] = LastSetLabels[key];
+                    SetLabelRpcArgs[2] = 0f;
+                    RPCManager.PhotonView.RPC(SetLabelRpc, player, SetLabelRpcArgs);
+                }
             }
         }
 
-        public override object CallMethod(string name, List<object> parameters)
+        /// <summary>"TopCenter" constant</summary>
+        [CLProperty] public static string TopCenter => "TopCenter";
+
+        /// <summary>"TopLeft" constant</summary>
+        [CLProperty] public static string TopLeft => "TopLeft";
+
+        /// <summary>"TopRight" constant</summary>
+        [CLProperty] public static string TopRight => "TopRight";
+
+        /// <summary>"MiddleCenter" constant</summary>
+        [CLProperty] public static string MiddleCenter => "MiddleCenter";
+
+        /// <summary>"MiddleLeft" constant</summary>
+        [CLProperty] public static string MiddleLeft => "MiddleLeft";
+
+        /// <summary>"MiddleRight" constant</summary>
+        [CLProperty] public static string MiddleRight => "MiddleRight";
+
+        /// <summary>"BottomCenter" constant</summary>
+        [CLProperty] public static string BottomCenter => "BottomCenter";
+
+        /// <summary>"BottomLeft" constant</summary>
+        [CLProperty] public static string BottomLeft => "BottomLeft";
+
+        /// <summary>"BottomRight" constant</summary>
+        [CLProperty] public static string BottomRight => "BottomRight";
+
+        /// <summary>
+        /// Sets the label at a certain location. Valid types: "TopCenter", "TopLeft", "TopRight", "MiddleCenter", "MiddleLeft", "MiddleRight", "BottomLeft", "BottomRight", "BottomCenter".
+        /// </summary>
+        [CLMethod] public static void SetLabel(string label, string message) => InGameManager.SetLabel(label, message);
+
+        /// <summary>
+        /// Sets the label for a certain time, after which it will be cleared.
+        /// </summary>
+        [CLMethod] public static void SetLabelForTime(string label, string message, float time) => InGameManager.SetLabel(label, message, time);
+
+        /// <summary>
+        /// Sets the label for all players. Master client only. Be careful not to call this often.
+        /// </summary>
+        [CLMethod]
+        public static void SetLabelAll(string label, string message)
         {
-            var menu = (InGameMenu)UIManager.CurrentMenu;
-            if (name == "SetLabel")
+            if (PhotonNetwork.IsMasterClient)
             {
-                string label = (string)parameters[0];
-                string message = (string)parameters[1];
-                InGameManager.SetLabel(label, message, 0);
-                return null;
-            }
-            if (name == "SetLabelForTime")
-            {
-                string label = (string)parameters[0];
-                string message = (string)parameters[1];
-                float time = parameters[2].UnboxToFloat();
-                InGameManager.SetLabel(label, message, time);
-                return null;
-            }
-            if (name == "SetLabelAll")
-            {
-                string label = (string)parameters[0];
-                string message = (string)parameters[1];
-                if (PhotonNetwork.IsMasterClient)
+                if (!LastSetLabels.ContainsKey(label) || message != LastSetLabels[label])
                 {
-                    if (!_lastSetLabels.ContainsKey(label) || message != _lastSetLabels[label])
-                        RPCManager.PhotonView.RPC("SetLabelRPC", RpcTarget.All, new object[] { label, message, 0f });
-                    _lastSetLabels[label] = message;
+                    SetLabelRpcArgs[0] = label;
+                    SetLabelRpcArgs[1] = message;
+                    SetLabelRpcArgs[2] = 0f;
+                    RPCManager.PhotonView.RPC(SetLabelRpc, RpcTarget.All, SetLabelRpcArgs);
                 }
-                return null;
+                LastSetLabels[label] = message;
             }
-            if (name == "SetLabelForTimeAll")
+        }
+
+        /// <summary>
+        /// Sets the label for all players for a certain time. Master client only.
+        /// </summary>
+        [CLMethod]
+        public static void SetLabelForTimeAll(string label, string message, float time)
+        {
+            if (PhotonNetwork.IsMasterClient)
             {
-                string label = (string)parameters[0];
-                string message = (string)parameters[1];
-                float time = parameters[2].UnboxToFloat();
-                if (PhotonNetwork.IsMasterClient)
-                {
-                     RPCManager.PhotonView.RPC("SetLabelRPC", RpcTarget.All, new object[] { label, message, time });
-                }
-                return null;
+                SetLabelRpcArgs[0] = label;
+                SetLabelRpcArgs[1] = message;
+                SetLabelRpcArgs[2] = time;
+                RPCManager.PhotonView.RPC(SetLabelRpc, RpcTarget.All, SetLabelRpcArgs);
             }
-            if (name == "CreatePopup")
+        }
+
+        /// <summary>
+        /// Creates a new popup. This popup is hidden until shown.
+        /// </summary>
+        [CLMethod]
+        public static string CreatePopup(string popupName, string title, int width, int height)
+        {
+            Menu.CreateCustomPopup(popupName, title, width, height);
+            return popupName;
+        }
+
+        /// <summary>Shows the popup with given name.</summary>
+        [CLMethod] public static void ShowPopup(string popupName) => Menu.GetCustomPopup(popupName).Show();
+
+        /// <summary>Hides the popup with given name.</summary>
+        [CLMethod] public static void HidePopup(string popupName) => Menu.GetCustomPopup(popupName).Hide();
+
+        /// <summary>Clears all elements in popup with given name.</summary>
+        [CLMethod] public static void ClearPopup(string popupName) => Menu.GetCustomPopup(popupName).Clear();
+
+        /// <summary>Adds a text row to the popup with label as content.</summary>
+        [CLMethod] public static void AddPopupLabel(string popupName, string label) => Menu.GetCustomPopup(popupName).AddLabel(label);
+
+        /// <summary>Adds a button row to the popup with given button name and display text. When button is pressed, OnButtonClick is called in Main with buttonName parameter.</summary>
+        [CLMethod] public static void AddPopupButton(string popupName, string label, string callback) => Menu.GetCustomPopup(popupName).AddButton(label, callback);
+
+        /// <summary>Adds a button to the bottom bar of the popup.</summary>
+        [CLMethod] public static void AddPopupBottomButton(string popupName, string label, string callback) => Menu.GetCustomPopup(popupName).AddBottomButton(label, callback);
+
+        /// <summary>Adds a list of buttons in a row to the popup.</summary>
+        [CLMethod] public static void AddPopupButtons(string popupName, CustomLogicListBuiltin labels, CustomLogicListBuiltin callbacks) => Menu.GetCustomPopup(popupName).AddButtons(labels.List, callbacks.List);
+
+        /// <summary>Returns a wrapped string given style and args.</summary>
+        [CLMethod]
+        public static string WrapStyleTag(string text, string style, string arg = null)
+        {
+            if (arg == null)
+                return $"<{style}>{text}</{style}>";
+            return $"<{style}={arg}>{text}</{style}>";
+        }
+
+        /// <summary>Shows the change character menu if main character is Human.</summary>
+        [CLMethod]
+        public static void ShowChangeCharacterMenu()
+        {
+            var inGameManager = (InGameManager)SceneLoader.CurrentGameManager;
+            if (inGameManager.CurrentCharacter != null && inGameManager.CurrentCharacter is Human)
             {
-                string popupName = (string)parameters[0];
-                string title = (string)parameters[1];
-                int width = parameters[2].UnboxToInt();
-                int height = parameters[3].UnboxToInt();
-                menu.CreateCustomPopup(popupName, title, width, height);
-                return null;
+                Menu.ShowCharacterChangeMenu();
             }
-            if (name == "ShowPopup")
+        }
+
+        /// <summary>Sets the display of the scoreboard header (default "Kills / Deaths...")</summary>
+        [CLMethod] public static void SetScoreboardHeader(string header) => CustomLogicManager.Evaluator.ScoreboardHeader = header;
+
+        /// <summary>
+        /// Sets which Player custom property to read from to display on the scoreboard. If set to empty string, will use the default "Kills / Deaths..." display.
+        /// </summary>
+        [CLMethod] public static void SetScoreboardProperty(string property) => CustomLogicManager.Evaluator.ScoreboardProperty = $"CL:{property}";
+
+        /// <summary>Gets the color of the specified item. See theme json for reference.</summary>
+        [CLMethod]
+        public static CustomLogicColorBuiltin GetThemeColor(string panel, string category, string item)
+        {
+            var color = new Color255(UIManager.GetThemeColor(panel, category, item));
+            return new CustomLogicColorBuiltin(color);
+        }
+
+        [CLMethod("Returns if the given popup is active")]
+        public static bool IsPopupActive(string popupName) => Menu.GetCustomPopup(popupName).IsActive;
+
+        [CLProperty("Returns a list of all popups")]
+        public static CustomLogicListBuiltin GetPopups
+        {
+            get
             {
-                string popupName = (string)parameters[0];
-                menu.GetCustomPopup(popupName).Show();
-                return null;
+                var result = new CustomLogicListBuiltin();
+                foreach (var popup in Menu.GetAllCustomPopups())
+                    result.List.Add(popup);
+                return result;
             }
-            if (name == "HidePopup")
-            {
-                string popupName = (string)parameters[0];
-                menu.GetCustomPopup(popupName).Hide();
-                return null;
-            }
-            if (name == "ClearPopup")
-            {
-                string popupName = (string)parameters[0];
-                menu.GetCustomPopup(popupName).Clear();
-                return null;
-            }
-            if (name == "AddPopupLabel")
-            {
-                string popupName = (string)parameters[0];
-                menu.GetCustomPopup(popupName).AddLabel((string)parameters[1]);
-                return null;
-            }
-            if (name == "AddPopupButton")
-            {
-                string popupName = (string)parameters[0];
-                menu.GetCustomPopup(popupName).AddButton((string)parameters[1], (string)parameters[2]);
-                return null;
-            }
-            if (name == "AddPopupBottomButton")
-            {
-                string popupName = (string)parameters[0];
-                menu.GetCustomPopup(popupName).AddBottomButton((string)parameters[1], (string)parameters[2]);
-                return null;
-            }
-            if (name == "AddPopupButtons")
-            {
-                string popupName = (string)parameters[0];
-                CustomLogicListBuiltin names = (CustomLogicListBuiltin)parameters[1];
-                CustomLogicListBuiltin titles = (CustomLogicListBuiltin)parameters[2];
-                menu.GetCustomPopup(popupName).AddButtons(names.List, titles.List);
-                return null;
-            }
-            if (name == "WrapStyleTag")
-            {
-                string text = (string)parameters[0];
-                string style = (string)parameters[1];
-                string args = (string)parameters[2];
-                if (args == null)
-                {
-                    return "<" + style + ">" + text + "</" + style + ">";
-                }
-                return "<" + style + "=" + args + ">" + text + "</" + style + ">";
-            }
-            if (name == "GetLocale")
-            {
-                string cat = (string)parameters[0];
-                string sub = (string)parameters[1];
-                string key = (string)parameters[2];
-                return UIManager.GetLocale(cat, sub, key);
-            }
-            if (name == "GetLanguage")
-            {
-                return SettingsManager.GeneralSettings.Language.Value;
-            }
-            if (name == "GetThemeColor")
-            {
-                string panel = (string)parameters[0];
-                string category = (string)parameters[1]; 
-                string item = (string)parameters[2];
-                Color255 color = new Color255(UIManager.GetThemeColor(panel, category, item));
-                return new CustomLogicColorBuiltin(color);
-            }
-            if (name == "ShowChangeCharacterMenu")
-            {
-                var inGameManager = (InGameManager)SceneLoader.CurrentGameManager;
-                if (inGameManager.CurrentCharacter != null && inGameManager.CurrentCharacter is Human)
-                {
-                    ((InGameMenu)UIManager.CurrentMenu).ShowCharacterChangeMenu();
-                }
-                return null;
-            }
-            if (name == "SetScoreboardHeader")
-            {
-                CustomLogicManager.Evaluator.ScoreboardHeader = (string)parameters[0];
-                return null;
-            }
-            if (name == "SetScoreboardProperty")
-            {
-                CustomLogicManager.Evaluator.ScoreboardProperty = "CL:" + (string)parameters[0];
-                return null;
-            }
-            return base.CallMethod(name, parameters);
         }
     }
 }

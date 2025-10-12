@@ -1,8 +1,4 @@
-﻿using Effects;
-using System.Collections;
-using UnityEngine;
-
-namespace Characters
+﻿namespace Characters
 {
     class StockSpecial : BaseHoldAttackSpecial
     {
@@ -15,6 +11,12 @@ namespace Characters
             return base.CanUse() && _human.State == HumanState.Idle;
         }
 
+        public void FalseAttack()
+        {
+            IsActive = false;
+            Deactivate();
+        }
+
         protected override void Activate()
         {
             ((Human)_owner).StartBladeSwing();
@@ -23,7 +25,7 @@ namespace Characters
         protected override void ActiveFixedUpdate()
         {
             base.ActiveFixedUpdate();
-            if (_human.Cache.Animation[_human.AttackAnimation].normalizedTime >= 0.32f)
+            if (_human.Animation.GetNormalizedTime(_human.AttackAnimation) >= 0.32f)
                 _human.PauseAnimation();
             if (_human.Grounded)
             {

@@ -1,11 +1,8 @@
-﻿using UnityEngine;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Utility;
-using System.Diagnostics;
+﻿using Assets.Scripts.ApplicationManagers;
 using GameManagers;
-using Assets.Scripts.ApplicationManagers;
+using System.Collections.Generic;
+using UnityEngine;
+using Utility;
 
 namespace ApplicationManagers
 {
@@ -18,26 +15,29 @@ namespace ApplicationManagers
     {
         static DebugConsole _instance;
         public static bool Enabled;
-        static LinkedList<string> _messages = new LinkedList<string>();
+        public static LinkedList<string> _messages = new LinkedList<string>();
+        public static LinkedList<string> _messageBuffer = new LinkedList<string>();
         static int _currentCharCount = 0;
+        static int _currentCharCountBuffer = 0;
         static Vector2 _scrollPosition = Vector2.zero;
         static string _inputLine = string.Empty;
         static bool _needResetScroll;
         const int MaxMessages = 200;
         const int MaxChars = 5000;
-        const int MaxCharsPerMessage = 1000;
+        const int MaxCharsPerMessage = 60;
         const int PositionX = 20;
         const int PositionY = 20;
-        const int Width = 400;
-        const int Height = 300;
+        const int Width = 500;
+        const int Height = 400;
         const int InputHeight = 25;
         const int Padding = 10;
         const string InputControlName = "DebugInput";
 
+
         public static void Init()
         {
             _instance = SingletonFactory.CreateSingleton(_instance);
-            Application.RegisterLogCallback(OnUnityDebugLog);
+            Application.logMessageReceived += OnUnityDebugLog;
         }
 
         public static void Log(string message, bool showInChat = false)
@@ -54,12 +54,32 @@ namespace ApplicationManagers
 
         static void OnUnityDebugLog(string log, string stackTrace, LogType type)
         {
-            AddMessage(stackTrace);
-            AddMessage(log);
+            AddMessageBuffer(stackTrace);
+            AddMessageBuffer(log);
+        }
+
+        static void AddMessageBuffer(string message)
+        {
+            _messageBuffer.AddLast(message);
+            _currentCharCountBuffer += message.Length;
+            while (_messageBuffer.Count > MaxMessages || _currentCharCountBuffer > MaxChars)
+            {
+                _currentCharCountBuffer -= _messageBuffer.First.Value.Length;
+                _messageBuffer.RemoveFirst();
+            }
+            _needResetScroll = true;
         }
 
         static void AddMessage(string message)
         {
+            if (message == string.Empty)
+                return;
+            if (message.Contains('\n'))
+            {
+                foreach (string line in message.Split("\n"))
+                    AddMessage(line);
+                return;
+            }
             while (message.Length > MaxCharsPerMessage)
             {
                 AddMessage(message.Substring(0, MaxCharsPerMessage));
@@ -72,7 +92,6 @@ namespace ApplicationManagers
                 _currentCharCount -= _messages.First.Value.Length;
                 _messages.RemoveFirst();
             }
-            _needResetScroll = true;
         }
 
         void Update()
@@ -110,9 +129,21 @@ namespace ApplicationManagers
             positionY += InputHeight + Padding;
             int scrollViewHeight = Height - Padding * 4 - InputHeight * 2;
             GUIStyle style = new GUIStyle(GUI.skin.box);
+            if (_needResetScroll)
+            {
+                while (_messageBuffer.Count > 0)
+                {
+                    AddMessage(_messageBuffer.First.Value);
+                    _currentCharCountBuffer -= _messageBuffer.First.Value.Length;
+                    _messageBuffer.RemoveFirst();
+                }
+            }
             string text = "";
             foreach (string message in _messages)
+            {
                 text += message + "\n";
+            }
+            text = text.Trim();
             int textWidth = width - Padding * 2;
             int height = (int)style.CalcHeight(new GUIContent(text), textWidth) + Padding;
             _scrollPosition = GUI.BeginScrollView(new Rect(positionX, positionY, width, scrollViewHeight), _scrollPosition,
