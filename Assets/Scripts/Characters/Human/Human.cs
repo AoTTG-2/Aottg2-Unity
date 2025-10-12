@@ -496,12 +496,12 @@ namespace Characters
                 MusicManager.PlayGrabbedSong();
         }
 
-        public void Ungrab(bool notifyTitan, bool idle)
+        public void Ungrab(bool notifyTitan, bool idle, bool breakArm = false)
         {
             if (notifyTitan && Grabber != null)
             {
-                //Grabber.DisableArm(Grabber.HoldHumanLeft);
-                Grabber.Cache.PhotonView.RPC("UngrabRPC", RpcTarget.All, new object[] { Cache.PhotonView.ViewID });
+                if (breakArm) Grabber.DisableArm(Grabber.HoldHumanLeft);
+                else Grabber.Cache.PhotonView.RPC("UngrabRPC", RpcTarget.All, new object[] { Cache.PhotonView.ViewID });
             }
 
             Grabber = null;

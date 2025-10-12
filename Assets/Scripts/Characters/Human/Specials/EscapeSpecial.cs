@@ -41,7 +41,7 @@ namespace Characters
             {
                 human.CrossFade(HumanAnimations.AHSSShootBoth, 0.1f);
             }
-            
+
         }
 
         protected override void Deactivate()
@@ -49,16 +49,16 @@ namespace Characters
             var human = (Human)_owner;
             if (!human.Dead && human.Grabber != null && human.State == HumanState.Grab)
             {
-                human.Ungrab(true, false);
-                if(human.Weapon is BladeWeapon)
+                human.Ungrab(true, false, breakArm: true);
+                if (human.Weapon is BladeWeapon)
                 {
                     EffectSpawner.Spawn(EffectPrefabs.Blood1, human.HumanCache.BladeHitLeft.transform.position, Quaternion.Euler(270f, 0f, 0f));
                     human.PlaySound(HumanSounds.BladeHit);
                     human.SpecialActionState(0.5f);
                 }
-                if(human.Weapon is AHSSWeapon)
+                if (human.Weapon is AHSSWeapon)
                 {
-                    EffectSpawner.Spawn(EffectPrefabs.GunExplode, human.Cache.Transform.position + human.Cache.Transform.up * 0.8f, Quaternion.LookRotation ((human.GetAimPoint() - human.Cache.Transform.position).normalized));
+                    EffectSpawner.Spawn(EffectPrefabs.GunExplode, human.Cache.Transform.position + human.Cache.Transform.up * 0.8f, Quaternion.LookRotation((human.GetAimPoint() - human.Cache.Transform.position).normalized));
                     EffectSpawner.Spawn(EffectPrefabs.Blood1, human.HumanCache.BladeHitLeft.transform.position, Quaternion.Euler(270f, 0f, 0f));
                     human.PlaySound(HumanSounds.GetRandomAHSSGunShot());
                     human.SpecialActionState(0.5f);
