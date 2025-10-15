@@ -15,23 +15,24 @@ namespace CustomLogic
         private Vector3 _internalLocalRotation;
         private bool _needSetRotation = true;
         private bool _needSetLocalRotation = true;
-        private string _currentAnimation;
-        private Dictionary<string, AnimationClip> _animatorClips;
-
-        private readonly Animation _animation;
-        private readonly Animator _animator;
-        private readonly AudioSource _audioSource;
+        private readonly CustomLogicAnimationBuiltin _animation;
+        private readonly CustomLogicAnimatorBuiltin _animator;
+        private readonly CustomLogicAudioSourceBuiltin _audioSource;
         private readonly ParticleSystem _particleSystem;
+        // private readonly Renderer _renderer;
 
         public CustomLogicTransformBuiltin(Transform transform)
         {
             Value = transform;
 
-            _animator = Value.GetComponent<Animator>();
-            _animation = Value.GetComponent<Animation>();
-            _animator = Value.GetComponent<Animator>();
-            _audioSource = Value.GetComponent<AudioSource>();
             _particleSystem = Value.GetComponent<ParticleSystem>();
+
+            if (Value.TryGetComponent<AudioSource>(out var audioSource))
+                _audioSource = new CustomLogicAudioSourceBuiltin(this, audioSource);
+            if (Value.TryGetComponent<Animation>(out var animation))
+                _animation = new CustomLogicAnimationBuiltin(this, animation);
+            else if (Value.TryGetComponent<Animator>(out var animator))
+                _animator = new CustomLogicAnimatorBuiltin(this, animator);
         }
 
         [CLProperty("Gets or sets the position of the transform.")]
@@ -169,6 +170,24 @@ namespace CustomLogic
             set => Value.gameObject.layer = value;
         }
 
+        [CLProperty("The Animation attached to this transform, returns null if there is none.")]
+        public CustomLogicAnimationBuiltin Animation
+        {
+            get => _animation;
+        }
+
+        [CLProperty("The Animator attached to this transform, returns null if there is none.")]
+        public CustomLogicAnimatorBuiltin Animator
+        {
+            get => _animator;
+        }
+
+        [CLProperty("The AudioSource attached to this transform, returns null if there is none.")]
+        public CustomLogicAudioSourceBuiltin AudioSource
+        {
+            get => _audioSource;
+        }
+
         [CLMethod("Gets the transform of the specified child.")]
         public CustomLogicTransformBuiltin GetTransform(string name)
         {
@@ -191,14 +210,9 @@ namespace CustomLogic
         public bool IsPlayingAnimation(string anim)
         {
             if (_animation != null)
-            {
                 return _animation.IsPlaying(anim);
-            }
-            if (_animator != null)
-            {
-                anim = anim.Replace('.', '_');
-                return _currentAnimation == anim;
-            }
+            else if (_animator != null)
+                return _animator.IsPlaying(anim);
             return false;
         }
 
@@ -206,107 +220,32 @@ namespace CustomLogic
         public void PlayAnimation(string anim, float fade = 0.1f)
         {
             if (_animation != null)
-            {
-                if (!_animation.IsPlaying(anim))
-                    _animation.CrossFade(anim, fade);
-                return;
-            }
-            if (_animator != null)
-            {
-                anim = anim.Replace('.', '_');
-                if (_currentAnimation != anim)
-                {
-                    _animator.CrossFade(anim, fade);
-                    _currentAnimation = anim;
-                }
-            }
-        }
-
-        [CLMethod("Plays the specified animation starting from a normalized time.")]
-        public void PlayAnimationAt(string anim, float normalizedTime, float fade = 0.1f)
-        {
-            if (_animation != null)
-            {
-                if (!_animation.IsPlaying(anim))
-                {
-                    _animation.CrossFade(anim, fade);
-                    _animation[anim].normalizedTime = normalizedTime;
-                }
-                return;
-            }
-
-            if (_animator != null)
-            {
-                anim = anim.Replace('.', '_');
-                if (_currentAnimation != anim)
-                {
-                    _animator.CrossFade(anim, fade, 0, normalizedTime);
-                    _currentAnimation = anim;
-                }
-            }
-        }
-
-        [CLMethod("Sets the animation playback speed")]
-        public void SetAnimationSpeed(float speed)
-        {
-            if (_animation != null)
-            {
-                foreach (AnimationState state in _animation)
-                    state.speed = speed;
-
-                return;
-            }
-
-            if (_animator != null)
-                _animator.speed = speed;
+                _animation.PlayAnimation(anim, fade);
+            else if (_animator != null)
+                _animator.PlayAnimation(anim, fade);
         }
 
         [CLMethod("Gets the length of the specified animation.")]
         public float GetAnimationLength(string anim)
         {
             if (_animation != null)
-                return _animation[anim].length;
-            if (_animator != null)
-            {
-                anim = anim.Replace('.', '_');
-                if (_animatorClips == null)
-                {
-                    _animatorClips = new Dictionary<string, AnimationClip>();
-                    foreach (AnimationClip clip in _animator.runtimeAnimatorController.animationClips)
-                        _animatorClips[clip.name.Replace('.', '_')] = clip;
-                }
-                return _animatorClips[anim].length;
-            }
+                return _animation.GetAnimationLength(anim);
+            else if (_animator != null)
+                return _animator.GetAnimationLength(anim);
             return -1;
-        }
-
-        // Get/Set Audio volume
-        [CLMethod("Gets the audio sound if a clip exists.")]
-        public float GetSoundVolume()
-        {
-            if (_audioSource != null)
-                return _audioSource.volume;
-            return -1;
-        }
-
-        [CLMethod("Sets the audio sound if a clip exists.")]
-        public void SetSoundVolume(float volume)
-        {
-            if (_audioSource != null)
-                _audioSource.volume = volume;
         }
 
         [CLMethod("Plays the sound.")]
         public void PlaySound()
         {
-            if (!_audioSource.isPlaying)
+            if (!_audioSource.IsPlaying)
                 _audioSource.Play();
         }
 
         [CLMethod("Stops the sound.")]
         public void StopSound()
         {
-            if (_audioSource.isPlaying)
+            if (_audioSource.IsPlaying)
                 _audioSource.Stop();
         }
 
