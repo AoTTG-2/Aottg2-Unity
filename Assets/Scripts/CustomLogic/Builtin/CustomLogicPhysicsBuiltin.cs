@@ -155,6 +155,51 @@ namespace CustomLogic
             return results;
         }
 
+        [CLMethod("Performs a box cast between two points, returns the object hit (Human, Titan, etc...).")]
+        public static object BoxCast(CustomLogicVector3Builtin start, CustomLogicVector3Builtin end, CustomLogicVector3Builtin dimensions, CustomLogicQuaternionBuiltin orientation, string collideWith)
+        {
+            var startPosition = start.Value;
+            var endPosition = end.Value;
+            int layer = MapLoader.GetColliderLayer(collideWith);
+            var diff = (endPosition - startPosition);
+            var halfExtents = dimensions.Value / 2;
+            if (Physics.BoxCast(startPosition, halfExtents, diff.normalized, out RaycastHit hit, orientation.Value, diff.magnitude, PhysicsLayer.CopyMask(layer).value))
+            {
+                return CustomLogicCollisionHandler.GetBuiltin(hit.collider);
+            }
+            return null;
+        }
+
+        [CLMethod("Performs a box cast between two points and returns a LineCastHitResult object for each element hit.")]
+        public static CustomLogicListBuiltin BoxCastAll(CustomLogicVector3Builtin start, CustomLogicVector3Builtin end, CustomLogicVector3Builtin dimensions, CustomLogicQuaternionBuiltin orientation, string collideWith)
+        {
+            var startPosition = start.Value;
+            var endPosition = end.Value;
+            int layer = MapLoader.GetColliderLayer(collideWith);
+            Vector3 diff = endPosition - startPosition;
+            var halfExtents = dimensions.Value / 2;
+            var hits = Physics.BoxCastAll(startPosition, halfExtents, diff.normalized, orientation.Value, diff.magnitude, PhysicsLayer.CopyMask(layer).value);
+            CustomLogicListBuiltin results = new CustomLogicListBuiltin();
+
+            foreach (var hit in hits)
+            {
+                var collider = CustomLogicCollisionHandler.GetBuiltin(hit.collider);
+                if (collider != null)
+                {
+                    results.List.Add(new CustomLogicLineCastHitResultBuiltin
+                    {
+                        IsCharacter = collider != null && collider is CustomLogicCharacterBuiltin,
+                        IsMapObject = collider != null && collider is CustomLogicMapObjectBuiltin,
+                        Point = new CustomLogicVector3Builtin(hit.point),
+                        Normal = new CustomLogicVector3Builtin(hit.normal),
+                        Distance = hit.distance,
+                        Collider = new CustomLogicColliderBuiltin(new object[] { hit.collider })
+                    });
+                }
+            }
+            return results;
+        }
+
         [CLMethod("Returns a point on the given collider that is closest to the specified location.")]
         public static CustomLogicVector3Builtin ClosestPoint(CustomLogicVector3Builtin point, CustomLogicColliderBuiltin collider, CustomLogicVector3Builtin position, CustomLogicQuaternionBuiltin rotation)
         {
