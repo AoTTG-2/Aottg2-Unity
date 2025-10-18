@@ -312,6 +312,17 @@ namespace Characters
                 FinishDisable();
         }
 
+        public bool IsAttached() 
+        {
+            return State == HookState.Hooked;
+        }
+
+        public void Detach()
+        {
+            if(_owner.isMine())
+                SetHookState(HookState.DisablingHooked)
+        }
+
         protected void FixedUpdateHooking()
         {
             if (_owner.IsMine())
@@ -354,6 +365,10 @@ namespace Characters
                             if (obj.layer == PhysicsLayer.Human)
                                 point = obj.transform.position + Vector3.up * 0.8f;
                             SetHooked(point, obj.transform, obj.transform.root.gameObject.GetPhotonView().ViewID);
+
+                            var titan = obj.transform.root.GetComponent<BaseTitan>();
+                            if (titan != null)
+                                titan.OnHooked(this, finalHit.collider)
                             return;
                         }
                         else
