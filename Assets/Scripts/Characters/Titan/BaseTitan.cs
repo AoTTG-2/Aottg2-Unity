@@ -1089,8 +1089,8 @@ namespace Characters
 
         public virtual void OnHooked(Hook hook, Collider part)
         {
-            bool isHardDifficulty = (int)SettingsManager.GeneralSettings.GameDifficulty.Value >= 3;
-            bool isNapeHit = part.GameObject.CompareTag("TitanNape");
+            bool isHardDifficulty = (int)SettingsManager.InGameCurrent.General.Difficulty.Value >= (int)GameDifficulty.Hard;
+            bool isNapeHit = part.gameObject.CompareTag("TitanNape");
 
             if (isHardDifficulty && isNapeHit)
             {
@@ -1107,6 +1107,15 @@ namespace Characters
                 if (BaseTitanAnimations.UnhookNape != string.Empty)
                 {
                     StateAction(TitanState.UnhookNape, BaseTitanAnimations.UnhookNape, 0.1f);
+
+                    string animName = BaseTitanAnimations.UnhookNape;
+                    float animLength = Animation.GetTotalTime(animName);
+
+                    yield return new WaitForSeconds(animLength * 0.55f);
+                }
+                else
+                {
+                    yield return new WaitForSeconds(1.21f);
                 }
 
                 hook.Detach();
