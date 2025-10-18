@@ -319,8 +319,8 @@ namespace Characters
 
         public void Detach()
         {
-            if(_owner.isMine())
-                SetHookState(HookState.DisablingHooked)
+            if(_owner.IsMine())
+                SetHookState(HookState.DisablingHooked);
         }
 
         protected void FixedUpdateHooking()
@@ -368,7 +368,7 @@ namespace Characters
 
                             var titan = obj.transform.root.GetComponent<BaseTitan>();
                             if (titan != null)
-                                titan.OnHooked(this, finalHit.collider)
+                                titan.OnHooked(this, finalHit.collider);
                             return;
                         }
                         else
