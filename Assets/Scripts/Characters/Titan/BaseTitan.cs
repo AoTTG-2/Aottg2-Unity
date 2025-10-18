@@ -1092,7 +1092,7 @@ namespace Characters
             bool isHardDifficulty = (int)SettingsManager.GeneralSettings.GameDifficulty.Value >= 3;
             bool isNapeHit = part.GameObject.CompareTag("TitanNape");
 
-            is (isHardDifficulty && isNapeHit)
+            if (isHardDifficulty && isNapeHit)
             {
                 StartCoroutine(NapeHookRemovalCoroutine(hook));
             }
@@ -1104,9 +1104,9 @@ namespace Characters
 
             if (hook != null && hook.IsAttached())
             {
-                if (BaseTitanAnimations.CoverNape != string.Empty)
+                if (BaseTitanAnimations.UnhookNape != string.Empty)
                 {
-                    StateAction(TitanState.CoverNape, BaseTitanAnimations.CoverNape, 0.1f);
+                    StateAction(TitanState.UnhookNape, BaseTitanAnimations.UnhookNape, 0.1f);
                 }
 
                 hook.Detach();
@@ -1143,6 +1143,7 @@ namespace Characters
         Turn,
         WallClimb,
         CoverNape,
-        HumanThrow
+        HumanThrow,
+        UnhookNape
     }
 }
