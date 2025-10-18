@@ -1022,7 +1022,7 @@ GameObject:
   - component: {fileID: 13601012}
   m_Layer: 12
   m_Name: neck
-  m_TagString: Untagged
+  m_TagString: TitanNape
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3355,7 +3355,7 @@ GameObject:
   - component: {fileID: 13601016}
   m_Layer: 13
   m_Name: NapeHurtbox
-  m_TagString: TitanNape
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
