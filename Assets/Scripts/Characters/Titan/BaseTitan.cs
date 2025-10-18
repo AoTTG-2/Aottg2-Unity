@@ -1086,6 +1086,32 @@ namespace Characters
         {
             return Size * SizeMultiplier * 20f;
         }
+
+        public virtual void OnHooked(Hook hook, Collider part)
+        {
+            bool isHardDifficulty = (int)SettingsManager.GeneralSettings.GameDifficulty.Value >= 3;
+            bool isNapeHit = part.GameObject.CompareTag("TitanNape");
+
+            is (isHardDifficulty && isNapeHit)
+            {
+                StartCoroutine(NapeHookRemovalCoroutine(hook));
+            }
+        }
+
+        protected virtual IEnumerator NapeHookRemovalCoroutine(Hook hook)
+        {
+            yield return new WaitForSeconds(5.0f);
+
+            if (hook != null && hook.IsAttached())
+            {
+                if (BaseTitanAnimations.CoverNape != string.Empty)
+                {
+                    StateAction(TitanState.CoverNape, BaseTitanAnimations.CoverNape, 0.1f);
+                }
+
+                hook.Detach();
+            }
+        }
     }
 
     public enum TitanState
