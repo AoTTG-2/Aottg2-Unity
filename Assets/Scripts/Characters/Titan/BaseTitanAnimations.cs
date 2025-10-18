@@ -20,5 +20,6 @@
         public virtual string Turn90L => "";
         public virtual string Turn90R => "";
         public virtual string Blind => "";
+        public virtual string CoverNape => "";
     }
 }
