@@ -323,6 +323,13 @@ namespace Characters
                 SetHookState(HookState.DisablingHooked);
         }
 
+        public Vector3 GetHookPositionWorld()
+        {
+            if (_hasHookParent && HookParent != null)
+                return HookParent.TransformPoint(_hookPosition);
+            return _hookPosition;
+        }
+
         protected void FixedUpdateHooking()
         {
             if (_owner.IsMine())
