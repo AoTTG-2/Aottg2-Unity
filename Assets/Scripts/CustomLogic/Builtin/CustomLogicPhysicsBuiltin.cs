@@ -73,7 +73,8 @@ namespace CustomLogic
                         Point = new CustomLogicVector3Builtin(hit.point),
                         Normal = new CustomLogicVector3Builtin(hit.normal),
                         Distance = hit.distance,
-                        Collider = new CustomLogicColliderBuiltin(new object[] { hit.collider })
+                        Collider = collider,
+                        ColliderInfo = new CustomLogicColliderBuiltin(new object[] { hit.collider })
                     };
                 }
             }
@@ -103,7 +104,8 @@ namespace CustomLogic
                         Point = new CustomLogicVector3Builtin(hit.point),
                         Normal = new CustomLogicVector3Builtin(hit.normal),
                         Distance = hit.distance,
-                        Collider = new CustomLogicColliderBuiltin(new object[] { hit.collider })
+                        Collider = collider,
+                        ColliderInfo = new CustomLogicColliderBuiltin(new object[] { hit.collider })
                     });
                 }
             }
@@ -148,7 +150,8 @@ namespace CustomLogic
                         Point = new CustomLogicVector3Builtin(hit.point),
                         Normal = new CustomLogicVector3Builtin(hit.normal),
                         Distance = hit.distance,
-                        Collider = new CustomLogicColliderBuiltin(new object[] { hit.collider })
+                        Collider = collider,
+                        ColliderInfo = new CustomLogicColliderBuiltin(new object[] { hit.collider })
                     });
                 }
             }
