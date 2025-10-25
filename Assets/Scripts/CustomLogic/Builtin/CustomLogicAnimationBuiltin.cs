@@ -42,6 +42,16 @@ namespace CustomLogic
             }
         }
 
+        [CLMethod("Plays the specified animation after the current animation finishes playing.")]
+        public void PlayAnimationQueued(string anim, float fade = 0.1f, int layer = 0)
+        {
+            if (!Value.IsPlaying(anim))
+            {
+                Value.CrossFade(anim, fade);
+                Value[anim].layer = layer;
+            }
+        }
+
         [CLMethod("Stops the specified animation. Will stop all animations if no name is given.")]
         public void StopAnimation(string anim = null)
         {
@@ -59,6 +69,9 @@ namespace CustomLogic
 
         [CLMethod("Gets the length of the specified animation.")]
         public float GetAnimationLength(string anim) => Value[anim].length;
+
+        [CLMethod("Gets the normalized time of the specified animation.")]
+        public float GetAnimationNormalizedTime(string anim) => Value[anim].normalizedTime;
 
         [CLMethod("Sets the weight of the specified animation.")]
         public float SetAnimationWeight(string anim, float weight) => Value[anim].weight = weight;

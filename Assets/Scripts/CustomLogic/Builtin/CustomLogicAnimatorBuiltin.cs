@@ -89,5 +89,12 @@ namespace CustomLogic
 
         [CLMethod("Gets the weight of the specified layer.")]
         public void GetLayerWeight(int layer) => Value.GetLayerWeight(layer);
+
+        [CLMethod("Gets the normalized time of the current animation.")]
+        public float GetAnimationNormalizedTime(int layer = 0)
+        {
+            AnimatorStateInfo stateInfo = Value.GetCurrentAnimatorStateInfo(layer);
+            return stateInfo.normalizedTime;
+        }
     }
 }

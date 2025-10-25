@@ -108,6 +108,9 @@ namespace CustomLogic
         /// <inheritdoc cref="Quaternion.AngleAxis(float, Vector3)"/>
         [CLMethod] public static CustomLogicQuaternionBuiltin AngleAxis(float angle, CustomLogicVector3Builtin axis) => Quaternion.AngleAxis(angle, axis);
 
+        /// <inheritdoc cref="Quaternion.Angle(Quaternion, Quaternion)"/>
+        [CLMethod] public static float Angle(CustomLogicQuaternionBuiltin a, CustomLogicQuaternionBuiltin b) => Quaternion.Angle(a, b);
+
         public override string ToString()
         {
             return Value.ToString();

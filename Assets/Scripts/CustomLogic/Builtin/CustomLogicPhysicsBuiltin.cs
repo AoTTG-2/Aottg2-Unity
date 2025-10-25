@@ -164,7 +164,7 @@ namespace CustomLogic
             var startPosition = start.Value;
             var endPosition = end.Value;
             int layer = MapLoader.GetColliderLayer(collideWith);
-            var diff = (endPosition - startPosition);
+            var diff = endPosition - startPosition;
             var halfExtents = dimensions.Value / 2;
             if (Physics.BoxCast(startPosition, halfExtents, diff.normalized, out RaycastHit hit, orientation.Value, diff.magnitude, PhysicsLayer.CopyMask(layer).value))
             {
@@ -196,7 +196,8 @@ namespace CustomLogic
                         Point = new CustomLogicVector3Builtin(hit.point),
                         Normal = new CustomLogicVector3Builtin(hit.normal),
                         Distance = hit.distance,
-                        Collider = new CustomLogicColliderBuiltin(new object[] { hit.collider })
+                        Collider = collider,
+                        ColliderInfo = new CustomLogicColliderBuiltin(new object[] { hit.collider })
                     });
                 }
             }
@@ -220,9 +221,7 @@ namespace CustomLogic
         [CLMethod("Check if the the given colliders at specified poses are apart or overlapping.")]
         public static bool AreCollidersOverlapping(CustomLogicColliderBuiltin colliderA, CustomLogicVector3Builtin positionA, CustomLogicQuaternionBuiltin rotationA, CustomLogicColliderBuiltin colliderB, CustomLogicVector3Builtin positionB, CustomLogicQuaternionBuiltin rotationB)
         {
-
             return Physics.ComputePenetration(colliderA.collider, positionA.Value, rotationA.Value, colliderB.collider, positionB, rotationB, out Vector3 direction, out float distance);
         }
-
     }
 }
