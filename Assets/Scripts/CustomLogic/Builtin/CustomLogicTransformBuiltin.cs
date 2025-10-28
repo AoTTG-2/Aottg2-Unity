@@ -226,7 +226,10 @@ namespace CustomLogic
         public void PlayAnimation(string anim, float fade = 0.1f)
         {
             if (_animation != null)
-                _animation.PlayAnimation(anim, fade);
+            {
+                if (!_animation.IsPlaying(anim))
+                    _animation.PlayAnimation(anim, fade);
+            }
             else if (_animator != null)
             {
                 anim = anim.Replace('.', '_');
