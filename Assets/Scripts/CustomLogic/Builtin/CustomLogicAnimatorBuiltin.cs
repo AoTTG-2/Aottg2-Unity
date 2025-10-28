@@ -8,7 +8,6 @@ namespace CustomLogic
     {
         public Animator Value;
         public BuiltinClassInstance OwnerBuiltin;
-        private string _currentAnimation;
         private readonly Dictionary<string, AnimationClip> _animatorClips;
 
         [CLConstructor]
@@ -21,44 +20,27 @@ namespace CustomLogic
 
             _animatorClips = new Dictionary<string, AnimationClip>();
             foreach (AnimationClip clip in Value.runtimeAnimatorController.animationClips)
-                _animatorClips[clip.name.Replace('.', '_')] = clip;
+                _animatorClips[clip.name] = clip;
         }
 
-
         [CLMethod("Checks if the given animation is playing.")]
-        public bool IsPlaying(string anim)
+        public bool IsPlaying(string anim, int layer = 0)
         {
-            anim = anim.Replace('.', '_');
-            return _currentAnimation == anim;
+            AnimatorStateInfo stateInfo = Value.IsInTransition(layer) ? Value.GetNextAnimatorStateInfo(layer) : Value.GetCurrentAnimatorStateInfo(layer);
+            return stateInfo.IsName(anim);
         }
 
         [CLMethod("Plays the specified animation.")]
-        public void PlayAnimation(string anim, float fade = 0.1f, int layer = 0)
-        {
-            anim = anim.Replace('.', '_');
-            if (_currentAnimation != anim)
-            {
-                Value.CrossFade(anim, fade, layer);
-                _currentAnimation = anim;
-            }
-        }
+        public void PlayAnimation(string anim, float fade = 0.1f, int layer = 0) => Value.CrossFade(anim, fade, layer);
 
         [CLMethod("Plays the specified animation starting from a normalized time.")]
-        public void PlayAnimationAt(string anim, float normalizedTime, float fade = 0.1f, int layer = 0)
-        {
-            anim = anim.Replace('.', '_');
-            if (_currentAnimation != anim)
-            {
-                Value.CrossFade(anim, fade, layer, normalizedTime);
-                _currentAnimation = anim;
-            }
-        }
+        public void PlayAnimationAt(string anim, float normalizedTime, float fade = 0.1f, int layer = 0) => Value.CrossFade(anim, fade, layer, normalizedTime);
 
         [CLMethod("Sets the animation playback speed.")]
         public void SetAnimationSpeed(float speed) => Value.speed = speed;
 
         [CLMethod("Gets the length of the specified animation.")]
-        public float GetAnimationLength(string anim) => _animatorClips[anim.Replace('.', '_')].length;
+        public float GetAnimationLength(string anim) => _animatorClips[anim].length;
 
         [CLMethod("Gets an animation float parameter.")]
         public float GetAnimatorFloat(string name) => Value.GetFloat(name);
@@ -93,7 +75,7 @@ namespace CustomLogic
         [CLMethod("Gets the normalized time of the current animation.")]
         public float GetAnimationNormalizedTime(int layer = 0)
         {
-            AnimatorStateInfo stateInfo = Value.GetCurrentAnimatorStateInfo(layer);
+            AnimatorStateInfo stateInfo = Value.IsInTransition(layer) ? Value.GetNextAnimatorStateInfo(layer) : Value.GetCurrentAnimatorStateInfo(layer);
             return stateInfo.normalizedTime;
         }
     }

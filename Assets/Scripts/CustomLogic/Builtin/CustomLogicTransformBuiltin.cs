@@ -15,6 +15,8 @@ namespace CustomLogic
         private Vector3 _internalLocalRotation;
         private bool _needSetRotation = true;
         private bool _needSetLocalRotation = true;
+        private string _currentAnimation;
+
         private readonly CustomLogicAnimationBuiltin _animation;
         private readonly CustomLogicAnimatorBuiltin _animator;
         private readonly CustomLogicAudioSourceBuiltin _audioSource;
@@ -211,8 +213,12 @@ namespace CustomLogic
         {
             if (_animation != null)
                 return _animation.IsPlaying(anim);
-            else if (_animator != null)
-                return _animator.IsPlaying(anim);
+            if (_animator != null)
+            {
+                anim = anim.Replace('.', '_');
+                return _currentAnimation == anim;
+            }
+
             return false;
         }
 
@@ -222,7 +228,14 @@ namespace CustomLogic
             if (_animation != null)
                 _animation.PlayAnimation(anim, fade);
             else if (_animator != null)
-                _animator.PlayAnimation(anim, fade);
+            {
+                anim = anim.Replace('.', '_');
+                if (_currentAnimation != anim)
+                {
+                    _animator.Value.CrossFade(anim, fade);
+                    _currentAnimation = anim;
+                }
+            }
         }
 
         [CLMethod("Gets the length of the specified animation.")]
@@ -231,7 +244,7 @@ namespace CustomLogic
             if (_animation != null)
                 return _animation.GetAnimationLength(anim);
             else if (_animator != null)
-                return _animator.GetAnimationLength(anim);
+                return _animator.GetAnimationLength(anim.Replace('.', '_'));
             return -1;
         }
 
