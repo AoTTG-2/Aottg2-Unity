@@ -214,7 +214,11 @@ namespace UI
             }
         }
 
-        public void SetBottomHUDActive(bool active) => _hudBottom.SetActive(active);
+        public void SetBottomHUDActive(bool active)
+        {
+            if (_hudBottom != null)
+                _hudBottom.SetActive(active);
+        }
         
         public void SetSpecialIcon(string icon)
         {
