@@ -214,6 +214,12 @@ namespace UI
             }
         }
 
+        public void SetBottomHUDActive(bool active)
+        {
+            if (_hudBottom != null)
+                _hudBottom.SetActive(active);
+        }
+        
         public void SetSpecialIcon(string icon)
         {
             _newSpecialIcon = icon;
@@ -362,6 +368,9 @@ namespace UI
         Dictionary<Image, Animator> _AnimationCache = new Dictionary<Image, Animator>();
         private void StopAnimator(Image obj)
         {
+            if (_hudBottom.GetActive() == false)
+                return;
+                
             // Check Animation cache first
             Animator animator;
             if (_AnimationCache.ContainsKey(obj))
@@ -382,6 +391,9 @@ namespace UI
 
         private void StartAnimator(Image obj)
         {
+            if (_hudBottom.GetActive() == false)
+                return;
+                
             var animator = obj.GetComponent<Animator>();
             if (animator.speed == 0f)
             {

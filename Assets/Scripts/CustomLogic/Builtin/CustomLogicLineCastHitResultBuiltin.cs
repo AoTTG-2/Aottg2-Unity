@@ -22,7 +22,10 @@ namespace CustomLogic
         public CustomLogicVector3Builtin Normal { get; set; }
 
         [CLProperty("The collider that was hit", ReadOnly = true)]
-        public CustomLogicColliderBuiltin Collider { get; set; }
+        public BuiltinClassInstance Collider { get; set; }
+
+        [CLProperty("The collider that was hit", ReadOnly = true)]
+        public CustomLogicColliderBuiltin ColliderInfo { get; set; }
 
         public BuiltinClassInstance Copy()
         {
@@ -33,7 +36,8 @@ namespace CustomLogic
                 Point = (CustomLogicVector3Builtin)Point.__Copy__(),
                 Normal = (CustomLogicVector3Builtin)Normal.__Copy__(),
                 Distance = Distance,
-                Collider = Collider
+                Collider = Collider,
+                ColliderInfo = ColliderInfo
             };
         }
 

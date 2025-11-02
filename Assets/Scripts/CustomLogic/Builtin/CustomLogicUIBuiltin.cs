@@ -7,7 +7,7 @@ using Settings;
 using System.Collections.Generic;
 using UI;
 using Utility;
-using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace CustomLogic
 {
@@ -194,6 +194,209 @@ namespace CustomLogic
                     result.List.Add(popup);
                 return result;
             }
+        }
+
+        /// <summary>
+        /// Sets whether a label is active or not.
+        /// </summary>
+        [CLMethod]
+        public static void SetLabelActive(string label, bool active)
+        {
+            Menu.SetLabelActive(label, active);
+        }
+
+        /// <summary>
+        /// Sets whether the KDR panel (top-left) is active or not.
+        /// </summary>
+        [CLMethod]
+        public static void SetKDRPanelActive(bool active)
+        {
+            Menu.SetKDRPanelActive(active);
+        }
+
+        /// <summary>
+        /// Sets whether the minimap is active or not.
+        /// </summary>
+        [CLMethod]
+        public static void SetMinimapActive(bool active)
+        {
+            Menu.SetMinimapActive(active);
+        }
+
+        /// <summary>
+        /// Sets whether the chat panel is active or not.
+        /// </summary>
+        [CLMethod]
+        public static void SetChatPanelActive(bool active)
+        {
+            Menu.SetChatPanelActive(active);
+        }
+
+        /// <summary>
+        /// Sets whether the feed panel is active or not.
+        /// </summary>
+        [CLMethod]
+        public static void SetFeedPanelActive(bool active)
+        {
+            Menu.SetFeedPanelActive(active);
+        }
+
+        /// <summary>
+        /// Sets whether the bottom HUD is active or not.
+        /// This can only be used when the character is alive.
+        /// </summary>
+        [CLMethod]
+        public static void SetBottomHUDActive(bool active)
+        {
+            Menu.SetBottomHUDActive(active);
+        }
+
+        /// <summary>
+        /// Returns the root `VisualElement` which you can add other elements to.
+        /// </summary>
+        /// <returns>The root `VisualElement`</returns>
+        [CLMethod]
+        public static CustomLogicVisualElementBuiltin GetRootVisualElement()
+        {
+            return new CustomLogicVisualElementBuiltin(Menu.RootVisualElement);
+        }
+
+        /// <summary>
+        /// Creates a new `VisualElement`.
+        /// </summary>
+        [CLMethod]
+        public static CustomLogicVisualElementBuiltin VisualElement()
+        {
+            return new CustomLogicVisualElementBuiltin(new VisualElement());
+        }
+
+        /// <summary>
+        /// Creates a new `Button` with optional text and click event.
+        /// </summary>
+        /// <param name="text">The text that the button displays</param>
+        /// <param name="clickEvent">The function that will be called when button is clicked</param>
+        [CLMethod]
+        public static CustomLogicButtonBuiltin Button(string text = "", UserMethod clickEvent = null)
+        {
+            return new CustomLogicButtonBuiltin(new Button { text = text }).OnClick(clickEvent);
+        }
+
+        /// <summary>
+        /// Creates a new `Label` with optional text.
+        /// </summary>
+        /// <param name="text">The text to be displayed</param>
+        [CLMethod]
+        public static CustomLogicLabelBuiltin Label(string text = "")
+        {
+            return new CustomLogicLabelBuiltin(new Label { text = text });
+        }
+
+        /// <summary>
+        /// Creates a new `TextField` with optional label.
+        /// </summary>
+        [CLMethod]
+        public static CustomLogicTextFieldBuiltin TextField(string label = "")
+        {
+            return new CustomLogicTextFieldBuiltin(new TextField(label));
+        }
+
+        /// <summary>
+        /// Creates a new `Toggle` with optional label and value changed event.
+        /// </summary>
+        /// <param name="label">The label text displayed next to the toggle</param>
+        /// <param name="valueChangedEvent">The function that will be called when toggle value changes</param>
+        [CLMethod]
+        public static CustomLogicToggleBuiltin Toggle(string label = "", UserMethod valueChangedEvent = null)
+        {
+            return new CustomLogicToggleBuiltin(new Toggle(label)).OnValueChanged(valueChangedEvent);
+        }
+
+        /// <summary>
+        /// Creates a new `Slider` for floating-point values with optional range, tick interval, and value changed event.
+        /// The slider will snap to values at multiples of the tick interval.
+        /// </summary>
+        /// <param name="lowValue">The minimum value of the slider</param>
+        /// <param name="highValue">The maximum value of the slider</param>
+        /// <param name="tickInterval">The interval between allowed values. If 0, no snapping occurs. For example, 0.1 will snap to 0.0, 0.1, 0.2, etc.</param>
+        /// <param name="label">The label text displayed next to the slider</param>
+        /// <param name="valueChangedEvent">The function that will be called when slider value changes</param>
+        [CLMethod]
+        public static CustomLogicSliderBuiltin Slider(float lowValue = 0f, float highValue = 100f, float tickInterval = 0f, string label = "", UserMethod valueChangedEvent = null)
+        {
+            var slider = new Slider(label, lowValue, highValue);
+            if (tickInterval > 0f)
+                slider.pageSize = tickInterval;
+            return new CustomLogicSliderBuiltin(slider).OnValueChanged(valueChangedEvent);
+        }
+
+        /// <summary>
+        /// Creates a new `Slider` for integer values with optional range, tick interval, and value changed event.
+        /// The slider will snap to values at multiples of the tick interval.
+        /// </summary>
+        /// <param name="lowValue">The minimum value of the slider</param>
+        /// <param name="highValue">The maximum value of the slider</param>
+        /// <param name="tickInterval">The interval between allowed values. For example, 5 will snap to 0, 5, 10, 15, etc.</param>
+        /// <param name="label">The label text displayed next to the slider</param>
+        /// <param name="valueChangedEvent">The function that will be called when slider value changes</param>
+        [CLMethod]
+        public static CustomLogicSliderBuiltin SliderInt(int lowValue = 0, int highValue = 100, int tickInterval = 1, string label = "", UserMethod valueChangedEvent = null)
+        {
+            var sliderInt = new SliderInt(label, lowValue, highValue);
+            if (tickInterval > 1)
+                sliderInt.pageSize = tickInterval;
+            return new CustomLogicSliderBuiltin(sliderInt).OnValueChanged(valueChangedEvent);
+        }
+
+        /// <summary>
+        /// Creates a new `Dropdown` with a list of choices and optional label and value changed event.
+        /// </summary>
+        /// <param name="choices">List of string options to display in the dropdown</param>
+        /// <param name="defaultIndex">The index of the initially selected option (default: 0)</param>
+        /// <param name="label">The label text displayed next to the dropdown</param>
+        /// <param name="valueChangedEvent">The function that will be called when dropdown value changes</param>
+        [CLMethod]
+        public static CustomLogicDropdownBuiltin Dropdown(CustomLogicListBuiltin choices, int defaultIndex = 0, string label = "", UserMethod valueChangedEvent = null)
+        {
+            var choicesList = new System.Collections.Generic.List<string>();
+            foreach (var item in choices.List)
+            {
+                if (item != null)
+                    choicesList.Add(item.ToString());
+            }
+            
+            if (choicesList.Count == 0)
+                choicesList.Add("No options");
+
+            var dropdown = new DropdownField(label, choicesList, defaultIndex);
+            return new CustomLogicDropdownBuiltin(dropdown).OnValueChanged(valueChangedEvent);
+        }
+
+        /// <summary>
+        /// Creates a new `ProgressBar` with optional range, title, and value changed event.
+        /// </summary>
+        /// <param name="lowValue">The minimum value of the progress bar (default: 0)</param>
+        /// <param name="highValue">The maximum value of the progress bar (default: 100)</param>
+        /// <param name="title">The title text displayed on the progress bar</param>
+        /// <param name="valueChangedEvent">The function that will be called when progress bar value changes</param>
+        [CLMethod]
+        public static CustomLogicProgressBarBuiltin ProgressBar(float lowValue = 0f, float highValue = 100f, string title = "", UserMethod valueChangedEvent = null)
+        {
+            var progressBar = new ProgressBar
+            {
+                lowValue = lowValue,
+                highValue = highValue,
+                title = title
+            };
+            return new CustomLogicProgressBarBuiltin(progressBar).OnValueChanged(valueChangedEvent);
+        }
+
+        /// <summary>
+        /// Creates a new `ScrollView` for scrollable content.
+        /// </summary>
+        [CLMethod]
+        public static CustomLogicScrollViewBuiltin ScrollView()
+        {
+            return new CustomLogicScrollViewBuiltin(new ScrollView());
         }
     }
 }

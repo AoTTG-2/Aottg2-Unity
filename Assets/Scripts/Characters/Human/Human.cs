@@ -496,10 +496,14 @@ namespace Characters
                 MusicManager.PlayGrabbedSong();
         }
 
-        public void Ungrab(bool notifyTitan, bool idle)
+        public void Ungrab(bool notifyTitan, bool idle, bool breakArm = false)
         {
             if (notifyTitan && Grabber != null)
-                Grabber.Cache.PhotonView.RPC("UngrabRPC", RpcTarget.All, new object[] { Cache.PhotonView.ViewID });
+            {
+                if (breakArm) Grabber.DisableArm(Grabber.HoldHumanLeft);
+                else Grabber.Cache.PhotonView.RPC("UngrabRPC", RpcTarget.All, new object[] { Cache.PhotonView.ViewID });
+            }
+
             Grabber = null;
             GrabHand = null;
             SetTriggerCollider(false);
@@ -1109,7 +1113,6 @@ namespace Characters
             else
                 base.GetHitRPC(viewId, name, damage, type, collider);
         }
-
         public override void OnHit(BaseHitbox hitbox, object victim, Collider collider, string type, bool firstHit)
         {
             if (hitbox != null)
@@ -1233,6 +1236,10 @@ namespace Characters
                             }
 
                         }
+                        if (Special is RechargeableUseable)
+                        {
+                            ((RechargeableUseable)Special).ReduceCooldown();
+                        }
                         _lastNapeHitTimes[titan] = Time.time;
                     }
                     if (titan.BaseTitanCache.Hurtboxes.Contains(collider))
@@ -1251,7 +1258,6 @@ namespace Characters
                 }
             }
         }
-
         protected void Update()
         {
             if (IsMine() && !Dead)
@@ -1304,7 +1310,7 @@ namespace Characters
                         Unmount(true);
                     else
                     {
-                        Cache.Transform.position = Horse.Cache.Transform.position + Vector3.up * 1.95f;
+                        Cache.Transform.position = Horse.Cache.Transform.position + Horse.Cache.Transform.up * 1.95f;
                         if (!IsAttackableState || (_state != HumanState.Attack && _state != HumanState.SpecialAttack && _state != HumanState.SpecialAction))
                         {
                             Cache.Transform.rotation = Horse.Cache.Transform.rotation;
@@ -1661,7 +1667,7 @@ namespace Characters
                 {
                     if (Horse != null && (Animation.IsPlaying(HumanAnimations.HorseMount) || Animation.IsPlaying(HumanAnimations.AirFall)) && Cache.Rigidbody.velocity.y < 0f && Vector3.Distance(Horse.Cache.Transform.position + Vector3.up * 1.65f, Cache.Transform.position) < 1f)
                     {
-                        Cache.Transform.position = Horse.Cache.Transform.position + Vector3.up * 1.95f;
+                        Cache.Transform.position = Horse.Cache.Transform.position + Horse.Cache.Transform.up * 1.95f;
                         Cache.Transform.rotation = Horse.Cache.Transform.rotation;
                         MountState = HumanMountState.Horse;
                         MountedTransform = Horse.Cache.Transform;

@@ -73,7 +73,7 @@ namespace CustomLogic
                             }
                         }
                     }
-                    else if (char.IsDigit(c) || (c == '-' && i < _chars.Length - 1 && char.IsDigit(_chars[i + 1])))
+                    else if (char.IsDigit(c))
                     {
                         string numberStr = ScanNumber(i);
                         if (numberStr.Contains("."))
@@ -162,7 +162,7 @@ namespace CustomLogic
             string currentLexeme = "";
             for (int i = startIndex; i < _chars.Length; i++)
             {
-                if (!char.IsDigit(_chars[i]) && _chars[i] != '.' && !(i == startIndex && _chars[i] == '-'))
+                if (!char.IsDigit(_chars[i]) && _chars[i] != '.')
                     return currentLexeme;
                 currentLexeme += _chars[i];
             }

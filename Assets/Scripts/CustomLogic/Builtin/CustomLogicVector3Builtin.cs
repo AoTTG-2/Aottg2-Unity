@@ -326,6 +326,11 @@ namespace CustomLogic
 
         [CLMethod] public int __Hash__() => Value.GetHashCode();
 
+        public object __Mod__(object self, object other)
+        {
+            throw new NotImplementedException();
+        }
+
         public static implicit operator Vector3(CustomLogicVector3Builtin v) => v.Value;
         public static implicit operator CustomLogicVector3Builtin(Vector3 v) => new CustomLogicVector3Builtin(v);
     }

@@ -16,7 +16,7 @@ Functions may return int or float depending on the parameter types given.
 
 
 ### Methods
-<pre class="language-typescript"><code class="lang-typescript">function Clamp(value: <a data-footnote-ref href="#user-content-fn-45">Object</a>, min: <a data-footnote-ref href="#user-content-fn-45">Object</a>, max: <a data-footnote-ref href="#user-content-fn-45">Object</a>) -> <a data-footnote-ref href="#user-content-fn-45">Object</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function Clamp(value: <a data-footnote-ref href="#user-content-fn-57">Object</a>, min: <a data-footnote-ref href="#user-content-fn-57">Object</a>, max: <a data-footnote-ref href="#user-content-fn-57">Object</a>) -> <a data-footnote-ref href="#user-content-fn-57">Object</a></code></pre>
 > Clamp a value between a minimum and maximum value
 > 
 > **Parameters**:
@@ -25,7 +25,7 @@ Functions may return int or float depending on the parameter types given.
 > - `max`: The maximum value. Can be int or float
 > 
 > **Returns**: The clamped value. Will be the same type as the inputs
-<pre class="language-typescript"><code class="lang-typescript">function Max(a: <a data-footnote-ref href="#user-content-fn-45">Object</a>, b: <a data-footnote-ref href="#user-content-fn-45">Object</a>) -> <a data-footnote-ref href="#user-content-fn-45">Object</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function Max(a: <a data-footnote-ref href="#user-content-fn-57">Object</a>, b: <a data-footnote-ref href="#user-content-fn-57">Object</a>) -> <a data-footnote-ref href="#user-content-fn-57">Object</a></code></pre>
 > Get the maximum of two values
 > 
 > **Parameters**:
@@ -33,7 +33,7 @@ Functions may return int or float depending on the parameter types given.
 > - `b`: The second value. Can be int or float
 > 
 > **Returns**: The maximum of the two values. Will be the same type as the inputs
-<pre class="language-typescript"><code class="lang-typescript">function Min(a: <a data-footnote-ref href="#user-content-fn-45">Object</a>, b: <a data-footnote-ref href="#user-content-fn-45">Object</a>) -> <a data-footnote-ref href="#user-content-fn-45">Object</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function Min(a: <a data-footnote-ref href="#user-content-fn-57">Object</a>, b: <a data-footnote-ref href="#user-content-fn-57">Object</a>) -> <a data-footnote-ref href="#user-content-fn-57">Object</a></code></pre>
 > Get the minimum of two values
 > 
 > **Parameters**:
@@ -44,7 +44,7 @@ Functions may return int or float depending on the parameter types given.
 <pre class="language-typescript"><code class="lang-typescript">function Pow(a: float, b: float) -> float</code></pre>
 > Raise a value to the power of another value
 > 
-<pre class="language-typescript"><code class="lang-typescript">function Abs(value: <a data-footnote-ref href="#user-content-fn-45">Object</a>) -> <a data-footnote-ref href="#user-content-fn-45">Object</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function Abs(value: <a data-footnote-ref href="#user-content-fn-57">Object</a>) -> <a data-footnote-ref href="#user-content-fn-57">Object</a></code></pre>
 > Get the absolute value of a number
 > 
 > **Parameters**:
@@ -54,7 +54,7 @@ Functions may return int or float depending on the parameter types given.
 <pre class="language-typescript"><code class="lang-typescript">function Sqrt(value: float) -> float</code></pre>
 > Get the square root of a number
 > 
-<pre class="language-typescript"><code class="lang-typescript">function Repeat(value: <a data-footnote-ref href="#user-content-fn-45">Object</a>, max: <a data-footnote-ref href="#user-content-fn-45">Object</a>) -> <a data-footnote-ref href="#user-content-fn-45">Object</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function Repeat(value: <a data-footnote-ref href="#user-content-fn-57">Object</a>, max: <a data-footnote-ref href="#user-content-fn-57">Object</a>) -> <a data-footnote-ref href="#user-content-fn-57">Object</a></code></pre>
 > Modulo for floats
 > 
 <pre class="language-typescript"><code class="lang-typescript">function Mod(a: int, b: int) -> int</code></pre>
@@ -159,50 +159,62 @@ Functions may return int or float depending on the parameter types given.
 > Shift bits to the right
 > 
 
-[^0]: [Camera](../static/Camera.md)
-[^1]: [Character](../objects/Character.md)
-[^2]: [Collider](../objects/Collider.md)
-[^3]: [Collision](../objects/Collision.md)
-[^4]: [Color](../objects/Color.md)
-[^5]: [Convert](../static/Convert.md)
-[^6]: [Cutscene](../static/Cutscene.md)
-[^7]: [Dict](../objects/Dict.md)
-[^8]: [Game](../static/Game.md)
-[^9]: [Human](../objects/Human.md)
-[^10]: [Input](../static/Input.md)
-[^11]: [Json](../static/Json.md)
-[^12]: [LightBuiltin](../static/LightBuiltin.md)
-[^13]: [LineCastHitResult](../objects/LineCastHitResult.md)
-[^14]: [LineRenderer](../objects/LineRenderer.md)
-[^15]: [List](../objects/List.md)
-[^16]: [Locale](../static/Locale.md)
-[^17]: [LodBuiltin](../static/LodBuiltin.md)
-[^18]: [Map](../static/Map.md)
-[^19]: [MapObject](../objects/MapObject.md)
-[^20]: [MapTargetable](../objects/MapTargetable.md)
-[^21]: [Math](../static/Math.md)
-[^22]: [NavmeshObstacleBuiltin](../static/NavmeshObstacleBuiltin.md)
-[^23]: [Network](../static/Network.md)
-[^24]: [NetworkView](../objects/NetworkView.md)
-[^25]: [PersistentData](../static/PersistentData.md)
-[^26]: [Physics](../static/Physics.md)
-[^27]: [PhysicsMaterialBuiltin](../static/PhysicsMaterialBuiltin.md)
-[^28]: [Player](../objects/Player.md)
-[^29]: [Prefab](../objects/Prefab.md)
-[^30]: [Quaternion](../objects/Quaternion.md)
-[^31]: [Random](../objects/Random.md)
-[^32]: [Range](../objects/Range.md)
-[^33]: [RigidbodyBuiltin](../static/RigidbodyBuiltin.md)
-[^34]: [RoomData](../static/RoomData.md)
-[^35]: [Set](../objects/Set.md)
-[^36]: [Shifter](../objects/Shifter.md)
-[^37]: [String](../static/String.md)
-[^38]: [Time](../static/Time.md)
-[^39]: [Titan](../objects/Titan.md)
-[^40]: [Transform](../objects/Transform.md)
-[^41]: [UI](../static/UI.md)
-[^42]: [Vector2](../objects/Vector2.md)
-[^43]: [Vector3](../objects/Vector3.md)
-[^44]: [WallColossal](../objects/WallColossal.md)
-[^45]: [Object](../objects/Object.md)
-[^46]: [Component](../objects/Component.md)
+[^0]: [Animation](../objects/Animation.md)
+[^1]: [Animator](../objects/Animator.md)
+[^2]: [AudioSource](../objects/AudioSource.md)
+[^3]: [Camera](../static/Camera.md)
+[^4]: [Character](../objects/Character.md)
+[^5]: [Collider](../objects/Collider.md)
+[^6]: [Collision](../objects/Collision.md)
+[^7]: [Color](../objects/Color.md)
+[^8]: [Convert](../static/Convert.md)
+[^9]: [Cutscene](../static/Cutscene.md)
+[^10]: [Dict](../objects/Dict.md)
+[^11]: [Game](../static/Game.md)
+[^12]: [Human](../objects/Human.md)
+[^13]: [Input](../static/Input.md)
+[^14]: [Json](../static/Json.md)
+[^15]: [LightBuiltin](../static/LightBuiltin.md)
+[^16]: [LineCastHitResult](../objects/LineCastHitResult.md)
+[^17]: [LineRenderer](../objects/LineRenderer.md)
+[^18]: [List](../objects/List.md)
+[^19]: [Locale](../static/Locale.md)
+[^20]: [LodBuiltin](../static/LodBuiltin.md)
+[^21]: [Map](../static/Map.md)
+[^22]: [MapObject](../objects/MapObject.md)
+[^23]: [MapTargetable](../objects/MapTargetable.md)
+[^24]: [Math](../static/Math.md)
+[^25]: [NavmeshObstacleBuiltin](../static/NavmeshObstacleBuiltin.md)
+[^26]: [Network](../static/Network.md)
+[^27]: [NetworkView](../objects/NetworkView.md)
+[^28]: [PersistentData](../static/PersistentData.md)
+[^29]: [Physics](../static/Physics.md)
+[^30]: [PhysicsMaterialBuiltin](../static/PhysicsMaterialBuiltin.md)
+[^31]: [Player](../objects/Player.md)
+[^32]: [Prefab](../objects/Prefab.md)
+[^33]: [Quaternion](../objects/Quaternion.md)
+[^34]: [Random](../objects/Random.md)
+[^35]: [Range](../objects/Range.md)
+[^36]: [RigidbodyBuiltin](../static/RigidbodyBuiltin.md)
+[^37]: [RoomData](../static/RoomData.md)
+[^38]: [Set](../objects/Set.md)
+[^39]: [Shifter](../objects/Shifter.md)
+[^40]: [String](../static/String.md)
+[^41]: [Time](../static/Time.md)
+[^42]: [Titan](../objects/Titan.md)
+[^43]: [Transform](../objects/Transform.md)
+[^44]: [UI](../static/UI.md)
+[^45]: [Vector2](../objects/Vector2.md)
+[^46]: [Vector3](../objects/Vector3.md)
+[^47]: [WallColossal](../objects/WallColossal.md)
+[^48]: [Button](../objects/Button.md)
+[^49]: [Dropdown](../objects/Dropdown.md)
+[^50]: [Label](../objects/Label.md)
+[^51]: [ProgressBar](../objects/ProgressBar.md)
+[^52]: [ScrollView](../objects/ScrollView.md)
+[^53]: [Slider](../objects/Slider.md)
+[^54]: [TextField](../objects/TextField.md)
+[^55]: [Toggle](../objects/Toggle.md)
+[^56]: [VisualElement](../objects/VisualElement.md)
+[^57]: [Object](../objects/Object.md)
+[^58]: [Component](../objects/Component.md)

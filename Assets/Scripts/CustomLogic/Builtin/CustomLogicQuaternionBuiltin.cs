@@ -105,6 +105,12 @@ namespace CustomLogic
         /// <inheritdoc cref="Quaternion.RotateTowards(Quaternion, Quaternion, float)"/>
         [CLMethod] public static CustomLogicQuaternionBuiltin RotateTowards(CustomLogicQuaternionBuiltin from, CustomLogicQuaternionBuiltin to, float maxDegreesDelta) => Quaternion.RotateTowards(from, to, maxDegreesDelta);
 
+        /// <inheritdoc cref="Quaternion.AngleAxis(float, Vector3)"/>
+        [CLMethod] public static CustomLogicQuaternionBuiltin AngleAxis(float angle, CustomLogicVector3Builtin axis) => Quaternion.AngleAxis(angle, axis);
+
+        /// <inheritdoc cref="Quaternion.Angle(Quaternion, Quaternion)"/>
+        [CLMethod] public static float Angle(CustomLogicQuaternionBuiltin a, CustomLogicQuaternionBuiltin b) => Quaternion.Angle(a, b);
+
         public override string ToString()
         {
             return Value.ToString();
@@ -144,6 +150,11 @@ namespace CustomLogic
 
         [CLMethod]
         public int __Hash__() => Value.GetHashCode();
+
+        public object __Mod__(object self, object other)
+        {
+            throw new System.NotImplementedException();
+        }
 
         public static implicit operator Quaternion(CustomLogicQuaternionBuiltin q) => q.Value;
         public static implicit operator CustomLogicQuaternionBuiltin(Quaternion q) => new CustomLogicQuaternionBuiltin(q);
