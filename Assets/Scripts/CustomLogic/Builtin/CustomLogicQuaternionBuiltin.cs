@@ -145,6 +145,11 @@ namespace CustomLogic
         [CLMethod]
         public int __Hash__() => Value.GetHashCode();
 
+        public object __Mod__(object self, object other)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public static implicit operator Quaternion(CustomLogicQuaternionBuiltin q) => q.Value;
         public static implicit operator CustomLogicQuaternionBuiltin(Quaternion q) => new CustomLogicQuaternionBuiltin(q);
     }

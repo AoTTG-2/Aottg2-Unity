@@ -236,5 +236,10 @@ namespace CustomLogic
                 _ => throw CustomLogicUtils.OperatorException(nameof(__Div__), self, other)
             };
         }
+
+        public object __Mod__(object self, object other)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
