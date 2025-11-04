@@ -152,5 +152,23 @@ namespace CustomLogic
             CustomLogicManager.CameraMode = null;
             CurrentCamera.ResetCameraMode();
         }
+
+        /// <summary>
+        /// Locks or unlocks the camera to prevent or allow camera movement.
+        /// </summary>
+        [CLMethod]
+        public static void SetCameraLocked(bool locked)
+        {
+            CustomLogicManager.CameraLocked = locked;
+        }
+
+        /// <summary>
+        /// Sets the visibility of the cursor.
+        /// </summary>
+        [CLMethod]
+        public static void SetCursorVisible(bool visible)
+        {
+            CustomLogicManager.CursorVisible = visible;
+        }
     }
 }

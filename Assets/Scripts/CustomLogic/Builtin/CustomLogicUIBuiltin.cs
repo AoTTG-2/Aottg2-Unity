@@ -7,7 +7,7 @@ using Settings;
 using System.Collections.Generic;
 using UI;
 using Utility;
-using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace CustomLogic
 {
@@ -194,6 +194,110 @@ namespace CustomLogic
                     result.List.Add(popup);
                 return result;
             }
+        }
+
+        /// <summary>
+        /// Sets whether a label is active or not.
+        /// </summary>
+        [CLMethod]
+        public static void SetLabelActive(string label, bool active)
+        {
+            Menu.SetLabelActive(label, active);
+        }
+
+        /// <summary>
+        /// Sets whether the KDR panel (top-left) is active or not.
+        /// </summary>
+        [CLMethod]
+        public static void SetKDRPanelActive(bool active)
+        {
+            Menu.SetKDRPanelActive(active);
+        }
+
+        /// <summary>
+        /// Sets whether the minimap is active or not.
+        /// </summary>
+        [CLMethod]
+        public static void SetMinimapActive(bool active)
+        {
+            Menu.SetMinimapActive(active);
+        }
+
+        /// <summary>
+        /// Sets whether the chat panel is active or not.
+        /// </summary>
+        [CLMethod]
+        public static void SetChatPanelActive(bool active)
+        {
+            Menu.SetChatPanelActive(active);
+        }
+
+        /// <summary>
+        /// Sets whether the feed panel is active or not.
+        /// </summary>
+        [CLMethod]
+        public static void SetFeedPanelActive(bool active)
+        {
+            Menu.SetFeedPanelActive(active);
+        }
+
+        /// <summary>
+        /// Sets whether the bottom HUD is active or not.
+        /// This can only be used when the character is alive.
+        /// </summary>
+        [CLMethod]
+        public static void SetBottomHUDActive(bool active)
+        {
+            Menu.SetBottomHUDActive(active);
+        }
+
+        /// <summary>
+        /// Returns the root `VisualElement` which you can add other elements to.
+        /// </summary>
+        /// <returns>The root `VisualElement`</returns>
+        [CLMethod]
+        public static CustomLogicVisualElementBuiltin GetRootVisualElement()
+        {
+            return new CustomLogicVisualElementBuiltin(Menu.RootVisualElement);
+        }
+
+        /// <summary>
+        /// Creates a new `VisualElement`.
+        /// </summary>
+        [CLMethod]
+        public static CustomLogicVisualElementBuiltin VisualElement()
+        {
+            return new CustomLogicVisualElementBuiltin(new VisualElement());
+        }
+
+        /// <summary>
+        /// Creates a new `Button` with optional text and click event.
+        /// </summary>
+        /// <param name="text">The text that the button displays</param>
+        /// <param name="clickEvent">The function that will be called when button is clicked</param>
+        [CLMethod]
+        public static CustomLogicButtonBuiltin Button(string text = "", UserMethod clickEvent = null)
+        {
+            return new CustomLogicButtonBuiltin(new Button { text = text }).OnClick(clickEvent);
+        }
+
+        /// <summary>
+        /// Creates a new `Label` with optional text.
+        /// </summary>
+        /// <param name="text">The text to be displayed</param>
+        [CLMethod]
+        public static CustomLogicLabelBuiltin Label(string text = "")
+        {
+            return new CustomLogicLabelBuiltin(new Label { text = text });
+        }
+
+        /// <summary>
+        /// Creates a new `TextField` with optional label.
+        /// </summary>
+        [CLMethod]
+        public static CustomLogicTextFieldBuiltin TextField(string label = "")
+        {
+            return new CustomLogicTextFieldBuiltin(new TextField(label));
         }
     }
 }

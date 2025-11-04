@@ -28,6 +28,8 @@ namespace CustomLogic
         public static Vector3 CameraRotation;
         public static Vector3 CameraVelocity;
         public static CameraInputMode? CameraMode = null;
+        public static bool CameraLocked;
+        public static bool CursorVisible;
         public static HashSet<KeybindSetting> KeybindDefaultDisabled = new HashSet<KeybindSetting>();
         public static HashSet<KeybindSetting> KeybindHold = new HashSet<KeybindSetting>();
         public static Dictionary<string, object> RoomData = new Dictionary<string, object>();

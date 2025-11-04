@@ -337,7 +337,7 @@ namespace Cameras
             Cache.Transform.position += Vector3.up * GetHeightDistance() * SettingsManager.GeneralSettings.CameraHeight.Value;
             float height = cameraDistance == 0f ? 0.6f : cameraDistance;
             Cache.Transform.position -= Vector3.up * (0.6f - height) * 2f;
-            if (!ChatManager.IsChatActive() && !InGameMenu.InMenu())
+            if (!ChatManager.IsChatActive() && !InGameMenu.InMenu() && !CustomLogicManager.CameraLocked)
             {
                 float sensitivity = SettingsManager.GeneralSettings.MouseSpeed.Value;
                 int invertY = SettingsManager.GeneralSettings.InvertMouse.Value ? -1 : 1;
