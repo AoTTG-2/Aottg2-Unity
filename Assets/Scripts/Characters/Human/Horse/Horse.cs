@@ -17,10 +17,11 @@ namespace Characters
         private float TeleportTime = 10f;
         protected override Vector3 Gravity => Vector3.down * 30f;
         private float JumpForce = 30f;
+        private float MaxTilt = 45f;
         private float _idleTimeLeft;
         private float _teleportTimeLeft;
         private float _jumpCooldownLeft;
-        
+
         public void Init(Human human)
         {
             base.Init(true, human.Team);
@@ -131,7 +132,7 @@ namespace Characters
                 {
                     if (_owner.HasDirection)
                     {
-                        Cache.Transform.rotation = Quaternion.Lerp(Cache.Transform.rotation, _owner.GetTargetRotation(), 5f * Time.deltaTime);
+                        Cache.Rigidbody.MoveRotation(Quaternion.Lerp(Cache.Rigidbody.rotation, _owner.GetTargetRotation(), 5f * Time.deltaTime));
                         if (_owner.IsWalk)
                             State = HorseState.ControlledWalk;
                         else if (!_owner.IsWalk)
@@ -163,7 +164,7 @@ namespace Characters
                     {
                         Vector3 direction = (_owner.Cache.Transform.position - Cache.Transform.position);
                         direction.y = 0f;
-                        Cache.Transform.rotation = Quaternion.Lerp(Cache.Transform.rotation, Quaternion.LookRotation(direction.normalized), 10f * Time.deltaTime);
+                        Cache.Rigidbody.MoveRotation(Quaternion.Lerp(Cache.Rigidbody.rotation, Quaternion.LookRotation(direction.normalized), 10f * Time.deltaTime));
                     }
                 }
             }
@@ -177,6 +178,9 @@ namespace Characters
                 if (_owner == null || _owner.Dead)
                     return;
                 CheckGround();
+
+                Cache.Rigidbody.angularDrag = 6f;
+
                 if (Grounded)
                 {
                     if (State == HorseState.ControlledIdle || State == HorseState.Idle)
@@ -189,7 +193,7 @@ namespace Characters
                                 ForceMode.Acceleration);
                         }
                     }
-                    else if (State == HorseState.WalkToPoint || State == HorseState.RunToPoint  || 
+                    else if (State == HorseState.WalkToPoint || State == HorseState.RunToPoint ||
                         State == HorseState.ControlledWalk || State == HorseState.ControlledRun)
                     {
                         float speed = _owner.Stats.HorseSpeed;
@@ -200,6 +204,8 @@ namespace Characters
                         Cache.Rigidbody.AddForce(Cache.Transform.forward * _owner.Stats.HorseSpeed, ForceMode.Acceleration);
                         if (Cache.Rigidbody.velocity.magnitude >= speed)
                         {
+                            Cache.Rigidbody.angularDrag = 1f;
+
                             if (speed == _owner.Stats.HorseSpeed)
                                 Cache.Rigidbody.AddForce((speed - Cache.Rigidbody.velocity.magnitude) * Cache.Rigidbody.velocity.normalized, ForceMode.VelocityChange);
                             else
@@ -207,6 +213,15 @@ namespace Characters
                         }
                     }
                 }
+
+                Quaternion tiltRotation = Quaternion.FromToRotation(Vector3.up, Cache.Rigidbody.transform.up);
+                if (Quaternion.Angle(Quaternion.identity, tiltRotation) > MaxTilt)
+                {
+                    Quaternion uprightRotation = Quaternion.Inverse(tiltRotation) * Cache.Rigidbody.rotation;
+                    Quaternion finalRotation = Quaternion.RotateTowards(uprightRotation, Cache.Rigidbody.rotation, MaxTilt);
+                    Cache.Rigidbody.MoveRotation(finalRotation);
+                }
+
                 Cache.Rigidbody.AddForce(Gravity, ForceMode.Acceleration);
             }
         }

@@ -433,5 +433,28 @@ namespace CustomLogic
         {
             Value.PublishTransform();
         }
+
+        [CLMethod("Checks if the rigidbody would collide with anything, returns a LineCastHitResult object.")]
+        public object SweepTest(CustomLogicVector3Builtin direction, float distance)
+        {
+            if (Value.SweepTest(direction, out RaycastHit hit, distance))
+            {
+                var collider = CustomLogicCollisionHandler.GetBuiltin(hit.collider);
+                if (collider != null)
+                {
+                    return new CustomLogicLineCastHitResultBuiltin
+                    {
+                        IsCharacter = collider != null && collider is CustomLogicCharacterBuiltin,
+                        IsMapObject = collider != null && collider is CustomLogicMapObjectBuiltin,
+                        Point = new CustomLogicVector3Builtin(hit.point),
+                        Normal = new CustomLogicVector3Builtin(hit.normal),
+                        Distance = hit.distance,
+                        Collider = collider,
+                        ColliderInfo = new CustomLogicColliderBuiltin(new object[] { hit.collider })
+                    };
+                }
+            }
+            return null;
+        }
     }
 }

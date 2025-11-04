@@ -1,10 +1,12 @@
 ﻿using ApplicationManagers;
 using GameManagers;
 using Photon.Pun;
+using Photon.Realtime;
 using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using UnityEngine;
+using UnityEngine.Diagnostics;
 using Utility;
 
 namespace CustomLogic
@@ -65,6 +67,15 @@ namespace CustomLogic
         public void SendMessageOthers(string message)
         {
             RPCManager.PhotonView.RPC("SendMessageRPC", RpcTarget.Others, new object[] { message });
+        }
+
+        [CLMethod(description: "Finds a player in the room by id.")]
+        public CustomLogicPlayerBuiltin FindPlayer(int id)
+        {
+            Player player = Util.FindPlayerById(id);
+            if (player != null)
+                return new CustomLogicPlayerBuiltin(player);
+            return null;
         }
 
         [CLMethod(description: "Get the difference between two photon timestamps")]

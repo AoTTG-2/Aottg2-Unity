@@ -626,9 +626,9 @@ namespace CustomLogic
         }
 
         [CLMethod(description: "Draw a ray")]
-        public void DrawRay(CustomLogicVector3Builtin start, CustomLogicVector3Builtin dir, Color color, float duration)
+        public void DrawRay(CustomLogicVector3Builtin start, CustomLogicVector3Builtin dir, CustomLogicColorBuiltin color, float duration)
         {
-            UnityEngine.Debug.DrawRay(start.Value, dir.Value, color, duration);
+            UnityEngine.Debug.DrawRay(start.Value, dir.Value, color.Value.ToColor(), duration);
         }
 
         [CLMethod(description: "Show the kill score")]
