@@ -1,6 +1,4 @@
 ﻿using Map;
-using System;
-using UnityEditor.Rendering;
 using UnityEngine;
 
 namespace CustomLogic
@@ -15,7 +13,7 @@ namespace CustomLogic
         [CLConstructor]
         public CustomLogicLightBuiltin() : base(null) { }
 
-        public CustomLogicLightBuiltin(CustomLogicMapObjectBuiltin owner, LightType type) : base(owner.Value.GameObject.AddComponent<Light>())
+        public CustomLogicLightBuiltin(CustomLogicMapObjectBuiltin owner, LightType type) : base(GetOrAddComponent<Light>(owner.Value.GameObject))
         {
             OwnerMapObject = owner;
             Owner = owner.Value.GameObject;

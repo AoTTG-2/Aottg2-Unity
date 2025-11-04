@@ -1,19 +1,14 @@
 ﻿using ApplicationManagers;
-using Settings;
 using SimpleJSONFixed;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UnityEngine;
 
 namespace UI
 {
-    class SocialPopup: BasePopup
+    class SocialPopup : BasePopup
     {
         protected override string Title => UIManager.GetLocaleCommon("Social");
-        protected override float Width => 650f;
-        protected override float Height => 440f;
+        protected override float Width => 750f;
+        protected override float Height => 650;
         protected override bool DoublePanel => false;
 
         protected override int HorizontalPadding => 35;

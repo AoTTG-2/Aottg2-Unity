@@ -8,24 +8,18 @@ namespace CustomLogic
         private Vector2 _value;
 
         [CLConstructor]
-        public CustomLogicVector2Builtin(object[] parameterValues)
+        public CustomLogicVector2Builtin() { }
+
+        [CLConstructor]
+        public CustomLogicVector2Builtin(float xy)
         {
-            float x = 0;
-            float y = 0;
+            _value = new Vector2(xy, xy);
+        }
 
-            if (parameterValues.Length == 1)
-            {
-                x = parameterValues[0].UnboxToFloat();
-                y = x;
-            }
-            else if (parameterValues.Length > 1)
-            {
-                x = parameterValues[0].UnboxToFloat();
-                y = parameterValues[1].UnboxToFloat();
-            }
-
+        [CLConstructor]
+        public CustomLogicVector2Builtin(float x, float y)
+        {
             _value = new Vector2(x, y);
-
         }
 
         public CustomLogicVector2Builtin(Vector2 value)
@@ -197,6 +191,11 @@ namespace CustomLogic
 
         [CLMethod]
         public int __Hash__() => _value.GetHashCode();
+
+        public object __Mod__(object self, object other)
+        {
+            throw new System.NotImplementedException();
+        }
 
         public static implicit operator Vector2(CustomLogicVector2Builtin value) => value._value;
         public static implicit operator CustomLogicVector2Builtin(Vector2 value) => new CustomLogicVector2Builtin(value);

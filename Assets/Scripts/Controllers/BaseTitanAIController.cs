@@ -51,6 +51,8 @@ namespace Controllers
         protected float _waitAttackTimeLeft;
         protected float _enemyDistance;
         protected bool _isAIEnabled = true;
+        protected virtual bool _scriptedAI => false;
+        protected virtual bool _stationaryAI => false;
 
         // A way to circumvent normal AI control so that we can force certain scripted behavior.
         public bool AIEnabled
@@ -82,7 +84,7 @@ namespace Controllers
             base.Awake();
             _titan = GetComponent<BaseTitan>();
             _mainCollider = _titan.GetComponent<CapsuleCollider>();
-            _usePathfinding = SettingsManager.InGameUI.Titan.TitanSmartMovement.Value;
+            _usePathfinding = SettingsManager.InGameUI.Titan.TitanSmartMovement.Value && !_stationaryAI;
 
             if (_usePathfinding)
             {
@@ -256,6 +258,10 @@ namespace Controllers
             }
         }
 
+        protected virtual void UpdateScriptedAI()
+        {
+        }
+
         protected override void FixedUpdate()
         {
             if (_usePathfinding)
@@ -281,12 +287,12 @@ namespace Controllers
                     return;
             }
 
-            if (AIEnabled == false)
+            if (!AIEnabled)
             {
                 _enemy = null;
                 if (AIState == TitanAIState.Idle || AIState == TitanAIState.Wander || AIState == TitanAIState.SitIdle)
                 {
-                    if (_moveToActive)
+                    if (_moveToActive && !_stationaryAI)
                         MoveToPosition();
                 }
                 if (AIState == TitanAIState.MoveToPosition)
@@ -316,6 +322,11 @@ namespace Controllers
                 }
 
                 RefreshAgent();
+                return;
+            }
+            if (_scriptedAI)
+            {
+                UpdateScriptedAI();
                 return;
             }
 

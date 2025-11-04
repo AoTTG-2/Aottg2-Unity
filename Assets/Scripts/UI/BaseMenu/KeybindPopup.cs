@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace UI
 {
-    class KeybindPopup: PromptPopup
+    class KeybindPopup : PromptPopup
     {
         protected override string Title => UIManager.GetLocale("SettingsPopup", "KeybindPopup", "Title");
         protected override float Width => 300f;
@@ -30,7 +30,7 @@ namespace UI
             _buffer = new InputKey();
         }
 
-        private void Update()
+        private new void Update()
         {
             if (_setting != null && !_isDone && _buffer.ReadNextInput())
             {

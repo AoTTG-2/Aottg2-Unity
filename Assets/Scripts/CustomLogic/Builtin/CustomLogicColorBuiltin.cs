@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Unity.VisualScripting;
+﻿using Unity.VisualScripting;
 using UnityEngine;
 using Utility;
 using ColorUtility = UnityEngine.ColorUtility;
@@ -7,44 +6,53 @@ using ColorUtility = UnityEngine.ColorUtility;
 namespace CustomLogic
 {
     /// <summary>
-    /// Constructor for the Color class
+    /// Represents a color. Every component is in the range [0, 255].
     /// </summary>
-    /// <example>
-    /// Game.Print(color.ToHexString()) // Prints the color in hex format
-    /// </example>
+    /// <remarks>
+    /// Implements `__Copy__` which means that this class will act like a struct.
+    /// </remarks>
     /// <code>
-    /// color = Color() # Creates a white color
-    /// color = Color(150) # Creates a gray color
-    /// color = Color(255, 0, 0) # Creates a red color
-    /// color = Color(255, 0, 0, 100) # Creates a red color with transparency
+    /// Game.Print(color.ToHexString()) // Prints the color in hex format
     /// </code>
     [CLType(Name = "Color", Static = true, Description = "")]
     partial class CustomLogicColorBuiltin : BuiltinClassInstance, ICustomLogicEquals, ICustomLogicCopyable, ICustomLogicMathOperators, ICustomLogicToString
     {
         public Color255 Value = new Color255();
 
+        /// <summary>
+        /// Default constructor, creates a white color.
+        /// </summary>
         [CLConstructor]
-        public CustomLogicColorBuiltin(object[] parameterValues)
+        public CustomLogicColorBuiltin() { }
+
+        /// <summary>
+        /// Creates a color from a hex string
+        /// </summary>
+        [CLConstructor]
+        public CustomLogicColorBuiltin(string hexString)
         {
-            var color = new Color255();
-
-            if (parameterValues.Length == 1)
-            {
-                if (ColorUtility.TryParseHtmlString((string)parameterValues[0], out var c))
-                    color = new Color255(c);
-            }
-            else if (parameterValues.Length == 3)
-            {
-                color = new Color255((int)parameterValues[0], (int)parameterValues[1], (int)parameterValues[2]);
-            }
-            else if (parameterValues.Length == 4)
-            {
-                color = new Color255((int)parameterValues[0], (int)parameterValues[1],
-                    (int)parameterValues[2], (int)parameterValues[3]);
-            }
-
-            Value = color;
+            if (ColorUtility.TryParseHtmlString(hexString, out var c))
+                Value = new Color255(c);
         }
+
+        /// <summary>
+        /// Creates a color from RGB
+        /// </summary>
+        [CLConstructor]
+        public CustomLogicColorBuiltin(int r, int g, int b)
+        {
+            Value = new Color255(r, g, b);
+        }
+
+        /// <summary>
+        /// Creates a color from RGBA
+        /// </summary>
+        [CLConstructor]
+        public CustomLogicColorBuiltin(int r, int g, int b, int a)
+        {
+            Value = new Color255(r, g, b, a);
+        }
+
 
         public CustomLogicColorBuiltin(Color color)
         {
@@ -56,7 +64,6 @@ namespace CustomLogic
             Value = value;
         }
 
-        // Convert the above to CLProperties
         [CLProperty(Description = "Red component of the color")]
         public int R
         {
@@ -85,14 +92,20 @@ namespace CustomLogic
             set => Value.A = value;
         }
 
-        // Convert the above to CLMethods
         [CLMethod(Description = "Converts the color to a hex string")]
         public string ToHexString()
         {
             return Value.ToColor().ToHexString();
         }
 
-        [CLMethod(Description = "Linearly interpolates between colors a and b by t")]
+        /// <summary>
+        /// Linearly interpolates between colors `a` and `b` by `t`
+        /// </summary>
+        /// <param name="a">Color to interpolate from</param>
+        /// <param name="b">Color to interpolate to</param>
+        /// <param name="t">Interpolation factor. 0 = `a`, 1 = `b`</param>
+        /// <returns>A new color between `a` and `b`</returns>
+        [CLMethod]
         public static CustomLogicColorBuiltin Lerp(CustomLogicColorBuiltin a, CustomLogicColorBuiltin b, float t)
         {
             return new CustomLogicColorBuiltin(Color255.Lerp(a.Value, b.Value, t));
@@ -101,6 +114,8 @@ namespace CustomLogic
         [CLMethod(Description = "Creates a gradient color from two colors")]
         public static CustomLogicColorBuiltin Gradient(CustomLogicColorBuiltin a, CustomLogicColorBuiltin b, float t)
         {
+            // TODO: isn't this the same as Lerp?
+
             var colors = new GradientColorKey[2];
             colors[0] = new GradientColorKey(a.Value.ToColor(), 0f);
             colors[1] = new GradientColorKey(b.Value.ToColor(), 1f);
@@ -134,6 +149,7 @@ namespace CustomLogic
             return new CustomLogicColorBuiltin(value);
         }
 
+        [CLMethod]
         public bool __Eq__(object self, object other)
         {
             return (self, other) switch
@@ -143,21 +159,25 @@ namespace CustomLogic
             };
         }
 
+        [CLMethod]
         public int __Hash__()
         {
             return Value.GetHashCode();
         }
 
+        [CLMethod]
         public object __Copy__()
         {
             return new CustomLogicColorBuiltin(new Color255(Value.R, Value.G, Value.B, Value.A));
         }
 
+        [CLMethod]
         public string __Str__()
         {
             return ToString();
         }
 
+        [CLMethod]
         public object __Add__(object self, object other)
         {
             return (self, other) switch
@@ -172,6 +192,7 @@ namespace CustomLogic
             };
         }
 
+        [CLMethod]
         public object __Sub__(object self, object other)
         {
             return (self, other) switch
@@ -186,6 +207,7 @@ namespace CustomLogic
             };
         }
 
+        [CLMethod]
         public object __Mul__(object self, object other)
         {
             return (self, other) switch
@@ -200,6 +222,7 @@ namespace CustomLogic
             };
         }
 
+        [CLMethod]
         public object __Div__(object self, object other)
         {
             return (self, other) switch
@@ -212,6 +235,11 @@ namespace CustomLogic
                 )),
                 _ => throw CustomLogicUtils.OperatorException(nameof(__Div__), self, other)
             };
+        }
+
+        public object __Mod__(object self, object other)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

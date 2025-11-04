@@ -1,7 +1,6 @@
 ﻿using ApplicationManagers;
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace CustomLogic
 {
@@ -9,10 +8,17 @@ namespace CustomLogic
     {
         protected List<CustomLogicToken> _tokens = new List<CustomLogicToken>();
         public string Error = "";
+        private int _baseLogicOffset = 0;
 
-        public CustomLogicParser(List<CustomLogicToken> tokens)
+        public CustomLogicParser(List<CustomLogicToken> tokens, int baseLogicOffset = 0)
         {
             _tokens = tokens;
+            _baseLogicOffset = baseLogicOffset;
+        }
+
+        public string GetLineNumberString(int line)
+        {
+            return CustomLogicManager.GetLineNumberString(line, _baseLogicOffset);
         }
 
         public CustomLogicStartAst GetStartAst()
@@ -82,6 +88,17 @@ namespace CustomLogic
                 notExpressionAst.Next = right;
                 return notExpressionAst;
             }
+            // Added unary minus and plus (not sure if we need plus but others will matter like ~)
+            else if (IsSymbolValue(currToken, (int)CustomLogicSymbol.Minus) || IsSymbolValue(currToken, (int)CustomLogicSymbol.Plus))
+            {
+                // Handle unary + and -
+                // Make sure this is a prefix, not a binary operator (no left-hand side)
+                var unaryAst = new CustomLogicUnaryExpressionAst(currToken, currToken.Line);
+                var operand = ParseExpression(null, startIndex + 1, endIndex);
+                unaryAst.Next = operand;
+                return unaryAst;
+            }
+            // End added unary minus and plus
             else if (IsSymbolValue(currToken, (int)CustomLogicSymbol.Dot))
             {
                 AssertTokenType(nextToken, CustomLogicTokenType.Name);
@@ -219,7 +236,7 @@ namespace CustomLogic
                 else
                     AssertFalse(currToken);
             }
-            else if (prev.Type == CustomLogicAstType.MethodDefinition || prev.Type == CustomLogicAstType.ConditionalExpression || 
+            else if (prev.Type == CustomLogicAstType.MethodDefinition || prev.Type == CustomLogicAstType.ConditionalExpression ||
                 prev.Type == CustomLogicAstType.ForExpression)
             {
                 if (IsSymbolValue(currToken, (int)CustomLogicSymbol.Return))
@@ -328,6 +345,20 @@ namespace CustomLogic
                     parenCount--;
                 if (parenCount > 0)
                     continue;
+
+                // account for unary minus
+                if (IsSymbolValue(token, (int)CustomLogicSymbol.Minus) || IsSymbolValue(token, (int)CustomLogicSymbol.Plus))
+                {
+                    if (i == startIndex) // first token in expression
+                        continue;
+                    var prev = _tokens[i - 1];
+                    // skip if previous token is an operator or '('
+                    if (prev.Type == CustomLogicTokenType.Symbol &&
+                        !IsSymbolValue(prev, (int)CustomLogicSymbol.RightParen))
+                        continue;
+                }
+                // end account for unary minus
+
                 if (IsSymbolBinop(token))
                 {
                     int priority = CustomLogicSymbols.BinopSymbolPriorities[(int)token.Value];
@@ -419,22 +450,22 @@ namespace CustomLogic
         {
             if (token == null || token.Type != CustomLogicTokenType.Symbol || (int)token.Value != symbolValue)
             {
-                throw new Exception("Parsing error at line " + token.Line.ToString() + ", got " + GetTokenString(token)
+                throw new Exception("Parsing error at line " + GetLineNumberString(token.Line) + ", got " + GetTokenString(token)
                     + ", expected " + ((CustomLogicSymbol)symbolValue).ToString());
             }
-                
+
         }
 
         private void AssertTokenType(CustomLogicToken token, CustomLogicTokenType type)
         {
             if (token == null || token.Type != type)
-                throw new Exception("Parsing error at line " + token.Line.ToString() + ", got " + GetTokenString(token)
+                throw new Exception("Parsing error at line " + GetLineNumberString(token.Line) + ", got " + GetTokenString(token)
                     + ", expected " + type.ToString());
         }
 
         private void AssertFalse(CustomLogicToken token)
         {
-            throw new Exception("Parsing error at line " + token.Line.ToString() + ", got " + GetTokenString(token));
+            throw new Exception("Parsing error at line " + GetLineNumberString(token.Line) + ", got " + GetTokenString(token));
         }
 
         private string GetTokenString(CustomLogicToken token)

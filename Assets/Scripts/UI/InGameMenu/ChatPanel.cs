@@ -131,6 +131,7 @@ namespace UI
             textRect.sizeDelta = Vector2.zero;
             var tmpText = textComponent.GetComponent<TextMeshProUGUI>();
             tmpText.enableWordWrapping = false;
+            tmpText.richText = false;
             tmpText.overflowMode = TextOverflowModes.ScrollRect;
             tmpText.horizontalAlignment = HorizontalAlignmentOptions.Left;
             tmpText.verticalAlignment = VerticalAlignmentOptions.Middle;
@@ -138,9 +139,9 @@ namespace UI
             _inputField.textViewport = textAreaRect;
             _inputField.textComponent = tmpText;
             _inputField.lineType = TMP_InputField.LineType.SingleLine;
+            _inputField.richText = false;
             _inputField.inputType = TMP_InputField.InputType.Standard;
             _inputField.scrollSensitivity = 60f;
-            // Add paste handler to strip rich text (except sprites) and line breaks
             _inputField.onValidateInput += (text, charIndex, addedChar) =>
             {
                 if (addedChar == '\n' || addedChar == '\r' || addedChar == '\u001B' || addedChar == (char)27)
@@ -148,17 +149,6 @@ namespace UI
                 return addedChar;
             };
             _inputField.onFocusSelectAll = false;
-            _inputField.onSelect.AddListener((value) => {
-                if (GUIUtility.systemCopyBuffer.Length > 0)
-                {
-                    string clipText = GUIUtility.systemCopyBuffer;
-                    clipText = Regex.Replace(clipText, @"<(?!sprite=)[^>]+>|</[^>]+>", string.Empty) // Keep sprite tags
-                        .Replace("\n", string.Empty)
-                        .Replace("\r", string.Empty)
-                        .Replace("\u001B", string.Empty);
-                    GUIUtility.systemCopyBuffer = clipText;
-                }
-            });
             var nav = _inputField.navigation;
             nav.mode = Navigation.Mode.None;
             _inputField.navigation = nav;
@@ -198,7 +188,7 @@ namespace UI
             var (text, caretPos) = ChatManager.GetConversation("PUBLIC");
             if (!string.IsNullOrEmpty(text))
             {
-                _inputField.text = text;
+                _inputField.text = text.StripRichText();
                 _desiredCaretPosition = caretPos;
             }
             else
@@ -206,7 +196,7 @@ namespace UI
                 var (preservedText, preservedCaret) = ChatManager.GetPreservedInputWithCaret();
                 if (!string.IsNullOrEmpty(preservedText))
                 {
-                    _inputField.text = preservedText;
+                    _inputField.text = preservedText.StripRichText();
                     _desiredCaretPosition = preservedCaret;
                 }
             }
@@ -523,18 +513,24 @@ namespace UI
 
         private void RefreshDisplayedMessages()
         {
-            List<string> regularMessages = new List<string>();
+            List<string> linesToShow = new List<string>();
             List<string> suggestions = new List<string>();
-            List<string> notifications = new List<string>();
+            if (_inPMMode && _currentPMTarget != null)
+            {
+                linesToShow.Add(ChatManager.GetFormattedMessage(
+                    $"{ChatManager.GetColorString("Private chat with ", ChatTextColor.System)}{ChatManager.GetPlayerIdentifier(_currentPMTarget)}",
+                    DateTime.Now,
+                    true));
+            }
             for (int i = 0; i < ChatManager.RawMessages.Count; i++)
             {
                 if (_inPMMode && _currentPMTarget != null)
                 {
-                    if (ChatManager.PrivateFlags[i] && 
+                    if (ChatManager.PrivateFlags[i] &&
                         (ChatManager.PMPartnerIDs[i] == _currentPMTarget.ActorNumber ||
                          ChatManager.SenderIDs[i] == _currentPMTarget.ActorNumber))
                     {
-                        regularMessages.Add(ChatManager.GetFormattedMessage(
+                        linesToShow.Add(ChatManager.GetFormattedMessage(
                             ChatManager.RawMessages[i],
                             ChatManager.Timestamps[i],
                             ChatManager.SuggestionFlags[i]));
@@ -542,40 +538,30 @@ namespace UI
                 }
                 else
                 {
-                    if (ChatManager.NotificationFlags[i])
-                    {
-                        notifications.Add(ChatManager.GetFormattedMessage(
-                            ChatManager.RawMessages[i],
-                            ChatManager.Timestamps[i],
-                            ChatManager.NotificationFlags[i]));
-                    }
-                    else if (ChatManager.SuggestionFlags[i])
+                    if (ChatManager.SuggestionFlags[i])
                     {
                         suggestions.Add(ChatManager.GetFormattedMessage(
                             ChatManager.RawMessages[i],
                             ChatManager.Timestamps[i],
                             ChatManager.SuggestionFlags[i]));
                     }
-                    else if ((!ChatManager.PrivateFlags[i] || ChatManager.SystemFlags[i]) && 
+                    else if (ChatManager.NotificationFlags[i])
+                    {
+                        linesToShow.Add(ChatManager.GetFormattedMessage(
+                            ChatManager.RawMessages[i],
+                            ChatManager.Timestamps[i],
+                            ChatManager.NotificationFlags[i]));
+                    }
+                    else if ((!ChatManager.PrivateFlags[i] || ChatManager.SystemFlags[i]) &&
                              !ChatManager.SuggestionFlags[i] && !ChatManager.NotificationFlags[i])
                     {
-                        regularMessages.Add(ChatManager.GetFormattedMessage(
+                        linesToShow.Add(ChatManager.GetFormattedMessage(
                             ChatManager.RawMessages[i],
                             ChatManager.Timestamps[i],
                             ChatManager.SuggestionFlags[i]));
                     }
                 }
             }
-            List<string> linesToShow = new List<string>();
-            if (_inPMMode && _currentPMTarget != null)
-            {
-                linesToShow.Add(ChatManager.GetFormattedMessage(
-                    $"{ChatManager.GetColorString("Private chat with ", ChatTextColor.System)}{ChatManager.GetPlayerIdentifier(_currentPMTarget)}", 
-                    DateTime.Now, 
-                    true));
-            }
-            linesToShow.AddRange(regularMessages);
-            linesToShow.AddRange(notifications);
             linesToShow.AddRange(suggestions);
             UpdateVisibleMessages(linesToShow);
         }
@@ -720,6 +706,7 @@ namespace UI
             {
                 ChatManager.ClearLastSuggestions();
                 IgnoreNextActivation = true;
+                _inputField.text = "";
                 _inputField.DeactivateInputField();
                 return;
             }
@@ -791,42 +778,32 @@ namespace UI
             if (e.type == EventType.KeyDown)
             {
                 bool canHandlePMKeys = IsInputActive() || _isInteractingWithChatUI;
-                if (e.keyCode == KeyCode.Tab)
+                if (e.keyCode == KeyCode.Tab && canHandlePMKeys)
                 {
-                    if (IsInputActive())
+                    bool anyPMNotification = _pmPartners.Exists(p => ChatManager.HasActivePMNotification(p.ActorNumber));
+                    if (IsInputActive() && ChatManager.HasActiveSuggestions() && !anyPMNotification)
                     {
                         e.Use();
-                        if (_inPMMode && _pmPartners.Count > 0)
-                        {
-                            CycleToPMPartner();
-                        }
-                        else
-                        {
-                            ChatManager.HandleTabComplete();
-                        }
+                        ChatManager.HandleTabComplete();
                     }
-                    else if (_inPMMode && _pmPartners.Count > 0)
+                    else if (_pmPartners.Count > 0)
                     {
                         e.Use();
                         CycleToPMPartner();
+                    }
+                    else
+                    {
+                        if (IsInputActive())
+                        {
+                            e.Use();
+                            ChatManager.HandleTabComplete();
+                        }
                     }
                 }
                 else if (e.keyCode == KeyCode.Escape && canHandlePMKeys)
                 {
                     e.Use();
-                    if (_inPMMode || _pmPartners.Count > 0)
-                    {
-                        if (_inPMMode)
-                        {
-                            ExitPMMode();
-                        }
-                        else if (_pmPartners.Count > 0)
-                        {
-                            _currentPMIndex = _pmPartners.Count - 1;
-                            EnterPMMode(_pmPartners[_currentPMIndex]);
-                        }
-                    }
-                    else if (IsInputActive())
+                    if (IsInputActive())
                     {
                         ChatManager.ClearLastSuggestions();
                     }
@@ -1181,34 +1158,120 @@ namespace UI
         private void CycleToPMPartner()
         {
             if (_pmPartners.Count == 0) return;
-            int currentIndex = -1;
-            if (_currentPMTarget != null)
+            List<Player> recencyOrdered = GetPmPartnersByRecency();
+            int partnerCount = recencyOrdered.Count;
+            int currentIndexInRecency;
+            if (_currentPMTarget == null)
             {
-                currentIndex = _pmPartners.FindIndex(p => p.ActorNumber == _currentPMTarget.ActorNumber);
+                currentIndexInRecency = partnerCount;
             }
-            if (currentIndex == -1)
+            else
             {
-                currentIndex = -1;
+                currentIndexInRecency = recencyOrdered.FindIndex(p => p.ActorNumber == _currentPMTarget.ActorNumber);
+                if (currentIndexInRecency == -1)
+                {
+                    currentIndexInRecency = _pmPartners.FindIndex(p => p.ActorNumber == _currentPMTarget.ActorNumber);
+                    if (currentIndexInRecency == -1) currentIndexInRecency = partnerCount;
+                    else
+                    {
+                        var fallback = recencyOrdered.FindIndex(p2 => p2.ActorNumber == _pmPartners[currentIndexInRecency].ActorNumber);
+                        if (fallback != -1) currentIndexInRecency = fallback;
+                    }
+                }
             }
-            int nextIndex = (currentIndex + 1) % _pmPartners.Count;
-            Player nextPartner = _pmPartners[nextIndex];
-            SaveCurrentConversation();
-            _currentPMTarget = nextPartner;
-            _currentPMIndex = nextIndex;
-            ChatManager.ClearPMNotification(nextPartner.ActorNumber);
-            var (text, caretPos) = ChatManager.GetConversation($"PM_{nextPartner.ActorNumber}");
-            SetTextAndCaretPosition(text, caretPos);
-            Sync();
+            int notifiedIndex = -1;
+            for (int i = 0; i < partnerCount; i++)
+            {
+                if (ChatManager.HasActivePMNotification(recencyOrdered[i].ActorNumber))
+                {
+                    notifiedIndex = i;
+                    break;
+                }
+            }
+            int nextIndex;
+            if (notifiedIndex != -1 && notifiedIndex != currentIndexInRecency)
+            {
+                nextIndex = notifiedIndex;
+            }
+            else
+            {
+                nextIndex = (currentIndexInRecency + 1) % (partnerCount + 1);
+            }
+            if (nextIndex == partnerCount)
+            {
+                SaveCurrentConversation();
+                ExitPMMode();
+                return;
+            }
+            Player nextPartner = recencyOrdered[nextIndex];
+            EnterPMMode(nextPartner);
+        }
+
+        private List<Player> GetPmPartnersByRecency()
+        {
+            var result = new List<Player>();
+            if (_pmPartners == null || _pmPartners.Count == 0) return result;
+            var partnerById = new Dictionary<int, Player>();
+            foreach (var p in _pmPartners)
+            {
+                if (p != null && !partnerById.ContainsKey(p.ActorNumber))
+                    partnerById[p.ActorNumber] = p;
+            }
+            var seen = new HashSet<int>();
+            for (int i = ChatManager.PMPartnerIDs.Count - 1; i >= 0; i--)
+            {
+                if (i < 0) continue;
+                if (i >= ChatManager.PrivateFlags.Count) continue;
+                if (!ChatManager.PrivateFlags[i]) continue;
+                int id = ChatManager.PMPartnerIDs[i];
+                if (id <= 0) continue;
+                if (seen.Contains(id)) continue;
+                seen.Add(id);
+                if (partnerById.TryGetValue(id, out var player))
+                {
+                    result.Add(player);
+                }
+            }
+            foreach (var p in _pmPartners)
+            {
+                if (p == null) continue;
+                if (!result.Any(r => r.ActorNumber == p.ActorNumber))
+                    result.Add(p);
+            }
+
+            return result;
         }
 
         public void AddPMPartner(Player player)
         {
             if (player == null || player.ActorNumber == PhotonNetwork.LocalPlayer.ActorNumber)
                 return;
-            if (!_pmPartners.Exists(p => p.ActorNumber == player.ActorNumber))
+            int existing = _pmPartners.FindIndex(p => p.ActorNumber == player.ActorNumber);
+            if (existing != -1)
             {
-                _pmPartners.Add(player);
+                var existingPlayer = _pmPartners[existing];
+                _pmPartners.RemoveAt(existing);
+                _pmPartners.Add(existingPlayer);
+                return;
             }
+            const int MAX_PM_CONVERSATIONS = 10;
+            if (_pmPartners.Count >= MAX_PM_CONVERSATIONS)
+            {
+                var oldest = _pmPartners[0];
+                if (oldest != null)
+                {
+                    ChatManager.ClearConversation($"PM_{oldest.ActorNumber}");
+                    ChatManager.ClearPMNotification(oldest.ActorNumber);
+                    ChatManager.ResetNotifiedForPM(oldest.ActorNumber);
+                }
+                _pmPartners.RemoveAt(0);
+                if (_currentPMTarget != null && _currentPMTarget.ActorNumber == (oldest?.ActorNumber ?? -1))
+                {
+                    _currentPMTarget = null;
+                    _inPMMode = false;
+                }
+            }
+            _pmPartners.Add(player);
         }
 
         public Player GetCurrentPMTarget()

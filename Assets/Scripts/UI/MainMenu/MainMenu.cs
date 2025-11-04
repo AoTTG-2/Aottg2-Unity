@@ -25,6 +25,7 @@ namespace UI
         public BasePopup _aboutPopup;
         public BasePopup _questPopup;
         public BasePopup _tutorialPopup;
+        public BasePopup _modLoginPopup;
         public OutdatedPopup _outdatedPopup;
         public MainBackgroundMenu _backgroundMenu;
         public TipPanel _tipPanel;
@@ -87,6 +88,7 @@ namespace UI
             _tutorialPopup = ElementFactory.CreateHeadedPanel<TutorialPopup>(transform).GetComponent<BasePopup>();
             _outdatedPopup = ElementFactory.CreateDefaultPopup<OutdatedPopup>(transform).GetComponent<OutdatedPopup>();
             _duelPopup = ElementFactory.CreateDefaultPopup<DuelPopup>(transform).GetComponent<DuelPopup>();
+            _modLoginPopup = ElementFactory.CreateDefaultPopup<ModLoginPopup>(transform).GetComponent<BasePopup>();
             _popups.Add(_createGamePopup);
             _popups.Add(_experienceMenuPopup);
             _popups.Add(_multiplayerMapPopup);
@@ -102,6 +104,7 @@ namespace UI
             _popups.Add(_selectMapPopup);
             _popups.Add(_outdatedPopup);
             _popups.Add(_duelPopup);
+            _popups.Add(_modLoginPopup);
         }
 
         private RectTransform _introPanelRect;
@@ -238,6 +241,10 @@ namespace UI
                         _outdatedPopup.Show("Your game version is outdated. \nIf using the launcher, try restarting and repairing." +
                             "\nFor standalone, download the latest version from https://aottg2.itch.io/aottg2.");
                 }
+            }
+            if (Input.GetKeyDown(KeyCode.M) && Input.GetKey(KeyCode.LeftControl))
+            {
+                _modLoginPopup.Show();
             }
         }
 

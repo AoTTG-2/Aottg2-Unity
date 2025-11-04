@@ -8,24 +8,38 @@ namespace CustomLogic
     {
         public Rigidbody Value;
         public ConstantForce CustomGravity;
-        public CustomLogicMapObjectBuiltin OwnerMapObject;
-        public GameObject Owner;
+        public BuiltinClassInstance OwnerBuiltin;
+        public GameObject AttachedGameObject;
         private bool _isGravityEnabled = true;
         private Vector3? _gravity;
 
         [CLConstructor]
         public CustomLogicRigidbodyBuiltin() : base(null) { }
 
-        public CustomLogicRigidbodyBuiltin(CustomLogicMapObjectBuiltin owner, float mass = 1, Vector3? gravity = null, bool freezeRotation = false, bool interpolate = false) : base(owner.Value.GameObject.AddComponent<Rigidbody>())
+        /// <summary>
+        /// MapObject rigidbody constructor.
+        /// </summary>
+        public CustomLogicRigidbodyBuiltin(CustomLogicMapObjectBuiltin owner, float mass = 1, Vector3? gravity = null, bool freezeRotation = false, bool interpolate = false) : base(GetOrAddComponent<Rigidbody>(owner.Value.GameObject))
         {
-            OwnerMapObject = owner;
-            Owner = owner.Value.GameObject;
+            OwnerBuiltin = owner;
+            AttachedGameObject = owner.Value.GameObject;
             Value = (Rigidbody)Component;
 
             Gravity = gravity; // Set the custom gravity force
             UseGravity = true;
             FreezeXRotation = FreezeYRotation = FreezeZRotation = freezeRotation; // Freeze all rotation axes
             Interpolate = interpolate;
+        }
+
+        /// <summary>
+        /// Simpler case for any of our objects that have a rigidbody by default, could be cached but this should really be good enough.
+        /// GC Alloc here will be in the new CustomLogicRigidbodyBuiltin call itself.
+        /// </summary>
+        public CustomLogicRigidbodyBuiltin(BuiltinClassInstance owner, Rigidbody rb) : base(rb)
+        {
+            OwnerBuiltin = owner;
+            AttachedGameObject = rb.gameObject;
+            Value = (Rigidbody)Component;
         }
 
         // Add Static Getters for ForceMode
@@ -42,11 +56,7 @@ namespace CustomLogic
         public static int ForceModeVelocityChange => (int)ForceMode.VelocityChange;
 
         [CLProperty(Description = "The MapObject this rigidbody is attached to.")]
-        public CustomLogicMapObjectBuiltin OwnerMapObjectBuiltin
-        {
-            get => OwnerMapObject;
-        }
-
+        public BuiltinClassInstance Owner => OwnerBuiltin;
         // Position
         [CLProperty(Description = "The position of the Rigidbody in world space. This is the same as the position of the GameObject it is attached to.")]
         public CustomLogicVector3Builtin Position
@@ -313,7 +323,7 @@ namespace CustomLogic
         }
 
         [CLMethod(Description = "Apply a force to the Rigidbody - legacy version, please use optimized if possible.")]
-        public void AddForce(CustomLogicVector3Builtin force, string forceMode, CustomLogicVector3Builtin? atPoint = null)
+        public void AddForce(CustomLogicVector3Builtin force, string forceMode = "Acceleration", CustomLogicVector3Builtin? atPoint = null)
         {
             ForceMode mode = ForceMode.Acceleration;
             switch (forceMode)
@@ -337,7 +347,7 @@ namespace CustomLogic
         }
 
         [CLMethod(Description = "Apply a force to the Rigidbody.")]
-        public void AddForceOptimized(CustomLogicVector3Builtin force, int forceMode=5, CustomLogicVector3Builtin? atPoint = null)
+        public void AddForceOptimized(CustomLogicVector3Builtin force, int forceMode = 5, CustomLogicVector3Builtin? atPoint = null)
         {
             ForceMode mode = (ForceMode)forceMode;
             if (atPoint != null)

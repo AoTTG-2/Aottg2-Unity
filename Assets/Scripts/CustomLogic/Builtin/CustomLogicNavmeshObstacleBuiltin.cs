@@ -11,7 +11,7 @@ namespace CustomLogic
         public GameObject Owner;
         [CLConstructor]
         public CustomLogicNavmeshObstacleBuiltin() : base(null) { }
-        public CustomLogicNavmeshObstacleBuiltin(CustomLogicMapObjectBuiltin owner) : base(owner.Value.GameObject.AddComponent<NavMeshObstacle>())
+        public CustomLogicNavmeshObstacleBuiltin(CustomLogicMapObjectBuiltin owner) : base(GetOrAddComponent<NavMeshObstacle>(owner.Value.GameObject))
         {
             OwnerMapObject = owner;
             Owner = owner.Value.GameObject;

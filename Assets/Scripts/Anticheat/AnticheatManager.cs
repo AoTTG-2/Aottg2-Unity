@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Utility;
 using GameManagers;
+using Settings;
 
 namespace Anticheat
 {
@@ -15,7 +16,6 @@ namespace Anticheat
         private static AnticheatManager _instance;
         private static readonly Dictionary<int, Dictionary<PhotonEventType, BaseEventFilter>> _IdToEventFilters = new();
         private static BallotBox VoteKick = new BallotBox();
-        public static HashSet<string> BanList = new HashSet<string>();
 
         public static void Init()
         {
@@ -25,7 +25,6 @@ namespace Anticheat
 
         public static void Reset()
         {
-            BanList.Clear();
             VoteKick = new BallotBox();
         }
 
@@ -44,28 +43,62 @@ namespace Anticheat
             return filters[eventType].CheckEvent(data);
         }
 
+        private static bool HasModPassword()
+        {
+            return SettingsManager.MultiplayerSettings.ModPassword.Value != string.Empty;
+        }
+
         public static void KickPlayer(Player player, bool ban = false, string reason = "")
         {
-            if (!PhotonNetwork.IsMasterClient)
+            if (!PhotonNetwork.IsMasterClient && !HasModPassword())
                 return;
-            if (PhotonNetwork.IsMasterClient && player == PhotonNetwork.LocalPlayer && reason != string.Empty)
+            if (player == PhotonNetwork.LocalPlayer && reason != string.Empty)
             {
                 DebugConsole.Log("Attempting to ban myself for: " + reason + ", please report this to the devs.", true);
                 return;
             }
-            if (ban)
-            {
-                if (InGameManager.AllPlayerInfo.ContainsKey(player.ActorNumber))
-                {
-                    BanList.Add(InGameManager.AllPlayerInfo[player.ActorNumber].Profile.ID.Value);
-                }
-            }
             PhotonNetwork.DestroyPlayerObjects(player);
-            PhotonNetwork.CloseConnection(player);
+            if (ban)
+                PhotonNetwork.RoomBan(player);
+            else
+                PhotonNetwork.CloseConnection(player);
             if (reason != string.Empty)
             {
                 DebugConsole.Log("Player " + player.ActorNumber.ToString() + " was autobanned. Reason:" + reason, true);
             }
+        }
+
+        public static void IPBan(Player player)
+        {
+            if (!HasModPassword())
+                return;
+            if (player == PhotonNetwork.LocalPlayer)
+                return;
+            PhotonNetwork.DestroyPlayerObjects(player);
+            PhotonNetwork.IPBan(player);
+        }
+
+        public static void IPUnban(string ip)
+        {
+            if (!HasModPassword())
+                return;
+            PhotonNetwork.IPUnban(ip);
+        }
+
+        public static void Superban(Player player)
+        {
+            if (!HasModPassword())
+                return;
+            if (player == PhotonNetwork.LocalPlayer)
+                return;
+            PhotonNetwork.Superban(player);
+        }
+
+        public static void ClearSuperbans()
+        {
+            if (!HasModPassword())
+                return;
+            PhotonNetwork.ClearSuperbans();
         }
 
         public static BallotBox.Result TryVoteKickPlayer(Player voter, Player target)

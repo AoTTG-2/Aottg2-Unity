@@ -6,6 +6,7 @@ namespace CustomLogic
 {
     class CustomLogicLexer
     {
+        public int BuiltinLogicOffset => _lineOffset;
         protected string _source;
         protected List<CustomLogicToken> _tokens = new List<CustomLogicToken>();
         protected int _lineOffset;
@@ -13,11 +14,16 @@ namespace CustomLogic
 
         private int _line;
         private char[] _chars;
-        
+
         public CustomLogicLexer(string source, int lineOffset)
         {
             _source = source;
             _lineOffset = lineOffset;
+        }
+
+        public string GetLineNumberString(int line)
+        {
+            return CustomLogicManager.GetLineNumberString(line, _lineOffset);
         }
 
         public List<CustomLogicToken> GetTokens()
@@ -25,7 +31,7 @@ namespace CustomLogic
             _line = 0;
             _tokens.Clear();
             _chars = _source.ToCharArray();
-            
+
             for (int i = 0; i < _chars.Length; i++)
             {
                 char c = _chars[i];
@@ -36,7 +42,7 @@ namespace CustomLogic
                         _line++;
                         continue;
                     }
-                    
+
                     string twoCharToken = c.ToString();
                     if (i < _chars.Length - 1)
                         twoCharToken += _chars[i + 1];
@@ -67,7 +73,7 @@ namespace CustomLogic
                             }
                         }
                     }
-                    else if (char.IsDigit(c) || (c == '-' && i < _chars.Length - 1 && char.IsDigit(_chars[i + 1])))
+                    else if (char.IsDigit(c))
                     {
                         string numberStr = ScanNumber(i);
                         if (numberStr.Contains("."))
@@ -116,7 +122,7 @@ namespace CustomLogic
 
         private void AddToken(CustomLogicTokenType type, object value, int line)
         {
-            _tokens.Add(new CustomLogicToken(type, value, line + 1 - _lineOffset ));
+            _tokens.Add(new CustomLogicToken(type, value, line + 1 - _lineOffset));
         }
 
         private string ScanAlphaSymbol(int startIndex)
@@ -156,7 +162,7 @@ namespace CustomLogic
             string currentLexeme = "";
             for (int i = startIndex; i < _chars.Length; i++)
             {
-                if (!char.IsDigit(_chars[i]) && _chars[i] != '.' && !(i == startIndex && _chars[i] == '-'))
+                if (!char.IsDigit(_chars[i]) && _chars[i] != '.')
                     return currentLexeme;
                 currentLexeme += _chars[i];
             }
@@ -182,7 +188,7 @@ namespace CustomLogic
             {
                 if (_chars[i] == '\n')
                     _line++;
-                
+
                 if (_chars[i] == '\"')
                     return currentLexeme;
                 currentLexeme += _chars[i];
@@ -204,7 +210,7 @@ namespace CustomLogic
             }
             throw new Exception("Unclosed comment");
         }
-        
+
         private string ScanBlockComment(int startIndex)
         {
             string currentLexeme = "";
@@ -212,7 +218,7 @@ namespace CustomLogic
             {
                 if (_chars[i] == '\n')
                     _line++;
-                
+
                 if (_chars[i] == '*' && i + 1 < _chars.Length && _chars[i + 1] == '/')
                     return currentLexeme;
 

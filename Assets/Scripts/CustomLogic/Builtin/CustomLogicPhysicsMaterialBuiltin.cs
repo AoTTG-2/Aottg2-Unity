@@ -1,5 +1,4 @@
 ﻿using Map;
-using System;
 using UnityEngine;
 
 namespace CustomLogic
@@ -14,7 +13,7 @@ namespace CustomLogic
         [CLConstructor]
         public CustomLogicPhysicsMaterialBuiltin() : base(null) { }
 
-        public CustomLogicPhysicsMaterialBuiltin(CustomLogicMapObjectBuiltin owner) : base(owner.Value.GameObject.AddComponent<CustomPhysicsMaterial>())
+        public CustomLogicPhysicsMaterialBuiltin(CustomLogicMapObjectBuiltin owner) : base(GetOrAddComponent<CustomPhysicsMaterial>(owner.Value.GameObject))
         {
             OwnerMapObject = owner;
             Owner = owner.Value.GameObject;

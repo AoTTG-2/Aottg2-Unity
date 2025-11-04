@@ -2,21 +2,24 @@
 
 namespace CustomLogic
 {
-    /// <code>
-    /// # Quaternion takes four floats X, Y, Z and W as parameters when initializing. 
-    /// quaternion = Quaternion(0.5, 0.5, 0.5, 0.5);
-    /// </code>
+    /// <summary>
+    /// Represents a quaternion.
+    /// </summary>
     [CLType(Name = "Quaternion", Static = true)]
     partial class CustomLogicQuaternionBuiltin : BuiltinClassInstance, ICustomLogicMathOperators, ICustomLogicEquals, ICustomLogicCopyable
     {
         public Quaternion Value = Quaternion.identity;
 
         [CLConstructor]
-        public CustomLogicQuaternionBuiltin(object[] parameterValues)
+        public CustomLogicQuaternionBuiltin() { }
+
+        /// <summary>
+        /// Creates a new Quaternion from the given values.
+        /// </summary>
+        [CLConstructor]
+        public CustomLogicQuaternionBuiltin(float x, float y, float z, float w)
         {
-            if (parameterValues.Length == 0)
-                return;
-            Value = new Quaternion(parameterValues[0].UnboxToFloat(), parameterValues[1].UnboxToFloat(), parameterValues[2].UnboxToFloat(), parameterValues[3].UnboxToFloat());
+            Value = new Quaternion(x, y, z, w);
         }
 
         public CustomLogicQuaternionBuiltin(Quaternion value)
@@ -114,9 +117,7 @@ namespace CustomLogic
             return new CustomLogicQuaternionBuiltin(value);
         }
 
-        [CLMethod]
         public object __Add__(object self, object other) => throw CustomLogicUtils.OperatorException(nameof(__Add__), self, other);
-        [CLMethod]
         public object __Sub__(object self, object other) => throw CustomLogicUtils.OperatorException(nameof(__Sub__), self, other);
 
         [CLMethod]
@@ -130,7 +131,6 @@ namespace CustomLogic
             };
         }
 
-        [CLMethod]
         public object __Div__(object self, object other) => throw CustomLogicUtils.OperatorException(nameof(__Div__), self, other);
 
         [CLMethod]
@@ -144,6 +144,11 @@ namespace CustomLogic
 
         [CLMethod]
         public int __Hash__() => Value.GetHashCode();
+
+        public object __Mod__(object self, object other)
+        {
+            throw new System.NotImplementedException();
+        }
 
         public static implicit operator Quaternion(CustomLogicQuaternionBuiltin q) => q.Value;
         public static implicit operator CustomLogicQuaternionBuiltin(Quaternion q) => new CustomLogicQuaternionBuiltin(q);

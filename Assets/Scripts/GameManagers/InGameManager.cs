@@ -412,8 +412,6 @@ namespace GameManagers
             if (data.Length > 1000)
                 return;
             AllPlayerInfo[info.Sender.ActorNumber].DeserializeFromJsonString(StringCompression.Decompress(data));
-            if (AnticheatManager.BanList.Contains(AllPlayerInfo[info.Sender.ActorNumber].Profile.ID.Value))
-                AnticheatManager.KickPlayer(info.Sender, false);
         }
 
         public static void OnGameSettingsRPC(byte[] data, PhotonMessageInfo info)
@@ -833,6 +831,8 @@ namespace GameManagers
                 prefab = CharacterPrefabs.ArmoredShifter;
             else if (type == "Eren")
                 prefab = CharacterPrefabs.ErenShifter;
+            else if (type == "WallColossal")
+                prefab = CharacterPrefabs.WallColossal;
             if (prefab == "")
                 return null;
             var shifter = (BaseShifter)CharacterSpawner.Spawn(prefab, position, rotation);

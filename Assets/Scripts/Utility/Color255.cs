@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Utility
 {
@@ -58,6 +57,11 @@ namespace Utility
                 return false;
             var other = (Color255)obj;
             return R == other.R && G == other.G && B == other.B && A == other.A;
+        }
+
+        public override int GetHashCode()
+        {
+            return (R, G, B, A).GetHashCode();
         }
     }
 }

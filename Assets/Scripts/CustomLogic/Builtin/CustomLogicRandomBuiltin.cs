@@ -4,11 +4,14 @@ using Utility;
 namespace CustomLogic
 {
     /// <summary>
-    /// Random can be initialized as a class with a string given as the seed value.
+    /// Random can be initialized as a class with an int given as the seed value.
     /// Note that this is optional, and you can reference Random directly as a static class.
     /// </summary>
     /// <code>
-    /// # Create an instance of Random with a seed of 123
+    /// # Use random methods directly
+    /// r = Random.RandomInt(0, 100);
+    /// 
+    /// # Or create an instance of Random with a seed
     /// generator = Random(123);
     /// 
     /// # Use it
@@ -16,7 +19,7 @@ namespace CustomLogic
     /// 
     /// # Seed allows repeatable random values
     /// generator2 = Random(123);
-    /// b = generator.RandomInt(0, 100);
+    /// b = generator2.RandomInt(0, 100);
     /// compared = a == b;    # Always True
     /// </code>
     [CLType(Name = "Random", Static = true)]
@@ -26,13 +29,13 @@ namespace CustomLogic
         public readonly bool UseInstanceRandom;
 
         [CLConstructor]
-        public CustomLogicRandomBuiltin(object[] parameterValues)
+        public CustomLogicRandomBuiltin() { }
+
+        [CLConstructor]
+        public CustomLogicRandomBuiltin(int seed)
         {
-            if (parameterValues.Length == 1)
-            {
-                Rand = new Unity.Mathematics.Random((uint)parameterValues[0].UnboxToInt());
-                UseInstanceRandom = true;
-            }
+            Rand = new Unity.Mathematics.Random((uint)seed);
+            UseInstanceRandom = true;
         }
 
         [CLMethod("Generates a random integer between the specified range.")]

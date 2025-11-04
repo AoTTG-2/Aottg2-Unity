@@ -5,9 +5,9 @@ using Utility;
 namespace CustomLogic
 {
     /// <summary>
-    /// Physics class for custom logic.
+    /// Static Physics class. Contains some common physics functions
     /// </summary>
-    /// <example>
+    /// <code>
     /// start = Vector3(0);
     /// end = Vector3(10);
     /// # Options: All, MapObjects, Characters, Titans, Humans, Projectiles, Entities, Hitboxes, MapEditor
@@ -18,7 +18,7 @@ namespace CustomLogic
     /// Game.Print(result.Normal);
     /// Game.Print(result.Distance);
     /// Game.Print(result.Collider);
-    /// </example>
+    /// </code>
     [CLType(Name = "Physics", Static = true, Abstract = true)]
     partial class CustomLogicPhysicsBuiltin : BuiltinClassInstance
     {
@@ -73,7 +73,8 @@ namespace CustomLogic
                         Point = new CustomLogicVector3Builtin(hit.point),
                         Normal = new CustomLogicVector3Builtin(hit.normal),
                         Distance = hit.distance,
-                        Collider = new CustomLogicColliderBuiltin(new object[] { hit.collider })
+                        Collider = collider,
+                        ColliderInfo = new CustomLogicColliderBuiltin(new object[] { hit.collider })
                     };
                 }
             }
@@ -103,7 +104,8 @@ namespace CustomLogic
                         Point = new CustomLogicVector3Builtin(hit.point),
                         Normal = new CustomLogicVector3Builtin(hit.normal),
                         Distance = hit.distance,
-                        Collider = new CustomLogicColliderBuiltin(new object[] { hit.collider })
+                        Collider = collider,
+                        ColliderInfo = new CustomLogicColliderBuiltin(new object[] { hit.collider })
                     });
                 }
             }
@@ -148,7 +150,8 @@ namespace CustomLogic
                         Point = new CustomLogicVector3Builtin(hit.point),
                         Normal = new CustomLogicVector3Builtin(hit.normal),
                         Distance = hit.distance,
-                        Collider = new CustomLogicColliderBuiltin(new object[] { hit.collider })
+                        Collider = collider,
+                        ColliderInfo = new CustomLogicColliderBuiltin(new object[] { hit.collider })
                     });
                 }
             }

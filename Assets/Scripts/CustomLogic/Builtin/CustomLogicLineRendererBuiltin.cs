@@ -1,36 +1,57 @@
-using ApplicationManagers;
 using System;
 using System.Collections.Generic;
+using ApplicationManagers;
 using UnityEngine;
 using Utility;
 
 namespace CustomLogic
 {
+    /// <summary>
+    /// Represents a LineRenderer
+    /// </summary>
     [CLType(Name = "LineRenderer", Static = true)]
     partial class CustomLogicLineRendererBuiltin : BuiltinClassInstance
     {
         public LineRenderer Value = null;
 
         /// <summary>
-        /// Default constructor is parameterless.
-        /// lr = LineRenderer();
-        /// lr.StartWidth = 1;
+        /// Default constructor, Creates a black line with a width of 1
         /// </summary>
         [CLConstructor]
-        public CustomLogicLineRendererBuiltin(object[] parameterValues)
+        public CustomLogicLineRendererBuiltin()
+            : this(Color.black, 1f) { }
+
+        /// <summary>
+        /// Creates a line with the given color and width
+        /// </summary>
+        [CLConstructor]
+        public CustomLogicLineRendererBuiltin(CustomLogicColorBuiltin color, float width = 1f)
+            : this(color.Value.ToColor(), width) { }
+
+        private CustomLogicLineRendererBuiltin(Color color, float width)
         {
             Value = new GameObject().AddComponent<LineRenderer>();
             Value.material = ResourceManager.InstantiateAsset<Material>(ResourcePaths.Map, "Materials/TransparentMaterial", true);
-            Value.material.color = Color.black;
-            Value.startWidth = 1f;
-            Value.endWidth = 1f;
+            Value.material.color = color;
+            Value.startWidth = width;
+            Value.endWidth = width;
             Value.positionCount = 0;
             Value.enabled = false;
         }
 
-        public CustomLogicLineRendererBuiltin(LineRenderer value)
+        [CLMethod(description: "Remove the line renderer (can also be done by removing all references to this object)")]
+        public void Destroy()
         {
-            Value = value;
+            GameObject.Destroy(Value.gameObject);
+        }
+
+        ~CustomLogicLineRendererBuiltin()
+        {
+            // Remove object when reference is lost
+            if (Value.gameObject != null)
+            {
+                GameObject.Destroy(Value.gameObject);
+            }
         }
 
         [CLProperty(description: "The width of the line at the start")]
@@ -62,13 +83,12 @@ namespace CustomLogic
         }
 
         [CLProperty(description: "Is the line renderer enabled")]
-        public bool Enabled
+        public new bool Enabled
         {
             get => Value.enabled;
             set => Value.enabled = value;
         }
 
-        // Loop
         [CLProperty(description: "Is the line renderer a loop")]
         public bool Loop
         {
@@ -76,7 +96,6 @@ namespace CustomLogic
             set => Value.loop = value;
         }
 
-        // Corner Vertices
         [CLProperty(description: "The number of corner vertices")]
         public int NumCornerVertices
         {
@@ -84,7 +103,6 @@ namespace CustomLogic
             set => Value.numCornerVertices = value;
         }
 
-        // End Cap Vertices
         [CLProperty(description: "The number of end cap vertices")]
         public int NumCapVertices
         {
@@ -92,7 +110,6 @@ namespace CustomLogic
             set => Value.numCapVertices = value;
         }
 
-        // Alignment
         [CLProperty(description: "The alignment of the line renderer")]
         public string Alignment
         {
@@ -100,7 +117,6 @@ namespace CustomLogic
             set => Value.alignment = (LineAlignment)System.Enum.Parse(typeof(LineAlignment), value);
         }
 
-        // Texture Mode
         [CLProperty(description: "The texture mode of the line renderer")]
         public string TextureMode
         {
@@ -108,7 +124,6 @@ namespace CustomLogic
             set => Value.textureMode = (LineTextureMode)System.Enum.Parse(typeof(LineTextureMode), value);
         }
 
-        // World Space
         [CLProperty(description: "Is the line renderer in world space")]
         public bool UseWorldSpace
         {
@@ -116,7 +131,6 @@ namespace CustomLogic
             set => Value.useWorldSpace = value;
         }
 
-        // Cast Shadows
         [CLProperty(description: "Does the line renderer cast shadows")]
         public string ShadowCastingMode
         {
@@ -124,7 +138,6 @@ namespace CustomLogic
             set => Value.shadowCastingMode = (UnityEngine.Rendering.ShadowCastingMode)System.Enum.Parse(typeof(UnityEngine.Rendering.ShadowCastingMode), value);
         }
 
-        // Receive Shadows
         [CLProperty(description: "Does the line renderer receive shadows")]
         public bool ReceiveShadows
         {
@@ -132,7 +145,6 @@ namespace CustomLogic
             set => Value.receiveShadows = value;
         }
 
-        // Gradient
         [CLProperty(description: "The gradient of the line renderer")]
         public CustomLogicListBuiltin ColorGradient
         {
@@ -165,7 +177,6 @@ namespace CustomLogic
             }
         }
 
-        // Alpha Gradient
         [CLProperty(description: "The alpha gradient of the line renderer")]
         public CustomLogicListBuiltin AlphaGradient
         {
@@ -195,7 +206,6 @@ namespace CustomLogic
             }
         }
 
-        // Width Curve use a list of vector2's to create then animation curve
         [CLProperty(description: "The width curve of the line renderer")]
         public CustomLogicListBuiltin WidthCurve
         {
@@ -226,7 +236,6 @@ namespace CustomLogic
             }
         }
 
-        // Multiplier
         [CLProperty(description: "The width multiplier of the line renderer")]
         public float WidthMultiplier
         {
@@ -234,7 +243,6 @@ namespace CustomLogic
             set => Value.widthMultiplier = value;
         }
 
-        // Color Gradient Mode
         [CLProperty(description: "The color gradient mode of the line renderer")]
         public string ColorGradientMode
         {
@@ -245,15 +253,7 @@ namespace CustomLogic
         [CLMethod(description: "Create a new LineRenderer"), Obsolete("Create a new instance with LineRenderer() instead.")]
         public static CustomLogicLineRendererBuiltin CreateLineRenderer()
         {
-            GameObject obj = new GameObject();
-            var renderer = obj.AddComponent<LineRenderer>();
-            renderer.material = ResourceManager.InstantiateAsset<Material>(ResourcePaths.Map, "Materials/TransparentMaterial", true);
-            renderer.material.color = Color.black;
-            renderer.startWidth = 1f;
-            renderer.endWidth = 1f;
-            renderer.positionCount = 0;
-            renderer.enabled = false;
-            return new CustomLogicLineRendererBuiltin(renderer);
+            return new CustomLogicLineRendererBuiltin();
         }
 
         [CLMethod(description: "Get the position of a point in the line renderer")]

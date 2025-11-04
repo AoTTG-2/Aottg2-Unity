@@ -8,5 +8,6 @@
         public static string ErenShifter = "Shifters/Prefabs/Eren";
         public static string AnnieShifter = "Shifters/Prefabs/Annie";
         public static string ArmoredShifter = "Shifters/Prefabs/Armored";
+        public static string WallColossal = "Shifters/Prefabs/WallColossal";
     }
 }

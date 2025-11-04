@@ -182,11 +182,11 @@ namespace Characters
                 _lastWorldHookPosition = position;
                 HookCharacter = transform.root.GetComponent<BaseCharacter>();
 
-                if (SettingsManager.InGameCurrent.Misc.RealismMode.Value)
+                if (SettingsManager.InGameCurrent.Misc.HookDamageMultiplier.Value > 0)
                 {
                     if (HookCharacter != null && HookCharacter is Human && !TeamInfo.SameTeam(HookCharacter, _owner) && _owner.IsMine())
                     {
-                        var damage = Math.Max(10, (int)(_owner.CurrentSpeed * CharacterData.HumanWeaponInfo["Hook"]["DamageMultiplier"]));
+                        var damage = Math.Max(10, (int)(_owner.CurrentSpeed * SettingsManager.InGameCurrent.Misc.HookDamageMultiplier.Value));
                         ((InGameMenu)UIManager.CurrentMenu).ShowKillScore(damage);
                         HookCharacter.GetHit(_owner, damage, "Hook", "");
                     }

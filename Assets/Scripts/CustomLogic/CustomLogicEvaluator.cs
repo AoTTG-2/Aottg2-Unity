@@ -28,8 +28,6 @@ namespace CustomLogic
         public Dictionary<int, Dictionary<string, float>> PlayerIdToLastPropertyChanges = new Dictionary<int, Dictionary<string, float>>();
         public string ScoreboardHeader = "Kills / Deaths / Max / Total";
         public string ScoreboardProperty = "";
-        //public List<string> AllowedSpecials = new List<string>();
-        //public List<string> DisallowedSpecials = new List<string>();
         public static readonly object[] EmptyArgs = Array.Empty<object>();
         public bool DefaultShowKillScore = true;
         public bool DefaultShowKillFeed = true;
@@ -38,10 +36,18 @@ namespace CustomLogic
         public bool ShowScoreboardStatus = true;
         public string ForcedCharacterType = string.Empty;
         public string ForcedLoadout = string.Empty;
+        private int _baseLogicOffset = 0;
 
-        public CustomLogicEvaluator(CustomLogicStartAst start)
+        public CustomLogicEvaluator(CustomLogicStartAst start, int baseLogicOffset = 0)
         {
             _start = start;
+            _baseLogicOffset = baseLogicOffset;
+        }
+
+        public string GetLineNumberString(int lineNumber)
+        {
+            // More relevant line number for when using MapLogic -> need to expand to handle builtin errors as well since its so annoying.
+            return CustomLogicManager.GetLineNumberString(lineNumber, _baseLogicOffset);
         }
 
         public Dictionary<string, BaseSetting> GetModeSettings()
@@ -90,7 +96,7 @@ namespace CustomLogic
                 }
                 foreach (string variableName in instance.Variables.Keys)
                 {
-                    if (!variableName.StartsWith("_"))
+                    if (!variableName.StartsWith("_") && variableName != "Type")
                     {
                         object value = instance.Variables[variableName];
                         if (parameterDict.ContainsKey(variableName))
@@ -127,6 +133,8 @@ namespace CustomLogic
             }
             return componentNames;
         }
+
+        #region Callbacks
 
         public void Start(Dictionary<string, BaseSetting> modeSettings)
         {
@@ -301,6 +309,8 @@ namespace CustomLogic
                 return new CustomLogicHumanBuiltin((Human)character);
             else if (character is BasicTitan)
                 return new CustomLogicTitanBuiltin((BasicTitan)character);
+            else if (character is WallColossalShifter)
+                return new CustomLogicWallColossalBuiltin((WallColossalShifter)character);
             else if (character is BaseShifter)
                 return new CustomLogicShifterBuiltin((BaseShifter)character);
             return null;
@@ -371,32 +381,41 @@ namespace CustomLogic
             }
         }
 
+        #endregion
+
+        #region Map Object Setup
         public void LoadMapObjectComponents(MapObject obj, bool init = false)
         {
             if (obj.ScriptObject is MapScriptSceneObject)
             {
                 var photonView = SetupNetworking(obj);
                 var mapObjectBuiltin = SetupMapObject(obj);
-                List<MapScriptComponent> components = ((MapScriptSceneObject)obj.ScriptObject).Components;
-                bool rigidbody = false;
-                foreach (var component in components)
-                {
-                    if (_start.Classes.ContainsKey(component.ComponentName))
-                    {
-                        CustomLogicComponentInstance instance = CreateComponentInstance(component.ComponentName, obj, component);
-                        obj.RegisterComponentInstance(instance);
-                        if (init)
-                        {
-                            EvaluateMethod(instance, "Init");
-                            instance.Inited = true;
-                        }
-                        if (component.ComponentName == "Rigidbody")
-                            rigidbody = true;
-                    }
-                }
+                bool rigidbody = LoadRuntimeMapObjectComponents(obj, init);
                 if (photonView != null)
                     photonView.Init(obj.ScriptObject.Id, rigidbody);
             }
+        }
+
+        public bool LoadRuntimeMapObjectComponents(MapObject obj, bool init = false)
+        {
+            List<MapScriptComponent> components = ((MapScriptSceneObject)obj.ScriptObject).Components;
+            bool rigidbody = false;
+            foreach (var component in components)
+            {
+                if (_start.Classes.ContainsKey(component.ComponentName))
+                {
+                    CustomLogicComponentInstance instance = CreateComponentInstance(component.ComponentName, obj, component);
+                    obj.RegisterComponentInstance(instance);
+                    if (init)
+                    {
+                        EvaluateMethod(instance, "Init");
+                        instance.Inited = true;
+                    }
+                    if (component.ComponentName == "Rigidbody")
+                        rigidbody = true;
+                }
+            }
+            return rigidbody;
         }
 
         public CustomLogicComponentInstance AddMapObjectComponent(MapObject obj, string componentName)
@@ -464,7 +483,6 @@ namespace CustomLogic
 
         public CustomLogicComponentInstance CreateComponentInstance(string className, MapObject obj, MapScriptComponent script)
         {
-
             CustomLogicNetworkViewBuiltin networkView = null;
             if (obj.ScriptObject.Networked)
                 networkView = IdToNetworkView[obj.ScriptObject.Id];
@@ -519,7 +537,8 @@ namespace CustomLogic
                     IdToNetworkView.Add(obj.ScriptObject.Id, new CustomLogicNetworkViewBuiltin(obj));
                     if (PhotonNetwork.IsMasterClient)
                     {
-                        var go = PhotonNetwork.Instantiate("Game/CustomLogicPhotonSyncPrefab", Vector3.zero, Quaternion.identity, 0);
+                        object[] data = new object[] { (int)SpawnIntent.PreplacedBind, obj.ScriptObject.Id, false };
+                        var go = PhotonNetwork.Instantiate("Game/CustomLogicPhotonSyncDynamicPrefab", Vector3.zero, Quaternion.identity, 0, data);
                         var photonView = go.GetComponent<CustomLogicPhotonSync>();
                         return photonView;
                     }
@@ -528,6 +547,9 @@ namespace CustomLogic
             return null;
         }
 
+        #endregion
+
+        #region Evaluator
         public CustomLogicClassInstance CreateClassInstance(string className, object[] parameterValues, bool init = true)
         {
             if (CustomLogicBuiltinTypes.IsBuiltinType(className))
@@ -543,13 +565,7 @@ namespace CustomLogic
             {
                 RunAssignmentsClassInstance(classInstance);
                 EvaluateMethod(classInstance, "Init", parameterValues);
-                classInstance = new UserClassInstance(className);
-                if (init)
-                {
-                    RunAssignmentsClassInstance(classInstance);
-                    EvaluateMethod(classInstance, "Init", parameterValues);
-                    classInstance.Inited = true;
-                }
+                classInstance.Inited = true;
             }
             return classInstance;
         }
@@ -1020,7 +1036,7 @@ namespace CustomLogic
             }
             catch (Exception e)
             {
-                DebugConsole.Log("Custom logic runtime error at method " + methodName + " in class " + classInstance.ClassName + ": " + e.Message, true);
+                DebugConsole.Log("Custom logic runtime error at line " + GetLineNumberString(userMethod.Ast.Line) + " at method " + methodName + " in class " + classInstance.ClassName + ": " + e.Message, true);
                 return null;
             }
         }
@@ -1089,6 +1105,13 @@ namespace CustomLogic
                 {
                     return !(bool)EvaluateExpression(classInstance, localVariables, ((CustomLogicNotExpressionAst)expression).Next);
                 }
+                else if (expression.Type == CustomLogicAstType.UnaryExpression)
+                {
+                    CustomLogicUnaryExpressionAst unaryExpression = (CustomLogicUnaryExpressionAst)expression;
+                    CustomLogicSymbol symbol = (CustomLogicSymbol)unaryExpression.Token.Value;
+                    object next = EvaluateExpression(classInstance, localVariables, ((CustomLogicUnaryExpressionAst)expression).Next);
+                    return EvaluateUnaryExpression(symbol, next);
+                }
                 else if (expression.Type == CustomLogicAstType.MethodCallExpression)
                 {
                     CustomLogicMethodCallExpressionAst methodCallExpression = (CustomLogicMethodCallExpressionAst)expression;
@@ -1131,7 +1154,19 @@ namespace CustomLogic
             }
             catch (Exception e)
             {
-                DebugConsole.Log("Custom logic runtime error at line " + expression.Line.ToString() + ": " + e.Message, true);
+                DebugConsole.Log("Custom logic runtime error at line " + GetLineNumberString(expression.Line) + ": " + e.Message, true);
+            }
+            return null;
+        }
+
+        private object EvaluateUnaryExpression(CustomLogicSymbol symbol, object next)
+        {
+            if (symbol == CustomLogicSymbol.Plus) return next;
+            else if (symbol == CustomLogicSymbol.Minus)
+            {
+                if (next is int i) return -i;
+                if (next is float f) return -f;
+                if (next is double d) return -d;
             }
             return null;
         }
@@ -1142,6 +1177,7 @@ namespace CustomLogic
             else if (symbol == CustomLogicSymbol.Minus) return SubtractValues(left, right);
             else if (symbol == CustomLogicSymbol.Times) return MultiplyValues(left, right);
             else if (symbol == CustomLogicSymbol.Divide) return DivideValues(left, right);
+            else if (symbol == CustomLogicSymbol.Modulo) return ModuloValues(left, right);
             else if (symbol == CustomLogicSymbol.Equals)
                 return CheckEquals(left, right);
             else if (symbol == CustomLogicSymbol.NotEquals)
@@ -1179,6 +1215,7 @@ namespace CustomLogic
         string sub = nameof(ICustomLogicMathOperators.__Sub__);
         string mul = nameof(ICustomLogicMathOperators.__Mul__);
         string div = nameof(ICustomLogicMathOperators.__Div__);
+        string mod = nameof(ICustomLogicMathOperators.__Mod__);
 
         string eq = nameof(ICustomLogicEquals.__Eq__);
         string copy = nameof(ICustomLogicCopyable.__Copy__);
@@ -1232,6 +1269,16 @@ namespace CustomLogic
                 return ClassMathOperation(left, right, div);
             else
                 return left.UnboxToFloat() / right.UnboxToFloat();
+        }
+
+        private object ModuloValues(object left, object right)
+        {
+            if (left is int && right is int)
+                return (int)left % (int)right;
+            else if (left is CustomLogicClassInstance || right is CustomLogicClassInstance)
+                return ClassMathOperation(left, right, mod);
+            else
+                return left.UnboxToFloat() % right.UnboxToFloat();
         }
 
         public bool CheckEquals(object left, object right)
@@ -1289,4 +1336,6 @@ namespace CustomLogic
         PassedElseIf,
         FailedElseIf
     }
+
+    #endregion
 }

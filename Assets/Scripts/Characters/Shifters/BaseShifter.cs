@@ -57,12 +57,20 @@ namespace Characters
             TransformingToHuman = true;
         }
 
-        public void Init(bool ai, string team, JSONNode data, float liveTime)
+        public virtual void Init(bool ai, string team, JSONNode data, float liveTime)
         {
             if (ai)
             {
-                var controller = gameObject.AddComponent<BaseTitanAIController>();
-                controller.Init(data);
+                if (this is WallColossalShifter)
+                {
+                    var controller = gameObject.AddComponent<WallColossalAIController>();
+                    controller.Init(data);
+                }
+                else
+                {
+                    var controller = gameObject.AddComponent<BaseTitanAIController>();
+                    controller.Init(data);
+                }
                 Name = data["Name"].Value;
             }
             else

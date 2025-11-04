@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace CustomLogic
 {
+    /// <summary>
+    /// Represents a transform.
+    /// </summary>
     [CLType(Name = "Transform", Abstract = true)]
     partial class CustomLogicTransformBuiltin : BuiltinClassInstance, ICustomLogicEquals
     {
@@ -89,14 +92,24 @@ namespace CustomLogic
         public CustomLogicQuaternionBuiltin QuaternionRotation
         {
             get => Value.rotation;
-            set => Value.rotation = value.Value;
+            set
+            {
+                _needSetLocalRotation = true;
+                _needSetRotation = true;
+                Value.rotation = value.Value;
+            }
         }
 
         [CLProperty("Gets or sets the quaternion local rotation of the transform.")]
         public CustomLogicQuaternionBuiltin QuaternionLocalRotation
         {
             get => Value.localRotation;
-            set => Value.localRotation = value.Value;
+            set
+            {
+                _needSetLocalRotation = true;
+                _needSetRotation = true;
+                Value.localRotation = value.Value;
+            }
         }
 
         [CLProperty("Gets or sets the scale of the transform.")]
@@ -137,6 +150,9 @@ namespace CustomLogic
                     Value.SetParent(null);
                 else
                     Value.SetParent(value.Value);
+
+                _needSetLocalRotation = true;
+                _needSetRotation = true;
             }
         }
 
@@ -316,13 +332,31 @@ namespace CustomLogic
         [CLMethod] public CustomLogicVector3Builtin TransformPoint(CustomLogicVector3Builtin point) => Value.TransformPoint(point);
 
         /// <inheritdoc cref="Transform.Rotate(Vector3)"/>
-        [CLMethod] public void Rotate(CustomLogicVector3Builtin rotation) => Value.Rotate(rotation);
+        [CLMethod]
+        public void Rotate(CustomLogicVector3Builtin rotation)
+        {
+            Value.Rotate(rotation);
+            _needSetLocalRotation = true;
+            _needSetRotation = true;
+        }
 
         /// <inheritdoc cref="Transform.RotateAround(Vector3, Vector3, float)"/>
-        [CLMethod] public void RotateAround(CustomLogicVector3Builtin point, CustomLogicVector3Builtin axis, float angle) => Value.RotateAround(point.Value, axis.Value, angle);
+        [CLMethod]
+        public void RotateAround(CustomLogicVector3Builtin point, CustomLogicVector3Builtin axis, float angle)
+        {
+            _needSetLocalRotation = true;
+            _needSetRotation = true;
+            Value.RotateAround(point.Value, axis.Value, angle);
+        }
 
         /// <inheritdoc cref="Transform.LookAt(Vector3)"/>
-        [CLMethod] public void LookAt(CustomLogicVector3Builtin target) => Value.LookAt(target);
+        [CLMethod]
+        public void LookAt(CustomLogicVector3Builtin target)
+        {
+            _needSetLocalRotation = true;
+            _needSetRotation = true;
+            Value.LookAt(target);
+        }
 
         [CLMethod("Sets the enabled state of all child renderers.")]
         public void SetRenderersEnabled(bool enabled)
