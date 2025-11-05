@@ -64,7 +64,8 @@ namespace Characters
             human.HumanCache.AHSSHit.transform.rotation = Quaternion.LookRotation(direction);
             human.HumanCache.AHSSHit.Activate(0f, 0.1f);
             human.Cache.Rigidbody.AddForce(-direction * ahssInfo["KnockbackForce"].AsFloat, ForceMode.VelocityChange);
-            ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.ShootAHSS(RoundLeft == 1, RoundLeft == 0);
+            if (!human.AI)
+                ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.ShootAHSS(RoundLeft == 1, RoundLeft == 0);
         }
         public void HandleUI()
         {
