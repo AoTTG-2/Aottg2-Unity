@@ -54,19 +54,19 @@ namespace CustomLogic
         [CLMethod(description: "Send a message to a player")]
         public void SendMessage(CustomLogicPlayerBuiltin player, string message)
         {
-            RPCManager.PhotonView.RPC("SendMessageRPC", player.Player, new object[] { message });
+            RPCManager.PhotonView.RPC(nameof(RPCManager.SendMessageRPC), player.Player, new object[] { message });
         }
 
         [CLMethod(description: "Send a message to all players")]
         public void SendMessageAll(string message)
         {
-            RPCManager.PhotonView.RPC("SendMessageRPC", RpcTarget.All, new object[] { message });
+            RPCManager.PhotonView.RPC(nameof(RPCManager.SendMessageRPC), RpcTarget.All, new object[] { message });
         }
 
         [CLMethod(description: "Send a message to all players except the sender")]
         public void SendMessageOthers(string message)
         {
-            RPCManager.PhotonView.RPC("SendMessageRPC", RpcTarget.Others, new object[] { message });
+            RPCManager.PhotonView.RPC(nameof(RPCManager.SendMessageRPC), RpcTarget.Others, new object[] { message });
         }
 
         [CLMethod(description: "Finds a player in the room by id.")]

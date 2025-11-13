@@ -53,7 +53,7 @@ namespace Map
                 if (mapHash != MapHash)
                     Transfer(player);
                 else
-                    RPCManager.PhotonView.RPC("LoadCachedMapRPC", player, new object[0]);
+                    RPCManager.PhotonView.RPC(nameof(RPCManager.LoadCachedMapRPC), player, new object[0]);
             }
             MapTransferReady = true;
         }
@@ -159,7 +159,7 @@ namespace Map
         {
             for (int i = 0; i < _mapTransferData.Count; i++)
             {
-                RPCManager.PhotonView.RPC("TransferMapRPC", player, new object[] { _mapTransferData[i], i, _mapTransferData.Count });
+                RPCManager.PhotonView.RPC(nameof(RPCManager.TransferMapRPC), player, new object[] { _mapTransferData[i], i, _mapTransferData.Count });
                 yield return new WaitForSeconds(0.25f);
             }
         }

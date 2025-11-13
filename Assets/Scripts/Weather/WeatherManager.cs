@@ -322,7 +322,7 @@ namespace Weather
             ApplyCurrentWeather(firstStart: false, applyAll: true);
             if (PhotonNetwork.IsMasterClient)
             {
-                RPCManager.PhotonView.RPC("SetWeatherRPC", RpcTarget.Others, new object[]{ StringCompression.Compress(_currentWeather.SerializeToJsonString()),
+                RPCManager.PhotonView.RPC(nameof(RPCManager.SetWeatherRPC), RpcTarget.Others, new object[]{ StringCompression.Compress(_currentWeather.SerializeToJsonString()),
                     StringCompression.Compress(_startWeather.SerializeToJsonString()), StringCompression.Compress(_targetWeather.SerializeToJsonString()), 
                     _targetWeatherStartTimes, _targetWeatherEndTimes, _currentTime });
             }
@@ -332,7 +332,7 @@ namespace Weather
         {
             if (PhotonNetwork.IsMasterClient)
             {
-                RPCManager.PhotonView.RPC("SetWeatherRPC", player, new object[]{ StringCompression.Compress(_currentWeather.SerializeToJsonString()),
+                RPCManager.PhotonView.RPC(nameof(RPCManager.SetWeatherRPC), player, new object[]{ StringCompression.Compress(_currentWeather.SerializeToJsonString()),
                     StringCompression.Compress(_startWeather.SerializeToJsonString()), StringCompression.Compress(_targetWeather.SerializeToJsonString()),
                     _targetWeatherStartTimes, _targetWeatherEndTimes, _currentTime });
             }
