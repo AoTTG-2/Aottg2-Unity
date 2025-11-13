@@ -181,12 +181,12 @@ namespace UI
                 if (_currentEmoteWheelState == EmoteWheelState.Text)
                 {
                     string text = ((StringSetting)SettingsManager.EmoteSettings.TextEmotes.GetItemAt(selected)).Value;
-                    RPCManager.PhotonView.RPC("EmoteTextRPC", RpcTarget.All, new object[] { character.Cache.PhotonView.ViewID, text });
+                    RPCManager.PhotonView.RPC(nameof(RPCManager.EmoteTextRPC), RpcTarget.All, new object[] { character.Cache.PhotonView.ViewID, text });
                 }
                 else if (_currentEmoteWheelState == EmoteWheelState.Emoji)
                 {
                     string emoji = ((StringSetting)SettingsManager.EmoteSettings.EmojiEmotes.GetItemAt(selected)).Value;
-                    RPCManager.PhotonView.RPC("EmoteEmojiRPC", RpcTarget.All, new object[] { character.Cache.PhotonView.ViewID, emoji });
+                    RPCManager.PhotonView.RPC(nameof(RPCManager.EmoteEmojiRPC), RpcTarget.All, new object[] { character.Cache.PhotonView.ViewID, emoji });
                 }
                 else if (_currentEmoteWheelState == EmoteWheelState.Action)
                 {

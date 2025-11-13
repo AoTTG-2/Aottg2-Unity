@@ -353,7 +353,7 @@ namespace Controllers
                 if (_human.CarryState == HumanCarryState.Carry)
                 {
                     if (_humanInput.HorseMount.GetKeyDown())
-                        _human.Cache.PhotonView.RPC("UncarryRPC", RpcTarget.All, new object[0]);
+                        _human.Cache.PhotonView.RPC(nameof(_human.UncarryRPC), RpcTarget.All, new object[0]);
                 }
             }
             else if (_human.MountState == HumanMountState.Horse)

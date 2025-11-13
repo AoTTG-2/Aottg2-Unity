@@ -131,19 +131,19 @@ namespace CustomLogic
         public void Init(int mapObjectId, bool rigidbody)
         {
             MapObject = MapLoader.IdToMapObject[mapObjectId];
-            PhotonView.RPC("InitRPC", RpcTarget.AllBuffered, new object[] { mapObjectId, rigidbody });
+            PhotonView.RPC(nameof(InitRPC), RpcTarget.AllBuffered, new object[] { mapObjectId, rigidbody });
         }
 
         public void Init(int mapObjectId)
         {
             MapObject = MapLoader.IdToMapObject[mapObjectId];
             bool rigidbody = MapObject.GameObject.GetComponent<Rigidbody>() != null;
-            PhotonView.RPC("InitRPC", RpcTarget.AllBuffered, new object[] { mapObjectId, rigidbody });
+            PhotonView.RPC(nameof(InitRPC), RpcTarget.AllBuffered, new object[] { mapObjectId, rigidbody });
         }
 
         public void InitDynamic(bool persistsOwnership, string csvScript)
         {
-            PhotonView.RPC("InitDynamicRPC", RpcTarget.OthersBuffered, new object[] { persistsOwnership, csvScript });
+            PhotonView.RPC(nameof(InitDynamicRPC), RpcTarget.OthersBuffered, new object[] { persistsOwnership, csvScript });
             CreateAndSetupObject(persistsOwnership, csvScript);
         }
 
@@ -244,23 +244,23 @@ namespace CustomLogic
 
         public void SendMessage(Player player, string message)
         {
-            PhotonView.RPC("SendMessageRPC", player, new object[] { message });
+            PhotonView.RPC(nameof(SendMessageRPC), player, new object[] { message });
         }
 
         public void SendMessageAll(string message)
         {
-            PhotonView.RPC("SendMessageRPC", RpcTarget.All, new object[] { message });
+            PhotonView.RPC(nameof(SendMessageRPC), RpcTarget.All, new object[] { message });
         }
 
         public void SendMessageOthers(string message)
         {
-            PhotonView.RPC("SendMessageRPC", RpcTarget.Others, new object[] { message });
+            PhotonView.RPC(nameof(SendMessageRPC), RpcTarget.Others, new object[] { message });
         }
 
         public override void OnPlayerEnteredRoom(Player newPlayer)
         {
             if (_inited && SyncTransforms)
-                PhotonView.RPC("SyncRPC", newPlayer, new object[] { GetPosition(), GetRotation() });
+                PhotonView.RPC(nameof(SyncRPC), newPlayer, new object[] { GetPosition(), GetRotation() });
         }
 
         [PunRPC]

@@ -206,17 +206,17 @@ namespace Characters
 
         public void SetHookState(HookState state)
         {
-            _owner.Cache.PhotonView.RPC("SetHookStateRPC", RpcTarget.All, new object[] { _left, _id, (int)state });
+            _owner.Cache.PhotonView.RPC(nameof(_owner.SetHookStateRPC), RpcTarget.All, new object[] { _left, _id, (int)state });
         }
 
         public void SetHooking(Vector3 baseVelocity, Vector3 relativeVelocity)
         {
-            _owner.Cache.PhotonView.RPC("SetHookingRPC", RpcTarget.All, new object[] { _left, _id, baseVelocity, relativeVelocity });
+            _owner.Cache.PhotonView.RPC(nameof(_owner.SetHookingRPC), RpcTarget.All, new object[] { _left, _id, baseVelocity, relativeVelocity });
         }
 
         public void SetHooked(Vector3 position, Transform t = null, int viewId = -1, int objectId = -1)
         {
-            _owner.Cache.PhotonView.RPC("SetHookedRPC", RpcTarget.Others, new object[] { _left, _id, position, viewId, objectId });
+            _owner.Cache.PhotonView.RPC(nameof(_owner.SetHookedRPC), RpcTarget.Others, new object[] { _left, _id, position, viewId, objectId });
             OnSetHooked(position, t);
             _owner.OnHooked(_left, position);
             if (t != null && t.GetComponent<Human>() != null)
