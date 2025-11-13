@@ -487,16 +487,15 @@ namespace UI
             string text = _inputField.text;
             string emojiCode = $":{spriteIndex}:";
             
-            int insertPosition = text.Length;
+            int insertPosition = _inputField.caretPosition;
             string newText = text.Insert(insertPosition, emojiCode);
             int maxLength = _inputField.characterLimit > 0 ? _inputField.characterLimit : int.MaxValue;
             if (newText.Length > maxLength)
             {
                 return;
             }
-            string processedText = ProcessEmojiCodes(newText);
-            _inputField.SetTextWithoutNotify(processedText);
-            int newCaretPos = newText.Length;
+            _inputField.text = newText;
+            int newCaretPos = insertPosition + emojiCode.Length;
             _inputField.caretPosition = newCaretPos;
             _inputField.selectionAnchorPosition = newCaretPos;
             _inputField.selectionFocusPosition = newCaretPos;
@@ -1035,13 +1034,6 @@ namespace UI
             _lastTypeTime = Time.unscaledTime;
             if (text == null)
                 text = string.Empty;
-            string processedText = ProcessEmojiCodes(text);
-            if (processedText != text)
-            {
-                int caretPos = _inputField.caretPosition;
-                _inputField.SetTextWithoutNotify(processedText);
-                _inputField.caretPosition = caretPos;
-            }
             ChatManager.HandleTyping(text);
         }
 
