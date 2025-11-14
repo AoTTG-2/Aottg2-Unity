@@ -1105,6 +1105,13 @@ namespace CustomLogic
                 {
                     return !(bool)EvaluateExpression(classInstance, localVariables, ((CustomLogicNotExpressionAst)expression).Next);
                 }
+                else if (expression.Type == CustomLogicAstType.UnaryExpression)
+                {
+                    CustomLogicUnaryExpressionAst unaryExpression = (CustomLogicUnaryExpressionAst)expression;
+                    CustomLogicSymbol symbol = (CustomLogicSymbol)unaryExpression.Token.Value;
+                    object next = EvaluateExpression(classInstance, localVariables, ((CustomLogicUnaryExpressionAst)expression).Next);
+                    return EvaluateUnaryExpression(symbol, next);
+                }
                 else if (expression.Type == CustomLogicAstType.MethodCallExpression)
                 {
                     CustomLogicMethodCallExpressionAst methodCallExpression = (CustomLogicMethodCallExpressionAst)expression;
@@ -1152,12 +1159,25 @@ namespace CustomLogic
             return null;
         }
 
+        private object EvaluateUnaryExpression(CustomLogicSymbol symbol, object next)
+        {
+            if (symbol == CustomLogicSymbol.Plus) return next;
+            else if (symbol == CustomLogicSymbol.Minus)
+            {
+                if (next is int i) return -i;
+                if (next is float f) return -f;
+                if (next is double d) return -d;
+            }
+            return null;
+        }
+
         private object EvaluateBinopExpression(CustomLogicSymbol symbol, object left, object right)
         {
             if (symbol == CustomLogicSymbol.Plus) return AddValues(left, right);
             else if (symbol == CustomLogicSymbol.Minus) return SubtractValues(left, right);
             else if (symbol == CustomLogicSymbol.Times) return MultiplyValues(left, right);
             else if (symbol == CustomLogicSymbol.Divide) return DivideValues(left, right);
+            else if (symbol == CustomLogicSymbol.Modulo) return ModuloValues(left, right);
             else if (symbol == CustomLogicSymbol.Equals)
                 return CheckEquals(left, right);
             else if (symbol == CustomLogicSymbol.NotEquals)
@@ -1195,6 +1215,7 @@ namespace CustomLogic
         string sub = nameof(ICustomLogicMathOperators.__Sub__);
         string mul = nameof(ICustomLogicMathOperators.__Mul__);
         string div = nameof(ICustomLogicMathOperators.__Div__);
+        string mod = nameof(ICustomLogicMathOperators.__Mod__);
 
         string eq = nameof(ICustomLogicEquals.__Eq__);
         string copy = nameof(ICustomLogicCopyable.__Copy__);
@@ -1248,6 +1269,16 @@ namespace CustomLogic
                 return ClassMathOperation(left, right, div);
             else
                 return left.UnboxToFloat() / right.UnboxToFloat();
+        }
+
+        private object ModuloValues(object left, object right)
+        {
+            if (left is int && right is int)
+                return (int)left % (int)right;
+            else if (left is CustomLogicClassInstance || right is CustomLogicClassInstance)
+                return ClassMathOperation(left, right, mod);
+            else
+                return left.UnboxToFloat() % right.UnboxToFloat();
         }
 
         public bool CheckEquals(object left, object right)

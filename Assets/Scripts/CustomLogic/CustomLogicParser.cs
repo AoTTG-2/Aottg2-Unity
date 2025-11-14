@@ -88,6 +88,17 @@ namespace CustomLogic
                 notExpressionAst.Next = right;
                 return notExpressionAst;
             }
+            // Added unary minus and plus (not sure if we need plus but others will matter like ~)
+            else if (IsSymbolValue(currToken, (int)CustomLogicSymbol.Minus) || IsSymbolValue(currToken, (int)CustomLogicSymbol.Plus))
+            {
+                // Handle unary + and -
+                // Make sure this is a prefix, not a binary operator (no left-hand side)
+                var unaryAst = new CustomLogicUnaryExpressionAst(currToken, currToken.Line);
+                var operand = ParseExpression(null, startIndex + 1, endIndex);
+                unaryAst.Next = operand;
+                return unaryAst;
+            }
+            // End added unary minus and plus
             else if (IsSymbolValue(currToken, (int)CustomLogicSymbol.Dot))
             {
                 AssertTokenType(nextToken, CustomLogicTokenType.Name);
@@ -334,6 +345,20 @@ namespace CustomLogic
                     parenCount--;
                 if (parenCount > 0)
                     continue;
+
+                // account for unary minus
+                if (IsSymbolValue(token, (int)CustomLogicSymbol.Minus) || IsSymbolValue(token, (int)CustomLogicSymbol.Plus))
+                {
+                    if (i == startIndex) // first token in expression
+                        continue;
+                    var prev = _tokens[i - 1];
+                    // skip if previous token is an operator or '('
+                    if (prev.Type == CustomLogicTokenType.Symbol &&
+                        !IsSymbolValue(prev, (int)CustomLogicSymbol.RightParen))
+                        continue;
+                }
+                // end account for unary minus
+
                 if (IsSymbolBinop(token))
                 {
                     int priority = CustomLogicSymbols.BinopSymbolPriorities[(int)token.Value];
