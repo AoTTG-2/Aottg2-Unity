@@ -89,7 +89,7 @@ namespace ApplicationManagers
             if (ApplicationConfig.DevelopmentMode)
                 DebugTesting.RunLateTests();
             DiscordManager.Init();
-            if (SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.Null)
+            if (SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.Null || Application.isBatchMode)
             {
                 Debug.Log("Running in headless mode!");
                 string[] args = System.Environment.GetCommandLineArgs();
