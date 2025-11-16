@@ -1,17 +1,18 @@
-# Cutscene
-Inherits from [Object](../objects/Object.md)
+# Button
+Inherits from [VisualElement](../objects/VisualElement.md)
+
+A UI element that represents a clickable button
+
+### Properties
+|Name|Type|Readonly|Description|
+|---|---|---|---|
+|Text|string|False|The text displayed by the Button|
+|EnableRichText|bool|False|When false, rich text tags will not be parsed|
+
+
 ### Methods
-<pre class="language-typescript"><code class="lang-typescript">function Start(name: string, full: bool)</code></pre>
-> Start a cutscene
-> 
-<pre class="language-typescript"><code class="lang-typescript">function ShowDialogue(icon: string, title: string, content: string)</code></pre>
-> Show a dialogue box
-> 
-<pre class="language-typescript"><code class="lang-typescript">function ShowDialogueForTime(icon: string, title: string, content: string, time: float)</code></pre>
-> Show a dialogue box for a certain amount of time
-> 
-<pre class="language-typescript"><code class="lang-typescript">function HideDialogue()</code></pre>
-> Hide the dialogue box
+<pre class="language-typescript"><code class="lang-typescript">function OnClick(clickEvent: function) -> <a data-footnote-ref href="#user-content-fn-48">Button</a></code></pre>
+> Sets the method to be called when the Button is clicked
 > 
 
 [^0]: [Animation](../objects/Animation.md)

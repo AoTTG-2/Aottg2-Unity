@@ -1,17 +1,42 @@
-# Cutscene
-Inherits from [Object](../objects/Object.md)
+# ScrollView
+Inherits from [VisualElement](../objects/VisualElement.md)
+
+ScrollView UI element that provides scrollable content.
+
+Note: Most methods return self to allow method chaining
+
+### Initialization
+```csharp
+```
+
+### Properties
+|Name|Type|Readonly|Description|
+|---|---|---|---|
+|ScrollOffset|[Vector2](../objects/Vector2.md)|False|The current scroll offset|
+|ScrollDecelerationRate|float|False|Controls the scrolling speed when using the scroll wheel|
+|MouseWheelScrollSize|float|False|Controls the sensitivity/speed of mouse wheel scrolling|
+|HorizontalScrollEnabled|bool|False|Enable or disable horizontal scrolling|
+|VerticalScrollEnabled|bool|False|Enable or disable vertical scrolling|
+
+
 ### Methods
-<pre class="language-typescript"><code class="lang-typescript">function Start(name: string, full: bool)</code></pre>
-> Start a cutscene
+<pre class="language-typescript"><code class="lang-typescript">function Elasticity(value: string) -> <a data-footnote-ref href="#user-content-fn-52">ScrollView</a></code></pre>
+> The behavior to use when scrolling reaches limits of the content
 > 
-<pre class="language-typescript"><code class="lang-typescript">function ShowDialogue(icon: string, title: string, content: string)</code></pre>
-> Show a dialogue box
+> **Parameters**:
+> - `value`: Acceptable values are: `Clamped`, `Elastic`, and `Unrestricted`
 > 
-<pre class="language-typescript"><code class="lang-typescript">function ShowDialogueForTime(icon: string, title: string, content: string, time: float)</code></pre>
-> Show a dialogue box for a certain amount of time
+<pre class="language-typescript"><code class="lang-typescript">function SetScrollDecelerationRate(rate: float) -> <a data-footnote-ref href="#user-content-fn-52">ScrollView</a></code></pre>
+> Controls the rate at which scrolling movement slows after a user scrolling action
 > 
-<pre class="language-typescript"><code class="lang-typescript">function HideDialogue()</code></pre>
-> Hide the dialogue box
+<pre class="language-typescript"><code class="lang-typescript">function SetScrollOffset(offset: <a data-footnote-ref href="#user-content-fn-45">Vector2</a>) -> <a data-footnote-ref href="#user-content-fn-52">ScrollView</a></code></pre>
+> Set the scroll offset
+> 
+<pre class="language-typescript"><code class="lang-typescript">function ScrollToTop()</code></pre>
+> Scroll to the top of the content
+> 
+<pre class="language-typescript"><code class="lang-typescript">function ScrollToBottom()</code></pre>
+> Scroll to the bottom of the content
 > 
 
 [^0]: [Animation](../objects/Animation.md)

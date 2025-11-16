@@ -1,17 +1,37 @@
-# Cutscene
-Inherits from [Object](../objects/Object.md)
+# Animation
 ### Methods
-<pre class="language-typescript"><code class="lang-typescript">function Start(name: string, full: bool)</code></pre>
-> Start a cutscene
+<pre class="language-typescript"><code class="lang-typescript">function IsPlaying(anim: string) -> bool</code></pre>
+> Checks if the given animation is playing.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function ShowDialogue(icon: string, title: string, content: string)</code></pre>
-> Show a dialogue box
+<pre class="language-typescript"><code class="lang-typescript">function PlayAnimation(anim: string, fade: float = 0.1, layer: int = 0)</code></pre>
+> Plays the specified animation.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function ShowDialogueForTime(icon: string, title: string, content: string, time: float)</code></pre>
-> Show a dialogue box for a certain amount of time
+<pre class="language-typescript"><code class="lang-typescript">function PlayAnimationAt(anim: string, normalizedTime: float, fade: float = 0.1, layer: int = 0)</code></pre>
+> Plays the specified animation starting from a normalized time.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function HideDialogue()</code></pre>
-> Hide the dialogue box
+<pre class="language-typescript"><code class="lang-typescript">function PlayAnimationQueued(anim: string, fade: float = 0.1, layer: int = 0)</code></pre>
+> Plays the specified animation after the current animation finishes playing.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function StopAnimation(anim: string = null)</code></pre>
+> Stops the specified animation. Will stop all animations if no name is given.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function SetAnimationSpeed(name: string, speed: float)</code></pre>
+> Sets the playback speed of the specified animation.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function GetAnimationSpeed(name: string) -> float</code></pre>
+> Gets the playback speed of the specified animation.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function GetAnimationLength(anim: string) -> float</code></pre>
+> Gets the length of the specified animation.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function GetAnimationNormalizedTime(anim: string) -> float</code></pre>
+> Gets the normalized time of the specified animation.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function SetAnimationWeight(anim: string, weight: float) -> float</code></pre>
+> Sets the weight of the specified animation.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function GetAnimationWeight(anim: string) -> float</code></pre>
+> Gets the weight of the specified animation.
 > 
 
 [^0]: [Animation](../objects/Animation.md)

@@ -1,18 +1,14 @@
-# Cutscene
-Inherits from [Object](../objects/Object.md)
-### Methods
-<pre class="language-typescript"><code class="lang-typescript">function Start(name: string, full: bool)</code></pre>
-> Start a cutscene
-> 
-<pre class="language-typescript"><code class="lang-typescript">function ShowDialogue(icon: string, title: string, content: string)</code></pre>
-> Show a dialogue box
-> 
-<pre class="language-typescript"><code class="lang-typescript">function ShowDialogueForTime(icon: string, title: string, content: string, time: float)</code></pre>
-> Show a dialogue box for a certain amount of time
-> 
-<pre class="language-typescript"><code class="lang-typescript">function HideDialogue()</code></pre>
-> Hide the dialogue box
-> 
+# Label
+Inherits from [VisualElement](../objects/VisualElement.md)
+
+UI element for displaying text
+
+### Properties
+|Name|Type|Readonly|Description|
+|---|---|---|---|
+|Text|string|False|The text displayed by the Label|
+|EnableRichText|bool|False|When false, rich text tags will not be parsed|
+
 
 [^0]: [Animation](../objects/Animation.md)
 [^1]: [Animator](../objects/Animator.md)

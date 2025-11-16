@@ -1,17 +1,38 @@
-# Cutscene
-Inherits from [Object](../objects/Object.md)
+# Dropdown
+Inherits from [VisualElement](../objects/VisualElement.md)
+
+A UI element that represents a dropdown selection field
+
+### Properties
+|Name|Type|Readonly|Description|
+|---|---|---|---|
+|Label|string|False|The label text displayed next to the Dropdown|
+|Value|string|False|The currently selected value (option text)|
+|Index|int|False|The index of the currently selected option (0-based)|
+|Choices|[List](../objects/List.md)|False|Gets the list of available choices|
+
+
 ### Methods
-<pre class="language-typescript"><code class="lang-typescript">function Start(name: string, full: bool)</code></pre>
-> Start a cutscene
+<pre class="language-typescript"><code class="lang-typescript">function OnValueChanged(valueChangedEvent: function) -> <a data-footnote-ref href="#user-content-fn-49">Dropdown</a></code></pre>
+> Sets the method to be called when the Dropdown value changes
 > 
-<pre class="language-typescript"><code class="lang-typescript">function ShowDialogue(icon: string, title: string, content: string)</code></pre>
-> Show a dialogue box
+> **Parameters**:
+> - `valueChangedEvent`: Method that will be called with the new selected value as parameter
 > 
-<pre class="language-typescript"><code class="lang-typescript">function ShowDialogueForTime(icon: string, title: string, content: string, time: float)</code></pre>
-> Show a dialogue box for a certain amount of time
+<pre class="language-typescript"><code class="lang-typescript">function SetValueWithoutNotify(value: string)</code></pre>
+> Sets the value of the Dropdown without triggering any change events
 > 
-<pre class="language-typescript"><code class="lang-typescript">function HideDialogue()</code></pre>
-> Hide the dialogue box
+<pre class="language-typescript"><code class="lang-typescript">function SetIndexWithoutNotify(index: int)</code></pre>
+> Sets the index of the selected option without triggering any change events
+> 
+<pre class="language-typescript"><code class="lang-typescript">function AddChoice(choice: string) -> <a data-footnote-ref href="#user-content-fn-49">Dropdown</a></code></pre>
+> Adds a choice to the dropdown options
+> 
+<pre class="language-typescript"><code class="lang-typescript">function RemoveChoice(choice: string) -> <a data-footnote-ref href="#user-content-fn-49">Dropdown</a></code></pre>
+> Removes a choice from the dropdown options
+> 
+<pre class="language-typescript"><code class="lang-typescript">function ClearChoices() -> <a data-footnote-ref href="#user-content-fn-49">Dropdown</a></code></pre>
+> Clears all choices from the dropdown
 > 
 
 [^0]: [Animation](../objects/Animation.md)

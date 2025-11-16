@@ -1,17 +1,27 @@
-# Cutscene
-Inherits from [Object](../objects/Object.md)
+# AudioSource
+### Properties
+|Name|Type|Readonly|Description|
+|---|---|---|---|
+|Volume|float|False|Volume of the sound.|
+|Time|float|False|Sound playback position.|
+|IsPlaying|bool|True|Is the sound currently playing.|
+
+
 ### Methods
-<pre class="language-typescript"><code class="lang-typescript">function Start(name: string, full: bool)</code></pre>
-> Start a cutscene
+<pre class="language-typescript"><code class="lang-typescript">function Play()</code></pre>
+> Plays the sound.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function ShowDialogue(icon: string, title: string, content: string)</code></pre>
-> Show a dialogue box
+<pre class="language-typescript"><code class="lang-typescript">function PlayDelayed(seconds: float)</code></pre>
+> Plays the sound after n seconds.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function ShowDialogueForTime(icon: string, title: string, content: string, time: float)</code></pre>
-> Show a dialogue box for a certain amount of time
+<pre class="language-typescript"><code class="lang-typescript">function Stop()</code></pre>
+> Stops the sound.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function HideDialogue()</code></pre>
-> Hide the dialogue box
+<pre class="language-typescript"><code class="lang-typescript">function Pause()</code></pre>
+> Pauses the sound.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function Unpause()</code></pre>
+> Unpauses the sound.
 > 
 
 [^0]: [Animation](../objects/Animation.md)

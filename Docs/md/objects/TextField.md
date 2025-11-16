@@ -1,17 +1,25 @@
-# Cutscene
-Inherits from [Object](../objects/Object.md)
+# TextField
+Inherits from [VisualElement](../objects/VisualElement.md)
+
+A UI element that lets the user input and edit text
+
+### Properties
+|Name|Type|Readonly|Description|
+|---|---|---|---|
+|IsDelayed|bool|False|If true, the value property isn't updated until either the Enter key is pressed or the TextField loses focus|
+|Multiline|bool|False|If true, the TextField supports multiple lines of text|
+|Label|string|False|The label text displayed next to the TextField|
+|Value|string|False|The value of the TextField|
+|SelectionColor|[Color](../objects/Color.md)|False|Color used to highlight selected text inside the field|
+|CursorColor|[Color](../objects/Color.md)|False|Color of the text cursor (caret)|
+
+
 ### Methods
-<pre class="language-typescript"><code class="lang-typescript">function Start(name: string, full: bool)</code></pre>
-> Start a cutscene
+<pre class="language-typescript"><code class="lang-typescript">function RegisterValueChangedEventCallback(changeEvent: function) -> <a data-footnote-ref href="#user-content-fn-54">TextField</a></code></pre>
+> Registers a callback to be invoked when the value of the TextField changes
 > 
-<pre class="language-typescript"><code class="lang-typescript">function ShowDialogue(icon: string, title: string, content: string)</code></pre>
-> Show a dialogue box
-> 
-<pre class="language-typescript"><code class="lang-typescript">function ShowDialogueForTime(icon: string, title: string, content: string, time: float)</code></pre>
-> Show a dialogue box for a certain amount of time
-> 
-<pre class="language-typescript"><code class="lang-typescript">function HideDialogue()</code></pre>
-> Hide the dialogue box
+<pre class="language-typescript"><code class="lang-typescript">function SetValueWithoutNotify(value: string)</code></pre>
+> Sets the value of the TextField without triggering any change events
 > 
 
 [^0]: [Animation](../objects/Animation.md)
