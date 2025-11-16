@@ -25,6 +25,18 @@ namespace CustomLogic
             return keybind;
         }
 
+        private static KeyCode? GetCustomKeyCode(string key)
+        {
+            if (!key.StartsWith("CustomKey/"))
+                return null;
+            
+            string keyCodeStr = key.Substring("CustomKey/".Length);
+            if (System.Enum.TryParse(keyCodeStr, out KeyCode keyCode))
+                return keyCode;
+            
+            return null;
+        }
+
         private static bool CanKey()
         {
             var gameManager = (InGameManager)SceneLoader.CurrentGameManager;
@@ -37,6 +49,10 @@ namespace CustomLogic
         [CLMethod(description: "Gets the key name the player assigned to the key setting")]
         public static string GetKeyName(string key)
         {
+            KeyCode? customKey = GetCustomKeyCode(key);
+            if (customKey.HasValue)
+                return customKey.Value.ToString();
+            
             KeybindSetting keybind = GetKeybind(key);
             return keybind.ToString();
         }
@@ -44,6 +60,10 @@ namespace CustomLogic
         [CLMethod(description: "Returns true if the key is being held down")]
         public static bool GetKeyHold(string key)
         {
+            KeyCode? customKey = GetCustomKeyCode(key);
+            if (customKey.HasValue)
+                return Input.GetKey(customKey.Value) && CanKey();
+            
             KeybindSetting keybind = GetKeybind(key);
             return keybind.GetKey(true) && CanKey();
         }
@@ -51,6 +71,10 @@ namespace CustomLogic
         [CLMethod(description: "Returns true if the key was pressed down this frame")]
         public static bool GetKeyDown(string key)
         {
+            KeyCode? customKey = GetCustomKeyCode(key);
+            if (customKey.HasValue)
+                return Input.GetKeyDown(customKey.Value) && CanKey();
+            
             KeybindSetting keybind = GetKeybind(key);
             return keybind.GetKeyDown(true) && CanKey();
         }
@@ -58,6 +82,10 @@ namespace CustomLogic
         [CLMethod(description: "Returns true if the key was released this frame")]
         public static bool GetKeyUp(string key)
         {
+            KeyCode? customKey = GetCustomKeyCode(key);
+            if (customKey.HasValue)
+                return Input.GetKeyUp(customKey.Value) && CanKey();
+            
             KeybindSetting keybind = GetKeybind(key);
             return keybind.GetKeyUp(true) && CanKey();
         }
@@ -119,6 +147,52 @@ namespace CustomLogic
                 CustomLogicManager.KeybindHold.Remove(keybind);
             else if (enabled && !CustomLogicManager.KeybindHold.Contains(keybind))
                 CustomLogicManager.KeybindHold.Add(keybind);
+        }
+
+        [CLMethod(description: "Sets whether all keys in the specified category are enabled by default. Valid categories: General, Human, Titan, Interaction")]
+        public static void SetCategoryKeysEnabled(string category, bool enabled)
+        {
+            if (!SettingsManager.InputSettings.Settings.Contains(category))
+            {
+                Debug.LogError($"Invalid input category: {category}. Valid categories are: General, Human, Titan, Interaction");
+                return;
+            }
+
+            SaveableSettingsContainer categoryContainer = (SaveableSettingsContainer)SettingsManager.InputSettings.Settings[category];
+            foreach (System.Collections.DictionaryEntry settingPair in categoryContainer.Settings)
+            {
+                if (settingPair.Value is KeybindSetting keybind)
+                {
+                    if (enabled && CustomLogicManager.KeybindDefaultDisabled.Contains(keybind))
+                        CustomLogicManager.KeybindDefaultDisabled.Remove(keybind);
+                    else if (!enabled && !CustomLogicManager.KeybindDefaultDisabled.Contains(keybind))
+                        CustomLogicManager.KeybindDefaultDisabled.Add(keybind);
+                }
+            }
+        }
+
+        [CLMethod(description: "Sets whether all General category keys are enabled by default")]
+        public static void SetGeneralKeysEnabled(bool enabled)
+        {
+            SetCategoryKeysEnabled("General", enabled);
+        }
+
+        [CLMethod(description: "Sets whether all Interaction category keys are enabled by default")]
+        public static void SetInteractionKeysEnabled(bool enabled)
+        {
+            SetCategoryKeysEnabled("Interaction", enabled);
+        }
+
+        [CLMethod(description: "Sets whether all Titan category keys are enabled by default")]
+        public static void SetTitanKeysEnabled(bool enabled)
+        {
+            SetCategoryKeysEnabled("Titan", enabled);
+        }
+
+        [CLMethod(description: "Sets whether all Human category keys are enabled by default")]
+        public static void SetHumanKeysEnabled(bool enabled)
+        {
+            SetCategoryKeysEnabled("Human", enabled);
         }
     }
 }

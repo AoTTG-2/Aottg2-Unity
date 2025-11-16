@@ -758,6 +758,42 @@ namespace CustomLogic
 
         #endregion
 
+        #region Overflow
+
+        /// <summary>
+        /// Set the overflow behavior on the X axis
+        /// </summary>
+        /// <param name="value">Acceptable values are: `Visible` and `Hidden`</param>
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin OverflowX(string value)
+        {
+            _visualElement.style.overflow = value switch
+            {
+                "Visible" => Overflow.Visible,
+                "Hidden" => Overflow.Hidden,
+                _ => throw new System.Exception("Unknown overflow value")
+            };
+            return this;
+        }
+
+        /// <summary>
+        /// Set the overflow behavior on the Y axis
+        /// </summary>
+        /// <param name="value">Acceptable values are: `Visible` and `Hidden`</param>
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin OverflowY(string value)
+        {
+            _visualElement.style.overflow = value switch
+            {
+                "Visible" => Overflow.Visible,
+                "Hidden" => Overflow.Hidden,
+                _ => throw new System.Exception("Unknown overflow value")
+            };
+            return this;
+        }
+
+        #endregion
+
         #region Transform
 
         /// <summary>
