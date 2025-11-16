@@ -1,6 +1,7 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
-using System;
 
 namespace CustomLogic
 {
@@ -189,6 +190,17 @@ namespace CustomLogic
         public CustomLogicVisualElementBuiltin Visible(bool value)
         {
             _visualElement.style.visibility = value ? Visibility.Visible : Visibility.Hidden;
+            return this;
+        }
+
+        /// <summary>
+        /// Set the element to be visible or hidden
+        /// </summary>
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin TransitionDuration(float value)
+        {
+            StyleList<TimeValue> transitionDuration = new List<TimeValue> { new TimeValue(value, TimeUnit.Millisecond) };
+            _visualElement.style.transitionDuration = transitionDuration;
             return this;
         }
 
@@ -579,7 +591,7 @@ namespace CustomLogic
         #endregion
 
         #region Border Color
-        
+
         /// <summary>
         /// Set the border color of the element
         /// </summary>
