@@ -9,7 +9,7 @@ using Photon.Pun;
 
 namespace Controllers
 {
-    class HumanPlayerController : BasePlayerController
+    class HumanPlayerController : BasePlayerController, IHumanController
     {
         protected Human _human;
         protected float _reelOutScrollTimeLeft;
@@ -263,7 +263,7 @@ namespace Controllers
             UpdateHookInput(inMenu);
             UpdateReelInput(inMenu);
             UpdateDashInput(inMenu);
-            bool canWeapon =  _human.IsAttackableState && !_illegalWeaponStates.Contains(_human.State) && !inMenu && !_human.Dead;
+            bool canWeapon = _human.IsAttackableState && !_illegalWeaponStates.Contains(_human.State) && !inMenu && !_human.Dead;
             var attackInput = _humanInput.AttackDefault;
             var specialInput = _humanInput.AttackSpecial;
             if (_human.Weapon is ThunderspearWeapon && SettingsManager.InputSettings.Human.SwapTSAttackSpecial.Value)
@@ -321,7 +321,7 @@ namespace Controllers
                     if (_human.Special is AHSSTwinShot)
                         _human.Special.SetInput(specialInput.GetKeyUp());
                     else
-                    _human.Special.ReadInput(specialInput);
+                        _human.Special.ReadInput(specialInput);
                 }
                 else
                     _human.Special.SetInput(false);
@@ -507,6 +507,35 @@ namespace Controllers
         bool IsSpin3Special()
         {
             return _human.State == HumanState.SpecialAttack && _human.Special is Spin3Special;
+        }
+
+        public bool MovingLeft()
+        {
+            return SettingsManager.InputSettings.General.Left.GetKey();
+        }
+        public bool MovingRight()
+        {
+            return SettingsManager.InputSettings.General.Right.GetKey();
+        }
+
+        public bool UsingGas()
+        {
+            return SettingsManager.InputSettings.Human.Jump.GetKey();
+        }
+
+        public bool HookingLeft()
+        {
+            return SettingsManager.InputSettings.Human.HookLeft.GetKey();
+        }
+
+        public bool HookingRight()
+        {
+            return SettingsManager.InputSettings.Human.HookRight.GetKey();
+        }
+
+        public bool HookingBoth()
+        {
+            return SettingsManager.InputSettings.Human.HookBoth.GetKey();
         }
     }
 }

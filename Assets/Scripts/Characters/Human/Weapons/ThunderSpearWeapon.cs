@@ -88,7 +88,8 @@ namespace Characters
                 spawnDirection * speed, Vector3.zero, travelTime, human.Cache.PhotonView.ViewID, "", new object[] { Radius, SettingsManager.AbilitySettings.BombColor.Value.ToColor(), true });
             Current.InitialPlayerVelocity = initialVelocity;
             _delayTimeLeft = Delay;
-            ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.ShootTS();
+            if (!human.AI)
+                ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.ShootTS();
         }
 
         public bool HasActiveProjectile()

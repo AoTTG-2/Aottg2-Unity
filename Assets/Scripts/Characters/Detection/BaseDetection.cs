@@ -72,7 +72,7 @@ namespace Characters
             return !_enemiesOnly || Owner == null || !TeamInfo.SameTeam(character, Owner);
         }
 
-        public void OnFixedUpdate()
+        public virtual void OnFixedUpdate()
         {
             _currentMediumTime += Time.deltaTime;
             _currentSlowTime += Time.deltaTime;

@@ -40,6 +40,16 @@ namespace Characters
             return _activeHook != null && _activeHook.State != HookState.Disabled;
         }
 
+        public bool IsHooking()
+        {
+            return _activeHook != null && _activeHook.State == HookState.Hooking;
+        }
+
+        public bool IsReady()
+        {
+            return _activeHook == null || _activeHook.State == HookState.Disabled;
+        }
+
         public HookState GetHookState()
         {
             return _activeHook.State;
@@ -50,6 +60,13 @@ namespace Characters
             if (_activeHook != null)
                 return _activeHook.GetHookPosition();
             return Vector3.zero;
+        }
+
+        public Vector3? GetCLHookPosition()
+        {
+            if (_activeHook != null)
+                return _activeHook.GetHookPosition();
+            return null;
         }
 
         public bool IsHookOffset()

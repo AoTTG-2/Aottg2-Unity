@@ -73,7 +73,8 @@ namespace Characters
             radius, radius, 0.25f};
             EffectSpawner.Spawn(EffectPrefabs.APGTrail, start, Quaternion.identity, settings: settings);
             human.HumanCache.APGHit.Activate(0f, 0.1f);
-            ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.ShootAPG();
+            if (!human.AI)
+                ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.ShootAPG();
         }
     }
 }

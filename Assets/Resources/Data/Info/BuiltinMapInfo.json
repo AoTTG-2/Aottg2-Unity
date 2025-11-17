@@ -101,7 +101,7 @@
 					"Name": "Outside The Walls",
 					"MiscSettings": {
 						"Horses": true,
-						"HorsebackCombat": false,
+						"HorsebackCombat": true,
 						"AllowPlayerTitans": false,
 						"AllowShifters": false
 					}
