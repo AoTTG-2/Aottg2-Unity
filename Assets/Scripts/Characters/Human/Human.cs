@@ -2143,6 +2143,11 @@ namespace Characters
             }
         }
 
+
+        private Collider _lastHit = null;
+        private Vector3 _lastDirection = Vector3.zero;
+        private float _collisionTimer = 0;
+        private float _collisionInterval = 0.1f;
         protected void OnCollisionEnter(Collision collision)
         {
             if (!IsMine())
@@ -2167,6 +2172,11 @@ namespace Characters
 
                 if (hitTitan)
                 {
+                    bool intervalFinished = Time.time - _collisionTimer >= _collisionInterval;
+                    bool sameCollider = collision.collider == _lastHit;
+                    bool canResolve = intervalFinished || !sameCollider;
+                    _collisionTimer = Time.time;
+                    _lastHit = collision.collider;
                     float maxAngle = 0;
                     float minAngle = 0;
                     float newAngle = 0;
@@ -2177,24 +2187,32 @@ namespace Characters
 
                         maxAngle = Mathf.Max(maxAngle, newAngle);
                         minAngle = Mathf.Min(minAngle, newAngle);
+                        Vector3 projected = Vector3.ProjectOnPlane(_lastVelocity, contact.normal);
                         if (newAngle < angleThreshold)
                         {
                             // Project velocity along the surface to preserve momentum
-                            Vector3 projected = Vector3.ProjectOnPlane(_lastVelocity, contact.normal);
-                            Cache.Rigidbody.velocity = Vector3.Lerp(_lastVelocity, projected, 0.5f);
+                            bool isAligned = Vector3.Angle(projected, _lastVelocity) < 45f;
+                            if (isAligned || canResolve)
+                            {
+                                Cache.Rigidbody.velocity = Vector3.Lerp(_lastVelocity, projected, 0.5f);
+                            }
                         }
                     }
 
-                    // Map velocity on a scale from 0-500 into 0-1
-                    if (minAngle > frictionThreshold)
-                    {
-                        // Testing optional friction under 1k it should apply the max friction possible and reduce it to nothing towards the upper limit.
-                        float speedFactor = Util.ClampedLinearMap(Cache.Rigidbody.velocity.magnitude, 0, 250, 0, 1);
-                        float speedMultiplier = Mathf.Max(1f - (minAngle * 0.005f), 0f);    // Friction value 1-0.5
-                        float appliedMultiplier = Mathf.Lerp(speedMultiplier, 1f, speedFactor);
-                        float speed = _lastVelocity.magnitude * appliedMultiplier;
-                        Cache.Rigidbody.velocity = velocity.normalized * speed;
-                    }
+                    //// Map velocity on a scale from 0-500 into 0-1
+                    //if (minAngle > frictionThreshold)
+                    //{
+
+                    //}
+
+                    // Testing optional friction under 1k it should apply the max friction possible and reduce it to nothing towards the upper limit.
+                    float angle = Mathf.Abs(Vector3.Angle(velocity, _lastVelocity));
+                    float speedFactor = Util.ClampedLinearMap(Cache.Rigidbody.velocity.magnitude, 0, 250, 0, 1);
+                    float speedMultiplier = Mathf.Max(1f - (angle * 0.005f), 0f);    // Friction value 1-0.5
+                    float speedMultiplierMax = Mathf.Max(1f - (angle * 1.5f * 0.01f), 0f);
+                    float appliedMultiplier = Mathf.Lerp(speedMultiplier, speedMultiplierMax, speedFactor);
+                    float speed = _lastVelocity.magnitude * appliedMultiplier;
+                    Cache.Rigidbody.velocity = velocity.normalized * speed;
                 }
                 else
                 {
