@@ -36,6 +36,7 @@ namespace CustomLogic
         public bool ShowScoreboardStatus = true;
         public string ForcedCharacterType = string.Empty;
         public string ForcedLoadout = string.Empty;
+        public bool ShowErrorInChat = false;    // TODO: Replace with setting.
         private int _baseLogicOffset = 0;
 
         public CustomLogicEvaluator(CustomLogicStartAst start, int baseLogicOffset = 0)
@@ -48,6 +49,27 @@ namespace CustomLogic
         {
             // More relevant line number for when using MapLogic -> need to expand to handle builtin errors as well since its so annoying.
             return CustomLogicManager.GetLineNumberString(lineNumber, _baseLogicOffset);
+        }
+
+        private void LogCustomLogicError(string errorMessage, bool showInChat)
+        {
+            // Always log full error to debug console
+            DebugConsole.Log(errorMessage, false);
+
+            // Show in chat based on ShowErrorInChat setting
+            if (showInChat && ChatManager.IsChatAvailable())
+            {
+                if (ShowErrorInChat)
+                {
+                    // Show full error message in chat
+                    ChatManager.AddException(errorMessage);
+                }
+                else
+                {
+                    // Show simplified notification in chat
+                    ChatManager.AddException("CL Runtime Exception, press F11 to view in debug console");
+                }
+            }
         }
 
         public Dictionary<string, BaseSetting> GetModeSettings()
@@ -76,7 +98,7 @@ namespace CustomLogic
             }
             catch (Exception e)
             {
-                DebugConsole.Log("Custom logic error getting main logic settings", true);
+                LogCustomLogicError("Custom logic error getting main logic settings", true);
                 return new Dictionary<string, BaseSetting>();
             }
         }
@@ -167,7 +189,7 @@ namespace CustomLogic
             }
             catch (Exception e)
             {
-                DebugConsole.Log("Custom logic runtime error: " + e.Message, true);
+                LogCustomLogicError("Custom logic runtime error: " + e.Message, true);
             }
         }
 
@@ -987,12 +1009,12 @@ namespace CustomLogic
             }
             catch (TargetInvocationException e)
             {
-                DebugConsole.Log("Custom logic runtime error at method " + methodName + " in class " + classInstance.ClassName + ": " + e.InnerException?.Message, true);
+                LogCustomLogicError("Custom logic runtime error at method " + methodName + " in class " + classInstance.ClassName + ": " + e.InnerException?.Message, true);
                 return null;
             }
             catch (Exception e)
             {
-                DebugConsole.Log("Custom logic runtime error at method " + methodName + " in class " + classInstance.ClassName + ": " + e.Message, true);
+                LogCustomLogicError("Custom logic runtime error at method " + methodName + " in class " + classInstance.ClassName + ": " + e.Message, true);
                 return null;
             }
         }
@@ -1031,12 +1053,12 @@ namespace CustomLogic
             }
             catch (TargetInvocationException e)
             {
-                DebugConsole.Log("Custom logic runtime error at method " + methodName + " in class " + classInstance.ClassName + ": " + e.InnerException?.Message, true);
+                LogCustomLogicError("Custom logic runtime error at method " + methodName + " in class " + classInstance.ClassName + ": " + e.InnerException?.Message, true);
                 return null;
             }
             catch (Exception e)
             {
-                DebugConsole.Log("Custom logic runtime error at line " + GetLineNumberString(userMethod.Ast.Line) + " at method " + methodName + " in class " + classInstance.ClassName + ": " + e.Message, true);
+                LogCustomLogicError("Custom logic runtime error at line " + GetLineNumberString(userMethod.Ast.Line) + " at method " + methodName + " in class " + classInstance.ClassName + ": " + e.Message, true);
                 return null;
             }
         }
@@ -1154,7 +1176,7 @@ namespace CustomLogic
             }
             catch (Exception e)
             {
-                DebugConsole.Log("Custom logic runtime error at line " + GetLineNumberString(expression.Line) + ": " + e.Message, true);
+                LogCustomLogicError("Custom logic runtime error at line " + GetLineNumberString(expression.Line) + ": " + e.Message, true);
             }
             return null;
         }
