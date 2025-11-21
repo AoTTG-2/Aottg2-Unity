@@ -117,6 +117,18 @@ namespace CustomLogic
             set => Human.Stats.Speed = value;
         }
 
+        [CLProperty(description: "The transform of the horse belonging to this human. Returns null if horses are disabled.")]
+        public CustomLogicTransformBuiltin HorseTransform
+        {
+            get
+            {
+                Horse horse = Human.Horse;
+                if (horse != null)
+                    return new(Human.Horse.transform);
+                return null;
+            }
+        }
+
         [CLProperty(description: "The speed of the horse")]
         public float HorseSpeed
         {

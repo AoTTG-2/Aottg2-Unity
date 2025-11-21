@@ -43,14 +43,7 @@ namespace CustomLogic
         }
 
         [CLMethod("Plays the specified animation after the current animation finishes playing.")]
-        public void PlayAnimationQueued(string anim, float fade = 0.1f, int layer = 0)
-        {
-            if (!Value.IsPlaying(anim))
-            {
-                Value.CrossFade(anim, fade);
-                Value[anim].layer = layer;
-            }
-        }
+        public void PlayAnimationQueued(string anim) => Value.PlayQueued(anim);
 
         [CLMethod("Stops the specified animation. Will stop all animations if no name is given.")]
         public void StopAnimation(string anim = null)
