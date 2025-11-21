@@ -398,5 +398,18 @@ namespace CustomLogic
         {
             return new CustomLogicScrollViewBuiltin(new ScrollView());
         }
+
+        /// <summary>
+        /// Creates a new `Icon` element for displaying images/icons.
+        /// </summary>
+        /// <param name="iconPath">Path to the icon resource (e.g., "Icons/Game/BladeIcon")</param>
+        [CLMethod]
+        public static CustomLogicIconBuiltin Icon(string iconPath = "")
+        {
+            var icon = new CustomLogicIconBuiltin(new Image());
+            if (!string.IsNullOrEmpty(iconPath))
+                icon.SetIcon(iconPath);
+            return icon;
+        }
     }
 }
