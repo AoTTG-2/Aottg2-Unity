@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.ApplicationManagers;
 using GameManagers;
+using Settings;
 using System.Collections.Generic;
 using UnityEngine;
 using Utility;
@@ -62,12 +63,12 @@ namespace ApplicationManagers
             {
                 string countSuffix = Count > 1 ? $" (x{Count})" : "";
                 string result = Prefix + Message + countSuffix;
-                
+
                 if (showStackTraces && !string.IsNullOrEmpty(StackTrace))
                 {
                     result += "\n" + StackTrace;
                 }
-                
+
                 return result;
             }
 
@@ -175,7 +176,7 @@ namespace ApplicationManagers
             {
                 var lastMessage = _messageBuffer.Last.Value;
                 var tempMessage = new LogMessage(message, type, stackTrace, isCustomLogic);
-                
+
                 if (lastMessage.IsDuplicateOf(tempMessage))
                 {
                     lastMessage.Count++;
@@ -187,7 +188,7 @@ namespace ApplicationManagers
             var logMessage = new LogMessage(message, type, stackTrace, isCustomLogic);
             _messageBuffer.AddLast(logMessage);
             _currentCharCountBuffer += message.Length + stackTrace.Length;
-            
+
             while (_messageBuffer.Count > MaxMessages || _currentCharCountBuffer > MaxChars)
             {
                 var first = _messageBuffer.First.Value;
@@ -207,7 +208,7 @@ namespace ApplicationManagers
             {
                 var lastMessage = _messages.Last.Value;
                 var tempMessage = new LogMessage(message, type, stackTrace, isCustomLogic);
-                
+
                 if (lastMessage.IsDuplicateOf(tempMessage))
                 {
                     lastMessage.Count++;
@@ -229,7 +230,7 @@ namespace ApplicationManagers
 
         void Update()
         {
-            if (Input.GetKeyDown(KeyCode.F11))
+            if (SettingsManager.InputSettings.General.DebugWindow.GetKeyDown())
             {
                 Enabled = !Enabled;
             }

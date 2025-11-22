@@ -1,12 +1,8 @@
 ﻿using Settings;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.UI;
 
 namespace UI
 {
-    class SettingsUIPanel: SettingsCategoryPanel
+    class SettingsUIPanel : SettingsCategoryPanel
     {
         protected override bool ScrollBar => true;
         public override void Setup(BasePanel parent = null)
@@ -36,12 +32,12 @@ namespace UI
             ElementFactory.CreateToggleSetting(DoublePanelLeft, style, SettingsManager.UISettings.ShowEmotes, UIManager.GetLocale(cat, sub, "ShowEmotes"));
 
             // Name Visibility
-            
+
             ElementFactory.CreateDropdownSetting(DoublePanelLeft, style, SettingsManager.UISettings.ShowNames, UIManager.GetLocale(cat, sub, "ShowNames"),
                 UIManager.GetLocaleArray(cat, sub, "ShowNamesOptions"), elementWidth: 160f);
             ElementFactory.CreateDropdownSetting(DoublePanelLeft, style, SettingsManager.UISettings.ShowHealthbars, UIManager.GetLocale(cat, sub, "ShowHealthbars"),
                 UIManager.GetLocaleArray(cat, sub, "ShowHealthbarsOptions"), elementWidth: 160f);
-            ElementFactory.CreateInputSetting(DoublePanelLeft, style, SettingsManager.UISettings.HumanNameDistance, UIManager.GetLocale(cat, sub, "HumanNameDistance"), 
+            ElementFactory.CreateInputSetting(DoublePanelLeft, style, SettingsManager.UISettings.HumanNameDistance, UIManager.GetLocale(cat, sub, "HumanNameDistance"),
                 tooltip: UIManager.GetLocale(cat, sub, "HumanNameDistanceTooltip"), elementWidth: 160f);
             ElementFactory.CreateDropdownSetting(DoublePanelLeft, style, SettingsManager.UISettings.NameOverrideTarget, UIManager.GetLocale(cat, sub, "NameOverrideTarget"),
                 UIManager.GetLocaleArray(cat, sub, "ShowNamesOptions"), elementWidth: 160f);
@@ -55,7 +51,7 @@ namespace UI
             // Crosshair
             ElementFactory.CreateDropdownSetting(DoublePanelRight, style, SettingsManager.UISettings.CrosshairStyle, UIManager.GetLocale(cat, sub, "CrosshairStyle"),
                 UIManager.GetLocaleArray(cat, sub, "CrosshairStyleOptions"), elementWidth: 200f);
-            ElementFactory.CreateSliderSetting(DoublePanelRight, new ElementStyle(titleWidth: 150f, themePanel: ThemePanel), 
+            ElementFactory.CreateSliderSetting(DoublePanelRight, new ElementStyle(titleWidth: 150f, themePanel: ThemePanel),
                 SettingsManager.UISettings.CrosshairScale, UIManager.GetLocale(cat, sub, "CrosshairScale"), elementWidth: 185f);
             ElementFactory.CreateSliderSetting(DoublePanelRight, new ElementStyle(titleWidth: 150f, themePanel: ThemePanel),
                 SettingsManager.UISettings.CrosshairTextScale, UIManager.GetLocale(cat, sub, "CrosshairTextScale"), elementWidth: 185f);
@@ -77,10 +73,11 @@ namespace UI
             ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.ChatWidth, UIManager.GetLocale(cat, sub, "ChatWidth"), elementWidth: 100f);
             ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.ChatHeight, UIManager.GetLocale(cat, sub, "ChatHeight"), elementWidth: 100f);
             ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.ChatFontSize, UIManager.GetLocale(cat, sub, "ChatFontSize"), elementWidth: 100f);
-            ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.ChatPoolSize, UIManager.GetLocale(cat, sub, "ChatPoolSize"), 
+            ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.ChatPoolSize, UIManager.GetLocale(cat, sub, "ChatPoolSize"),
                 tooltip: UIManager.GetLocale(cat, sub, "ChatPoolSizeTooltip"), elementWidth: 100f);
             ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.ChatScrollSensitivity, UIManager.GetLocale(cat, sub, "ChatScrollSensitivity"));
             ElementFactory.CreateColorSetting(DoublePanelRight, style, SettingsManager.UISettings.ChatBackgroundColor, UIManager.GetLocale(cat, sub, "ChatBackgroundColor"), UIManager.CurrentMenu.ColorPickPopup);
+            ElementFactory.CreateToggleSetting(DoublePanelRight, style, SettingsManager.UISettings.ChatCLErrors, UIManager.GetLocale(cat, sub, "ChatCLErrors"), tooltip: UIManager.GetLocale(cat, sub, "ChatCLErrorsTooltip"));
         }
     }
 }

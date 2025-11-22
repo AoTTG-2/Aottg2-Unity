@@ -36,7 +36,6 @@ namespace CustomLogic
         public bool ShowScoreboardStatus = true;
         public string ForcedCharacterType = string.Empty;
         public string ForcedLoadout = string.Empty;
-        public bool ShowErrorInChat = false;    // TODO: Replace with setting.
         private int _baseLogicOffset = 0;
 
         public CustomLogicEvaluator(CustomLogicStartAst start, int baseLogicOffset = 0)
@@ -59,7 +58,7 @@ namespace CustomLogic
             // Show in chat based on ShowErrorInChat setting
             if (showInChat && ChatManager.IsChatAvailable())
             {
-                if (ShowErrorInChat)
+                if (SettingsManager.UISettings.ChatCLErrors.Value)
                 {
                     // Show full error message in chat
                     ChatManager.AddException(errorMessage);
@@ -67,7 +66,7 @@ namespace CustomLogic
                 else
                 {
                     // Show simplified notification in chat
-                    ChatManager.AddException("CL Runtime Exception, press F11 to view in debug console");
+                    ChatManager.AddException($"CL Runtime Exception, press {SettingsManager.InputSettings.General.DebugWindow.GetKey()} to view in debug console");
                 }
             }
         }
