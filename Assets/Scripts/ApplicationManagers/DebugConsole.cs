@@ -68,9 +68,9 @@ namespace ApplicationManagers
         // Window position and size
         static float _windowX = 20;
         static float _windowY = 20;
-        static float _windowWidth = 500;
+        static float _windowWidth = 600;
         static float _windowHeight = 400;
-        
+
         // Dragging and resizing state
         static bool _isDragging = false;
         static bool _isResizing = false;
@@ -87,9 +87,10 @@ namespace ApplicationManagers
             Error,
             CustomLogic
         }
-        static LogTab _currentTab = LogTab.All;
+        static LogTab _currentTab;
         static bool _showStackTraces = false;
         static bool _solidBackground = true;
+        static bool _wordWrap = true;
 
         const int MaxMessages = 200;
         const int MaxChars = 5000;
@@ -97,8 +98,8 @@ namespace ApplicationManagers
         const int Padding = 10;
         const int TabHeight = 25;
         const int ResizeHandleSize = 15;
-        const int MinWidth = 300;
-        const int MinHeight = 200;
+        const int MinWidth = 400;
+        const int MinHeight = 300;
         const string InputControlName = "DebugInput";
 
 
@@ -106,6 +107,15 @@ namespace ApplicationManagers
         {
             _instance = SingletonFactory.CreateSingleton(_instance);
             Application.logMessageReceived += OnUnityDebugLog;
+
+            // Set default tab based on build type
+            // In editor or debug builds, show all logs by default
+            // In release builds, show only Custom Logic errors by default (most relevant to end users)
+#if UNITY_EDITOR
+            _currentTab = LogTab.All;
+#else
+            _currentTab = Debug.isDebugBuild ? LogTab.All : LogTab.CustomLogic;
+#endif
         }
 
         public static void Log(string message, bool showInChat = false)
@@ -190,10 +200,10 @@ namespace ApplicationManagers
             {
                 // draw debug console over everything else
                 GUI.depth = 1;
-                
+
                 // Handle dragging and resizing
                 HandleWindowInteraction();
-                
+
                 // Draw background - solid or transparent based on toggle
                 if (_solidBackground)
                 {
@@ -203,18 +213,18 @@ namespace ApplicationManagers
                     GUI.DrawTexture(new Rect(_windowX, _windowY, _windowWidth, _windowHeight), Texture2D.whiteTexture);
                     GUI.color = oldColor;
                 }
-                
+
                 // Always draw the window border/frame
                 GUI.Box(new Rect(_windowX, _windowY, _windowWidth, _windowHeight), "");
-                
+
                 DrawTabs();
                 DrawMessageWindow();
                 DrawInputWindow();
                 HandleInput();
-                
+
                 // Draw resize handle
                 DrawResizeHandle();
-                
+
                 GUI.depth = 0;
             }
         }
@@ -223,30 +233,30 @@ namespace ApplicationManagers
         {
             Event e = Event.current;
             Vector2 mousePos = e.mousePosition;
-            
+
             // Check if mouse is in resize handle area (bottom-right corner)
-            Rect resizeHandleRect = new Rect(_windowX + _windowWidth - ResizeHandleSize, 
-                                             _windowY + _windowHeight - ResizeHandleSize, 
+            Rect resizeHandleRect = new Rect(_windowX + _windowWidth - ResizeHandleSize,
+                                             _windowY + _windowHeight - ResizeHandleSize,
                                              ResizeHandleSize, ResizeHandleSize);
-            
+
             // Check if mouse is in title bar area (for dragging) - adjusted for extra spacing
             Rect titleBarRect = new Rect(_windowX, _windowY, _windowWidth, InputHeight + Padding * 3 + TabHeight);
-            
-            // Calculate button area to exclude from dragging
-            int buttonWidth = 70;
+
+            // Calculate button area to exclude from dragging - now 4 buttons on top row
+            int buttonWidth = 80;
             int buttonSpacing = 5;
-            int totalButtonWidth = buttonWidth * 3 + buttonSpacing * 2;
-            Rect buttonAreaRect = new Rect(_windowX + _windowWidth - totalButtonWidth - Padding * 2, 
-                                           _windowY + Padding, 
-                                           totalButtonWidth + Padding, 
+            int totalButtonWidth = buttonWidth * 4 + buttonSpacing * 3;
+            Rect buttonAreaRect = new Rect(_windowX + _windowWidth - totalButtonWidth - Padding * 2,
+                                           _windowY + Padding,
+                                           totalButtonWidth + Padding,
                                            InputHeight);
-            
+
             // Calculate tab area to exclude from dragging
-            Rect tabAreaRect = new Rect(_windowX + Padding, 
-                                        _windowY + Padding * 2 + InputHeight, 
-                                        _windowWidth - Padding * 2, 
+            Rect tabAreaRect = new Rect(_windowX + Padding,
+                                        _windowY + Padding * 2 + InputHeight,
+                                        _windowWidth - Padding * 2,
                                         TabHeight);
-            
+
             if (e.type == EventType.MouseDown && e.button == 0)
             {
                 if (resizeHandleRect.Contains(mousePos))
@@ -293,14 +303,14 @@ namespace ApplicationManagers
             int positionY = (int)_windowY + Padding;
             int width = (int)_windowWidth - Padding * 2;
 
-            // Title and buttons on the right
-            int buttonWidth = 70; // Increased from 60 to 70 for better fit
-            int buttonSpacing = 5; // Small spacing between buttons
-            int totalButtonWidth = buttonWidth * 3 + buttonSpacing * 2; // Clear + Traces + Background
+            // Title and toggle buttons on the right (top row)
+            int buttonWidth = 90;
+            int buttonSpacing = 5;
+            int totalButtonWidth = buttonWidth * 4 + buttonSpacing * 3; // Clear + Stack Traces + Background + Wrap
             GUI.Label(new Rect(positionX, positionY, width - totalButtonWidth - Padding, InputHeight), "Debug Console (Press F11 to hide)");
 
             int buttonX = positionX + width - totalButtonWidth;
-            
+
             // Clear button
             if (GUI.Button(new Rect(buttonX, positionY, buttonWidth, InputHeight), "Clear"))
             {
@@ -318,18 +328,26 @@ namespace ApplicationManagers
                 _showStackTraces = !_showStackTraces;
             }
             buttonX += buttonWidth + buttonSpacing;
-            
+
             // Background toggle button
-            string bgLabel = _solidBackground ? "Transparent" : "Solid BG";
+            string bgLabel = _solidBackground ? "Glass" : "Opaque";
             if (GUI.Button(new Rect(buttonX, positionY, buttonWidth, InputHeight), bgLabel))
             {
                 _solidBackground = !_solidBackground;
+            }
+            buttonX += buttonWidth + buttonSpacing;
+
+            // Word wrap toggle button
+            string wrapLabel = _wordWrap ? "No Wrap" : "Wrap";
+            if (GUI.Button(new Rect(buttonX, positionY, buttonWidth, InputHeight), wrapLabel))
+            {
+                _wordWrap = !_wordWrap;
             }
 
             // Add extra spacing between title row and tabs
             positionY += InputHeight + Padding;
 
-            // Now we have 5 tabs instead of 4
+            // Second row: Log type tabs
             int tabWidth = (width - Padding * 4) / 5;
             int tabX = positionX;
 
@@ -383,7 +401,7 @@ namespace ApplicationManagers
             int width = (int)_windowWidth - Padding * 2;
             int scrollViewHeight = (int)_windowHeight - Padding * 6 - InputHeight * 2 - TabHeight; // Adjusted for extra spacing
             GUIStyle style = new GUIStyle(GUI.skin.textArea);
-            style.wordWrap = true;
+            style.wordWrap = _wordWrap;
             style.richText = true; // Enable rich text for colored icons
 
             if (_needResetScroll)
@@ -437,17 +455,40 @@ namespace ApplicationManagers
             text = text.Trim();
 
             int textWidth = width - Padding * 2;
-            int height = (int)style.CalcHeight(new GUIContent(text), textWidth) + Padding;
+            int textHeight;
+            int contentWidth;
+
+            if (_wordWrap)
+            {
+                // When word wrapping is enabled, calculate height based on wrapped content
+                textHeight = (int)style.CalcHeight(new GUIContent(text), textWidth) + Padding;
+                contentWidth = textWidth;
+            }
+            else
+            {
+                // When word wrapping is disabled, calculate the maximum line width for horizontal scrolling
+                string[] lines = text.Split('\n');
+                float maxLineWidth = 0;
+                foreach (string line in lines)
+                {
+                    float lineWidth = style.CalcSize(new GUIContent(line)).x;
+                    if (lineWidth > maxLineWidth)
+                        maxLineWidth = lineWidth;
+                }
+                contentWidth = Mathf.Max(textWidth, (int)maxLineWidth + Padding);
+                textHeight = (int)style.CalcHeight(new GUIContent(text), contentWidth) + Padding;
+            }
+
             _scrollPosition = GUI.BeginScrollView(new Rect(positionX, positionY, width, scrollViewHeight), _scrollPosition,
-                new Rect(positionX, positionY, textWidth, height));
+                new Rect(positionX, positionY, contentWidth, textHeight));
 
             // Use TextArea instead of Label to allow text selection
-            GUI.TextArea(new Rect(positionX, positionY, textWidth, height), text, style);
+            GUI.TextArea(new Rect(positionX, positionY, contentWidth, textHeight), text, style);
 
             if (_needResetScroll)
             {
                 _needResetScroll = false;
-                _scrollPosition = new Vector2(0f, height);
+                _scrollPosition = new Vector2(0f, textHeight);
             }
             GUI.EndScrollView();
         }
@@ -455,6 +496,8 @@ namespace ApplicationManagers
         static void DrawInputWindow()
         {
             int y = (int)(_windowY + _windowHeight) - InputHeight - Padding;
+
+            // Draw input field taking the full width
             GUI.SetNextControlName(InputControlName);
             _inputLine = GUI.TextField(new Rect((int)_windowX + Padding, y, (int)_windowWidth - Padding * 2, InputHeight), _inputLine);
         }
@@ -555,10 +598,10 @@ namespace ApplicationManagers
         static void DrawResizeHandle()
         {
             // Draw a visual indicator for the resize handle
-            Rect resizeHandleRect = new Rect(_windowX + _windowWidth - ResizeHandleSize, 
-                                             _windowY + _windowHeight - ResizeHandleSize, 
+            Rect resizeHandleRect = new Rect(_windowX + _windowWidth - ResizeHandleSize,
+                                             _windowY + _windowHeight - ResizeHandleSize,
                                              ResizeHandleSize, ResizeHandleSize);
-            
+
             GUI.Box(resizeHandleRect, "⋰");
         }
     }
