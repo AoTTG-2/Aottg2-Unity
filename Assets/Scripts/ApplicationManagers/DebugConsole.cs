@@ -22,15 +22,17 @@ namespace ApplicationManagers
             public string Message;
             public LogType Type;
             public string Prefix;
-            public bool IsStackTrace;
             public bool IsCustomLogic;
+            public string StackTrace;
+            public int Count;
 
-            public LogMessage(string message, LogType type, bool isStackTrace = false, bool isCustomLogic = false)
+            public LogMessage(string message, LogType type, string stackTrace = "", bool isCustomLogic = false)
             {
                 Message = message;
                 Type = type;
-                IsStackTrace = isStackTrace;
                 IsCustomLogic = isCustomLogic;
+                StackTrace = stackTrace;
+                Count = 1;
 
                 // Set prefix with UTF-8 icons and rich text colors
                 switch (type)
@@ -54,6 +56,28 @@ namespace ApplicationManagers
                         Prefix = "";
                         break;
                 }
+            }
+
+            public string GetFormattedMessage(bool showStackTraces)
+            {
+                string countSuffix = Count > 1 ? $" (x{Count})" : "";
+                string result = Prefix + Message + countSuffix;
+                
+                if (showStackTraces && !string.IsNullOrEmpty(StackTrace))
+                {
+                    result += "\n" + StackTrace;
+                }
+                
+                return result;
+            }
+
+            public bool IsDuplicateOf(LogMessage other)
+            {
+                return other != null &&
+                       Message == other.Message &&
+                       Type == other.Type &&
+                       IsCustomLogic == other.IsCustomLogic &&
+                       StackTrace == other.StackTrace;
             }
         }
 
@@ -141,43 +165,64 @@ namespace ApplicationManagers
             if (isCustomLogic && type == LogType.Log)
                 type = LogType.Error;
 
-            if (!string.IsNullOrEmpty(stackTrace) && !isCustomLogic)
-                AddMessageBuffer(stackTrace, type, true, false);
-            AddMessageBuffer(log, type, false, isCustomLogic);
+            AddMessageBuffer(log, type, stackTrace, isCustomLogic);
         }
 
-        static void AddMessageBuffer(string message, LogType type, bool isStackTrace = false, bool isCustomLogic = false)
+        static void AddMessageBuffer(string message, LogType type, string stackTrace = "", bool isCustomLogic = false)
         {
-            var logMessage = new LogMessage(message, type, isStackTrace, isCustomLogic);
+            // Check if this is a duplicate of the last message
+            if (_messageBuffer.Count > 0)
+            {
+                var lastMessage = _messageBuffer.Last.Value;
+                var tempMessage = new LogMessage(message, type, stackTrace, isCustomLogic);
+                
+                if (lastMessage.IsDuplicateOf(tempMessage))
+                {
+                    lastMessage.Count++;
+                    _needResetScroll = true;
+                    return;
+                }
+            }
+
+            var logMessage = new LogMessage(message, type, stackTrace, isCustomLogic);
             _messageBuffer.AddLast(logMessage);
-            _currentCharCountBuffer += message.Length;
+            _currentCharCountBuffer += message.Length + stackTrace.Length;
+            
             while (_messageBuffer.Count > MaxMessages || _currentCharCountBuffer > MaxChars)
             {
-                _currentCharCountBuffer -= _messageBuffer.First.Value.Message.Length;
+                var first = _messageBuffer.First.Value;
+                _currentCharCountBuffer -= first.Message.Length + first.StackTrace.Length;
                 _messageBuffer.RemoveFirst();
             }
             _needResetScroll = true;
         }
 
-        static void AddMessage(string message, LogType type, bool isStackTrace = false, bool isCustomLogic = false)
+        static void AddMessage(string message, LogType type, string stackTrace = "", bool isCustomLogic = false)
         {
             if (message == string.Empty)
                 return;
-            if (message.Contains('\n'))
+
+            // Check if this is a duplicate of the last message
+            if (_messages.Count > 0)
             {
-                foreach (string line in message.Split('\n'))
-                    AddMessage(line, type, isStackTrace, isCustomLogic);
-                return;
+                var lastMessage = _messages.Last.Value;
+                var tempMessage = new LogMessage(message, type, stackTrace, isCustomLogic);
+                
+                if (lastMessage.IsDuplicateOf(tempMessage))
+                {
+                    lastMessage.Count++;
+                    return;
+                }
             }
 
-            // Don't split messages - let them wrap naturally in the UI
-            var logMessage = new LogMessage(message, type, isStackTrace, isCustomLogic);
+            var logMessage = new LogMessage(message, type, stackTrace, isCustomLogic);
             _messages.AddLast(logMessage);
-            _currentCharCount += message.Length;
+            _currentCharCount += message.Length + stackTrace.Length;
 
             while (_messages.Count > MaxMessages || _currentCharCount > MaxChars)
             {
-                _currentCharCount -= _messages.First.Value.Message.Length;
+                var first = _messages.First.Value;
+                _currentCharCount -= first.Message.Length + first.StackTrace.Length;
                 _messages.RemoveFirst();
             }
         }
@@ -409,8 +454,9 @@ namespace ApplicationManagers
                 while (_messageBuffer.Count > 0)
                 {
                     var logMessage = _messageBuffer.First.Value;
-                    AddMessage(logMessage.Message, logMessage.Type, logMessage.IsStackTrace, logMessage.IsCustomLogic);
-                    _currentCharCountBuffer -= logMessage.Message.Length;
+                    AddMessage(logMessage.Message, logMessage.Type, logMessage.StackTrace, logMessage.IsCustomLogic);
+                    var first = _messageBuffer.First.Value;
+                    _currentCharCountBuffer -= first.Message.Length + first.StackTrace.Length;
                     _messageBuffer.RemoveFirst();
                 }
             }
@@ -419,10 +465,6 @@ namespace ApplicationManagers
             string text = "";
             foreach (var logMessage in _messages)
             {
-                // Skip stack traces if toggle is off
-                if (logMessage.IsStackTrace && !_showStackTraces)
-                    continue;
-
                 bool includeMessage = false;
 
                 switch (_currentTab)
@@ -449,7 +491,7 @@ namespace ApplicationManagers
 
                 if (includeMessage)
                 {
-                    text += logMessage.Prefix + logMessage.Message + "\n";
+                    text += logMessage.GetFormattedMessage(_showStackTraces) + "\n";
                 }
             }
             text = text.Trim();
