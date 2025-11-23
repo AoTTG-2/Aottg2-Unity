@@ -52,8 +52,8 @@ namespace CustomLogic
 
         private void LogCustomLogicError(string errorMessage, bool showInChat)
         {
-            // Always log full error to debug console
-            DebugConsole.Log(errorMessage, false);
+            // Always log full error to debug console using the new method
+            DebugConsole.LogCustomLogic(errorMessage, false);
 
             // Show in chat based on ShowErrorInChat setting
             if (showInChat && ChatManager.IsChatAvailable())

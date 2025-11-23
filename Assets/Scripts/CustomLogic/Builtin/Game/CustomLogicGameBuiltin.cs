@@ -2,8 +2,6 @@ using ApplicationManagers;
 using Characters;
 using Effects;
 using GameManagers;
-using Map;
-using NUnit.Framework;
 using Photon.Pun;
 using Projectiles;
 using Settings;
@@ -302,7 +300,7 @@ namespace CustomLogic
         {
             if (message == null)
                 message = "null";
-            DebugConsole.Log(message.ToString(), true);
+            DebugConsole.LogCustomLogic(message.ToString(), SettingsManager.UISettings.ChatCLErrors.Value);
         }
 
         [CLMethod(description: "Print a message to the chat")]

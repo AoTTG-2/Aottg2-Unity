@@ -126,6 +126,7 @@ namespace ApplicationManagers
         const int MinWidth = 400;
         const int MinHeight = 300;
         const string InputControlName = "DebugInput";
+        const string CustomLogicErrorPrefix = "[Custom Logic Error] ";
 
 
         public static void Init()
@@ -150,6 +151,14 @@ namespace ApplicationManagers
                 ChatManager.AddException(message);
         }
 
+        public static void LogCustomLogic(string message, bool showInChat = false)
+        {
+            // Prefix the message internally for detection, but don't show the prefix
+            UnityEngine.Debug.LogError(CustomLogicErrorPrefix + message);
+            if (showInChat && ChatManager.IsChatAvailable())
+                ChatManager.AddException(message);
+        }
+
         public static void LogTimeSince(float start, string prefix = "")
         {
             UnityEngine.Debug.Log(prefix + ": " + (Time.realtimeSinceStartup - start).ToString());
@@ -157,14 +166,17 @@ namespace ApplicationManagers
 
         static void OnUnityDebugLog(string log, string stackTrace, LogType type)
         {
-            // Check if this is a Custom Logic error - be more comprehensive in detection
-            bool isCustomLogic = log.Contains("Custom logic runtime error") ||
-                                log.Contains("Custom logic error") ||
-                                log.Contains("Custom logic parsing error");
-
-            // Custom Logic errors should be treated as errors, not info
-            if (isCustomLogic && type == LogType.Log)
-                type = LogType.Error;
+            // Check if this is a Custom Logic error by looking for the prefix
+            bool isCustomLogic = log.StartsWith(CustomLogicErrorPrefix);
+            
+            // Remove the prefix from the message before displaying
+            if (isCustomLogic)
+            {
+                log = log.Substring(CustomLogicErrorPrefix.Length);
+                // Custom Logic errors should be treated as errors
+                if (type == LogType.Log)
+                    type = LogType.Error;
+            }
 
             AddMessageBuffer(log, type, stackTrace, isCustomLogic);
         }
