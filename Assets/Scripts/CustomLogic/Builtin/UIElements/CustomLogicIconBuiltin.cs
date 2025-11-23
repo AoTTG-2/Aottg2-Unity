@@ -1,8 +1,7 @@
-using System;
+using ApplicationManagers;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Utility;
-using ApplicationManagers;
 
 namespace CustomLogic
 {
@@ -101,8 +100,10 @@ namespace CustomLogic
                     _image.scaleMode = UnityEngine.ScaleMode.ScaleAndCrop;
                 else if (value == "ScaleToFit")
                     _image.scaleMode = UnityEngine.ScaleMode.ScaleToFit;
+                else if (value == "StretchToFill")
+                    _image.scaleMode = UnityEngine.ScaleMode.StretchToFill;
                 else
-                    throw new System.Exception($"Unknown scale mode: {value}. Valid values are 'ScaleAndCrop' and 'ScaleToFit'");
+                    throw new System.Exception($"Unknown scale mode: {value}. Valid values are 'ScaleAndCrop', 'ScaleToFit', and 'StretchToFill'");
             }
         }
     }
