@@ -50,11 +50,24 @@ namespace CustomLogic
                 return this;
             }
 
-            var texture = (Texture2D)ResourceManager.LoadAsset(ResourcePaths.UI, iconPath, true);
-            if (texture != null)
+            // Validate path to prevent path traversal attacks
+            if (!Util.IsValidResourcePath(iconPath))
+            {
+                Debug.LogWarning($"Failed to load icon at path: {iconPath}");
+                return this;
+            }
+
+            var asset = ResourceManager.LoadAsset(ResourcePaths.UI, iconPath, true);
+
+            // Ensure only Texture2D assets are loaded, not prefabs or other types
+            if (asset != null && asset is Texture2D texture)
             {
                 _image.image = texture;
                 _currentIconPath = iconPath;
+            }
+            else if (asset != null)
+            {
+                Debug.LogWarning($"Failed to load icon at path: {iconPath}");
             }
             else
             {
@@ -88,7 +101,7 @@ namespace CustomLogic
         /// Get or set the scale mode for the icon
         /// </summary>
         /// <remarks>
-        /// Valid values: "ScaleAndCrop", "ScaleToFit"
+        /// Valid values: "ScaleAndCrop", "ScaleToFit", "StretchToFill"
         /// </remarks>
         [CLProperty]
         public string ScaleMode

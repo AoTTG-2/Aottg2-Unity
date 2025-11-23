@@ -3,11 +3,10 @@ using Characters;
 using GameManagers;
 using Photon.Pun;
 using Photon.Realtime;
-using Settings;
 using System.Collections.Generic;
 using UI;
-using Utility;
 using UnityEngine.UIElements;
+using Utility;
 
 namespace CustomLogic
 {
@@ -363,7 +362,7 @@ namespace CustomLogic
                 if (item != null)
                     choicesList.Add(item.ToString());
             }
-            
+
             if (choicesList.Count == 0)
                 choicesList.Add("No options");
 
@@ -410,6 +409,19 @@ namespace CustomLogic
             if (!string.IsNullOrEmpty(iconPath))
                 icon.SetIcon(iconPath);
             return icon;
+        }
+
+        /// <summary>
+        /// Creates a new `Icon` element for displaying images/icons.
+        /// </summary>
+        /// <param name="iconPath">Path to the icon resource (e.g., "Icons/Game/BladeIcon")</param>
+        [CLMethod]
+        public static CustomLogicImageBuiltin Image(string iconPath = "")
+        {
+            var image = new CustomLogicImageBuiltin();
+            if (!string.IsNullOrEmpty(iconPath))
+                image.SetImage(iconPath);
+            return image;
         }
     }
 }

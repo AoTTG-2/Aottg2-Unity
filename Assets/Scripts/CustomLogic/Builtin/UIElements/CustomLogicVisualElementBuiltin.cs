@@ -588,6 +588,24 @@ namespace CustomLogic
             return this;
         }
 
+        /// <summary>
+        /// Set the background image of the element
+        /// </summary>
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin SetBackgroundImage(CustomLogicImageBuiltin image)
+        {
+            // Apply the image to this element
+            if (image != null)
+            {
+                var texture = image.GetTexture();
+                if (texture != null)
+                {
+                    _visualElement.style.backgroundImage = new StyleBackground(texture);
+                }
+            }
+            return this;
+        }
+
         #endregion
 
         #region Border Color
