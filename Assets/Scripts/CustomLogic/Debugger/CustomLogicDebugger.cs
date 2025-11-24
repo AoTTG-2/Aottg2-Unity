@@ -37,6 +37,7 @@ namespace CustomLogic.Debugger
         private Dictionary<string, object> _currentLocalVariables;
         private CustomLogicBaseAst _currentStatement;
         private string _currentFileName = "main.cl";
+        private int _currentLineNumber = 0; // Actual file line number (not AST line)
 
         // Stack trace
         private Stack<DebugStackFrame> _callStack = new Stack<DebugStackFrame>();
@@ -120,12 +121,15 @@ namespace CustomLogic.Debugger
             _client?.Close();
             _tcpListener?.Stop();
             _pauseEvent.Set(); // Unblock any paused execution
-            IsEnabled = false;
+            
+            // Clear state and disable debugger
             ClearState();
+            IsEnabled = false;
         }
 
         /// <summary>
         /// Clears all debugger state. Called when debugger is stopped or CL is reloaded.
+        /// Preserves IsEnabled if debugger is still connected.
         /// </summary>
         public void ClearState()
         {
@@ -134,6 +138,7 @@ namespace CustomLogic.Debugger
             _currentLocalVariables = null;
             _currentStatement = null;
             _currentFileName = "main.cl";
+            _currentLineNumber = 0; // Reset current line number
             
             // Clear call stack
             _callStack.Clear();
@@ -154,6 +159,7 @@ namespace CustomLogic.Debugger
             _pauseEvent.Set();
             
             // Note: We don't clear breakpoints as they should persist across CL reloads
+            // Note: We don't disable IsEnabled - it stays active if debugger is connected
             
             Debug.Log("[CL Debugger] State cleared");
         }
@@ -436,7 +442,7 @@ namespace CustomLogic.Debugger
             var frames = new List<object>();
             int frameId = 0;
 
-            // Current frame
+            // Current frame - use actual file line number, not AST line
             if (_currentStatement != null)
             {
                 frames.Add(new
@@ -444,12 +450,12 @@ namespace CustomLogic.Debugger
                     id = frameId++,
                     name = _callStack.Count > 0 ? _callStack.Peek().MethodName : "main",
                     source = new { path = _currentFileName },
-                    line = _currentStatement.Line,
+                    line = _currentLineNumber, // Use actual file line number
                     column = 1
                 });
             }
 
-            // Call stack frames
+            // Call stack frames - these already have actual line numbers from PushStackFrame
             foreach (var frame in _callStack)
             {
                 frames.Add(new
@@ -457,7 +463,7 @@ namespace CustomLogic.Debugger
                     id = frameId++,
                     name = $"{frame.ClassName}.{frame.MethodName}",
                     source = new { path = frame.FileName },
-                    line = frame.Line,
+                    line = frame.Line, // Already converted in PushStackFrame
                     column = 1
                 });
             }
@@ -953,7 +959,7 @@ namespace CustomLogic.Debugger
         /// <summary>
         /// Called before executing each statement. Checks for breakpoints and pauses if needed.
         /// </summary>
-        internal void OnBeforeStatement(CustomLogicBaseAst statement, string fileName,
+        internal void OnBeforeStatement(CustomLogicBaseAst statement, string fileName, int actualLineNumber,
             CustomLogicClassInstance instance, Dictionary<string, object> localVariables)
         {
             if (!IsEnabled) return;
@@ -962,6 +968,7 @@ namespace CustomLogic.Debugger
             _currentInstance = instance;
             _currentLocalVariables = localVariables;
             _currentFileName = fileName;
+            _currentLineNumber = actualLineNumber; // Store the actual file line number
 
             bool shouldPause = false;
             string reason = "step";
@@ -989,12 +996,12 @@ namespace CustomLogic.Debugger
                 }
             }
 
-            // Check breakpoint
-            if (HasBreakpoint(fileName, statement.Line))
+            // Check breakpoint using actual file line number
+            if (HasBreakpoint(fileName, actualLineNumber))
             {
                 shouldPause = true;
                 reason = "breakpoint";
-                Debug.Log($"[CL Debugger] Hit breakpoint at {fileName}:{statement.Line}");
+                Debug.Log($"[CL Debugger] Hit breakpoint at {fileName}:{actualLineNumber}");
                 Debug.Log($"  - Instance: {instance?.ClassName ?? "null"}");
                 Debug.Log($"  - Local vars count: {localVariables?.Count ?? 0}");
                 if (localVariables != null)
@@ -1007,7 +1014,7 @@ namespace CustomLogic.Debugger
             if (shouldPause)
             {
                 Pause();
-                SendStoppedEvent(reason, fileName, statement.Line);
+                SendStoppedEvent(reason, fileName, actualLineNumber);
             }
 
             // Wait if paused
@@ -1093,7 +1100,7 @@ namespace CustomLogic.Debugger
                 }
             }
 
-            Debug.Log($"[CL Debugger] No breakpoint at {fileName}:{line}");
+            // Debug.Log($"[CL Debugger] No breakpoint at {fileName}:{line}");
             return false;
         }
 

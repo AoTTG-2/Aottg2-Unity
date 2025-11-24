@@ -9,15 +9,19 @@ The Custom Logic Debugger now properly manages its memory to prevent stale state
 ### 1. When Debugger is Disabled
 
 When the user disables the debugger via the UI settings:
-- **UISettings.Apply()** calls `ClearState()` before stopping the server
+- **UISettings.Apply()** calls `StopDebugServer()` which calls `ClearState()` and sets `IsEnabled = false`
 - All execution state, call stacks, and variable handles are cleared
-- The debugger is ready to be re-enabled without stale data
+- The debugger server is stopped and the connection is closed
+- The debugger is fully disabled and won't hit any breakpoints
 
 ### 2. When Custom Logic is Reloaded
 
 When a scene is unloaded (which happens before CL reload):
 - **OnPreLoadScene()** calls `ClearState()` to clean up debugger memory
+- **IsEnabled remains true** if the debugger is still connected
+- This allows breakpoints to continue working after the reload
 - This happens automatically when:
+  - Restarting the game (F5)
   - Switching between game modes
   - Reloading a map
   - Leaving a room
@@ -26,8 +30,8 @@ When a scene is unloaded (which happens before CL reload):
 ### 3. When Debugger Server Stops
 
 When the TCP server is stopped:
-- **StopDebugServer()** calls `ClearState()` automatically
-- Ensures clean state even if stopped programmatically
+- **StopDebugServer()** calls `ClearState()` and then sets `IsEnabled = false`
+- Ensures clean state and fully disables debugging
 
 ## What Gets Cleared
 

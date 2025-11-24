@@ -97,6 +97,7 @@ namespace CustomLogic
             // Clear debugger state when CL is being unloaded
             if (SettingsManager.UISettings.EnableCLDebugger.Value)
             {
+                Debug.Log("Clearing Custom Logic Debugger state in CLM.PreloadScene");
                 CustomLogic.Debugger.CustomLogicDebugger.Instance.ClearState();
             }
         }
@@ -232,6 +233,34 @@ namespace CustomLogic
             var lexer = GetLexer(Logic);
             var parser = new CustomLogicParser(lexer.GetTokens(), lexer.BuiltinLogicOffset);
             Evaluator = new CustomLogicEvaluator(parser.GetStartAst(), lexer.BuiltinLogicOffset);
+            
+            // Set file information for debugger
+            InGameGeneralSettings settings = SettingsManager.InGameCurrent.General;
+            string gameMode = settings.GameMode.Value;
+            bool isMapLogic = gameMode == BuiltinLevels.UseMapLogic;
+            
+            if (isMapLogic && MapManager.MapScript != null)
+            {
+                // Map logic mode
+                string mapName = settings.MapName.Value;
+                string mapCategory = settings.MapCategory.Value;
+                string mapPath = mapCategory == "Custom" 
+                    ? $"{BuiltinLevels.CustomMapFolderPath}/{mapName}.txt"
+                    : $"Resources/BuiltinMaps/{mapCategory}/{mapName}Map.txt";
+                
+                Evaluator.SetFileInfo(mapPath, true, mapPath, MapManager.MapScript.LogicStart);
+            }
+            else
+            {
+                // Custom or builtin game mode
+                bool isBuiltin = BuiltinLevels.IsLogicBuiltin(gameMode);
+                string modePath = isBuiltin
+                    ? $"Resources/Modes/{gameMode}Logic.txt"
+                    : $"{BuiltinLevels.CustomLogicFolderPath}/{gameMode}.cl";
+                
+                Evaluator.SetFileInfo(modePath, false);
+            }
+            
             Evaluator.Start(modeSettings);
         }
 

@@ -1003,9 +1003,10 @@ namespace GameManagers
                 PrintMOTD(original);
             }
 
-            // Start the CL debugger server if enabled
-            if (SettingsManager.UISettings.EnableCLDebugger.Value)
+            // Start the CL debugger server if enabled (only if not already running)
+            if (SettingsManager.UISettings.EnableCLDebugger.Value && !CustomLogicDebugger.Instance.IsConnected)
             {
+                Debug.Log("IGM Awake, starting debug server...");
                 CustomLogicDebugger.Instance.StartDebugServer(4711);
             }
 
@@ -1014,8 +1015,9 @@ namespace GameManagers
 
         private void OnDestroy()
         {
-            // Stop debugger when exiting
-            CustomLogicDebugger.Instance.StopDebugServer();
+            // Don't stop the debugger server on destroy - it should persist across scene reloads
+            // Only stop it when the application quits or debugger is explicitly disabled
+            Debug.Log("IGM Destroy (debugger server kept running for persistence across reloads)");
         }
 
         protected override void Start()

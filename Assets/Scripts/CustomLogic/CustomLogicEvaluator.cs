@@ -9,10 +9,12 @@ using Settings;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Reflection;
 using Unity.VisualScripting;
 using UnityEngine;
 using Utility;
+using static PlasticPipe.Server.MonitorStats;
 
 
 namespace CustomLogic
@@ -39,12 +41,94 @@ namespace CustomLogic
         public string ForcedLoadout = string.Empty;
         private int _baseLogicOffset = 0;
 
-        public static string _currentFileName = "C:\\Users\\Michael\\Documents\\Aottg2\\CustomLogic\\refactor.cl";
+        // File source tracking for debugger
+        private string _builtinLogicPath = "BaseLogic.txt";
+        private string _modeLogicPath = "unknown.cl";
+        private string _mapLogicPath = "unknown_map.txt";
+        private int _mapLogicStartLine = 0;
+        private bool _isMapLogic = false;
+
+        public static string _currentFileName = "refactor.cl";
 
         public CustomLogicEvaluator(CustomLogicStartAst start, int baseLogicOffset = 0)
         {
             _start = start;
             _baseLogicOffset = baseLogicOffset;
+        }
+
+        public void SetFileInfo(string modeLogicPath, bool isMapLogic, string mapLogicPath = null, int mapLogicStartLine = 0)
+        {
+            // Convert all paths to absolute paths for VSCode
+            _modeLogicPath = ConvertToAbsolutePath(modeLogicPath ?? "unknown.cl");
+            _isMapLogic = isMapLogic;
+            _mapLogicPath = ConvertToAbsolutePath(mapLogicPath ?? "unknown_map.txt");
+            _mapLogicStartLine = mapLogicStartLine;
+            
+            // BaseLogic is always in Assets/Resources/Data/Modes/BaseLogic.txt
+            _builtinLogicPath = ConvertToAbsolutePath("Assets/Resources/Data/Modes/BaseLogic.txt");
+        }
+
+        /// <summary>
+        /// Converts a path to an absolute path. Handles both file system paths and Unity Resource paths.
+        /// </summary>
+        private string ConvertToAbsolutePath(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+                return path;
+
+            // Already absolute?
+            if (System.IO.Path.IsPathRooted(path))
+                return path;
+
+            // Handle Unity Resource paths (e.g., "Resources/Modes/WavesLogic.txt")
+            if (path.StartsWith("Resources/"))
+            {
+                // Resources folder is inside Assets
+                return System.IO.Path.Combine(UnityEngine.Application.dataPath, path);
+            }
+
+            // Handle Assets-relative paths (e.g., "Assets/Resources/...")
+            if (path.StartsWith("Assets/") || path.StartsWith("Assets\\"))
+            {
+                // Get the project root (parent of Assets folder)
+                string projectRoot = System.IO.Path.GetDirectoryName(UnityEngine.Application.dataPath);
+                return System.IO.Path.Combine(projectRoot, path);
+            }
+
+            // Handle CustomLogic/CustomMap folders (these are in Documents/Aottg2)
+            // These are already absolute paths from FolderPaths
+            if (path.Contains(FolderPaths.Documents))
+                return path;
+
+            // Default: assume it's relative to project root
+            string root = System.IO.Path.GetDirectoryName(UnityEngine.Application.dataPath);
+            return System.IO.Path.Combine(root, path);
+        }
+
+        /// <summary>
+        /// Gets the file path and actual line number for a given AST line number
+        /// </summary>
+        public (string filePath, int lineNumber) GetFileAndLine(int astLine)
+        {
+            // Negative lines are in BaseLogic
+            if (astLine < 0)
+            {
+                int actualLine = astLine + _baseLogicOffset;
+                return (_builtinLogicPath, actualLine);
+            }
+
+            // Positive lines are in Mode/Map logic
+            if (_isMapLogic)
+            {
+                // Map logic: add the map offset
+                int actualLine = _mapLogicStartLine + astLine;
+                return (_mapLogicPath, actualLine);
+            }
+            else
+            {
+                // Mode logic: line number is direct
+                return (_modeLogicPath, astLine);
+            }
         }
 
         public string GetLineNumberString(int lineNumber)
@@ -381,9 +465,14 @@ namespace CustomLogic
                 if (instance is not BuiltinClassInstance)
                     RunAssignmentsClassInstance(instance);
             }
+
+
+            if (CustomLogicDebugger.Instance.IsEnabled)
+            {
+                // Expose static classes to debugger
+                CustomLogicDebugger.Instance.SetGlobals(_staticClasses);
+            }
             
-            // Expose static classes to debugger
-            CustomLogicDebugger.Instance.SetGlobals(_staticClasses);
             
             foreach (int id in MapLoader.IdToMapObject.Keys)
             {
@@ -626,8 +715,12 @@ namespace CustomLogic
             ConditionalEvalState conditionalState = ConditionalEvalState.None;
             foreach (CustomLogicBaseAst statement in statements)
             {
-                // Debugger iteration
-                CustomLogicDebugger.Instance.OnBeforeStatement(statement, _currentFileName, classInstance, localVariables);
+                // Debugger iteration - pass the actual file and line number
+                if (CustomLogicDebugger.Instance.IsEnabled)
+                {
+                    var (filePath, actualLine) = GetFileAndLine(statement.Line);
+                    CustomLogicDebugger.Instance.OnBeforeStatement(statement, filePath, actualLine, classInstance, localVariables);
+                }
 
                 if (statement is CustomLogicAssignmentExpressionAst assignment)
                 {
@@ -766,8 +859,15 @@ namespace CustomLogic
             result = null;
             foreach (CustomLogicBaseAst statement in statements)
             {
-                // Debugger iteration
-                CustomLogicDebugger.Instance.OnBeforeStatement(statement, _currentFileName, classInstance, localVariables);
+                if (CustomLogicDebugger.Instance.IsEnabled)
+                {
+                    // Debugger iteration - pass the actual file and line number
+                    var (filePath, actualLine) = GetFileAndLine(statement.Line);
+
+                    // Create a modified statement with the actual line number for debugger
+                    // We pass both the file path and actual line so breakpoints work correctly
+                    CustomLogicDebugger.Instance.OnBeforeStatement(statement, filePath, actualLine, classInstance, localVariables);
+                }
 
                 if (statement is CustomLogicAssignmentExpressionAst assignment)
                 {
@@ -983,9 +1083,6 @@ namespace CustomLogic
             if (parameterValues == null)
                 parameterValues = EmptyArgs;
 
-            // Debugger stack frame.
-            CustomLogicDebugger.Instance.PushStackFrame(methodName, classInstance.ClassName, _currentFileName, 0);
-
             try
             {
                 if (classInstance.TryGetVariable(methodName, out var variable) && variable is CLMethodBinding method)
@@ -1007,6 +1104,13 @@ namespace CustomLogic
                     methodAst = _start.Classes[classInstance.ClassName].Methods[methodName];
                 else
                     return null;
+
+                if (CustomLogicDebugger.Instance.IsEnabled)
+                {
+                    // Get file and line for debugger stack frame
+                    var (filePath, lineNumber) = GetFileAndLine(methodAst.Line);
+                    CustomLogicDebugger.Instance.PushStackFrame(methodName, classInstance.ClassName, filePath, lineNumber);
+                }
 
                 if (methodAst.Coroutine)
                 {
@@ -1030,19 +1134,32 @@ namespace CustomLogic
             }
             catch (TargetInvocationException e)
             {
-                CustomLogicDebugger.Instance.OnException(e.InnerException ?? e, null, _currentFileName);
+                if (CustomLogicDebugger.Instance.IsEnabled)
+                {
+                    var (filePath, _) = GetFileAndLine(0);
+                    CustomLogicDebugger.Instance.OnException(e.InnerException ?? e, null, filePath);
+                }
+                
                 LogCustomLogicError("Custom logic runtime error at method " + methodName + " in class " + classInstance.ClassName + ": " + e.InnerException?.Message, true);
                 return null;
             }
             catch (Exception e)
             {
-                CustomLogicDebugger.Instance.OnException(e, null, _currentFileName);
-                LogCustomLogicError("Custom logic runtime error at method " + methodName + " in class " + classInstance.ClassName + ": " + e.Message, true);
+                if (CustomLogicDebugger.Instance.IsEnabled)
+                {
+                    var (filePath, lineNumber) = GetFileAndLine(0);
+                    CustomLogicDebugger.Instance.OnException(e, null, filePath);
+                }
+                
+                LogCustomLogicError("Custom logic runtime error at line " + GetLineNumberString(0) + " at method " + methodName + " in class " + classInstance.ClassName + ": " + e.Message, true);
                 return null;
             }
             finally
             {
-                CustomLogicDebugger.Instance.PopStackFrame();
+                if (CustomLogicDebugger.Instance.IsEnabled)
+                {
+                    CustomLogicDebugger.Instance.PopStackFrame();
+                }
             }
         }
 
@@ -1055,11 +1172,15 @@ namespace CustomLogic
             if (parameterValues == null)
                 parameterValues = EmptyArgs;
 
-            // Debugger stack frame.
-            CustomLogicDebugger.Instance.PushStackFrame(methodName, classInstance.ClassName, _currentFileName, ast.Line);
-
             try
             {
+                if (CustomLogicDebugger.Instance.IsEnabled)
+                {
+                    // Get file and line for debugger stack frame
+                    var (filePath, lineNumber) = GetFileAndLine(ast.Line);
+                    CustomLogicDebugger.Instance.PushStackFrame(methodName, classInstance.ClassName, filePath, lineNumber);
+                }
+
                 if (ast.Coroutine)
                 {
                     Dictionary<string, object> localVariables = new Dictionary<string, object>();
@@ -1083,19 +1204,31 @@ namespace CustomLogic
             }
             catch (TargetInvocationException e)
             {
-                CustomLogicDebugger.Instance.OnException(e.InnerException ?? e, ast, _currentFileName);
+                if (CustomLogicDebugger.Instance.IsEnabled)
+                {
+                    var (filePath, _) = GetFileAndLine(ast.Line);
+                    CustomLogicDebugger.Instance.OnException(e.InnerException ?? e, ast, filePath);
+                }
+                
                 LogCustomLogicError("Custom logic runtime error at method " + methodName + " in class " + classInstance.ClassName + ": " + e.InnerException?.Message, true);
                 return null;
             }
             catch (Exception e)
             {
-                CustomLogicDebugger.Instance.OnException(e, ast, _currentFileName);
+                if (CustomLogicDebugger.Instance.IsEnabled)
+                {
+                    var (filePath, lineNumber) = GetFileAndLine(ast.Line);
+                    CustomLogicDebugger.Instance.OnException(e, ast, filePath);
+                }
                 LogCustomLogicError("Custom logic runtime error at line " + GetLineNumberString(userMethod.Ast.Line) + " at method " + methodName + " in class " + classInstance.ClassName + ": " + e.Message, true);
                 return null;
             }
             finally
             {
-                CustomLogicDebugger.Instance.PopStackFrame();
+                if (CustomLogicDebugger.Instance.IsEnabled)
+                {
+                    CustomLogicDebugger.Instance.PopStackFrame();
+                }
             }
         }
 
@@ -1212,7 +1345,11 @@ namespace CustomLogic
             }
             catch (Exception e)
             {
-                CustomLogicDebugger.Instance.OnException(e, expression, _currentFileName);
+                if (CustomLogicDebugger.Instance.IsEnabled)
+                {
+                    var (filePath, lineNumber) = GetFileAndLine(expression.Line);
+                    CustomLogicDebugger.Instance.OnException(e, expression, filePath);
+                }
                 LogCustomLogicError("Custom logic runtime error at line " + GetLineNumberString(expression.Line) + ": " + e.Message, true);
             }
             return null;
