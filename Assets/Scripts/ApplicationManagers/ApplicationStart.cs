@@ -70,6 +70,13 @@ namespace ApplicationManagers
             VoiceChatManager.Init();
             CustomSerialization.Init();
 
+            // Start CL debugger server early if enabled
+            if (SettingsManager.UISettings.EnableCLDebugger.Value)
+            {
+                CustomLogic.Debugger.CustomLogicDebugger.Instance.StartDebugServer();
+                UnityEngine.Debug.Log("[CL Debugger] Server started early - ready for connections before game start");
+            }
+
             // debug
             DebugConsole.Init();
             DebugLagSim.Init();

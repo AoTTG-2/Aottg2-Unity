@@ -215,6 +215,14 @@ namespace CustomLogic
         /// </summary>
         public static void StartLogic(Dictionary<string, BaseSetting> modeSettings)
         {
+            // Wait for debugger connection if enabled and requested
+            if (SettingsManager.UISettings.EnableCLDebugger.Value && 
+                SettingsManager.UISettings.WaitForDebuggerConnection.Value)
+            {
+                float timeout = SettingsManager.UISettings.DebuggerConnectionTimeout.Value;
+                CustomLogic.Debugger.CustomLogicDebugger.Instance.WaitForConnection(timeout);
+            }
+
             var lexer = GetLexer(Logic);
             var parser = new CustomLogicParser(lexer.GetTokens(), lexer.BuiltinLogicOffset);
             Evaluator = new CustomLogicEvaluator(parser.GetStartAst(), lexer.BuiltinLogicOffset);

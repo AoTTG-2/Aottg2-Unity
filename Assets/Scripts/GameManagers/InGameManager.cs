@@ -7,6 +7,7 @@ using ApplicationManagers;
 using Characters;
 using Settings;
 using CustomLogic;
+using CustomLogic.Debugger;
 using Map;
 using System.Collections;
 using GameProgress;
@@ -1001,7 +1002,20 @@ namespace GameManagers
                 SettingsManager.InGameCurrent.Copy(SettingsManager.InGameUI);
                 PrintMOTD(original);
             }
+
+            // Start the CL debugger server if enabled
+            if (SettingsManager.UISettings.EnableCLDebugger.Value)
+            {
+                CustomLogicDebugger.Instance.StartDebugServer(4711);
+            }
+
             base.Awake();
+        }
+
+        private void OnDestroy()
+        {
+            // Stop debugger when exiting
+            CustomLogicDebugger.Instance.StopDebugServer();
         }
 
         protected override void Start()

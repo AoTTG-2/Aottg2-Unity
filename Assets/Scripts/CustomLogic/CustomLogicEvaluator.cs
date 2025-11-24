@@ -1,5 +1,6 @@
 using ApplicationManagers;
 using Characters;
+using CustomLogic.Debugger;
 using GameManagers;
 using Map;
 using Photon.Pun;
@@ -38,6 +39,8 @@ namespace CustomLogic
         public string ForcedLoadout = string.Empty;
         private int _baseLogicOffset = 0;
 
+        public static string _currentFileName = "C:\\Users\\Michael\\Documents\\Aottg2\\CustomLogic\\refactor.cl";
+
         public CustomLogicEvaluator(CustomLogicStartAst start, int baseLogicOffset = 0)
         {
             _start = start;
@@ -48,6 +51,11 @@ namespace CustomLogic
         {
             // More relevant line number for when using MapLogic -> need to expand to handle builtin errors as well since its so annoying.
             return CustomLogicManager.GetLineNumberString(lineNumber, _baseLogicOffset);
+        }
+
+        public void SetCurrentFileName(string name)
+        {
+            _currentFileName = name;
         }
 
         private void LogCustomLogicError(string errorMessage, bool showInChat)
@@ -373,6 +381,10 @@ namespace CustomLogic
                 if (instance is not BuiltinClassInstance)
                     RunAssignmentsClassInstance(instance);
             }
+            
+            // Expose static classes to debugger
+            CustomLogicDebugger.Instance.SetGlobals(_staticClasses);
+            
             foreach (int id in MapLoader.IdToMapObject.Keys)
             {
                 MapObject obj = MapLoader.IdToMapObject[id];
@@ -614,6 +626,9 @@ namespace CustomLogic
             ConditionalEvalState conditionalState = ConditionalEvalState.None;
             foreach (CustomLogicBaseAst statement in statements)
             {
+                // Debugger iteration
+                CustomLogicDebugger.Instance.OnBeforeStatement(statement, _currentFileName, classInstance, localVariables);
+
                 if (statement is CustomLogicAssignmentExpressionAst assignment)
                 {
                     EvaluateAssignmentExpression(classInstance, localVariables, assignment);
@@ -751,6 +766,9 @@ namespace CustomLogic
             result = null;
             foreach (CustomLogicBaseAst statement in statements)
             {
+                // Debugger iteration
+                CustomLogicDebugger.Instance.OnBeforeStatement(statement, _currentFileName, classInstance, localVariables);
+
                 if (statement is CustomLogicAssignmentExpressionAst assignment)
                 {
                     EvaluateAssignmentExpression(classInstance, localVariables, assignment);
@@ -964,6 +982,10 @@ namespace CustomLogic
         {
             if (parameterValues == null)
                 parameterValues = EmptyArgs;
+
+            // Debugger stack frame.
+            CustomLogicDebugger.Instance.PushStackFrame(methodName, classInstance.ClassName, _currentFileName, 0);
+
             try
             {
                 if (classInstance.TryGetVariable(methodName, out var variable) && variable is CLMethodBinding method)
@@ -1008,13 +1030,19 @@ namespace CustomLogic
             }
             catch (TargetInvocationException e)
             {
+                CustomLogicDebugger.Instance.OnException(e.InnerException ?? e, null, _currentFileName);
                 LogCustomLogicError("Custom logic runtime error at method " + methodName + " in class " + classInstance.ClassName + ": " + e.InnerException?.Message, true);
                 return null;
             }
             catch (Exception e)
             {
+                CustomLogicDebugger.Instance.OnException(e, null, _currentFileName);
                 LogCustomLogicError("Custom logic runtime error at method " + methodName + " in class " + classInstance.ClassName + ": " + e.Message, true);
                 return null;
+            }
+            finally
+            {
+                CustomLogicDebugger.Instance.PopStackFrame();
             }
         }
 
@@ -1026,6 +1054,9 @@ namespace CustomLogic
 
             if (parameterValues == null)
                 parameterValues = EmptyArgs;
+
+            // Debugger stack frame.
+            CustomLogicDebugger.Instance.PushStackFrame(methodName, classInstance.ClassName, _currentFileName, ast.Line);
 
             try
             {
@@ -1052,13 +1083,19 @@ namespace CustomLogic
             }
             catch (TargetInvocationException e)
             {
+                CustomLogicDebugger.Instance.OnException(e.InnerException ?? e, ast, _currentFileName);
                 LogCustomLogicError("Custom logic runtime error at method " + methodName + " in class " + classInstance.ClassName + ": " + e.InnerException?.Message, true);
                 return null;
             }
             catch (Exception e)
             {
+                CustomLogicDebugger.Instance.OnException(e, ast, _currentFileName);
                 LogCustomLogicError("Custom logic runtime error at line " + GetLineNumberString(userMethod.Ast.Line) + " at method " + methodName + " in class " + classInstance.ClassName + ": " + e.Message, true);
                 return null;
+            }
+            finally
+            {
+                CustomLogicDebugger.Instance.PopStackFrame();
             }
         }
 
@@ -1175,6 +1212,7 @@ namespace CustomLogic
             }
             catch (Exception e)
             {
+                CustomLogicDebugger.Instance.OnException(e, expression, _currentFileName);
                 LogCustomLogicError("Custom logic runtime error at line " + GetLineNumberString(expression.Line) + ": " + e.Message, true);
             }
             return null;

@@ -51,6 +51,9 @@ namespace Settings
         public BoolSetting ShowChatTimestamp = new BoolSetting(false);
         public ColorSetting ChatBackgroundColor = new ColorSetting(new Utility.Color255(38, 38, 38, 0));
         public BoolSetting ChatCLErrors = new BoolSetting(false);
+        public BoolSetting EnableCLDebugger = new BoolSetting(false);
+        public BoolSetting WaitForDebuggerConnection = new BoolSetting(false);
+        public FloatSetting DebuggerConnectionTimeout = new FloatSetting(30f, minValue: 0f, maxValue: 120f);
 
 
         public override void Apply()

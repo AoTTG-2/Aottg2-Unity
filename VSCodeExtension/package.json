@@ -1,0 +1,142 @@
+{
+  "name": "cl-debugger",
+  "displayName": "Custom Logic Debugger",
+  "version": "1.0.0",
+  "publisher": "aottg2",
+  "description": "Debug Custom Logic scripts for AoTTG2",
+  "author": "AoTTG2 Team",
+  "license": "MIT",
+  "keywords": [
+    "debuggers",
+    "custom-logic",
+    "aottg2"
+  ],
+  "engines": {
+    "vscode": "^1.60.0"
+  },
+  "categories": [
+    "Debuggers"
+  ],
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AoTTG-2/Aottg2-Unity.git"
+  },
+  "bugs": {
+    "url": "https://github.com/AoTTG-2/Aottg2-Unity/issues"
+  },
+  "overrides": {
+    "undici": "5.28.4"
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "package": "vsce package",
+    "publish": "vsce publish"
+  },
+  "dependencies": {
+    "await-notify": "1.0.1",
+    "vscode-debugadapter": "^1.51.0"
+  },
+  "devDependencies": {
+    "@types/glob": "^8.1.0",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "^14.14.37",
+    "@types/vscode": "^1.60.0",
+    "glob": "^8.1.0",
+    "mocha": "^10.2.0",
+    "typescript": "^4.9.5",
+    "vsce": "^1.103.1"
+  },
+  "main": "./out/extension.js",
+  "activationEvents": [
+    "onDebug",
+    "onLanguage:cl"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "cl",
+        "extensions": [
+          ".cl"
+        ],
+        "aliases": [
+          "Custom Logic",
+          "cl"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "cl",
+        "scopeName": "source.cl",
+        "path": "./syntaxes/cl.tmLanguage.json"
+      }
+    ],
+    "breakpoints": [
+      {
+        "language": "cl"
+      }
+    ],
+    "debuggers": [
+      {
+        "type": "cl",
+        "label": "CL Debug",
+        "program": "./out/debugAdapter.js",
+        "runtime": "node",
+        "configurationAttributes": {
+          "launch": {
+            "required": [
+              "program"
+            ],
+            "properties": {
+              "program": {
+                "type": "string",
+                "description": "Absolute path to a .cl file.",
+                "default": "${file}"
+              },
+              "stopOnEntry": {
+                "type": "boolean",
+                "description": "Automatically stop after launch.",
+                "default": false
+              },
+              "port": {
+                "type": "number",
+                "description": "Port to connect to the debugger server.",
+                "default": 4711
+              },
+              "trace": {
+                "type": "boolean",
+                "description": "Enable logging of the Debug Adapter Protocol.",
+                "default": false
+              }
+            }
+          }
+        },
+        "initialConfigurations": [
+          {
+            "type": "cl",
+            "request": "launch",
+            "name": "Debug CL Script",
+            "program": "${file}",
+            "stopOnEntry": false
+          }
+        ],
+        "configurationSnippets": [
+          {
+            "label": "CL Debug: Launch",
+            "description": "A new configuration for debugging a CL file.",
+            "body": {
+              "type": "cl",
+              "request": "launch",
+              "name": "Debug CL Script",
+              "program": "^\"\\${file}\"",
+              "stopOnEntry": false
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
