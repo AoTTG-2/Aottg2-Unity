@@ -78,7 +78,7 @@ namespace UI
             ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.ChatScrollSensitivity, UIManager.GetLocale(cat, sub, "ChatScrollSensitivity"));
             ElementFactory.CreateColorSetting(DoublePanelRight, style, SettingsManager.UISettings.ChatBackgroundColor, UIManager.GetLocale(cat, sub, "ChatBackgroundColor"), UIManager.CurrentMenu.ColorPickPopup);
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, SettingsManager.UISettings.ChatCLErrors, UIManager.GetLocale(cat, sub, "ChatCLErrors"), tooltip: UIManager.GetLocale(cat, sub, "ChatCLErrorsTooltip"));
-            ElementFactory.CreateToggleSetting(DoublePanelRight, style, SettingsManager.UISettings.EnableCLDebugger, "Enable CL Debugger", tooltip: "Enables the Custom Logic debugger server for VSCode debugging. Requires game restart.");
+            ElementFactory.CreateToggleSetting(DoublePanelRight, style, SettingsManager.UISettings.EnableCLDebugger, "Enable CL Debugger", tooltip: "Enables the Custom Logic debugger server for VSCode debugging.");
         }
     }
 }

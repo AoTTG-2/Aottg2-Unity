@@ -121,6 +121,51 @@ namespace CustomLogic.Debugger
             _tcpListener?.Stop();
             _pauseEvent.Set(); // Unblock any paused execution
             IsEnabled = false;
+            ClearState();
+        }
+
+        /// <summary>
+        /// Clears all debugger state. Called when debugger is stopped or CL is reloaded.
+        /// </summary>
+        public void ClearState()
+        {
+            // Clear execution state
+            _currentInstance = null;
+            _currentLocalVariables = null;
+            _currentStatement = null;
+            _currentFileName = "main.cl";
+            
+            // Clear call stack
+            _callStack.Clear();
+            
+            // Clear step control
+            _stepMode = StepMode.None;
+            _stepDepth = 0;
+            
+            // Clear variable handles
+            _variableHandles.Clear();
+            _nextVariableHandle = 100;
+            
+            // Clear globals reference
+            _globalStaticClasses = null;
+            
+            // Reset pause state
+            _isPaused = false;
+            _pauseEvent.Set();
+            
+            // Note: We don't clear breakpoints as they should persist across CL reloads
+            
+            Debug.Log("[CL Debugger] State cleared");
+        }
+
+        public void RestartDebugServer(int port = 4711)
+        {
+            StopDebugServer();
+            
+            // Give a moment for cleanup
+            System.Threading.Thread.Sleep(100);
+            
+            StartDebugServer(port);
         }
 
         private void ListenForConnections(int port)
@@ -1075,6 +1120,8 @@ namespace CustomLogic.Debugger
         /// </summary>
         public void PushStackFrame(string methodName, string className, string fileName, int line)
         {
+            if (!IsEnabled) return;
+            
             _callStack.Push(new DebugStackFrame
             {
                 MethodName = methodName,
@@ -1089,6 +1136,8 @@ namespace CustomLogic.Debugger
         /// </summary>
         public void PopStackFrame()
         {
+            if (!IsEnabled) return;
+            
             if (_callStack.Count > 0)
                 _callStack.Pop();
         }

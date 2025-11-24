@@ -93,6 +93,12 @@ namespace CustomLogic
             CameraFOV = 0f;
             KeybindDefaultDisabled.Clear();
             KeybindHold.Clear();
+            
+            // Clear debugger state when CL is being unloaded
+            if (SettingsManager.UISettings.EnableCLDebugger.Value)
+            {
+                CustomLogic.Debugger.CustomLogicDebugger.Instance.ClearState();
+            }
         }
 
         public static void ToggleCutscene(bool cutscene)

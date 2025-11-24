@@ -72,6 +72,25 @@ namespace Settings
                     }
                 }
             }
+
+            // Handle debugger enable/disable without restart
+            if (EnableCLDebugger.Value)
+            {
+                if (!CustomLogic.Debugger.CustomLogicDebugger.Instance.IsConnected)
+                {
+                    CustomLogic.Debugger.CustomLogicDebugger.Instance.StartDebugServer();
+                }
+            }
+            else
+            {
+                // Clear state when disabling
+                CustomLogic.Debugger.CustomLogicDebugger.Instance.ClearState();
+                
+                if (CustomLogic.Debugger.CustomLogicDebugger.Instance.IsConnected)
+                {
+                    CustomLogic.Debugger.CustomLogicDebugger.Instance.StopDebugServer();
+                }
+            }
         }
     }
 
