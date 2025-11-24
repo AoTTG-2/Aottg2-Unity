@@ -122,7 +122,7 @@ namespace GameManagers
         {
             if (!PhotonNetwork.IsMasterClient || GlobalPause)
                 return;
-            RPCManager.PhotonView.RPC("PauseGameRPC", RpcTarget.All, new object[0]);
+            RPCManager.PhotonView.RPC(nameof(RPCManager.PauseGameRPC), RpcTarget.All, new object[0]);
         }
 
         public void OnPauseGameRPC(PhotonMessageInfo info)
@@ -138,7 +138,7 @@ namespace GameManagers
         {
             if (!PhotonNetwork.IsMasterClient || !GlobalPause)
                 return;
-            RPCManager.PhotonView.RPC("UnpauseGameRPC", RpcTarget.All, new object[0]);
+            RPCManager.PhotonView.RPC(nameof(RPCManager.UnpauseGameRPC), RpcTarget.All, new object[0]);
         }
 
         public void OnUnpauseGameRPC(PhotonMessageInfo info)
@@ -154,7 +154,7 @@ namespace GameManagers
         {
             if (!PhotonNetwork.IsMasterClient || !GlobalPause)
                 return;
-            RPCManager.PhotonView.RPC("StartUnpauseGameRPC", RpcTarget.All, new object[0]);
+            RPCManager.PhotonView.RPC(nameof(RPCManager.StartUnpauseGameRPC), RpcTarget.All, new object[0]);
         }
 
         public void OnStartUnpauseGameRPC(PhotonMessageInfo info)
@@ -183,7 +183,7 @@ namespace GameManagers
             if (!PhotonNetwork.IsMasterClient)
                 return;
             var manager = (InGameManager)SceneLoader.CurrentGameManager;
-            RPCManager.PhotonView.RPC("PreRestartGameRPC", RpcTarget.All, new object[] { !SettingsManager.UISettings.FadeLoadscreen.Value });
+            RPCManager.PhotonView.RPC(nameof(RPCManager.PreRestartGameRPC), RpcTarget.All, new object[] { !SettingsManager.UISettings.FadeLoadscreen.Value });
             Time.timeScale = 1f;
             manager.StartCoroutine(manager.FinishRestartGame());
         }
@@ -195,7 +195,7 @@ namespace GameManagers
             else
                 yield return new WaitForEndOfFrame();
             PhotonNetwork.DestroyAll();
-            RPCManager.PhotonView.RPC("RestartGameRPC", RpcTarget.All, new object[0]);
+            RPCManager.PhotonView.RPC(nameof(RPCManager.RestartGameRPC), RpcTarget.All, new object[0]);
         }
 
         public static void OnRestartGameRPC(PhotonMessageInfo info)
@@ -340,12 +340,12 @@ namespace GameManagers
         {
             if (!AllPlayerInfo.ContainsKey(player.ActorNumber))
                 AllPlayerInfo.Add(player.ActorNumber, new PlayerInfo());
-            RPCManager.PhotonView.RPC("PlayerInfoRPC", player, new object[] { StringCompression.Compress(MyPlayerInfo.SerializeToJsonString()) });
+            RPCManager.PhotonView.RPC(nameof(RPCManager.PlayerInfoRPC), player, new object[] { StringCompression.Compress(MyPlayerInfo.SerializeToJsonString()) });
             if (PhotonNetwork.IsMasterClient)
             {
-                RPCManager.PhotonView.RPC("GameSettingsRPC", player, new object[] { StringCompression.Compress(SettingsManager.InGameCurrent.SerializeToJsonString()) });
+                RPCManager.PhotonView.RPC(nameof(RPCManager.GameSettingsRPC), player, new object[] { StringCompression.Compress(SettingsManager.InGameCurrent.SerializeToJsonString()) });
                 if (GlobalPause)
-                    RPCManager.PhotonView.RPC("PauseGameRPC", player, new object[0]);
+                    RPCManager.PhotonView.RPC(nameof(RPCManager.PauseGameRPC), player, new object[0]);
             }
             if (ChatManager.HasActivePlayerSuggestions())
                 ChatManager.RefreshPlayerSuggestions();
@@ -1025,7 +1025,7 @@ namespace GameManagers
             _inGameMenu = (InGameMenu)UIManager.CurrentMenu;
             if (PhotonNetwork.IsMasterClient)
             {
-                RPCManager.PhotonView.RPC("GameSettingsRPC", RpcTarget.All, new object[] { StringCompression.Compress(SettingsManager.InGameCurrent.SerializeToJsonString()) });
+                RPCManager.PhotonView.RPC(nameof(RPCManager.GameSettingsRPC), RpcTarget.All, new object[] { StringCompression.Compress(SettingsManager.InGameCurrent.SerializeToJsonString()) });
                 var settings = SettingsManager.InGameCurrent;
                 string mapName = settings.General.MapName.Value;
                 string gameMode = settings.General.GameMode.Value;
@@ -1081,9 +1081,9 @@ namespace GameManagers
             CustomLogicManager.StartLogic(SettingsManager.InGameCurrent.Mode.Current);
             if (_needSendPlayerInfo)
             {
-                RPCManager.PhotonView.RPC("PlayerInfoRPC", RpcTarget.Others, new object[] { StringCompression.Compress(MyPlayerInfo.SerializeToJsonString()) });
+                RPCManager.PhotonView.RPC(nameof(RPCManager.PlayerInfoRPC), RpcTarget.Others, new object[] { StringCompression.Compress(MyPlayerInfo.SerializeToJsonString()) });
                 if (!PhotonNetwork.IsMasterClient)
-                    RPCManager.PhotonView.RPC("NotifyPlayerJoinedRPC", RpcTarget.Others, new object[0]);
+                    RPCManager.PhotonView.RPC(nameof(RPCManager.NotifyPlayerJoinedRPC), RpcTarget.Others, new object[0]);
                 _needSendPlayerInfo = false;
             }
             SpawnPlayer(false);
@@ -1178,14 +1178,14 @@ namespace GameManagers
                 var set = (SkyboxCustomSkinSet)SettingsManager.CustomSkinSettings.Skybox.GetSelectedSet();
                 string urls = string.Join(",", new string[] {set.Front.Value, set.Back.Value , set.Left.Value , set.Right.Value ,
                                               set.Up.Value, set.Down.Value});
-                RPCManager.PhotonView.RPC("LoadSkyboxRPC", RpcTarget.AllBuffered, new object[] { urls });
+                RPCManager.PhotonView.RPC(nameof(RPCManager.LoadSkyboxRPC), RpcTarget.AllBuffered, new object[] { urls });
             }
             else if (PhotonNetwork.IsMasterClient)
             {
                 // send empty strings for the values
                 string urls = string.Join(",", new string[] {string.Empty, string.Empty, string.Empty , string.Empty ,
                                               string.Empty, string.Empty});
-                RPCManager.PhotonView.RPC("LoadSkyboxRPC", RpcTarget.AllBuffered, new object[] { urls });
+                RPCManager.PhotonView.RPC(nameof(RPCManager.LoadSkyboxRPC), RpcTarget.AllBuffered, new object[] { urls });
             }
         }
 

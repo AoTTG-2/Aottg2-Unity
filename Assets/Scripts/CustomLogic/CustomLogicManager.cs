@@ -131,7 +131,7 @@ namespace CustomLogic
                 if (BuiltinLevels.IsLogicBuiltin(settings.GameMode.Value))
                 {
                     CustomLogicTransfer.LogicTransferReady = true;
-                    RPCManager.PhotonView.RPC("LoadBuiltinLogicRPC", RpcTarget.All, new object[] { settings.GameMode.Value });
+                    RPCManager.PhotonView.RPC(nameof(RPCManager.LoadBuiltinLogicRPC), RpcTarget.All, new object[] { settings.GameMode.Value });
                 }
                 else
                 {
@@ -172,7 +172,7 @@ namespace CustomLogic
             {
                 InGameGeneralSettings settings = SettingsManager.InGameCurrent.General;
                 if (BuiltinLevels.IsLogicBuiltin(settings.GameMode.Value))
-                    RPCManager.PhotonView.RPC("LoadBuiltinLogicRPC", player, new object[] { settings.GameMode.Value });
+                    RPCManager.PhotonView.RPC(nameof(RPCManager.LoadBuiltinLogicRPC), player, new object[] { settings.GameMode.Value });
                 else
                     CustomLogicTransfer.Transfer(player);
             }
