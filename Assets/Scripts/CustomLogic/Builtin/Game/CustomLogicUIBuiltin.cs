@@ -27,6 +27,7 @@ namespace CustomLogic
         [CLConstructor]
         public CustomLogicUIBuiltin()
         {
+            LastSetLabels.Clear();
         }
 
         public void OnPlayerJoin(Player player)
@@ -363,7 +364,7 @@ namespace CustomLogic
                 if (item != null)
                     choicesList.Add(item.ToString());
             }
-            
+
             if (choicesList.Count == 0)
                 choicesList.Add("No options");
 
