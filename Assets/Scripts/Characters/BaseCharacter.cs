@@ -201,7 +201,7 @@ namespace Characters
                 Name = PhotonNetwork.LocalPlayer.GetStringProperty(PlayerProperty.Name).StripIllegalRichText();
                 Guild = PhotonNetwork.LocalPlayer.GetStringProperty(PlayerProperty.Guild).StripIllegalRichText();
             }
-            Cache.PhotonView.RPC("InitRPC", RpcTarget.AllBuffered, new object[] { AI, Name, Guild });
+            Cache.PhotonView.RPC(nameof(InitRPC), RpcTarget.AllBuffered, new object[] { AI, Name, Guild });
             SetTeam(team);
         }
 
@@ -214,7 +214,7 @@ namespace Characters
 
         public void SetTeam(string team)
         {
-            Cache.PhotonView.RPC("SetTeamRPC", RpcTarget.All, new object[] { team });
+            Cache.PhotonView.RPC(nameof(SetTeamRPC), RpcTarget.All, new object[] { team });
         }
 
         public virtual Transform GetCameraAnchor()
@@ -300,7 +300,7 @@ namespace Characters
 
         public virtual void Die()
         {
-            Cache.PhotonView.RPC("MarkDeadRPC", RpcTarget.AllBuffered, new object[0]);
+            Cache.PhotonView.RPC(nameof(MarkDeadRPC), RpcTarget.AllBuffered, new object[0]);
             if (IsMainCharacter())
                 _inGameManager.RegisterMainCharacterDie();
             StartCoroutine(WaitAndDie());
@@ -321,24 +321,24 @@ namespace Characters
         {
             if (Cache.PhotonView.IsMine)
             {
-                Cache.PhotonView.RPC("SetHealthRPC", player, new object[] { CurrentHealth, MaxHealth });
-                Cache.PhotonView.RPC("SetTeamRPC", player, new object[] { Team });
+                Cache.PhotonView.RPC(nameof(SetHealthRPC), player, new object[] { CurrentHealth, MaxHealth });
+                Cache.PhotonView.RPC(nameof(SetTeamRPC), player, new object[] { Team });
                 string currentAnimation = GetCurrentAnimation();
                 if (currentAnimation != "")
-                    Cache.PhotonView.RPC("PlayAnimationRPC", player, new object[] { currentAnimation, Animation.GetCurrentNormalizedTime() });
+                    Cache.PhotonView.RPC(nameof(PlayAnimationRPC), player, new object[] { currentAnimation, Animation.GetCurrentNormalizedTime() });
             }
         }
 
         public void PlayAnimation(string animation, float startTime = 0f)
         {
             if (IsMine())
-                Cache.PhotonView.RPC("PlayAnimationRPC", RpcTarget.All, new object[] { animation, startTime });
+                Cache.PhotonView.RPC(nameof(PlayAnimationRPC), RpcTarget.All, new object[] { animation, startTime });
         }
 
         public void PlayAnimationReset(string animation)
         {
             if (IsMine())
-                Cache.PhotonView.RPC("PlayAnimationResetRPC", RpcTarget.All, new object[] { animation });
+                Cache.PhotonView.RPC(nameof(PlayAnimationResetRPC), RpcTarget.All, new object[] { animation });
         }
 
         [PunRPC]
@@ -371,14 +371,14 @@ namespace Characters
                 crossfadeCache[0] = animation;
                 crossfadeCache[1] = fadeTime;
                 crossfadeCache[2] = startTime;
-                Cache.PhotonView.RPC("CrossFadeRPC", RpcTarget.All, crossfadeCache);
+                Cache.PhotonView.RPC(nameof(CrossFadeRPC), RpcTarget.All, crossfadeCache);
             }
         }
 
         public void CrossFadeWithSpeed(string animation, float speed, float fadeTime = 0f, float startTime = 0f)
         {
             if (IsMine())
-                Cache.PhotonView.RPC("CrossFadeWithSpeedRPC", RpcTarget.All, new object[] { animation, speed, fadeTime, startTime });
+                Cache.PhotonView.RPC(nameof(CrossFadeWithSpeedRPC), RpcTarget.All, new object[] { animation, speed, fadeTime, startTime });
         }
 
         public void CrossFadeIfNotPlaying(string animation, float fadeTime = 0f, float startTime = 0f)
@@ -394,7 +394,7 @@ namespace Characters
         //    if (!_animationStopped)
         //        return;
         //    _animationStopped = false;
-        //    Cache.PhotonView.RPC("ContinueAnimationsRPC", RpcTarget.All, new object[0]);
+        //    Cache.PhotonView.RPC(nameof(ContinueAnimationsRPC), RpcTarget.All, new object[0]);
         //}
 
         //[PunRPC]
@@ -413,7 +413,7 @@ namespace Characters
         //    if (_animationStopped)
         //        return;
         //    _animationStopped = true;
-        //    Cache.PhotonView.RPC("PauseAnimationsRPC", RpcTarget.All, new object[0]);
+        //    Cache.PhotonView.RPC(nameof(PauseAnimationsRPC), RpcTarget.All, new object[0]);
         //}
 
         //[PunRPC]
@@ -431,7 +431,7 @@ namespace Characters
 
         public void SetAnimationSpeed(string animation, float speed)
         {
-            Cache.PhotonView.RPC("SetAnimationSpeedRPC", RpcTarget.All, new object[2] { animation, speed });
+            Cache.PhotonView.RPC(nameof(SetAnimationSpeedRPC), RpcTarget.All, new object[2] { animation, speed });
         }
 
         public void SetAnimationSpeedNonRPC(string animation, float speed)
@@ -467,7 +467,7 @@ namespace Characters
         public void PlaySound(string sound)
         {
             if (IsMine())
-                Cache.PhotonView.RPC("PlaySoundRPC", RpcTarget.All, new object[] { sound });
+                Cache.PhotonView.RPC(nameof(PlaySoundRPC), RpcTarget.All, new object[] { sound });
         }
 
         public bool IsPlayingSound(string sound)
@@ -497,13 +497,13 @@ namespace Characters
         public void StopSound(string sound)
         {
             if (IsMine())
-                Cache.PhotonView.RPC("StopSoundRPC", RpcTarget.All, new object[] { sound });
+                Cache.PhotonView.RPC(nameof(StopSoundRPC), RpcTarget.All, new object[] { sound });
         }
 
         public void FadeSound(string sound, float volume, float time)
         {
             if (IsMine())
-                Cache.PhotonView.RPC("FadeSoundRPC", RpcTarget.All, new object[] { sound, volume, time });
+                Cache.PhotonView.RPC(nameof(FadeSoundRPC), RpcTarget.All, new object[] { sound, volume, time });
         }
 
         [PunRPC]
@@ -548,7 +548,7 @@ namespace Characters
         protected virtual void OnHealthChange()
         {
             if (IsMine())
-                photonView.RPC("SetHealthRPC", RpcTarget.All, new object[] { CurrentHealth, MaxHealth });
+                Cache.PhotonView.RPC(nameof(SetHealthRPC), RpcTarget.All, new object[] { CurrentHealth, MaxHealth });
         }
 
         public virtual void OnHit(BaseHitbox hitbox, object victim, Collider collider, string type, bool firstHit)
@@ -569,12 +569,12 @@ namespace Characters
                     name = killer.Name;
             }
             TakeDamage(damage);
-            Cache.PhotonView.RPC("NotifyDamagedRPC", RpcTarget.All, new object[] { viewId, name, damage });
+            Cache.PhotonView.RPC(nameof(NotifyDamagedRPC), RpcTarget.All, new object[] { viewId, name, damage });
             if (CurrentHealth <= 0f)
             {
                 if (CustomLogicManager.Evaluator != null && CustomLogicManager.Evaluator.DefaultShowKillFeed)
-                    RPCManager.PhotonView.RPC("ShowKillFeedRPC", RpcTarget.All, new object[] { name, Name, damage, type });
-                Cache.PhotonView.RPC("NotifyDieRPC", RpcTarget.All, new object[] { viewId, name });
+                    RPCManager.PhotonView.RPC(nameof(RPCManager.ShowKillFeedRPC), RpcTarget.All, new object[] { name, Name, damage, type });
+                Cache.PhotonView.RPC(nameof(NotifyDieRPC), RpcTarget.All, new object[] { viewId, name });
             }
         }
 
@@ -584,12 +584,12 @@ namespace Characters
             if (!Cache.PhotonView.IsMine || Dead)
                 return;
             TakeDamage(damage);
-            Cache.PhotonView.RPC("NotifyDamagedRPC", RpcTarget.All, new object[] { -1, name, damage });
+            Cache.PhotonView.RPC(nameof(NotifyDamagedRPC), RpcTarget.All, new object[] { -1, name, damage });
             if (CurrentHealth <= 0f)
             {
                 if (CustomLogicManager.Evaluator != null && CustomLogicManager.Evaluator.DefaultShowKillFeed)
-                    RPCManager.PhotonView.RPC("ShowKillFeedRPC", RpcTarget.All, new object[] { name, Name, damage, "" });
-                Cache.PhotonView.RPC("NotifyDieRPC", RpcTarget.All, new object[] { -1, name });
+                    RPCManager.PhotonView.RPC(nameof(RPCManager.ShowKillFeedRPC), RpcTarget.All, new object[] { name, Name, damage, "" });
+                Cache.PhotonView.RPC(nameof(NotifyDieRPC), RpcTarget.All, new object[] { -1, name });
             }
         }
 
@@ -600,8 +600,8 @@ namespace Characters
                 return;
             SetCurrentHealth(0);
             if (CustomLogicManager.Evaluator != null && CustomLogicManager.Evaluator.DefaultShowKillFeed)
-                RPCManager.PhotonView.RPC("ShowKillFeedRPC", RpcTarget.All, new object[] { name, Name, 0, "" });
-            Cache.PhotonView.RPC("NotifyDieRPC", RpcTarget.All, new object[] { -1, name });
+                RPCManager.PhotonView.RPC(nameof(RPCManager.ShowKillFeedRPC), RpcTarget.All, new object[] { name, Name, 0, "" });
+            Cache.PhotonView.RPC(nameof(NotifyDieRPC), RpcTarget.All, new object[] { -1, name });
         }
 
         [PunRPC]
@@ -664,31 +664,31 @@ namespace Characters
             int viewId = -1;
             if (enemy != null)
                 viewId = enemy.Cache.PhotonView.ViewID;
-            Cache.PhotonView.RPC("GetHitRPC", Cache.PhotonView.Owner, new object[] { viewId, "", damage, type, collider });
+            Cache.PhotonView.RPC(nameof(GetHitRPC), Cache.PhotonView.Owner, new object[] { viewId, "", damage, type, collider });
         }
 
         public virtual void GetHit(string name, int damage, string type, string collider)
         {
             if (!Dead)
-                Cache.PhotonView.RPC("GetHitRPC", Cache.PhotonView.Owner, new object[] { -1, name, damage, type, collider });
+                Cache.PhotonView.RPC(nameof(GetHitRPC), Cache.PhotonView.Owner, new object[] { -1, name, damage, type, collider });
         }
 
         public virtual void GetDamaged(string name, int damage)
         {
             if (!Dead)
-                Cache.PhotonView.RPC("GetDamagedRPC", Cache.PhotonView.Owner, new object[] { name, damage });
+                Cache.PhotonView.RPC(nameof(GetDamagedRPC), Cache.PhotonView.Owner, new object[] { name, damage });
         }
 
         public virtual void GetKilled(string name)
         {
             if (!Dead)
-                Cache.PhotonView.RPC("GetKilledRPC", Cache.PhotonView.Owner, new object[] { name });
+                Cache.PhotonView.RPC(nameof(GetKilledRPC), Cache.PhotonView.Owner, new object[] { name });
         }
 
         public virtual void BlowAway(Vector3 source, float force, float maxDistance)
         {
             if (!Dead)
-                Cache.PhotonView.RPC("BlowAwayRPC", Cache.PhotonView.Owner, new object[] { source, force, maxDistance });
+                Cache.PhotonView.RPC(nameof(BlowAwayRPC), Cache.PhotonView.Owner, new object[] { source, force, maxDistance });
         }
 
         [PunRPC]

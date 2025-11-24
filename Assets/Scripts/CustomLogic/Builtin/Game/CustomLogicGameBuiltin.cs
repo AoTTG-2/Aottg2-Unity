@@ -342,7 +342,7 @@ namespace CustomLogic
         public void End(float delay)
         {
             if (PhotonNetwork.IsMasterClient)
-                RPCManager.PhotonView.RPC("EndGameRPC", RpcTarget.All, new object[] { delay });
+                RPCManager.PhotonView.RPC(nameof(RPCManager.EndGameRPC), RpcTarget.All, new object[] { delay });
         }
 
         [CLMethod(description: "Find a character by view ID")]
@@ -583,14 +583,14 @@ namespace CustomLogic
             if (player.Player == PhotonNetwork.LocalPlayer)
                 _inGameManager.SpawnPlayer(force);
             else if (PhotonNetwork.IsMasterClient)
-                RPCManager.PhotonView.RPC("SpawnPlayerRPC", player.Player, new object[] { force });
+                RPCManager.PhotonView.RPC(nameof(RPCManager.SpawnPlayerRPC), player.Player, new object[] { force });
         }
 
         [CLMethod(description: "Spawn a player for all players")]
         public void SpawnPlayerAll(bool force)
         {
             if (PhotonNetwork.IsMasterClient)
-                RPCManager.PhotonView.RPC("SpawnPlayerRPC", RpcTarget.All, new object[] { force });
+                RPCManager.PhotonView.RPC(nameof(RPCManager.SpawnPlayerRPC), RpcTarget.All, new object[] { force });
         }
 
         [CLMethod(description: "Spawn a player at a position")]
@@ -599,14 +599,14 @@ namespace CustomLogic
             if (player.Player == PhotonNetwork.LocalPlayer)
                 _inGameManager.SpawnPlayerAt(force, position.Value, rotationY);
             else if (PhotonNetwork.IsMasterClient)
-                RPCManager.PhotonView.RPC("SpawnPlayerAtRPC", player.Player, new object[] { force, position.Value, rotationY });
+                RPCManager.PhotonView.RPC(nameof(RPCManager.SpawnPlayerAtRPC), player.Player, new object[] { force, position.Value, rotationY });
         }
 
         [CLMethod(description: "Spawn a player at a position for all players")]
         public void SpawnPlayerAtAll(bool force, CustomLogicVector3Builtin position, float rotationY = 0f)
         {
             if (PhotonNetwork.IsMasterClient)
-                RPCManager.PhotonView.RPC("SpawnPlayerAtRPC", RpcTarget.All, new object[] { force, position.Value, rotationY });
+                RPCManager.PhotonView.RPC(nameof(RPCManager.SpawnPlayerAtRPC), RpcTarget.All, new object[] { force, position.Value, rotationY });
         }
 
         [CLMethod(description: "Set the music playlist")]
@@ -644,7 +644,7 @@ namespace CustomLogic
         [CLMethod(description: "Show the kill feed for all players")]
         public void ShowKillFeedAll(string killer, string victim, int score, string weapon)
         {
-            RPCManager.PhotonView.RPC("ShowKillFeedRPC", RpcTarget.All, new object[] { killer, victim, score, weapon });
+            RPCManager.PhotonView.RPC(nameof(RPCManager.ShowKillFeedRPC), RpcTarget.All, new object[] { killer, victim, score, weapon });
         }
         private bool NeedRefreshList<T>(string cacheKey, HashSet<T> currentSet, bool includeAI, bool includeNonAI, bool isShifter) where T : BaseCharacter
         {

@@ -346,7 +346,7 @@ namespace CustomLogic
                 EvaluateMethodForCallbacks("OnSecond");
                 if (PhotonNetwork.IsMasterClient)
                 {
-                    RPCManager.PhotonView.RPC("SyncCurrentTimeRPC", RpcTarget.Others, new object[] { CurrentTime });
+                    RPCManager.PhotonView.RPC(nameof(RPCManager.SyncCurrentTimeRPC), RpcTarget.Others, new object[] { CurrentTime });
                     foreach (int key in IdToNetworkView.Keys)
                         IdToNetworkView[key].OnSecond();
                 }

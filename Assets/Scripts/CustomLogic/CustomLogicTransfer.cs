@@ -49,7 +49,7 @@ namespace Map
                 if (logicHash != LogicHash)
                     Transfer(player);
                 else
-                    RPCManager.PhotonView.RPC("LoadCachedLogicRPC", player, new object[0]);
+                    RPCManager.PhotonView.RPC(nameof(RPCManager.LoadCachedLogicRPC), player, new object[0]);
             }
             LogicTransferReady = true;
         }
@@ -110,7 +110,7 @@ namespace Map
         {
             for (int i = 0; i < _logicTransferData.Count; i++)
             {
-                RPCManager.PhotonView.RPC("TransferLogicRPC", player, new object[] { _logicTransferData[i], i, _logicTransferData.Count });
+                RPCManager.PhotonView.RPC(nameof(RPCManager.TransferLogicRPC), player, new object[] { _logicTransferData[i], i, _logicTransferData.Count });
                 yield return new WaitForSeconds(0.5f);
             }
         }
