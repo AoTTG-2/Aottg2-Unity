@@ -1323,6 +1323,10 @@ cutscene MainCutscene
 		{
 			colossal = Game.SpawnShifterAt("WallColossal", spawnPosition, -180);
 			colossal.Size = 0.945;
+			rb = colossal.Rigidbody;
+			rb.FreezeXPosition = true;
+			rb.FreezeYPosition = true;
+			rb.FreezeZPosition = true;
 			Main._colossal = colossal;
 		}
 		wait 1.0;
@@ -1389,6 +1393,11 @@ component MoveTo
 component Civilians
 {
 	_health = 1000;
+
+	function Init()
+	{
+		self.MapObject.AddBoxCollider("Region", "Titans", Vector3(), self.MapObject.Scale);
+	}
 
 	function OnGameStart()
 	{
