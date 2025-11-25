@@ -15,8 +15,9 @@ class Main {
         transformedList = List(2,4,2,8,230); # self.GetList("2,4,2,8,230");
         values = baseList;
         uniques = values.ToSet().ToList();
-
         a = List();
+
+        a = Vector3(1,2,3);
 
         self._tester.Assert("ToSet", self.ListCompare(uniques, uniqueList));
         self._tester.AssertEqual("reduce", values.Reduce(self.Sum2, 0), 123);

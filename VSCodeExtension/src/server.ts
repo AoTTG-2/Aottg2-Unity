@@ -127,12 +127,12 @@ connection.onCompletion(
                 if (parts[0] === 'self') {
                     // Get current class
                     const position = textDocumentPosition.position;
-                    currentType = symbolManager.getCurrentClass(document, position.line) || undefined;
+                    currentType = symbolManager.getCurrentClass(document, position.line + 1) || undefined;
                     connection.console.log(`[CL Server] self resolves to class: ${currentType}`);
                 } else {
                     // Check if first part is a local variable
                     const position = textDocumentPosition.position;
-                    const localVarType = symbolManager.findLocalVariableType(document, position.line, parts[0]);
+                    const localVarType = symbolManager.findLocalVariableType(document, position.line + 1, parts[0]);
                     if (localVarType) {
                         currentType = localVarType;
                         connection.console.log(`[CL Server] ${parts[0]} is a local variable with type: ${currentType}`);
@@ -156,12 +156,12 @@ connection.onCompletion(
             } else if (objectName === 'self') {
                 // Handle simple self.
                 const position = textDocumentPosition.position;
-                resolvedType = symbolManager.getCurrentClass(document, position.line) || undefined;
+                resolvedType = symbolManager.getCurrentClass(document, position.line + 1) || undefined;
                 connection.console.log(`[CL Server] self resolves to class: ${resolvedType}`);
             } else {
                 // Check if it's a local variable
                 const position = textDocumentPosition.position;
-                const localVarType = symbolManager.findLocalVariableType(document, position.line, objectName);
+                const localVarType = symbolManager.findLocalVariableType(document, position.line + 1, objectName);
                 if (localVarType) {
                     resolvedType = localVarType;
                     connection.console.log(`[CL Server] ${objectName} is a local variable with type: ${resolvedType}`);
@@ -231,7 +231,7 @@ connection.onCompletion(
 
         // Get local variables at current position
         const position = textDocumentPosition.position;
-        const localVars = symbolManager.getLocalVariables(document, position.line);
+        const localVars = symbolManager.getLocalVariables(document, position.line + 1);
         for (const localVar of localVars) {
             completions.push({
                 label: localVar.name,

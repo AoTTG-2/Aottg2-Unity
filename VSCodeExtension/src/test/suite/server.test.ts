@@ -1,8 +1,121 @@
 import * as assert from 'assert';
 import { TextDocument } from 'vscode-languageserver-textdocument';
+import { CompletionItemKind } from 'vscode-languageserver';
 import { SymbolManager } from '../../symbolManager';
 import { APIMetadataLoader } from '../../apiMetadata';
 import * as path from 'path';
+
+/**
+ * Helper function to simulate completion request logic from server.ts
+ */
+function getCompletions(
+    document: TextDocument,
+    line: number,
+    character: number,
+    symbolManager: SymbolManager,
+    apiLoader: APIMetadataLoader
+): Array<{ label: string; kind: number; detail?: string }> {
+    const text = document.getText();
+    const offset = document.offsetAt({ line, character });
+    const linePrefix = text.substring(0, offset);
+    const lastLine = linePrefix.split('\n').pop() || '';
+    
+    const completions: Array<{ label: string; kind: number; detail?: string }> = [];
+    
+    // Check if we're after a dot (member access)
+    const dotMatch = lastLine.match(/(\w+(?:\.\w+)*)\.$/);
+    if (dotMatch) {
+        let objectName = dotMatch[1];
+        let resolvedType: string | undefined = undefined;
+        
+        // Handle chained member access like self._tester.
+        if (objectName.includes('.')) {
+            const parts = objectName.split('.');
+            
+            // Start with the first part
+            let currentType: string | undefined;
+            
+            if (parts[0] === 'self') {
+                // Get current class
+                currentType = symbolManager.getCurrentClass(document, line + 1) || undefined;
+            } else {
+                // Check if first part is a local variable
+                const localVarType = symbolManager.findLocalVariableType(document, line + 1, parts[0]);
+                if (localVarType) {
+                    currentType = localVarType;
+                } else {
+                    // Assume it's a class name or field
+                    currentType = parts[0];
+                }
+            }
+            
+            // Resolve each part in the chain
+            for (let i = 1; i < parts.length && currentType; i++) {
+                const fieldName = parts[i];
+                currentType = symbolManager.findFieldType(currentType, fieldName);
+            }
+            
+            resolvedType = currentType;
+        } else if (objectName === 'self') {
+            // Handle simple self.
+            resolvedType = symbolManager.getCurrentClass(document, line + 1) || undefined;
+        } else {
+            // Check if it's a local variable
+            const localVarType = symbolManager.findLocalVariableType(document, line + 1, objectName);
+            if (localVarType) {
+                resolvedType = localVarType;
+            }
+        }
+        
+        if (!resolvedType) {
+            return completions;
+        }
+        
+        // Check if it's a built-in class
+        const methods = apiLoader.getMethods(resolvedType);
+        const fields = apiLoader.getFields(resolvedType);
+        
+        for (const method of methods) {
+            const params = method.parameters.map(p => 
+                `${p.name}${p.isOptional ? '?' : ''}: ${p.type.name}`
+            ).join(', ');
+            
+            completions.push({
+                label: method.label,
+                kind: CompletionItemKind.Method,
+                detail: `(${params}) → ${method.returnType.name}`
+            });
+        }
+        
+        for (const field of fields) {
+            completions.push({
+                label: field.label,
+                kind: field.readonly ? CompletionItemKind.Constant : CompletionItemKind.Field,
+                detail: field.type.name
+            });
+        }
+        
+        // Check if it's a user-defined class
+        const userMembers = symbolManager.getClassMembers(resolvedType);
+        for (const member of userMembers) {
+            if (member.kind === 'function') {
+                const params = member.parameters?.join(', ') || '';
+                completions.push({
+                    label: member.name,
+                    kind: CompletionItemKind.Method,
+                    detail: `(${params})`
+                });
+            } else if (member.kind === 'field') {
+                completions.push({
+                    label: member.name,
+                    kind: CompletionItemKind.Field
+                });
+            }
+        }
+    }
+    
+    return completions;
+}
 
 suite('Language Server Integration Tests', () => {
     let symbolManager: SymbolManager;
@@ -157,5 +270,182 @@ class Tester {
         
         // Verify we can resolve the chain: self._tester._passingTests would need type List
         // This simulates: self -> Main, Main._tester -> Tester, Tester._passingTests -> List
+    });
+
+    test('Should provide List autocomplete for local variable with dot access', () => {
+        const code = `class Main {
+    function OnGameStart()
+    {
+        a = List();
+        a.
+    }
+}`;
+        const doc = TextDocument.create('test://test.cl', 'cl', 1, code);
+        symbolManager.updateDocument(doc);
+        
+        // Simulate completion request at position after 'a.'
+        // Line 4 is where 'a.' appears (0-indexed)
+        // getLocalVariables expects 1-based, so pass 5
+        const localVars = symbolManager.getLocalVariables(doc, 5);
+        const aVar = localVars.find(v => v.name === 'a');
+        assert.ok(aVar, 'Should find local variable a');
+        assert.strictEqual(aVar?.type, 'List', 'Variable a should have type List');
+        
+        // Get completions at line 4 (0-indexed), character 10
+        const completions = getCompletions(doc, 4, 10, symbolManager, apiLoader);
+        
+        // Verify we get List methods
+        assert.ok(completions.length > 0, 'Should have completions for List');
+        
+        const expectedMethods = [
+            'Clear', 'Get', 'Set', 'Add', 'InsertAt', 'RemoveAt', 
+            'Remove', 'Contains', 'Sort', 'SortCustom', 'Filter', 
+            'Map', 'Reduce', 'Randomize', 'ToSet'
+        ];
+        
+        for (const methodName of expectedMethods) {
+            const completion = completions.find(c => c.label === methodName);
+            assert.ok(completion, `Should have completion for ${methodName}`);
+            assert.strictEqual(completion?.kind, CompletionItemKind.Method, `${methodName} should be a method`);
+        }
+        
+        // Verify Count field is present
+        const countCompletion = completions.find(c => c.label === 'Count');
+        assert.ok(countCompletion, 'Should have completion for Count');
+        assert.strictEqual(countCompletion?.kind, CompletionItemKind.Constant, 'Count should be a constant');
+        assert.strictEqual(countCompletion?.detail, 'int', 'Count should be of type int');
+    });
+
+    test('Should provide List autocomplete for field with dot access', () => {
+        const code = `class Main {
+    _myList = List();
+
+    function OnGameStart()
+    {
+        self._myList.
+    }
+}`;
+        const doc = TextDocument.create('test://test.cl', 'cl', 1, code);
+        symbolManager.updateDocument(doc);
+        
+        // Simulate completion request at position after 'self._myList.'
+        // Line 5 (0-based index 5), character 21 (after 'self._myList.')
+        const completions = getCompletions(doc, 5, 21, symbolManager, apiLoader);
+        
+        assert.ok(completions.length > 0, 'Should have completions for List');
+        
+        // Verify some key methods
+        const add = completions.find(c => c.label === 'Add');
+        assert.ok(add, 'Should have Add method');
+        
+        const filter = completions.find(c => c.label === 'Filter');
+        assert.ok(filter, 'Should have Filter method');
+        assert.ok(filter?.detail?.includes('List'), 'Filter should return List');
+        
+        const count = completions.find(c => c.label === 'Count');
+        assert.ok(count, 'Should have Count field');
+    });
+
+    test('Should provide List autocomplete through nested field access', () => {
+        const code = `class Main {
+    _tester = null;
+
+    function OnGameStart()
+    {
+        self._tester = Tester();
+        self._tester._passingTests.
+    }
+}
+
+class Tester {
+    _passingTests = List();
+    _failingTests = List();
+}`;
+        const doc = TextDocument.create('test://test.cl', 'cl', 1, code);
+        symbolManager.updateDocument(doc);
+        
+        // Simulate completion request at position after 'self._tester._passingTests.'
+        // Line 6 (0-based index 6), character 35 (after the dot)
+        const completions = getCompletions(doc, 6, 35, symbolManager, apiLoader);
+        
+        assert.ok(completions.length > 0, 'Should have completions for List through nested access');
+        
+        // Verify List methods are available
+        const toSet = completions.find(c => c.label === 'ToSet');
+        assert.ok(toSet, 'Should have ToSet method');
+        assert.ok(toSet?.detail?.includes('Set'), 'ToSet should return Set');
+        
+        const map = completions.find(c => c.label === 'Map');
+        assert.ok(map, 'Should have Map method');
+        
+        const count = completions.find(c => c.label === 'Count');
+        assert.ok(count, 'Should have Count field');
+    });
+
+    test('Should handle multiple local variables with different types', () => {
+        const code = `class Main {
+    function OnGameStart()
+    {
+        myList = List();
+        myDict = Dict();
+        myList.
+    }
+}`;
+        const doc = TextDocument.create('test://test.cl', 'cl', 1, code);
+        symbolManager.updateDocument(doc);
+        
+        // Debug: Check local variables (1-based line number for extractLocalVariables)
+        const localVars = symbolManager.getLocalVariables(doc, 7);
+        const myListVar = localVars.find(v => v.name === 'myList');
+        assert.ok(myListVar, 'Should find myList variable');
+        assert.strictEqual(myListVar?.type, 'List', 'myList should have type List');
+        
+        // Get completions for myList at 0-indexed line 5 (where myList. appears)
+        const listCompletions = getCompletions(doc, 5, 15, symbolManager, apiLoader);
+        
+        // Should have List methods
+        const listAdd = listCompletions.find(c => c.label === 'Add');
+        assert.ok(listAdd, 'Should have Add method for List');
+        
+        // Should NOT have Dict methods
+        const dictGet = listCompletions.find(c => c.label === 'GetKey');
+        assert.strictEqual(dictGet, undefined, 'Should not have Dict methods for List variable');
+    });
+
+    test('Should update local variable type on reassignment', () => {
+        const code = `class Main {
+    function OnGameStart()
+    {
+        a = List();
+        a = Vector3(1,2,3);
+        a.
+    }
+}`;
+        const doc = TextDocument.create('test://test.cl', 'cl', 1, code);
+        symbolManager.updateDocument(doc);
+        
+        // Get local variables at line 6 (after reassignment)
+        const localVars = symbolManager.getLocalVariables(doc, 6);
+        const aVar = localVars.find(v => v.name === 'a');
+        
+        assert.ok(aVar, 'Should find variable a');
+        assert.strictEqual(aVar?.type, 'Vector3', 'Variable a should have type Vector3 after reassignment');
+        
+        // Get completions at line 5 (0-indexed), character 10
+        const completions = getCompletions(doc, 5, 10, symbolManager, apiLoader);
+        
+        // Should have Vector3 methods, not List methods
+        assert.ok(completions.length > 0, 'Should have completions for Vector3');
+        
+        // Vector3 should have properties like X, Y, Z
+        const xProp = completions.find(c => c.label === 'X');
+        assert.ok(xProp, 'Should have X property for Vector3');
+        
+        // Should NOT have List methods
+        const addMethod = completions.find(c => c.label === 'Add');
+        assert.strictEqual(addMethod, undefined, 'Should not have List Add method after reassignment to Vector3');
+        
+        const toSet = completions.find(c => c.label === 'ToSet');
+        assert.strictEqual(toSet, undefined, 'Should not have List ToSet method after reassignment to Vector3');
     });
 });

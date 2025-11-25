@@ -186,15 +186,18 @@ export class CLParser {
 
         for (let i = line - 1; i >= 0; i--) {
             const currentLine = lines[i];
+            
+            // Check for function BEFORE updating brace depth
+            // braceDepth <= 0 handles both: brace on same line (0) and brace on next line (-1)
+            if (/function\s+\w+\s*\(/.test(currentLine) && braceDepth <= 0) {
+                functionStart = i;
+                break;
+            }
+            
             const closeBraces = (currentLine.match(/}/g) || []).length;
             const openBraces = (currentLine.match(/{/g) || []).length;
             
             braceDepth += closeBraces - openBraces;
-
-            if (/function\s+\w+\s*\(/.test(currentLine) && braceDepth === 0) {
-                functionStart = i;
-                break;
-            }
         }
 
         if (functionStart === -1) return symbols;
@@ -215,8 +218,9 @@ export class CLParser {
                     const inferredType = this.inferType(currentLine);
                     
                     if (existing) {
-                        // Update type if we have better information
-                        if (inferredType && (!existing.type || existing.type === 'null')) {
+                        // Always update type on reassignment if we can infer a type
+                        // This handles cases like: a = List(); a = Vector3();
+                        if (inferredType) {
                             existing.type = inferredType;
                         }
                     } else {
