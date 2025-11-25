@@ -1,0 +1,201 @@
+{
+  "name": "Collision",
+  "info": {
+    "summary": "",
+    "remarks": "",
+    "code": "",
+    "parameters": null,
+    "returns": null
+  },
+  "constructors": null,
+  "staticFields": [],
+  "instanceFields": [
+    {
+      "type": {
+        "name": "Collider",
+        "arguments": []
+      },
+      "label": "Collider",
+      "info": {
+        "summary": "The collider involved in the collision.",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "Vector3",
+        "arguments": []
+      },
+      "label": "Impulse",
+      "info": {
+        "summary": "The impulse response of the collision.",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "Vector3",
+        "arguments": []
+      },
+      "label": "RelativeVelocity",
+      "info": {
+        "summary": "The relative velocity of the collision. (sum of velocities)",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "int",
+        "arguments": []
+      },
+      "label": "ContactCount",
+      "info": {
+        "summary": "The number of contacts in the collision, iterate over this in conjunction with the GetContact Point, Norm, Impulse, and Separation.",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "staticMethods": [],
+  "instanceMethods": [
+    {
+      "parameters": [
+        {
+          "name": "index",
+          "info": null,
+          "type": {
+            "name": "int",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "Vector3",
+        "arguments": []
+      },
+      "label": "GetContactPoint",
+      "info": {
+        "summary": "The contact point of the collision.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "index",
+          "info": null,
+          "type": {
+            "name": "int",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "Vector3",
+        "arguments": []
+      },
+      "label": "GetContactNorms",
+      "info": {
+        "summary": "The contact norm of the collision.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "index",
+          "info": null,
+          "type": {
+            "name": "int",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "Vector3",
+        "arguments": []
+      },
+      "label": "GetContactImpulses",
+      "info": {
+        "summary": "The contact impulse of the collision.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "index",
+          "info": null,
+          "type": {
+            "name": "int",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "Vector3",
+        "arguments": []
+      },
+      "label": "GetContactSeparations",
+      "info": {
+        "summary": "The separation between colliders at the given contact point.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "kind": "CLASS",
+  "baseTypeName": "Object",
+  "obsoleteMessage": "",
+  "isObsolete": false
+}

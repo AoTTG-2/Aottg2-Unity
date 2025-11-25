@@ -1,0 +1,221 @@
+{
+  "name": "Slider",
+  "info": {
+    "summary": "\r\n            A UI element that represents a horizontal slider for selecting numeric values (both int and float)\r\n            ",
+    "remarks": "",
+    "code": "",
+    "parameters": null,
+    "returns": null
+  },
+  "constructors": null,
+  "staticFields": [],
+  "instanceFields": [
+    {
+      "type": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "Label",
+      "info": {
+        "summary": "\r\n            The label text displayed next to the Slider\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "Object",
+        "arguments": []
+      },
+      "label": "Value",
+      "info": {
+        "summary": "\r\n            The current value of the Slider (returns int for integer sliders, float for float sliders)\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "Object",
+        "arguments": []
+      },
+      "label": "LowValue",
+      "info": {
+        "summary": "\r\n            The minimum value of the Slider (returns int for integer sliders, float for float sliders)\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "Object",
+        "arguments": []
+      },
+      "label": "HighValue",
+      "info": {
+        "summary": "\r\n            The maximum value of the Slider (returns int for integer sliders, float for float sliders)\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "float",
+        "arguments": []
+      },
+      "label": "PageSize",
+      "info": {
+        "summary": "\r\n            The page size for the slider. This is the amount by which the slider value changes when clicking in the slider track area.\r\n            For integer sliders, this also controls the snapping/tick interval.\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "Direction",
+      "info": {
+        "summary": "\r\n            The direction of the slider (Horizontal or Vertical)\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "bool",
+        "arguments": []
+      },
+      "label": "ShowInputField",
+      "info": {
+        "summary": "\r\n            If true, the slider will show a text field for direct input\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "bool",
+        "arguments": []
+      },
+      "label": "IsIntSlider",
+      "info": {
+        "summary": "\r\n            Returns true if this is an integer slider, false if it's a float slider\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "staticMethods": [],
+  "instanceMethods": [
+    {
+      "parameters": [
+        {
+          "name": "valueChangedEvent",
+          "info": {
+            "summary": "Method that will be called with the new value as parameter (int for integer sliders, float for float sliders)",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "function",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "Slider",
+        "arguments": []
+      },
+      "label": "OnValueChanged",
+      "info": {
+        "summary": "\r\n            Sets the method to be called when the Slider value changes\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {
+          "valueChangedEvent": "Method that will be called with the new value as parameter (int for integer sliders, float for float sliders)"
+        },
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "value",
+          "info": null,
+          "type": {
+            "name": "Object",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "SetValueWithoutNotify",
+      "info": {
+        "summary": "\r\n            Sets the value of the Slider without triggering any change events\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "kind": "CLASS",
+  "baseTypeName": "VisualElement",
+  "obsoleteMessage": "",
+  "isObsolete": false
+}

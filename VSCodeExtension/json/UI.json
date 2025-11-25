@@ -1,0 +1,1737 @@
+{
+  "name": "UI",
+  "info": {
+    "summary": "\r\n            UI label functions.\r\n            ",
+    "remarks": "",
+    "code": "",
+    "parameters": null,
+    "returns": null
+  },
+  "constructors": null,
+  "staticFields": [
+    {
+      "type": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "TopCenter",
+      "info": {
+        "summary": "\"TopCenter\" constant",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "TopLeft",
+      "info": {
+        "summary": "\"TopLeft\" constant",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "TopRight",
+      "info": {
+        "summary": "\"TopRight\" constant",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "MiddleCenter",
+      "info": {
+        "summary": "\"MiddleCenter\" constant",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "MiddleLeft",
+      "info": {
+        "summary": "\"MiddleLeft\" constant",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "MiddleRight",
+      "info": {
+        "summary": "\"MiddleRight\" constant",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "BottomCenter",
+      "info": {
+        "summary": "\"BottomCenter\" constant",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "BottomLeft",
+      "info": {
+        "summary": "\"BottomLeft\" constant",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "BottomRight",
+      "info": {
+        "summary": "\"BottomRight\" constant",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "List",
+        "arguments": []
+      },
+      "label": "GetPopups",
+      "info": {
+        "summary": "Returns a list of all popups",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "instanceFields": [],
+  "staticMethods": [
+    {
+      "parameters": [
+        {
+          "name": "label",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "message",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "SetLabel",
+      "info": {
+        "summary": "\r\n            Sets the label at a certain location. Valid types: \"TopCenter\", \"TopLeft\", \"TopRight\", \"MiddleCenter\", \"MiddleLeft\", \"MiddleRight\", \"BottomLeft\", \"BottomRight\", \"BottomCenter\".\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "label",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "message",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "time",
+          "info": null,
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "SetLabelForTime",
+      "info": {
+        "summary": "\r\n            Sets the label for a certain time, after which it will be cleared.\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "label",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "message",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "SetLabelAll",
+      "info": {
+        "summary": "\r\n            Sets the label for all players. Master client only. Be careful not to call this often.\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "label",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "message",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "time",
+          "info": null,
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "SetLabelForTimeAll",
+      "info": {
+        "summary": "\r\n            Sets the label for all players for a certain time. Master client only.\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "popupName",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "title",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "width",
+          "info": null,
+          "type": {
+            "name": "int",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "height",
+          "info": null,
+          "type": {
+            "name": "int",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "CreatePopup",
+      "info": {
+        "summary": "\r\n            Creates a new popup. This popup is hidden until shown.\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "popupName",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "ShowPopup",
+      "info": {
+        "summary": "Shows the popup with given name.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "popupName",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "HidePopup",
+      "info": {
+        "summary": "Hides the popup with given name.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "popupName",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "ClearPopup",
+      "info": {
+        "summary": "Clears all elements in popup with given name.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "popupName",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "label",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "AddPopupLabel",
+      "info": {
+        "summary": "Adds a text row to the popup with label as content.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "popupName",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "label",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "callback",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "AddPopupButton",
+      "info": {
+        "summary": "Adds a button row to the popup with given button name and display text. When button is pressed, OnButtonClick is called in Main with buttonName parameter.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "popupName",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "label",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "callback",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "AddPopupBottomButton",
+      "info": {
+        "summary": "Adds a button to the bottom bar of the popup.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "popupName",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "labels",
+          "info": null,
+          "type": {
+            "name": "List",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "callbacks",
+          "info": null,
+          "type": {
+            "name": "List",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "AddPopupButtons",
+      "info": {
+        "summary": "Adds a list of buttons in a row to the popup.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "text",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "style",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "arg",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "null",
+          "isOptional": true
+        }
+      ],
+      "returnType": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "WrapStyleTag",
+      "info": {
+        "summary": "Returns a wrapped string given style and args.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "ShowChangeCharacterMenu",
+      "info": {
+        "summary": "Shows the change character menu if main character is Human.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "header",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "SetScoreboardHeader",
+      "info": {
+        "summary": "Sets the display of the scoreboard header (default \"Kills / Deaths...\")",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "property",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "SetScoreboardProperty",
+      "info": {
+        "summary": "\r\n            Sets which Player custom property to read from to display on the scoreboard. If set to empty string, will use the default \"Kills / Deaths...\" display.\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "panel",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "category",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "item",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "Color",
+        "arguments": []
+      },
+      "label": "GetThemeColor",
+      "info": {
+        "summary": "Gets the color of the specified item. See theme json for reference.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "popupName",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "bool",
+        "arguments": []
+      },
+      "label": "IsPopupActive",
+      "info": {
+        "summary": "Returns if the given popup is active",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "label",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "active",
+          "info": null,
+          "type": {
+            "name": "bool",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "SetLabelActive",
+      "info": {
+        "summary": "\r\n            Sets whether a label is active or not.\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "active",
+          "info": null,
+          "type": {
+            "name": "bool",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "SetKDRPanelActive",
+      "info": {
+        "summary": "\r\n            Sets whether the KDR panel (top-left) is active or not.\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "active",
+          "info": null,
+          "type": {
+            "name": "bool",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "SetMinimapActive",
+      "info": {
+        "summary": "\r\n            Sets whether the minimap is active or not.\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "active",
+          "info": null,
+          "type": {
+            "name": "bool",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "SetChatPanelActive",
+      "info": {
+        "summary": "\r\n            Sets whether the chat panel is active or not.\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "active",
+          "info": null,
+          "type": {
+            "name": "bool",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "SetFeedPanelActive",
+      "info": {
+        "summary": "\r\n            Sets whether the feed panel is active or not.\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "active",
+          "info": null,
+          "type": {
+            "name": "bool",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "SetBottomHUDActive",
+      "info": {
+        "summary": "\r\n            Sets whether the bottom HUD is active or not.\r\n            This can only be used when the character is alive.\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "GetRootVisualElement",
+      "info": {
+        "summary": "\r\n            Returns the root `VisualElement` which you can add other elements to.\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": "The root `VisualElement`"
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "VisualElement",
+      "info": {
+        "summary": "\r\n            Creates a new `VisualElement`.\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "text",
+          "info": {
+            "summary": "The text that the button displays",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "\"\"",
+          "isOptional": true
+        },
+        {
+          "name": "clickEvent",
+          "info": {
+            "summary": "The function that will be called when button is clicked",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "function",
+            "arguments": []
+          },
+          "defaultValue": "null",
+          "isOptional": true
+        }
+      ],
+      "returnType": {
+        "name": "Button",
+        "arguments": []
+      },
+      "label": "Button",
+      "info": {
+        "summary": "\r\n            Creates a new `Button` with optional text and click event.\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {
+          "text": "The text that the button displays",
+          "clickEvent": "The function that will be called when button is clicked"
+        },
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "text",
+          "info": {
+            "summary": "The text to be displayed",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "\"\"",
+          "isOptional": true
+        }
+      ],
+      "returnType": {
+        "name": "Label",
+        "arguments": []
+      },
+      "label": "Label",
+      "info": {
+        "summary": "\r\n            Creates a new `Label` with optional text.\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {
+          "text": "The text to be displayed"
+        },
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "label",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "\"\"",
+          "isOptional": true
+        }
+      ],
+      "returnType": {
+        "name": "TextField",
+        "arguments": []
+      },
+      "label": "TextField",
+      "info": {
+        "summary": "\r\n            Creates a new `TextField` with optional label.\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "label",
+          "info": {
+            "summary": "The label text displayed next to the toggle",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "\"\"",
+          "isOptional": true
+        },
+        {
+          "name": "valueChangedEvent",
+          "info": {
+            "summary": "The function that will be called when toggle value changes",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "function",
+            "arguments": []
+          },
+          "defaultValue": "null",
+          "isOptional": true
+        }
+      ],
+      "returnType": {
+        "name": "Toggle",
+        "arguments": []
+      },
+      "label": "Toggle",
+      "info": {
+        "summary": "\r\n            Creates a new `Toggle` with optional label and value changed event.\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {
+          "label": "The label text displayed next to the toggle",
+          "valueChangedEvent": "The function that will be called when toggle value changes"
+        },
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "lowValue",
+          "info": {
+            "summary": "The minimum value of the slider",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "0",
+          "isOptional": true
+        },
+        {
+          "name": "highValue",
+          "info": {
+            "summary": "The maximum value of the slider",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "100",
+          "isOptional": true
+        },
+        {
+          "name": "tickInterval",
+          "info": {
+            "summary": "The interval between allowed values. If 0, no snapping occurs. For example, 0.1 will snap to 0.0, 0.1, 0.2, etc.",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "0",
+          "isOptional": true
+        },
+        {
+          "name": "label",
+          "info": {
+            "summary": "The label text displayed next to the slider",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "\"\"",
+          "isOptional": true
+        },
+        {
+          "name": "valueChangedEvent",
+          "info": {
+            "summary": "The function that will be called when slider value changes",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "function",
+            "arguments": []
+          },
+          "defaultValue": "null",
+          "isOptional": true
+        }
+      ],
+      "returnType": {
+        "name": "Slider",
+        "arguments": []
+      },
+      "label": "Slider",
+      "info": {
+        "summary": "\r\n            Creates a new `Slider` for floating-point values with optional range, tick interval, and value changed event.\r\n            The slider will snap to values at multiples of the tick interval.\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {
+          "lowValue": "The minimum value of the slider",
+          "highValue": "The maximum value of the slider",
+          "tickInterval": "The interval between allowed values. If 0, no snapping occurs. For example, 0.1 will snap to 0.0, 0.1, 0.2, etc.",
+          "label": "The label text displayed next to the slider",
+          "valueChangedEvent": "The function that will be called when slider value changes"
+        },
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "lowValue",
+          "info": {
+            "summary": "The minimum value of the slider",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "int",
+            "arguments": []
+          },
+          "defaultValue": "0",
+          "isOptional": true
+        },
+        {
+          "name": "highValue",
+          "info": {
+            "summary": "The maximum value of the slider",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "int",
+            "arguments": []
+          },
+          "defaultValue": "100",
+          "isOptional": true
+        },
+        {
+          "name": "tickInterval",
+          "info": {
+            "summary": "The interval between allowed values. For example, 5 will snap to 0, 5, 10, 15, etc.",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "int",
+            "arguments": []
+          },
+          "defaultValue": "1",
+          "isOptional": true
+        },
+        {
+          "name": "label",
+          "info": {
+            "summary": "The label text displayed next to the slider",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "\"\"",
+          "isOptional": true
+        },
+        {
+          "name": "valueChangedEvent",
+          "info": {
+            "summary": "The function that will be called when slider value changes",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "function",
+            "arguments": []
+          },
+          "defaultValue": "null",
+          "isOptional": true
+        }
+      ],
+      "returnType": {
+        "name": "Slider",
+        "arguments": []
+      },
+      "label": "SliderInt",
+      "info": {
+        "summary": "\r\n            Creates a new `Slider` for integer values with optional range, tick interval, and value changed event.\r\n            The slider will snap to values at multiples of the tick interval.\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {
+          "lowValue": "The minimum value of the slider",
+          "highValue": "The maximum value of the slider",
+          "tickInterval": "The interval between allowed values. For example, 5 will snap to 0, 5, 10, 15, etc.",
+          "label": "The label text displayed next to the slider",
+          "valueChangedEvent": "The function that will be called when slider value changes"
+        },
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "choices",
+          "info": {
+            "summary": "List of string options to display in the dropdown",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "List",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "defaultIndex",
+          "info": {
+            "summary": "The index of the initially selected option (default: 0)",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "int",
+            "arguments": []
+          },
+          "defaultValue": "0",
+          "isOptional": true
+        },
+        {
+          "name": "label",
+          "info": {
+            "summary": "The label text displayed next to the dropdown",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "\"\"",
+          "isOptional": true
+        },
+        {
+          "name": "valueChangedEvent",
+          "info": {
+            "summary": "The function that will be called when dropdown value changes",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "function",
+            "arguments": []
+          },
+          "defaultValue": "null",
+          "isOptional": true
+        }
+      ],
+      "returnType": {
+        "name": "Dropdown",
+        "arguments": []
+      },
+      "label": "Dropdown",
+      "info": {
+        "summary": "\r\n            Creates a new `Dropdown` with a list of choices and optional label and value changed event.\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {
+          "choices": "List of string options to display in the dropdown",
+          "defaultIndex": "The index of the initially selected option (default: 0)",
+          "label": "The label text displayed next to the dropdown",
+          "valueChangedEvent": "The function that will be called when dropdown value changes"
+        },
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "lowValue",
+          "info": {
+            "summary": "The minimum value of the progress bar (default: 0)",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "0",
+          "isOptional": true
+        },
+        {
+          "name": "highValue",
+          "info": {
+            "summary": "The maximum value of the progress bar (default: 100)",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "100",
+          "isOptional": true
+        },
+        {
+          "name": "title",
+          "info": {
+            "summary": "The title text displayed on the progress bar",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "\"\"",
+          "isOptional": true
+        },
+        {
+          "name": "valueChangedEvent",
+          "info": {
+            "summary": "The function that will be called when progress bar value changes",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "function",
+            "arguments": []
+          },
+          "defaultValue": "null",
+          "isOptional": true
+        }
+      ],
+      "returnType": {
+        "name": "ProgressBar",
+        "arguments": []
+      },
+      "label": "ProgressBar",
+      "info": {
+        "summary": "\r\n            Creates a new `ProgressBar` with optional range, title, and value changed event.\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {
+          "lowValue": "The minimum value of the progress bar (default: 0)",
+          "highValue": "The maximum value of the progress bar (default: 100)",
+          "title": "The title text displayed on the progress bar",
+          "valueChangedEvent": "The function that will be called when progress bar value changes"
+        },
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [],
+      "returnType": {
+        "name": "ScrollView",
+        "arguments": []
+      },
+      "label": "ScrollView",
+      "info": {
+        "summary": "\r\n            Creates a new `ScrollView` for scrollable content.\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "iconPath",
+          "info": {
+            "summary": "Path to the icon resource (e.g., \"Icons/Game/BladeIcon\")",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "\"\"",
+          "isOptional": true
+        }
+      ],
+      "returnType": {
+        "name": "Icon",
+        "arguments": []
+      },
+      "label": "Icon",
+      "info": {
+        "summary": "\r\n            Creates a new `Icon` element for displaying images/icons.\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {
+          "iconPath": "Path to the icon resource (e.g., \"Icons/Game/BladeIcon\")"
+        },
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "iconPath",
+          "info": {
+            "summary": "Path to the icon resource (e.g., \"Icons/Game/BladeIcon\")",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "\"\"",
+          "isOptional": true
+        }
+      ],
+      "returnType": {
+        "name": "Image",
+        "arguments": []
+      },
+      "label": "Image",
+      "info": {
+        "summary": "\r\n            Creates a new `Icon` element for displaying images/icons.\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {
+          "iconPath": "Path to the icon resource (e.g., \"Icons/Game/BladeIcon\")"
+        },
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "instanceMethods": [],
+  "kind": "EXTENSION",
+  "baseTypeName": "Object",
+  "obsoleteMessage": "",
+  "isObsolete": false
+}

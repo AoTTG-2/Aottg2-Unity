@@ -1,0 +1,119 @@
+{
+  "name": "Icon",
+  "info": {
+    "summary": "\r\n            UI element for displaying icons/images\r\n            ",
+    "remarks": "",
+    "code": "\r\n            # Example: Create an icon element\r\n            icon = UI.CreateIcon(\"Icons/Game/BladeIcon\")\r\n                .Width(64)\r\n                .Height(64);\r\n            container.Add(icon);\r\n            \r\n            # Example: Load an icon from a resource path\r\n            weaponIcon = UI.CreateIcon(\"Icons/Game/AHSSIcon\");\r\n            weaponIcon.SetIcon(\"Icons/Game/ThunderSpearIcon\"); # Change the icon dynamically\r\n            ",
+    "parameters": null,
+    "returns": null
+  },
+  "constructors": null,
+  "staticFields": [],
+  "instanceFields": [
+    {
+      "type": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "IconPath",
+      "info": {
+        "summary": "\r\n            Get the current icon path\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "ScaleMode",
+      "info": {
+        "summary": "\r\n            Get or set the scale mode for the icon\r\n            ",
+        "remarks": "\r\n            Valid values: \"ScaleAndCrop\", \"ScaleToFit\", \"StretchToFill\"\r\n            ",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "staticMethods": [],
+  "instanceMethods": [
+    {
+      "parameters": [
+        {
+          "name": "iconPath",
+          "info": {
+            "summary": "Path to the icon resource (e.g., \"Icons/Game/BladeIcon\")",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "Icon",
+        "arguments": []
+      },
+      "label": "SetIcon",
+      "info": {
+        "summary": "\r\n            Set the icon to display from a resource path\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {
+          "iconPath": "Path to the icon resource (e.g., \"Icons/Game/BladeIcon\")"
+        },
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "color",
+          "info": null,
+          "type": {
+            "name": "Color",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "Icon",
+        "arguments": []
+      },
+      "label": "SetTintColor",
+      "info": {
+        "summary": "\r\n            Set the tint color of the icon\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "kind": "CLASS",
+  "baseTypeName": "VisualElement",
+  "obsoleteMessage": "",
+  "isObsolete": false
+}

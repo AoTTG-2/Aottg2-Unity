@@ -1,0 +1,54 @@
+{
+  "name": "Label",
+  "info": {
+    "summary": "\r\n            UI element for displaying text\r\n            ",
+    "remarks": "",
+    "code": "",
+    "parameters": null,
+    "returns": null
+  },
+  "constructors": null,
+  "staticFields": [],
+  "instanceFields": [
+    {
+      "type": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "Text",
+      "info": {
+        "summary": "\r\n            The text displayed by the Label\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "bool",
+        "arguments": []
+      },
+      "label": "EnableRichText",
+      "info": {
+        "summary": "\r\n            When false, rich text tags will not be parsed\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "staticMethods": [],
+  "instanceMethods": [],
+  "kind": "CLASS",
+  "baseTypeName": "VisualElement",
+  "obsoleteMessage": "",
+  "isObsolete": false
+}

@@ -1,0 +1,179 @@
+{
+  "name": "TextField",
+  "info": {
+    "summary": "\r\n            A UI element that lets the user input and edit text\r\n            ",
+    "remarks": "",
+    "code": "",
+    "parameters": null,
+    "returns": null
+  },
+  "constructors": null,
+  "staticFields": [],
+  "instanceFields": [
+    {
+      "type": {
+        "name": "bool",
+        "arguments": []
+      },
+      "label": "IsDelayed",
+      "info": {
+        "summary": "\r\n            If true, the value property isn't updated until either the Enter key is pressed or the TextField loses focus\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "bool",
+        "arguments": []
+      },
+      "label": "Multiline",
+      "info": {
+        "summary": "\r\n            If true, the TextField supports multiple lines of text\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "Label",
+      "info": {
+        "summary": "\r\n            The label text displayed next to the TextField\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "Value",
+      "info": {
+        "summary": "\r\n            The value of the TextField\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "Color",
+        "arguments": []
+      },
+      "label": "SelectionColor",
+      "info": {
+        "summary": "\r\n            Color used to highlight selected text inside the field\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "Color",
+        "arguments": []
+      },
+      "label": "CursorColor",
+      "info": {
+        "summary": "\r\n            Color of the text cursor (caret)\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "staticMethods": [],
+  "instanceMethods": [
+    {
+      "parameters": [
+        {
+          "name": "changeEvent",
+          "info": null,
+          "type": {
+            "name": "function",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "TextField",
+        "arguments": []
+      },
+      "label": "RegisterValueChangedEventCallback",
+      "info": {
+        "summary": "\r\n            Registers a callback to be invoked when the value of the TextField changes\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "value",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "SetValueWithoutNotify",
+      "info": {
+        "summary": "\r\n            Sets the value of the TextField without triggering any change events\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "kind": "CLASS",
+  "baseTypeName": "VisualElement",
+  "obsoleteMessage": "",
+  "isObsolete": false
+}

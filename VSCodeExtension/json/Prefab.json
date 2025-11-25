@@ -1,0 +1,305 @@
+{
+  "name": "Prefab",
+  "info": {
+    "summary": "\r\n            Will expand this further later, currently only handles single elements, not children.\r\n            Should be able to take in a serialized CSV describing the object and populate a child array/parent object when done.\r\n            ",
+    "remarks": "",
+    "code": "",
+    "parameters": null,
+    "returns": null
+  },
+  "constructors": [
+    {
+      "parameters": [],
+      "info": {
+        "summary": "",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "prefabCSV",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "string",
+          "isOptional": false
+        },
+        {
+          "name": "clearComponents",
+          "info": null,
+          "type": {
+            "name": "bool",
+            "arguments": []
+          },
+          "defaultValue": "False",
+          "isOptional": false
+        }
+      ],
+      "info": {
+        "summary": "",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "staticFields": [],
+  "instanceFields": [
+    {
+      "type": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "Type",
+      "info": {
+        "summary": "",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "Asset",
+      "info": {
+        "summary": "",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "bool",
+        "arguments": []
+      },
+      "label": "Active",
+      "info": {
+        "summary": "",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "bool",
+        "arguments": []
+      },
+      "label": "Static",
+      "info": {
+        "summary": "",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "bool",
+        "arguments": []
+      },
+      "label": "Visible",
+      "info": {
+        "summary": "",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "Name",
+      "info": {
+        "summary": "",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "Vector3",
+        "arguments": []
+      },
+      "label": "Position",
+      "info": {
+        "summary": "",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "Vector3",
+        "arguments": []
+      },
+      "label": "Rotation",
+      "info": {
+        "summary": "",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "Vector3",
+        "arguments": []
+      },
+      "label": "Scale",
+      "info": {
+        "summary": "",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "CollideMode",
+      "info": {
+        "summary": "",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "CollideWith",
+      "info": {
+        "summary": "",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "PhysicsMaterial",
+      "info": {
+        "summary": "",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "bool",
+        "arguments": []
+      },
+      "label": "PersistsOwnership",
+      "info": {
+        "summary": "",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "staticMethods": [],
+  "instanceMethods": [
+    {
+      "parameters": [],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "ClearComponents",
+      "info": {
+        "summary": "",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "kind": "CLASS",
+  "baseTypeName": "Object",
+  "obsoleteMessage": "",
+  "isObsolete": false
+}

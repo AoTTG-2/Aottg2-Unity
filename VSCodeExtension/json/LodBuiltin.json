@@ -1,0 +1,54 @@
+{
+  "name": "LodBuiltin",
+  "info": {
+    "summary": "\r\n            WIP feature to support LOD (Level of Detail) for map objects, currently only supports a single LOD level with a distance threshold.\r\n            ",
+    "remarks": "",
+    "code": "",
+    "parameters": null,
+    "returns": null
+  },
+  "constructors": null,
+  "staticFields": [],
+  "instanceFields": [
+    {
+      "type": {
+        "name": "float",
+        "arguments": []
+      },
+      "label": "DistanceThreshold",
+      "info": {
+        "summary": "Configures the distance threshold.",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "float",
+        "arguments": []
+      },
+      "label": "DetailPriority",
+      "info": {
+        "summary": "Configures the distance threshold.",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "staticMethods": [],
+  "instanceMethods": [],
+  "kind": "EXTENSION",
+  "baseTypeName": "",
+  "obsoleteMessage": "",
+  "isObsolete": false
+}

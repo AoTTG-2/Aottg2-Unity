@@ -1,0 +1,443 @@
+{
+  "name": "Input",
+  "info": {
+    "summary": "\r\n            Reading player key inputs. Note that inputs are best handled in OnFrame rather than OnTick, due to being updated every frame and not every physics tick.\r\n            ",
+    "remarks": "",
+    "code": "",
+    "parameters": null,
+    "returns": null
+  },
+  "constructors": null,
+  "staticFields": [],
+  "instanceFields": [],
+  "staticMethods": [
+    {
+      "parameters": [
+        {
+          "name": "key",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "GetKeyName",
+      "info": {
+        "summary": "Gets the key name the player assigned to the key setting",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "key",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "bool",
+        "arguments": []
+      },
+      "label": "GetKeyHold",
+      "info": {
+        "summary": "Returns true if the key is being held down",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "key",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "bool",
+        "arguments": []
+      },
+      "label": "GetKeyDown",
+      "info": {
+        "summary": "Returns true if the key was pressed down this frame",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "key",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "bool",
+        "arguments": []
+      },
+      "label": "GetKeyUp",
+      "info": {
+        "summary": "Returns true if the key was released this frame",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [],
+      "returnType": {
+        "name": "Vector3",
+        "arguments": []
+      },
+      "label": "GetMouseAim",
+      "info": {
+        "summary": "Returns the position the player is aiming at",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [],
+      "returnType": {
+        "name": "Vector3",
+        "arguments": []
+      },
+      "label": "GetCursorAimDirection",
+      "info": {
+        "summary": "Returns the ray the player is aiming at",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [],
+      "returnType": {
+        "name": "Vector3",
+        "arguments": []
+      },
+      "label": "GetMouseSpeed",
+      "info": {
+        "summary": "Returns the speed of the mouse",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [],
+      "returnType": {
+        "name": "Vector3",
+        "arguments": []
+      },
+      "label": "GetMousePosition",
+      "info": {
+        "summary": "Returns the position of the mouse",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [],
+      "returnType": {
+        "name": "Vector3",
+        "arguments": []
+      },
+      "label": "GetScreenDimensions",
+      "info": {
+        "summary": "Returns the dimensions of the screen",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "key",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "enabled",
+          "info": null,
+          "type": {
+            "name": "bool",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "SetKeyDefaultEnabled",
+      "info": {
+        "summary": "Sets whether the key is enabled by default",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "key",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "enabled",
+          "info": null,
+          "type": {
+            "name": "bool",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "SetKeyHold",
+      "info": {
+        "summary": "Sets whether the key is being held down",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "category",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "enabled",
+          "info": null,
+          "type": {
+            "name": "bool",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "SetCategoryKeysEnabled",
+      "info": {
+        "summary": "Sets whether all keys in the specified category are enabled by default. Valid categories: General, Human, Titan, Interaction",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "enabled",
+          "info": null,
+          "type": {
+            "name": "bool",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "SetGeneralKeysEnabled",
+      "info": {
+        "summary": "Sets whether all General category keys are enabled by default",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "enabled",
+          "info": null,
+          "type": {
+            "name": "bool",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "SetInteractionKeysEnabled",
+      "info": {
+        "summary": "Sets whether all Interaction category keys are enabled by default",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "enabled",
+          "info": null,
+          "type": {
+            "name": "bool",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "SetTitanKeysEnabled",
+      "info": {
+        "summary": "Sets whether all Titan category keys are enabled by default",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "enabled",
+          "info": null,
+          "type": {
+            "name": "bool",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "SetHumanKeysEnabled",
+      "info": {
+        "summary": "Sets whether all Human category keys are enabled by default",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "instanceMethods": [],
+  "kind": "EXTENSION",
+  "baseTypeName": "Object",
+  "obsoleteMessage": "",
+  "isObsolete": false
+}

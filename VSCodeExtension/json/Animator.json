@@ -1,0 +1,568 @@
+{
+  "name": "Animator",
+  "info": {
+    "summary": "",
+    "remarks": "",
+    "code": "",
+    "parameters": null,
+    "returns": null
+  },
+  "constructors": null,
+  "staticFields": [],
+  "instanceFields": [],
+  "staticMethods": [],
+  "instanceMethods": [
+    {
+      "parameters": [
+        {
+          "name": "anim",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "layer",
+          "info": null,
+          "type": {
+            "name": "int",
+            "arguments": []
+          },
+          "defaultValue": "0",
+          "isOptional": true
+        }
+      ],
+      "returnType": {
+        "name": "bool",
+        "arguments": []
+      },
+      "label": "IsPlaying",
+      "info": {
+        "summary": "Checks if the given animation is playing.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "anim",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "fade",
+          "info": null,
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "0.1",
+          "isOptional": true
+        },
+        {
+          "name": "layer",
+          "info": null,
+          "type": {
+            "name": "int",
+            "arguments": []
+          },
+          "defaultValue": "0",
+          "isOptional": true
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "PlayAnimation",
+      "info": {
+        "summary": "Plays the specified animation.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "anim",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "normalizedTime",
+          "info": null,
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "fade",
+          "info": null,
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "0.1",
+          "isOptional": true
+        },
+        {
+          "name": "layer",
+          "info": null,
+          "type": {
+            "name": "int",
+            "arguments": []
+          },
+          "defaultValue": "0",
+          "isOptional": true
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "PlayAnimationAt",
+      "info": {
+        "summary": "Plays the specified animation starting from a normalized time.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "speed",
+          "info": null,
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "SetAnimationSpeed",
+      "info": {
+        "summary": "Sets the animation playback speed.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "anim",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "float",
+        "arguments": []
+      },
+      "label": "GetAnimationLength",
+      "info": {
+        "summary": "Gets the length of the specified animation.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "name",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "float",
+        "arguments": []
+      },
+      "label": "GetAnimatorFloat",
+      "info": {
+        "summary": "Gets an animation float parameter.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "name",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "int",
+        "arguments": []
+      },
+      "label": "GetAnimatorInt",
+      "info": {
+        "summary": "Gets an animation int parameter.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "name",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "bool",
+        "arguments": []
+      },
+      "label": "GetAnimatorBool",
+      "info": {
+        "summary": "Gets an animation bool parameter.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "name",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "value",
+          "info": null,
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "SetAnimatorFloat",
+      "info": {
+        "summary": "Sets an animation float parameter.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "name",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "value",
+          "info": null,
+          "type": {
+            "name": "int",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "SetAnimatorInt",
+      "info": {
+        "summary": "Sets an animation int parameter.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "name",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "value",
+          "info": null,
+          "type": {
+            "name": "bool",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "SetAnimatorBool",
+      "info": {
+        "summary": "Sets an animation bool parameter.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "name",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "SetAnimatorTrigger",
+      "info": {
+        "summary": "Sets an animation trigger.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "name",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "ResetAnimatorTrigger",
+      "info": {
+        "summary": "Resets an animation trigger.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "layer",
+          "info": null,
+          "type": {
+            "name": "int",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "weight",
+          "info": null,
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "SetLayerWeight",
+      "info": {
+        "summary": "Sets the weight of the specified layer.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "layer",
+          "info": null,
+          "type": {
+            "name": "int",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "GetLayerWeight",
+      "info": {
+        "summary": "Gets the weight of the specified layer.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "layer",
+          "info": null,
+          "type": {
+            "name": "int",
+            "arguments": []
+          },
+          "defaultValue": "0",
+          "isOptional": true
+        }
+      ],
+      "returnType": {
+        "name": "float",
+        "arguments": []
+      },
+      "label": "GetAnimationNormalizedTime",
+      "info": {
+        "summary": "Gets the normalized time of the current animation.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "kind": "CLASS",
+  "baseTypeName": "",
+  "obsoleteMessage": "",
+  "isObsolete": false
+}

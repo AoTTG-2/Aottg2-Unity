@@ -1,0 +1,198 @@
+{
+  "name": "ProgressBar",
+  "info": {
+    "summary": "\r\n            A UI element that represents a progress bar for displaying progress from 0% to 100%\r\n            ",
+    "remarks": "",
+    "code": "",
+    "parameters": null,
+    "returns": null
+  },
+  "constructors": null,
+  "staticFields": [],
+  "instanceFields": [
+    {
+      "type": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "Title",
+      "info": {
+        "summary": "\r\n            The title text displayed on the progress bar\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "float",
+        "arguments": []
+      },
+      "label": "Value",
+      "info": {
+        "summary": "\r\n            The current value of the progress bar (0-100)\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "float",
+        "arguments": []
+      },
+      "label": "LowValue",
+      "info": {
+        "summary": "\r\n            The minimum value of the progress bar (default: 0)\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "float",
+        "arguments": []
+      },
+      "label": "HighValue",
+      "info": {
+        "summary": "\r\n            The maximum value of the progress bar (default: 100)\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "staticMethods": [],
+  "instanceMethods": [
+    {
+      "parameters": [
+        {
+          "name": "valueChangedEvent",
+          "info": {
+            "summary": "Method that will be called with the new value as parameter",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "function",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "ProgressBar",
+        "arguments": []
+      },
+      "label": "OnValueChanged",
+      "info": {
+        "summary": "\r\n            Sets the method to be called when the progress bar value changes\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {
+          "valueChangedEvent": "Method that will be called with the new value as parameter"
+        },
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "value",
+          "info": null,
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "SetValueWithoutNotify",
+      "info": {
+        "summary": "\r\n            Sets the value of the progress bar without triggering any change events\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [],
+      "returnType": {
+        "name": "float",
+        "arguments": []
+      },
+      "label": "GetPercentage",
+      "info": {
+        "summary": "\r\n            Gets the current progress as a percentage (0-100)\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "percentage",
+          "info": null,
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "ProgressBar",
+        "arguments": []
+      },
+      "label": "SetPercentage",
+      "info": {
+        "summary": "\r\n            Sets the progress by percentage (0-100)\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "kind": "CLASS",
+  "baseTypeName": "VisualElement",
+  "obsoleteMessage": "",
+  "isObsolete": false
+}

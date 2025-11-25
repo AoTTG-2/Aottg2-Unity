@@ -1,0 +1,203 @@
+{
+  "name": "PhysicsMaterialBuiltin",
+  "info": {
+    "summary": "",
+    "remarks": "",
+    "code": "",
+    "parameters": null,
+    "returns": null
+  },
+  "constructors": null,
+  "staticFields": [
+    {
+      "type": {
+        "name": "int",
+        "arguments": []
+      },
+      "label": "FrictionCombineMinimum",
+      "info": {
+        "summary": "PhysicMaterialCombine.Minimum",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "int",
+        "arguments": []
+      },
+      "label": "FrictionCombineMultiply",
+      "info": {
+        "summary": "PhysicMaterialCombine.Multiply",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "int",
+        "arguments": []
+      },
+      "label": "FrictionCombineMaximum",
+      "info": {
+        "summary": "PhysicMaterialCombine.Maximum",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "int",
+        "arguments": []
+      },
+      "label": "FrictionCombineAverage",
+      "info": {
+        "summary": "PhysicMaterialCombine.Average",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "instanceFields": [
+    {
+      "type": {
+        "name": "float",
+        "arguments": []
+      },
+      "label": "StaticFriction",
+      "info": {
+        "summary": "The static friction of the material.",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "float",
+        "arguments": []
+      },
+      "label": "DynamicFriction",
+      "info": {
+        "summary": "The dynamic friction of the material.",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "float",
+        "arguments": []
+      },
+      "label": "Bounciness",
+      "info": {
+        "summary": "The bounciness of the material.",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "int",
+        "arguments": []
+      },
+      "label": "FrictionCombine",
+      "info": {
+        "summary": "The friction combine mode of the material.",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "int",
+        "arguments": []
+      },
+      "label": "BounceCombine",
+      "info": {
+        "summary": "The bounce combine mode of the material.",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "staticMethods": [],
+  "instanceMethods": [
+    {
+      "parameters": [
+        {
+          "name": "allChildColliders",
+          "info": null,
+          "type": {
+            "name": "bool",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "Setup",
+      "info": {
+        "summary": "Setup the material.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "kind": "EXTENSION",
+  "baseTypeName": "",
+  "obsoleteMessage": "",
+  "isObsolete": false
+}

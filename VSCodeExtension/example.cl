@@ -7,12 +7,16 @@ class Main {
 
         self._tester = Tester(self.DisplayInConsole);
 
+        self._tester.ShowResults()
+
         baseList = List(1,2,1,4,115); # self.GetList("1,2,1,4,115");
         uniqueList = List(1,2,4,115); # self.GetList("1,2,4,115");
         filteredList = List(115);  # self.GetList("115");
         transformedList = List(2,4,2,8,230); # self.GetList("2,4,2,8,230");
         values = baseList;
         uniques = values.ToSet().ToList();
+
+        a = List();
 
         self._tester.Assert("ToSet", self.ListCompare(uniques, uniqueList));
         self._tester.AssertEqual("reduce", values.Reduce(self.Sum2, 0), 123);

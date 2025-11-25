@@ -1,0 +1,870 @@
+{
+  "name": "RigidbodyBuiltin",
+  "info": {
+    "summary": "",
+    "remarks": "",
+    "code": "",
+    "parameters": null,
+    "returns": null
+  },
+  "constructors": null,
+  "staticFields": [
+    {
+      "type": {
+        "name": "int",
+        "arguments": []
+      },
+      "label": "ForceModeAcceleration",
+      "info": {
+        "summary": "ForceMode.Acceleration",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "int",
+        "arguments": []
+      },
+      "label": "ForceModeForce",
+      "info": {
+        "summary": "ForceMode.Force",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "int",
+        "arguments": []
+      },
+      "label": "ForceModeImpulse",
+      "info": {
+        "summary": "ForceMode.Impulse",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "int",
+        "arguments": []
+      },
+      "label": "ForceModeVelocityChange",
+      "info": {
+        "summary": "ForceMode.VelocityChange",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "instanceFields": [
+    {
+      "type": {
+        "name": "BuiltinClassInstance",
+        "arguments": []
+      },
+      "label": "Owner",
+      "info": {
+        "summary": "The MapObject this rigidbody is attached to.",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "Vector3",
+        "arguments": []
+      },
+      "label": "Position",
+      "info": {
+        "summary": "The position of the Rigidbody in world space. This is the same as the position of the GameObject it is attached to.",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "Quaternion",
+        "arguments": []
+      },
+      "label": "Rotation",
+      "info": {
+        "summary": "The rotation of the Rigidbody in world space. This is the same as the rotation of the GameObject it is attached to.",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "Vector3",
+        "arguments": []
+      },
+      "label": "Velocity",
+      "info": {
+        "summary": "The velocity of the Rigidbody in world space.",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "Vector3",
+        "arguments": []
+      },
+      "label": "AngularVelocity",
+      "info": {
+        "summary": "The angular velocity of the Rigidbody in world space.",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "float",
+        "arguments": []
+      },
+      "label": "AngularDrag",
+      "info": {
+        "summary": "The angular damping of the Rigidbody. This is a multiplier applied to the angular velocity every frame, reducing it over time.",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "float",
+        "arguments": []
+      },
+      "label": "Mass",
+      "info": {
+        "summary": "The Mass of the Rigidbody",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "bool",
+        "arguments": []
+      },
+      "label": "UseGravity",
+      "info": {
+        "summary": "Whether or not the Rigidbody use gravity.",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "Vector3",
+        "arguments": []
+      },
+      "label": "Gravity",
+      "info": {
+        "summary": "\r\n            The force of gravity applied to the Rigidbody.\r\n            If null, the Rigidbody will use Unity's default gravity settings and will enable gravity.\r\n            If Vector3 is provided, it will apply that as a custom gravity force using ConstantForce and disable gravity.\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "bool",
+        "arguments": []
+      },
+      "label": "FreezeXPosition",
+      "info": {
+        "summary": "If the x movement axis is frozen",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "bool",
+        "arguments": []
+      },
+      "label": "FreezeYPosition",
+      "info": {
+        "summary": "If the y movement axis is frozen",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "bool",
+        "arguments": []
+      },
+      "label": "FreezeZPosition",
+      "info": {
+        "summary": "If the z movement axis is frozen",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "bool",
+        "arguments": []
+      },
+      "label": "FreezeXRotation",
+      "info": {
+        "summary": "If the x rotation axis is frozen",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "bool",
+        "arguments": []
+      },
+      "label": "FreezeYRotation",
+      "info": {
+        "summary": "If the y rotation axis is frozen",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "bool",
+        "arguments": []
+      },
+      "label": "FreezeZRotation",
+      "info": {
+        "summary": "If the z rotation axis is frozen",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "bool",
+        "arguments": []
+      },
+      "label": "FreezeAllRotations",
+      "info": {
+        "summary": "Freeze all rotations",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "bool",
+        "arguments": []
+      },
+      "label": "FreezeAllPositions",
+      "info": {
+        "summary": "Freeze all positions. This will also freeze all rotations.",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "bool",
+        "arguments": []
+      },
+      "label": "IsKinematic",
+      "info": {
+        "summary": "If the Rigidbody is kinematic. Kinematic bodies are not affected by forces and can only be moved manually.",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "bool",
+        "arguments": []
+      },
+      "label": "Interpolate",
+      "info": {
+        "summary": "Interpolation mode of the Rigidbody. If true, it will interpolate between frames.",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "Vector3",
+        "arguments": []
+      },
+      "label": "CenterOfMass",
+      "info": {
+        "summary": "The center of mass of the Rigidbody in local space.",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "CollisionDetectionMode",
+      "info": {
+        "summary": "The collision detection mode of the Rigidbody. This determines how collisions are detected and resolved.",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "bool",
+        "arguments": []
+      },
+      "label": "DetectCollisions",
+      "info": {
+        "summary": "If the Rigidbody detects collisions. If false, it will not collide with other colliders.",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "staticMethods": [],
+  "instanceMethods": [
+    {
+      "parameters": [
+        {
+          "name": "force",
+          "info": null,
+          "type": {
+            "name": "Vector3",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "forceMode",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "\"Acceleration\"",
+          "isOptional": true
+        },
+        {
+          "name": "atPoint",
+          "info": null,
+          "type": {
+            "name": "Vector3",
+            "arguments": []
+          },
+          "defaultValue": "null",
+          "isOptional": true
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "AddForce",
+      "info": {
+        "summary": "Apply a force to the Rigidbody - legacy version, please use optimized if possible.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "force",
+          "info": null,
+          "type": {
+            "name": "Vector3",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "forceMode",
+          "info": null,
+          "type": {
+            "name": "int",
+            "arguments": []
+          },
+          "defaultValue": "5",
+          "isOptional": true
+        },
+        {
+          "name": "atPoint",
+          "info": null,
+          "type": {
+            "name": "Vector3",
+            "arguments": []
+          },
+          "defaultValue": "null",
+          "isOptional": true
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "AddForceOptimized",
+      "info": {
+        "summary": "Apply a force to the Rigidbody.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "torque",
+          "info": null,
+          "type": {
+            "name": "Vector3",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "forceMode",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "AddTorque",
+      "info": {
+        "summary": "Apply a torque to the Rigidbody - legacy version, please use optimized if possible.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "torque",
+          "info": null,
+          "type": {
+            "name": "Vector3",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "forceMode",
+          "info": null,
+          "type": {
+            "name": "int",
+            "arguments": []
+          },
+          "defaultValue": "5",
+          "isOptional": true
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "AddTorqueOptimized",
+      "info": {
+        "summary": "Apply a torque to the Rigidbody.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "explosionForce",
+          "info": null,
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "explosionPosition",
+          "info": null,
+          "type": {
+            "name": "Vector3",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "explosionRadius",
+          "info": null,
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "upwardsModifier",
+          "info": null,
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "0",
+          "isOptional": true
+        },
+        {
+          "name": "forceMode",
+          "info": null,
+          "type": {
+            "name": "int",
+            "arguments": []
+          },
+          "defaultValue": "5",
+          "isOptional": true
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "AddExplosionForce",
+      "info": {
+        "summary": "Apply an explosion force to the Rigidbody.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "position",
+          "info": null,
+          "type": {
+            "name": "Vector3",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "rotation",
+          "info": null,
+          "type": {
+            "name": "Quaternion",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "Move",
+      "info": {
+        "summary": "Move the Rigidbody to a new position. This will not apply any forces, it will just set the position directly.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "position",
+          "info": null,
+          "type": {
+            "name": "Vector3",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "MovePosition",
+      "info": {
+        "summary": "Move the Rigidbody to a new position. This will apply forces to move the Rigidbody to the new position.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "rotation",
+          "info": null,
+          "type": {
+            "name": "Quaternion",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "MoveRotation",
+      "info": {
+        "summary": "Move the Rigidbody to a new rotation. This will apply forces to rotate the Rigidbody to the new rotation.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "ResetCenterOfMass",
+      "info": {
+        "summary": "Reset the center of mass of the Rigidbody to the default value (0, 0, 0). This will also reset the inertia tensor.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "PublishTransform",
+      "info": {
+        "summary": "Publish the current position and rotation of the Rigidbody to the MapObject. This will update the MapObject's transform to match the Rigidbody's transform.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "direction",
+          "info": null,
+          "type": {
+            "name": "Vector3",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "distance",
+          "info": null,
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "Object",
+        "arguments": []
+      },
+      "label": "SweepTest",
+      "info": {
+        "summary": "Checks if the rigidbody would collide with anything, returns a LineCastHitResult object.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "kind": "EXTENSION",
+  "baseTypeName": "",
+  "obsoleteMessage": "",
+  "isObsolete": false
+}

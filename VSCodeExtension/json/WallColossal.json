@@ -1,0 +1,157 @@
+{
+  "name": "WallColossal",
+  "info": {
+    "summary": "\r\n            Only character owner can modify fields and call functions unless otherwise specified.\r\n            ",
+    "remarks": "",
+    "code": "\r\n            function OnCharacterSpawn(character) {\r\n                if (character.IsMine && character.Type == \"WallColossal\") {\r\n                    character.Size = 2;\r\n                    if (Network.MyPlayer.Status == \"Alive\" && Network.MyPlayer.Character.Type == \"Human\") {\r\n                        character.Target(Network.MyPlayer, 10);\r\n                    }\r\n                }\r\n            }\r\n            ",
+    "parameters": null,
+    "returns": null
+  },
+  "constructors": null,
+  "staticFields": [],
+  "instanceFields": [
+    {
+      "type": {
+        "name": "int",
+        "arguments": []
+      },
+      "label": "HandHealth",
+      "info": {
+        "summary": "Colossal's current hand health.",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "int",
+        "arguments": []
+      },
+      "label": "MaxHandHealth",
+      "info": {
+        "summary": "Colossal's maximum hand health.",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "float",
+        "arguments": []
+      },
+      "label": "WallAttackCooldown",
+      "info": {
+        "summary": "Colossal's (AI) wall attack cooldown per attack.",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "float",
+        "arguments": []
+      },
+      "label": "WallAttackCooldownLeft",
+      "info": {
+        "summary": "Colossal's (AI) wall attack cooldown remaining.",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "SteamState",
+      "info": {
+        "summary": "Colossal's current steam state (Off, Warning, or Damage).",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "staticMethods": [],
+  "instanceMethods": [
+    {
+      "parameters": [],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "AttackSteam",
+      "info": {
+        "summary": "Causes the colossal to perform steam attack.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "StopSteam",
+      "info": {
+        "summary": "Causes the colossal to stop steam attack.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "WallAttack",
+      "info": {
+        "summary": "Causes the (AI) colossal to perform a random wall attack.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "kind": "CLASS",
+  "baseTypeName": "Shifter",
+  "obsoleteMessage": "",
+  "isObsolete": false
+}

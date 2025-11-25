@@ -1,0 +1,303 @@
+{
+  "name": "Dict",
+  "info": {
+    "summary": "\r\n            Collection of key-value pairs.\r\n            Keys must be unique.\r\n            ",
+    "remarks": "",
+    "code": "",
+    "parameters": null,
+    "returns": null
+  },
+  "constructors": [
+    {
+      "parameters": [],
+      "info": {
+        "summary": "\r\n            Creates an empty dictionary\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "capacity",
+          "info": null,
+          "type": {
+            "name": "int",
+            "arguments": []
+          },
+          "defaultValue": "0",
+          "isOptional": false
+        }
+      ],
+      "info": {
+        "summary": "\r\n            Creates a dictionary with the specified capacity\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "staticFields": [],
+  "instanceFields": [
+    {
+      "type": {
+        "name": "int",
+        "arguments": []
+      },
+      "label": "Count",
+      "info": {
+        "summary": "Number of elements in the dictionary",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "List",
+        "arguments": []
+      },
+      "label": "Keys",
+      "info": {
+        "summary": "Keys in the dictionary",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "List",
+        "arguments": []
+      },
+      "label": "Values",
+      "info": {
+        "summary": "Values in the dictionary",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "staticMethods": [],
+  "instanceMethods": [
+    {
+      "parameters": [],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "Clear",
+      "info": {
+        "summary": "Clears the dictionary",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "key",
+          "info": {
+            "summary": "The key of the value to get",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "Object",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "defaultValue",
+          "info": {
+            "summary": "The value to return if the key is not found",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "Object",
+            "arguments": []
+          },
+          "defaultValue": "null",
+          "isOptional": true
+        }
+      ],
+      "returnType": {
+        "name": "Object",
+        "arguments": []
+      },
+      "label": "Get",
+      "info": {
+        "summary": "\r\n            Gets a value from the dictionary\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {
+          "key": "The key of the value to get",
+          "defaultValue": "The value to return if the key is not found"
+        },
+        "returns": "The value associated with the key, or the default value if the key is not found"
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "key",
+          "info": {
+            "summary": "The key of the value to set",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "Object",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "value",
+          "info": {
+            "summary": "The value to set",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "Object",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "Set",
+      "info": {
+        "summary": "\r\n            Sets a value in the dictionary\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {
+          "key": "The key of the value to set",
+          "value": "The value to set"
+        },
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "key",
+          "info": {
+            "summary": "The key of the value to remove",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "Object",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "Remove",
+      "info": {
+        "summary": "\r\n            Removes a value from the dictionary\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {
+          "key": "The key of the value to remove"
+        },
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "key",
+          "info": {
+            "summary": "The key to check",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "Object",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "bool",
+        "arguments": []
+      },
+      "label": "Contains",
+      "info": {
+        "summary": "\r\n            Checks if the dictionary contains a key\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {
+          "key": "The key to check"
+        },
+        "returns": "True if the dictionary contains the key, false otherwise"
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "kind": "CLASS",
+  "baseTypeName": "Object",
+  "obsoleteMessage": "",
+  "isObsolete": false
+}

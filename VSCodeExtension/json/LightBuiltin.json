@@ -1,0 +1,276 @@
+{
+  "name": "LightBuiltin",
+  "info": {
+    "summary": "",
+    "remarks": "",
+    "code": "",
+    "parameters": null,
+    "returns": null
+  },
+  "constructors": null,
+  "staticFields": [
+    {
+      "type": {
+        "name": "int",
+        "arguments": []
+      },
+      "label": "LightTypeDirectional",
+      "info": {
+        "summary": "LightType.Directional",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "int",
+        "arguments": []
+      },
+      "label": "LightTypePoint",
+      "info": {
+        "summary": "LightType.Point",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "int",
+        "arguments": []
+      },
+      "label": "LightTypeSpot",
+      "info": {
+        "summary": "LightType.Point",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "int",
+        "arguments": []
+      },
+      "label": "ShadowTypeNone",
+      "info": {
+        "summary": "LightShadows.None",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "int",
+        "arguments": []
+      },
+      "label": "ShadowTypeHard",
+      "info": {
+        "summary": "LightShadows.Hard",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "int",
+        "arguments": []
+      },
+      "label": "ShadowTypeSoft",
+      "info": {
+        "summary": "LightShadows.Soft",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "instanceFields": [
+    {
+      "type": {
+        "name": "int",
+        "arguments": []
+      },
+      "label": "TypeOfLight",
+      "info": {
+        "summary": "The type of the light.",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "float",
+        "arguments": []
+      },
+      "label": "Range",
+      "info": {
+        "summary": "The range of the light.",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "float",
+        "arguments": []
+      },
+      "label": "SpotAngle",
+      "info": {
+        "summary": "The spot angle of the light, works on spot lights only.",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "Color",
+        "arguments": []
+      },
+      "label": "Color",
+      "info": {
+        "summary": "The color of the light.",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "float",
+        "arguments": []
+      },
+      "label": "Intensity",
+      "info": {
+        "summary": "The intensity of the light.",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "float",
+        "arguments": []
+      },
+      "label": "BounceIntensity",
+      "info": {
+        "summary": "The bounce intensity of the light.",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "int",
+        "arguments": []
+      },
+      "label": "ShadowType",
+      "info": {
+        "summary": "The shadow type of the light (Soft, None, Hard).",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "float",
+        "arguments": []
+      },
+      "label": "ShadowStrength",
+      "info": {
+        "summary": "The shadow strength of the light.",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "bool",
+        "arguments": []
+      },
+      "label": "WeatherControlled",
+      "info": {
+        "summary": "The light is controlled by the weather system.",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "staticMethods": [],
+  "instanceMethods": [],
+  "kind": "EXTENSION",
+  "baseTypeName": "",
+  "obsoleteMessage": "",
+  "isObsolete": false
+}

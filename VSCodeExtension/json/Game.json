@@ -1,0 +1,1807 @@
+{
+  "name": "Game",
+  "info": {
+    "summary": "\r\n            Game functions such as spawning titans and managing game state.\r\n            ",
+    "remarks": "",
+    "code": "",
+    "parameters": null,
+    "returns": null
+  },
+  "constructors": null,
+  "staticFields": [],
+  "instanceFields": [
+    {
+      "type": {
+        "name": "bool",
+        "arguments": []
+      },
+      "label": "IsEnding",
+      "info": {
+        "summary": "Is the game ending?",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "float",
+        "arguments": []
+      },
+      "label": "EndTimeLeft",
+      "info": {
+        "summary": "Time left until the game ends",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "List",
+        "arguments": []
+      },
+      "label": "Titans",
+      "info": {
+        "summary": "List of all titans",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "List",
+        "arguments": []
+      },
+      "label": "AITitans",
+      "info": {
+        "summary": "List of all AI titans",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "List",
+        "arguments": []
+      },
+      "label": "PlayerTitans",
+      "info": {
+        "summary": "List of all player titans",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "List",
+        "arguments": []
+      },
+      "label": "Shifters",
+      "info": {
+        "summary": "List of all shifters",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "List",
+        "arguments": []
+      },
+      "label": "AIShifters",
+      "info": {
+        "summary": "List of all AI shifters",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "List",
+        "arguments": []
+      },
+      "label": "PlayerShifters",
+      "info": {
+        "summary": "List of all player shifters",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "List",
+        "arguments": []
+      },
+      "label": "Humans",
+      "info": {
+        "summary": "List of all humans",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "List",
+        "arguments": []
+      },
+      "label": "AIHumans",
+      "info": {
+        "summary": "List of all AI humans",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "List",
+        "arguments": []
+      },
+      "label": "PlayerHumans",
+      "info": {
+        "summary": "List of all player humans",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "List",
+        "arguments": []
+      },
+      "label": "Loadouts",
+      "info": {
+        "summary": "List of all loadouts",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "bool",
+        "arguments": []
+      },
+      "label": "DefaultShowKillScore",
+      "info": {
+        "summary": "Is the kill score shown by default?",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "bool",
+        "arguments": []
+      },
+      "label": "DefaultHideKillScore",
+      "info": {
+        "summary": "Is the kill feed shown by default?",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "bool",
+        "arguments": []
+      },
+      "label": "DefaultAddKillScore",
+      "info": {
+        "summary": "Is the kill score added by default?",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "bool",
+        "arguments": []
+      },
+      "label": "ShowScoreboardLoadout",
+      "info": {
+        "summary": "Is the loadout shown in the scoreboard?",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "bool",
+        "arguments": []
+      },
+      "label": "ShowScoreboardStatus",
+      "info": {
+        "summary": "Is the status shown in the scoreboard?",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "ForcedCharacterType",
+      "info": {
+        "summary": "Forced character type",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "ForcedLoadout",
+      "info": {
+        "summary": "Forced loadout",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "staticMethods": [],
+  "instanceMethods": [
+    {
+      "parameters": [
+        {
+          "name": "message",
+          "info": null,
+          "type": {
+            "name": "Object",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "Debug",
+      "info": {
+        "summary": "Print a debug statement to the console",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "message",
+          "info": null,
+          "type": {
+            "name": "Object",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "Print",
+      "info": {
+        "summary": "Print a message to the chat",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "message",
+          "info": null,
+          "type": {
+            "name": "Object",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "PrintAll",
+      "info": {
+        "summary": "Print a message to all players",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "settingName",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "Object",
+        "arguments": []
+      },
+      "label": "GetGeneralSetting",
+      "info": {
+        "summary": "Get a general setting",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "settingName",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "Object",
+        "arguments": []
+      },
+      "label": "GetTitanSetting",
+      "info": {
+        "summary": "Get a titan setting",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "settingName",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "Object",
+        "arguments": []
+      },
+      "label": "GetMiscSetting",
+      "info": {
+        "summary": "Get a misc setting",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "delay",
+          "info": null,
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "End",
+      "info": {
+        "summary": "End the game",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "viewID",
+          "info": null,
+          "type": {
+            "name": "int",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "Character",
+        "arguments": []
+      },
+      "label": "FindCharacterByViewID",
+      "info": {
+        "summary": "Find a character by view ID",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "type",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "Titan",
+        "arguments": []
+      },
+      "label": "SpawnTitan",
+      "info": {
+        "summary": "Spawn a titan",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "type",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "position",
+          "info": null,
+          "type": {
+            "name": "Vector3",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "rotationY",
+          "info": null,
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "0",
+          "isOptional": true
+        }
+      ],
+      "returnType": {
+        "name": "Titan",
+        "arguments": []
+      },
+      "label": "SpawnTitanAt",
+      "info": {
+        "summary": "Spawn a titan at a position",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "type",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "count",
+          "info": null,
+          "type": {
+            "name": "int",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "List",
+        "arguments": []
+      },
+      "label": "SpawnTitans",
+      "info": {
+        "summary": "Spawn titans",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "type",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "count",
+          "info": null,
+          "type": {
+            "name": "int",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "SpawnTitansAsync",
+      "info": {
+        "summary": "Spawn titans asynchronously",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "type",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "count",
+          "info": null,
+          "type": {
+            "name": "int",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "position",
+          "info": null,
+          "type": {
+            "name": "Vector3",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "rotationY",
+          "info": null,
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "0",
+          "isOptional": true
+        }
+      ],
+      "returnType": {
+        "name": "List",
+        "arguments": []
+      },
+      "label": "SpawnTitansAt",
+      "info": {
+        "summary": "Spawn titans at a position",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "type",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "count",
+          "info": null,
+          "type": {
+            "name": "int",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "position",
+          "info": null,
+          "type": {
+            "name": "Vector3",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "rotationY",
+          "info": null,
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "0",
+          "isOptional": true
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "SpawnTitansAtAsync",
+      "info": {
+        "summary": "Spawn titans at a position asynchronously",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "type",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "Shifter",
+        "arguments": []
+      },
+      "label": "SpawnShifter",
+      "info": {
+        "summary": "Spawn a shifter",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "type",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "position",
+          "info": null,
+          "type": {
+            "name": "Vector3",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "rotationY",
+          "info": null,
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "0",
+          "isOptional": true
+        }
+      ],
+      "returnType": {
+        "name": "Shifter",
+        "arguments": []
+      },
+      "label": "SpawnShifterAt",
+      "info": {
+        "summary": "Spawn a shifter at a position",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "projectileName",
+          "info": {
+            "summary": "Name of the projectile. Valid values are: \"Thunderspear\", \"CannonBall\", \"Flare\", \"BladeThrow\", \"SmokeBomb\", \"Rock1\"",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "position",
+          "info": {
+            "summary": "Spawn position",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "Vector3",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "rotation",
+          "info": {
+            "summary": "Spawn rotation",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "Vector3",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "velocity",
+          "info": {
+            "summary": "Spawn velocity",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "Vector3",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "gravity",
+          "info": {
+            "summary": "Spawn gravity",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "Vector3",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "liveTime",
+          "info": {
+            "summary": "Live time of the projectile",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "team",
+          "info": {
+            "summary": "The team that the projectile belongs to",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "extraParam",
+          "info": {
+            "summary": "\r\n            Optional. Type depends on projectile:\r\n            >   - Thunderspear: float (explosion radius)\r\n            >   - Flare: Color (flare color)\r\n            >   - Rock1: float (rock size)\r\n            >   - Others: unused",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "Object",
+            "arguments": []
+          },
+          "defaultValue": "null",
+          "isOptional": true
+        },
+        {
+          "name": "extraParam2",
+          "info": {
+            "summary": "\r\n            Optional. Type depends on projectile:\r\n            >   - Thunderspear: Color (projectile color)\r\n            >   - Others: unused\r\n            ",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "Object",
+            "arguments": []
+          },
+          "defaultValue": "null",
+          "isOptional": true
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "SpawnProjectile",
+      "info": {
+        "summary": "\r\n            Spawn a projectile.\r\n            Note: `extraParam` and `extraParam2` are optional. They may or may not be used depending on the value of `projectileName`\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {
+          "projectileName": "Name of the projectile. Valid values are: \"Thunderspear\", \"CannonBall\", \"Flare\", \"BladeThrow\", \"SmokeBomb\", \"Rock1\"",
+          "position": "Spawn position",
+          "rotation": "Spawn rotation",
+          "velocity": "Spawn velocity",
+          "gravity": "Spawn gravity",
+          "liveTime": "Live time of the projectile",
+          "team": "The team that the projectile belongs to",
+          "extraParam": "\r\n            Optional. Type depends on projectile:\r\n            >   - Thunderspear: float (explosion radius)\r\n            >   - Flare: Color (flare color)\r\n            >   - Rock1: float (rock size)\r\n            >   - Others: unused",
+          "extraParam2": "\r\n            Optional. Type depends on projectile:\r\n            >   - Thunderspear: Color (projectile color)\r\n            >   - Others: unused\r\n            "
+        },
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "projectileName",
+          "info": {
+            "summary": "Name of the projectile. Valid values are: \"Thunderspear\", \"CannonBall\", \"Flare\", \"BladeThrow\", \"SmokeBomb\", \"Rock1\"",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "position",
+          "info": {
+            "summary": "Spawn position",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "Vector3",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "rotation",
+          "info": {
+            "summary": "Spawn rotation",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "Vector3",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "velocity",
+          "info": {
+            "summary": "Spawn velocity",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "Vector3",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "gravity",
+          "info": {
+            "summary": "Spawn gravity",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "Vector3",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "liveTime",
+          "info": {
+            "summary": "Live time of the projectile",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "owner",
+          "info": {
+            "summary": "The character that the projectile belongs to",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "Character",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "extraParam",
+          "info": {
+            "summary": "\r\n            Optional. Type depends on projectile:\r\n            >   - Thunderspear: float (explosion radius)\r\n            >   - Flare: Color (flare color)\r\n            >   - Rock1: float (rock size)\r\n            >   - Others: unused",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "Object",
+            "arguments": []
+          },
+          "defaultValue": "null",
+          "isOptional": true
+        },
+        {
+          "name": "extraParam2",
+          "info": {
+            "summary": "\r\n            Optional. Type depends on projectile:\r\n            >   - Thunderspear: Color (projectile color)\r\n            >   - Others: unused\r\n            ",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "Object",
+            "arguments": []
+          },
+          "defaultValue": "null",
+          "isOptional": true
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "SpawnProjectileWithOwner",
+      "info": {
+        "summary": "\r\n            Spawn a projectile with an owner.\r\n            Note: `extraParam` and `extraParam2` are optional. They may or may not be used depending on the value of `projectileName`\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {
+          "projectileName": "Name of the projectile. Valid values are: \"Thunderspear\", \"CannonBall\", \"Flare\", \"BladeThrow\", \"SmokeBomb\", \"Rock1\"",
+          "position": "Spawn position",
+          "rotation": "Spawn rotation",
+          "velocity": "Spawn velocity",
+          "gravity": "Spawn gravity",
+          "liveTime": "Live time of the projectile",
+          "owner": "The character that the projectile belongs to",
+          "extraParam": "\r\n            Optional. Type depends on projectile:\r\n            >   - Thunderspear: float (explosion radius)\r\n            >   - Flare: Color (flare color)\r\n            >   - Rock1: float (rock size)\r\n            >   - Others: unused",
+          "extraParam2": "\r\n            Optional. Type depends on projectile:\r\n            >   - Thunderspear: Color (projectile color)\r\n            >   - Others: unused\r\n            "
+        },
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "effectName",
+          "info": {
+            "summary": "Name of the effect. Effect names can be found [here](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/refs/heads/main/Assets/Scripts/Effects/EffectPrefabs.cs) (left-hand variable name)",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "position",
+          "info": {
+            "summary": "Spawn position",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "Vector3",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "rotation",
+          "info": {
+            "summary": "Spawn rotation",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "Vector3",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "scale",
+          "info": {
+            "summary": "Spawn scale",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "tsExplodeColor",
+          "info": {
+            "summary": "Thunderspear explode color (Only valid when `effectName` is \"ThunderspearExplode\")",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "Color",
+            "arguments": []
+          },
+          "defaultValue": "null",
+          "isOptional": true
+        },
+        {
+          "name": "tsKillSound",
+          "info": {
+            "summary": "\r\n            Optional. Thunderspear explode sound (Only valid when `effectName` is \"ThunderspearExplode\"). Valid values are: \"Kill\", \"Air\", \"Ground\", \"ArmorHit\", \"CloseShot\", \"MaxRangeShot\"\r\n            ",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "null",
+          "isOptional": true
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "SpawnEffect",
+      "info": {
+        "summary": "\r\n            Spawns an effect.\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {
+          "effectName": "Name of the effect. Effect names can be found [here](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/refs/heads/main/Assets/Scripts/Effects/EffectPrefabs.cs) (left-hand variable name)",
+          "position": "Spawn position",
+          "rotation": "Spawn rotation",
+          "scale": "Spawn scale",
+          "tsExplodeColor": "Thunderspear explode color (Only valid when `effectName` is \"ThunderspearExplode\")",
+          "tsKillSound": "\r\n            Optional. Thunderspear explode sound (Only valid when `effectName` is \"ThunderspearExplode\"). Valid values are: \"Kill\", \"Air\", \"Ground\", \"ArmorHit\", \"CloseShot\", \"MaxRangeShot\"\r\n            "
+        },
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "player",
+          "info": null,
+          "type": {
+            "name": "Player",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "force",
+          "info": null,
+          "type": {
+            "name": "bool",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "SpawnPlayer",
+      "info": {
+        "summary": "Spawn a player",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "force",
+          "info": null,
+          "type": {
+            "name": "bool",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "SpawnPlayerAll",
+      "info": {
+        "summary": "Spawn a player for all players",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "player",
+          "info": null,
+          "type": {
+            "name": "Player",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "force",
+          "info": null,
+          "type": {
+            "name": "bool",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "position",
+          "info": null,
+          "type": {
+            "name": "Vector3",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "rotationY",
+          "info": null,
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "0",
+          "isOptional": true
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "SpawnPlayerAt",
+      "info": {
+        "summary": "Spawn a player at a position",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "force",
+          "info": null,
+          "type": {
+            "name": "bool",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "position",
+          "info": null,
+          "type": {
+            "name": "Vector3",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "rotationY",
+          "info": null,
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "0",
+          "isOptional": true
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "SpawnPlayerAtAll",
+      "info": {
+        "summary": "Spawn a player at a position for all players",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "playlist",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "SetPlaylist",
+      "info": {
+        "summary": "Set the music playlist",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "song",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "SetSong",
+      "info": {
+        "summary": "Set the music song",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "start",
+          "info": null,
+          "type": {
+            "name": "Vector3",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "dir",
+          "info": null,
+          "type": {
+            "name": "Vector3",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "color",
+          "info": null,
+          "type": {
+            "name": "Color",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "duration",
+          "info": null,
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "DrawRay",
+      "info": {
+        "summary": "Draw a ray",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "damage",
+          "info": null,
+          "type": {
+            "name": "int",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "ShowKillScore",
+      "info": {
+        "summary": "Show the kill score",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "killer",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "victim",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "score",
+          "info": null,
+          "type": {
+            "name": "int",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "weapon",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "ShowKillFeed",
+      "info": {
+        "summary": "Show the kill feed",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "killer",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "victim",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "score",
+          "info": null,
+          "type": {
+            "name": "int",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "weapon",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "ShowKillFeedAll",
+      "info": {
+        "summary": "Show the kill feed for all players",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "kind": "EXTENSION",
+  "baseTypeName": "Object",
+  "obsoleteMessage": "",
+  "isObsolete": false
+}

@@ -1,0 +1,232 @@
+{
+  "name": "ScrollView",
+  "info": {
+    "summary": "\r\n            ScrollView UI element that provides scrollable content.\r\n            \r\n            Note: Most methods return self to allow method chaining\r\n            ",
+    "remarks": "",
+    "code": "",
+    "parameters": null,
+    "returns": null
+  },
+  "constructors": [],
+  "staticFields": [],
+  "instanceFields": [
+    {
+      "type": {
+        "name": "Vector2",
+        "arguments": []
+      },
+      "label": "ScrollOffset",
+      "info": {
+        "summary": "\r\n            The current scroll offset\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "float",
+        "arguments": []
+      },
+      "label": "ScrollDecelerationRate",
+      "info": {
+        "summary": "\r\n            Controls the scrolling speed when using the scroll wheel\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "float",
+        "arguments": []
+      },
+      "label": "MouseWheelScrollSize",
+      "info": {
+        "summary": "\r\n            Controls the sensitivity/speed of mouse wheel scrolling\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "bool",
+        "arguments": []
+      },
+      "label": "HorizontalScrollEnabled",
+      "info": {
+        "summary": "\r\n            Enable or disable horizontal scrolling\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "bool",
+        "arguments": []
+      },
+      "label": "VerticalScrollEnabled",
+      "info": {
+        "summary": "\r\n            Enable or disable vertical scrolling\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "staticMethods": [],
+  "instanceMethods": [
+    {
+      "parameters": [
+        {
+          "name": "value",
+          "info": {
+            "summary": "Acceptable values are: `Clamped`, `Elastic`, and `Unrestricted`",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "ScrollView",
+        "arguments": []
+      },
+      "label": "Elasticity",
+      "info": {
+        "summary": "\r\n            The behavior to use when scrolling reaches limits of the content\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {
+          "value": "Acceptable values are: `Clamped`, `Elastic`, and `Unrestricted`"
+        },
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "rate",
+          "info": null,
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "ScrollView",
+        "arguments": []
+      },
+      "label": "SetScrollDecelerationRate",
+      "info": {
+        "summary": "\r\n            Controls the rate at which scrolling movement slows after a user scrolling action\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "offset",
+          "info": null,
+          "type": {
+            "name": "Vector2",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "ScrollView",
+        "arguments": []
+      },
+      "label": "SetScrollOffset",
+      "info": {
+        "summary": "\r\n            Set the scroll offset\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "ScrollToTop",
+      "info": {
+        "summary": "\r\n            Scroll to the top of the content\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "ScrollToBottom",
+      "info": {
+        "summary": "\r\n            Scroll to the bottom of the content\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "kind": "CLASS",
+  "baseTypeName": "VisualElement",
+  "obsoleteMessage": "",
+  "isObsolete": false
+}

@@ -1,0 +1,474 @@
+{
+  "name": "LineRenderer",
+  "info": {
+    "summary": "\r\n            Represents a LineRenderer\r\n            ",
+    "remarks": "",
+    "code": "",
+    "parameters": null,
+    "returns": null
+  },
+  "constructors": [
+    {
+      "parameters": [],
+      "info": {
+        "summary": "\r\n            Default constructor, Creates a black line with a width of 1\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "color",
+          "info": null,
+          "type": {
+            "name": "Color",
+            "arguments": []
+          },
+          "defaultValue": "Color",
+          "isOptional": false
+        },
+        {
+          "name": "width",
+          "info": null,
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "1",
+          "isOptional": false
+        }
+      ],
+      "info": {
+        "summary": "\r\n            Creates a line with the given color and width\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "staticFields": [],
+  "instanceFields": [
+    {
+      "type": {
+        "name": "float",
+        "arguments": []
+      },
+      "label": "StartWidth",
+      "info": {
+        "summary": "The width of the line at the start",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "float",
+        "arguments": []
+      },
+      "label": "EndWidth",
+      "info": {
+        "summary": "The width of the line at the end",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "Color",
+        "arguments": []
+      },
+      "label": "LineColor",
+      "info": {
+        "summary": "The color of the line",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "int",
+        "arguments": []
+      },
+      "label": "PositionCount",
+      "info": {
+        "summary": "The number of points in the line",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "bool",
+        "arguments": []
+      },
+      "label": "Enabled",
+      "info": {
+        "summary": "Is the line renderer enabled",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "bool",
+        "arguments": []
+      },
+      "label": "Loop",
+      "info": {
+        "summary": "Is the line renderer a loop",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "int",
+        "arguments": []
+      },
+      "label": "NumCornerVertices",
+      "info": {
+        "summary": "The number of corner vertices",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "int",
+        "arguments": []
+      },
+      "label": "NumCapVertices",
+      "info": {
+        "summary": "The number of end cap vertices",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "Alignment",
+      "info": {
+        "summary": "The alignment of the line renderer",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "TextureMode",
+      "info": {
+        "summary": "The texture mode of the line renderer",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "bool",
+        "arguments": []
+      },
+      "label": "UseWorldSpace",
+      "info": {
+        "summary": "Is the line renderer in world space",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "ShadowCastingMode",
+      "info": {
+        "summary": "Does the line renderer cast shadows",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "bool",
+        "arguments": []
+      },
+      "label": "ReceiveShadows",
+      "info": {
+        "summary": "Does the line renderer receive shadows",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "List",
+        "arguments": []
+      },
+      "label": "ColorGradient",
+      "info": {
+        "summary": "The gradient of the line renderer",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "List",
+        "arguments": []
+      },
+      "label": "AlphaGradient",
+      "info": {
+        "summary": "The alpha gradient of the line renderer",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "List",
+        "arguments": []
+      },
+      "label": "WidthCurve",
+      "info": {
+        "summary": "The width curve of the line renderer",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "float",
+        "arguments": []
+      },
+      "label": "WidthMultiplier",
+      "info": {
+        "summary": "The width multiplier of the line renderer",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "ColorGradientMode",
+      "info": {
+        "summary": "The color gradient mode of the line renderer",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "staticMethods": [
+    {
+      "parameters": [],
+      "returnType": {
+        "name": "LineRenderer",
+        "arguments": []
+      },
+      "label": "CreateLineRenderer",
+      "info": {
+        "summary": "Create a new LineRenderer",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "Create a new instance with LineRenderer() instead.",
+      "isObsolete": true
+    }
+  ],
+  "instanceMethods": [
+    {
+      "parameters": [],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "Destroy",
+      "info": {
+        "summary": "Remove the line renderer (can also be done by removing all references to this object)",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "index",
+          "info": null,
+          "type": {
+            "name": "int",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "Vector3",
+        "arguments": []
+      },
+      "label": "GetPosition",
+      "info": {
+        "summary": "Get the position of a point in the line renderer",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "index",
+          "info": null,
+          "type": {
+            "name": "int",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "position",
+          "info": null,
+          "type": {
+            "name": "Vector3",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "SetPosition",
+      "info": {
+        "summary": "Set the position of a point in the line renderer",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "kind": "EXTENSION",
+  "baseTypeName": "Object",
+  "obsoleteMessage": "",
+  "isObsolete": false
+}
