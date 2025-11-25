@@ -1,0 +1,586 @@
+{
+  "name": "Locale",
+  "info": {
+    "summary": "\r\n             Internationalization (Locale) utility for managing localized strings.\r\n             Supports single-level (non-recursive) language fallbacks and automatic UI language detection.\r\n             ",
+    "remarks": "",
+    "code": "\r\n             # Register individual strings for different languages\r\n             Locale.Set(Locale.EnglishLanguage, \"welcome\", \"Welcome to the game!\");\r\n             Locale.Set(Locale.RussianLanguage, \"welcome\", \"Добро пожаловать в игру!\");\r\n             Locale.Set(Locale.ChineseLanguage, \"welcome\", \"你好\");\r\n            \r\n             Game.Print(\"welcome: \" + Locale.Get(\"welcome\"));\r\n            \r\n             # Register multiple strings at once using a dictionary\r\n             englishStrings = Dict();\r\n             englishStrings.Set(\"hello\", \"Hello\");\r\n             englishStrings.Set(\"goodbye\", \"Goodbye\");\r\n             englishStrings.Set(\"score\", \"Score: {0}\");\r\n             Locale.RegisterLanguage(Locale.EnglishLanguage, englishStrings);\r\n            \r\n             russianStrings = Dict();\r\n             russianStrings.Set(\"hello\", \"Привет\");\r\n             russianStrings.Set(\"goodbye\", \"Пока\");\r\n             russianStrings.Set(\"score\", \"Счет: {0}\");\r\n             Locale.RegisterLanguage(Locale.RussianLanguage, russianStrings);\r\n            \r\n             chineseStrings = Dict();\r\n             chineseStrings.Set(\"hello\", \"你好\");\r\n             chineseStrings.Set(\"goodbye\", \"再见\");\r\n             chineseStrings.Set(\"score\", \"分数: {0}\");\r\n             Locale.RegisterLanguage(Locale.ChineseLanguage, chineseStrings);\r\n            \r\n             # Get localized strings (automatically uses current UI language)\r\n             Game.Print(\"hello: \" + Locale.Get(\"hello\"));\r\n             Game.Print(\"goodbye: \" + Locale.Get(\"goodbye\"));\r\n             \r\n             params = List();\r\n             params.Add(83);\r\n             Game.Print(\"score: \" + String.FormatFromList(Locale.Get(\"score\"), params));\r\n            \r\n             # Register all strings from internal JSON files for a specific category\r\n             # Use internal:// prefix to specify internal localization files\r\n             Locale.RegisterLanguages(\"internal://BasicTutorialMap\");\r\n             \r\n             Game.Print(\"Name.Game: \" + Locale.Get(\"Name.Game\"));\r\n             Game.Print(\"Name.Tutorial: \" + Locale.Get(\"Name.Tutorial\"));\r\n             Game.Print(\"Stage.Introduction: \" + Locale.Get(\"Stage.Introduction\"));\r\n             \r\n             # Register all strings from external JSON files\r\n             # Without prefix, treats as external localization files\r\n             # Path: Documents/Aottg2/CustomLocale/MyGameMode/English.json\r\n             # JSON file structure:\r\n             {\r\n                 \"Name\": \"English\",  // Required header\r\n                 \"Hello\": \"World!\",  // Localization values\r\n                 \"Foo.Bar\": \"Baz\"    // Localization values\r\n             }\r\n             \r\n             Locale.RegisterLanguages(\"MyGameMode\");\r\n             \r\n             Game.Print(\"Hello: \" + Locale.Get(\"Hello\"));\r\n             Game.Print(\"Foo.Bar: \" + Locale.Get(\"Foo.Bar\"));\r\n             \r\n             # Registering non-existing or empty localization files directory will throw an exception\r\n             Locale.RegisterLanguages(\"NonExistingGameMode\");\r\n            \r\n             # Set default fallback language (Russian instead of English)\r\n             Locale.DefaultLanguage = Locale.RussianLanguage;\r\n            \r\n             # Fallback to default for missing key in current language\r\n             Locale.Set(Locale.RussianLanguage, \"russian_key\", \"Сообщение\");\r\n             Game.Print(\"russian_key: \" + Locale.Get(\"russian_key\"));\r\n            \r\n             # Single-level (non-recursive) fallback: English -> German\r\n             Locale.RegisterFallback(Locale.EnglishLanguage, Locale.GermanLanguage);\r\n             Locale.Set(Locale.GermanLanguage, \"german_string\", \"Hallo\");\r\n             Game.Print(\"german_string: \" + Locale.Get(\"german_string\"));\r\n            \r\n             # By default Traditional Chinese falls back to Simplified Chinese\r\n             Locale.Set(Locale.ChineseLanguage, \"chinese_string\", \"你好\");\r\n             Game.Print(\"chinese_string: \" + Locale.Get(\"chinese_string\"));\r\n            \r\n             # Clean up fallbacks\r\n             Locale.RemoveFallback(Locale.ChineseLanguage);\r\n             Locale.RemoveFallback(Locale.TraditionalChineseLanguage);\r\n            \r\n             # Missing key throws an exception\r\n             Game.Print(\"missing_key: \" + Locale.Get(\"missing_key\"));\r\n             ",
+    "parameters": null,
+    "returns": null
+  },
+  "constructors": null,
+  "staticFields": [
+    {
+      "type": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "ArabicLanguage",
+      "info": {
+        "summary": "Arabic language code",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "BrazilianPortugueseLanguage",
+      "info": {
+        "summary": "Brazilian Portuguese language code",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "ChineseLanguage",
+      "info": {
+        "summary": "Chinese language code",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "CzechLanguage",
+      "info": {
+        "summary": "Czech language code",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "DutchLanguage",
+      "info": {
+        "summary": "Dutch language code",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "EnglishLanguage",
+      "info": {
+        "summary": "English language code",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "FrenchLanguage",
+      "info": {
+        "summary": "French language code",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "GermanLanguage",
+      "info": {
+        "summary": "German language code",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "GreekLanguage",
+      "info": {
+        "summary": "Greek language code",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "IndonesianLanguage",
+      "info": {
+        "summary": "Indonesian language code",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "ItalianLanguage",
+      "info": {
+        "summary": "Italian language code",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "JapaneseLanguage",
+      "info": {
+        "summary": "Japanese language code",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "KoreanLanguage",
+      "info": {
+        "summary": "Korean language code",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "PolishLanguage",
+      "info": {
+        "summary": "Polish language code",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "RussianLanguage",
+      "info": {
+        "summary": "Russian language code",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "SpanishLanguage",
+      "info": {
+        "summary": "Spanish language code",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "TraditionalChineseLanguage",
+      "info": {
+        "summary": "Traditional Chinese language code",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "TurkishLanguage",
+      "info": {
+        "summary": "Turkish language code",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "UkrainianLanguage",
+      "info": {
+        "summary": "Ukrainian language code",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "CurrentLanguage",
+      "info": {
+        "summary": "Returns the current language (e.g. \"English\" or \"简体中文\").",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "DefaultLanguage",
+      "info": {
+        "summary": "The default language to use when a string is not found in the current language pack. English by default.",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "instanceFields": [],
+  "staticMethods": [
+    {
+      "parameters": [
+        {
+          "name": "key",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "Get",
+      "info": {
+        "summary": "Get the localized string for the given key. Searches the current UI language, then any registered fallbacks, and finally the default language. Throws an exception if the key is not found in any language pack.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "language",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "key",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "value",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "Set",
+      "info": {
+        "summary": "Set or override a localized string for the specified language and key.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "language",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "strings",
+          "info": null,
+          "type": {
+            "name": "Dict",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "RegisterLanguage",
+      "info": {
+        "summary": "Register a single-level (non-recursive) fallback: if a string is not found in 'fromLanguage', the system will search only in 'toLanguage', without chaining further.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "pattern",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "RegisterLanguages",
+      "info": {
+        "summary": "Register all localized strings from JSON files for a specific category across all available languages. Use 'internal://' prefix for internal files (e.g., 'internal://BasicTutorialMap') or no prefix for external files (e.g., 'MyCustomMod').",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "fromLanguage",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "toLanguage",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "RegisterFallback",
+      "info": {
+        "summary": "Register a fallback language. When a string is not found in 'fromLanguage', it will try 'toLanguage'.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "fromLanguage",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "RemoveFallback",
+      "info": {
+        "summary": "Remove a language fallback.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "instanceMethods": [],
+  "kind": "EXTENSION",
+  "baseTypeName": "Object",
+  "obsoleteMessage": "",
+  "isObsolete": false
+}

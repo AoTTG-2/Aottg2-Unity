@@ -1,0 +1,71 @@
+{
+  "name": "MapTargetable",
+  "info": {
+    "summary": "\r\n            MapTargetable object returned from MapObject.AddTarget method.\r\n            Creating a map targetable is similar to adding a collider to the MapObject,\r\n            except this collider can be targeted by AI such as titans.\r\n            Map targetables that are on a different team than the AI will be targeted by the titan,\r\n            and will trigger the OnGetHit callback on the attached MapObject.\r\n            ",
+    "remarks": "",
+    "code": "",
+    "parameters": null,
+    "returns": null
+  },
+  "constructors": null,
+  "staticFields": [],
+  "instanceFields": [
+    {
+      "type": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "Team",
+      "info": {
+        "summary": "The team of the targetable",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "Vector3",
+        "arguments": []
+      },
+      "label": "Position",
+      "info": {
+        "summary": "The position of the targetable",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "bool",
+        "arguments": []
+      },
+      "label": "Enabled",
+      "info": {
+        "summary": "Is the targetable enabled",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "staticMethods": [],
+  "instanceMethods": [],
+  "kind": "CLASS",
+  "baseTypeName": "Object",
+  "obsoleteMessage": "",
+  "isObsolete": false
+}

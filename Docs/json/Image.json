@@ -1,0 +1,74 @@
+{
+  "name": "Image",
+  "info": {
+    "summary": "\r\n            UI element for setting background images on visual elements\r\n            ",
+    "remarks": "",
+    "code": "\r\n            # Example: Create a background image\r\n            container = UI.CreateContainer();\r\n            image = UI.CreateImage();\r\n            image.SetImage(\"Icons/Game/BladeIcon\");\r\n            container.SetBackgroundImage(image);\r\n            ",
+    "parameters": null,
+    "returns": null
+  },
+  "constructors": null,
+  "staticFields": [],
+  "instanceFields": [
+    {
+      "type": {
+        "name": "string",
+        "arguments": []
+      },
+      "label": "ImagePath",
+      "info": {
+        "summary": "\r\n            Get the current image path\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "staticMethods": [],
+  "instanceMethods": [
+    {
+      "parameters": [
+        {
+          "name": "imagePath",
+          "info": {
+            "summary": "Path to the image resource (e.g., \"Icons/Game/BladeIcon\")",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "Image",
+        "arguments": []
+      },
+      "label": "SetImage",
+      "info": {
+        "summary": "\r\n            Set the image from a resource path\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {
+          "imagePath": "Path to the image resource (e.g., \"Icons/Game/BladeIcon\")"
+        },
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "kind": "CLASS",
+  "baseTypeName": "Object",
+  "obsoleteMessage": "",
+  "isObsolete": false
+}

@@ -1,0 +1,2442 @@
+{
+  "name": "VisualElement",
+  "info": {
+    "summary": "\r\n            Base class for all UI elements\r\n            \r\n            Note: Most methods return self to allow method chaining\r\n            ",
+    "remarks": "",
+    "code": "",
+    "parameters": null,
+    "returns": null
+  },
+  "constructors": null,
+  "staticFields": [],
+  "instanceFields": [
+    {
+      "type": {
+        "name": "int",
+        "arguments": []
+      },
+      "label": "ChildCount",
+      "info": {
+        "summary": "\r\n            Number of child elements\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "staticMethods": [],
+  "instanceMethods": [
+    {
+      "parameters": [
+        {
+          "name": "visualElement",
+          "info": null,
+          "type": {
+            "name": "VisualElement",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "Add",
+      "info": {
+        "summary": "\r\n            Add a child element\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "visualElement",
+          "info": null,
+          "type": {
+            "name": "VisualElement",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "Remove",
+      "info": {
+        "summary": "\r\n            Remove a child elemend\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "RemoveFromHierarchy",
+      "info": {
+        "summary": "\r\n            Removes this element from its parent hierarchy\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "index",
+          "info": null,
+          "type": {
+            "name": "int",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "GetElementAt",
+      "info": {
+        "summary": "\r\n            Get child element at index\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "name",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "QueryByName",
+      "info": {
+        "summary": "\r\n            Query child element by name\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": "The first child element with the matching name"
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "className",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "QueryByClassName",
+      "info": {
+        "summary": "\r\n            Query child element by class name\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": "The first child element with the matching class name"
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "method",
+          "info": null,
+          "type": {
+            "name": "function",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "RegisterMouseEnterEventCallback",
+      "info": {
+        "summary": "\r\n            Register a callback for mouse enter event\r\n            \r\n            Mouse enter event is fired when the mouse pointer enters an element or one of its children\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "method",
+          "info": null,
+          "type": {
+            "name": "function",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "RegisterMouseLeaveEventCallback",
+      "info": {
+        "summary": "\r\n            Register a callback for mouse leave event\r\n            \r\n            Mouse leave event is fired when the mouse pointer exits an element and all its children\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "method",
+          "info": null,
+          "type": {
+            "name": "function",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "RegisterClickEventCallback",
+      "info": {
+        "summary": "\r\n            Register a callback for click event\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "method",
+          "info": null,
+          "type": {
+            "name": "function",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "RegisterFocusInEventCallback",
+      "info": {
+        "summary": "\r\n            Register a callback for focus in event\r\n            \r\n            Focus in event is fired immediately before an element gains focus\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "method",
+          "info": null,
+          "type": {
+            "name": "function",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "RegisterFocusOutEventCallback",
+      "info": {
+        "summary": "\r\n            Register a callback for focus out event.\r\n            \r\n            Focus out event is fired immediately before an element loses focus\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "value",
+          "info": {
+            "summary": "a value between 0 and 100",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "Opacity",
+      "info": {
+        "summary": "\r\n            Set the opacity of the element\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {
+          "value": "a value between 0 and 100"
+        },
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "value",
+          "info": null,
+          "type": {
+            "name": "bool",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "Active",
+      "info": {
+        "summary": "\r\n            Set the element to be active or inactive\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "value",
+          "info": null,
+          "type": {
+            "name": "bool",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "Visible",
+      "info": {
+        "summary": "\r\n            Set the element to be visible or hidden\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "value",
+          "info": null,
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "TransitionDuration",
+      "info": {
+        "summary": "\r\n            Set the element to be visible or hidden\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "value",
+          "info": null,
+          "type": {
+            "name": "bool",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "Absolute",
+      "info": {
+        "summary": "\r\n            Set the element to be absolute or relative positioned\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "value",
+          "info": {
+            "summary": "the value",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "percentage",
+          "info": {
+            "summary": "if true, the `value` will be treated as percentage value",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "bool",
+            "arguments": []
+          },
+          "defaultValue": "False",
+          "isOptional": true
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "Left",
+      "info": {
+        "summary": "\r\n            Set the left position of the element\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {
+          "value": "the value",
+          "percentage": "if true, the `value` will be treated as percentage value"
+        },
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "value",
+          "info": {
+            "summary": "the value",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "percentage",
+          "info": {
+            "summary": "if true, the `value` will be treated as percentage value",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "bool",
+            "arguments": []
+          },
+          "defaultValue": "False",
+          "isOptional": true
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "Top",
+      "info": {
+        "summary": "\r\n            Set the top position of the element\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {
+          "value": "the value",
+          "percentage": "if true, the `value` will be treated as percentage value"
+        },
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "value",
+          "info": {
+            "summary": "the value",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "percentage",
+          "info": {
+            "summary": "if true, the `value` will be treated as percentage value",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "bool",
+            "arguments": []
+          },
+          "defaultValue": "False",
+          "isOptional": true
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "Right",
+      "info": {
+        "summary": "\r\n            Set the right position of the element\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {
+          "value": "the value",
+          "percentage": "if true, the `value` will be treated as percentage value"
+        },
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "value",
+          "info": {
+            "summary": "the value",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "percentage",
+          "info": {
+            "summary": "if true, the `value` will be treated as percentage value",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "bool",
+            "arguments": []
+          },
+          "defaultValue": "False",
+          "isOptional": true
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "Bottom",
+      "info": {
+        "summary": "\r\n            Set the bottom position of the element\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {
+          "value": "the value",
+          "percentage": "if true, the `value` will be treated as percentage value"
+        },
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "value",
+          "info": null,
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "FlexShrink",
+      "info": {
+        "summary": "\r\n            Set the flex shrink value\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "value",
+          "info": null,
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "FlexGrow",
+      "info": {
+        "summary": "\r\n            Set the flex grow value\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "value",
+          "info": {
+            "summary": "Acceptable values are: `Row`, `Column`, `RowReverse`, and `ColumnReverse`",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "FlexDirection",
+      "info": {
+        "summary": "\r\n            Set the flex direction\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {
+          "value": "Acceptable values are: `Row`, `Column`, `RowReverse`, and `ColumnReverse`"
+        },
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "value",
+          "info": {
+            "summary": "Acceptable values are: `Auto`, `FlexStart`, `Center`, `FlexEnd`, and `Stretch`",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "AlignItems",
+      "info": {
+        "summary": "\r\n            Set the align items property\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {
+          "value": "Acceptable values are: `Auto`, `FlexStart`, `Center`, `FlexEnd`, and `Stretch`"
+        },
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "value",
+          "info": {
+            "summary": "Acceptable values are: `FlexStart`, `Center`, `FlexEnd`, `SpaceBetween`, `SpaceAround`, and `SpaceEvenly`",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "JustifyContent",
+      "info": {
+        "summary": "\r\n            Set the justify content property\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {
+          "value": "Acceptable values are: `FlexStart`, `Center`, `FlexEnd`, `SpaceBetween`, `SpaceAround`, and `SpaceEvenly`"
+        },
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "value",
+          "info": {
+            "summary": "Acceptable values are: `Auto`, `FlexStart`, `Center`, `FlexEnd`, and `Stretch`",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "AlignSelf",
+      "info": {
+        "summary": "\r\n            Set the align self property\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {
+          "value": "Acceptable values are: `Auto`, `FlexStart`, `Center`, `FlexEnd`, and `Stretch`"
+        },
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "value",
+          "info": {
+            "summary": "the value",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "percentage",
+          "info": {
+            "summary": "if true, the `value` will be treated as percentage value",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "bool",
+            "arguments": []
+          },
+          "defaultValue": "False",
+          "isOptional": true
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "Width",
+      "info": {
+        "summary": "\r\n            Set the width of the element\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {
+          "value": "the value",
+          "percentage": "if true, the `value` will be treated as percentage value"
+        },
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "value",
+          "info": {
+            "summary": "the value",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "percentage",
+          "info": {
+            "summary": "if true, the `value` will be treated as percentage value",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "bool",
+            "arguments": []
+          },
+          "defaultValue": "False",
+          "isOptional": true
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "Height",
+      "info": {
+        "summary": "\r\n            Set the height of the element\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {
+          "value": "the value",
+          "percentage": "if true, the `value` will be treated as percentage value"
+        },
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "value",
+          "info": {
+            "summary": "the value",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "percentage",
+          "info": {
+            "summary": "if true, the `value` will be treated as percentage value",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "bool",
+            "arguments": []
+          },
+          "defaultValue": "False",
+          "isOptional": true
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "Margin",
+      "info": {
+        "summary": "\r\n            Set the margin of the element\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {
+          "value": "the value",
+          "percentage": "if true, the `value` will be treated as percentage value"
+        },
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "value",
+          "info": {
+            "summary": "the value",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "percentage",
+          "info": {
+            "summary": "if true, the `value` will be treated as percentage value",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "bool",
+            "arguments": []
+          },
+          "defaultValue": "False",
+          "isOptional": true
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "MarginLeft",
+      "info": {
+        "summary": "\r\n            Set the left margin of the element\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {
+          "value": "the value",
+          "percentage": "if true, the `value` will be treated as percentage value"
+        },
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "value",
+          "info": {
+            "summary": "the value",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "percentage",
+          "info": {
+            "summary": "if true, the `value` will be treated as percentage value",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "bool",
+            "arguments": []
+          },
+          "defaultValue": "False",
+          "isOptional": true
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "MarginTop",
+      "info": {
+        "summary": "\r\n            Set the top margin of the element\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {
+          "value": "the value",
+          "percentage": "if true, the `value` will be treated as percentage value"
+        },
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "value",
+          "info": {
+            "summary": "the value",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "percentage",
+          "info": {
+            "summary": "if true, the `value` will be treated as percentage value",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "bool",
+            "arguments": []
+          },
+          "defaultValue": "False",
+          "isOptional": true
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "MarginRight",
+      "info": {
+        "summary": "\r\n            Set the right margin of the element\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {
+          "value": "the value",
+          "percentage": "if true, the `value` will be treated as percentage value"
+        },
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "value",
+          "info": {
+            "summary": "the value",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "percentage",
+          "info": {
+            "summary": "if true, the `value` will be treated as percentage value",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "bool",
+            "arguments": []
+          },
+          "defaultValue": "False",
+          "isOptional": true
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "MarginBottom",
+      "info": {
+        "summary": "\r\n            Set the bottom margin of the element\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {
+          "value": "the value",
+          "percentage": "if true, the `value` will be treated as percentage value"
+        },
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "value",
+          "info": {
+            "summary": "the value",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "percentage",
+          "info": {
+            "summary": "if true, the `value` will be treated as percentage value",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "bool",
+            "arguments": []
+          },
+          "defaultValue": "False",
+          "isOptional": true
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "Padding",
+      "info": {
+        "summary": "\r\n            Set the padding of the element\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {
+          "value": "the value",
+          "percentage": "if true, the `value` will be treated as percentage value"
+        },
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "value",
+          "info": {
+            "summary": "the value",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "percentage",
+          "info": {
+            "summary": "if true, the `value` will be treated as percentage value",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "bool",
+            "arguments": []
+          },
+          "defaultValue": "False",
+          "isOptional": true
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "PaddingLeft",
+      "info": {
+        "summary": "\r\n            Set the left padding of the element\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {
+          "value": "the value",
+          "percentage": "if true, the `value` will be treated as percentage value"
+        },
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "value",
+          "info": {
+            "summary": "the value",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "percentage",
+          "info": {
+            "summary": "if true, the `value` will be treated as percentage value",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "bool",
+            "arguments": []
+          },
+          "defaultValue": "False",
+          "isOptional": true
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "PaddingTop",
+      "info": {
+        "summary": "\r\n            Set the top padding of the element\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {
+          "value": "the value",
+          "percentage": "if true, the `value` will be treated as percentage value"
+        },
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "value",
+          "info": {
+            "summary": "the value",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "percentage",
+          "info": {
+            "summary": "if true, the `value` will be treated as percentage value",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "bool",
+            "arguments": []
+          },
+          "defaultValue": "False",
+          "isOptional": true
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "PaddingRight",
+      "info": {
+        "summary": "\r\n            Set the right padding of the element\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {
+          "value": "the value",
+          "percentage": "if true, the `value` will be treated as percentage value"
+        },
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "value",
+          "info": {
+            "summary": "the value",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "percentage",
+          "info": {
+            "summary": "if true, the `value` will be treated as percentage value",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "bool",
+            "arguments": []
+          },
+          "defaultValue": "False",
+          "isOptional": true
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "PaddingBottom",
+      "info": {
+        "summary": "\r\n            Set the bottom padding of the element\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {
+          "value": "the value",
+          "percentage": "if true, the `value` will be treated as percentage value"
+        },
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "value",
+          "info": {
+            "summary": "Acceptable values are: `Normal`, `Bold`, `Italic`, and `BoldAndItalic`",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "FontStyle",
+      "info": {
+        "summary": "\r\n            Set the font style of the element\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {
+          "value": "Acceptable values are: `Normal`, `Bold`, `Italic`, and `BoldAndItalic`"
+        },
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "value",
+          "info": {
+            "summary": "the value",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "percentage",
+          "info": {
+            "summary": "if true, the `value` will be treated as percentage value",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "bool",
+            "arguments": []
+          },
+          "defaultValue": "False",
+          "isOptional": true
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "FontSize",
+      "info": {
+        "summary": "\r\n            Set the font size of the element\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {
+          "value": "the value",
+          "percentage": "if true, the `value` will be treated as percentage value"
+        },
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "color",
+          "info": null,
+          "type": {
+            "name": "Color",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "Color",
+      "info": {
+        "summary": "\r\n            Set the text color of the element\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "color",
+          "info": null,
+          "type": {
+            "name": "Color",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "BackgroundColor",
+      "info": {
+        "summary": "\r\n            Set the background color of the element\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "image",
+          "info": null,
+          "type": {
+            "name": "Image",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "SetBackgroundImage",
+      "info": {
+        "summary": "\r\n            Set the background image of the element\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "color",
+          "info": null,
+          "type": {
+            "name": "Color",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "BorderColor",
+      "info": {
+        "summary": "\r\n            Set the border color of the element\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "color",
+          "info": null,
+          "type": {
+            "name": "Color",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "BorderColorLeft",
+      "info": {
+        "summary": "\r\n            Set the left border color of the element\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "color",
+          "info": null,
+          "type": {
+            "name": "Color",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "BorderColorTop",
+      "info": {
+        "summary": "\r\n            Set the top border color of the element\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "color",
+          "info": null,
+          "type": {
+            "name": "Color",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "BorderColorRight",
+      "info": {
+        "summary": "\r\n            Set the right border color of the element\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "color",
+          "info": null,
+          "type": {
+            "name": "Color",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "BorderColorBottom",
+      "info": {
+        "summary": "\r\n            Set the bottom border color of the element\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "value",
+          "info": null,
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "BorderWidth",
+      "info": {
+        "summary": "\r\n            Set the border width of the element\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "value",
+          "info": null,
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "BorderWidthLeft",
+      "info": {
+        "summary": "\r\n            Set the left border width of the element\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "value",
+          "info": null,
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "BorderWidthTop",
+      "info": {
+        "summary": "\r\n            Set the top border width of the element\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "value",
+          "info": null,
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "BorderWidthRight",
+      "info": {
+        "summary": "\r\n            Set the right border width of the element\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "value",
+          "info": null,
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "BorderWidthBottom",
+      "info": {
+        "summary": "\r\n            Set the bottom border width of the element\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "value",
+          "info": null,
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "BorderRadius",
+      "info": {
+        "summary": "\r\n            Set the border radius of the element\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "value",
+          "info": null,
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "BorderRadiusTopLeft",
+      "info": {
+        "summary": "\r\n            Set the top-left border radius of the element\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "value",
+          "info": null,
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "BorderRadiusTopRight",
+      "info": {
+        "summary": "\r\n            Set the top-right border radius of the element\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "value",
+          "info": null,
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "BorderRadiusBottomLeft",
+      "info": {
+        "summary": "\r\n            Set the bottom-left border radius of the element\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "value",
+          "info": null,
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "BorderRadiusBottomRight",
+      "info": {
+        "summary": "\r\n            Set the bottom-right border radius of the element\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "value",
+          "info": {
+            "summary": "Acceptable values are: `Visible` and `Hidden`",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "OverflowX",
+      "info": {
+        "summary": "\r\n            Set the overflow behavior on the X axis\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {
+          "value": "Acceptable values are: `Visible` and `Hidden`"
+        },
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "value",
+          "info": {
+            "summary": "Acceptable values are: `Visible` and `Hidden`",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "OverflowY",
+      "info": {
+        "summary": "\r\n            Set the overflow behavior on the Y axis\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {
+          "value": "Acceptable values are: `Visible` and `Hidden`"
+        },
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "x",
+          "info": {
+            "summary": "x value",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "y",
+          "info": {
+            "summary": "y value",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "percentage",
+          "info": {
+            "summary": "if true, the `value` will be treated as percentage value",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "bool",
+            "arguments": []
+          },
+          "defaultValue": "False",
+          "isOptional": true
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "SetTransformOrigin",
+      "info": {
+        "summary": "\r\n            Set the origin of the element\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {
+          "x": "x value",
+          "y": "y value",
+          "percentage": "if true, the `value` will be treated as percentage value"
+        },
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "x",
+          "info": {
+            "summary": "x value",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "y",
+          "info": {
+            "summary": "y value",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "percentage",
+          "info": {
+            "summary": "if true, the `value` will be treated as percentage value",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "bool",
+            "arguments": []
+          },
+          "defaultValue": "False",
+          "isOptional": true
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "TransformTranslate",
+      "info": {
+        "summary": "\r\n            Translate the element\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {
+          "x": "x value",
+          "y": "y value",
+          "percentage": "if true, the `value` will be treated as percentage value"
+        },
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "x",
+          "info": {
+            "summary": "x value",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "y",
+          "info": {
+            "summary": "y value",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "TransformScale",
+      "info": {
+        "summary": "\r\n            Scale the element\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {
+          "x": "x value",
+          "y": "y value"
+        },
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "angle",
+          "info": {
+            "summary": "the angle of rotation",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "angleUnit",
+          "info": {
+            "summary": "the unit of the angle. Valid values are: `Degree`, `Gradian`, `Radian`, and `Turn`",
+            "remarks": null,
+            "code": null,
+            "parameters": null,
+            "returns": null
+          },
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "\"Degree\"",
+          "isOptional": true
+        }
+      ],
+      "returnType": {
+        "name": "VisualElement",
+        "arguments": []
+      },
+      "label": "TransformRotate",
+      "info": {
+        "summary": "\r\n            Rotate the element\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {
+          "angle": "the angle of rotation",
+          "angleUnit": "the unit of the angle. Valid values are: `Degree`, `Gradian`, `Radian`, and `Turn`"
+        },
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "kind": "CLASS",
+  "baseTypeName": "Object",
+  "obsoleteMessage": "",
+  "isObsolete": false
+}

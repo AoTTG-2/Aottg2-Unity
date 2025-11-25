@@ -1,0 +1,119 @@
+{
+  "name": "Range",
+  "info": {
+    "summary": "\r\n            Range allows you to create lists of integers for convenient iteration, particularly in for loops.\r\n            ",
+    "remarks": "",
+    "code": "\r\n            for (a in Range(10))\r\n            {\r\n                Game.Print(a);\r\n            }\r\n                \r\n            for (a in Range(1, 10))\r\n            {\r\n                Game.Print(a);\r\n            }\r\n                \r\n            for (a in Range(1, 10, 2))\r\n            {\r\n                Game.Print(a);\r\n            }\r\n            ",
+    "parameters": null,
+    "returns": null
+  },
+  "constructors": [
+    {
+      "parameters": [
+        {
+          "name": "end",
+          "info": null,
+          "type": {
+            "name": "int",
+            "arguments": []
+          },
+          "defaultValue": "0",
+          "isOptional": false
+        }
+      ],
+      "info": {
+        "summary": "\r\n            Creates a range from 0 to end-1\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "start",
+          "info": null,
+          "type": {
+            "name": "int",
+            "arguments": []
+          },
+          "defaultValue": "0",
+          "isOptional": false
+        },
+        {
+          "name": "end",
+          "info": null,
+          "type": {
+            "name": "int",
+            "arguments": []
+          },
+          "defaultValue": "0",
+          "isOptional": false
+        }
+      ],
+      "info": {
+        "summary": "\r\n            Creates a range from start to end-1\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "start",
+          "info": null,
+          "type": {
+            "name": "int",
+            "arguments": []
+          },
+          "defaultValue": "0",
+          "isOptional": false
+        },
+        {
+          "name": "end",
+          "info": null,
+          "type": {
+            "name": "int",
+            "arguments": []
+          },
+          "defaultValue": "0",
+          "isOptional": false
+        },
+        {
+          "name": "step",
+          "info": null,
+          "type": {
+            "name": "int",
+            "arguments": []
+          },
+          "defaultValue": "0",
+          "isOptional": false
+        }
+      ],
+      "info": {
+        "summary": "\r\n            Creates a range from start to end-1 with the specified step\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "staticFields": [],
+  "instanceFields": [],
+  "staticMethods": [],
+  "instanceMethods": [],
+  "kind": "CLASS",
+  "baseTypeName": "",
+  "obsoleteMessage": "",
+  "isObsolete": false
+}
