@@ -279,13 +279,13 @@ namespace GameManagers
         public static void SendChatAll(string message, ChatTextColor color = ChatTextColor.Default)
         {
             string formattedMessage = GetColorString(message, color);
-            RPCManager.PhotonView.RPC("ChatRPC", RpcTarget.All, new object[] { formattedMessage });
+            RPCManager.PhotonView.RPC(nameof(RPCManager.ChatRPC), RpcTarget.All, new object[] { formattedMessage });
         }
 
         public static void SendChat(string message, Player player, ChatTextColor color = ChatTextColor.Default)
         {
             string formattedMessage = GetColorString(message, color);
-            RPCManager.PhotonView.RPC("ChatRPC", player, new object[] { formattedMessage });
+            RPCManager.PhotonView.RPC(nameof(RPCManager.ChatRPC), player, new object[] { formattedMessage });
         }
 
         public static void OnChatRPC(string message, PhotonMessageInfo info)
@@ -580,7 +580,7 @@ namespace GameManagers
         {
             if (CheckMC())
             {
-                RPCManager.PhotonView.RPC("SpawnPlayerRPC", RpcTarget.All, new object[] { false });
+                RPCManager.PhotonView.RPC(nameof(RPCManager.SpawnPlayerRPC), RpcTarget.All, new object[] { false });
                 SendChatAll("All players have been revived by master client.", ChatTextColor.System);
             }
         }
@@ -593,7 +593,7 @@ namespace GameManagers
                 var player = GetPlayer(args);
                 if (player != null)
                 {
-                    RPCManager.PhotonView.RPC("SpawnPlayerRPC", player, new object[] { false });
+                    RPCManager.PhotonView.RPC(nameof(RPCManager.SpawnPlayerRPC), player, new object[] { false });
                     SendChat("You have been revived by master client.", player, ChatTextColor.System);
                     AddLine(player.GetStringProperty(PlayerProperty.Name) + " has been revived.", ChatTextColor.System);
                 }
@@ -740,7 +740,7 @@ namespace GameManagers
         [CommandAttribute("resetkdall", "/resetkdall: Reset all player stats.")]
         private static void Resetkdall(string[] args)
         {
-            RPCManager.PhotonView.RPC("ResetKDRPC", RpcTarget.All);
+            RPCManager.PhotonView.RPC(nameof(RPCManager.ResetKDRPC), RpcTarget.All);
         }
 
 
@@ -1604,8 +1604,8 @@ namespace GameManagers
                 AddLine("Invalid private message target.", ChatTextColor.Error);
                 return;
             }
-            RPCManager.PhotonView.RPC("PrivateChatRPC", PhotonNetwork.LocalPlayer, new object[] { message, target.ActorNumber });
-            RPCManager.PhotonView.RPC("PrivateChatRPC", target, new object[] { message, target.ActorNumber });
+            RPCManager.PhotonView.RPC(nameof(RPCManager.PrivateChatRPC), PhotonNetwork.LocalPlayer, new object[] { message, target.ActorNumber });
+            RPCManager.PhotonView.RPC(nameof(RPCManager.PrivateChatRPC), target, new object[] { message, target.ActorNumber });
         }
 
         public static void OnPrivateChatRPC(string message, int targetID, PhotonMessageInfo info)

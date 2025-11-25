@@ -66,7 +66,7 @@ namespace Characters
         protected virtual void OnHandHealthChange()
         {
             if (IsMine())
-                photonView.RPC("SetHandHealthRPC", RpcTarget.All, new object[] { CurrentHandHealth, MaxHandHealth });
+                photonView.RPC(nameof(SetHandHealthRPC), RpcTarget.All, new object[] { CurrentHandHealth, MaxHandHealth });
         }
 
         [PunRPC]

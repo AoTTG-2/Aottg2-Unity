@@ -1,4 +1,5 @@
 ﻿using ApplicationManagers;
+using Settings;
 using System;
 using System.Collections.Generic;
 
@@ -33,7 +34,7 @@ namespace CustomLogic
             catch (Exception e)
             {
                 Error = e.Message;
-                DebugConsole.Log("Custom logic parsing error: " + e.Message, true);
+                DebugConsole.LogCustomLogic("Custom logic parsing error: " + e.Message, SettingsManager.UISettings.ChatCLErrors.Value);
                 start = new CustomLogicStartAst();
                 start.AddEmptyMain();
                 return start;
