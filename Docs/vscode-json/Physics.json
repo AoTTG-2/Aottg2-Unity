@@ -1,0 +1,619 @@
+{
+  "kind": "extension",
+  "name": "Physics",
+  "description": "Static Physics class. Contains some common physics functions",
+  "extends": [
+    "Object"
+  ],
+  "instanceFields": [],
+  "instanceMethods": [],
+  "staticFields": [
+    {
+      "label": "CollideWithAll",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "All Collide Mode",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "CollideWithMapObjects",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "MapObject Collide Mode",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "CollideWithCharacters",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Characters Collide Mode",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "CollideWithTitans",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Titans Collide Mode",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "CollideWithHumans",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Humans Collide Mode",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "CollideWithProjectiles",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Projectiles Collide Mode",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "CollideWithEntities",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Entities Collide Mode",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "CollideWithHitboxes",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Hitboxes Collide Mode",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "CollideWithMapEditor",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "MapEditor Collide Mode",
+      "readonly": true,
+      "private": false
+    }
+  ],
+  "staticMethods": [
+    {
+      "label": "LineCast",
+      "returnType": {
+        "name": "LineCastHitResult",
+        "typeArguments": []
+      },
+      "description": "Performs a line cast between two points, returns a LineCastHitResult object",
+      "parameters": [
+        {
+          "name": "start",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "end",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "collideWith",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "LineCastAll",
+      "returnType": {
+        "name": "List",
+        "typeArguments": [
+          {
+            "name": "LineCastHitResult",
+            "typeArguments": []
+          }
+        ]
+      },
+      "description": "Performs a line cast between two points and returns a LineCastHitResult object for each element hit.",
+      "parameters": [
+        {
+          "name": "start",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "end",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "collideWith",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "SphereCast",
+      "returnType": {
+        "name": "Object",
+        "typeArguments": []
+      },
+      "description": "Performs a sphere cast between two points, returns the object hit (Human, Titan, etc...).",
+      "parameters": [
+        {
+          "name": "start",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "end",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "radius",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "collideWith",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "SphereCastAll",
+      "returnType": {
+        "name": "List",
+        "typeArguments": [
+          {
+            "name": "LineCastHitResult",
+            "typeArguments": []
+          }
+        ]
+      },
+      "description": "Performs a sphere cast between two points and returns a LineCastHitResult object for each element hit.",
+      "parameters": [
+        {
+          "name": "start",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "end",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "radius",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "collideWith",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "BoxCast",
+      "returnType": {
+        "name": "Object",
+        "typeArguments": []
+      },
+      "description": "Performs a box cast between two points, returns the object hit (Human, Titan, etc...).",
+      "parameters": [
+        {
+          "name": "start",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "end",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "dimensions",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "orientation",
+          "type": {
+            "name": "Quaternion",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "collideWith",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "BoxCastAll",
+      "returnType": {
+        "name": "List",
+        "typeArguments": [
+          {
+            "name": "LineCastHitResult",
+            "typeArguments": []
+          }
+        ]
+      },
+      "description": "Performs a box cast between two points and returns a LineCastHitResult object for each element hit.",
+      "parameters": [
+        {
+          "name": "start",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "end",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "dimensions",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "orientation",
+          "type": {
+            "name": "Quaternion",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "collideWith",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "ClosestPoint",
+      "returnType": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Returns a point on the given collider that is closest to the specified location.",
+      "parameters": [
+        {
+          "name": "point",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "collider",
+          "type": {
+            "name": "Collider",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "position",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "rotation",
+          "type": {
+            "name": "Quaternion",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "ComputePenetration",
+      "returnType": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Compute the minimal translation required to separate the given colliders apart at specified poses.",
+      "parameters": [
+        {
+          "name": "colliderA",
+          "type": {
+            "name": "Collider",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "positionA",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "rotationA",
+          "type": {
+            "name": "Quaternion",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "colliderB",
+          "type": {
+            "name": "Collider",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "positionB",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "rotationB",
+          "type": {
+            "name": "Quaternion",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "AreCollidersOverlapping",
+      "returnType": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Check if the the given colliders at specified poses are apart or overlapping.",
+      "parameters": [
+        {
+          "name": "colliderA",
+          "type": {
+            "name": "Collider",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "positionA",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "rotationA",
+          "type": {
+            "name": "Quaternion",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "colliderB",
+          "type": {
+            "name": "Collider",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "positionB",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "rotationB",
+          "type": {
+            "name": "Quaternion",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    }
+  ],
+  "constructors": []
+}

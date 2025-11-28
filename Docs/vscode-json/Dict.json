@@ -1,0 +1,198 @@
+{
+  "kind": "class",
+  "name": "Dict",
+  "description": "Collection of key-value pairs. Keys must be unique.",
+  "typeParameters": [
+    "K",
+    "V"
+  ],
+  "extends": [
+    "Object"
+  ],
+  "instanceFields": [
+    {
+      "label": "Count",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "Number of elements in the dictionary",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "Keys",
+      "type": {
+        "name": "List",
+        "typeArguments": [
+          {
+            "name": "K",
+            "typeArguments": []
+          }
+        ]
+      },
+      "description": "Keys in the dictionary",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "Values",
+      "type": {
+        "name": "List",
+        "typeArguments": [
+          {
+            "name": "V",
+            "typeArguments": []
+          }
+        ]
+      },
+      "description": "Values in the dictionary",
+      "readonly": true,
+      "private": false
+    }
+  ],
+  "instanceMethods": [
+    {
+      "label": "Clear",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Clears the dictionary",
+      "parameters": [],
+      "kind": "function"
+    },
+    {
+      "label": "Get",
+      "returnType": {
+        "name": "Object",
+        "typeArguments": [
+          {
+            "name": "V",
+            "typeArguments": []
+          }
+        ]
+      },
+      "description": "Gets a value from the dictionary",
+      "parameters": [
+        {
+          "name": "key",
+          "type": {
+            "name": "Object",
+            "typeArguments": []
+          },
+          "description": "The key of the value to get",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "defaultValue",
+          "type": {
+            "name": "Object",
+            "typeArguments": []
+          },
+          "description": "The value to return if the key is not found",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Set",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Sets a value in the dictionary",
+      "parameters": [
+        {
+          "name": "key",
+          "type": {
+            "name": "Object",
+            "typeArguments": []
+          },
+          "description": "The key of the value to set",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "value",
+          "type": {
+            "name": "Object",
+            "typeArguments": []
+          },
+          "description": "The value to set",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Remove",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Removes a value from the dictionary",
+      "parameters": [
+        {
+          "name": "key",
+          "type": {
+            "name": "Object",
+            "typeArguments": []
+          },
+          "description": "The key of the value to remove",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Contains",
+      "returnType": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Checks if the dictionary contains a key",
+      "parameters": [
+        {
+          "name": "key",
+          "type": {
+            "name": "Object",
+            "typeArguments": []
+          },
+          "description": "The key to check",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    }
+  ],
+  "staticFields": [],
+  "staticMethods": [],
+  "constructors": [
+    {
+      "parameters": [],
+      "description": "Creates an empty dictionary"
+    },
+    {
+      "parameters": [
+        {
+          "name": "capacity",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "description": "Creates a dictionary with the specified capacity"
+    }
+  ]
+}

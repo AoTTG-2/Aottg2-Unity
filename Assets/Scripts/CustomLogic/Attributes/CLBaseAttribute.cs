@@ -9,5 +9,10 @@ namespace CustomLogic
         public string Description { get; set; } = "";
 
         public bool Static { get; set; }
+
+        /// <summary>
+        /// If true, the method/property/field can be called as a static method or an instance method.
+        /// </summary>
+        public bool Hybrid { get; set; }
     }
 }

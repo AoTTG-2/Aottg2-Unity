@@ -10,7 +10,7 @@ namespace CustomLogic
     /// Map targetables that are on a different team than the AI will be targeted by the titan,
     /// and will trigger the OnGetHit callback on the attached MapObject.
     /// </summary>
-    [CLType(Name = "MapTargetable", Abstract = true)]
+    [CLType(Name = "MapTargetable", Abstract = true, IsComponent = true)]
     partial class CustomLogicMapTargetableBuiltin : BuiltinClassInstance
     {
         public GameObject GameObject { get; }

@@ -1,0 +1,237 @@
+{
+  "kind": "class",
+  "name": "Player",
+  "description": "Represents a network player. Only master client or player may modify fields.",
+  "extends": [
+    "Object"
+  ],
+  "instanceFields": [
+    {
+      "label": "Character",
+      "type": {
+        "name": "Character",
+        "typeArguments": []
+      },
+      "description": "Player's current character, if alive.",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "Connected",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Player is still connected to the room.",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "ID",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "Player unique ID.",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "Name",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Player name.",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "Guild",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Player guild.",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "Team",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Player's chosen team (\"None\", \"Blue\", \"Red\", \"Titan\", \"Human\"). Note that this may be different from the character's final team (Character.Team field) if the character's team field is modified.",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "Status",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Player's spawn status (\"Alive\", \"Dead\", \"Spectating\").",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "CharacterType",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Player's chosen character (\"Human\", \"Titan\", \"Shifter\")",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "Loadout",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Player's chosen loadout (\"Blades\", \"AHSS\", \"APG\", \"Thunderspears\").",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "Kills",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "Player's kills.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Deaths",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "Player's deaths.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "HighestDamage",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "Player's highest damage.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "TotalDamage",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "Player's total damage.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Ping",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "The player's connection ping.",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "SpectateID",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "The player's spectating ID. If not spectating anyone, returns -1.",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "SpawnPoint",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Player's respawn point. Is initially null and can be set back to null, at which point map spawn points are used.",
+      "readonly": false,
+      "private": false
+    }
+  ],
+  "instanceMethods": [
+    {
+      "label": "GetCustomProperty",
+      "returnType": {
+        "name": "Object",
+        "typeArguments": []
+      },
+      "description": "Get a custom property at given key. Must be a primitive type. This is synced to all clients.",
+      "parameters": [
+        {
+          "name": "property",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "SetCustomProperty",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Sets a custom property at given key. Must be a primitive type. This is synced to all clients.",
+      "parameters": [
+        {
+          "name": "property",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "value",
+          "type": {
+            "name": "Object",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "ClearKDR",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Clears kills, deaths, highestdamage, and totaldamage properties.",
+      "parameters": [],
+      "kind": "function"
+    }
+  ],
+  "staticFields": [],
+  "staticMethods": [],
+  "constructors": []
+}

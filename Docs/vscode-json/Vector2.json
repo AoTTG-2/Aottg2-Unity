@@ -1,0 +1,665 @@
+{
+  "kind": "extension",
+  "name": "Vector2",
+  "description": "",
+  "extends": [
+    "Object"
+  ],
+  "instanceFields": [
+    {
+      "label": "X",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Y",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Normalized",
+      "type": {
+        "name": "Vector2",
+        "typeArguments": []
+      },
+      "description": "",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "Magnitude",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "SqrMagnitude",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "",
+      "readonly": true,
+      "private": false
+    }
+  ],
+  "instanceMethods": [
+    {
+      "label": "Set",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "",
+      "parameters": [
+        {
+          "name": "x",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "y",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Normalize",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "",
+      "parameters": [],
+      "kind": "function"
+    }
+  ],
+  "staticFields": [
+    {
+      "label": "Zero",
+      "type": {
+        "name": "Vector2",
+        "typeArguments": []
+      },
+      "description": "",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "One",
+      "type": {
+        "name": "Vector2",
+        "typeArguments": []
+      },
+      "description": "",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "Up",
+      "type": {
+        "name": "Vector2",
+        "typeArguments": []
+      },
+      "description": "",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "Down",
+      "type": {
+        "name": "Vector2",
+        "typeArguments": []
+      },
+      "description": "",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "Left",
+      "type": {
+        "name": "Vector2",
+        "typeArguments": []
+      },
+      "description": "",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "Right",
+      "type": {
+        "name": "Vector2",
+        "typeArguments": []
+      },
+      "description": "",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "NegativeInfinity",
+      "type": {
+        "name": "Vector2",
+        "typeArguments": []
+      },
+      "description": "",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "PositiveInfinity",
+      "type": {
+        "name": "Vector2",
+        "typeArguments": []
+      },
+      "description": "",
+      "readonly": true,
+      "private": false
+    }
+  ],
+  "staticMethods": [
+    {
+      "label": "Angle",
+      "returnType": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "",
+      "parameters": [
+        {
+          "name": "from",
+          "type": {
+            "name": "Vector2",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "to",
+          "type": {
+            "name": "Vector2",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "ClampMagnitude",
+      "returnType": {
+        "name": "Vector2",
+        "typeArguments": []
+      },
+      "description": "",
+      "parameters": [
+        {
+          "name": "vector",
+          "type": {
+            "name": "Vector2",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "maxLength",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Distance",
+      "returnType": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "",
+      "parameters": [
+        {
+          "name": "a",
+          "type": {
+            "name": "Vector2",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "b",
+          "type": {
+            "name": "Vector2",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Dot",
+      "returnType": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "",
+      "parameters": [
+        {
+          "name": "a",
+          "type": {
+            "name": "Vector2",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "b",
+          "type": {
+            "name": "Vector2",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Lerp",
+      "returnType": {
+        "name": "Vector2",
+        "typeArguments": []
+      },
+      "description": "",
+      "parameters": [
+        {
+          "name": "a",
+          "type": {
+            "name": "Vector2",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "b",
+          "type": {
+            "name": "Vector2",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "t",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "LerpUnclamped",
+      "returnType": {
+        "name": "Vector2",
+        "typeArguments": []
+      },
+      "description": "",
+      "parameters": [
+        {
+          "name": "a",
+          "type": {
+            "name": "Vector2",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "b",
+          "type": {
+            "name": "Vector2",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "t",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Max",
+      "returnType": {
+        "name": "Vector2",
+        "typeArguments": []
+      },
+      "description": "",
+      "parameters": [
+        {
+          "name": "a",
+          "type": {
+            "name": "Vector2",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "b",
+          "type": {
+            "name": "Vector2",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Min",
+      "returnType": {
+        "name": "Vector2",
+        "typeArguments": []
+      },
+      "description": "",
+      "parameters": [
+        {
+          "name": "a",
+          "type": {
+            "name": "Vector2",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "b",
+          "type": {
+            "name": "Vector2",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "MoveTowards",
+      "returnType": {
+        "name": "Vector2",
+        "typeArguments": []
+      },
+      "description": "",
+      "parameters": [
+        {
+          "name": "current",
+          "type": {
+            "name": "Vector2",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "target",
+          "type": {
+            "name": "Vector2",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "maxDistanceDelta",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Reflect",
+      "returnType": {
+        "name": "Vector2",
+        "typeArguments": []
+      },
+      "description": "",
+      "parameters": [
+        {
+          "name": "inDirection",
+          "type": {
+            "name": "Vector2",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "inNormal",
+          "type": {
+            "name": "Vector2",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "SignedAngle",
+      "returnType": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "",
+      "parameters": [
+        {
+          "name": "from",
+          "type": {
+            "name": "Vector2",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "to",
+          "type": {
+            "name": "Vector2",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "SmoothDamp",
+      "returnType": {
+        "name": "Vector2",
+        "typeArguments": []
+      },
+      "description": "Smoothly transitions the current vector position towards the target vector position using the currentVelocity as state. smoothTime and maxSpeed adjust the aggressiveness of the motion.",
+      "parameters": [
+        {
+          "name": "current",
+          "type": {
+            "name": "Vector2",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "target",
+          "type": {
+            "name": "Vector2",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "currentVelocity",
+          "type": {
+            "name": "Vector2",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "smoothTime",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "maxSpeed",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    }
+  ],
+  "constructors": [
+    {
+      "parameters": [],
+      "description": ""
+    },
+    {
+      "parameters": [
+        {
+          "name": "xy",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "description": ""
+    },
+    {
+      "parameters": [
+        {
+          "name": "x",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "y",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "description": ""
+    }
+  ]
+}

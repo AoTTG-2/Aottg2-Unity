@@ -36,28 +36,28 @@
 
 
 ### Methods
-<pre class="language-typescript"><code class="lang-typescript">function AddForce(force: <a data-footnote-ref href="#user-content-fn-46">Vector3</a>, forceMode: string = "Acceleration", atPoint: <a data-footnote-ref href="#user-content-fn-46">Vector3</a> = null)</code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function AddForce(force: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, forceMode: string = "Acceleration", atPoint: <a data-footnote-ref href="#user-content-fn-9">Vector3</a> = null)</code></pre>
 > Apply a force to the Rigidbody - legacy version, please use optimized if possible.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function AddForceOptimized(force: <a data-footnote-ref href="#user-content-fn-46">Vector3</a>, forceMode: int = 5, atPoint: <a data-footnote-ref href="#user-content-fn-46">Vector3</a> = null)</code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function AddForceOptimized(force: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, forceMode: int = 5, atPoint: <a data-footnote-ref href="#user-content-fn-9">Vector3</a> = null)</code></pre>
 > Apply a force to the Rigidbody.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function AddTorque(torque: <a data-footnote-ref href="#user-content-fn-46">Vector3</a>, forceMode: string)</code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function AddTorque(torque: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, forceMode: string)</code></pre>
 > Apply a torque to the Rigidbody - legacy version, please use optimized if possible.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function AddTorqueOptimized(torque: <a data-footnote-ref href="#user-content-fn-46">Vector3</a>, forceMode: int = 5)</code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function AddTorqueOptimized(torque: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, forceMode: int = 5)</code></pre>
 > Apply a torque to the Rigidbody.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function AddExplosionForce(explosionForce: float, explosionPosition: <a data-footnote-ref href="#user-content-fn-46">Vector3</a>, explosionRadius: float, upwardsModifier: float = 0, forceMode: int = 5)</code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function AddExplosionForce(explosionForce: float, explosionPosition: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, explosionRadius: float, upwardsModifier: float = 0, forceMode: int = 5)</code></pre>
 > Apply an explosion force to the Rigidbody.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function Move(position: <a data-footnote-ref href="#user-content-fn-46">Vector3</a>, rotation: <a data-footnote-ref href="#user-content-fn-33">Quaternion</a>)</code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function Move(position: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, rotation: <a data-footnote-ref href="#user-content-fn-5">Quaternion</a>)</code></pre>
 > Move the Rigidbody to a new position. This will not apply any forces, it will just set the position directly.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function MovePosition(position: <a data-footnote-ref href="#user-content-fn-46">Vector3</a>)</code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function MovePosition(position: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>)</code></pre>
 > Move the Rigidbody to a new position. This will apply forces to move the Rigidbody to the new position.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function MoveRotation(rotation: <a data-footnote-ref href="#user-content-fn-33">Quaternion</a>)</code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function MoveRotation(rotation: <a data-footnote-ref href="#user-content-fn-5">Quaternion</a>)</code></pre>
 > Move the Rigidbody to a new rotation. This will apply forces to rotate the Rigidbody to the new rotation.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function ResetCenterOfMass()</code></pre>
@@ -66,66 +66,68 @@
 <pre class="language-typescript"><code class="lang-typescript">function PublishTransform()</code></pre>
 > Publish the current position and rotation of the Rigidbody to the MapObject. This will update the MapObject's transform to match the Rigidbody's transform.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function SweepTest(direction: <a data-footnote-ref href="#user-content-fn-46">Vector3</a>, distance: float) -> <a data-footnote-ref href="#user-content-fn-57">Object</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function SweepTest(direction: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, distance: float) -> <a data-footnote-ref href="#user-content-fn-59">Object</a></code></pre>
 > Checks if the rigidbody would collide with anything, returns a LineCastHitResult object.
 > 
 
-[^0]: [Animation](../objects/Animation.md)
-[^1]: [Animator](../objects/Animator.md)
-[^2]: [AudioSource](../objects/AudioSource.md)
-[^3]: [Camera](../static/Camera.md)
-[^4]: [Character](../objects/Character.md)
-[^5]: [Collider](../objects/Collider.md)
-[^6]: [Collision](../objects/Collision.md)
-[^7]: [Color](../objects/Color.md)
-[^8]: [Convert](../static/Convert.md)
-[^9]: [Cutscene](../static/Cutscene.md)
-[^10]: [Dict](../objects/Dict.md)
-[^11]: [Game](../static/Game.md)
-[^12]: [Human](../objects/Human.md)
-[^13]: [Input](../static/Input.md)
-[^14]: [Json](../static/Json.md)
-[^15]: [LightBuiltin](../static/LightBuiltin.md)
-[^16]: [LineCastHitResult](../objects/LineCastHitResult.md)
-[^17]: [LineRenderer](../objects/LineRenderer.md)
-[^18]: [List](../objects/List.md)
-[^19]: [Locale](../static/Locale.md)
-[^20]: [LodBuiltin](../static/LodBuiltin.md)
-[^21]: [Map](../static/Map.md)
-[^22]: [MapObject](../objects/MapObject.md)
-[^23]: [MapTargetable](../objects/MapTargetable.md)
-[^24]: [Math](../static/Math.md)
-[^25]: [NavmeshObstacleBuiltin](../static/NavmeshObstacleBuiltin.md)
-[^26]: [Network](../static/Network.md)
-[^27]: [NetworkView](../objects/NetworkView.md)
-[^28]: [PersistentData](../static/PersistentData.md)
-[^29]: [Physics](../static/Physics.md)
-[^30]: [PhysicsMaterialBuiltin](../static/PhysicsMaterialBuiltin.md)
-[^31]: [Player](../objects/Player.md)
-[^32]: [Prefab](../objects/Prefab.md)
-[^33]: [Quaternion](../objects/Quaternion.md)
-[^34]: [Random](../objects/Random.md)
-[^35]: [Range](../objects/Range.md)
-[^36]: [RigidbodyBuiltin](../static/RigidbodyBuiltin.md)
-[^37]: [RoomData](../static/RoomData.md)
-[^38]: [Set](../objects/Set.md)
-[^39]: [Shifter](../objects/Shifter.md)
-[^40]: [String](../static/String.md)
+[^0]: [Color](../objects/Color.md)
+[^1]: [Dict](../objects/Dict.md)
+[^2]: [LightBuiltin](../static/LightBuiltin.md)
+[^3]: [LineCastHitResult](../objects/LineCastHitResult.md)
+[^4]: [List](../objects/List.md)
+[^5]: [Quaternion](../objects/Quaternion.md)
+[^6]: [Range](../objects/Range.md)
+[^7]: [Set](../objects/Set.md)
+[^8]: [Vector2](../objects/Vector2.md)
+[^9]: [Vector3](../objects/Vector3.md)
+[^10]: [Animation](../objects/Animation.md)
+[^11]: [Animator](../objects/Animator.md)
+[^12]: [AudioSource](../objects/AudioSource.md)
+[^13]: [Collider](../objects/Collider.md)
+[^14]: [Collision](../objects/Collision.md)
+[^15]: [LineRenderer](../objects/LineRenderer.md)
+[^16]: [LodBuiltin](../static/LodBuiltin.md)
+[^17]: [MapTargetable](../objects/MapTargetable.md)
+[^18]: [NavmeshObstacleBuiltin](../static/NavmeshObstacleBuiltin.md)
+[^19]: [PhysicsMaterialBuiltin](../static/PhysicsMaterialBuiltin.md)
+[^20]: [RigidbodyBuiltin](../static/RigidbodyBuiltin.md)
+[^21]: [Character](../objects/Character.md)
+[^22]: [Human](../objects/Human.md)
+[^23]: [MapObject](../objects/MapObject.md)
+[^24]: [NetworkView](../objects/NetworkView.md)
+[^25]: [Player](../objects/Player.md)
+[^26]: [Prefab](../objects/Prefab.md)
+[^27]: [Shifter](../objects/Shifter.md)
+[^28]: [Titan](../objects/Titan.md)
+[^29]: [Transform](../objects/Transform.md)
+[^30]: [WallColossal](../objects/WallColossal.md)
+[^31]: [Camera](../static/Camera.md)
+[^32]: [Cutscene](../static/Cutscene.md)
+[^33]: [Game](../static/Game.md)
+[^34]: [Input](../static/Input.md)
+[^35]: [Locale](../static/Locale.md)
+[^36]: [Map](../static/Map.md)
+[^37]: [Network](../static/Network.md)
+[^38]: [PersistentData](../static/PersistentData.md)
+[^39]: [Physics](../static/Physics.md)
+[^40]: [RoomData](../static/RoomData.md)
 [^41]: [Time](../static/Time.md)
-[^42]: [Titan](../objects/Titan.md)
-[^43]: [Transform](../objects/Transform.md)
-[^44]: [UI](../static/UI.md)
-[^45]: [Vector2](../objects/Vector2.md)
-[^46]: [Vector3](../objects/Vector3.md)
-[^47]: [WallColossal](../objects/WallColossal.md)
-[^48]: [Button](../objects/Button.md)
-[^49]: [Dropdown](../objects/Dropdown.md)
-[^50]: [Label](../objects/Label.md)
-[^51]: [ProgressBar](../objects/ProgressBar.md)
-[^52]: [ScrollView](../objects/ScrollView.md)
-[^53]: [Slider](../objects/Slider.md)
-[^54]: [TextField](../objects/TextField.md)
-[^55]: [Toggle](../objects/Toggle.md)
-[^56]: [VisualElement](../objects/VisualElement.md)
-[^57]: [Object](../objects/Object.md)
-[^58]: [Component](../objects/Component.md)
+[^42]: [Button](../objects/Button.md)
+[^43]: [Dropdown](../objects/Dropdown.md)
+[^44]: [Icon](../objects/Icon.md)
+[^45]: [Image](../objects/Image.md)
+[^46]: [Label](../objects/Label.md)
+[^47]: [ProgressBar](../objects/ProgressBar.md)
+[^48]: [ScrollView](../objects/ScrollView.md)
+[^49]: [Slider](../objects/Slider.md)
+[^50]: [TextField](../objects/TextField.md)
+[^51]: [Toggle](../objects/Toggle.md)
+[^52]: [UI](../static/UI.md)
+[^53]: [VisualElement](../objects/VisualElement.md)
+[^54]: [Convert](../static/Convert.md)
+[^55]: [Json](../static/Json.md)
+[^56]: [Math](../static/Math.md)
+[^57]: [Random](../objects/Random.md)
+[^58]: [String](../static/String.md)
+[^59]: [Object](../objects/Object.md)
+[^60]: [Component](../objects/Component.md)

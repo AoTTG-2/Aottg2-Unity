@@ -28,7 +28,7 @@ namespace CustomLogic
             return string.Format(str, list.List.ToArray());
         }
 
-        [CLMethod("Split the string into a list. Can pass in either a string to split on or a list of strings to split on, the last optional param can remove all empty entries.")]
+        [CLMethod(Description = "Split the string into a list. Can pass in either a string to split on or a list of strings to split on, the last optional param can remove all empty entries.", ReturnTypeArguments = new[] { "string" })]
         public static CustomLogicListBuiltin Split(string toSplit, object splitter, bool removeEmptyEntries = false)
         {
             var options = removeEmptyEntries

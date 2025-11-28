@@ -1,0 +1,218 @@
+{
+  "kind": "component",
+  "name": "Collider",
+  "description": "",
+  "extends": [
+    "Object"
+  ],
+  "instanceFields": [
+    {
+      "label": "AttachedArticulationBody",
+      "type": {
+        "name": "Transform",
+        "typeArguments": []
+      },
+      "description": "The transform of the rigidbody this collider is attached to.",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "ContactOffset",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Enabled",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "ExludeLayers",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "IncludeLayers",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "The additional layers that this Collider should include when deciding if the Collider can contact another Collider.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "IsTrigger",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Center",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "ProvidesContacts",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "MaterialName",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "The name of the physics material on the collider.",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "SharedMaterialName",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "The name of the shared physics material on this collider.",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "Transform",
+      "type": {
+        "name": "Transform",
+        "typeArguments": []
+      },
+      "description": "The collider's transform.",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "GameObjectTransform",
+      "type": {
+        "name": "Transform",
+        "typeArguments": []
+      },
+      "description": "The transform of the gameobject this collider is attached to.",
+      "readonly": true,
+      "private": false
+    }
+  ],
+  "instanceMethods": [
+    {
+      "label": "ClosestPoint",
+      "returnType": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "",
+      "parameters": [
+        {
+          "name": "position",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "ClosestPointOnBounds",
+      "returnType": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "",
+      "parameters": [
+        {
+          "name": "position",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Raycast",
+      "returnType": {
+        "name": "LineCastHitResult",
+        "typeArguments": []
+      },
+      "description": "Runs a raycast physics check between start to end and checks if it hits any collider with the given collideWith layer. Returns a Collider object if it hit something otherwise returns null.",
+      "parameters": [
+        {
+          "name": "start",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "end",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "collideWith",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    }
+  ],
+  "staticFields": [],
+  "staticMethods": [],
+  "constructors": []
+}

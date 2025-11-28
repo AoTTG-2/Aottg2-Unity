@@ -16,5 +16,16 @@ namespace CustomLogic
         public bool Abstract { get; set; } = false;
 
         public bool InheritBaseMembers { get; set; } = true;
+
+        /// <summary>
+        /// Generic type parameter names for types that are conceptually generic in ACL
+        /// (e.g., ["K", "V"] for Dict&lt;K, V&gt;)
+        /// </summary>
+        public string[] TypeParameters { get; set; }
+
+        /// <summary>
+        /// Indicates whether this type is a component
+        /// </summary>
+        public bool IsComponent { get; set; } = false;
     }
 }
