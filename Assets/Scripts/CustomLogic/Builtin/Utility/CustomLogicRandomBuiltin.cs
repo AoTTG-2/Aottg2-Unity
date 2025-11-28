@@ -38,6 +38,7 @@ namespace CustomLogic
             UseInstanceRandom = true;
         }
 
+
         [CLMethod("Generates a random integer between the specified range.")]
         public int RandomInt(int min, int max) => UseInstanceRandom ? Rand.NextInt(min, max) : Random.Range(min, max);
 
