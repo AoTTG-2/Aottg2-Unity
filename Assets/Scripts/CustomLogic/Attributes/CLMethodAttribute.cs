@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace CustomLogic
 {
+    [Conditional("UNITY_EDITOR")]
     [AttributeUsage(AttributeTargets.Method)]
     internal class CLMethodAttribute : CLBaseAttribute
     {

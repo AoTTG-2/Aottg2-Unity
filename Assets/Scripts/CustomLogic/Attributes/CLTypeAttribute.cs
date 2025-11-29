@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace CustomLogic
 {
@@ -8,6 +9,7 @@ namespace CustomLogic
     /// a constructor with a single parameter of type object[]
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, Inherited = false)]
+    [Conditional("UNITY_EDITOR")]
     internal class CLTypeAttribute : CLBaseAttribute
     {
         /// <summary>
