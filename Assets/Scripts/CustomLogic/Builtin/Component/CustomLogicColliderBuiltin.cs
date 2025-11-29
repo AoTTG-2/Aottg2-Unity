@@ -4,7 +4,7 @@ using Utility;
 
 namespace CustomLogic
 {
-    [CLType(Name = "Collider", Abstract = true)]
+    [CLType(Name = "Collider", Abstract = true, IsComponent = true)]
     partial class CustomLogicColliderBuiltin : BuiltinClassInstance, ICustomLogicCopyable, ICustomLogicEquals
     {
         public Collider collider;

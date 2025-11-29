@@ -1,0 +1,34 @@
+{
+  "kind": "class",
+  "name": "Label",
+  "description": "UI element for displaying text",
+  "extends": [
+    "VisualElement"
+  ],
+  "instanceFields": [
+    {
+      "label": "Text",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "The text displayed by the Label",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "EnableRichText",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "When false, rich text tags will not be parsed",
+      "readonly": false,
+      "private": false
+    }
+  ],
+  "instanceMethods": [],
+  "staticFields": [],
+  "staticMethods": [],
+  "constructors": []
+}

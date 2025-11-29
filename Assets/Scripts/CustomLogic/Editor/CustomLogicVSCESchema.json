@@ -1,0 +1,189 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ACL Class Definition Schema",
+  "description": "Schema for declarative class definitions in JSON format",
+  "type": "object",
+  "properties": {
+    "kind": {
+      "type": "string",
+      "enum": ["class", "component", "extension", "cutscene"],
+      "description": "The kind of class"
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the class"
+    },
+    "description": {
+      "type": "string",
+      "description": "Human-readable description of the class"
+    },
+    "typeParameters": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Generic type parameters (e.g., ['K', 'V'] for Dict<K,V>)"
+    },
+    "extends": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Names of base classes to extend"
+    },
+    "hidden": {
+      "type": "boolean",
+      "description": "Whether the class should be hidden from autocomplete"
+    },
+    "instanceFields": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Field"
+      },
+      "default": []
+    },
+    "instanceMethods": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Method"
+      },
+      "default": []
+    },
+    "staticFields": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Field"
+      },
+      "default": []
+    },
+    "staticMethods": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Method"
+      },
+      "default": []
+    },
+    "constructors": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Constructor"
+      },
+      "default": []
+    }
+  },
+  "required": ["kind", "name", "description"],
+  "definitions": {
+    "TypeReference": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Type name (can be a type parameter like 'K', 'V', 'T')"
+        },
+        "typeArguments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TypeReference"
+          },
+          "default": []
+        }
+      },
+      "required": ["name"]
+    },
+    "Field": {
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string",
+          "description": "Field name"
+        },
+        "type": {
+          "$ref": "#/definitions/TypeReference"
+        },
+        "description": {
+          "type": "string"
+        },
+        "readonly": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether the field is readonly (optional, defaults to false)"
+        },
+        "private": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether the field is private (optional, defaults to false)"
+        }
+      },
+      "required": ["label", "type", "description"]
+    },
+    "Parameter": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/definitions/TypeReference"
+        },
+        "description": {
+          "type": "string"
+        },
+        "isOptional": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether the parameter is optional (optional, defaults to false)"
+        },
+        "isVariadic": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether the parameter is variadic (optional, defaults to false)"
+        }
+      },
+      "required": ["name", "type", "description"]
+    },
+    "Method": {
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string",
+          "description": "Method name"
+        },
+        "returnType": {
+          "$ref": "#/definitions/TypeReference"
+        },
+        "description": {
+          "type": "string"
+        },
+        "parameters": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Parameter"
+          },
+          "default": []
+        },
+        "kind": {
+          "type": "string",
+          "enum": ["function", "coroutine"],
+          "description": "Method kind (required in IMethod interface)"
+        }
+      },
+      "required": ["label", "returnType", "description", "kind"]
+    },
+    "Constructor": {
+      "type": "object",
+      "properties": {
+        "parameters": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Parameter"
+          },
+          "default": []
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "required": ["description"]
+    }
+  }
+}

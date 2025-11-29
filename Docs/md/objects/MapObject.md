@@ -50,61 +50,61 @@ MapObject represents a map object created in the editor or spawned at runtime us
 <pre class="language-typescript"><code class="lang-typescript">function SetComponentsEnabled(enabled: bool)</code></pre>
 > Set whether all components are enabled
 > 
-<pre class="language-typescript"><code class="lang-typescript">function AddSphereCollider(collideMode: string, collideWith: string, center: <a data-footnote-ref href="#user-content-fn-46">Vector3</a>, radius: float)</code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function AddSphereCollider(collideMode: string, collideWith: string, center: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, radius: float)</code></pre>
 > Add a sphere collider to the object
 > 
-<pre class="language-typescript"><code class="lang-typescript">function AddBoxCollider(collideMode: string, collideWith: string, center: <a data-footnote-ref href="#user-content-fn-46">Vector3</a> = null, size: <a data-footnote-ref href="#user-content-fn-46">Vector3</a> = null)</code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function AddBoxCollider(collideMode: string, collideWith: string, center: <a data-footnote-ref href="#user-content-fn-9">Vector3</a> = null, size: <a data-footnote-ref href="#user-content-fn-9">Vector3</a> = null)</code></pre>
 > Add a box collider to the object
 > 
-<pre class="language-typescript"><code class="lang-typescript">function AddSphereTarget(team: string, center: <a data-footnote-ref href="#user-content-fn-46">Vector3</a>, radius: float) -> <a data-footnote-ref href="#user-content-fn-23">MapTargetable</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function AddSphereTarget(team: string, center: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, radius: float) -> <a data-footnote-ref href="#user-content-fn-17">MapTargetable</a></code></pre>
 > Add a sphere target to the object
 > 
-<pre class="language-typescript"><code class="lang-typescript">function AddBoxTarget(team: string, center: <a data-footnote-ref href="#user-content-fn-46">Vector3</a>, size: <a data-footnote-ref href="#user-content-fn-46">Vector3</a>) -> <a data-footnote-ref href="#user-content-fn-23">MapTargetable</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function AddBoxTarget(team: string, center: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, size: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>) -> <a data-footnote-ref href="#user-content-fn-17">MapTargetable</a></code></pre>
 > Add a box target to the object
 > 
-<pre class="language-typescript"><code class="lang-typescript">function GetChild(name: string) -> <a data-footnote-ref href="#user-content-fn-22">MapObject</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function GetChild(name: string) -> <a data-footnote-ref href="#user-content-fn-23">MapObject</a></code></pre>
 > Get a child object by name
 > 
-<pre class="language-typescript"><code class="lang-typescript">function GetChildren() -> <a data-footnote-ref href="#user-content-fn-18">List</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function GetChildren() -> <a data-footnote-ref href="#user-content-fn-4">List</a><<a data-footnote-ref href="#user-content-fn-23">MapObject</a>></code></pre>
 > Get all child objects
 > 
-<pre class="language-typescript"><code class="lang-typescript">function GetTransform(name: string) -> <a data-footnote-ref href="#user-content-fn-43">Transform</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function GetTransform(name: string) -> <a data-footnote-ref href="#user-content-fn-29">Transform</a></code></pre>
 > Get a child transform by name
 > 
-<pre class="language-typescript"><code class="lang-typescript">function SetColorAll(color: <a data-footnote-ref href="#user-content-fn-7">Color</a>)</code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function SetColorAll(color: <a data-footnote-ref href="#user-content-fn-0">Color</a>)</code></pre>
 > Set the color of all renderers on the object
 > 
-<pre class="language-typescript"><code class="lang-typescript">function InBounds(position: <a data-footnote-ref href="#user-content-fn-46">Vector3</a>) -> bool</code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function InBounds(position: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>) -> bool</code></pre>
 > Check if a position is within the object's bounds
 > 
-<pre class="language-typescript"><code class="lang-typescript">function GetBoundsAverageCenter() -> <a data-footnote-ref href="#user-content-fn-46">Vector3</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function GetBoundsAverageCenter() -> <a data-footnote-ref href="#user-content-fn-9">Vector3</a></code></pre>
 > Get the bounds average center
 > 
-<pre class="language-typescript"><code class="lang-typescript">function GetBoundsCenter() -> <a data-footnote-ref href="#user-content-fn-46">Vector3</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function GetBoundsCenter() -> <a data-footnote-ref href="#user-content-fn-9">Vector3</a></code></pre>
 > Get the bounds center
 > 
-<pre class="language-typescript"><code class="lang-typescript">function GetBoundsSize() -> <a data-footnote-ref href="#user-content-fn-46">Vector3</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function GetBoundsSize() -> <a data-footnote-ref href="#user-content-fn-9">Vector3</a></code></pre>
 > Get the bounds size
 > 
-<pre class="language-typescript"><code class="lang-typescript">function GetBoundsMin() -> <a data-footnote-ref href="#user-content-fn-46">Vector3</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function GetBoundsMin() -> <a data-footnote-ref href="#user-content-fn-9">Vector3</a></code></pre>
 > Get the bounds min
 > 
-<pre class="language-typescript"><code class="lang-typescript">function GetBoundsMax() -> <a data-footnote-ref href="#user-content-fn-46">Vector3</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function GetBoundsMax() -> <a data-footnote-ref href="#user-content-fn-9">Vector3</a></code></pre>
 > Get the bounds max
 > 
-<pre class="language-typescript"><code class="lang-typescript">function GetBoundsExtents() -> <a data-footnote-ref href="#user-content-fn-46">Vector3</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function GetBoundsExtents() -> <a data-footnote-ref href="#user-content-fn-9">Vector3</a></code></pre>
 > Get the bounds extents
 > 
-<pre class="language-typescript"><code class="lang-typescript">function GetCorners() -> <a data-footnote-ref href="#user-content-fn-18">List</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function GetCorners() -> <a data-footnote-ref href="#user-content-fn-4">List</a><<a data-footnote-ref href="#user-content-fn-9">Vector3</a>></code></pre>
 > Get the corners of the bounds
 > 
 <pre class="language-typescript"><code class="lang-typescript">function HasTag(tag: string) -> bool</code></pre>
 > Whether or not the object has the given tag
 > 
-<pre class="language-typescript"><code class="lang-typescript">function AddBuiltinComponent(name: string) -> <a data-footnote-ref href="#user-content-fn-57">Object</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function AddBuiltinComponent(name: string) -> <a data-footnote-ref href="#user-content-fn-59">Object</a></code></pre>
 > Add a builtin component to the MapObject
 > 
-<pre class="language-typescript"><code class="lang-typescript">function GetBuiltinComponent(name: string) -> <a data-footnote-ref href="#user-content-fn-57">Object</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function GetBuiltinComponent(name: string) -> <a data-footnote-ref href="#user-content-fn-59">Object</a></code></pre>
 > Gets a builtin component to the MapObject
 > 
 <pre class="language-typescript"><code class="lang-typescript">function RemoveBuiltinComponent(name: string)</code></pre>
@@ -114,62 +114,64 @@ MapObject represents a map object created in the editor or spawned at runtime us
 > Serialize the current object to a csv.
 > 
 
-[^0]: [Animation](../objects/Animation.md)
-[^1]: [Animator](../objects/Animator.md)
-[^2]: [AudioSource](../objects/AudioSource.md)
-[^3]: [Camera](../static/Camera.md)
-[^4]: [Character](../objects/Character.md)
-[^5]: [Collider](../objects/Collider.md)
-[^6]: [Collision](../objects/Collision.md)
-[^7]: [Color](../objects/Color.md)
-[^8]: [Convert](../static/Convert.md)
-[^9]: [Cutscene](../static/Cutscene.md)
-[^10]: [Dict](../objects/Dict.md)
-[^11]: [Game](../static/Game.md)
-[^12]: [Human](../objects/Human.md)
-[^13]: [Input](../static/Input.md)
-[^14]: [Json](../static/Json.md)
-[^15]: [LightBuiltin](../static/LightBuiltin.md)
-[^16]: [LineCastHitResult](../objects/LineCastHitResult.md)
-[^17]: [LineRenderer](../objects/LineRenderer.md)
-[^18]: [List](../objects/List.md)
-[^19]: [Locale](../static/Locale.md)
-[^20]: [LodBuiltin](../static/LodBuiltin.md)
-[^21]: [Map](../static/Map.md)
-[^22]: [MapObject](../objects/MapObject.md)
-[^23]: [MapTargetable](../objects/MapTargetable.md)
-[^24]: [Math](../static/Math.md)
-[^25]: [NavmeshObstacleBuiltin](../static/NavmeshObstacleBuiltin.md)
-[^26]: [Network](../static/Network.md)
-[^27]: [NetworkView](../objects/NetworkView.md)
-[^28]: [PersistentData](../static/PersistentData.md)
-[^29]: [Physics](../static/Physics.md)
-[^30]: [PhysicsMaterialBuiltin](../static/PhysicsMaterialBuiltin.md)
-[^31]: [Player](../objects/Player.md)
-[^32]: [Prefab](../objects/Prefab.md)
-[^33]: [Quaternion](../objects/Quaternion.md)
-[^34]: [Random](../objects/Random.md)
-[^35]: [Range](../objects/Range.md)
-[^36]: [RigidbodyBuiltin](../static/RigidbodyBuiltin.md)
-[^37]: [RoomData](../static/RoomData.md)
-[^38]: [Set](../objects/Set.md)
-[^39]: [Shifter](../objects/Shifter.md)
-[^40]: [String](../static/String.md)
+[^0]: [Color](../objects/Color.md)
+[^1]: [Dict](../objects/Dict.md)
+[^2]: [LightBuiltin](../static/LightBuiltin.md)
+[^3]: [LineCastHitResult](../objects/LineCastHitResult.md)
+[^4]: [List](../objects/List.md)
+[^5]: [Quaternion](../objects/Quaternion.md)
+[^6]: [Range](../objects/Range.md)
+[^7]: [Set](../objects/Set.md)
+[^8]: [Vector2](../objects/Vector2.md)
+[^9]: [Vector3](../objects/Vector3.md)
+[^10]: [Animation](../objects/Animation.md)
+[^11]: [Animator](../objects/Animator.md)
+[^12]: [AudioSource](../objects/AudioSource.md)
+[^13]: [Collider](../objects/Collider.md)
+[^14]: [Collision](../objects/Collision.md)
+[^15]: [LineRenderer](../objects/LineRenderer.md)
+[^16]: [LodBuiltin](../static/LodBuiltin.md)
+[^17]: [MapTargetable](../objects/MapTargetable.md)
+[^18]: [NavmeshObstacleBuiltin](../static/NavmeshObstacleBuiltin.md)
+[^19]: [PhysicsMaterialBuiltin](../static/PhysicsMaterialBuiltin.md)
+[^20]: [RigidbodyBuiltin](../static/RigidbodyBuiltin.md)
+[^21]: [Character](../objects/Character.md)
+[^22]: [Human](../objects/Human.md)
+[^23]: [MapObject](../objects/MapObject.md)
+[^24]: [NetworkView](../objects/NetworkView.md)
+[^25]: [Player](../objects/Player.md)
+[^26]: [Prefab](../objects/Prefab.md)
+[^27]: [Shifter](../objects/Shifter.md)
+[^28]: [Titan](../objects/Titan.md)
+[^29]: [Transform](../objects/Transform.md)
+[^30]: [WallColossal](../objects/WallColossal.md)
+[^31]: [Camera](../static/Camera.md)
+[^32]: [Cutscene](../static/Cutscene.md)
+[^33]: [Game](../static/Game.md)
+[^34]: [Input](../static/Input.md)
+[^35]: [Locale](../static/Locale.md)
+[^36]: [Map](../static/Map.md)
+[^37]: [Network](../static/Network.md)
+[^38]: [PersistentData](../static/PersistentData.md)
+[^39]: [Physics](../static/Physics.md)
+[^40]: [RoomData](../static/RoomData.md)
 [^41]: [Time](../static/Time.md)
-[^42]: [Titan](../objects/Titan.md)
-[^43]: [Transform](../objects/Transform.md)
-[^44]: [UI](../static/UI.md)
-[^45]: [Vector2](../objects/Vector2.md)
-[^46]: [Vector3](../objects/Vector3.md)
-[^47]: [WallColossal](../objects/WallColossal.md)
-[^48]: [Button](../objects/Button.md)
-[^49]: [Dropdown](../objects/Dropdown.md)
-[^50]: [Label](../objects/Label.md)
-[^51]: [ProgressBar](../objects/ProgressBar.md)
-[^52]: [ScrollView](../objects/ScrollView.md)
-[^53]: [Slider](../objects/Slider.md)
-[^54]: [TextField](../objects/TextField.md)
-[^55]: [Toggle](../objects/Toggle.md)
-[^56]: [VisualElement](../objects/VisualElement.md)
-[^57]: [Object](../objects/Object.md)
-[^58]: [Component](../objects/Component.md)
+[^42]: [Button](../objects/Button.md)
+[^43]: [Dropdown](../objects/Dropdown.md)
+[^44]: [Icon](../objects/Icon.md)
+[^45]: [Image](../objects/Image.md)
+[^46]: [Label](../objects/Label.md)
+[^47]: [ProgressBar](../objects/ProgressBar.md)
+[^48]: [ScrollView](../objects/ScrollView.md)
+[^49]: [Slider](../objects/Slider.md)
+[^50]: [TextField](../objects/TextField.md)
+[^51]: [Toggle](../objects/Toggle.md)
+[^52]: [UI](../static/UI.md)
+[^53]: [VisualElement](../objects/VisualElement.md)
+[^54]: [Convert](../static/Convert.md)
+[^55]: [Json](../static/Json.md)
+[^56]: [Math](../static/Math.md)
+[^57]: [Random](../objects/Random.md)
+[^58]: [String](../static/String.md)
+[^59]: [Object](../objects/Object.md)
+[^60]: [Component](../objects/Component.md)

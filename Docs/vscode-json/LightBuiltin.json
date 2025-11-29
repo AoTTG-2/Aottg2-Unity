@@ -1,0 +1,162 @@
+{
+  "kind": "extension",
+  "name": "LightBuiltin",
+  "description": "",
+  "instanceFields": [
+    {
+      "label": "TypeOfLight",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "The type of the light.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Range",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "The range of the light.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "SpotAngle",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "The spot angle of the light, works on spot lights only.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Color",
+      "type": {
+        "name": "Color",
+        "typeArguments": []
+      },
+      "description": "The color of the light.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Intensity",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "The intensity of the light.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "BounceIntensity",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "The bounce intensity of the light.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "ShadowType",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "The shadow type of the light (Soft, None, Hard).",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "ShadowStrength",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "The shadow strength of the light.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "WeatherControlled",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "The light is controlled by the weather system.",
+      "readonly": false,
+      "private": false
+    }
+  ],
+  "instanceMethods": [],
+  "staticFields": [
+    {
+      "label": "LightTypeDirectional",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "LightType.Directional",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "LightTypePoint",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "LightType.Point",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "LightTypeSpot",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "LightType.Point",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "ShadowTypeNone",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "LightShadows.None",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "ShadowTypeHard",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "LightShadows.Hard",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "ShadowTypeSoft",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "LightShadows.Soft",
+      "readonly": true,
+      "private": false
+    }
+  ],
+  "staticMethods": [],
+  "constructors": []
+}

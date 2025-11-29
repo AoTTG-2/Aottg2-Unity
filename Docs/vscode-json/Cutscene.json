@@ -1,0 +1,147 @@
+{
+  "kind": "extension",
+  "name": "Cutscene",
+  "description": "",
+  "extends": [
+    "Object"
+  ],
+  "instanceFields": [],
+  "instanceMethods": [],
+  "staticFields": [],
+  "staticMethods": [
+    {
+      "label": "Start",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Start a cutscene",
+      "parameters": [
+        {
+          "name": "name",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "full",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "ShowDialogue",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Show a dialogue box",
+      "parameters": [
+        {
+          "name": "icon",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "title",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "content",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "ShowDialogueForTime",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Show a dialogue box for a certain amount of time",
+      "parameters": [
+        {
+          "name": "icon",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "title",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "content",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "time",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "HideDialogue",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Hide the dialogue box",
+      "parameters": [],
+      "kind": "function"
+    }
+  ],
+  "constructors": []
+}

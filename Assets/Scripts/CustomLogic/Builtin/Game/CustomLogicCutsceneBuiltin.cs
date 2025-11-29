@@ -15,25 +15,25 @@ namespace CustomLogic
         }
 
         // Convert the above to CLMethod
-        [CLMethod("Start a cutscene")]
+        [CLMethod(Static = true, Description = "Start a cutscene")]
         public void Start(string name, bool full)
         {
             CustomLogicManager._instance.StartCoroutine(StartCutscene(name, full));
         }
 
-        [CLMethod("Show a dialogue box")]
+        [CLMethod(Static = true, Description = "Show a dialogue box")]
         public void ShowDialogue(string icon, string title, string content)
         {
             ((InGameMenu)UIManager.CurrentMenu).ShowCutsceneMenu(icon, title, content, CustomLogicManager.Cutscene);
         }
 
-        [CLMethod("Show a dialogue box for a certain amount of time")]
+        [CLMethod(Static = true, Description = "Show a dialogue box for a certain amount of time")]
         public void ShowDialogueForTime(string icon, string title, string content, float time)
         {
             CustomLogicManager._instance.StartCoroutine(routine_ShowDialogueForTime(icon, title, content, time));
         }
 
-        [CLMethod("Hide the dialogue box")]
+        [CLMethod(Static = true, Description = "Hide the dialogue box")]
         public void HideDialogue()
         {
             ((InGameMenu)UIManager.CurrentMenu).HideCutsceneMenu();

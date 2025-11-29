@@ -197,7 +197,7 @@ namespace CustomLogic
             return transform != null ? new CustomLogicTransformBuiltin(transform) : null;
         }
 
-        [CLMethod("Gets all child transforms.")]
+        [CLMethod("Gets all child transforms.", ReturnTypeArguments = new[] { "Transform" })]
         public CustomLogicListBuiltin GetTransforms()
         {
             var listBuiltin = new CustomLogicListBuiltin();
@@ -320,7 +320,7 @@ namespace CustomLogic
                 renderer.enabled = enabled;
         }
 
-        [CLMethod("Gets colliders of the transform.")]
+        [CLMethod("Gets colliders of the transform.", ReturnTypeArguments = new[] { "Collider" })]
         public CustomLogicListBuiltin GetColliders(bool recursive = false)
         {
             var listBuiltin = new CustomLogicListBuiltin();

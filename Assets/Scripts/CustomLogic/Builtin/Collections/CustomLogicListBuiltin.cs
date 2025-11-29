@@ -40,7 +40,7 @@ namespace CustomLogic
     ///     return a * 2;
     /// }
     /// </code>
-    [CLType(Name = "List")]
+    [CLType(Name = "List", TypeParameters = new[] { "T" })]
     partial class CustomLogicListBuiltin : BuiltinClassInstance
     {
         public List<object> List = new List<object>();
@@ -51,7 +51,7 @@ namespace CustomLogic
         }
 
         [CLConstructor]
-        public CustomLogicListBuiltin(object[] parameterValues)
+        public CustomLogicListBuiltin(params object[] parameterValues)
         {
             foreach (var item in parameterValues) List.Add(item);
         }
@@ -125,7 +125,7 @@ namespace CustomLogic
 
         // Add linq operations using UserMethod as the function
 
-        [CLMethod(description: "Filter the list using a custom method, expects a method with the signature bool method(element)")]
+        [CLMethod(description: "Filter the list using a custom method, expects a method with the signature bool method(element)", ReturnTypeArguments = new[] { "T" })]
         public CustomLogicListBuiltin Filter(UserMethod method)
         {
             CustomLogicListBuiltin newList = new CustomLogicListBuiltin();
@@ -133,7 +133,7 @@ namespace CustomLogic
             return newList;
         }
 
-        [CLMethod(description: "Map the list using a custom method, expects a method with the signature object method(element)")]
+        [CLMethod(description: "Map the list using a custom method, expects a method with the signature object method(element)", ReturnTypeArguments = new[] { "T" })]
         public CustomLogicListBuiltin Map(UserMethod method)
         {
             CustomLogicListBuiltin newList = new CustomLogicListBuiltin();
@@ -147,7 +147,7 @@ namespace CustomLogic
             return List.Aggregate(initialValue, (acc, e) => CustomLogicManager.Evaluator.EvaluateMethod(method, new object[] { acc, e }));
         }
 
-        [CLMethod(description: "Returns a randomized version of the list.")]
+        [CLMethod(description: "Returns a randomized version of the list.", ReturnTypeArguments = new[] { "T" })]
         public CustomLogicListBuiltin Randomize()
         {
             CustomLogicListBuiltin newList = new CustomLogicListBuiltin();
@@ -156,7 +156,7 @@ namespace CustomLogic
             return newList;
         }
 
-        [CLMethod(description: "Convert the list to a set")]
+        [CLMethod(description: "Convert the list to a set", ReturnTypeArguments = new[] { "T" })]
         public CustomLogicSetBuiltin ToSet()
         {
             CustomLogicSetBuiltin newSet = new CustomLogicSetBuiltin();

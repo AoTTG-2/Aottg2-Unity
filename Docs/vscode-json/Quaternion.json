@@ -1,0 +1,497 @@
+{
+  "kind": "extension",
+  "name": "Quaternion",
+  "description": "Represents a quaternion.",
+  "extends": [
+    "Object"
+  ],
+  "instanceFields": [
+    {
+      "label": "X",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Y",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Z",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "W",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Euler",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "",
+      "readonly": false,
+      "private": false
+    }
+  ],
+  "instanceMethods": [],
+  "staticFields": [
+    {
+      "label": "Identity",
+      "type": {
+        "name": "Quaternion",
+        "typeArguments": []
+      },
+      "description": "",
+      "readonly": true,
+      "private": false
+    }
+  ],
+  "staticMethods": [
+    {
+      "label": "Lerp",
+      "returnType": {
+        "name": "Quaternion",
+        "typeArguments": []
+      },
+      "description": "",
+      "parameters": [
+        {
+          "name": "a",
+          "type": {
+            "name": "Quaternion",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "b",
+          "type": {
+            "name": "Quaternion",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "t",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "LerpUnclamped",
+      "returnType": {
+        "name": "Quaternion",
+        "typeArguments": []
+      },
+      "description": "",
+      "parameters": [
+        {
+          "name": "a",
+          "type": {
+            "name": "Quaternion",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "b",
+          "type": {
+            "name": "Quaternion",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "t",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Slerp",
+      "returnType": {
+        "name": "Quaternion",
+        "typeArguments": []
+      },
+      "description": "",
+      "parameters": [
+        {
+          "name": "a",
+          "type": {
+            "name": "Quaternion",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "b",
+          "type": {
+            "name": "Quaternion",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "t",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "SlerpUnclamped",
+      "returnType": {
+        "name": "Quaternion",
+        "typeArguments": []
+      },
+      "description": "",
+      "parameters": [
+        {
+          "name": "a",
+          "type": {
+            "name": "Quaternion",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "b",
+          "type": {
+            "name": "Quaternion",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "t",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "FromEuler",
+      "returnType": {
+        "name": "Quaternion",
+        "typeArguments": []
+      },
+      "description": "Returns the Quaternion rotation from the given euler angles.",
+      "parameters": [
+        {
+          "name": "euler",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "LookRotation",
+      "returnType": {
+        "name": "Quaternion",
+        "typeArguments": []
+      },
+      "description": "",
+      "parameters": [
+        {
+          "name": "forward",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "upwards",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "FromToRotation",
+      "returnType": {
+        "name": "Quaternion",
+        "typeArguments": []
+      },
+      "description": "",
+      "parameters": [
+        {
+          "name": "a",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "b",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Inverse",
+      "returnType": {
+        "name": "Quaternion",
+        "typeArguments": []
+      },
+      "description": "",
+      "parameters": [
+        {
+          "name": "q",
+          "type": {
+            "name": "Quaternion",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "RotateTowards",
+      "returnType": {
+        "name": "Quaternion",
+        "typeArguments": []
+      },
+      "description": "",
+      "parameters": [
+        {
+          "name": "from",
+          "type": {
+            "name": "Quaternion",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "to",
+          "type": {
+            "name": "Quaternion",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "maxDegreesDelta",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "AngleAxis",
+      "returnType": {
+        "name": "Quaternion",
+        "typeArguments": []
+      },
+      "description": "",
+      "parameters": [
+        {
+          "name": "angle",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "axis",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Angle",
+      "returnType": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "",
+      "parameters": [
+        {
+          "name": "a",
+          "type": {
+            "name": "Quaternion",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "b",
+          "type": {
+            "name": "Quaternion",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    }
+  ],
+  "constructors": [
+    {
+      "parameters": [],
+      "description": ""
+    },
+    {
+      "parameters": [
+        {
+          "name": "x",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "y",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "z",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "w",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "description": "Creates a new Quaternion from the given values."
+    }
+  ]
+}

@@ -3,7 +3,7 @@ using UnityEngine.AI;
 
 namespace CustomLogic
 {
-    [CLType(Name = "NavmeshObstacleBuiltin", Static = true, Abstract = true, Description = "")]
+    [CLType(Name = "NavmeshObstacleBuiltin", Static = true, Abstract = true, Description = "", IsComponent = true)]
     partial class CustomLogicNavmeshObstacleBuiltin : BuiltinComponentInstance
     {
         public NavMeshObstacle Value;
@@ -19,10 +19,10 @@ namespace CustomLogic
         }
 
         // Expose static properties for each NavMeshObstacleShape
-        [CLProperty(Description = "The NavMeshObstacleShape Box.", Static = true)]
+        [CLProperty(Description = "The NavMeshObstacleShape Box.")]
         public static int ShapeBox => (int)NavMeshObstacleShape.Box;
 
-        [CLProperty(Description = "The NavMeshObstacleShape Capsule.", Static = true)]
+        [CLProperty(Description = "The NavMeshObstacleShape Capsule.")]
         public static int ShapeCapsule => (int)NavMeshObstacleShape.Capsule;
 
         [CLProperty(Description = "The radius of the obstacle.")]

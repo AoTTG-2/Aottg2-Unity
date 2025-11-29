@@ -11,6 +11,8 @@ namespace CustomLogic.Editor.Models
         [JsonIgnore] public bool IsStatic { get; set; }
         [JsonIgnore] public bool IsAbstract { get; set; }
         [JsonIgnore] public bool InheritBaseMembers { get; set; }
+        [JsonIgnore] public bool IsComponent { get; set; }
+        [JsonIgnore] public string[] TypeParameters { get; set; }
 
         [JsonIgnore] public CLType BaseType { get; set; }
 

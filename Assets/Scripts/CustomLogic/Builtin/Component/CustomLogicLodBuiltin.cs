@@ -7,7 +7,7 @@ namespace CustomLogic
     /// <summary>
     /// WIP feature to support LOD (Level of Detail) for map objects, currently only supports a single LOD level with a distance threshold.
     /// </summary>
-    [CLType(Name = "LodBuiltin", Static = true, Abstract = true, Description = "")]
+    [CLType(Name = "LodBuiltin", Static = true, Abstract = true, Description = "", IsComponent = true)]
     partial class CustomLogicLodBuiltin : BuiltinComponentInstance
     {
         public LODGroup Value;
