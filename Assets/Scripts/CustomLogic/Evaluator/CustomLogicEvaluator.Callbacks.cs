@@ -219,12 +219,8 @@ namespace CustomLogic
 
         private void Init()
         {
-            foreach (var staticType in CustomLogicBuiltinTypes.StaticTypeNames)
-            {
-                var instance = CustomLogicBuiltinTypes.CreateClassInstance(staticType, EmptyArgs);
-                _staticClasses[staticType] = instance;
-            }
-
+            // First, create user-defined static classes (Main and extensions)
+            // This must happen BEFORE C# bindings so user code can override
             foreach (string className in _start.Classes.Keys)
             {
                 if (className == "Main")
@@ -232,11 +228,25 @@ namespace CustomLogic
                 else if ((int)_start.Classes[className].Token.Value == (int)CustomLogicSymbol.Extension)
                     CreateStaticClass(className);
             }
+
+            // Then create C# builtin static classes ONLY if not already defined by user
+            foreach (var staticType in CustomLogicBuiltinTypes.StaticTypeNames)
+            {
+                if (!_staticClasses.ContainsKey(staticType))
+                {
+                    var instance = CustomLogicBuiltinTypes.CreateClassInstance(staticType, EmptyArgs);
+                    _staticClasses[staticType] = instance;
+                }
+            }
+
+            // Run assignments for all class instances
             foreach (CustomLogicClassInstance instance in _staticClasses.Values)
             {
                 if (instance is not BuiltinClassInstance)
                     RunAssignmentsClassInstance(instance);
             }
+            
+            // Load map objects
             foreach (int id in MapLoader.IdToMapObject.Keys)
             {
                 MapObject obj = MapLoader.IdToMapObject[id];

@@ -117,8 +117,8 @@ namespace ApplicationManagers
         static bool _solidBackground = true;
         static bool _wordWrap = true;
 
-        const int MaxMessages = 200;
-        const int MaxChars = 5000;
+        const int MaxMessages = 500;
+        const int MaxChars = 50000;
         const int InputHeight = 25;
         const int Padding = 10;
         const int TabHeight = 25;

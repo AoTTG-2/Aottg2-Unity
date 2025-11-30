@@ -47,6 +47,22 @@ namespace CustomLogic
         #region Evaluator
         public CustomLogicClassInstance CreateClassInstance(string className, object[] parameterValues, bool init = true)
         {
+            // NEW: Check user-defined classes FIRST (they can override C# bindings)
+            // This allows backward compatibility - if user defines "Button" and we add ButtonBuiltin later,
+            // their script won't break
+            if (_start.Classes.ContainsKey(className))
+            {
+                var classInstance = new UserClassInstance(className);
+                if (init)
+                {
+                    RunAssignmentsClassInstance(classInstance);
+                    EvaluateMethod(classInstance, "Init", parameterValues);
+                    classInstance.Inited = true;
+                }
+                return classInstance;
+            }
+
+            // Fallback to C# bindings if no user-defined class exists
             if (CustomLogicBuiltinTypes.IsBuiltinType(className))
             {
                 if (CustomLogicBuiltinTypes.IsAbstract(className))
@@ -55,14 +71,8 @@ namespace CustomLogic
                 return CustomLogicBuiltinTypes.CreateClassInstance(className, parameterValues);
             }
 
-            var classInstance = new UserClassInstance(className);
-            if (init)
-            {
-                RunAssignmentsClassInstance(classInstance);
-                EvaluateMethod(classInstance, "Init", parameterValues);
-                classInstance.Inited = true;
-            }
-            return classInstance;
+            // Class not found anywhere
+            throw new Exception($"Class {className} not found");
         }
 
         private void RunAssignmentsClassInstance(CustomLogicClassInstance classInstance)
