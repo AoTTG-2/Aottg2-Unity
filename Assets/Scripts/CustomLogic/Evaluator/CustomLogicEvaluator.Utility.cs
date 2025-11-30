@@ -12,8 +12,9 @@ namespace CustomLogic
     {
         public string GetLineNumberString(int lineNumber)
         {
-            // More relevant line number for when using MapLogic -> need to expand to handle builtin errors as well since its so annoying.
-            return CustomLogicManager.GetLineNumberString(lineNumber, _baseLogicOffset);
+            if (Compiler != null)
+                return Compiler.FormatLineNumber(lineNumber);
+            return lineNumber.ToString();
         }
 
         private void LogCustomLogicError(string errorMessage, bool showInChat)

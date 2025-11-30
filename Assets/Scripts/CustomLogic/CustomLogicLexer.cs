@@ -6,24 +6,25 @@ namespace CustomLogic
 {
     class CustomLogicLexer
     {
-        public int BuiltinLogicOffset => _lineOffset;
+        public CustomLogicCompiler Compiler { get; private set; }
         protected string _source;
         protected List<CustomLogicToken> _tokens = new List<CustomLogicToken>();
-        protected int _lineOffset;
         public string Error = "";
 
         private int _line;
         private char[] _chars;
 
-        public CustomLogicLexer(string source, int lineOffset)
+        public CustomLogicLexer(string source, CustomLogicCompiler compiler = null)
         {
             _source = source;
-            _lineOffset = lineOffset;
+            Compiler = compiler;
         }
 
         public string GetLineNumberString(int line)
         {
-            return CustomLogicManager.GetLineNumberString(line, _lineOffset);
+            if (Compiler != null)
+                return Compiler.FormatLineNumber(line);
+            return line.ToString();
         }
 
         public List<CustomLogicToken> GetTokens()
@@ -111,8 +112,7 @@ namespace CustomLogic
                 }
                 catch (Exception e)
                 {
-                    _line = _line + 1 + _lineOffset;
-                    Error = "Error parsing custom logic at line " + _line.ToString() + ": " + e.Message;
+                    Error = "Error parsing custom logic at line " + GetLineNumberString(_line + 1) + ": " + e.Message;
                     DebugConsole.Log(Error, true);
                     return new List<CustomLogicToken>();
                 }
@@ -122,7 +122,7 @@ namespace CustomLogic
 
         private void AddToken(CustomLogicTokenType type, object value, int line)
         {
-            _tokens.Add(new CustomLogicToken(type, value, line + 1 - _lineOffset));
+            _tokens.Add(new CustomLogicToken(type, value, line));
         }
 
         private string ScanAlphaSymbol(int startIndex)

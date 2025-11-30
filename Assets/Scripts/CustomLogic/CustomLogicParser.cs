@@ -9,17 +9,19 @@ namespace CustomLogic
     {
         protected List<CustomLogicToken> _tokens = new List<CustomLogicToken>();
         public string Error = "";
-        private int _baseLogicOffset = 0;
+        public CustomLogicCompiler Compiler { get; private set; }
 
-        public CustomLogicParser(List<CustomLogicToken> tokens, int baseLogicOffset = 0)
+        public CustomLogicParser(List<CustomLogicToken> tokens, CustomLogicCompiler compiler = null)
         {
             _tokens = tokens;
-            _baseLogicOffset = baseLogicOffset;
+            Compiler = compiler;
         }
 
         public string GetLineNumberString(int line)
         {
-            return CustomLogicManager.GetLineNumberString(line, _baseLogicOffset);
+            if (Compiler != null)
+                return Compiler.FormatLineNumber(line);
+            return line.ToString();
         }
 
         public CustomLogicStartAst GetStartAst()

@@ -20,6 +20,7 @@ namespace CustomLogic
         public static string Logic;
         public static string LogicHash;
         public static string BaseLogic;
+        public static CustomLogicCompiler Compiler;
         public static bool Cutscene;
         public static bool ManualCamera;
         public static float CameraFOV;
@@ -68,20 +69,11 @@ namespace CustomLogic
             }
         }
 
-        public static string GetLineNumberString(int line, int internalLogicOffset = 0)
-        {
-            // Base Logic
-            if (line < 0) return $"{line + internalLogicOffset} (Internal Logic)";
-
-            // Map Logic
-            if (SettingsManager.InGameCurrent.General.GameMode.Value == BuiltinLevels.UseMapLogic) return $"{line} ({MapManager.MapScript.LogicStart + line} maplogic)";
-            return line.ToString();
-        }
-
         private static void OnPreLoadScene(SceneName sceneName)
         {
             _instance.StopAllCoroutines();
             Evaluator = null;
+            Compiler = null;
             LogicLoaded = false;
             Cutscene = false;
             SkipCutscene = false;
@@ -188,18 +180,38 @@ namespace CustomLogic
 
         public static CustomLogicEvaluator GetEditorEvaluator(string source)
         {
-            // Rework this to pass around the builtin logic offset dependency bc this is annoying.
-            // Also implement a proper stack for error handling via rethrowing exceptions and adding in method calls as stack frames.
-            var lexer = GetLexer(source);
-            var parser = new CustomLogicParser(lexer.GetTokens(), lexer.BuiltinLogicOffset);
-            var evaluator = new CustomLogicEvaluator(parser.GetStartAst(), lexer.BuiltinLogicOffset);
+            var compiler = new CustomLogicCompiler();
+            
+            // Add base logic
+            compiler.AddSourceFile(new CustomLogicSourceFile("BaseLogic.cl", BaseLogic, CustomLogicSourceType.BaseLogic));
+            
+            // Add the user source
+            compiler.AddSourceFile(new CustomLogicSourceFile("UserSource.cl", source, CustomLogicSourceType.ModeLogic));
+            
+            // Compile
+            string combinedSource = compiler.Compile();
+            
+            var lexer = new CustomLogicLexer(combinedSource, compiler);
+            var parser = new CustomLogicParser(lexer.GetTokens(), compiler);
+            var evaluator = new CustomLogicEvaluator(parser.GetStartAst(), compiler);
             return evaluator;
         }
 
         public static string TryParseLogic(string source)
         {
-            var lexer = GetLexer(source);
-            var parser = new CustomLogicParser(lexer.GetTokens());
+            var compiler = new CustomLogicCompiler();
+            
+            // Add base logic
+            compiler.AddSourceFile(new CustomLogicSourceFile("BaseLogic.cl", BaseLogic, CustomLogicSourceType.BaseLogic));
+            
+            // Add the user source
+            compiler.AddSourceFile(new CustomLogicSourceFile("UserSource.cl", source, CustomLogicSourceType.ModeLogic));
+            
+            // Compile
+            string combinedSource = compiler.Compile();
+            
+            var lexer = new CustomLogicLexer(combinedSource, compiler);
+            var parser = new CustomLogicParser(lexer.GetTokens(), compiler);
             if (lexer.Error != string.Empty)
                 return lexer.Error;
             parser.GetStartAst();
@@ -209,22 +221,52 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// Need to maintain the following information in the lexer, parser, evaluator, and manager. 
-        /// If a line number is negative, it is part of baselogic and we need to remove the offset.
-        /// If the mode selected is "Map Logic", the non-negative part is offset by the current maps logic offset.
+        /// Starts the custom logic system with the given mode settings.
+        /// Loads files in the following order:
+        /// 1. C# bindings (implicit)
+        /// 2. BaseLogic
+        /// 3. Addons (if any)
+        /// 4. Map logic (if applicable)
+        /// 5. Mode logic
         /// </summary>
         public static void StartLogic(Dictionary<string, BaseSetting> modeSettings)
         {
-            var lexer = GetLexer(Logic);
-            var parser = new CustomLogicParser(lexer.GetTokens(), lexer.BuiltinLogicOffset);
-            Evaluator = new CustomLogicEvaluator(parser.GetStartAst(), lexer.BuiltinLogicOffset);
+            Compiler = new CustomLogicCompiler();
+            
+            // Add base logic (always first)
+            Compiler.AddSourceFile(new CustomLogicSourceFile("BaseLogic.cl", BaseLogic, CustomLogicSourceType.BaseLogic));
+            
+            // TODO: Add addon support here in the future
+            // For now, addons can be added via BuiltinLevels.GetAddonFiles()
+            
+            // Add map logic if using "Map Logic" mode
+            InGameGeneralSettings settings = SettingsManager.InGameCurrent.General;
+            if (settings.GameMode.Value == BuiltinLevels.UseMapLogic && MapManager.MapScript != null)
+            {
+                string mapLogic = MapManager.MapScript.Logic;
+                if (!string.IsNullOrEmpty(mapLogic))
+                {
+                    string mapName = settings.MapName.Value;
+                    Compiler.AddSourceFile(new CustomLogicSourceFile($"{mapName}.maplogic", mapLogic, CustomLogicSourceType.MapLogic));
+                }
+            }
+            
+            // Add mode logic (always last, unless it's Map Logic mode and map has no logic)
+            if (!string.IsNullOrEmpty(Logic))
+            {
+                string modeName = settings.GameMode.Value;
+                if (modeName == BuiltinLevels.UseMapLogic)
+                    modeName = "MapLogic";
+                Compiler.AddSourceFile(new CustomLogicSourceFile($"{modeName}.cl", Logic, CustomLogicSourceType.ModeLogic));
+            }
+            
+            // Compile all sources
+            string combinedSource = Compiler.Compile();
+            
+            var lexer = new CustomLogicLexer(combinedSource, Compiler);
+            var parser = new CustomLogicParser(lexer.GetTokens(), Compiler);
+            Evaluator = new CustomLogicEvaluator(parser.GetStartAst(), Compiler);
             Evaluator.Start(modeSettings);
-        }
-
-        private static CustomLogicLexer GetLexer(string logic)
-        {
-            int baseLogicLines = BaseLogic.Split('\n').Length;
-            return new CustomLogicLexer(BaseLogic + "\n" + logic, baseLogicLines);
         }
 
         private void FixedUpdate()

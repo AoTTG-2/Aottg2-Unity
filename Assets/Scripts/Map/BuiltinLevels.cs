@@ -18,6 +18,7 @@ namespace Map
         public static string CustomMapFolderPath = FolderPaths.CustomMap;
         public static string CustomMapAutosaveFolderPath = FolderPaths.CustomMapAutosave;
         public static string CustomLogicFolderPath = FolderPaths.CustomLogic;
+        public static string CustomAddonFolderPath = FolderPaths.CustomAddon;
         public static string UseMapLogic = "Map Logic";
 
         public static void Init()
@@ -25,6 +26,7 @@ namespace Map
             Directory.CreateDirectory(CustomMapFolderPath);
             Directory.CreateDirectory(CustomLogicFolderPath);
             Directory.CreateDirectory(CustomMapAutosaveFolderPath);
+            Directory.CreateDirectory(CustomAddonFolderPath);
             _info = JSON.Parse(((TextAsset)ResourceManager.LoadAsset(ResourcePaths.Info, "BuiltinMapInfo")).text);
         }
 
@@ -128,6 +130,62 @@ namespace Map
             return files;
         }
 
+        public static string LoadAddon(string name)
+        {
+            if (name == "")
+                return string.Empty;
+            
+            // Check for builtin addons first (if we add any in the future)
+            // For now, only check custom folder
+            
+            string path = CustomAddonFolderPath + "/" + name + ".addon";
+            if (File.Exists(path))
+                return File.ReadAllText(path);
+            path = CustomAddonFolderPath + "/" + name + ".cl";
+            if (File.Exists(path))
+                return File.ReadAllText(path);
+            path = CustomAddonFolderPath + "/" + name + ".txt";
+            if (File.Exists(path))
+                return File.ReadAllText(path);
+            return string.Empty;
+        }
+
+        public static string[] GetAddonNames()
+        {
+            List<string> addons = new List<string>();
+            HashSet<string> foundAddons = new HashSet<string>();
+            
+            string[] addonFiles = GetAddonFiles(CustomAddonFolderPath);
+            string[] clFiles = GetClFiles(CustomAddonFolderPath);
+            string[] txtFiles = GetTxtFiles(CustomAddonFolderPath);
+            
+            foreach (string file in addonFiles)
+            {
+                string name = file.Replace(".addon", "");
+                addons.Add(name);
+                foundAddons.Add(name);
+            }
+            foreach (string file in clFiles)
+            {
+                string name = file.Replace(".cl", "");
+                if (!foundAddons.Contains(name))
+                {
+                    addons.Add(name);
+                    foundAddons.Add(name);
+                }
+            }
+            foreach (string file in txtFiles)
+            {
+                string name = file.Replace(".txt", "");
+                if (!foundAddons.Contains(name))
+                {
+                    addons.Add(name);
+                    foundAddons.Add(name);
+                }
+            }
+            return addons.ToArray();
+        }
+
         public static void DeleteCustomMap(string name)
         {
             File.Delete(CustomMapFolderPath + "/" + name + ".txt");
@@ -137,6 +195,13 @@ namespace Map
         {
             File.Delete(CustomLogicFolderPath + "/" + name + ".txt");
             File.Delete(CustomLogicFolderPath + "/" + name + ".cl");
+        }
+
+        public static void DeleteCustomAddon(string name)
+        {
+            File.Delete(CustomAddonFolderPath + "/" + name + ".addon");
+            File.Delete(CustomAddonFolderPath + "/" + name + ".cl");
+            File.Delete(CustomAddonFolderPath + "/" + name + ".txt");
         }
 
         public static void SaveCustomMap(string name, MapScript script)
@@ -152,6 +217,11 @@ namespace Map
         public static void SaveCustomLogic(string name, string script)
         {
             File.WriteAllText(CustomLogicFolderPath + "/" + name + ".cl", script);
+        }
+
+        public static void SaveCustomAddon(string name, string script)
+        {
+            File.WriteAllText(CustomAddonFolderPath + "/" + name + ".addon", script);
         }
 
         public static string[] GetGameModes(string category, string mapName, bool hasMapLogic)
@@ -235,6 +305,13 @@ namespace Map
         {
             if (Directory.Exists(path))
                 return Directory.GetFiles(path, "*.cl", SearchOption.TopDirectoryOnly).Select(f => Path.GetFileName(f)).ToArray();
+            return new string[0];
+        }
+
+        private static string[] GetAddonFiles(string path)
+        {
+            if (Directory.Exists(path))
+                return Directory.GetFiles(path, "*.addon", SearchOption.TopDirectoryOnly).Select(f => Path.GetFileName(f)).ToArray();
             return new string[0];
         }
 

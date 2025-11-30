@@ -36,12 +36,12 @@ namespace CustomLogic
         public bool ShowScoreboardStatus = true;
         public string ForcedCharacterType = string.Empty;
         public string ForcedLoadout = string.Empty;
-        private int _baseLogicOffset = 0;
+        public CustomLogicCompiler Compiler { get; private set; }
 
-        public CustomLogicEvaluator(CustomLogicStartAst start, int baseLogicOffset = 0)
+        public CustomLogicEvaluator(CustomLogicStartAst start, CustomLogicCompiler compiler = null)
         {
             _start = start;
-            _baseLogicOffset = baseLogicOffset;
+            Compiler = compiler;
         }
 
         #region Evaluator
