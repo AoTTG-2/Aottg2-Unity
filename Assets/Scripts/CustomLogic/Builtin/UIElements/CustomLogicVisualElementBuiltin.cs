@@ -39,7 +39,7 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// Remove a child elemend
+        /// Remove a child element
         /// </summary>
         [CLMethod]
         public void Remove(CustomLogicVisualElementBuiltin visualElement)
@@ -54,6 +54,15 @@ namespace CustomLogic
         public void RemoveFromHierarchy()
         {
             _visualElement.RemoveFromHierarchy();
+        }
+
+        /// <summary>
+        /// Remove all child elements
+        /// </summary>
+        [CLMethod]
+        public void Clear()
+        {
+            _visualElement.Clear();
         }
 
         /// <summary>
