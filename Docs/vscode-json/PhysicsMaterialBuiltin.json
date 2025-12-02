@@ -1,0 +1,124 @@
+{
+  "kind": "component",
+  "name": "PhysicsMaterialBuiltin",
+  "description": "",
+  "instanceFields": [
+    {
+      "label": "StaticFriction",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "The static friction of the material.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "DynamicFriction",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "The dynamic friction of the material.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Bounciness",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "The bounciness of the material.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "FrictionCombine",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "The friction combine mode of the material.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "BounceCombine",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "The bounce combine mode of the material.",
+      "readonly": false,
+      "private": false
+    }
+  ],
+  "instanceMethods": [
+    {
+      "label": "Setup",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Setup the material.",
+      "parameters": [
+        {
+          "name": "allChildColliders",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    }
+  ],
+  "staticFields": [
+    {
+      "label": "FrictionCombineMinimum",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "PhysicMaterialCombine.Minimum",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "FrictionCombineMultiply",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "PhysicMaterialCombine.Multiply",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "FrictionCombineMaximum",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "PhysicMaterialCombine.Maximum",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "FrictionCombineAverage",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "PhysicMaterialCombine.Average",
+      "readonly": true,
+      "private": false
+    }
+  ],
+  "staticMethods": [],
+  "constructors": []
+}

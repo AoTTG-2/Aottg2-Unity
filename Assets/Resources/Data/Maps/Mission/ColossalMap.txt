@@ -1135,6 +1135,7 @@ class Main
 	_wallGateStart = null;
 	_wallGateDestroyed = null;
 	_hasFinalDialogue = false;
+	_bossHealthBar = null;
 
 	function OnGameStart()
 	{
@@ -1160,6 +1161,18 @@ class Main
 		{
 			self._handCooldown = 3.0;
 		}
+
+		self._bossHealthBar = BossHealthBar("Colossal Titan", 1000.0, "Top", true);
+
+        # Set hand health values
+        self._bossHealthBar.SetLeftHandMaxHealth(500.0);
+        self._bossHealthBar.SetLeftHandHealth(500.0);
+        self._bossHealthBar.SetRightHandMaxHealth(500.0);
+        self._bossHealthBar.SetRightHandHealth(500.0);
+
+        # Show the health bar
+        self._bossHealthBar.Show();
+
 		self._wallGateStart = Map.FindMapObjectByName("WallGateStart");
 		self._wallGateDestroyed = Map.FindMapObjectByName("WallGateDestroyed");
 		if (Network.IsMasterClient)
@@ -1236,7 +1249,7 @@ class Main
 			{
 				if (self._handMode)
 				{
-					UI.SetLabelAll("TopCenter", "<b><size=28><color=#008000>Colossal Hand: </color>" + self._colossal.HandHealth + "</size></b>");
+					#UI.SetLabelAll("TopCenter", "<b><size=28><color=#008000>Colossal Hand: </color>" + self._colossal.HandHealth + "</size></b>");
 					if (self._colossal.HandHealth <= 0)
 					{
 						self._handMode = false;
@@ -1246,7 +1259,7 @@ class Main
 				}
 				else
 				{
-					UI.SetLabelAll("TopCenter", "<b><size=28><color=#ff0000>Colossal Nape: </color>" + self._colossal.Health + "</size></b>");
+					#UI.SetLabelAll("TopCenter", "<b><size=28><color=#ff0000>Colossal Nape: </color>" + self._colossal.Health + "</size></b>");
 					self._handCooldownLeft -= Time.TickTime;
 					if (self._handCooldownLeft <= 0)
 					{
@@ -1259,6 +1272,20 @@ class Main
 							self._handMode = true;
 							self._colossal.HandHealth = self._colossal.MaxHandHealth;
 						}
+					}
+				}
+
+				if (self._bossHealthBar != null)
+				{
+					self._bossHealthBar.SetMaxHealth(self._colossal.MaxHealth);
+					self._bossHealthBar.SetCurrentHealth(self._colossal.Health);
+					self._bossHealthBar.SetLeftHandMaxHealth(self._colossal.MaxHandHealth);
+					self._bossHealthBar.SetLeftHandHealth(self._colossal.HandHealth);
+					self._bossHealthBar.SetRightHandMaxHealth(self._colossal.MaxHandHealth);
+					self._bossHealthBar.SetRightHandHealth(self._colossal.HandHealth);
+					if (self._bossHealthBar.IsDead())
+					{
+						self._bossHealthBar.Hide();
 					}
 				}
 			}
@@ -1347,6 +1374,656 @@ cutscene MainCutscene
 		Main._titanSpawnTimeLeft = 5.0;
 	}
 }
+class BossHealthBar
+{
+    # Configuration (set via Init)
+    _bossName = "Boss";
+    _maxHealth = 100.0;
+    _currentHealth = 100.0;
+    _labelPosition = "Top"; # "Top" or "Before"
+    _showPercentage = true;
+    
+    # Color thresholds (percent -> color)
+    _colorThresholds = null; # List of threshold objects
+    
+    # UI Elements
+    _rootContainer = null;
+    _healthBarContainer = null;
+    _healthBarFill = null;
+    _nameLabel = null;
+    _healthLabel = null;
+    _isVisible = false;
+    
+    # Hand health bars (vertical)
+    _leftHandContainer = null;
+    _leftHandFill = null;
+    _leftHandIcon = null;
+    _leftHandHealth = 100.0;
+    _leftHandMaxHealth = 100.0;
+    
+    _rightHandContainer = null;
+    _rightHandFill = null;
+    _rightHandIcon = null;
+    _rightHandHealth = 100.0;
+    _rightHandMaxHealth = 100.0;
+
+    # Init parameters:
+    # - bossName: Name to display for the boss
+    # - maxHealth: Maximum health value
+    # - labelPosition: "Top" (label above bar) or "Before" (label to left of bar)
+    # - showPercentage: Whether to show percentage in the health text
+    function Init(bossName, maxHealth, labelPosition, showPercentage)
+    {
+        self._bossName = bossName;
+        self._maxHealth = maxHealth;
+        self._currentHealth = maxHealth;
+        self._labelPosition = labelPosition;
+        self._showPercentage = showPercentage;
+        
+        # Initialize default color thresholds
+        self._colorThresholds = List();
+
+        # Add color thresholds after UI is created
+        self.AddColorThreshold(75.0, Color(100, 200, 100)); # Green above 75%
+        self.AddColorThreshold(50.0, Color(200, 200, 100)); # Yellow above 50%
+        self.AddColorThreshold(25.0, Color(200, 150, 50));  # Orange above 25%
+        self.AddColorThreshold(0.0, Color(200, 50, 50));    # Red above 0%
+        
+        self.CreateUI();
+        
+        
+    }
+
+    function DestroyUI()
+    {
+        if (self._rootContainer == null)
+        {
+            return;
+        }
+        root = UI.GetRootVisualElement();
+        root.Remove(self._rootContainer);
+    }
+
+    function CreateUI()
+    {
+        root = UI.GetRootVisualElement();
+
+        # Main container - positioned at top center of screen with fixed size
+        self._rootContainer = UI.VisualElement()
+            .Absolute(true)
+            .Width(40, true)
+            .Height(10, true)
+            .Top(1, true)
+            .Left(30, true)
+            .Right(30, true)
+            .Padding(10, false)
+            .BackgroundColor(Color(20, 20, 20, 200));
+
+        # Create layout based on label position
+        if (self._labelPosition == "Before")
+        {
+            self.CreateBeforeLabelLayout();
+        }
+        else
+        {
+            self.CreateTopLabelLayout();
+        }
+
+        root.Add(self._rootContainer);
+        
+        # Start hidden
+        self.Hide();
+    }
+
+    function CreateTopLabelLayout()
+    {
+        # Main row container with left hand, center content, and right hand
+        mainRow = UI.VisualElement()
+            .FlexDirection("Row")
+            .Width(100, true)
+            .AlignItems("Center")
+            .JustifyContent("SpaceBetween");
+
+        # Left hand vertical health bar
+        self.CreateVerticalHandBar(true);
+        mainRow.Add(self._leftHandContainer);
+
+        # Center container for boss info and horizontal health bar
+        centerContainer = UI.VisualElement()
+            .FlexDirection("Column")
+            .FlexGrow(1)
+            .FlexShrink(1)
+            .MarginLeft(15, false)
+            .MarginRight(15, false);
+
+        # Boss name label on top
+        self._nameLabel = UI.Label(self._bossName)
+            .FontSize(18, false)
+            .FontStyle("Bold")
+            .Color(Color(255, 255, 255))
+            .AlignSelf("Center");
+
+        # Create custom health bar
+        self.CreateHealthBar();
+
+        # Health text label below bar
+        self._healthLabel = UI.Label(self.GetHealthText())
+            .FontSize(14, false)
+            .FontStyle("Bold")
+            .Color(Color(255, 255, 255))
+            .AlignSelf("Center");
+
+        centerContainer.Add(self._nameLabel);
+        centerContainer.Add(self._healthBarContainer);
+        centerContainer.Add(self._healthLabel);
+        
+        mainRow.Add(centerContainer);
+
+        # Right hand vertical health bar
+        self.CreateVerticalHandBar(false);
+        mainRow.Add(self._rightHandContainer);
+
+        self._rootContainer.Add(mainRow);
+    }
+
+    function CreateBeforeLabelLayout()
+    {
+        # Container with row layout
+        container = UI.VisualElement()
+            .FlexDirection("Row")
+            .AlignItems("Center")
+            .Width(100, true);
+
+        # Boss name label on the left
+        self._nameLabel = UI.Label(self._bossName)
+            .FontSize(24, true)
+            .FontStyle("Bold")
+            .Color(Color(255, 255, 255))
+            .FlexShrink(0)
+            .MarginRight(1, true);
+
+        # Right side container for bar and health text
+        rightContainer = UI.VisualElement()
+            .FlexDirection("Column")
+            .FlexGrow(1)
+            .FlexShrink(1);
+
+        # Create custom health bar
+        self.CreateHealthBar();
+
+        # Health text label
+        self._healthLabel = UI.Label(self.GetHealthText())
+            .FontSize(14, true)
+            .FontStyle("Bold")
+            .Color(Color(255, 255, 255))
+            .AlignSelf("Center")
+            .MarginTop(0.3, true);
+
+        rightContainer.Add(self._healthBarContainer);
+        rightContainer.Add(self._healthLabel);
+
+        container.Add(self._nameLabel);
+        container.Add(rightContainer);
+
+        self._rootContainer.Add(container);
+    }
+
+    function CreateVerticalHandBar(isLeftHand)
+    {
+        # Outer container for the hand health bar
+        container = UI.VisualElement()
+            .FlexDirection("Column")
+            .AlignItems("Center")
+            .Width(50, false)
+            .FlexShrink(0);
+
+        # Stack container for bar and icon overlay (icon size only)
+        stackContainer = UI.VisualElement()
+            .Width(50, false)
+            .Height(50, false)
+            .FlexShrink(0);
+
+        # Background container for the vertical bar (icon size)
+        barBackground = UI.VisualElement()
+            .Width(50, false)
+            .Height(50, false)
+            .BackgroundColor(Color(40, 40, 40, 200))
+            .BorderRadius(4, false)
+            .BorderWidth(2, false)
+            .BorderColor(Color(80, 80, 80, 255))
+            .FlexDirection("Column")
+            .JustifyContent("FlexEnd")
+            .Absolute(true)
+            .Top(0, false)
+            .Left(0, false);
+
+        # Fill bar that grows from bottom to top
+        fill = UI.VisualElement()
+            .Width(100, true)
+            .Height(100, true)
+            .BackgroundColor(Color(100, 200, 100, 255))
+            .TransitionDuration(300, false);
+
+        barBackground.Add(fill);
+
+        # Icon overlay on top (same size as container)
+        icon = UI.Icon("Icons/Specials/EscapeSpecialIcon")
+            .Width(50, false)
+            .Height(50, false)
+            .Absolute(true)
+            .Top(0, false)
+            .Left(0, false);
+
+        stackContainer.Add(barBackground);
+        stackContainer.Add(icon);
+
+        # Label for hand name
+        handLabelText = "Right Hand";
+        if (isLeftHand)
+        {
+            handLabelText = "Left Hand";
+        }
+        
+        handLabel = UI.Label(handLabelText)
+            .FontSize(12, false)
+            .FontStyle("Bold")
+            .Color(Color(255, 255, 255))
+            .AlignSelf("Center")
+            .MarginTop(5, false);
+
+        container.Add(stackContainer);
+        container.Add(handLabel);
+
+        if (isLeftHand)
+        {
+            self._leftHandContainer = container;
+            self._leftHandFill = fill;
+            self._leftHandIcon = icon;
+        }
+        else
+        {
+            self._rightHandContainer = container;
+            self._rightHandFill = fill;
+            self._rightHandIcon = icon;
+        }
+    }
+
+    function CreateHealthBar()
+    {
+        # Container for the health bar with border
+        self._healthBarContainer = UI.VisualElement()
+            .Width(100, true)
+            .Height(23, false)
+            .BackgroundColor(Color(40, 40, 40, 255))
+            .BorderRadius(4, false)
+            .BorderWidth(2, false)
+            .BorderColor(Color(80, 80, 80, 255))
+            .FlexDirection("Row");
+
+        # Fill bar (current health) - starts at 100%
+        self._healthBarFill = UI.VisualElement()
+            .Width(100, true)
+            .Height(100, true)
+            .BackgroundColor(Color(100, 200, 100, 255))
+            .BorderRadius(4, false)
+            .TransitionDuration(300, false);
+
+        self._healthBarContainer.Add(self._healthBarFill);
+    }
+
+    function GetHealthText()
+    {
+        healthText = Convert.ToString(Convert.ToInt(self._currentHealth)) + " / " + Convert.ToString(Convert.ToInt(self._maxHealth));
+        
+        if (self._showPercentage)
+        {
+            percentage = self.GetHealthPercentage();
+            healthText = healthText + " (" + Convert.ToString(Convert.ToInt(percentage)) + "%)";
+        }
+        
+        return healthText;
+    }
+
+    function GetHealthPercentage()
+    {
+        if (self._maxHealth <= 0.0)
+        {
+            return 0.0;
+        }
+        return (self._currentHealth / self._maxHealth) * 100.0;
+    }
+
+    function UpdateHealthBar()
+    {
+        # Guard against null UI elements
+        if (self._healthBarFill == null || self._healthLabel == null)
+        {
+            return;
+        }
+        
+        percentage = self.GetHealthPercentage();
+        
+        # Update fill bar width (animated)
+        self._healthBarFill.Width(percentage, true);
+        
+        # Update health text
+        self._healthLabel.Text = self.GetHealthText();
+        
+        # Update color based on thresholds
+        self.UpdateBarColor(percentage);
+        
+        # Update hand health bars
+        self.UpdateHandHealthBars();
+    }
+    
+    function UpdateHandHealthBars()
+    {
+        # Update left hand
+        if (self._leftHandFill != null)
+        {
+            leftPercentage = (self._leftHandHealth / self._leftHandMaxHealth) * 100.0;
+            self._leftHandFill.Height(leftPercentage, true);
+            self.UpdateHandBarColor(self._leftHandFill, leftPercentage);
+        }
+        
+        # Update right hand
+        if (self._rightHandFill != null)
+        {
+            rightPercentage = (self._rightHandHealth / self._rightHandMaxHealth) * 100.0;
+            self._rightHandFill.Height(rightPercentage, true);
+            self.UpdateHandBarColor(self._rightHandFill, rightPercentage);
+        }
+    }
+    
+    function UpdateHandBarColor(barElement, percentage)
+    {
+        # Find the appropriate color based on thresholds
+        color = Color(200, 200, 200); # Default gray
+        
+        if (self._colorThresholds != null && self._colorThresholds.Count > 0)
+        {
+            i = 0;
+            while (i < self._colorThresholds.Count)
+            {
+                threshold = self._colorThresholds.Get(i);
+                if (percentage >= threshold.Get("Percent"))
+                {
+                    color = threshold.Get("Color");
+                    break;
+                }
+                i = i + 1;
+            }
+        }
+        
+        barElement.BackgroundColor(color);
+    }
+
+    function UpdateBarColor(percentage)
+    {
+        # Find the appropriate color based on thresholds
+        color = Color(200, 200, 200); # Default gray
+        
+        if (self._colorThresholds != null && self._colorThresholds.Count > 0)
+        {
+            # Sort thresholds in descending order and find first match
+            i = 0;
+            while (i < self._colorThresholds.Count)
+            {
+                threshold = self._colorThresholds.Get(i);
+                if (percentage >= threshold.Get("Percent"))
+                {
+                    color = threshold.Get("Color");
+                    i = self._colorThresholds.Count + 1;  # Break not working properly.
+                    break;
+                }
+                i = i + 1;
+            }
+        }
+        
+        # Apply color to the fill bar
+        self._healthBarFill.BackgroundColor(color);
+    }
+
+    # Public API Methods
+
+    function Show()
+    {
+        if (!self._isVisible)
+        {
+            self._isVisible = true;
+            self._rootContainer.Active(true);
+        }
+    }
+
+    function Hide()
+    {
+        if (self._isVisible)
+        {
+            self._isVisible = false;
+            self._rootContainer.Active(false);
+        }
+    }
+
+    function SetMaxHealth(maxHealth)
+    {
+        self._maxHealth = maxHealth;
+        
+        # Clamp current health to new max
+        if (self._currentHealth > self._maxHealth)
+        {
+            self._currentHealth = self._maxHealth;
+        }
+        
+        self.UpdateHealthBar();
+    }
+
+    function SetCurrentHealth(currentHealth)
+    {
+        # Clamp to valid range
+        if (currentHealth < 0.0)
+        {
+            currentHealth = 0.0;
+        }
+        if (currentHealth > self._maxHealth)
+        {
+            currentHealth = self._maxHealth;
+        }
+        
+        self._currentHealth = currentHealth;
+        self.UpdateHealthBar();
+    }
+
+    function AddHealth(amount)
+    {
+        self.SetCurrentHealth(self._currentHealth + amount);
+    }
+
+    function RemoveHealth(amount)
+    {
+        self.SetCurrentHealth(self._currentHealth - amount);
+    }
+
+    function SetBossName(name)
+    {
+        self._bossName = name;
+        self._nameLabel.Text = name;
+    }
+
+    function SetShowPercentage(show)
+    {
+        self._showPercentage = show;
+        self.UpdateHealthBar();
+    }
+
+    function AddColorThreshold(percent, color)
+    {
+        # Create threshold object
+        threshold = Dict();
+        threshold.Set("Percent", percent);
+        threshold.Set("Color", color);
+        
+        self._colorThresholds.Add(threshold);
+        
+        # Sort thresholds in descending order by percent using bubble sort
+        self.SortThresholds();
+        
+        # Update bar color if needed (only if UI is initialized)
+        if (self._healthBarFill != null)
+        {
+            self.UpdateHealthBar();
+        }
+    }
+
+    function ClearColorThresholds()
+    {
+        self._colorThresholds = List();
+    }
+
+    function SortThresholds()
+    {
+        # Bubble sort in descending order
+        n = self._colorThresholds.Count;
+        i = 0;
+        while (i < n - 1)
+        {
+            j = 0;
+            while (j < n - i - 1)
+            {
+                current = self._colorThresholds.Get(j);
+                next = self._colorThresholds.Get(j + 1);
+                
+                if (current.Get("Percent") < next.Get("Percent"))
+                {
+                    # Swap
+                    temp = self._colorThresholds.Get(j);
+                    self._colorThresholds.Set(j, self._colorThresholds.Get(j + 1));
+                    self._colorThresholds.Set(j + 1, temp);
+                }
+                j = j + 1;
+            }
+            i = i + 1;
+        }
+    }
+
+    function GetCurrentHealth()
+    {
+        return self._currentHealth;
+    }
+
+    function GetMaxHealth()
+    {
+        return self._maxHealth;
+    }
+
+    function IsDead()
+    {
+        return self._currentHealth <= 0.0;
+    }
+
+    function IsFull()
+    {
+        return self._currentHealth >= self._maxHealth;
+    }
+
+    function Reset()
+    {
+        self._currentHealth = self._maxHealth;
+        self._leftHandHealth = self._leftHandMaxHealth;
+        self._rightHandHealth = self._rightHandMaxHealth;
+        self.UpdateHealthBar();
+    }
+    
+    # Left Hand Methods
+    function SetLeftHandMaxHealth(maxHealth)
+    {
+        self._leftHandMaxHealth = maxHealth;
+        if (self._leftHandHealth > self._leftHandMaxHealth)
+        {
+            self._leftHandHealth = self._leftHandMaxHealth;
+        }
+        self.UpdateHandHealthBars();
+    }
+    
+    function SetLeftHandHealth(health)
+    {
+        if (health < 0.0)
+        {
+            health = 0.0;
+        }
+        if (health > self._leftHandMaxHealth)
+        {
+            health = self._leftHandMaxHealth;
+        }
+        self._leftHandHealth = health;
+        self.UpdateHandHealthBars();
+    }
+    
+    function AddLeftHandHealth(amount)
+    {
+        self.SetLeftHandHealth(self._leftHandHealth + amount);
+    }
+    
+    function RemoveLeftHandHealth(amount)
+    {
+        self.SetLeftHandHealth(self._leftHandHealth - amount);
+    }
+    
+    function GetLeftHandHealth()
+    {
+        return self._leftHandHealth;
+    }
+    
+    function IsLeftHandDestroyed()
+    {
+        return self._leftHandHealth <= 0.0;
+    }
+    
+    # Right Hand Methods
+    function SetRightHandMaxHealth(maxHealth)
+    {
+        self._rightHandMaxHealth = maxHealth;
+        if (self._rightHandHealth > self._rightHandMaxHealth)
+        {
+            self._rightHandHealth = self._rightHandMaxHealth;
+        }
+        self.UpdateHandHealthBars();
+    }
+    
+    function SetRightHandHealth(health)
+    {
+        if (health < 0.0)
+        {
+            health = 0.0;
+        }
+        if (health > self._rightHandMaxHealth)
+        {
+            health = self._rightHandMaxHealth;
+        }
+        self._rightHandHealth = health;
+        self.UpdateHandHealthBars();
+    }
+    
+    function AddRightHandHealth(amount)
+    {
+        self.SetRightHandHealth(self._rightHandHealth + amount);
+    }
+    
+    function RemoveRightHandHealth(amount)
+    {
+        self.SetRightHandHealth(self._rightHandHealth - amount);
+    }
+    
+    function GetRightHandHealth()
+    {
+        return self._rightHandHealth;
+    }
+    
+    function IsRightHandDestroyed()
+    {
+        return self._rightHandHealth <= 0.0;
+    }
+}
+
 /// Weather
 {
     "Skybox" : "Day1",

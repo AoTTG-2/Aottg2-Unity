@@ -1,0 +1,409 @@
+{
+  "kind": "class",
+  "name": "Titan",
+  "description": "Represents a Titan character. Only character owner can modify fields and call functions unless otherwise specified.",
+  "extends": [
+    "Character"
+  ],
+  "instanceFields": [
+    {
+      "label": "Size",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Titan's size.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "RunSpeedBase",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Titan's base run speed. Final run speed is RunSpeedBase + Size * RunSpeedPerLevel.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "WalkSpeedBase",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Titan's base walk speed. Final walk speed is WalkSpeedBase + Size * WalkSpeedPerLevel.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "WalkSpeedPerLevel",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Titan's walk speed added per size.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "RunSpeedPerLevel",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Titan's run speed added per size.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "TurnSpeed",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Titan's turn animation speed.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "RotateSpeed",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Titan's rotate speed.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "JumpForce",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Titan's jump force.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "ActionPause",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Titan's pause delay after performing an action.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "AttackPause",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Titan's pause delay after performing an attack.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "TurnPause",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Titan's pause delay after performing a turn.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Stamina",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "PT stamina.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "MaxStamina",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "PT max stamina.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "NapePosition",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "The titan's nape position.",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "IsCrawler",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Is titan a crawler.",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "DetectRange",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "(AI) titan's detect range.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "FocusRange",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "(AI) titan's focus range.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "FocusTime",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "(AI) titan's focus time.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "FarAttackCooldown",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "(AI) Titan's cooldown after performing a ranged attack.",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "AttackWait",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "(AI) Titan's wait time between being in range and performing an attack.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "CanRun",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "(AI) Titan can run or only walk.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "AttackSpeedMultiplier",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Titan's attack animation speed.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "UsePathfinding",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Determines whether the (AI) titan uses pathfinding. (Smart Movement in titan settings)",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "HeadMount",
+      "type": {
+        "name": "Transform",
+        "typeArguments": []
+      },
+      "description": "Titan's head transform.",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "NeckMount",
+      "type": {
+        "name": "Transform",
+        "typeArguments": []
+      },
+      "description": "Titan's neck transform.",
+      "readonly": true,
+      "private": false
+    }
+  ],
+  "instanceMethods": [
+    {
+      "label": "MoveTo",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Causes the (AI) titan to move towards a position and stopping when within specified range. If ignoreEnemies is true, will not engage enemies along the way.",
+      "parameters": [
+        {
+          "name": "position",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "range",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "ignoreEnemies",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Target",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Causes the (AI) titan to target an enemy character or MapTargetable for focusTime seconds. If focusTime is 0 it will use the default focus time",
+      "parameters": [
+        {
+          "name": "enemyObj",
+          "type": {
+            "name": "Object",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "focus",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "GetTarget",
+      "returnType": {
+        "name": "Object",
+        "typeArguments": []
+      },
+      "description": "Gets the target currently focused by this character. Returns null if no target is set.",
+      "parameters": [],
+      "kind": "function"
+    },
+    {
+      "label": "Idle",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Causes the (AI) titan to idle for time seconds before beginning to wander. During idle the titan will not react or move at all.",
+      "parameters": [
+        {
+          "name": "time",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Wander",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Causes the (AI) titan to cancel any move commands and begin wandering randomly.",
+      "parameters": [],
+      "kind": "function"
+    },
+    {
+      "label": "Blind",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Causes the titan to enter the blind state.",
+      "parameters": [],
+      "kind": "function"
+    },
+    {
+      "label": "Cripple",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Causes the titan to enter the cripple state for time seconds. Using 0 will use the default cripple time.",
+      "parameters": [
+        {
+          "name": "time",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    }
+  ],
+  "staticFields": [],
+  "staticMethods": [],
+  "constructors": []
+}

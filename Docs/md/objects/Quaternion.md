@@ -15,99 +15,94 @@ Quaternion(x: float, y: float, z: float, w: float) // Creates a new Quaternion f
 ### Properties
 |Name|Type|Readonly|Description|
 |---|---|---|---|
-|X|float|False|X component of the Quaternion. Don't modify this directly unless you know quaternions inside out.|
-|Y|float|False|Y component of the Quaternion. Don't modify this directly unless you know quaternions inside out.|
-|Z|float|False|Z component of the Quaternion. Don't modify this directly unless you know quaternions inside out.|
-|W|float|False|W component of the Quaternion. Do not directly modify quaternions.|
-|Euler|[Vector3](../objects/Vector3.md)|False|Returns or sets the euler angle representation of the rotation.|
+|X|float|False||
+|Y|float|False||
+|Z|float|False||
+|W|float|False||
+|Euler|[Vector3](../objects/Vector3.md)|False||
 
 
 ### Static Properties
 |Name|Type|Readonly|Description|
 |---|---|---|---|
-|Identity|[Quaternion](../objects/Quaternion.md)|True|The identity rotation (Read Only).|
+|Identity|[Quaternion](../objects/Quaternion.md)|True||
 
 
 ### Methods
 
 ### Static Methods
-<pre class="language-typescript"><code class="lang-typescript">function Lerp(a: <a data-footnote-ref href="#user-content-fn-30">Quaternion</a>, b: <a data-footnote-ref href="#user-content-fn-30">Quaternion</a>, t: float) -> <a data-footnote-ref href="#user-content-fn-30">Quaternion</a></code></pre>
-> Interpolates between a and b by t and normalizes the result afterwards.
-> 
-> **Returns**: A unit quaternion interpolated between quaternions a and b.
-<pre class="language-typescript"><code class="lang-typescript">function LerpUnclamped(a: <a data-footnote-ref href="#user-content-fn-30">Quaternion</a>, b: <a data-footnote-ref href="#user-content-fn-30">Quaternion</a>, t: float) -> <a data-footnote-ref href="#user-content-fn-30">Quaternion</a></code></pre>
-> Interpolates between a and b by t and normalizes the result afterwards. The parameter t is not clamped.
-> 
-<pre class="language-typescript"><code class="lang-typescript">function Slerp(a: <a data-footnote-ref href="#user-content-fn-30">Quaternion</a>, b: <a data-footnote-ref href="#user-content-fn-30">Quaternion</a>, t: float) -> <a data-footnote-ref href="#user-content-fn-30">Quaternion</a></code></pre>
-> Spherically linear interpolates between unit quaternions a and b by a ratio of t.
-> 
-> **Returns**: A unit quaternion spherically interpolated between quaternions a and b.
-<pre class="language-typescript"><code class="lang-typescript">function SlerpUnclamped(a: <a data-footnote-ref href="#user-content-fn-30">Quaternion</a>, b: <a data-footnote-ref href="#user-content-fn-30">Quaternion</a>, t: float) -> <a data-footnote-ref href="#user-content-fn-30">Quaternion</a></code></pre>
-> Spherically linear interpolates between unit quaternions a and b by t.
-> 
-> **Returns**: A unit quaternion spherically interpolated between unit quaternions a and b.
-<pre class="language-typescript"><code class="lang-typescript">function FromEuler(euler: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>) -> <a data-footnote-ref href="#user-content-fn-30">Quaternion</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function Lerp(a: <a data-footnote-ref href="#user-content-fn-5">Quaternion</a>, b: <a data-footnote-ref href="#user-content-fn-5">Quaternion</a>, t: float) -> <a data-footnote-ref href="#user-content-fn-5">Quaternion</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function LerpUnclamped(a: <a data-footnote-ref href="#user-content-fn-5">Quaternion</a>, b: <a data-footnote-ref href="#user-content-fn-5">Quaternion</a>, t: float) -> <a data-footnote-ref href="#user-content-fn-5">Quaternion</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function Slerp(a: <a data-footnote-ref href="#user-content-fn-5">Quaternion</a>, b: <a data-footnote-ref href="#user-content-fn-5">Quaternion</a>, t: float) -> <a data-footnote-ref href="#user-content-fn-5">Quaternion</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function SlerpUnclamped(a: <a data-footnote-ref href="#user-content-fn-5">Quaternion</a>, b: <a data-footnote-ref href="#user-content-fn-5">Quaternion</a>, t: float) -> <a data-footnote-ref href="#user-content-fn-5">Quaternion</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function FromEuler(euler: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>) -> <a data-footnote-ref href="#user-content-fn-5">Quaternion</a></code></pre>
 > Returns the Quaternion rotation from the given euler angles.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function LookRotation(forward: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, upwards: <a data-footnote-ref href="#user-content-fn-43">Vector3</a> = null) -> <a data-footnote-ref href="#user-content-fn-30">Quaternion</a></code></pre>
-> Creates a rotation with the specified forward and upwards directions.
-> 
-<pre class="language-typescript"><code class="lang-typescript">function FromToRotation(a: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, b: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>) -> <a data-footnote-ref href="#user-content-fn-30">Quaternion</a></code></pre>
-> Creates a rotation from fromDirection to toDirection.
-> 
-> **Returns**: A unit quaternion which rotates from fromDirection to toDirection.
-<pre class="language-typescript"><code class="lang-typescript">function Inverse(q: <a data-footnote-ref href="#user-content-fn-30">Quaternion</a>) -> <a data-footnote-ref href="#user-content-fn-30">Quaternion</a></code></pre>
-> Returns the Inverse of rotation.
-> 
-<pre class="language-typescript"><code class="lang-typescript">function RotateTowards(from: <a data-footnote-ref href="#user-content-fn-30">Quaternion</a>, to: <a data-footnote-ref href="#user-content-fn-30">Quaternion</a>, maxDegreesDelta: float) -> <a data-footnote-ref href="#user-content-fn-30">Quaternion</a></code></pre>
-> Rotates a rotation from towards to.
-> 
-> **Returns**: A unit quaternion rotated towards to by an angular step of maxDegreesDelta.
+<pre class="language-typescript"><code class="lang-typescript">function LookRotation(forward: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, upwards: <a data-footnote-ref href="#user-content-fn-9">Vector3</a> = null) -> <a data-footnote-ref href="#user-content-fn-5">Quaternion</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function FromToRotation(a: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, b: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>) -> <a data-footnote-ref href="#user-content-fn-5">Quaternion</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function Inverse(q: <a data-footnote-ref href="#user-content-fn-5">Quaternion</a>) -> <a data-footnote-ref href="#user-content-fn-5">Quaternion</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function RotateTowards(from: <a data-footnote-ref href="#user-content-fn-5">Quaternion</a>, to: <a data-footnote-ref href="#user-content-fn-5">Quaternion</a>, maxDegreesDelta: float) -> <a data-footnote-ref href="#user-content-fn-5">Quaternion</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function AngleAxis(angle: float, axis: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>) -> <a data-footnote-ref href="#user-content-fn-5">Quaternion</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function Angle(a: <a data-footnote-ref href="#user-content-fn-5">Quaternion</a>, b: <a data-footnote-ref href="#user-content-fn-5">Quaternion</a>) -> float</code></pre>
 
-[^0]: [Camera](../static/Camera.md)
-[^1]: [Character](../objects/Character.md)
-[^2]: [Collider](../objects/Collider.md)
-[^3]: [Collision](../objects/Collision.md)
-[^4]: [Color](../objects/Color.md)
-[^5]: [Convert](../static/Convert.md)
-[^6]: [Cutscene](../static/Cutscene.md)
-[^7]: [Dict](../objects/Dict.md)
-[^8]: [Game](../static/Game.md)
-[^9]: [Human](../objects/Human.md)
-[^10]: [Input](../static/Input.md)
-[^11]: [Json](../static/Json.md)
-[^12]: [LightBuiltin](../static/LightBuiltin.md)
-[^13]: [LineCastHitResult](../objects/LineCastHitResult.md)
-[^14]: [LineRenderer](../objects/LineRenderer.md)
-[^15]: [List](../objects/List.md)
-[^16]: [Locale](../static/Locale.md)
-[^17]: [LodBuiltin](../static/LodBuiltin.md)
-[^18]: [Map](../static/Map.md)
-[^19]: [MapObject](../objects/MapObject.md)
-[^20]: [MapTargetable](../objects/MapTargetable.md)
-[^21]: [Math](../static/Math.md)
-[^22]: [NavmeshObstacleBuiltin](../static/NavmeshObstacleBuiltin.md)
-[^23]: [Network](../static/Network.md)
+[^0]: [Color](../objects/Color.md)
+[^1]: [Dict](../objects/Dict.md)
+[^2]: [LightBuiltin](../static/LightBuiltin.md)
+[^3]: [LineCastHitResult](../objects/LineCastHitResult.md)
+[^4]: [List](../objects/List.md)
+[^5]: [Quaternion](../objects/Quaternion.md)
+[^6]: [Range](../objects/Range.md)
+[^7]: [Set](../objects/Set.md)
+[^8]: [Vector2](../objects/Vector2.md)
+[^9]: [Vector3](../objects/Vector3.md)
+[^10]: [Animation](../objects/Animation.md)
+[^11]: [Animator](../objects/Animator.md)
+[^12]: [AudioSource](../objects/AudioSource.md)
+[^13]: [Collider](../objects/Collider.md)
+[^14]: [Collision](../objects/Collision.md)
+[^15]: [LineRenderer](../objects/LineRenderer.md)
+[^16]: [LodBuiltin](../static/LodBuiltin.md)
+[^17]: [MapTargetable](../objects/MapTargetable.md)
+[^18]: [NavmeshObstacleBuiltin](../static/NavmeshObstacleBuiltin.md)
+[^19]: [PhysicsMaterialBuiltin](../static/PhysicsMaterialBuiltin.md)
+[^20]: [RigidbodyBuiltin](../static/RigidbodyBuiltin.md)
+[^21]: [Character](../objects/Character.md)
+[^22]: [Human](../objects/Human.md)
+[^23]: [MapObject](../objects/MapObject.md)
 [^24]: [NetworkView](../objects/NetworkView.md)
-[^25]: [PersistentData](../static/PersistentData.md)
-[^26]: [Physics](../static/Physics.md)
-[^27]: [PhysicsMaterialBuiltin](../static/PhysicsMaterialBuiltin.md)
-[^28]: [Player](../objects/Player.md)
-[^29]: [Prefab](../objects/Prefab.md)
-[^30]: [Quaternion](../objects/Quaternion.md)
-[^31]: [Random](../objects/Random.md)
-[^32]: [Range](../objects/Range.md)
-[^33]: [RigidbodyBuiltin](../static/RigidbodyBuiltin.md)
-[^34]: [RoomData](../static/RoomData.md)
-[^35]: [Set](../objects/Set.md)
-[^36]: [Shifter](../objects/Shifter.md)
-[^37]: [String](../static/String.md)
-[^38]: [Time](../static/Time.md)
-[^39]: [Titan](../objects/Titan.md)
-[^40]: [Transform](../objects/Transform.md)
-[^41]: [UI](../static/UI.md)
-[^42]: [Vector2](../objects/Vector2.md)
-[^43]: [Vector3](../objects/Vector3.md)
-[^44]: [WallColossal](../objects/WallColossal.md)
-[^45]: [Object](../objects/Object.md)
-[^46]: [Component](../objects/Component.md)
+[^25]: [Player](../objects/Player.md)
+[^26]: [Prefab](../objects/Prefab.md)
+[^27]: [Shifter](../objects/Shifter.md)
+[^28]: [Titan](../objects/Titan.md)
+[^29]: [Transform](../objects/Transform.md)
+[^30]: [WallColossal](../objects/WallColossal.md)
+[^31]: [Camera](../static/Camera.md)
+[^32]: [Cutscene](../static/Cutscene.md)
+[^33]: [Game](../static/Game.md)
+[^34]: [Input](../static/Input.md)
+[^35]: [Locale](../static/Locale.md)
+[^36]: [Map](../static/Map.md)
+[^37]: [Network](../static/Network.md)
+[^38]: [PersistentData](../static/PersistentData.md)
+[^39]: [Physics](../static/Physics.md)
+[^40]: [RoomData](../static/RoomData.md)
+[^41]: [Time](../static/Time.md)
+[^42]: [Button](../objects/Button.md)
+[^43]: [Dropdown](../objects/Dropdown.md)
+[^44]: [Icon](../objects/Icon.md)
+[^45]: [Image](../objects/Image.md)
+[^46]: [Label](../objects/Label.md)
+[^47]: [ProgressBar](../objects/ProgressBar.md)
+[^48]: [ScrollView](../objects/ScrollView.md)
+[^49]: [Slider](../objects/Slider.md)
+[^50]: [TextField](../objects/TextField.md)
+[^51]: [Toggle](../objects/Toggle.md)
+[^52]: [UI](../static/UI.md)
+[^53]: [VisualElement](../objects/VisualElement.md)
+[^54]: [Convert](../static/Convert.md)
+[^55]: [Json](../static/Json.md)
+[^56]: [Math](../static/Math.md)
+[^57]: [Random](../objects/Random.md)
+[^58]: [String](../static/String.md)
+[^59]: [Object](../objects/Object.md)
+[^60]: [Component](../objects/Component.md)

@@ -191,7 +191,7 @@ component Floater
                 }
             }
         }
-    
+
     }
 
 }
@@ -368,10 +368,10 @@ component WaterPhysics
             return;
         }
         velocity = self.GetVelocity(other);
-        position = other.Position;      
+        position = other.Position;
 
         # Convert velocity to euler angle on just the y axis
-        angle = Vector3.Angle(Vector3(0, 0, 1), velocity.Normalized);  
+        angle = Vector3.Angle(Vector3(0, 0, 1), velocity.Normalized);
 
         effectSize = velocity.Magnitude / 100;
         effectSize = Math.Clamp(effectSize, 2, 7);
@@ -752,6 +752,7 @@ component TitanTarget
     PlayerPriorityRangeTooltip = "If any player is in this range, this component will be automatically disabled so that the titans can focus on the player.";
 
     _playersInsideCount = 0;
+    _targetable = null;
 
     function Init()
     {
@@ -840,7 +841,7 @@ component DestructibleTrigger
     HasDestroyEffect = false;
     DestroyEffect = "";
     DestroyEffectScale = 1.0;
-    
+
     # Who can destroy this object
     AttacksThatCanDestroy = "";
     AttacksThatCanDestroyTooltip = "Slash (/) separated list of attack names leave empty to support all attacks.";
@@ -875,7 +876,7 @@ component DestructibleTrigger
             self.SetState(self._targets, true);
             self.SetState(self._replacements, false);
         }
-        
+
 
         # Parse out attacks into list, parse out teams into list
         if (self.AttacksThatCanDestroy != "")
@@ -977,7 +978,7 @@ component DestructibleTrigger
     function DestroyObject()
     {
         # Spawn effect if exists
-        if (self.HasDestroyEffect)
+        if (self.HasDestroyEffect && Network.IsMasterClient)
         {
             for (object in self._targets)
             {
@@ -1024,7 +1025,7 @@ component DestructibleTrigger
         self._isHostDestroyed = true;
         self.NetworkSync(null);
     }
-    
+
     function SignalRecover()
     {
         self._health = self.Health;
@@ -1085,14 +1086,14 @@ component DestructibleTrigger
 component CustomPhysicsMaterial
 {
     IncludeChildren = false;
-    
+
     StaticFriction = 0.6;
     DynamicFriction = 0.6;
     Bounciness = 0.0;
-    
+
     FrictionCombine = "Average";
     FrictionCombineDropbox = "Average, Minimum, Multiply, Maximum";
-    
+
     BounceCombine = "Average";
     BounceCombineDropbox = "Average, Minimum, Multiply, Maximum";
 
@@ -1103,7 +1104,7 @@ component CustomPhysicsMaterial
         self.StaticFriction = Math.Max(0.0, self.StaticFriction);
         self.DynamicFriction = Math.Max(0.0, self.DynamicFriction);
         self.Bounciness = Math.Clamp(self.Bounciness, 0.0, 1.0);
-        
+
         self._material = self.MapObject.AddBuiltinComponent("CustomPhysicsMaterial");
         self._material.Setup(self.IncludeChildren);
         self.SetStaticFriction(self.StaticFriction);
@@ -1112,22 +1113,22 @@ component CustomPhysicsMaterial
         self.SetFrictionCombine(self.FrictionCombine);
         self.SetBounceCombine(self.BounceCombine);
     }
-    
+
     function SetStaticFriction(value)
     {
         self._material.StaticFriction = value;
     }
-    
+
     function SetDynamicFriction(value)
     {
         self._material.DynamicFriction = value;
     }
-        
+
     function SetBounciness(value)
     {
         self._material.Bounciness = value;
     }
-    
+
     function GetEnumValue(value)
     {
         if (value == "Average")
@@ -1152,7 +1153,7 @@ component CustomPhysicsMaterial
     {
         self._material.FrictionCombine = self.GetEnumValue(value);
     }
-        
+
     function SetBounceCombine(value)
     {
         self._material.BounceCombine = self.GetEnumValue(value);
@@ -1186,7 +1187,7 @@ component CaptureZone
     UIVisibilityRangeTooltip = "UI will only be visible when the player is within this range of the capture zone";
     CurrentOwnerTooltip = "Initial owner of the capture zone";
     CurrentOwnerDropbox = "Neutral, Human, Titan, Shifter, Blue, Red";
-    
+
     # States: Captured, Capturing, Contested
     _state = "Captured";
     _lastState = "Captured";
@@ -1209,12 +1210,12 @@ component CaptureZone
 
     # UI state
     _isViewing = false;
-    
+
     # Supply Station
     _supplyStation = null;
     _hasSupplyStation = false;
     _isSupplyStationActive = false;
-    
+
     # Callback Receiver
     _lastOwner = "null"; # Use to avoid calling "OnCaptured" multiple times
     _callbackReceiver = null;
@@ -1239,14 +1240,14 @@ component CaptureZone
             id = Convert.ToInt(self.SupplyStationID);
             self._supplyStation = Map.FindMapObjectByID(id);
             self._hasSupplyStation = self._supplyStation != null;
-            
+
             if (self._hasSupplyStation)
             {
                 self._supplyStation.Active = false;
             }
         }
     }
-    
+
     /*
      * Callback receiver can be an instance of any class
      * that have the following functions:
@@ -1308,7 +1309,7 @@ component CaptureZone
         if (self._state == "Captured")
 		{
             color = self.GetTeamColor(self.CurrentOwner);
-            
+
 		}
 		if (self._state == "Capturing" || (self._state == "Contested" && self._currentCapturer != "null"))
 		{
@@ -1436,7 +1437,7 @@ component CaptureZone
                 {
                     self._captureProgress = self._captureProgress - 1.0;
                 }
-                
+
                 if (self._captureProgress <= 0.0)
                 {
                     self._state = "Captured";
@@ -1535,7 +1536,7 @@ component CaptureZone
 		{
 			return;
 		}
-		
+
 		if (self._lastState != self._state)
 		{
 		    if (self._hasCallbackReceiver)
@@ -1559,7 +1560,7 @@ component CaptureZone
 		    }
             self._lastState = self._state;
 		}
-		
+
 		if (self._state == "Captured")
         {
             if (self.CurrentOwner == "Human")
@@ -1660,7 +1661,7 @@ component CaptureZone
         {
             team = player.Type;
         }
-        
+
         if (self._teamsInZone.Contains(team) == false)
         {
             self._teamsInZone.Set(team, List());
@@ -1865,6 +1866,7 @@ component SupplyStation
     LoadoutChange = true;
     _currentHumanRefill = null;
     _currentHuman = null;
+    _refillsLeft = 0;
 
     function Init()
     {
@@ -2016,12 +2018,15 @@ component Rigidbody
 
     function Init()
     {
-        # self.MapObject.AddBuiltinComponent("Rigidbody", self.Mass, self.Gravity, self.FreezeRotation, self.Interpolate);
-        self.MapObject.AddBuiltinComponent("Rigidbody"); # self.Mass, self.Gravity, self.FreezeRotation, self.Interpolate);
-        self.MapObject.Rigidbody.Mass = self.Mass;
-        self.MapObject.Rigidbody.Gravity = self.Gravity;
-        self.MapObject.Rigidbody.FreezeAllRotations = self.FreezeRotation;
-        self.MapObject.Rigidbody.Interpolate = self.Interpolate;
+        if (self.MapObject.Rigidbody == null)
+        {
+            # self.MapObject.AddBuiltinComponent("Rigidbody", self.Mass, self.Gravity, self.FreezeRotation, self.Interpolate);
+            self.MapObject.AddBuiltinComponent("Rigidbody"); # self.Mass, self.Gravity, self.FreezeRotation, self.Interpolate);
+            self.MapObject.Rigidbody.Mass = self.Mass;
+            self.MapObject.Rigidbody.Gravity = self.Gravity;
+            self.MapObject.Rigidbody.FreezeAllRotations = self.FreezeRotation;
+            self.MapObject.Rigidbody.Interpolate = self.Interpolate;
+        }
     }
 
     function SetVelocity(velocity)
@@ -2158,6 +2163,7 @@ component MovePingPong
     _currentProgress = 0.0;
     _backwards = false;
     _pauseTimeLeft = 0.0;
+    _step = 0.0;
 
     function Init()
     {
@@ -2229,7 +2235,7 @@ component RacingCheckpointRegion
             }
             other.Player.SpawnPoint = self.MapObject.Position;
             if (self.LapCheckpoint)
-            {    
+            {
                 self._Cleared = true;
                 Main.CheckpointStatus();
             }
@@ -2418,38 +2424,64 @@ component Wagon
     MoveForce = 20.0;
     JumpVelocity = 20.0;
     MaxMoveSpeed = 50.0;
-    RotateSpeed = 3.0;
     CanSupply = true;
     InfiniteSupply = true;
     MaxSupplyTimes = 0;
-    _inUse = false;
-    _riding = false;
     _horse = null;
     _human = null;
+    _rigidbody = null;
+    _leftWheel = null;
+    _rightWheel = null;
+    _wagonPivot = null;
+    _wagonBase = null;
+    _runSound = null;
+    _dust = null;
+    _leftSitTransform = null;
+    _rightSitTransform = null;
     _collidingHuman = null;
     _collidingDrive = false;
     _collidingRide = false;
     _collidingGas = false;
-    _rigidbody = null;
-    _leftWheel = null;
-    _rightWheel = null;
-    _leftSitTransform = null;
-    _rightSitTransform = null;
+    _inUse = false;
+    _riding = false;
     _supplyTimesLeft = 0;
     _jumpCoolDown = 0.0;
     _delayUnmount = false; # Avoid key conflicts with dash
+    _isGrounded = true;
+    _syncRotation = Quaternion.Identity;
+    _horseRotation = Quaternion.Identity;
 
     function Init()
     {
+        self.MapObject.AddSphereCollider("Region", "Characters", Vector3.Zero, 10.0);
         self._horse = self.MapObject.GetTransform("Horse");
         self._horse.Layer = 17; # NPC
-        self.MapObject.AddSphereCollider("Region", "Characters", Vector3.Zero, 10.0);
-        self._rigidbody = self.MapObject.GetComponent("Rigidbody");
         self._leftWheel = self.MapObject.GetTransform("Carriage/Wheels/LeftWheelPivot");
         self._rightWheel = self.MapObject.GetTransform("Carriage/Wheels/RightWheelPivot");
         self._leftSitTransform = self.MapObject.GetTransform("SitRegionBottomLeft");
         self._rightSitTransform = self.MapObject.GetTransform("SitRegionBottomRight");
+        self._wagonPivot = self.MapObject.GetTransform("WagonPivot");
+        self._wagonBase = self.MapObject.GetTransform("WagonBase");
+        self._runSound = self.MapObject.GetTransform("RunSound");
+        self._dust = self.MapObject.GetTransform("Dust");
         self._supplyTimesLeft = self.MaxSupplyTimes;
+        self._horseRotation = self._horse.QuaternionRotation;
+
+        if (self.MapObject.Rigidbody == null)
+        {
+            self._rigidbody = self.MapObject.AddBuiltinComponent("Rigidbody");
+        }
+        else
+        {
+            self._rigidbody = self.MapObject.Rigidbody;
+        }
+
+        self._rigidbody.FreezeXRotation = false;
+        self._rigidbody.FreezeYRotation = false;
+        self._rigidbody.FreezeZRotation = false;
+        self._rigidbody.CenterOfMass = self._wagonPivot.LocalPosition;
+        self._rigidbody.AngularDrag = 5;
+
     }
 
     function OnNetworkMessage(sender, message)
@@ -2462,6 +2494,18 @@ component Wagon
         {
             self._supplyTimesLeft = Convert.ToInt(String.Substring(message, 1));
         }
+    }
+
+    function OnNetworkStream()
+    {
+        self._syncRotation = Quaternion.FromEuler(self.NetworkView.ReceiveStream());
+        self._isGrounded = self.NetworkView.ReceiveStream();
+    }
+
+    function SendNetworkStream()
+    {
+        self.NetworkView.SendStream(self._horse.QuaternionRotation.Euler);
+        self.NetworkView.SendStream(self._isGrounded);
     }
 
     function OnPlayerJoin(player)
@@ -2478,7 +2522,7 @@ component Wagon
         self.NetworkView.SendMessageOthers("s" + Convert.ToString(self._supplyTimesLeft));
     }
 
-    function OnNetworkTransfer(oldOwner, newOwner) 
+    function OnNetworkTransfer(oldOwner, newOwner)
     {
         if (newOwner == Network.MasterClient && Network.IsMasterClient)
         {
@@ -2557,9 +2601,9 @@ component Wagon
             L = Vector3.Distance(self._leftWheel.Position, self._rightWheel.Position);
             r = self._leftWheel.Scale.Y / 2;
 
-            localVelocity = self.MapObject.Transform.InverseTransformDirection(self._rigidbody.GetVelocity());
-            angularVelocity = self._rigidbody.GetAngularVelocity();
-            
+            localVelocity = self.MapObject.Transform.InverseTransformDirection(self._rigidbody.Velocity);
+            angularVelocity = self._rigidbody.AngularVelocity;
+
             v_x = localVelocity.Z;
             omega = angularVelocity.Y;
 
@@ -2571,14 +2615,81 @@ component Wagon
 
             self._leftWheel.Rotate(Vector3(leftWheelRotation, 0, 0));
             self._rightWheel.Rotate(Vector3(rightWheelRotation, 0, 0));
-
         }
 
-        if (self._delayUnmount)
+        if (self.NetworkView.Owner == Network.MyPlayer)
         {
-            self._delayUnmount = false;
-            self._human.Unmount(false);
+            self._isGrounded = self.Grounded();
+            upAngle = Vector3.Angle(self.MapObject.Up, Vector3.Up);
+
+            if (self._inUse)
+            {
+                horseTargetDirection = self._horse.Forward;
+                isMoving = self._inUse && self._human.HasTargetDirection;
+
+                if (isMoving)
+                {
+                    horseTargetDirection = self._human.TargetDirection;
+                }
+
+                endRotation = Quaternion.LookRotation(self.MapObject.Up, horseTargetDirection * -1) * Quaternion.FromEuler(Vector3(90, 0, 0));
+                self._horseRotation = Quaternion.Slerp(self._horseRotation, endRotation, 5.0 * Time.TickTime);
+                self._horse.QuaternionRotation = self._horseRotation;
+
+                if (self._isGrounded)
+                {
+                    if (isMoving)
+                    {
+                        spd = self.MoveForce;
+                        dot = Vector3.Dot(self._horse.Forward, Vector3.Up);
+
+                        # deccelerate if the ground is too steep
+                        if (dot > 0.0)
+                        {
+                            spd *= 1.0 - Math.Pow(dot, 0.6);
+                        }
+
+                        self._rigidbody.AddForceOptimized(self._horse.Forward * spd * Time.TickTime / 0.007, self._rigidbody.ForceModeAcceleration, self._horse.Position);
+                    }
+                    else
+                    {
+                        self.Deccelerate();
+                    }
+                }
+            }
+            else
+            {
+                self._horseRotation = self._horse.QuaternionRotation;
+                self.Deccelerate();
+            }
+
+            if (!self._isGrounded)
+            {
+                # stop the wagon from toppling over
+                maxTiltAngle = 45;
+                if (upAngle > maxTiltAngle)
+                {
+                    axis = Vector3.Cross(self.MapObject.Up, Vector3.Up).Normalized;
+                    speed = 10 * Time.TickTime;
+                    self._rigidbody.AddTorqueOptimized(axis * speed * ((upAngle - maxTiltAngle) / maxTiltAngle), self._rigidbody.ForceModeVelocityChange);
+                }
+            }
+
+            velocity = self._rigidbody.Velocity;
+            self._rigidbody.Velocity = velocity.Normalized * Math.Min(velocity.Magnitude, self.MaxMoveSpeed);
+
+            if (self._delayUnmount)
+            {
+                self._delayUnmount = false;
+                self._human.Unmount(false);
+            }
         }
+        else
+        {
+            self._horse.QuaternionRotation = Quaternion.Slerp(self._horse.QuaternionRotation, self._syncRotation, 10.0 * Time.TickTime);
+        }
+
+        self.UpdateHorse();
     }
 
     function OnFrame()
@@ -2593,42 +2704,25 @@ component Wagon
                     self._inUse = false;
                     return;
                 }
-                ySpeed = self._rigidbody.GetVelocity().Y;
-                FrameFactor = Time.FrameTime/0.007;
-                if (ySpeed <= 0.1 && self._jumpCoolDown > 0)
+
+                if (self._isGrounded)
                 {
-                    self._jumpCoolDown -= Time.FrameTime;
-                }
-                if (Input.GetKeyDown("Human/HorseJump") && self._jumpCoolDown <= 0 && Math.Abs(ySpeed) < 0.1)
-                {
-                    velocity = self._rigidbody.GetVelocity();
-                    velocity.Y = self.JumpVelocity;
-                    self._rigidbody.SetVelocity(velocity);
-                    self._jumpCoolDown = 1;
-                }
-                elif (self._human.HasTargetDirection && self._jumpCoolDown <= 0 && Math.Abs(ySpeed) < 0.1)
-                {
-                    self.MapObject.Forward = Vector3.Lerp(self.MapObject.Forward, self._human.TargetDirection, self.RotateSpeed * Time.FrameTime);
-                    self._rigidbody.AddForce(self.MapObject.Forward * self.MoveForce * FrameFactor);
-                    velocity = self._rigidbody.GetVelocity();
-                    self._rigidbody.SetVelocity(velocity.Normalized * Math.Min(velocity.Magnitude, self.MaxMoveSpeed));
-                }
-                else
-                {
-                    velocity = self._rigidbody.GetVelocity();
-                    vh = Vector3(velocity.X, 0.0, velocity.Z);
-                    if (vh.Magnitude < 1)
+                    if (self._jumpCoolDown > 0)
                     {
-                        self._rigidbody.SetVelocity(Vector3.Up * velocity.Y);
+                        self._jumpCoolDown -= Time.FrameTime;
                     }
-                    elif (Math.Abs(velocity.Y) < 0.1 && self._jumpCoolDown <= 0)
+                    elif (Input.GetKeyDown("Human/HorseJump"))
                     {
-                        self._rigidbody.AddForce(-0.5 * vh);
+                        velocity = self._rigidbody.Velocity;
+                        velocity.Y = self.JumpVelocity;
+                        self._rigidbody.Velocity = velocity;
+                        self._jumpCoolDown = 1;
                     }
                 }
+
                 if (self._human.State == "Idle")
                 {
-                    if (self._rigidbody.GetVelocity().Magnitude > 1)
+                    if (self._rigidbody.Velocity.Magnitude > 1)
                     {
                         self._human.PlayAnimation("Armature|horse_run");
                     }
@@ -2643,19 +2737,6 @@ component Wagon
                     self.NetworkView.Transfer(Network.MasterClient);
                     self._inUse = false;
                     return;
-                }
-            }
-            else
-            {
-                velocity = self._rigidbody.GetVelocity();
-                vh = Vector3(velocity.X, 0.0, velocity.Z);
-                if (vh.Magnitude < 1)
-                {
-                    self._rigidbody.SetVelocity(Vector3.Up * velocity.Y);
-                }
-                elif (Math.Abs(velocity.Y) < 0.1 && self._jumpCoolDown <= 0)
-                {
-                    self._rigidbody.AddForce(-0.5 * vh);
                 }
             }
         }
@@ -2682,7 +2763,7 @@ component Wagon
             {
                 if (self._collidingDrive && !self._inUse)
                 {
-                    if (self.NetworkView.Owner == Network.MyPlayer) 
+                    if (self.NetworkView.Owner == Network.MyPlayer)
                     {
                         self._inUse = true;
                         self._collidingHuman.MountTransform(self._horse, Vector3(0, 1.95, 0), Vector3.Zero, Game.GetMiscSetting("HorsebackCombat"));
@@ -2694,7 +2775,7 @@ component Wagon
                     }
                 }
             }
-            elif(Input.GetKeyDown("Interaction/Interact"))
+            elif (Input.GetKeyDown("Interaction/Interact"))
             {
                 if (self._collidingGas && !self._inUse)
                 {
@@ -2707,28 +2788,72 @@ component Wagon
                 {
                     self._riding = true;
                     self._human = self._collidingHuman;
-                    posA = self._leftSitTransform.LocalPosition; # Vector3(-1.0, 1.78, -3.5);
-                    posB = self._rightSitTransform.LocalPosition; # Vector3(1.0, 1.78, 1.0);
+                    posA = self._leftSitTransform.LocalPosition;
+                    posB = self._rightSitTransform.LocalPosition;
                     self._human.MountMapObject(self.MapObject, Random.RandomVector3(posA, posB), Vector3(0, 0, 0));
                 }
             }
         }
-        self.UpdateHorse();
     }
 
     function UpdateHorse()
     {
-        if (self._rigidbody.GetVelocity().Magnitude > 1)
+        if (self._rigidbody.Velocity.Magnitude > 1)
         {
             self._horse.PlayAnimation("horse_Run");
-            self.MapObject.GetTransform("RunSound").PlaySound();
-            self.MapObject.GetTransform("Dust").ToggleParticle(true);
+            self._dust.ToggleParticle(true);
         }
         else
         {
             self._horse.PlayAnimation("horse_idle0");
-            self.MapObject.GetTransform("RunSound").StopSound();
-            self.MapObject.GetTransform("Dust").ToggleParticle(false);
+            self._dust.ToggleParticle(false);
+        }
+
+        if (self._rigidbody.Velocity.Magnitude > 1 && self._isGrounded)
+        {
+            self._runSound.PlaySound();
+        }
+        else
+        {
+            self._runSound.StopSound();
+        }
+    }
+
+    function Grounded()
+    {
+        horseCast = Physics.SphereCastAll(self._horse.Position + Vector3.Up * 0.6, self._horse.Position + Vector3.Down * 1.5, 0.5, Physics.CollideWithMapObjects);
+        for (cast in horseCast)
+        {
+            if (cast.Collider != self.MapObject && !cast.ColliderInfo.IsTrigger)
+            {
+                return true;
+            }
+        }
+
+        wagonCast = Physics.BoxCastAll(self._wagonBase.Position + self._wagonBase.Position.Up, self._wagonBase.Position, self._wagonBase.Scale, self._wagonBase.QuaternionRotation, Physics.CollideWithMapObjects);
+        for (cast in wagonCast)
+        {
+            if (cast.Collider != self.MapObject && !cast.ColliderInfo.IsTrigger)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    function Deccelerate()
+    {
+        velocity = self._rigidbody.Velocity;
+        horizontalVelocity = Vector3(velocity.X, 0, velocity.Z);
+        if (horizontalVelocity.Magnitude < 1)
+        {
+            self._rigidbody.Velocity = Vector3.Up * velocity.Y;
+        }
+        elif (self._jumpCoolDown <= 0)
+        {
+            force = -150 * horizontalVelocity * Time.TickTime;
+            self._rigidbody.AddForce(force);
         }
     }
 }
@@ -2783,7 +2908,7 @@ component Cannon
         }
     }
 
-    function OnNetworkTransfer(oldOwner, newOwner) 
+    function OnNetworkTransfer(oldOwner, newOwner)
     {
         if (newOwner == Network.MasterClient && Network.IsMasterClient)
         {
@@ -2874,9 +2999,9 @@ component Cannon
         }
         if (!self._inUse && self._collidingHuman != null)
         {
-            if (Input.GetKeyDown("Interaction/Interact")) 
+            if (Input.GetKeyDown("Interaction/Interact"))
             {
-                if (self.NetworkView.Owner == Network.MyPlayer) 
+                if (self.NetworkView.Owner == Network.MyPlayer)
                 {
                     self._inUse = true;
                     self._collidingHuman.MountTransform(self._humanMount, Vector3.Zero, Vector3.Zero);
@@ -2902,7 +3027,7 @@ component Cannon
         if (self._human != null)
         {
             Game.SpawnEffect("Boom2", self._barrelEnd.Position, self.MapObject.Rotation, 0.5);
-            Game.SpawnProjectileWithOwner("CannonBall", self._barrelEnd.Position, Vector3.Zero, self._barrel.Forward.Normalized * self._ballSpeed, 
+            Game.SpawnProjectileWithOwner("CannonBall", self._barrelEnd.Position, Vector3.Zero, self._barrel.Forward.Normalized * self._ballSpeed,
             Vector3(0, -20, 0), self.ProjectileLiveTime, self._human);
         }
     }
@@ -2927,6 +3052,7 @@ component Animal
     _state = "Idle";
     _targetRotation = null;
     _hasAction = false;
+    _rigidbody = null;
 
     function Init()
     {
@@ -2959,13 +3085,13 @@ component Animal
     }
 
     function OnFrame()
-    {  
+    {
         self._stateTimeLeft = self._stateTimeLeft - Time.FrameTime;
         if (self._state == "Wander")
         {
             if (Vector3.Distance(self._originalPosition, self._transform.Position) > self.WanderRadius)
             {
-                self.Idle();            
+                self.Idle();
             }
             else
             {
@@ -3394,7 +3520,7 @@ component SignalMover
     RepeatTimes = 0;
     Infinite = true;
     Interpolate = false;
-    
+
     Description = "Moves the object. Activate auto-disables after operation is done, re-send signal to restart. Use SignalSender component if Modular use is necessary.";
     ActivateTooltip = "Enable to start operation. Counts as 1 repeat time.";
     ReverseTooltip = "Returns to original position after Target movement.";
@@ -3430,7 +3556,7 @@ component SignalMover
         self._TimesPerSecond = self.TimesPerSecond;
     }
     function OnTick()
-    {   
+    {
         if (!Network.IsMasterClient)
         {
             return;
@@ -3519,26 +3645,26 @@ component SignalMover
     }
     function ReverseEasing(Easing)
     {
-    if (Easing == "EaseIn")
-    {
-        Easing = "EaseOut";
-    }
-    elif (Easing == "EaseOut")
-    {
-        Easing = "EaseIn";
-    }
-    elif (Easing == "BackIn")
-    {
-        Easing = "BackOut";
-    }
-    elif (Easing == "BackOut")
-    {
-        Easing = "BackIn";
-    }
-    return Easing;
+        if (Easing == "EaseIn")
+        {
+            Easing = "EaseOut";
+        }
+        elif (Easing == "EaseOut")
+        {
+            Easing = "EaseIn";
+        }
+        elif (Easing == "BackIn")
+        {
+            Easing = "BackOut";
+        }
+        elif (Easing == "BackOut")
+        {
+            Easing = "BackIn";
+        }
+        return Easing;
     }
     function Calculate(XTime)
-    {    
+    {
         if (!Network.IsMasterClient)
         {
             return;
@@ -3610,7 +3736,7 @@ component SignalArcMover
     RepeatTimes = 0;
     Infinite = true;
     Interpolate = false;
-    
+
     Description = "Moves the object in an arc. Activate auto-disables after operation is done, re-send signal to restart. Use SignalSender component if Modular use is necessary.";
     ActivateTooltip = "Enable to start operation. Counts as 1 repeat time.";
     ReverseTooltip = "Returns to original position after Target movement.";
@@ -3654,7 +3780,7 @@ component SignalArcMover
         self._Pivot = self.PivotOffset;
     }
     function OnTick()
-    {   
+    {
         if (!Network.IsMasterClient)
         {
             return;
@@ -3767,26 +3893,26 @@ component SignalArcMover
     }
     function ReverseEasing(Easing)
     {
-    if (Easing == "EaseIn")
-    {
-        Easing = "EaseOut";
-    }
-    elif (Easing == "EaseOut")
-    {
-        Easing = "EaseIn";
-    }
-    elif (Easing == "BackIn")
-    {
-        Easing = "BackOut";
-    }
-    elif (Easing == "BackOut")
-    {
-        Easing = "BackIn";
-    }
-    return Easing;
+        if (Easing == "EaseIn")
+        {
+            Easing = "EaseOut";
+        }
+        elif (Easing == "EaseOut")
+        {
+            Easing = "EaseIn";
+        }
+        elif (Easing == "BackIn")
+        {
+            Easing = "BackOut";
+        }
+        elif (Easing == "BackOut")
+        {
+            Easing = "BackIn";
+        }
+        return Easing;
     }
     function Calculate(XTime)
-    {    
+    {
         if (!Network.IsMasterClient)
         {
             return;
@@ -3857,7 +3983,7 @@ component SignalRotator
     RepeatTimes = 0;
     Infinite = true;
     Interpolate = false;
-    
+
     Description = "Rotates the object. Activate auto-disables after operation is done, re-send signal to restart. Use SignalSender component if Modular use is necessary.";
     ActivateTooltip = "Enable to start operation. Counts as 1 repeat time.";
     ReverseTooltip = "Returns to original rotation after normal rotation.";
@@ -3893,7 +4019,7 @@ component SignalRotator
         self._TimesPerSecond = self.TimesPerSecond;
     }
     function OnTick()
-    {   
+    {
         if (!Network.IsMasterClient)
         {
             return;
@@ -3981,26 +4107,26 @@ component SignalRotator
     }
     function ReverseEasing(Easing)
     {
-    if (Easing == "EaseIn")
-    {
-        Easing = "EaseOut";
-    }
-    elif (Easing == "EaseOut")
-    {
-        Easing = "EaseIn";
-    }
-    elif (Easing == "BackIn")
-    {
-        Easing = "BackOut";
-    }
-    elif (Easing == "BackOut")
-    {
-        Easing = "BackIn";
-    }
-    return Easing;
+        if (Easing == "EaseIn")
+        {
+            Easing = "EaseOut";
+        }
+        elif (Easing == "EaseOut")
+        {
+            Easing = "EaseIn";
+        }
+        elif (Easing == "BackIn")
+        {
+            Easing = "BackOut";
+        }
+        elif (Easing == "BackOut")
+        {
+            Easing = "BackIn";
+        }
+        return Easing;
     }
     function Calculate(XTime)
-    {   
+    {
         if (!Network.IsMasterClient)
         {
             return;
@@ -4073,7 +4199,7 @@ component SignalScaler
     RepeatTimes = 0;
     Infinite = true;
     Interpolate = false;
-    
+
     Description = "Scales the object. Activate auto-disables after operation is done, re-send signal to restart. Use SignalSender component if Modular use is necessary.";
     ActivateTooltip = "Enable to start operation. Counts as 1 repeat time.";
     ReverseTooltip = "Returns to original scale after target Scaling.";
@@ -4090,7 +4216,7 @@ component SignalScaler
     _StartScale = Vector3(0,0,0);
     _GoalScale = Vector3(0,0,0);
     _OriginalScale = Vector3(0,0,0);
-
+    _SyncScale = Vector3(0,0,0);
     _Forwards = true;
     _Running = false;
     _TimesPerSecond = 0.0;
@@ -4109,9 +4235,13 @@ component SignalScaler
         self._TimesPerSecond = self.TimesPerSecond;
     }
     function OnTick()
-    {   
+    {
         if (!Network.IsMasterClient)
         {
+            if (self.MapObject.NetworkView != null)
+            {
+                self.MapObject.Scale = Vector3.Lerp(self.MapObject.Scale, self._SyncScale, Time.TickTime * 5.0);
+            }
             return;
         }
         if ((self.Infinite || self._RepeatTimes > 0 || self._ForwardTimes > 0 || self._ReverseTimes > 0) && self.Activate && !self._Running)
@@ -4201,26 +4331,26 @@ component SignalScaler
     }
     function ReverseEasing(Easing)
     {
-    if (Easing == "EaseIn")
-    {
-        Easing = "EaseOut";
-    }
-    elif (Easing == "EaseOut")
-    {
-        Easing = "EaseIn";
-    }
-    elif (Easing == "BackIn")
-    {
-        Easing = "BackOut";
-    }
-    elif (Easing == "BackOut")
-    {
-        Easing = "BackIn";
-    }
-    return Easing;
+        if (Easing == "EaseIn")
+        {
+            Easing = "EaseOut";
+        }
+        elif (Easing == "EaseOut")
+        {
+            Easing = "EaseIn";
+        }
+        elif (Easing == "BackIn")
+        {
+            Easing = "BackOut";
+        }
+        elif (Easing == "BackOut")
+        {
+            Easing = "BackIn";
+        }
+        return Easing;
     }
     function Calculate(XTime)
-    {    
+    {
         if (!Network.IsMasterClient)
         {
             return;
@@ -4276,6 +4406,14 @@ component SignalScaler
             self.MapObject.Scale = Vector3.LerpUnclamped(self._StartScale, self._GoalScale, XTime);
         }
     }
+    function OnNetworkStream()
+    {
+        self._SyncScale = self.NetworkView.ReceiveStream();
+    }
+    function SendNetworkStream()
+    {
+        self.NetworkView.SendStream(self.MapObject.Scale);
+    }
 }
 
 # general
@@ -4300,7 +4438,7 @@ component SignalSender
     ReceiverObjectIDsTooltip = "ID  for the receiving objects, use space to separate multiple receivers.";
     SignalTriggerTooltip = "How the signal is activated. (OnGetHit only works with cubes and Interact is not included for 'Any')";
     ComponentNameTooltip = "What component to send the signal to";
-    SetXYZTooltip = "Only modifies original values if set to anything but (0, 0, 0)"
+    SetXYZTooltip = "Only modifies original values if set to anything but (0, 0, 0)";
     SetTimesPerSecondTooltip = "Modify the speed value of target object, is ignored if value is 0";
     UsesTooltip = "How many times this signal can be used";
     StopOnConstrainsTooltip = "Receiver object will stop at start and end position. Use for things like doors.";
@@ -4317,6 +4455,7 @@ component SignalSender
 
     _Receivers = List();
     _Components = List();
+
     function Init()
     {
         self._OnStayTimer = self.OnStayTimer;
@@ -4454,7 +4593,7 @@ component SignalSender
                     Component.Activate = true;
                     Component._RepeatTimes = self.RepeatTimes;
                 }
-                if (Component.Activate)  
+                if (Component.Activate)
                 {
                     if (self.SetXYZ != Vector3(0, 0, 0))
                     {
@@ -4504,7 +4643,7 @@ component SignalSender
                     Component.Activate = true;
                     Component._RepeatTimes = self.RepeatTimes;
                 }
-                if (Component.Activate)  
+                if (Component.Activate)
                 {
                     if (self.SetXYZ != Vector3(0, 0, 0))
                     {
@@ -4554,7 +4693,7 @@ component SignalSender
                     Component.Activate = true;
                     Component._RepeatTimes = self.RepeatTimes;
                 }
-                if (Component.Activate)  
+                if (Component.Activate)
                 {
                     if (self.SetXYZ != Vector3(0, 0, 0))
                     {
@@ -4569,7 +4708,7 @@ component SignalSender
                         Component._TimesPerSecond = self.SetTimesPerSecond;
                     }
                     Receiver.Active = true;
-                }   
+                }
             }
             elif (self.ComponentName == "SignalScaler")
             {
@@ -4604,7 +4743,7 @@ component SignalSender
                     Component.Activate = true;
                     Component._RepeatTimes = self.RepeatTimes;
                 }
-                if (Component.Activate)  
+                if (Component.Activate)
                 {
                     if (self.SetXYZ != Vector3(0, 0, 0))
                     {
@@ -4622,7 +4761,7 @@ component SignalSender
                 }
             }
         }
-    }  
+    }
 }
 
 # general
@@ -4769,7 +4908,7 @@ component Vehicle
         }
     }
 
-    function OnNetworkTransfer(oldOwner, newOwner) 
+    function OnNetworkTransfer(oldOwner, newOwner)
     {
         if (newOwner == Network.MasterClient && Network.IsMasterClient)
         {
@@ -5042,7 +5181,7 @@ component Chair
     }
 
 
-    function OnNetworkTransfer(oldOwner, newOwner) 
+    function OnNetworkTransfer(oldOwner, newOwner)
     {
         if (newOwner == Network.MasterClient && Network.IsMasterClient)
         {

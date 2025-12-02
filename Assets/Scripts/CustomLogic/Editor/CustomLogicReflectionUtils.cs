@@ -87,5 +87,10 @@ namespace CustomLogic.Editor
             }
             return string.Empty;
         }
+
+        public static bool IsVariadicParameter(ParameterInfo parameterInfo)
+        {
+            return parameterInfo.IsDefined(typeof(ParamArrayAttribute), false);
+        }
     }
 }

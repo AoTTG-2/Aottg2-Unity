@@ -1,0 +1,313 @@
+{
+  "kind": "component",
+  "name": "LineRenderer",
+  "description": "Represents a LineRenderer",
+  "extends": [
+    "Object"
+  ],
+  "instanceFields": [
+    {
+      "label": "StartWidth",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "The width of the line at the start",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "EndWidth",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "The width of the line at the end",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "LineColor",
+      "type": {
+        "name": "Color",
+        "typeArguments": []
+      },
+      "description": "The color of the line",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "PositionCount",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "The number of points in the line",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Enabled",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Is the line renderer enabled",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Loop",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Is the line renderer a loop",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "NumCornerVertices",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "The number of corner vertices",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "NumCapVertices",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "The number of end cap vertices",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Alignment",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "The alignment of the line renderer",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "TextureMode",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "The texture mode of the line renderer",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "UseWorldSpace",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Is the line renderer in world space",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "ShadowCastingMode",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Does the line renderer cast shadows",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "ReceiveShadows",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Does the line renderer receive shadows",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "ColorGradient",
+      "type": {
+        "name": "List",
+        "typeArguments": [
+          {
+            "name": "Color",
+            "typeArguments": []
+          }
+        ]
+      },
+      "description": "The gradient of the line renderer",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "AlphaGradient",
+      "type": {
+        "name": "List",
+        "typeArguments": [
+          {
+            "name": "float",
+            "typeArguments": []
+          }
+        ]
+      },
+      "description": "The alpha gradient of the line renderer",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "WidthCurve",
+      "type": {
+        "name": "List",
+        "typeArguments": [
+          {
+            "name": "Vector2",
+            "typeArguments": []
+          }
+        ]
+      },
+      "description": "The width curve of the line renderer",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "WidthMultiplier",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "The width multiplier of the line renderer",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "ColorGradientMode",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "The color gradient mode of the line renderer",
+      "readonly": false,
+      "private": false
+    }
+  ],
+  "instanceMethods": [
+    {
+      "label": "Destroy",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Remove the line renderer (can also be done by removing all references to this object)",
+      "parameters": [],
+      "kind": "function"
+    },
+    {
+      "label": "GetPosition",
+      "returnType": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Get the position of a point in the line renderer",
+      "parameters": [
+        {
+          "name": "index",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "SetPosition",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Set the position of a point in the line renderer",
+      "parameters": [
+        {
+          "name": "index",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "position",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    }
+  ],
+  "staticFields": [],
+  "staticMethods": [
+    {
+      "label": "CreateLineRenderer",
+      "returnType": {
+        "name": "LineRenderer",
+        "typeArguments": []
+      },
+      "description": "Create a new LineRenderer",
+      "parameters": [],
+      "kind": "function"
+    }
+  ],
+  "constructors": [
+    {
+      "parameters": [],
+      "description": "Default constructor, Creates a black line with a width of 1"
+    },
+    {
+      "parameters": [
+        {
+          "name": "color",
+          "type": {
+            "name": "Color",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "width",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "description": "Creates a line with the given color and width"
+    }
+  ]
+}

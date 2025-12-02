@@ -1,0 +1,95 @@
+{
+  "kind": "class",
+  "name": "WallColossal",
+  "description": "Only character owner can modify fields and call functions unless otherwise specified.",
+  "extends": [
+    "Shifter"
+  ],
+  "instanceFields": [
+    {
+      "label": "HandHealth",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "Colossal's current hand health.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "MaxHandHealth",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "Colossal's maximum hand health.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "WallAttackCooldown",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Colossal's (AI) wall attack cooldown per attack.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "WallAttackCooldownLeft",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Colossal's (AI) wall attack cooldown remaining.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "SteamState",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Colossal's current steam state (Off, Warning, or Damage).",
+      "readonly": true,
+      "private": false
+    }
+  ],
+  "instanceMethods": [
+    {
+      "label": "AttackSteam",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Causes the colossal to perform steam attack.",
+      "parameters": [],
+      "kind": "function"
+    },
+    {
+      "label": "StopSteam",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Causes the colossal to stop steam attack.",
+      "parameters": [],
+      "kind": "function"
+    },
+    {
+      "label": "WallAttack",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Causes the (AI) colossal to perform a random wall attack.",
+      "parameters": [],
+      "kind": "function"
+    }
+  ],
+  "staticFields": [],
+  "staticMethods": [],
+  "constructors": []
+}

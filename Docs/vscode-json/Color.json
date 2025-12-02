@@ -1,0 +1,248 @@
+{
+  "kind": "extension",
+  "name": "Color",
+  "description": "Represents a color. Every component is in the range [0, 255].",
+  "extends": [
+    "Object"
+  ],
+  "instanceFields": [
+    {
+      "label": "R",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "Red component of the color",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "G",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "Green component of the color",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "B",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "Blue component of the color",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "A",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "Alpha component of the color",
+      "readonly": false,
+      "private": false
+    }
+  ],
+  "instanceMethods": [
+    {
+      "label": "ToHexString",
+      "returnType": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Converts the color to a hex string",
+      "parameters": [],
+      "kind": "function"
+    }
+  ],
+  "staticFields": [],
+  "staticMethods": [
+    {
+      "label": "Lerp",
+      "returnType": {
+        "name": "Color",
+        "typeArguments": []
+      },
+      "description": "Linearly interpolates between colors `a` and `b` by `t`",
+      "parameters": [
+        {
+          "name": "a",
+          "type": {
+            "name": "Color",
+            "typeArguments": []
+          },
+          "description": "Color to interpolate from",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "b",
+          "type": {
+            "name": "Color",
+            "typeArguments": []
+          },
+          "description": "Color to interpolate to",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "t",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "Interpolation factor. 0 = `a`, 1 = `b`",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Gradient",
+      "returnType": {
+        "name": "Color",
+        "typeArguments": []
+      },
+      "description": "Creates a gradient color from two colors",
+      "parameters": [
+        {
+          "name": "a",
+          "type": {
+            "name": "Color",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "b",
+          "type": {
+            "name": "Color",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "t",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    }
+  ],
+  "constructors": [
+    {
+      "parameters": [],
+      "description": "Default constructor, creates a white color."
+    },
+    {
+      "parameters": [
+        {
+          "name": "hexString",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "description": "Creates a color from a hex string"
+    },
+    {
+      "parameters": [
+        {
+          "name": "r",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "g",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "b",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "description": "Creates a color from RGB"
+    },
+    {
+      "parameters": [
+        {
+          "name": "r",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "g",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "b",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "a",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "description": "Creates a color from RGBA"
+    }
+  ]
+}

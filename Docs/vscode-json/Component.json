@@ -1,0 +1,34 @@
+{
+  "kind": "class",
+  "name": "Component",
+  "description": "Represents a component script attached to a MapObject.",
+  "extends": [
+    "Object"
+  ],
+  "instanceFields": [
+    {
+      "label": "MapObject",
+      "type": {
+        "name": "MapObject",
+        "typeArguments": []
+      },
+      "description": "The MapObject the component is attached to.",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "NetworkView",
+      "type": {
+        "name": "NetworkView",
+        "typeArguments": []
+      },
+      "description": "The NetworkView attached to the MapObject, if Networked is enabled.",
+      "readonly": true,
+      "private": false
+    }
+  ],
+  "instanceMethods": [],
+  "staticFields": [],
+  "staticMethods": [],
+  "constructors": []
+}

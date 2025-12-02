@@ -9,7 +9,7 @@ Contributing: join our discord server for more details on how to contribute. We 
 ### Required installs
 1. Install git: https://git-scm.com/book/en/v2/Getting-Started-Installing-Git
 2. Install git lfs: https://git-lfs.github.com/
-3. Install Unity 2023.1.17f1 from Unity Hub
+3. Install Unity 2023.1.22f1 from Unity Hub
 
 ### Downloading the project
 1. Open command prompt and [navigate](https://www.howtogeek.com/659411/how-to-change-directories-in-command-prompt-on-windows-10/) to your preferred installation folder

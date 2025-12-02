@@ -28,6 +28,8 @@ namespace CustomLogic
         public static Vector3 CameraRotation;
         public static Vector3 CameraVelocity;
         public static CameraInputMode? CameraMode = null;
+        public static bool CameraLocked;
+        public static bool CursorVisible;
         public static HashSet<KeybindSetting> KeybindDefaultDisabled = new HashSet<KeybindSetting>();
         public static HashSet<KeybindSetting> KeybindHold = new HashSet<KeybindSetting>();
         public static Dictionary<string, object> RoomData = new Dictionary<string, object>();
@@ -122,7 +124,7 @@ namespace CustomLogic
                 if (BuiltinLevels.IsLogicBuiltin(settings.GameMode.Value))
                 {
                     CustomLogicTransfer.LogicTransferReady = true;
-                    RPCManager.PhotonView.RPC("LoadBuiltinLogicRPC", RpcTarget.All, new object[] { settings.GameMode.Value });
+                    RPCManager.PhotonView.RPC(nameof(RPCManager.LoadBuiltinLogicRPC), RpcTarget.All, new object[] { settings.GameMode.Value });
                 }
                 else
                 {
@@ -163,7 +165,7 @@ namespace CustomLogic
             {
                 InGameGeneralSettings settings = SettingsManager.InGameCurrent.General;
                 if (BuiltinLevels.IsLogicBuiltin(settings.GameMode.Value))
-                    RPCManager.PhotonView.RPC("LoadBuiltinLogicRPC", player, new object[] { settings.GameMode.Value });
+                    RPCManager.PhotonView.RPC(nameof(RPCManager.LoadBuiltinLogicRPC), player, new object[] { settings.GameMode.Value });
                 else
                     CustomLogicTransfer.Transfer(player);
             }

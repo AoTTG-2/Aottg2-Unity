@@ -1,0 +1,77 @@
+{
+  "kind": "class",
+  "name": "Icon",
+  "description": "UI element for displaying icons/images",
+  "extends": [
+    "VisualElement"
+  ],
+  "instanceFields": [
+    {
+      "label": "IconPath",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Get the current icon path",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "ScaleMode",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Get or set the scale mode for the icon",
+      "readonly": false,
+      "private": false
+    }
+  ],
+  "instanceMethods": [
+    {
+      "label": "SetIcon",
+      "returnType": {
+        "name": "Icon",
+        "typeArguments": []
+      },
+      "description": "Set the icon to display from a resource path",
+      "parameters": [
+        {
+          "name": "iconPath",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "Path to the icon resource (e.g., \"Icons/Game/BladeIcon\")",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "SetTintColor",
+      "returnType": {
+        "name": "Icon",
+        "typeArguments": []
+      },
+      "description": "Set the tint color of the icon",
+      "parameters": [
+        {
+          "name": "color",
+          "type": {
+            "name": "Color",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    }
+  ],
+  "staticFields": [],
+  "staticMethods": [],
+  "constructors": []
+}

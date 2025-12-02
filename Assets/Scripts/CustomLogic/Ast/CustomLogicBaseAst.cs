@@ -22,6 +22,7 @@
         ClassInstantiateExpression,
         FieldExpression,
         PrimitiveExpression,
+        UnaryExpression,
         BinopExpression,
         NotExpression,
         VariableExpression,

@@ -1,0 +1,46 @@
+{
+  "kind": "class",
+  "name": "Image",
+  "description": "UI element for setting background images on visual elements",
+  "extends": [
+    "Object"
+  ],
+  "instanceFields": [
+    {
+      "label": "ImagePath",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Get the current image path",
+      "readonly": false,
+      "private": false
+    }
+  ],
+  "instanceMethods": [
+    {
+      "label": "SetImage",
+      "returnType": {
+        "name": "Image",
+        "typeArguments": []
+      },
+      "description": "Set the image from a resource path",
+      "parameters": [
+        {
+          "name": "imagePath",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "Path to the image resource (e.g., \"Icons/Game/BladeIcon\")",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    }
+  ],
+  "staticFields": [],
+  "staticMethods": [],
+  "constructors": []
+}

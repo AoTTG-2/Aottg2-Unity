@@ -1,0 +1,570 @@
+{
+  "kind": "class",
+  "name": "Human",
+  "description": "Represents a human character. Only character owner can modify fields and call functions unless otherwise specified.",
+  "extends": [
+    "Character"
+  ],
+  "instanceFields": [
+    {
+      "label": "Weapon",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "The weapon the human is using",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "CurrentSpecial",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "The current special the human is using",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "SpecialCooldownTime",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "The normalized cooldown time of the special. Has a range of 0 to 1.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "SpecialCooldown",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "The cooldown of the special",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "ShifterLiveTime",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "The live time of the shifter special",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "SpecialCooldownRatio",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "The ratio of the special cooldown",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "CurrentGas",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "The current gas of the human",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "MaxGas",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "The max gas of the human",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Acceleration",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "The acceleration of the human",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Speed",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "The speed of the human",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "HorseSpeed",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "The speed of the horse",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "CurrentBladeDurability",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "The current blade durability",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "MaxBladeDurability",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "The max blade durability",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "CurrentBlade",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "The current blade",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "MaxBlade",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "The max number of blades held",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "CurrentAmmoRound",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "The current ammo round",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "MaxAmmoRound",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "The max ammo round",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "CurrentAmmoLeft",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "The current ammo left",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "MaxAmmoTotal",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "The max total ammo",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "LeftHookEnabled",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Whether the left hook is enabled",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "RightHookEnabled",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Whether the right hook is enabled",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "IsMounted",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Whether the human is mounted",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "MountedMapObject",
+      "type": {
+        "name": "MapObject",
+        "typeArguments": []
+      },
+      "description": "The map object the human is mounted on",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "MountedTransform",
+      "type": {
+        "name": "Transform",
+        "typeArguments": []
+      },
+      "description": "The transform the human is mounted on",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "AutoRefillGas",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Whether the human auto refills gas",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "State",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "The state of the human",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "CanDodge",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Whether the human can dodge",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "IsInvincible",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Whether the human is invincible",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "InvincibleTimeLeft",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "The time left for invincibility",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "IsCarried",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "If the human is carried.",
+      "readonly": true,
+      "private": false
+    }
+  ],
+  "instanceMethods": [
+    {
+      "label": "Refill",
+      "returnType": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Refills the gas of the human",
+      "parameters": [],
+      "kind": "function"
+    },
+    {
+      "label": "RefillImmediate",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Refills the gas of the human immediately",
+      "parameters": [],
+      "kind": "function"
+    },
+    {
+      "label": "ClearHooks",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Clears all hooks",
+      "parameters": [],
+      "kind": "function"
+    },
+    {
+      "label": "ClearLeftHook",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Clears the left hook",
+      "parameters": [],
+      "kind": "function"
+    },
+    {
+      "label": "ClearRightHook",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Clears the right hook",
+      "parameters": [],
+      "kind": "function"
+    },
+    {
+      "label": "LeftHookPosition",
+      "returnType": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Position of the left hook, null if there is no hook.",
+      "parameters": [],
+      "kind": "function"
+    },
+    {
+      "label": "RightHookPosition",
+      "returnType": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Position of the right hook, null if there is no hook.",
+      "parameters": [],
+      "kind": "function"
+    },
+    {
+      "label": "MountMapObject",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Mounts the human on a map object",
+      "parameters": [
+        {
+          "name": "mapObject",
+          "type": {
+            "name": "MapObject",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "positionOffset",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "rotationOffset",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "canMountedAttack",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "MountTransform",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Mounts the human on a transform",
+      "parameters": [
+        {
+          "name": "transform",
+          "type": {
+            "name": "Transform",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "positionOffset",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "rotationOffset",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "canMountedAttack",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Unmount",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Unmounts the human",
+      "parameters": [
+        {
+          "name": "immediate",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "SetSpecial",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Sets the special of the human",
+      "parameters": [
+        {
+          "name": "special",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "ActivateSpecial",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Activates the special of the human",
+      "parameters": [],
+      "kind": "function"
+    },
+    {
+      "label": "SetWeapon",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Sets the weapon of the human",
+      "parameters": [
+        {
+          "name": "weapon",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "Name of the weapon. Available weapons: \"Blade\", \"AHSS\", \"APG\", \"Thunderspear\"",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "DisablePerks",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Disables all perks of the human",
+      "parameters": [],
+      "kind": "function"
+    }
+  ],
+  "staticFields": [],
+  "staticMethods": [],
+  "constructors": []
+}
