@@ -15,6 +15,8 @@ namespace CustomLogic
     {
         private readonly VisualElement _visualElement;
 
+        private TextShadow _textShadow = new();
+
         public CustomLogicVisualElementBuiltin(VisualElement visualElement)
         {
             _visualElement = visualElement;
@@ -37,7 +39,7 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// Remove a child elemend
+        /// Remove a child element
         /// </summary>
         [CLMethod]
         public void Remove(CustomLogicVisualElementBuiltin visualElement)
@@ -52,6 +54,15 @@ namespace CustomLogic
         public void RemoveFromHierarchy()
         {
             _visualElement.RemoveFromHierarchy();
+        }
+
+        /// <summary>
+        /// Remove all child elements
+        /// </summary>
+        [CLMethod]
+        public void Clear()
+        {
+            _visualElement.Clear();
         }
 
         /// <summary>
@@ -177,7 +188,7 @@ namespace CustomLogic
         /// Set the element to be active or inactive
         /// </summary>
         [CLMethod]
-        public CustomLogicVisualElementBuiltin Active(bool value)
+        public CustomLogicVisualElementBuiltin Active(bool value = true)
         {
             _visualElement.style.display = value ? DisplayStyle.Flex : DisplayStyle.None;
             return this;
@@ -187,7 +198,7 @@ namespace CustomLogic
         /// Set the element to be visible or hidden
         /// </summary>
         [CLMethod]
-        public CustomLogicVisualElementBuiltin Visible(bool value)
+        public CustomLogicVisualElementBuiltin Visible(bool value = true)
         {
             _visualElement.style.visibility = value ? Visibility.Visible : Visibility.Hidden;
             return this;
@@ -212,7 +223,7 @@ namespace CustomLogic
         /// Set the element to be absolute or relative positioned
         /// </summary>
         [CLMethod]
-        public CustomLogicVisualElementBuiltin Absolute(bool value)
+        public CustomLogicVisualElementBuiltin Absolute(bool value = true)
         {
             _visualElement.style.position = value ? Position.Absolute : Position.Relative;
             return this;
@@ -571,6 +582,164 @@ namespace CustomLogic
         public CustomLogicVisualElementBuiltin Color(CustomLogicColorBuiltin color)
         {
             _visualElement.style.color = color.Value.ToColor();
+            return this;
+        }
+
+        /// <summary>
+        /// Set the text alignment of the element
+        /// </summary>
+        /// <param name="value">Valid values are: `UpperLeft`, `UpperCenter`, `UpperRight`, `MiddleLeft`, `MiddleCenter`, `MiddleRight`, `LowerLeft`, `LowerCenter`, `LowerRight`</param>
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin TextAlign(string value)
+        {
+            _visualElement.style.unityTextAlign = value switch
+            {
+                "UpperLeft" => TextAnchor.UpperLeft,
+                "UpperCenter" => TextAnchor.UpperCenter,
+                "UpperRight" => TextAnchor.UpperRight,
+                "MiddleLeft" => TextAnchor.MiddleLeft,
+                "MiddleCenter" => TextAnchor.MiddleCenter,
+                "MiddleRight" => TextAnchor.MiddleRight,
+                "LowerLeft" => TextAnchor.LowerLeft,
+                "LowerCenter" => TextAnchor.LowerCenter,
+                "LowerRight" => TextAnchor.LowerRight,
+                _ => throw new System.Exception("Unknown text align value")
+            };
+            return this;
+        }
+
+        /// <summary>
+        /// Set whether the text should wrap or not
+        /// </summary>
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin TextWrap(bool value = true)
+        {
+            _visualElement.style.whiteSpace = value switch
+            {
+                true => WhiteSpace.Normal,
+                false => WhiteSpace.NoWrap
+            };
+            return this;
+        }
+
+        /// <summary>
+        /// Set the text overflow behavior
+        /// </summary>
+        /// <param name="value">Acceptable vlaues are: `Clip`, `Ellipsis`</param>
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin TextOverflow(string value)
+        {
+            _visualElement.style.textOverflow = value switch
+            {
+                "Clip" => UnityEngine.UIElements.TextOverflow.Clip,
+                "Ellipsis" => UnityEngine.UIElements.TextOverflow.Ellipsis,
+                _ => throw new System.Exception("Unknown text overflow value")
+            };
+            return this;
+        }
+
+        /// <summary>
+        /// Set the text outline width
+        /// </summary>
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin TextOutlineWidth(float value)
+        {
+            _visualElement.style.unityTextOutlineWidth = value;
+            return this;
+        }
+
+        /// <summary>
+        /// Set the text outline color
+        /// </summary>
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin TextOutlineColor(CustomLogicColorBuiltin value)
+        {
+            _visualElement.style.unityTextOutlineColor = value.Value.ToColor();
+            return this;
+        }
+
+        /// <summary>
+        /// Set the text shadow color
+        /// </summary>
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin TextShadowColor(CustomLogicColorBuiltin value)
+        {
+            _textShadow.color = value.Value.ToColor();
+            _visualElement.style.textShadow = _textShadow;
+            return this;
+        }
+
+        /// <summary>
+        /// Set the text shadow offset
+        /// </summary>
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin TextShadowOffset(float horizontal, float vertical)
+        {
+            _textShadow.offset = new Vector2(horizontal, vertical);
+            _visualElement.style.textShadow = _textShadow;
+            return this;
+        }
+
+        /// <summary>
+        /// Set the text shadow horizontal offset
+        /// </summary>
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin TextShadowHorizontalOffset(float value)
+        {
+            _textShadow.offset.x = value;
+            _visualElement.style.textShadow = _textShadow;
+            return this;
+        }
+
+        /// <summary>
+        /// Set the text shadow vertical offset
+        /// </summary>
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin TextShadowVerticalOffset(float value)
+        {
+            _textShadow.offset.y = value;
+            _visualElement.style.textShadow = _textShadow;
+            return this;
+        }
+
+        /// <summary>
+        /// Set the text shadow blur radius
+        /// </summary>
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin TextShadowBlurRadius(float value)
+        {
+            _textShadow.blurRadius = value;
+            _visualElement.style.textShadow = _textShadow;
+            return this;
+        }
+
+        /// <summary>
+        /// Set the text letter spacing
+        /// </summary>
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin TextLetterSpacing(float value)
+        {
+            _visualElement.style.letterSpacing = value;
+            return this;
+        }
+
+        /// <summary>
+        /// Set the text word spacing
+        /// </summary>
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin TextWordSpacing(float value)
+        {
+            _visualElement.style.wordSpacing = value;
+            return this;
+        }
+
+        /// <summary>
+        /// Set the text paragraph spacing
+        /// </summary>
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin TextParagraphSpacing(float value)
+        {
+            _visualElement.style.unityParagraphSpacing = value;
             return this;
         }
 
