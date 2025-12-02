@@ -576,6 +576,10 @@ namespace CustomLogic
             return this;
         }
 
+        /// <summary>
+        /// Set the text alignment of the element
+        /// </summary>
+        /// <param name="value">Valid values are: `UpperLeft`, `UpperCenter`, `UpperRight`, `MiddleLeft`, `MiddleCenter`, `MiddleRight`, `LowerLeft`, `LowerCenter`, `LowerRight`</param>
         [CLMethod]
         public CustomLogicVisualElementBuiltin TextAlign(string value)
         {
@@ -595,6 +599,9 @@ namespace CustomLogic
             return this;
         }
 
+        /// <summary>
+        /// Set whether the text should wrap or not
+        /// </summary>
         [CLMethod]
         public CustomLogicVisualElementBuiltin TextWrap(bool value)
         {
@@ -606,6 +613,10 @@ namespace CustomLogic
             return this;
         }
 
+        /// <summary>
+        /// Set the text overflow behavior
+        /// </summary>
+        /// <param name="value">Acceptable vlaues are: `Clip`, `Ellipsis`</param>
         [CLMethod]
         public CustomLogicVisualElementBuiltin TextOverflow(string value)
         {
@@ -618,6 +629,9 @@ namespace CustomLogic
             return this;
         }
 
+        /// <summary>
+        /// Set the text outline width
+        /// </summary>
         [CLMethod]
         public CustomLogicVisualElementBuiltin TextOutlineWidth(float value)
         {
@@ -625,6 +639,9 @@ namespace CustomLogic
             return this;
         }
 
+        /// <summary>
+        /// Set the text outline color
+        /// </summary>
         [CLMethod]
         public CustomLogicVisualElementBuiltin TextOutlineColor(CustomLogicColorBuiltin value)
         {
@@ -632,6 +649,9 @@ namespace CustomLogic
             return this;
         }
 
+        /// <summary>
+        /// Set the text shadow color
+        /// </summary>
         [CLMethod]
         public CustomLogicVisualElementBuiltin TextShadowColor(CustomLogicColorBuiltin value)
         {
@@ -640,6 +660,9 @@ namespace CustomLogic
             return this;
         }
 
+        /// <summary>
+        /// Set the text shadow offset
+        /// </summary>
         [CLMethod]
         public CustomLogicVisualElementBuiltin TextShadowOffset(float horizontal, float vertical)
         {
@@ -648,6 +671,9 @@ namespace CustomLogic
             return this;
         }
 
+        /// <summary>
+        /// Set the text shadow horizontal offset
+        /// </summary>
         [CLMethod]
         public CustomLogicVisualElementBuiltin TextShadowHorizontalOffset(float value)
         {
@@ -656,6 +682,9 @@ namespace CustomLogic
             return this;
         }
 
+        /// <summary>
+        /// Set the text shadow vertical offset
+        /// </summary>
         [CLMethod]
         public CustomLogicVisualElementBuiltin TextShadowVerticalOffset(float value)
         {
@@ -664,6 +693,9 @@ namespace CustomLogic
             return this;
         }
 
+        /// <summary>
+        /// Set the text shadow blur radius
+        /// </summary>
         [CLMethod]
         public CustomLogicVisualElementBuiltin TextShadowBlurRadius(float value)
         {
@@ -672,6 +704,9 @@ namespace CustomLogic
             return this;
         }
 
+        /// <summary>
+        /// Set the text letter spacing
+        /// </summary>
         [CLMethod]
         public CustomLogicVisualElementBuiltin TextLetterSpacing(float value)
         {
@@ -679,6 +714,9 @@ namespace CustomLogic
             return this;
         }
 
+        /// <summary>
+        /// Set the text word spacing
+        /// </summary>
         [CLMethod]
         public CustomLogicVisualElementBuiltin TextWordSpacing(float value)
         {
@@ -686,6 +724,9 @@ namespace CustomLogic
             return this;
         }
 
+        /// <summary>
+        /// Set the text paragraph spacing
+        /// </summary>
         [CLMethod]
         public CustomLogicVisualElementBuiltin TextParagraphSpacing(float value)
         {
