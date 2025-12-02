@@ -179,7 +179,7 @@ namespace CustomLogic
         /// Set the element to be active or inactive
         /// </summary>
         [CLMethod]
-        public CustomLogicVisualElementBuiltin Active(bool value)
+        public CustomLogicVisualElementBuiltin Active(bool value = true)
         {
             _visualElement.style.display = value ? DisplayStyle.Flex : DisplayStyle.None;
             return this;
@@ -189,7 +189,7 @@ namespace CustomLogic
         /// Set the element to be visible or hidden
         /// </summary>
         [CLMethod]
-        public CustomLogicVisualElementBuiltin Visible(bool value)
+        public CustomLogicVisualElementBuiltin Visible(bool value = true)
         {
             _visualElement.style.visibility = value ? Visibility.Visible : Visibility.Hidden;
             return this;
@@ -214,7 +214,7 @@ namespace CustomLogic
         /// Set the element to be absolute or relative positioned
         /// </summary>
         [CLMethod]
-        public CustomLogicVisualElementBuiltin Absolute(bool value)
+        public CustomLogicVisualElementBuiltin Absolute(bool value = true)
         {
             _visualElement.style.position = value ? Position.Absolute : Position.Relative;
             return this;
@@ -603,7 +603,7 @@ namespace CustomLogic
         /// Set whether the text should wrap or not
         /// </summary>
         [CLMethod]
-        public CustomLogicVisualElementBuiltin TextWrap(bool value)
+        public CustomLogicVisualElementBuiltin TextWrap(bool value = true)
         {
             _visualElement.style.whiteSpace = value switch
             {
