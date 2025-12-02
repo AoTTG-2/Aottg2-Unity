@@ -15,6 +15,8 @@ namespace CustomLogic
     {
         private readonly VisualElement _visualElement;
 
+        private TextShadow _textShadow = new();
+
         public CustomLogicVisualElementBuiltin(VisualElement visualElement)
         {
             _visualElement = visualElement;
@@ -571,6 +573,123 @@ namespace CustomLogic
         public CustomLogicVisualElementBuiltin Color(CustomLogicColorBuiltin color)
         {
             _visualElement.style.color = color.Value.ToColor();
+            return this;
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin TextAlign(string value)
+        {
+            _visualElement.style.unityTextAlign = value switch
+            {
+                "UpperLeft" => TextAnchor.UpperLeft,
+                "UpperCenter" => TextAnchor.UpperCenter,
+                "UpperRight" => TextAnchor.UpperRight,
+                "MiddleLeft" => TextAnchor.MiddleLeft,
+                "MiddleCenter" => TextAnchor.MiddleCenter,
+                "MiddleRight" => TextAnchor.MiddleRight,
+                "LowerLeft" => TextAnchor.LowerLeft,
+                "LowerCenter" => TextAnchor.LowerCenter,
+                "LowerRight" => TextAnchor.LowerRight,
+                _ => throw new System.Exception("Unknown text align value")
+            };
+            return this;
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin TextWrap(bool value)
+        {
+            _visualElement.style.whiteSpace = value switch
+            {
+                true => WhiteSpace.Normal,
+                false => WhiteSpace.NoWrap
+            };
+            return this;
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin TextOverflow(string value)
+        {
+            _visualElement.style.textOverflow = value switch
+            {
+                "Clip" => UnityEngine.UIElements.TextOverflow.Clip,
+                "Ellipsis" => UnityEngine.UIElements.TextOverflow.Ellipsis,
+                _ => throw new System.Exception("Unknown text overflow value")
+            };
+            return this;
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin TextOutlineWidth(float value)
+        {
+            _visualElement.style.unityTextOutlineWidth = value;
+            return this;
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin TextOutlineColor(CustomLogicColorBuiltin value)
+        {
+            _visualElement.style.unityTextOutlineColor = value.Value.ToColor();
+            return this;
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin TextShadowColor(CustomLogicColorBuiltin value)
+        {
+            _textShadow.color = value.Value.ToColor();
+            _visualElement.style.textShadow = _textShadow;
+            return this;
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin TextShadowOffset(float horizontal, float vertical)
+        {
+            _textShadow.offset = new Vector2(horizontal, vertical);
+            _visualElement.style.textShadow = _textShadow;
+            return this;
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin TextShadowHorizontalOffset(float value)
+        {
+            _textShadow.offset.x = value;
+            _visualElement.style.textShadow = _textShadow;
+            return this;
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin TextShadowVerticalOffset(float value)
+        {
+            _textShadow.offset.y = value;
+            _visualElement.style.textShadow = _textShadow;
+            return this;
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin TextShadowBlurRadius(float value)
+        {
+            _textShadow.blurRadius = value;
+            _visualElement.style.textShadow = _textShadow;
+            return this;
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin TextLetterSpacing(float value)
+        {
+            _visualElement.style.letterSpacing = value;
+            return this;
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin TextWordSpacing(float value)
+        {
+            _visualElement.style.wordSpacing = value;
+            return this;
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin TextParagraphSpacing(float value)
+        {
+            _visualElement.style.unityParagraphSpacing = value;
             return this;
         }
 
