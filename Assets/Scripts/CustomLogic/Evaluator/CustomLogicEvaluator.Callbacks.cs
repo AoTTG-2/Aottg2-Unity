@@ -17,7 +17,7 @@ using UnityEngine;
 
 namespace CustomLogic
 {
-    partial class CustomLogicEvaluator
+    internal partial class CustomLogicEvaluator
     {
         #region Callbacks
 
@@ -219,23 +219,34 @@ namespace CustomLogic
 
         private void Init()
         {
-            // First, create user-defined static classes (Main and extensions)
-            // This must happen BEFORE C# bindings so user code can override
+            // First, create C# builtin static classes
+            // These should ALWAYS be available, regardless of user definitions
+            foreach (var staticType in CustomLogicBuiltinTypes.StaticTypeNames)
+            {
+                var instance = CustomLogicBuiltinTypes.CreateClassInstance(staticType, EmptyArgs);
+                _staticClasses[staticType] = instance;
+            }
+            
+            // Then create user-defined static classes (Main and extensions)
+            // User code may override builtins, but both versions should exist
             foreach (string className in _start.Classes.Keys)
             {
                 if (className == "Main")
-                    CreateStaticClass(className);
-                else if ((int)_start.Classes[className].Token.Value == (int)CustomLogicSymbol.Extension)
-                    CreateStaticClass(className);
-            }
-
-            // Then create C# builtin static classes ONLY if not already defined by user
-            foreach (var staticType in CustomLogicBuiltinTypes.StaticTypeNames)
-            {
-                if (!_staticClasses.ContainsKey(staticType))
                 {
-                    var instance = CustomLogicBuiltinTypes.CreateClassInstance(staticType, EmptyArgs);
-                    _staticClasses[staticType] = instance;
+                    // Always create Main from user code if it exists
+                    CreateStaticClass(className);
+                }
+                else if ((int)_start.Classes[className].Token.Value == (int)CustomLogicSymbol.Extension)
+                {
+                    // Create user extensions
+                    CreateStaticClass(className);
+                }
+                else
+                {
+                    // For non-extension user-defined classes that conflict with builtins,
+                    // the user version is already registered in _start.Classes and will be
+                    // resolved through CreateClassInstance's namespace-aware logic
+                    // We don't add them to _staticClasses here
                 }
             }
 

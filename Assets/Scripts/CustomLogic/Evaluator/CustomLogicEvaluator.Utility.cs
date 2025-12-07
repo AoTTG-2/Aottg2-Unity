@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace CustomLogic
 {
-    partial class CustomLogicEvaluator
+    internal partial class CustomLogicEvaluator
     {
         public string GetLineNumberString(int lineNumber)
         {
@@ -36,6 +36,16 @@ namespace CustomLogic
                     ChatManager.AddException($"CL Runtime Exception, press {SettingsManager.InputSettings.General.DebugWindow.GetKey()} to view in debug console");
                 }
             }
+        }
+
+        public CustomLogicStartAst GetStartAst()
+        {
+            return _start;
+        }
+
+        public Dictionary<string, CustomLogicClassInstance> GetStaticClasses()
+        {
+            return _staticClasses;
         }
 
         public Dictionary<string, BaseSetting> GetModeSettings()
@@ -120,6 +130,33 @@ namespace CustomLogic
                     componentNames.Add(className);
             }
             return componentNames;
+        }
+
+        /// <summary>
+        /// Gets a static class instance by name (for testing purposes).
+        /// </summary>
+        public CustomLogicClassInstance GetStaticClass(string className)
+        {
+            if (_staticClasses.ContainsKey(className))
+                return _staticClasses[className];
+            return null;
+        }
+
+        /// <summary>
+        /// Creates a static class instance by name (for testing purposes).
+        /// </summary>
+        public void CreateStaticClass(string className)
+        {
+            if (!_staticClasses.ContainsKey(className))
+            {
+                CustomLogicSourceType? classNamespace = null;
+                if (_start.ClassNamespaces.TryGetValue(className, out var ns))
+                    classNamespace = ns;
+
+                var instance = CreateClassInstance(className, EmptyArgs, false, classNamespace);
+                instance.Namespace = classNamespace;
+                _staticClasses.Add(className, instance);
+            }
         }
     }
 }

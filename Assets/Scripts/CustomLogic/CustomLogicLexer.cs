@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace CustomLogic
 {
-    class CustomLogicLexer
+    public class CustomLogicLexer
     {
         public CustomLogicCompiler Compiler { get; private set; }
         protected string _source;

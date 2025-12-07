@@ -5,11 +5,12 @@ namespace CustomLogic.OfflineEvaluator
 {
     /// <summary>
     /// Offline evaluator for Custom Logic scripts that can run without Unity runtime dependencies.
-    /// Automatically calls Init on the Main class.
+    /// Supports multi-file compilation and namespace isolation testing.
     /// </summary>
     public class OfflineCustomLogicEvaluator
     {
         private CustomLogicEvaluator _evaluator;
+        private CustomLogicCompiler _compiler;
         private CustomLogicClassInstance _mainInstance;
 
         /// <summary>
@@ -32,32 +33,60 @@ namespace CustomLogic.OfflineEvaluator
             "Color"
         };
 
+        /// <summary>
+        /// Creates an offline evaluator from a single script file.
+        /// </summary>
         public OfflineCustomLogicEvaluator(string script)
+        {
+            InitializeSymbols();
+            
+            _compiler = new CustomLogicCompiler();
+            _compiler.AddSourceFile(new CustomLogicSourceFile("TestScript.cl", script, CustomLogicSourceType.ModeLogic));
+            
+            CompileAndInitialize();
+        }
+
+        /// <summary>
+        /// Creates an offline evaluator from a compiler with multiple source files.
+        /// This allows testing namespace isolation with BaseLogic, Addon, MapLogic, and ModeLogic files.
+        /// </summary>
+        public OfflineCustomLogicEvaluator(CustomLogicCompiler compiler)
+        {
+            InitializeSymbols();
+            _compiler = compiler;
+            CompileAndInitialize();
+        }
+
+        private void InitializeSymbols()
         {
             // Initialize CustomLogic symbols (required before lexing/parsing)
             if (CustomLogicSymbols.Symbols.Count == 0)
             {
                 CustomLogicSymbols.Init();
             }
+        }
 
-            // Compile the script
-            var compiler = new CustomLogicCompiler();
-            compiler.AddSourceFile(new CustomLogicSourceFile("TestScript.cl", script, CustomLogicSourceType.ModeLogic));
-            string combinedSource = compiler.Compile();
+        private void CompileAndInitialize()
+        {
+            // Compile the script(s)
+            string combinedSource = _compiler.Compile();
 
             // Parse the script
-            var lexer = new CustomLogicLexer(combinedSource, compiler);
+            var lexer = new CustomLogicLexer(combinedSource, _compiler);
             var tokens = lexer.GetTokens();
             if (!string.IsNullOrEmpty(lexer.Error))
                 throw new Exception($"Lexer error: {lexer.Error}");
 
-            var parser = new CustomLogicParser(tokens, compiler);
+            var parser = new CustomLogicParser(tokens, _compiler);
             var startAst = parser.GetStartAst();
             if (!string.IsNullOrEmpty(parser.Error))
                 throw new Exception($"Parser error: {parser.Error}");
 
             // Create evaluator
-            _evaluator = new CustomLogicEvaluator(startAst, compiler);
+            _evaluator = new CustomLogicEvaluator(startAst, _compiler);
+            
+            // IMPORTANT: Set the global evaluator reference for builtin classes that need it
+            // (e.g., List.Filter, List.Map, List.Reduce)
             CustomLogicManager.Evaluator = _evaluator;
 
             // Initialize the evaluator's static classes using the same pattern as Init()
@@ -88,9 +117,9 @@ namespace CustomLogic.OfflineEvaluator
             foreach (string className in startAst.Classes.Keys)
             {
                 if (className == "Main")
-                    CreateStaticClass(className, staticClasses);
+                    CreateStaticClassInternal(className, staticClasses);
                 else if ((int)startAst.Classes[className].Token.Value == (int)CustomLogicSymbol.Extension)
-                    CreateStaticClass(className, staticClasses);
+                    CreateStaticClassInternal(className, staticClasses);
             }
 
             // Then create C# builtin static classes ONLY if:
@@ -105,11 +134,14 @@ namespace CustomLogic.OfflineEvaluator
                 }
             }
 
-            // Run assignments for all class instances
+            // Run assignments for all NON-BUILTIN class instances
+            // Builtin classes don't have assignments to run
             foreach (CustomLogicClassInstance instance in staticClasses.Values)
             {
                 if (instance is not BuiltinClassInstance)
+                {
                     RunAssignmentsClassInstance(instance);
+                }
             }
         }
 
@@ -131,11 +163,22 @@ namespace CustomLogic.OfflineEvaluator
         /// <summary>
         /// Create a static class instance (used for Main and extension classes)
         /// </summary>
-        private void CreateStaticClass(string className, Dictionary<string, CustomLogicClassInstance> staticClasses)
+        private void CreateStaticClassInternal(string className, Dictionary<string, CustomLogicClassInstance> staticClasses)
         {
             if (!staticClasses.ContainsKey(className))
             {
-                var instance = _evaluator.CreateClassInstance(className, CustomLogicEvaluator.EmptyArgs, false);
+                var startAst = GetStartAst();
+                CustomLogicSourceType? classNamespace = null;
+                
+                // Get the namespace for this class if it exists
+                if (startAst.ClassNamespaces.TryGetValue(className, out var ns))
+                {
+                    classNamespace = ns;
+                }
+                
+                // Use init: false because we'll run assignments and call Init manually later in the correct order
+                var instance = _evaluator.CreateClassInstance(className, CustomLogicEvaluator.EmptyArgs, false, classNamespace);
+                instance.Namespace = classNamespace;
                 staticClasses.Add(className, instance);
             }
         }
@@ -145,13 +188,7 @@ namespace CustomLogic.OfflineEvaluator
         /// </summary>
         private void RunAssignmentsClassInstance(CustomLogicClassInstance classInstance)
         {
-            var runAssignmentsMethod = _evaluator.GetType()
-                .GetMethod("RunAssignmentsClassInstance", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            
-            if (runAssignmentsMethod != null)
-            {
-                runAssignmentsMethod.Invoke(_evaluator, new object[] { classInstance });
-            }
+            _evaluator.RunAssignmentsClassInstance(classInstance);
         }
 
         /// <summary>
@@ -159,9 +196,7 @@ namespace CustomLogic.OfflineEvaluator
         /// </summary>
         private CustomLogicStartAst GetStartAst()
         {
-            var startField = _evaluator.GetType()
-                .GetField("_start", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            return startField?.GetValue(_evaluator) as CustomLogicStartAst;
+            return _evaluator.GetStartAst();
         }
 
         /// <summary>
@@ -169,15 +204,13 @@ namespace CustomLogic.OfflineEvaluator
         /// </summary>
         private Dictionary<string, CustomLogicClassInstance> GetStaticClassesDictionary()
         {
-            var staticClassesField = _evaluator.GetType()
-                .GetField("_staticClasses", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            return staticClassesField?.GetValue(_evaluator) as Dictionary<string, CustomLogicClassInstance>;
+            return _evaluator.GetStaticClasses();
         }
 
         /// <summary>
         /// Get a static class instance from the evaluator
         /// </summary>
-        private CustomLogicClassInstance GetStaticClass(string className)
+        public CustomLogicClassInstance GetStaticClass(string className)
         {
             var staticClasses = GetStaticClassesDictionary();
             if (staticClasses != null && staticClasses.ContainsKey(className))
@@ -185,6 +218,15 @@ namespace CustomLogic.OfflineEvaluator
                 return staticClasses[className];
             }
             return null;
+        }
+
+        /// <summary>
+        /// Create a static class by name (for advanced testing scenarios).
+        /// </summary>
+        public void CreateStaticClass(string className)
+        {
+            var staticClasses = GetStaticClassesDictionary();
+            CreateStaticClassInternal(className, staticClasses);
         }
 
         public bool HasMainClass()
@@ -198,6 +240,17 @@ namespace CustomLogic.OfflineEvaluator
             return _mainInstance;
         }
 
+        /// <summary>
+        /// Evaluate a method on a class instance.
+        /// </summary>
+        public object EvaluateMethod(CustomLogicClassInstance instance, string methodName, params object[] parameters)
+        {
+            return _evaluator.EvaluateMethod(instance, methodName, parameters);
+        }
+
+        /// <summary>
+        /// Create and evaluate a method on a new instance of the specified class.
+        /// </summary>
         public object EvaluateMethod(string className, string methodName, params object[] parameters)
         {
             var instance = _evaluator.CreateClassInstance(className, CustomLogicEvaluator.EmptyArgs, init: true);
@@ -223,6 +276,14 @@ namespace CustomLogic.OfflineEvaluator
             if (_mainInstance == null)
                 throw new Exception("Main class not found or not initialized");
             _mainInstance.Variables[variableName] = value;
+        }
+
+        /// <summary>
+        /// Get the compiler used to compile the scripts.
+        /// </summary>
+        public CustomLogicCompiler GetCompiler()
+        {
+            return _compiler;
         }
     }
 }

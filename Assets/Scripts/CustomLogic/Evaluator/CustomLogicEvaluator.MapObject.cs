@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace CustomLogic
 {
-    partial class CustomLogicEvaluator
+    internal partial class CustomLogicEvaluator
     {
         #region Map Object Setup
         public void LoadMapObjectComponents(MapObject obj, bool init = false)
@@ -97,21 +97,19 @@ namespace CustomLogic
             RemoveCallbacks(instance);
         }
 
-        private void CreateStaticClass(string className)
-        {
-            if (!_staticClasses.ContainsKey(className))
-            {
-                var instance = CreateClassInstance(className, EmptyArgs, false);
-                _staticClasses.Add(className, instance);
-            }
-        }
-
         public CustomLogicComponentInstance CreateComponentInstance(string className, MapObject obj, MapScriptComponent script)
         {
             CustomLogicNetworkViewBuiltin networkView = null;
             if (obj.ScriptObject.Networked)
                 networkView = IdToNetworkView[obj.ScriptObject.Id];
             var classInstance = new CustomLogicComponentInstance(className, IdToMapObjectBuiltin[obj.ScriptObject.Id], script, networkView);
+            
+            // Set namespace if available
+            if (_start.ClassNamespaces.TryGetValue(className, out var classNamespace))
+            {
+                classInstance.Namespace = classNamespace;
+            }
+            
             if (networkView != null)
                 networkView.RegisterComponentInstance(classInstance);
             RunAssignmentsClassInstance(classInstance);

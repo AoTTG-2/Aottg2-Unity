@@ -13,6 +13,12 @@ namespace CustomLogic
         public bool Inited = false;
 
         public readonly Dictionary<string, object> Variables;
+        
+        /// <summary>
+        /// The namespace (source file type) where this instance's class was defined.
+        /// Used for namespace-aware class resolution.
+        /// </summary>
+        public CustomLogicSourceType? Namespace { get; set; }
 
         protected CustomLogicClassInstance()
         {

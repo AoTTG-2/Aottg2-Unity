@@ -16,7 +16,7 @@ using Utility;
 
 namespace CustomLogic
 {
-    partial class CustomLogicEvaluator
+    internal partial class CustomLogicEvaluator
     {
         public float CurrentTime;
         public bool HasSetMusic = false;
@@ -47,22 +47,37 @@ namespace CustomLogic
         #region Evaluator
         public CustomLogicClassInstance CreateClassInstance(string className, object[] parameterValues, bool init = true)
         {
-            // NEW: Check user-defined classes FIRST (they can override C# bindings)
-            // This allows backward compatibility - if user defines "Button" and we add ButtonBuiltin later,
-            // their script won't break
-            if (_start.Classes.ContainsKey(className))
+            return CreateClassInstance(className, parameterValues, init, null);
+        }
+        
+        /// <summary>
+        /// Creates a class instance with namespace-aware resolution.
+        /// </summary>
+        /// <param name="className">The name of the class to instantiate</param>
+        /// <param name="parameterValues">Parameters to pass to Init</param>
+        /// <param name="init">Whether to call Init</param>
+        /// <param name="callerNamespace">The namespace of the caller (for namespace-aware resolution)</param>
+        public CustomLogicClassInstance CreateClassInstance(string className, object[] parameterValues, bool init, CustomLogicSourceType? callerNamespace)
+        {
+            // Namespace-aware resolution:
+            // 1. Check caller's namespace first (same file)
+            // 2. Check builtins (always available)
+            // 3. Check other namespaces in priority order
+            
+            // Step 1: If caller has a namespace, check for class in same namespace first
+            if (callerNamespace.HasValue && _start.Classes.ContainsKey(className))
             {
-                var classInstance = new UserClassInstance(className);
-                if (init)
+                if (_start.ClassNamespaces.TryGetValue(className, out var classNamespace))
                 {
-                    RunAssignmentsClassInstance(classInstance);
-                    EvaluateMethod(classInstance, "Init", parameterValues);
-                    classInstance.Inited = true;
+                    if (classNamespace == callerNamespace.Value)
+                    {
+                        // Found in same namespace - use it
+                        return CreateUserClassInstance(className, parameterValues, init, classNamespace);
+                    }
                 }
-                return classInstance;
             }
-
-            // Fallback to C# bindings if no user-defined class exists
+            
+            // Step 2: Check C# builtins (always available to all namespaces)
             if (CustomLogicBuiltinTypes.IsBuiltinType(className))
             {
                 if (CustomLogicBuiltinTypes.IsAbstract(className))
@@ -70,12 +85,37 @@ namespace CustomLogic
 
                 return CustomLogicBuiltinTypes.CreateClassInstance(className, parameterValues);
             }
+            
+            // Step 3: Check user-defined classes from other namespaces
+            // Use first available definition (order matters: BaseLogic, Addon, MapLogic, ModeLogic)
+            if (_start.Classes.ContainsKey(className))
+            {
+                CustomLogicSourceType? classNamespace = null;
+                if (_start.ClassNamespaces.TryGetValue(className, out var ns))
+                    classNamespace = ns;
+                    
+                return CreateUserClassInstance(className, parameterValues, init, classNamespace);
+            }
 
             // Class not found anywhere
             throw new Exception($"Class {className} not found");
         }
+        
+        private CustomLogicClassInstance CreateUserClassInstance(string className, object[] parameterValues, bool init, CustomLogicSourceType? classNamespace)
+        {
+            var classInstance = new UserClassInstance(className);
+            classInstance.Namespace = classNamespace;
+            
+            if (init)
+            {
+                RunAssignmentsClassInstance(classInstance);
+                EvaluateMethod(classInstance, "Init", parameterValues);
+                classInstance.Inited = true;
+            }
+            return classInstance;
+        }
 
-        private void RunAssignmentsClassInstance(CustomLogicClassInstance classInstance)
+        public void RunAssignmentsClassInstance(CustomLogicClassInstance classInstance)
         {
             CustomLogicClassDefinitionAst classAst = _start.Classes[classInstance.ClassName];
             foreach (CustomLogicAssignmentExpressionAst assignment in classAst.Assignments)
@@ -615,7 +655,8 @@ namespace CustomLogic
 
                     if (CustomLogicBuiltinTypes.IsBuiltinType(instantiate.Name) || _start.Classes.ContainsKey(instantiate.Name))
                     {
-                        var result = CreateClassInstance(instantiate.Name, parameters, true);
+                        // Pass the caller's namespace for namespace-aware resolution
+                        var result = CreateClassInstance(instantiate.Name, parameters, true, classInstance.Namespace);
                         ArrayPool<object>.Free(parameters);
                         return result;
                     }
@@ -869,7 +910,7 @@ namespace CustomLogic
         }
     }
 
-    public enum ConditionalEvalState
+    internal enum ConditionalEvalState
     {
         None,
         PassedIf,

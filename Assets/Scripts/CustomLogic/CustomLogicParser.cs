@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace CustomLogic
 {
-    class CustomLogicParser
+    internal class CustomLogicParser
     {
         protected List<CustomLogicToken> _tokens = new List<CustomLogicToken>();
         public string Error = "";
@@ -189,6 +189,17 @@ namespace CustomLogic
                 if (IsSymbolIn(currToken, CustomLogicSymbols.ClassSymbols))
                 {
                     CustomLogicClassDefinitionAst classAst = new CustomLogicClassDefinitionAst(currToken, currToken.Line);
+                    
+                    // Set the namespace based on the source file type
+                    if (Compiler != null)
+                    {
+                        var fileType = Compiler.GetFileTypeForLine(currToken.Line);
+                        if (fileType.HasValue)
+                        {
+                            classAst.Namespace = fileType.Value;
+                        }
+                    }
+                    
                     AssertSymbolValue(_tokens[startIndex + 2], (int)CustomLogicSymbol.LeftCurly);
                     startIndex = ParseAst(startIndex + 3, classAst);
                     ((CustomLogicStartAst)prev).AddClass((string)nextToken.Value, classAst);
