@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CustomLogic
 {
-    abstract class CustomLogicClassInstance
+    public abstract class CustomLogicClassInstance
     {
         // Always true for class instances, but for components it can be toggled
         // The reason this is here instead of in CustomLogicComponentInstance is to

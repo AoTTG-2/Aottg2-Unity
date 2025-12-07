@@ -36,7 +36,8 @@ namespace CustomLogic
             catch (Exception e)
             {
                 Error = e.Message;
-                DebugConsole.LogCustomLogic("Custom logic parsing error: " + e.Message, SettingsManager.UISettings.ChatCLErrors.Value);
+                bool showInChat = SettingsManager.UISettings != null && SettingsManager.UISettings.ChatCLErrors.Value;
+                DebugConsole.LogCustomLogic("Custom logic parsing error: " + e.Message, showInChat);
                 start = new CustomLogicStartAst();
                 start.AddEmptyMain();
                 return start;

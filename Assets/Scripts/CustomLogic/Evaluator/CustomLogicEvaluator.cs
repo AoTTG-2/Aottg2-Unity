@@ -261,7 +261,19 @@ namespace CustomLogic
                             bool nextIter = EvaluateBlock(classInstance, localVariables, conditional.Statements, out object nextResult);
                             if (nextIter)
                             {
-                                if (nextResult is not CustomLogicContinueExpressionAst && nextResult is not CustomLogicBreakExpressionAst)
+                                if (nextResult is CustomLogicBreakExpressionAst)
+                                {
+                                    iter = true;
+                                    result = nextResult;
+                                    return iter;
+                                }
+                                else if (nextResult is CustomLogicContinueExpressionAst)
+                                {
+                                    iter = true;
+                                    result = nextResult;
+                                    return iter;
+                                }
+                                else
                                 {
                                     result = nextResult;
                                     return nextIter;
@@ -297,7 +309,19 @@ namespace CustomLogic
                             bool nextIter = EvaluateBlock(classInstance, localVariables, conditional.Statements, out object nextResult);
                             if (nextIter)
                             {
-                                if (nextResult is not CustomLogicContinueExpressionAst && nextResult is not CustomLogicBreakExpressionAst)
+                                if (nextResult is CustomLogicBreakExpressionAst)
+                                {
+                                    iter = true;
+                                    result = nextResult;
+                                    return iter;
+                                }
+                                else if (nextResult is CustomLogicContinueExpressionAst)
+                                {
+                                    iter = true;
+                                    result = nextResult;
+                                    return iter;
+                                }
+                                else
                                 {
                                     result = nextResult;
                                     return nextIter;
@@ -317,7 +341,19 @@ namespace CustomLogic
                             bool nextIter = EvaluateBlock(classInstance, localVariables, conditional.Statements, out object nextResult);
                             if (nextIter)
                             {
-                                if (nextResult is not CustomLogicContinueExpressionAst && nextResult is not CustomLogicBreakExpressionAst)
+                                if (nextResult is CustomLogicBreakExpressionAst)
+                                {
+                                    iter = true;
+                                    result = nextResult;
+                                    return iter;
+                                }
+                                else if (nextResult is CustomLogicContinueExpressionAst)
+                                {
+                                    iter = true;
+                                    result = nextResult;
+                                    return iter;
+                                }
+                                else
                                 {
                                     result = nextResult;
                                     return nextIter;
