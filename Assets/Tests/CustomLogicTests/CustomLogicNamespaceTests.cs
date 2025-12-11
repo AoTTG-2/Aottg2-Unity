@@ -131,64 +131,65 @@ class Main
         }
 
         [Test]
-        public void TestNamespaceIsolation_MapLogicAddonIsolation()
+        public void TestNamespaceIsolation_StaticBuiltinOverride()
         {
-            // Addon defines a utility class
-            string addonLogic = @"
-class AddonHelper
+            // BaseLogic uses Convert builtin
+            string baseLogic = @"
+extension BaseExtension
 {
-    function Init()
+    function UseConvertBuiltin()
     {
-    }
-    
-    function Calculate(x)
-    {
-        return x * 2;
+        # This should use the C# Convert builtin
+        # ToInt converts float to int
+        result = Convert.ToInt(5.7);
+        return result;
     }
 }";
 
-            // Map logic uses addon but has its own Main
-            string mapLogic = @"
-class Main
-{
-    function Init()
-    {
-    }
-    
-    function TestAddonHelper()
-    {
-        helper = AddonHelper();
-        return helper.Calculate(5);
-    }
-}";
-
-            // Mode logic has its own Main that shouldn't see map's Main
+            // Mode logic overrides Convert with custom implementation
             string modeLogic = @"
+extension Convert
+{
+    function ToInt(value)
+    {
+        # Custom implementation that adds 100
+        return 100 + value;
+    }
+}
+
 class Main
 {
-    _value = 999;
-    
     function Init()
     {
     }
     
-    function GetValue()
+    function TestUserConvert()
     {
-        return self._value;
+        # This should use the user-defined Convert
+        return Convert.ToInt(5.7);
+    }
+    
+    function TestBaseLogicConvert()
+    {
+        # This should still use the builtin Convert from BaseExtension
+        return BaseExtension.UseConvertBuiltin();
     }
 }";
 
             var compiler = new CustomLogicCompiler();
-            compiler.AddSourceFile(new CustomLogicSourceFile("Addon.cl", addonLogic, CustomLogicSourceType.Addon));
-            compiler.AddSourceFile(new CustomLogicSourceFile("Map.maplogic", mapLogic, CustomLogicSourceType.MapLogic));
+            compiler.AddSourceFile(new CustomLogicSourceFile("BaseLogic.cl", baseLogic, CustomLogicSourceType.BaseLogic));
             compiler.AddSourceFile(new CustomLogicSourceFile("Mode.cl", modeLogic, CustomLogicSourceType.ModeLogic));
             
             var offlineEvaluator = new OfflineCustomLogicEvaluator(compiler);
             var mainInstance = offlineEvaluator.GetMainInstance();
             
-            // Should use mode logic's Main (last loaded wins for Main)
-            var result = offlineEvaluator.EvaluateMethod(mainInstance, "GetValue");
-            Assert.AreEqual(999, result);
+            // User code uses user-defined Convert
+            var userResult = offlineEvaluator.EvaluateMethod(mainInstance, "TestUserConvert");
+            Assert.AreEqual(105.7f, userResult); // 100 + 5.7
+            
+            // BaseLogic uses builtin Convert
+            var baseResult = offlineEvaluator.EvaluateMethod(mainInstance, "TestBaseLogicConvert");
+            Assert.AreEqual(5, baseResult); // ToInt(5.7) = 5
         }
 
         [Test]
