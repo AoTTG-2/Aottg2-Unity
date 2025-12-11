@@ -104,43 +104,78 @@ namespace CustomLogic.OfflineEvaluator
 
         /// <summary>
         /// Initialize static classes using the same pattern as CustomLogicEvaluator.Init()
-        /// This creates user-defined classes first, then builtin classes, then runs assignments.
+        /// This creates C# builtins first, then user-defined classes with namespace isolation.
         /// Only offline-compatible builtins are initialized.
         /// </summary>
         private void InitializeStaticClasses()
         {
             var startAst = GetStartAst();
             var staticClasses = GetStaticClassesDictionary();
+            var namespacedStaticClasses = _evaluator.GetNamespacedStaticClasses();
 
-            // First, create user-defined static classes (Main and extensions)
-            // This must happen BEFORE C# bindings so user code can override
-            foreach (string className in startAst.Classes.Keys)
-            {
-                if (className == "Main")
-                    CreateStaticClassInternal(className, staticClasses);
-                else if ((int)startAst.Classes[className].Token.Value == (int)CustomLogicSymbol.Extension)
-                    CreateStaticClassInternal(className, staticClasses);
-            }
-
-            // Then create C# builtin static classes ONLY if:
-            // 1. Not already defined by user
-            // 2. Compatible with offline mode (no Unity runtime dependencies)
+            // First, create C# builtin static classes (these are the default and always accessible)
             foreach (var staticType in CustomLogicBuiltinTypes.StaticTypeNames)
             {
-                if (!staticClasses.ContainsKey(staticType) && OfflineCompatibleBuiltins.Contains(staticType))
+                if (OfflineCompatibleBuiltins.Contains(staticType))
                 {
                     var instance = CustomLogicBuiltinTypes.CreateClassInstance(staticType, CustomLogicEvaluator.EmptyArgs);
                     staticClasses[staticType] = instance;
                 }
             }
 
-            // Run assignments for all NON-BUILTIN class instances
-            // Builtin classes don't have assignments to run
+            // Then create user-defined static classes (Main and extensions)
+            foreach (string className in startAst.Classes.Keys)
+            {
+                if (className == "Main")
+                {
+                    // Always create Main from user code if it exists
+                    CreateStaticClassInternal(className, staticClasses);
+                }
+                else if ((int)startAst.Classes[className].Token.Value == (int)CustomLogicSymbol.Extension)
+                {
+                    // Get the namespace for this extension
+                    CustomLogicSourceType? classNamespace = null;
+                    if (startAst.ClassNamespaces.TryGetValue(className, out var ns))
+                        classNamespace = ns;
+
+                    var instance = _evaluator.CreateClassInstance(className, CustomLogicEvaluator.EmptyArgs, false, classNamespace);
+                    instance.Namespace = classNamespace;
+                    
+                    // Check if this extension name conflicts with a C# builtin static class
+                    bool conflictsWithBuiltin = CustomLogicBuiltinTypes.StaticTypeNames.Contains(className);
+                    
+                    if (conflictsWithBuiltin)
+                    {
+                        // Store in namespaced dictionary, do NOT add to staticClasses (preserve builtin)
+                        if (!namespacedStaticClasses.ContainsKey(className))
+                            namespacedStaticClasses[className] = new Dictionary<CustomLogicSourceType, CustomLogicClassInstance>();
+                            
+                        if (classNamespace.HasValue)
+                            namespacedStaticClasses[className][classNamespace.Value] = instance;
+                        // NOTE: We intentionally do NOT add to staticClasses to preserve the builtin
+                    }
+                    else
+                    {
+                        // No conflict with builtin, store as default
+                        staticClasses[className] = instance;
+                    }
+                }
+            }
+
+            // Run assignments for all class instances in staticClasses
             foreach (CustomLogicClassInstance instance in staticClasses.Values)
             {
                 if (instance is not BuiltinClassInstance)
-                {
                     RunAssignmentsClassInstance(instance);
+            }
+            
+            // Run assignments for all namespace-specific class instances
+            foreach (var namespaceDict in namespacedStaticClasses.Values)
+            {
+                foreach (var instance in namespaceDict.Values)
+                {
+                    if (instance is not BuiltinClassInstance)
+                        RunAssignmentsClassInstance(instance);
                 }
             }
         }

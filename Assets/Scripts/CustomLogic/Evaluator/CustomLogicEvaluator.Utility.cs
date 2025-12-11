@@ -48,6 +48,11 @@ namespace CustomLogic
             return _staticClasses;
         }
 
+        public Dictionary<string, Dictionary<CustomLogicSourceType, CustomLogicClassInstance>> GetNamespacedStaticClasses()
+        {
+            return _namespacedStaticClasses;
+        }
+
         public Dictionary<string, BaseSetting> GetModeSettings()
         {
             var instance = CreateClassInstance("Main", EmptyArgs, false);
@@ -153,9 +158,18 @@ namespace CustomLogic
                 if (_start.ClassNamespaces.TryGetValue(className, out var ns))
                     classNamespace = ns;
 
+                //UnityEngine.Debug.Log($"[NS-DEBUG] CreateStaticClass: Creating '{className}' with namespace '{classNamespace}'");
+                
                 var instance = CreateClassInstance(className, EmptyArgs, false, classNamespace);
                 instance.Namespace = classNamespace;
+                
+                //UnityEngine.Debug.Log($"[NS-DEBUG] CreateStaticClass: Created '{className}', namespace after creation: '{instance.Namespace}'");
+                
                 _staticClasses.Add(className, instance);
+            }
+            else
+            {
+                //UnityEngine.Debug.Log($"[NS-DEBUG] CreateStaticClass: '{className}' already exists in _staticClasses");
             }
         }
     }

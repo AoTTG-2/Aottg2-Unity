@@ -220,41 +220,123 @@ namespace CustomLogic
         private void Init()
         {
             // First, create C# builtin static classes
-            // These should ALWAYS be available, regardless of user definitions
+            // These are the default and always accessible
+            //var msg1 = "[NS-DEBUG] ===== Init: Creating C# builtin static classes =====";
+            //UnityEngine.Debug.Log(msg1);
+            //System.Console.WriteLine(msg1);
+            
             foreach (var staticType in CustomLogicBuiltinTypes.StaticTypeNames)
             {
                 var instance = CustomLogicBuiltinTypes.CreateClassInstance(staticType, EmptyArgs);
                 _staticClasses[staticType] = instance;
+                //var msg = $"[NS-DEBUG] Created builtin static class: {staticType}";
+                //UnityEngine.Debug.Log(msg);
+                //System.Console.WriteLine(msg);
             }
             
             // Then create user-defined static classes (Main and extensions)
-            // User code may override builtins, but both versions should exist
+            //var msg2 = "[NS-DEBUG] ===== Init: Creating user-defined static classes =====";
+            //UnityEngine.Debug.Log(msg2);
+            //System.Console.WriteLine(msg2);
+            
             foreach (string className in _start.Classes.Keys)
             {
                 if (className == "Main")
                 {
                     // Always create Main from user code if it exists
                     CreateStaticClass(className);
+                    //var msg = "[NS-DEBUG] Created Main class";
+                    //UnityEngine.Debug.Log(msg);
+                    //System.Console.WriteLine(msg);
                 }
                 else if ((int)_start.Classes[className].Token.Value == (int)CustomLogicSymbol.Extension)
                 {
-                    // Create user extensions
-                    CreateStaticClass(className);
-                }
-                else
-                {
-                    // For non-extension user-defined classes that conflict with builtins,
-                    // the user version is already registered in _start.Classes and will be
-                    // resolved through CreateClassInstance's namespace-aware logic
-                    // We don't add them to _staticClasses here
+                    // Get the namespace for this extension
+                    CustomLogicSourceType? classNamespace = null;
+                    if (_start.ClassNamespaces.TryGetValue(className, out var ns))
+                        classNamespace = ns;
+
+                    var instance = CreateClassInstance(className, EmptyArgs, false, classNamespace);
+                    instance.Namespace = classNamespace;
+                    
+                    // Check if this extension name conflicts with a C# builtin static class
+                    bool conflictsWithBuiltin = CustomLogicBuiltinTypes.StaticTypeNames.Contains(className);
+                    
+                    if (conflictsWithBuiltin)
+                    {
+                        //var msg = $"[NS-DEBUG] Extension '{className}' conflicts with builtin - storing ONLY in namespace '{classNamespace}' (NOT overwriting builtin)";
+                        //UnityEngine.Debug.Log(msg);
+                        //System.Console.WriteLine(msg);
+                        
+                        // Store in namespaced dictionary, do NOT add to _staticClasses
+                        if (!_namespacedStaticClasses.ContainsKey(className))
+                            _namespacedStaticClasses[className] = new Dictionary<CustomLogicSourceType, CustomLogicClassInstance>();
+                            
+                        if (classNamespace.HasValue)
+                            _namespacedStaticClasses[className][classNamespace.Value] = instance;
+                        // NOTE: We intentionally do NOT add to _staticClasses to preserve the builtin
+                    }
+                    else
+                    {
+                        // No conflict with builtin, store as default
+                        //var msg = $"[NS-DEBUG] Extension '{className}' does not conflict with builtin - storing in _staticClasses (namespace={classNamespace})";
+                        //UnityEngine.Debug.Log(msg);
+                        //System.Console.WriteLine(msg);
+                        _staticClasses[className] = instance;
+                    }
                 }
             }
 
-            // Run assignments for all class instances
+            //var msg3 = "[NS-DEBUG] ===== Init: Summary =====";
+            //UnityEngine.Debug.Log(msg3);
+            //System.Console.WriteLine(msg3);
+            
+            //var countMsg = $"[NS-DEBUG] _staticClasses count: {_staticClasses.Count}";
+            //UnityEngine.Debug.Log(countMsg);
+            //System.Console.WriteLine(countMsg);
+            
+            foreach (var key in _staticClasses.Keys)
+            {
+                var instance = _staticClasses[key];
+                var isBuiltin = instance is BuiltinClassInstance;
+                //var msg = $"[NS-DEBUG]   - {key} (isBuiltin={isBuiltin}, namespace={instance.Namespace})";
+                //UnityEngine.Debug.Log(msg);
+                //System.Console.WriteLine(msg);
+            }
+            
+            //var namespacedCountMsg = $"[NS-DEBUG] _namespacedStaticClasses count: {_namespacedStaticClasses.Count}";
+            //UnityEngine.Debug.Log(namespacedCountMsg);
+            //System.Console.WriteLine(namespacedCountMsg);
+            
+            //foreach (var className in _namespacedStaticClasses.Keys)
+            //{
+            //    var msg1a = $"[NS-DEBUG]   - {className}:";
+            //    UnityEngine.Debug.Log(msg1a);
+            //    System.Console.WriteLine(msg1a);
+                
+            //    foreach (var ns in _namespacedStaticClasses[className].Keys)
+            //    {
+            //        var msg2a = $"[NS-DEBUG]       * namespace={ns}";
+            //        UnityEngine.Debug.Log(msg2a);
+            //        System.Console.WriteLine(msg2a);
+            //    }
+            //}
+
+            // Run assignments for all class instances in _staticClasses
             foreach (CustomLogicClassInstance instance in _staticClasses.Values)
             {
                 if (instance is not BuiltinClassInstance)
                     RunAssignmentsClassInstance(instance);
+            }
+            
+            // Run assignments for all namespace-specific class instances
+            foreach (var namespaceDict in _namespacedStaticClasses.Values)
+            {
+                foreach (var instance in namespaceDict.Values)
+                {
+                    if (instance is not BuiltinClassInstance)
+                        RunAssignmentsClassInstance(instance);
+                }
             }
             
             // Load map objects

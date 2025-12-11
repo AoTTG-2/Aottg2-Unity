@@ -24,6 +24,9 @@ namespace CustomLogic
         public Dictionary<int, CustomLogicMapObjectBuiltin> IdToMapObjectBuiltin = new Dictionary<int, CustomLogicMapObjectBuiltin>();
         protected CustomLogicStartAst _start;
         protected Dictionary<string, CustomLogicClassInstance> _staticClasses = new Dictionary<string, CustomLogicClassInstance>();
+        // Track namespace-specific static classes (for user-defined extensions that override builtins)
+        protected Dictionary<string, Dictionary<CustomLogicSourceType, CustomLogicClassInstance>> _namespacedStaticClasses = 
+            new Dictionary<string, Dictionary<CustomLogicSourceType, CustomLogicClassInstance>>();
         protected Dictionary<string, List<CustomLogicClassInstance>> _callbacks = new Dictionary<string, List<CustomLogicClassInstance>>();
         public Dictionary<int, Dictionary<string, float>> PlayerIdToLastPropertyChanges = new Dictionary<int, Dictionary<string, float>>();
         public string ScoreboardHeader = "Kills / Deaths / Max / Total";
@@ -635,8 +638,50 @@ namespace CustomLogic
                     string name = ((CustomLogicVariableExpressionAst)expression).Name;
                     if (name == "self")
                         return classInstance;
-                    else if (_staticClasses.ContainsKey(name))
-                        return _staticClasses[name];
+                    else if (_staticClasses.ContainsKey(name) || _namespacedStaticClasses.ContainsKey(name))
+                    {
+                        // DEBUG: Log namespace resolution attempt
+                        //var logMsg = $"[NS-DEBUG] Resolving static class '{name}' for caller '{classInstance.ClassName}' in namespace '{classInstance.Namespace}'";
+                        //UnityEngine.Debug.Log(logMsg);
+                        //System.Console.WriteLine(logMsg);
+                        
+                        // Namespace-aware static class resolution
+                        // 1. Check if there's a user-defined extension in the caller's namespace
+                        if (classInstance.Namespace.HasValue && _namespacedStaticClasses.ContainsKey(name))
+                        {
+                            //var checkMsg = $"[NS-DEBUG]   Checking namespaced versions of '{name}'...";
+                            //UnityEngine.Debug.Log(checkMsg);
+                            //System.Console.WriteLine(checkMsg);
+                            
+                            if (_namespacedStaticClasses[name].TryGetValue(classInstance.Namespace.Value, out var namespacedInstance))
+                            {
+                                //var foundMsg = $"[NS-DEBUG]   ? Found '{name}' in namespace '{classInstance.Namespace.Value}' - returning namespaced version";
+                                //UnityEngine.Debug.Log(foundMsg);
+                                //System.Console.WriteLine(foundMsg);
+                                return namespacedInstance;
+                            }
+                            //var notFoundMsg = $"[NS-DEBUG]   ? No '{name}' found in namespace '{classInstance.Namespace.Value}'";
+                            //UnityEngine.Debug.Log(notFoundMsg);
+                            //System.Console.WriteLine(notFoundMsg);
+                        }
+                        
+                        // 2. Fall back to the default static class (builtin or non-conflicting extension)
+                        if (_staticClasses.ContainsKey(name))
+                        {
+                            var builtinInstance = _staticClasses[name];
+                            //var isBuiltin = builtinInstance is BuiltinClassInstance;
+                            //var returnMsg = $"[NS-DEBUG]   ? Returning default '{name}' from _staticClasses (isBuiltin={isBuiltin})";
+                            //UnityEngine.Debug.Log(returnMsg);
+                            //System.Console.WriteLine(returnMsg);
+                            return builtinInstance;
+                        }
+                        
+                        // 3. If no default and no namespace match, this shouldn't happen in valid code
+                        //var errorMsg = $"[NS-DEBUG]   ? Static class '{name}' not found for namespace '{classInstance.Namespace}'";
+                        //UnityEngine.Debug.LogError(errorMsg);
+                        //System.Console.WriteLine(errorMsg);
+                        throw new Exception($"Static class {name} not found for namespace {classInstance.Namespace}");
+                    }
                     else
                     {
                         object value = localVariables[name];
