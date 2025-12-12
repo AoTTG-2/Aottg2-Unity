@@ -329,13 +329,7 @@ namespace CustomLogic
                             bool nextIter = EvaluateBlock(classInstance, localVariables, conditional.Statements, out object nextResult);
                             if (nextIter)
                             {
-                                if (nextResult is CustomLogicBreakExpressionAst)
-                                {
-                                    iter = true;
-                                    result = nextResult;
-                                    return iter;
-                                }
-                                else if (nextResult is CustomLogicContinueExpressionAst)
+                                if (nextResult is CustomLogicBreakExpressionAst || nextResult is CustomLogicContinueExpressionAst)
                                 {
                                     iter = true;
                                     result = nextResult;
@@ -377,13 +371,7 @@ namespace CustomLogic
                             bool nextIter = EvaluateBlock(classInstance, localVariables, conditional.Statements, out object nextResult);
                             if (nextIter)
                             {
-                                if (nextResult is CustomLogicBreakExpressionAst)
-                                {
-                                    iter = true;
-                                    result = nextResult;
-                                    return iter;
-                                }
-                                else if (nextResult is CustomLogicContinueExpressionAst)
+                                if (nextResult is CustomLogicBreakExpressionAst || nextResult is CustomLogicContinueExpressionAst)
                                 {
                                     iter = true;
                                     result = nextResult;
@@ -409,13 +397,7 @@ namespace CustomLogic
                             bool nextIter = EvaluateBlock(classInstance, localVariables, conditional.Statements, out object nextResult);
                             if (nextIter)
                             {
-                                if (nextResult is CustomLogicBreakExpressionAst)
-                                {
-                                    iter = true;
-                                    result = nextResult;
-                                    return iter;
-                                }
-                                else if (nextResult is CustomLogicContinueExpressionAst)
+                                if (nextResult is CustomLogicBreakExpressionAst || nextResult is CustomLogicContinueExpressionAst)
                                 {
                                     iter = true;
                                     result = nextResult;
