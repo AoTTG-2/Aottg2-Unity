@@ -52,46 +52,43 @@ namespace CustomLogic
         [CLCallbackAttribute]
         public void OnCollisionStay(BuiltinClassInstance other, BuiltinClassInstance collision = null)
         {
-            if (!Enabled)
-                return;
-
-            CustomLogicManager.Evaluator?.EvaluateMethod(this, "OnCollisionStay", new object[] { other, collision });
+            EvaluateMethodForCallbacks("OnCollisionStay", new object[] { other, collision });
         }
 
         [CLCallbackAttribute]
         public void OnCollisionEnter(BuiltinClassInstance other, BuiltinClassInstance collision = null)
         {
-            if (!Enabled)
-                return;
-
-            CustomLogicManager.Evaluator.EvaluateMethod(this, "OnCollisionEnter", new object[] { other, collision });
+            EvaluateMethodForCallbacks("OnCollisionEnter", new object[] { other, collision });
         }
 
         [CLCallbackAttribute]
         public void OnCollisionExit(BuiltinClassInstance other, BuiltinClassInstance collision = null)
         {
-            if (!Enabled)
-                return;
-
-            CustomLogicManager.Evaluator.EvaluateMethod(this, "OnCollisionExit", new object[] { other, collision });
+            EvaluateMethodForCallbacks("OnCollisionExit", new object[] { other, collision });
         }
 
         [CLCallbackAttribute]
         public void OnGetHit(CustomLogicCharacterBuiltin character, string name, int damage, string type, CustomLogicVector3Builtin position)
         {
-            if (!Enabled)
-                return;
-
-            CustomLogicManager.Evaluator.EvaluateMethod(this, "OnGetHit", new object[] { character, name, damage, type, position });
+            EvaluateMethodForCallbacks("OnGetHit", new object[] { character, name, damage, type, position });
         }
 
         [CLCallbackAttribute]
         public void OnGetHooked(CustomLogicHumanBuiltin human, CustomLogicVector3Builtin position, bool left)
         {
+            EvaluateMethodForCallbacks("OnGetHooked", new object[] { human, position, left });
+        }
+
+        public void EvaluateMethodForCallbacks(string methodName, object[] parameters = null)
+        {
             if (!Enabled)
                 return;
-
-            CustomLogicManager.Evaluator.EvaluateMethod(this, "OnGetHooked", new object[] { human, position, left });
+            // Only call if the method exists on this component
+            var eval = CustomLogicManager.Evaluator;
+            if (eval != null && eval.HasMethod(this, methodName))
+            {
+                eval.EvaluateMethod(this, methodName, parameters);
+            }
         }
 
         public static object DeserializeValue(object obj, string value)

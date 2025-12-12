@@ -85,6 +85,9 @@ namespace CustomLogic.OfflineEvaluator
             // Create evaluator
             _evaluator = new CustomLogicEvaluator(startAst, _compiler);
             
+            // Enable error capturing for testing (errors tracked but execution continues)
+            _evaluator.CaptureErrors = true;
+            
             // IMPORTANT: Set the global evaluator reference for builtin classes that need it
             // (e.g., List.Filter, List.Map, List.Reduce)
             CustomLogicManager.Evaluator = _evaluator;
@@ -319,6 +322,39 @@ namespace CustomLogic.OfflineEvaluator
         public CustomLogicCompiler GetCompiler()
         {
             return _compiler;
+        }
+        
+        /// <summary>
+        /// Get all captured errors from the evaluator.
+        /// </summary>
+        public List<CustomLogicError> GetCapturedErrors()
+        {
+            return _evaluator.CapturedErrors;
+        }
+        
+        /// <summary>
+        /// Check if any errors were captured during execution.
+        /// </summary>
+        public bool HasErrors()
+        {
+            return _evaluator.CapturedErrors.Count > 0;
+        }
+        
+        /// <summary>
+        /// Clear all captured errors.
+        /// </summary>
+        public void ClearErrors()
+        {
+            _evaluator.ClearCapturedErrors();
+        }
+        
+        /// <summary>
+        /// Get the most recent error, or null if no errors occurred.
+        /// </summary>
+        public CustomLogicError GetLastError()
+        {
+            var errors = _evaluator.CapturedErrors;
+            return errors.Count > 0 ? errors[errors.Count - 1] : null;
         }
     }
 }
