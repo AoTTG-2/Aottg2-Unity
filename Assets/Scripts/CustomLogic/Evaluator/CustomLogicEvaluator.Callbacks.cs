@@ -13,8 +13,6 @@ using Unity.VisualScripting;
 using UnityEngine;
 using Utility;
 
-using UnityEngine;
-
 namespace CustomLogic
 {
     internal partial class CustomLogicEvaluator
@@ -158,7 +156,12 @@ namespace CustomLogic
         [CLCallbackAttribute]
         public object OnChatInput(string message)
         {
-            return EvaluateMethod(_staticClasses["Main"], "OnChatInput", new object[] { message });
+            var eval = CustomLogicManager.Evaluator;
+            if (eval != null && eval.HasMethod(_staticClasses["Main"], "OnChatInput"))
+            {
+                return eval.EvaluateMethod(_staticClasses["Main"], "OnChatInput", new object[] { message });
+            }
+            return true;
         }
 
         [CLCallbackAttribute]
@@ -185,7 +188,11 @@ namespace CustomLogic
             _networkCallback[0] = playerBuiltin;
             _networkCallback[1] = message;
             _networkCallback[2] = sentServerTimestamp;
-            EvaluateMethod(_staticClasses["Main"], "OnNetworkMessage", _networkCallback);
+            var eval = CustomLogicManager.Evaluator;
+            if (eval != null && eval.HasMethod(_staticClasses["Main"], "OnNetworkMessage"))
+            {
+                eval.EvaluateMethod(_staticClasses["Main"], "OnNetworkMessage", _networkCallback);
+            }
         }
 
         public static CustomLogicCharacterBuiltin GetCharacterBuiltin(BaseCharacter character)
