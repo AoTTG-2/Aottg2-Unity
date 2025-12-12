@@ -258,5 +258,337 @@ class Main
             var result = offlineEvaluator.EvaluateMethod(mainInstance, "TestBoth");
             Assert.AreEqual(14, result);
         }
+
+        [Test]
+        public void TestCrossNamespaceMethodCheck_ConvertHasMethod()
+        {
+            // BaseLogic receives class instance from ModeLogic and checks for methods
+            string baseLogic = @"
+extension InspectionUtility
+{
+    function InspectInstance(instance)
+    {
+        # Check if instance has specific methods
+        hasProcess = Convert.HasMethod(instance, ""Process"");
+        hasValidate = Convert.HasMethod(instance, ""Validate"");
+        hasNonExistent = Convert.HasMethod(instance, ""NonExistentMethod"");
+        
+        # Return count of methods found
+        count = 0;
+        if (hasProcess) {
+            count = count + 1;
+        }
+        if (hasValidate) {
+            count = count + 1;
+        }
+        if (hasNonExistent) {
+            count = count + 1;
+        }
+            
+        return count;
+    }
+    
+    function CallMethodIfExists(instance, methodName)
+    {
+        if (Convert.HasMethod(instance, methodName))
+        {
+            # If method exists, call it
+            result = instance.Process();
+            return result;
+        }
+        return -1;
+    }
+}";
+
+            // ModeLogic defines Main class with specific methods
+            string modeLogic = @"
+class Main
+{
+    _value = 42;
+    
+    function Init()
+    {
+    }
+    
+    function Process()
+    {
+        return self._value * 2;
+    }
+    
+    function Validate()
+    {
+        return self._value > 0;
+    }
+    
+    function TestInspection()
+    {
+        # Pass this Main instance to BaseLogic for inspection
+        methodCount = InspectionUtility.InspectInstance(self);
+        return methodCount;
+    }
+    
+    function TestCallIfExists()
+    {
+        # BaseLogic checks if method exists and calls it
+        result = InspectionUtility.CallMethodIfExists(self, ""Process"");
+        return result;
+    }
+}";
+
+            var compiler = new CustomLogicCompiler();
+            compiler.AddSourceFile(new CustomLogicSourceFile("BaseLogic.cl", baseLogic, CustomLogicSourceType.BaseLogic));
+            compiler.AddSourceFile(new CustomLogicSourceFile("Mode.cl", modeLogic, CustomLogicSourceType.ModeLogic));
+            
+            var offlineEvaluator = new OfflineCustomLogicEvaluator(compiler);
+            var mainInstance = offlineEvaluator.GetMainInstance();
+            
+            // Should find 2 methods (Process and Validate), not NonExistentMethod
+            var methodCount = offlineEvaluator.EvaluateMethod(mainInstance, "TestInspection");
+            Assert.AreEqual(2, methodCount, "Should find exactly 2 methods: Process and Validate");
+            
+            // Should successfully call Process() and return 84 (42 * 2)
+            var processResult = offlineEvaluator.EvaluateMethod(mainInstance, "TestCallIfExists");
+            Assert.AreEqual(84, processResult, "Process() should return 84 (42 * 2)");
+        }
+
+        [Test]
+        public void TestCrossNamespaceMethodCheck_DifferentClassTypes()
+        {
+            // BaseLogic utility that inspects various class types
+            string baseLogic = @"
+extension TypeInspector
+{
+    function InspectAndDescribe(instance)
+    {
+        # Check for various common methods
+        hasInit = Convert.HasMethod(instance, ""Init"");
+        hasGetValue = Convert.HasMethod(instance, ""GetValue"");
+        hasSetValue = Convert.HasMethod(instance, ""SetValue"");
+        hasToString = Convert.HasMethod(instance, ""ToString"");
+        
+        # Build a description code
+        code = 0;
+        if (hasInit) {
+            code = code + 1;
+        }
+        if (hasGetValue) {
+            code = code + 10;
+        }
+        if (hasSetValue) {
+            code = code + 100;
+        }   
+        if (hasToString) {
+            code = code + 1000;
+        }
+            
+        return code;
+    }
+}";
+
+            // ModeLogic with various classes
+            string modeLogic = @"
+class SimpleData
+{
+    _value = 0;
+    
+    function Init(val)
+    {
+        self._value = val;
+    }
+    
+    function GetValue()
+    {
+        return self._value;
+    }
+}
+
+class ComplexData
+{
+    _value = 0;
+    
+    function Init(val)
+    {
+        self._value = val;
+    }
+    
+    function GetValue()
+    {
+        return self._value;
+    }
+    
+    function SetValue(val)
+    {
+        self._value = val;
+    }
+    
+    function ToString()
+    {
+        return self._value;
+    }
+}
+
+class Main
+{
+    function Init()
+    {
+    }
+    
+    function TestSimpleData()
+    {
+        obj = SimpleData(5);
+        # SimpleData has Init and GetValue
+        # Expected code: 1 (Init) + 10 (GetValue) = 11
+        return TypeInspector.InspectAndDescribe(obj);
+    }
+    
+    function TestComplexData()
+    {
+        obj = ComplexData(10);
+        # ComplexData has Init, GetValue, SetValue, ToString
+        # Expected code: 1 + 10 + 100 + 1000 = 1111
+        return TypeInspector.InspectAndDescribe(obj);
+    }
+    
+    function TestMainInstance()
+    {
+        # Main only has Init
+        # Expected code: 1
+        return TypeInspector.InspectAndDescribe(self);
+    }
+}";
+
+            var compiler = new CustomLogicCompiler();
+            compiler.AddSourceFile(new CustomLogicSourceFile("BaseLogic.cl", baseLogic, CustomLogicSourceType.BaseLogic));
+            compiler.AddSourceFile(new CustomLogicSourceFile("Mode.cl", modeLogic, CustomLogicSourceType.ModeLogic));
+            
+            var offlineEvaluator = new OfflineCustomLogicEvaluator(compiler);
+            var mainInstance = offlineEvaluator.GetMainInstance();
+            
+            // SimpleData: Init + GetValue = 1 + 10 = 11
+            var simpleResult = offlineEvaluator.EvaluateMethod(mainInstance, "TestSimpleData");
+            Assert.AreEqual(11, simpleResult, "SimpleData should have Init (1) + GetValue (10) = 11");
+            
+            // ComplexData: Init + GetValue + SetValue + ToString = 1 + 10 + 100 + 1000 = 1111
+            var complexResult = offlineEvaluator.EvaluateMethod(mainInstance, "TestComplexData");
+            Assert.AreEqual(1111, complexResult, "ComplexData should have all methods = 1111");
+            
+            // Main: Only Init = 1
+            var mainResult = offlineEvaluator.EvaluateMethod(mainInstance, "TestMainInstance");
+            Assert.AreEqual(1, mainResult, "Main should only have Init (1)");
+        }
+
+        [Test]
+        public void TestCrossNamespaceMethodCheck_ComponentInstance()
+        {
+            // BaseLogic receives component instance and validates its methods
+            string baseLogic = @"
+extension ComponentValidator
+{
+    function ValidateComponent(comp)
+    {
+        # Components should have Init
+        if (!Convert.HasMethod(comp, ""Init"")) {
+            return -1;
+        }
+            
+        # Check for OnUpdate (common component callback)
+        hasOnUpdate = Convert.HasMethod(comp, ""OnUpdate"");
+        
+        # Check for custom method
+        hasCustom = Convert.HasMethod(comp, ""CustomBehavior"");
+        
+        # Return status code
+        if (hasOnUpdate && hasCustom) {
+            return 2;  # Full featured component
+        }
+        if (hasOnUpdate || hasCustom) {
+            return 1;  # Partial component
+        }
+        return 0;  # Basic component
+    }
+}";
+
+            // ModeLogic with different component types
+            string modeLogic = @"
+component BasicComponent
+{
+    function Init()
+    {
+    }
+}
+
+component UpdateComponent
+{
+    function Init()
+    {
+    }
+    
+    function OnUpdate()
+    {
+        # Update logic
+    }
+}
+
+component FullComponent
+{
+    function Init()
+    {
+    }
+    
+    function OnUpdate()
+    {
+        # Update logic
+    }
+    
+    function CustomBehavior()
+    {
+        # Custom behavior
+    }
+}
+
+class Main
+{
+    function Init()
+    {
+    }
+    
+    function TestBasicComponent()
+    {
+        comp = BasicComponent();
+        return ComponentValidator.ValidateComponent(comp);
+    }
+    
+    function TestUpdateComponent()
+    {
+        comp = UpdateComponent();
+        return ComponentValidator.ValidateComponent(comp);
+    }
+    
+    function TestFullComponent()
+    {
+        comp = FullComponent();
+        return ComponentValidator.ValidateComponent(comp);
+    }
+}";
+
+            var compiler = new CustomLogicCompiler();
+            compiler.AddSourceFile(new CustomLogicSourceFile("BaseLogic.cl", baseLogic, CustomLogicSourceType.BaseLogic));
+            compiler.AddSourceFile(new CustomLogicSourceFile("Mode.cl", modeLogic, CustomLogicSourceType.ModeLogic));
+            
+            var offlineEvaluator = new OfflineCustomLogicEvaluator(compiler);
+            var mainInstance = offlineEvaluator.GetMainInstance();
+            
+            // BasicComponent: Only has Init, no OnUpdate or Custom = 0
+            var basicResult = offlineEvaluator.EvaluateMethod(mainInstance, "TestBasicComponent");
+            Assert.AreEqual(0, basicResult, "BasicComponent should return 0");
+            
+            // UpdateComponent: Has OnUpdate but not Custom = 1
+            var updateResult = offlineEvaluator.EvaluateMethod(mainInstance, "TestUpdateComponent");
+            Assert.AreEqual(1, updateResult, "UpdateComponent should return 1");
+            
+            // FullComponent: Has both OnUpdate and Custom = 2
+            var fullResult = offlineEvaluator.EvaluateMethod(mainInstance, "TestFullComponent");
+            Assert.AreEqual(2, fullResult, "FullComponent should return 2");
+        }
     }
 }

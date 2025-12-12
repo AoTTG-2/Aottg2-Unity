@@ -1545,17 +1545,26 @@ component CaptureZone
                 {
                     if (self._lastOwner != self.CurrentOwner)
                     {
-                        self._callbackReceiver.OnCaptured(self, self.CurrentOwner);
+                        if (Convert.HasMethod(self._callbackReceiver, "OnCaptured"))
+                        {
+                            self._callbackReceiver.OnCaptured(self, self.CurrentOwner);
+                        }
                         self._lastOwner = self.CurrentOwner;
                     }
                 }
                 elif (self._state == "Capturing")
                 {
-                    self._callbackReceiver.OnCapturing(self, self._currentCapturer);
+                    if (Convert.HasMethod(self._callbackReceiver, "OnCapturing"))
+                    {
+                        self._callbackReceiver.OnCapturing(self, self._currentCapturer);
+                    }
                 }
                 elif (self._state == "Contested")
                 {
-                    self._callbackReceiver.OnContested(self);
+                    if (Convert.HasMethod(self._callbackReceiver, "OnContested"))
+                    {
+                        self._callbackReceiver.OnContested(self);
+                    }
                 }
 		    }
             self._lastState = self._state;
