@@ -53,7 +53,7 @@ namespace CustomLogic
         /// <param name="key">The key of the value to get</param>
         /// <param name="defaultValue">The value to return if the key is not found</param>
         /// <returns>The value associated with the key, or the default value if the key is not found</returns>
-        [CLMethod(ReturnTypeArguments = new[] { "V" })]
+        [CLMethod(ReturnTypeArguments = new[] { "V" }, ParameterTypeArguments = new[] { "K", "V" })]
         public object Get(object key, object defaultValue = null)
         {
             if (Dict.ContainsKey(key))
@@ -66,7 +66,7 @@ namespace CustomLogic
         /// </summary>
         /// <param name="key">The key of the value to set</param>
         /// <param name="value">The value to set</param>
-        [CLMethod]
+        [CLMethod(ParameterTypeArguments = new[] { "K", "V" })]
         public void Set(object key, object value)
         {
             if (Dict.ContainsKey(key))
@@ -79,7 +79,7 @@ namespace CustomLogic
         /// Removes a value from the dictionary
         /// </summary>
         /// <param name="key">The key of the value to remove</param>
-        [CLMethod]
+        [CLMethod(ParameterTypeArguments = new[] { "K" })]
         public void Remove(object key)
         {
             if (Dict.ContainsKey(key))
@@ -91,7 +91,7 @@ namespace CustomLogic
         /// </summary>
         /// <param name="key">The key to check</param>
         /// <returns>True if the dictionary contains the key, false otherwise</returns>
-        [CLMethod]
+        [CLMethod(ParameterTypeArguments = new[] { "K" })]
         public bool Contains(object key)
         {
             return Dict.ContainsKey(key);

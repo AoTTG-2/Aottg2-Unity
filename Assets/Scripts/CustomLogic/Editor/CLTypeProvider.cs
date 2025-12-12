@@ -119,6 +119,87 @@ namespace CustomLogic.Editor
             return type.Name;
         }
 
+        /// <summary>
+        /// Parses a type reference string that may contain generic type arguments.
+        /// Examples: "K", "List&lt;string&gt;", "List&lt;K&gt;", "Dict&lt;K,V&gt;"
+        /// </summary>
+        private TypeReference ParseTypeReferenceString(string typeString)
+        {
+            if (string.IsNullOrWhiteSpace(typeString))
+                return new TypeReference("Object");
+
+            typeString = typeString.Trim();
+
+            var openBracketIndex = typeString.IndexOf('<');
+            if (openBracketIndex < 0)
+            {
+                return new TypeReference(typeString);
+            }
+
+            var typeName = typeString.Substring(0, openBracketIndex).Trim();
+            
+            var closeBracketIndex = typeString.LastIndexOf('>');
+            if (closeBracketIndex < openBracketIndex)
+            {
+                // Malformed, treat as simple type
+                return new TypeReference(typeString);
+            }
+
+            var argumentsString = typeString.Substring(openBracketIndex + 1, closeBracketIndex - openBracketIndex - 1).Trim();
+            
+            var arguments = ParseTypeArguments(argumentsString);
+            
+            return new TypeReference(typeName, arguments);
+        }
+
+        /// <summary>
+        /// Parses a comma-separated list of type arguments, respecting nested generics.
+        /// </summary>
+        private TypeReference[] ParseTypeArguments(string argumentsString)
+        {
+            if (string.IsNullOrWhiteSpace(argumentsString))
+                return Array.Empty<TypeReference>();
+
+            var arguments = new List<TypeReference>();
+            var currentArg = new System.Text.StringBuilder();
+            var bracketDepth = 0;
+
+            foreach (var ch in argumentsString)
+            {
+                if (ch == '<')
+                {
+                    bracketDepth++;
+                    currentArg.Append(ch);
+                }
+                else if (ch == '>')
+                {
+                    bracketDepth--;
+                    currentArg.Append(ch);
+                }
+                else if (ch == ',' && bracketDepth == 0)
+                {
+                    var argStr = currentArg.ToString().Trim();
+                    if (!string.IsNullOrEmpty(argStr))
+                    {
+                        arguments.Add(ParseTypeReferenceString(argStr));
+                    }
+                    currentArg.Clear();
+                }
+                else
+                {
+                    currentArg.Append(ch);
+                }
+            }
+
+            var lastArgStr = currentArg.ToString().Trim();
+            if (!string.IsNullOrEmpty(lastArgStr))
+            {
+                arguments.Add(ParseTypeReferenceString(lastArgStr));
+            }
+
+            return arguments.ToArray();
+        }
+
         private void ResolveCLType(Type type, XmlDocument xmlDocument)
         {
             var clTypeAttribute = CustomLogicReflectionUtils.GetAttribute<CLTypeAttribute>(type);
@@ -328,10 +409,20 @@ namespace CustomLogic.Editor
                 var clParameters = new List<CLParameter>(parameterNames.Count);
                 for (int j = 0; j < parameterNames.Count; j++)
                 {
+                    var parameterType = parameterTypes[j];
+                    
+                    // Apply parameter type arguments from attribute if specified
+                    if (clMethodAttribute?.ParameterTypeArguments != null && 
+                        j < clMethodAttribute.ParameterTypeArguments.Length &&
+                        !string.IsNullOrEmpty(clMethodAttribute.ParameterTypeArguments[j]))
+                    {
+                        parameterType = ParseTypeReferenceString(clMethodAttribute.ParameterTypeArguments[j]);
+                    }
+                    
                     clParameters.Add(new CLParameter
                     {
                         Name = parameterNames[j],
-                        Type = parameterTypes[j],
+                        Type = parameterType,
                         DefaultValue = parameterValues[j],
                         IsOptional = parameters[j].IsOptional,
                         IsVariadic = CustomLogicReflectionUtils.IsVariadicParameter(parameters[j])

@@ -508,7 +508,12 @@
           "name": "labels",
           "type": {
             "name": "List",
-            "typeArguments": []
+            "typeArguments": [
+              {
+                "name": "string",
+                "typeArguments": []
+              }
+            ]
           },
           "description": "",
           "isOptional": false,
@@ -518,7 +523,12 @@
           "name": "callbacks",
           "type": {
             "name": "List",
-            "typeArguments": []
+            "typeArguments": [
+              {
+                "name": "void",
+                "typeArguments": []
+              }
+            ]
           },
           "description": "",
           "isOptional": false,
@@ -1076,7 +1086,12 @@
           "name": "choices",
           "type": {
             "name": "List",
-            "typeArguments": []
+            "typeArguments": [
+              {
+                "name": "string",
+                "typeArguments": []
+              }
+            ]
           },
           "description": "List of string options to display in the dropdown",
           "isOptional": false,

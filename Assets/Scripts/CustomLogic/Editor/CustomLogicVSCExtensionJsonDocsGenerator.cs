@@ -183,6 +183,18 @@ namespace CustomLogic.Editor
             if (typeRef.Arguments != null && typeRef.Arguments.Length > 0)
             {
                 typeRefObj.TypeArguments = typeRef.Arguments.Select(ConvertTypeReference).ToList();
+                
+                // If the type is "Object" with exactly one type argument that has no arguments itself,
+                // replace the name with the type argument (e.g., Object<V> becomes V)
+                if (name == "Object" && typeRefObj.TypeArguments.Count == 1)
+                {
+                    var singleArg = typeRefObj.TypeArguments[0];
+                    if (singleArg.TypeArguments == null || singleArg.TypeArguments.Count == 0)
+                    {
+                        typeRefObj.Name = singleArg.Name;
+                        typeRefObj.TypeArguments = new List<JsonTypeReference>();
+                    }
+                }
             }
 
             return typeRefObj;

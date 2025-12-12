@@ -22,7 +22,7 @@ namespace CustomLogic
             return Util.FormatFloat(val, decimals);
         }
 
-        [CLMethod("Equivalent to C# string.format(string, List<string>).")]
+        [CLMethod("Equivalent to C# string.format(string, List<string>).", ParameterTypeArguments = new[] { null, "List<string>" })]
         public static string FormatFromList(string str, CustomLogicListBuiltin list)
         {
             return string.Format(str, list.List.ToArray());
@@ -61,7 +61,7 @@ namespace CustomLogic
             return list;
         }
 
-        [CLMethod("Joins a list of strings into a single string with the specified separator.")]
+        [CLMethod("Joins a list of strings into a single string with the specified separator.", ParameterTypeArguments = new[] { "List<string>", null })]
         public static string Join(CustomLogicListBuiltin list, string separator)
         {
             var strList = new List<string>();

@@ -73,7 +73,12 @@
           "name": "list",
           "type": {
             "name": "List",
-            "typeArguments": []
+            "typeArguments": [
+              {
+                "name": "string",
+                "typeArguments": []
+              }
+            ]
           },
           "description": "",
           "isOptional": false,
@@ -140,7 +145,12 @@
           "name": "list",
           "type": {
             "name": "List",
-            "typeArguments": []
+            "typeArguments": [
+              {
+                "name": "string",
+                "typeArguments": []
+              }
+            ]
           },
           "description": "",
           "isOptional": false,
