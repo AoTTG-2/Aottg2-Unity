@@ -22,10 +22,10 @@ namespace CustomLogic
         {
         }
 
-        [CLProperty(description: "Is the player the master client")]
+        [CLProperty(Static = true, Description = "Is the player the master client")]
         public bool IsMasterClient => PhotonNetwork.IsMasterClient;
 
-        [CLProperty(description: "The list of players in the room")]
+        [CLProperty(Static = true, Description = "The list of players in the room", TypeArguments = new[] { "Player" })]
         public CustomLogicListBuiltin Players
         {
             get
@@ -39,37 +39,37 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(description: "The master client")]
+        [CLProperty(Static = true, Description = "The master client")]
         public CustomLogicPlayerBuiltin MasterClient => new CustomLogicPlayerBuiltin(PhotonNetwork.MasterClient);
 
-        [CLProperty(description: "The local player")]
+        [CLProperty(Static = true, Description = "The local player")]
         public CustomLogicPlayerBuiltin MyPlayer => new CustomLogicPlayerBuiltin(PhotonNetwork.LocalPlayer);
 
-        [CLProperty(description: "The network time")]
+        [CLProperty(Static = true, Description = "The network time")]
         public double NetworkTime => PhotonNetwork.Time;
 
-        [CLProperty(description: "The local player's ping")]
+        [CLProperty(Static = true, Description = "The local player's ping")]
         public int Ping => PhotonNetwork.GetPing();
 
-        [CLMethod(description: "Send a message to a player")]
+        [CLMethod(Static = true, Description = "Send a message to a player")]
         public void SendMessage(CustomLogicPlayerBuiltin player, string message)
         {
             RPCManager.PhotonView.RPC(nameof(RPCManager.SendMessageRPC), player.Player, new object[] { message });
         }
 
-        [CLMethod(description: "Send a message to all players")]
+        [CLMethod(Static = true, Description = "Send a message to all players")]
         public void SendMessageAll(string message)
         {
             RPCManager.PhotonView.RPC(nameof(RPCManager.SendMessageRPC), RpcTarget.All, new object[] { message });
         }
 
-        [CLMethod(description: "Send a message to all players except the sender")]
+        [CLMethod(Static = true, Description = "Send a message to all players except the sender")]
         public void SendMessageOthers(string message)
         {
             RPCManager.PhotonView.RPC(nameof(RPCManager.SendMessageRPC), RpcTarget.Others, new object[] { message });
         }
 
-        [CLMethod(description: "Finds a player in the room by id.")]
+        [CLMethod(Static = true, Description = "Finds a player in the room by id.")]
         public CustomLogicPlayerBuiltin FindPlayer(int id)
         {
             Player player = Util.FindPlayerById(id);
@@ -78,14 +78,14 @@ namespace CustomLogic
             return null;
         }
 
-        [CLMethod(description: "Get the difference between two photon timestamps")]
+        [CLMethod(Static = true, Description = "Get the difference between two photon timestamps")]
         public double GetTimestampDifference(double timestamp1, double timestamp2)
         {
             // Handle the wrap around case photon timestamps have for the user since most will likely ignore it otherwise.
             return Util.GetPhotonTimestampDifference(timestamp1, timestamp2);
         }
 
-        [CLMethod(description: "Kick the given player by id or player reference.")]
+        [CLMethod(Static = true, Description = "Kick the given player by id or player reference.")]
         public void KickPlayer(object target, string reason = ".")
         {
             Photon.Realtime.Player player = null;
@@ -101,7 +101,5 @@ namespace CustomLogic
             else
                 throw new Exception("Only the master client can kick players.");
         }
-
-
     }
 }

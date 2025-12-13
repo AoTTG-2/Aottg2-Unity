@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace CustomLogic
 {
-    [CLType(Name = "AudioSource", Abstract = true, Description = "")]
+    [CLType(Name = "AudioSource", Abstract = true, Description = "", IsComponent = true)]
     partial class CustomLogicAudioSourceBuiltin : BuiltinComponentInstance
     {
         public AudioSource Value;

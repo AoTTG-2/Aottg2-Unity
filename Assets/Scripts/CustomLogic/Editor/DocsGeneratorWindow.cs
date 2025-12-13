@@ -16,6 +16,7 @@ namespace CustomLogic.Editor
         private bool _runBuildCommand = true;
         private bool _generateJson;
         private bool _generateMarkdown;
+        private bool _generateVSCExtensionJson;
         private bool _resolveInheritDoc = true;
 
         private Button _generateButton;
@@ -40,16 +41,19 @@ namespace CustomLogic.Editor
             var runBuildCommandToggle = CreateOption("Run build command", "Run `dotnet build` before generating the docs which will generate Scripts.xml. Only enable this if this is the first time running docs generator (since unity startup) or the docs comments (xml) have changed.");
             var generateJsonToggle = CreateOption("Generate JSON", "Generate docs in JSON format");
             var generateMarkdownToggle = CreateOption("Generate Markdown", "Generate docs in Markdown format");
+            var generateVSCExtensionJsonToggle = CreateOption("Generate VSCExtension JSON", "Generate docs in JSON format for VSCode Extension");
             var resolveInheritDocToggle = CreateOption("Resolve <inheritdoc />", "Slow process. Can be disabled when debugging.");
 
             runBuildCommandToggle.SetValueWithoutNotify(_runBuildCommand);
             generateJsonToggle.SetValueWithoutNotify(_generateJson);
             generateMarkdownToggle.SetValueWithoutNotify(_generateMarkdown);
+            generateVSCExtensionJsonToggle.SetValueWithoutNotify(_generateVSCExtensionJson);
             resolveInheritDocToggle.SetValueWithoutNotify(_resolveInheritDoc);
 
             runBuildCommandToggle.RegisterValueChangedCallback(e => _runBuildCommand = e.newValue);
             generateJsonToggle.RegisterValueChangedCallback(e => _generateJson = e.newValue);
             generateMarkdownToggle.RegisterValueChangedCallback(e => _generateMarkdown = e.newValue);
+            generateVSCExtensionJsonToggle.RegisterValueChangedCallback(e => _generateVSCExtensionJson = e.newValue);
             resolveInheritDocToggle.RegisterValueChangedCallback(e => _resolveInheritDoc = e.newValue);
 
             _generateButton = new Button(() => _ = Generate())
@@ -126,7 +130,7 @@ namespace CustomLogic.Editor
             _logs.Clear();
             _logsView.Clear();
 
-            if (!_generateJson && !_generateMarkdown)
+            if (!_generateJson && !_generateMarkdown && !_generateVSCExtensionJson)
             {
                 LogError("At least one format must be selected.");
                 return;
@@ -192,9 +196,10 @@ namespace CustomLogic.Editor
                 var clTypeProvider = new CLTypeProvider();
                 var clTypes = clTypeProvider.GetCLTypes(xmlDocument);
 
-                var generators = new List<BaseCustomLogicDocsGenerator>(2);
+                var generators = new List<BaseCustomLogicDocsGenerator>(3);
                 if (_generateJson) generators.Add(new CustomLogicJsonDocsGenerator(clTypes));
                 if (_generateMarkdown) generators.Add(new CustomLogicMarkdownDocsGenerator(clTypes));
+                if (_generateVSCExtensionJson) generators.Add(new CustomLogicVSCExtensionJsonDocsGenerator(clTypes));
 
                 LogInfo("Running generators...");
 

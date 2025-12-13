@@ -2,7 +2,7 @@
 
 namespace CustomLogic
 {
-    [CLType(Name = "Collision", Abstract = true)]
+    [CLType(Name = "Collision", Abstract = true, IsComponent = true)]
     partial class CustomLogicCollisionBuiltin : BuiltinClassInstance, ICustomLogicCopyable, ICustomLogicEquals
     {
         public Collision collision;

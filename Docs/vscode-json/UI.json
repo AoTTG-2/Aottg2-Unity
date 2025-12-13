@@ -1,0 +1,1223 @@
+{
+  "kind": "extension",
+  "name": "UI",
+  "description": "UI label functions.",
+  "extends": [
+    "Object"
+  ],
+  "instanceFields": [],
+  "instanceMethods": [],
+  "staticFields": [
+    {
+      "label": "TopCenter",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "\"TopCenter\" constant",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "TopLeft",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "\"TopLeft\" constant",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "TopRight",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "\"TopRight\" constant",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "MiddleCenter",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "\"MiddleCenter\" constant",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "MiddleLeft",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "\"MiddleLeft\" constant",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "MiddleRight",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "\"MiddleRight\" constant",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "BottomCenter",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "\"BottomCenter\" constant",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "BottomLeft",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "\"BottomLeft\" constant",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "BottomRight",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "\"BottomRight\" constant",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "GetPopups",
+      "type": {
+        "name": "List",
+        "typeArguments": [
+          {
+            "name": "string",
+            "typeArguments": []
+          }
+        ]
+      },
+      "description": "Returns a list of all popups",
+      "readonly": true,
+      "private": false
+    }
+  ],
+  "staticMethods": [
+    {
+      "label": "SetLabel",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Sets the label at a certain location. Valid types: \"TopCenter\", \"TopLeft\", \"TopRight\", \"MiddleCenter\", \"MiddleLeft\", \"MiddleRight\", \"BottomLeft\", \"BottomRight\", \"BottomCenter\".",
+      "parameters": [
+        {
+          "name": "label",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "message",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "SetLabelForTime",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Sets the label for a certain time, after which it will be cleared.",
+      "parameters": [
+        {
+          "name": "label",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "message",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "time",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "SetLabelAll",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Sets the label for all players. Master client only. Be careful not to call this often.",
+      "parameters": [
+        {
+          "name": "label",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "message",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "SetLabelForTimeAll",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Sets the label for all players for a certain time. Master client only.",
+      "parameters": [
+        {
+          "name": "label",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "message",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "time",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "CreatePopup",
+      "returnType": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Creates a new popup. This popup is hidden until shown.",
+      "parameters": [
+        {
+          "name": "popupName",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "title",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "width",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "height",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "ShowPopup",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Shows the popup with given name.",
+      "parameters": [
+        {
+          "name": "popupName",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "HidePopup",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Hides the popup with given name.",
+      "parameters": [
+        {
+          "name": "popupName",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "ClearPopup",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Clears all elements in popup with given name.",
+      "parameters": [
+        {
+          "name": "popupName",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "AddPopupLabel",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Adds a text row to the popup with label as content.",
+      "parameters": [
+        {
+          "name": "popupName",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "label",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "AddPopupButton",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Adds a button row to the popup with given button name and display text. When button is pressed, OnButtonClick is called in Main with buttonName parameter.",
+      "parameters": [
+        {
+          "name": "popupName",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "label",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "callback",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "AddPopupBottomButton",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Adds a button to the bottom bar of the popup.",
+      "parameters": [
+        {
+          "name": "popupName",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "label",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "callback",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "AddPopupButtons",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Adds a list of buttons in a row to the popup.",
+      "parameters": [
+        {
+          "name": "popupName",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "labels",
+          "type": {
+            "name": "List",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "callbacks",
+          "type": {
+            "name": "List",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "WrapStyleTag",
+      "returnType": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Returns a wrapped string given style and args.",
+      "parameters": [
+        {
+          "name": "text",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "style",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "arg",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "ShowChangeCharacterMenu",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Shows the change character menu if main character is Human.",
+      "parameters": [],
+      "kind": "function"
+    },
+    {
+      "label": "SetScoreboardHeader",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Sets the display of the scoreboard header (default \"Kills / Deaths...\")",
+      "parameters": [
+        {
+          "name": "header",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "SetScoreboardProperty",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Sets which Player custom property to read from to display on the scoreboard. If set to empty string, will use the default \"Kills / Deaths...\" display.",
+      "parameters": [
+        {
+          "name": "property",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "GetThemeColor",
+      "returnType": {
+        "name": "Color",
+        "typeArguments": []
+      },
+      "description": "Gets the color of the specified item. See theme json for reference.",
+      "parameters": [
+        {
+          "name": "panel",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "category",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "item",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "IsPopupActive",
+      "returnType": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Returns if the given popup is active",
+      "parameters": [
+        {
+          "name": "popupName",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "SetLabelActive",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Sets whether a label is active or not.",
+      "parameters": [
+        {
+          "name": "label",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "active",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "SetKDRPanelActive",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Sets whether the KDR panel (top-left) is active or not.",
+      "parameters": [
+        {
+          "name": "active",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "SetMinimapActive",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Sets whether the minimap is active or not.",
+      "parameters": [
+        {
+          "name": "active",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "SetChatPanelActive",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Sets whether the chat panel is active or not.",
+      "parameters": [
+        {
+          "name": "active",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "SetFeedPanelActive",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Sets whether the feed panel is active or not.",
+      "parameters": [
+        {
+          "name": "active",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "SetBottomHUDActive",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Sets whether the bottom HUD is active or not. This can only be used when the character is alive.",
+      "parameters": [
+        {
+          "name": "active",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "GetRootVisualElement",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Returns the root `VisualElement` which you can add other elements to.",
+      "parameters": [],
+      "kind": "function"
+    },
+    {
+      "label": "VisualElement",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Creates a new `VisualElement`.",
+      "parameters": [],
+      "kind": "function"
+    },
+    {
+      "label": "Button",
+      "returnType": {
+        "name": "Button",
+        "typeArguments": []
+      },
+      "description": "Creates a new `Button` with optional text and click event.",
+      "parameters": [
+        {
+          "name": "text",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "The text that the button displays",
+          "isOptional": true,
+          "isVariadic": false
+        },
+        {
+          "name": "clickEvent",
+          "type": {
+            "name": "function",
+            "typeArguments": []
+          },
+          "description": "The function that will be called when button is clicked",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Label",
+      "returnType": {
+        "name": "Label",
+        "typeArguments": []
+      },
+      "description": "Creates a new `Label` with optional text.",
+      "parameters": [
+        {
+          "name": "text",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "The text to be displayed",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "TextField",
+      "returnType": {
+        "name": "TextField",
+        "typeArguments": []
+      },
+      "description": "Creates a new `TextField` with optional label.",
+      "parameters": [
+        {
+          "name": "label",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Toggle",
+      "returnType": {
+        "name": "Toggle",
+        "typeArguments": []
+      },
+      "description": "Creates a new `Toggle` with optional label and value changed event.",
+      "parameters": [
+        {
+          "name": "label",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "The label text displayed next to the toggle",
+          "isOptional": true,
+          "isVariadic": false
+        },
+        {
+          "name": "valueChangedEvent",
+          "type": {
+            "name": "function",
+            "typeArguments": []
+          },
+          "description": "The function that will be called when toggle value changes",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Slider",
+      "returnType": {
+        "name": "Slider",
+        "typeArguments": []
+      },
+      "description": "Creates a new `Slider` for floating-point values with optional range, tick interval, and value changed event. The slider will snap to values at multiples of the tick interval.",
+      "parameters": [
+        {
+          "name": "lowValue",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The minimum value of the slider",
+          "isOptional": true,
+          "isVariadic": false
+        },
+        {
+          "name": "highValue",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The maximum value of the slider",
+          "isOptional": true,
+          "isVariadic": false
+        },
+        {
+          "name": "tickInterval",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The interval between allowed values. If 0, no snapping occurs. For example, 0.1 will snap to 0.0, 0.1, 0.2, etc.",
+          "isOptional": true,
+          "isVariadic": false
+        },
+        {
+          "name": "label",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "The label text displayed next to the slider",
+          "isOptional": true,
+          "isVariadic": false
+        },
+        {
+          "name": "valueChangedEvent",
+          "type": {
+            "name": "function",
+            "typeArguments": []
+          },
+          "description": "The function that will be called when slider value changes",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "SliderInt",
+      "returnType": {
+        "name": "Slider",
+        "typeArguments": []
+      },
+      "description": "Creates a new `Slider` for integer values with optional range, tick interval, and value changed event. The slider will snap to values at multiples of the tick interval.",
+      "parameters": [
+        {
+          "name": "lowValue",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "The minimum value of the slider",
+          "isOptional": true,
+          "isVariadic": false
+        },
+        {
+          "name": "highValue",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "The maximum value of the slider",
+          "isOptional": true,
+          "isVariadic": false
+        },
+        {
+          "name": "tickInterval",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "The interval between allowed values. For example, 5 will snap to 0, 5, 10, 15, etc.",
+          "isOptional": true,
+          "isVariadic": false
+        },
+        {
+          "name": "label",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "The label text displayed next to the slider",
+          "isOptional": true,
+          "isVariadic": false
+        },
+        {
+          "name": "valueChangedEvent",
+          "type": {
+            "name": "function",
+            "typeArguments": []
+          },
+          "description": "The function that will be called when slider value changes",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Dropdown",
+      "returnType": {
+        "name": "Dropdown",
+        "typeArguments": []
+      },
+      "description": "Creates a new `Dropdown` with a list of choices and optional label and value changed event.",
+      "parameters": [
+        {
+          "name": "choices",
+          "type": {
+            "name": "List",
+            "typeArguments": []
+          },
+          "description": "List of string options to display in the dropdown",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "defaultIndex",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "The index of the initially selected option (default: 0)",
+          "isOptional": true,
+          "isVariadic": false
+        },
+        {
+          "name": "label",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "The label text displayed next to the dropdown",
+          "isOptional": true,
+          "isVariadic": false
+        },
+        {
+          "name": "valueChangedEvent",
+          "type": {
+            "name": "function",
+            "typeArguments": []
+          },
+          "description": "The function that will be called when dropdown value changes",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "ProgressBar",
+      "returnType": {
+        "name": "ProgressBar",
+        "typeArguments": []
+      },
+      "description": "Creates a new `ProgressBar` with optional range, title, and value changed event.",
+      "parameters": [
+        {
+          "name": "lowValue",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The minimum value of the progress bar (default: 0)",
+          "isOptional": true,
+          "isVariadic": false
+        },
+        {
+          "name": "highValue",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The maximum value of the progress bar (default: 100)",
+          "isOptional": true,
+          "isVariadic": false
+        },
+        {
+          "name": "title",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "The title text displayed on the progress bar",
+          "isOptional": true,
+          "isVariadic": false
+        },
+        {
+          "name": "valueChangedEvent",
+          "type": {
+            "name": "function",
+            "typeArguments": []
+          },
+          "description": "The function that will be called when progress bar value changes",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "ScrollView",
+      "returnType": {
+        "name": "ScrollView",
+        "typeArguments": []
+      },
+      "description": "Creates a new `ScrollView` for scrollable content.",
+      "parameters": [],
+      "kind": "function"
+    },
+    {
+      "label": "Icon",
+      "returnType": {
+        "name": "Icon",
+        "typeArguments": []
+      },
+      "description": "Creates a new `Icon` element for displaying images/icons.",
+      "parameters": [
+        {
+          "name": "iconPath",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "Path to the icon resource (e.g., \"Icons/Game/BladeIcon\")",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Image",
+      "returnType": {
+        "name": "Image",
+        "typeArguments": []
+      },
+      "description": "Creates a new `Icon` element for displaying images/icons.",
+      "parameters": [
+        {
+          "name": "iconPath",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "Path to the icon resource (e.g., \"Icons/Game/BladeIcon\")",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    }
+  ],
+  "constructors": []
+}

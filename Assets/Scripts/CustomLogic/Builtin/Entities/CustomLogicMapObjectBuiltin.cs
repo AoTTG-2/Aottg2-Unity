@@ -493,7 +493,7 @@ namespace CustomLogic
             return null;
         }
 
-        [CLMethod(description: "Get all child objects")]
+        [CLMethod(description: "Get all child objects", ReturnTypeArguments = new[] { "MapObject" })]
         public CustomLogicListBuiltin GetChildren()
         {
             CustomLogicListBuiltin listBuiltin = new CustomLogicListBuiltin();
@@ -619,7 +619,7 @@ namespace CustomLogic
             return new CustomLogicVector3Builtin(Value.colliderCache[0].bounds.extents);
         }
 
-        [CLMethod(Description = "Get the corners of the bounds")]
+        [CLMethod(Description = "Get the corners of the bounds", ReturnTypeArguments = new[] { "Vector3" })]
         public CustomLogicListBuiltin GetCorners()
         {
             if (Value.colliderCache.Length == 0)

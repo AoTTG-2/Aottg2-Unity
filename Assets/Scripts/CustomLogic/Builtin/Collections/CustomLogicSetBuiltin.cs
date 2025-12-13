@@ -6,7 +6,7 @@ namespace CustomLogic
     /// <summary>
     /// Collection of unique elements
     /// </summary>
-    [CLType(Name = "Set")]
+    [CLType(Name = "Set", TypeParameters = new[] { "T" })]
     partial class CustomLogicSetBuiltin : BuiltinClassInstance
     {
         public HashSet<object> Set = new HashSet<object>();
@@ -17,7 +17,7 @@ namespace CustomLogic
         }
 
         [CLConstructor]
-        public CustomLogicSetBuiltin(object[] parameterValues)
+        public CustomLogicSetBuiltin(params object[] parameterValues)
         {
             foreach (var item in parameterValues) Set.Add(item);
         }
@@ -99,7 +99,7 @@ namespace CustomLogic
             return Set.SetEquals(set.Set);
         }
 
-        [CLMethod(description: "Convert the set to a list")]
+        [CLMethod(description: "Convert the set to a list", ReturnTypeArguments = new[] { "T" })]
         public CustomLogicListBuiltin ToList()
         {
             CustomLogicListBuiltin newList = new CustomLogicListBuiltin();

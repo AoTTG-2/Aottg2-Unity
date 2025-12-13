@@ -1,0 +1,369 @@
+{
+  "kind": "class",
+  "name": "List",
+  "description": "Ordered collection of objects.",
+  "typeParameters": [
+    "T"
+  ],
+  "extends": [
+    "Object"
+  ],
+  "instanceFields": [
+    {
+      "label": "Count",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "The number of elements in the list",
+      "readonly": true,
+      "private": false
+    }
+  ],
+  "instanceMethods": [
+    {
+      "label": "Clear",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Clear all list elements",
+      "parameters": [],
+      "kind": "function"
+    },
+    {
+      "label": "Get",
+      "returnType": {
+        "name": "Object",
+        "typeArguments": []
+      },
+      "description": "Get the element at the specified index",
+      "parameters": [
+        {
+          "name": "index",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Set",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Set the element at the specified index",
+      "parameters": [
+        {
+          "name": "index",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "value",
+          "type": {
+            "name": "Object",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Add",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Add an element to the end of the list",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "Object",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "InsertAt",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Insert an element at the specified index",
+      "parameters": [
+        {
+          "name": "index",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "value",
+          "type": {
+            "name": "Object",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "RemoveAt",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Remove the element at the specified index",
+      "parameters": [
+        {
+          "name": "index",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Remove",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Remove the first occurrence of the specified element",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "Object",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Contains",
+      "returnType": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Check if the list contains the specified element",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "Object",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Sort",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Sort the list",
+      "parameters": [],
+      "kind": "function"
+    },
+    {
+      "label": "SortCustom",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Sort the list using a custom method, expects a method with the signature int method(a,b)",
+      "parameters": [
+        {
+          "name": "method",
+          "type": {
+            "name": "function",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Filter",
+      "returnType": {
+        "name": "List",
+        "typeArguments": [
+          {
+            "name": "T",
+            "typeArguments": []
+          }
+        ]
+      },
+      "description": "Filter the list using a custom method, expects a method with the signature bool method(element)",
+      "parameters": [
+        {
+          "name": "method",
+          "type": {
+            "name": "function",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Map",
+      "returnType": {
+        "name": "List",
+        "typeArguments": [
+          {
+            "name": "T",
+            "typeArguments": []
+          }
+        ]
+      },
+      "description": "Map the list using a custom method, expects a method with the signature object method(element)",
+      "parameters": [
+        {
+          "name": "method",
+          "type": {
+            "name": "function",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Reduce",
+      "returnType": {
+        "name": "Object",
+        "typeArguments": []
+      },
+      "description": "Reduce the list using a custom method, expects a method with the signature object method(acc, element)",
+      "parameters": [
+        {
+          "name": "method",
+          "type": {
+            "name": "function",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "initialValue",
+          "type": {
+            "name": "Object",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Randomize",
+      "returnType": {
+        "name": "List",
+        "typeArguments": [
+          {
+            "name": "T",
+            "typeArguments": []
+          }
+        ]
+      },
+      "description": "Returns a randomized version of the list.",
+      "parameters": [],
+      "kind": "function"
+    },
+    {
+      "label": "ToSet",
+      "returnType": {
+        "name": "Set",
+        "typeArguments": [
+          {
+            "name": "T",
+            "typeArguments": []
+          }
+        ]
+      },
+      "description": "Convert the list to a set",
+      "parameters": [],
+      "kind": "function"
+    }
+  ],
+  "staticFields": [],
+  "staticMethods": [],
+  "constructors": [
+    {
+      "parameters": [],
+      "description": ""
+    },
+    {
+      "parameters": [
+        {
+          "name": "parameterValues",
+          "type": {
+            "name": "Object",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": true
+        }
+      ],
+      "description": ""
+    }
+  ]
+}

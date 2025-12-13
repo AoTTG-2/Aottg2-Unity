@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace CustomLogic
 {
-    [CLType(Name = "Animation", Abstract = true, Description = "")]
+    [CLType(Name = "Animation", Abstract = true, Description = "", IsComponent = true)]
     partial class CustomLogicAnimationBuiltin : BuiltinComponentInstance
     {
         public Animation Value;

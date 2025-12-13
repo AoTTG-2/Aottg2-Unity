@@ -1,0 +1,369 @@
+{
+  "kind": "extension",
+  "name": "Convert",
+  "description": "Converting objects to different types.",
+  "extends": [
+    "Object"
+  ],
+  "instanceFields": [],
+  "instanceMethods": [],
+  "staticFields": [],
+  "staticMethods": [
+    {
+      "label": "ToFloat",
+      "returnType": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Converts a value to a float",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "Object",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "ToInt",
+      "returnType": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "Converts a value to an int",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "Object",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "ToBool",
+      "returnType": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Converts a value to a bool",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "Object",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "ToString",
+      "returnType": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Converts a value to a string",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "Object",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "IsFloat",
+      "returnType": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Checks if the value is a float",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "Object",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "IsInt",
+      "returnType": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Checks if the value is an int",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "Object",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "IsBool",
+      "returnType": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Checks if the value is a bool",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "Object",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "IsString",
+      "returnType": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Checks if the value is a string",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "Object",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "IsObject",
+      "returnType": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Checks if the value is an object",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "Object",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "IsList",
+      "returnType": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Checks if the value is a list",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "Object",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "IsDict",
+      "returnType": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Checks if the value is a dictionary",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "Object",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "HasVariable",
+      "returnType": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Checks if the class instance has a variable",
+      "parameters": [
+        {
+          "name": "cInstance",
+          "type": {
+            "name": "class",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "variableName",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "DefineVariable",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Defines a variable for the class instance",
+      "parameters": [
+        {
+          "name": "cInstance",
+          "type": {
+            "name": "class",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "variableName",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "value",
+          "type": {
+            "name": "Object",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "RemoveVariable",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Removes a variable from the class instance",
+      "parameters": [
+        {
+          "name": "cInstance",
+          "type": {
+            "name": "class",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "variableName",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "GetType",
+      "returnType": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Gets the type of the class instance",
+      "parameters": [
+        {
+          "name": "cInstance",
+          "type": {
+            "name": "class",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    }
+  ],
+  "constructors": []
+}

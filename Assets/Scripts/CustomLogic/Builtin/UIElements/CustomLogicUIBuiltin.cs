@@ -143,7 +143,7 @@ namespace CustomLogic
         [CLMethod] public static void AddPopupBottomButton(string popupName, string label, string callback) => Menu.GetCustomPopup(popupName).AddBottomButton(label, callback);
 
         /// <summary>Adds a list of buttons in a row to the popup.</summary>
-        [CLMethod] public static void AddPopupButtons(string popupName, CustomLogicListBuiltin labels, CustomLogicListBuiltin callbacks) => Menu.GetCustomPopup(popupName).AddButtons(labels.List, callbacks.List);
+        [CLMethod] public static void AddPopupButtons(string popupName, CustomLogicListBuiltin labels, CustomLogicListBuiltin callbacks) => Menu.GetCustomPopup(popupName).AddButtons(labels.List, callbacks.List); // TODO: Add generic type params definitions for generation
 
         /// <summary>Returns a wrapped string given style and args.</summary>
         [CLMethod]
@@ -184,7 +184,7 @@ namespace CustomLogic
         [CLMethod("Returns if the given popup is active")]
         public static bool IsPopupActive(string popupName) => Menu.GetCustomPopup(popupName).IsActive;
 
-        [CLProperty("Returns a list of all popups")]
+        [CLProperty(Description = "Returns a list of all popups", TypeArguments = new[] { "string" })]
         public static CustomLogicListBuiltin GetPopups
         {
             get

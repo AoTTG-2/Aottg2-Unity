@@ -1,0 +1,539 @@
+{
+  "kind": "class",
+  "name": "Transform",
+  "description": "Represents a transform.",
+  "extends": [
+    "Object"
+  ],
+  "instanceFields": [
+    {
+      "label": "Position",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Gets or sets the position of the transform.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "LocalPosition",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Gets or sets the local position of the transform.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Rotation",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Gets or sets the rotation of the transform.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "LocalRotation",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Gets or sets the local rotation of the transform.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "QuaternionRotation",
+      "type": {
+        "name": "Quaternion",
+        "typeArguments": []
+      },
+      "description": "Gets or sets the quaternion rotation of the transform.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "QuaternionLocalRotation",
+      "type": {
+        "name": "Quaternion",
+        "typeArguments": []
+      },
+      "description": "Gets or sets the quaternion local rotation of the transform.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Scale",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Gets or sets the scale of the transform.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Forward",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Gets the forward vector of the transform.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Up",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Gets the up vector of the transform.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Right",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Gets the right vector of the transform.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Parent",
+      "type": {
+        "name": "Transform",
+        "typeArguments": []
+      },
+      "description": "Sets the parent of the transform",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Name",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Gets the name of the transform.",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "Layer",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "Gets the Physics Layer of the transform.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Animation",
+      "type": {
+        "name": "Animation",
+        "typeArguments": []
+      },
+      "description": "The Animation attached to this transform, returns null if there is none.",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "Animator",
+      "type": {
+        "name": "Animator",
+        "typeArguments": []
+      },
+      "description": "The Animator attached to this transform, returns null if there is none.",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "AudioSource",
+      "type": {
+        "name": "AudioSource",
+        "typeArguments": []
+      },
+      "description": "The AudioSource attached to this transform, returns null if there is none.",
+      "readonly": true,
+      "private": false
+    }
+  ],
+  "instanceMethods": [
+    {
+      "label": "GetTransform",
+      "returnType": {
+        "name": "Transform",
+        "typeArguments": []
+      },
+      "description": "Gets the transform of the specified child.",
+      "parameters": [
+        {
+          "name": "name",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "GetTransforms",
+      "returnType": {
+        "name": "List",
+        "typeArguments": [
+          {
+            "name": "Transform",
+            "typeArguments": []
+          }
+        ]
+      },
+      "description": "Gets all child transforms.",
+      "parameters": [],
+      "kind": "function"
+    },
+    {
+      "label": "IsPlayingAnimation",
+      "returnType": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Checks if the given animation is playing.",
+      "parameters": [
+        {
+          "name": "anim",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "PlayAnimation",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Plays the specified animation.",
+      "parameters": [
+        {
+          "name": "anim",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "fade",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "GetAnimationLength",
+      "returnType": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Gets the length of the specified animation.",
+      "parameters": [
+        {
+          "name": "anim",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "PlaySound",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Plays the sound.",
+      "parameters": [],
+      "kind": "function"
+    },
+    {
+      "label": "StopSound",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Stops the sound.",
+      "parameters": [],
+      "kind": "function"
+    },
+    {
+      "label": "ToggleParticle",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Toggles the particle system.",
+      "parameters": [
+        {
+          "name": "enabled",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "InverseTransformDirection",
+      "returnType": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "",
+      "parameters": [
+        {
+          "name": "direction",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "InverseTransformPoint",
+      "returnType": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "",
+      "parameters": [
+        {
+          "name": "point",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "TransformDirection",
+      "returnType": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "",
+      "parameters": [
+        {
+          "name": "direction",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "TransformPoint",
+      "returnType": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "",
+      "parameters": [
+        {
+          "name": "point",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Rotate",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "",
+      "parameters": [
+        {
+          "name": "rotation",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "RotateAround",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "",
+      "parameters": [
+        {
+          "name": "point",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "axis",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "angle",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "LookAt",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "",
+      "parameters": [
+        {
+          "name": "target",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "SetRenderersEnabled",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Sets the enabled state of all child renderers.",
+      "parameters": [
+        {
+          "name": "enabled",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "GetColliders",
+      "returnType": {
+        "name": "List",
+        "typeArguments": [
+          {
+            "name": "Collider",
+            "typeArguments": []
+          }
+        ]
+      },
+      "description": "Gets colliders of the transform.",
+      "parameters": [
+        {
+          "name": "recursive",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    }
+  ],
+  "staticFields": [],
+  "staticMethods": [],
+  "constructors": []
+}

@@ -1,0 +1,185 @@
+{
+  "kind": "class",
+  "name": "Prefab",
+  "description": "Will expand this further later, currently only handles single elements, not children. Should be able to take in a serialized CSV describing the object and populate a child array/parent object when done.",
+  "extends": [
+    "Object"
+  ],
+  "instanceFields": [
+    {
+      "label": "Type",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Asset",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Active",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Static",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Visible",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Name",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Position",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Rotation",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Scale",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "CollideMode",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "CollideWith",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "PhysicsMaterial",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "PersistsOwnership",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "",
+      "readonly": false,
+      "private": false
+    }
+  ],
+  "instanceMethods": [
+    {
+      "label": "ClearComponents",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "",
+      "parameters": [],
+      "kind": "function"
+    }
+  ],
+  "staticFields": [],
+  "staticMethods": [],
+  "constructors": [
+    {
+      "parameters": [],
+      "description": ""
+    },
+    {
+      "parameters": [
+        {
+          "name": "prefabCSV",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "clearComponents",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "description": ""
+    }
+  ]
+}

@@ -109,70 +109,70 @@ namespace CustomLogic
             RegisterFallback(ChineseLanguage, TraditionalChineseLanguage);
         }
 
-        [CLProperty(readOnly: true, description: "Arabic language code")]
+        [CLProperty(Description = "Arabic language code")]
         public static string ArabicLanguage => UILanguages.Arabic;
 
-        [CLProperty(readOnly: true, description: "Brazilian Portuguese language code")]
+        [CLProperty(Description = "Brazilian Portuguese language code")]
         public static string BrazilianPortugueseLanguage => UILanguages.BrazilianPortuguese;
 
-        [CLProperty(readOnly: true, description: "Chinese language code")]
+        [CLProperty(Description = "Chinese language code")]
         public static string ChineseLanguage => UILanguages.Chinese;
 
-        [CLProperty(readOnly: true, description: "Czech language code")]
+        [CLProperty(Description = "Czech language code")]
         public static string CzechLanguage => UILanguages.Czech;
 
-        [CLProperty(readOnly: true, description: "Dutch language code")]
+        [CLProperty(Description = "Dutch language code")]
         public static string DutchLanguage => UILanguages.Dutch;
 
-        [CLProperty(readOnly: true, description: "English language code")]
+        [CLProperty(Description = "English language code")]
         public static string EnglishLanguage => UILanguages.English;
 
-        [CLProperty(readOnly: true, description: "French language code")]
+        [CLProperty(Description = "French language code")]
         public static string FrenchLanguage => UILanguages.French;
 
-        [CLProperty(readOnly: true, description: "German language code")]
+        [CLProperty(Description = "German language code")]
         public static string GermanLanguage => UILanguages.German;
 
-        [CLProperty(readOnly: true, description: "Greek language code")]
+        [CLProperty(Description = "Greek language code")]
         public static string GreekLanguage => UILanguages.Greek;
 
-        [CLProperty(readOnly: true, description: "Indonesian language code")]
+        [CLProperty(Description = "Indonesian language code")]
         public static string IndonesianLanguage => UILanguages.Indonesian;
 
-        [CLProperty(readOnly: true, description: "Italian language code")]
+        [CLProperty(Description = "Italian language code")]
         public static string ItalianLanguage => UILanguages.Italian;
 
-        [CLProperty(readOnly: true, description: "Japanese language code")]
+        [CLProperty(Description = "Japanese language code")]
         public static string JapaneseLanguage => UILanguages.Japanese;
 
-        [CLProperty(readOnly: true, description: "Korean language code")]
+        [CLProperty(Description = "Korean language code")]
         public static string KoreanLanguage => UILanguages.Korean;
 
-        [CLProperty(readOnly: true, description: "Polish language code")]
+        [CLProperty(Description = "Polish language code")]
         public static string PolishLanguage => UILanguages.Polish;
 
-        [CLProperty(readOnly: true, description: "Russian language code")]
+        [CLProperty(Description = "Russian language code")]
         public static string RussianLanguage => UILanguages.Russian;
 
-        [CLProperty(readOnly: true, description: "Spanish language code")]
+        [CLProperty(Description = "Spanish language code")]
         public static string SpanishLanguage => UILanguages.Spanish;
 
-        [CLProperty(readOnly: true, description: "Traditional Chinese language code")]
+        [CLProperty(Description = "Traditional Chinese language code")]
         public static string TraditionalChineseLanguage => UILanguages.TraditionalChinese;
 
-        [CLProperty(readOnly: true, description: "Turkish language code")]
+        [CLProperty(Description = "Turkish language code")]
         public static string TurkishLanguage => UILanguages.Turkish;
 
-        [CLProperty(readOnly: true, description: "Ukrainian language code")]
+        [CLProperty(Description = "Ukrainian language code")]
         public static string UkrainianLanguage => UILanguages.Ukrainian;
 
-        [CLProperty(readOnly: true, description: "Returns the current language (e.g. \"English\" or \"简体中文\").")]
+        [CLProperty(Description = "Returns the current language (e.g. \"English\" or \"简体中文\").")]
         public static string CurrentLanguage => SettingsManager.GeneralSettings.Language.Value;
 
-        [CLProperty(description: "The default language to use when a string is not found in the current language pack. English by default.")]
+        [CLProperty(Description = "The default language to use when a string is not found in the current language pack. English by default.")]
         public static string DefaultLanguage { get; set; }
 
-        [CLMethod(description: "Get the localized string for the given key. Searches the current UI language, then any registered fallbacks, and finally the default language. Throws an exception if the key is not found in any language pack.")]
+        [CLMethod(Description = "Get the localized string for the given key. Searches the current UI language, then any registered fallbacks, and finally the default language. Throws an exception if the key is not found in any language pack.")]
         public static string Get(string key)
         {
             var currentLang = SettingsManager.GeneralSettings.Language.Value;
@@ -184,7 +184,7 @@ namespace CustomLogic
             throw new Exception("Localized string not found: " + key);
         }
 
-        [CLMethod(description: "Set or override a localized string for the specified language and key.")]
+        [CLMethod(Description = "Set or override a localized string for the specified language and key.")]
         public static void Set(string language, string key, string value)
         {
             if (!_languages.TryGetValue(language, out var languagePack))
@@ -196,7 +196,7 @@ namespace CustomLogic
             languagePack[key] = value;
         }
 
-        [CLMethod(description: "Register a single-level (non-recursive) fallback: if a string is not found in 'fromLanguage', the system will search only in 'toLanguage', without chaining further.")]
+        [CLMethod(Description = "Register a single-level (non-recursive) fallback: if a string is not found in 'fromLanguage', the system will search only in 'toLanguage', without chaining further.")]
         public static void RegisterLanguage(string language, CustomLogicDictBuiltin strings)
         {
             var dictionary = new Dictionary<string, string>(strings.Dict.Count);
@@ -205,20 +205,20 @@ namespace CustomLogic
             _languages[language] = dictionary;
         }
 
-        [CLMethod(description: "Register all localized strings from JSON files for a specific category across all available languages. Use 'internal://' prefix for internal files (e.g., 'internal://BasicTutorialMap') or no prefix for external files (e.g., 'MyCustomMod').")]
+        [CLMethod(Description = "Register all localized strings from JSON files for a specific category across all available languages. Use 'internal://' prefix for internal files (e.g., 'internal://BasicTutorialMap') or no prefix for external files (e.g., 'MyCustomMod').")]
         public static void RegisterLanguages(string pattern)
         {
             foreach (var languagePair in UIManager.GetLocaleCategoryStrings(pattern))
                 _languages[languagePair.Key] = languagePair.Value;
         }
 
-        [CLMethod(description: "Register a fallback language. When a string is not found in 'fromLanguage', it will try 'toLanguage'.")]
+        [CLMethod(Description = "Register a fallback language. When a string is not found in 'fromLanguage', it will try 'toLanguage'.")]
         public static void RegisterFallback(string fromLanguage, string toLanguage)
         {
             _languageFallbacks[fromLanguage] = toLanguage;
         }
 
-        [CLMethod(description: "Remove a language fallback.")]
+        [CLMethod(Description = "Remove a language fallback.")]
         public static void RemoveFallback(string fromLanguage)
         {
             _languageFallbacks.Remove(fromLanguage);

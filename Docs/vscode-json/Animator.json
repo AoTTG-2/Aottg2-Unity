@@ -1,0 +1,447 @@
+{
+  "kind": "component",
+  "name": "Animator",
+  "description": "",
+  "instanceFields": [],
+  "instanceMethods": [
+    {
+      "label": "IsPlaying",
+      "returnType": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Checks if the given animation is playing.",
+      "parameters": [
+        {
+          "name": "anim",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "layer",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "PlayAnimation",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Plays the specified animation.",
+      "parameters": [
+        {
+          "name": "anim",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "fade",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": true,
+          "isVariadic": false
+        },
+        {
+          "name": "layer",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "PlayAnimationAt",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Plays the specified animation starting from a normalized time.",
+      "parameters": [
+        {
+          "name": "anim",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "normalizedTime",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "fade",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": true,
+          "isVariadic": false
+        },
+        {
+          "name": "layer",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "SetAnimationSpeed",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Sets the animation playback speed.",
+      "parameters": [
+        {
+          "name": "speed",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "GetAnimationLength",
+      "returnType": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Gets the length of the specified animation.",
+      "parameters": [
+        {
+          "name": "anim",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "GetAnimatorFloat",
+      "returnType": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Gets an animation float parameter.",
+      "parameters": [
+        {
+          "name": "name",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "GetAnimatorInt",
+      "returnType": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "Gets an animation int parameter.",
+      "parameters": [
+        {
+          "name": "name",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "GetAnimatorBool",
+      "returnType": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Gets an animation bool parameter.",
+      "parameters": [
+        {
+          "name": "name",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "SetAnimatorFloat",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Sets an animation float parameter.",
+      "parameters": [
+        {
+          "name": "name",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "SetAnimatorInt",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Sets an animation int parameter.",
+      "parameters": [
+        {
+          "name": "name",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "value",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "SetAnimatorBool",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Sets an animation bool parameter.",
+      "parameters": [
+        {
+          "name": "name",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "value",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "SetAnimatorTrigger",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Sets an animation trigger.",
+      "parameters": [
+        {
+          "name": "name",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "ResetAnimatorTrigger",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Resets an animation trigger.",
+      "parameters": [
+        {
+          "name": "name",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "SetLayerWeight",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Sets the weight of the specified layer.",
+      "parameters": [
+        {
+          "name": "layer",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "weight",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "GetLayerWeight",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Gets the weight of the specified layer.",
+      "parameters": [
+        {
+          "name": "layer",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "GetAnimationNormalizedTime",
+      "returnType": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Gets the normalized time of the current animation.",
+      "parameters": [
+        {
+          "name": "layer",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    }
+  ],
+  "staticFields": [],
+  "staticMethods": [],
+  "constructors": []
+}

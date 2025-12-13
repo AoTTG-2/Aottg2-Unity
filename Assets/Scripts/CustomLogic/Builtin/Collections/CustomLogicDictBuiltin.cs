@@ -9,7 +9,7 @@ namespace CustomLogic
     /// Collection of key-value pairs.
     /// Keys must be unique.
     /// </summary>
-    [CLType(Name = "Dict")]
+    [CLType(Name = "Dict", TypeParameters = new[] { "K", "V" })]
     partial class CustomLogicDictBuiltin : BuiltinClassInstance
     {
         public readonly Dictionary<object, object> Dict;
@@ -35,10 +35,10 @@ namespace CustomLogic
         [CLProperty(description: "Number of elements in the dictionary")]
         public int Count => Dict.Count;
 
-        [CLProperty(description: "Keys in the dictionary")]
+        [CLProperty(description: "Keys in the dictionary", TypeArguments = new[] { "K" })]
         public CustomLogicListBuiltin Keys => new CustomLogicListBuiltin { List = new List<object>(Dict.Keys) };
 
-        [CLProperty(description: "Values in the dictionary")]
+        [CLProperty(description: "Values in the dictionary", TypeArguments = new[] { "V" })]
         public CustomLogicListBuiltin Values => new CustomLogicListBuiltin { List = new List<object>(Dict.Values) };
 
         [CLMethod(description: "Clears the dictionary")]
@@ -53,7 +53,7 @@ namespace CustomLogic
         /// <param name="key">The key of the value to get</param>
         /// <param name="defaultValue">The value to return if the key is not found</param>
         /// <returns>The value associated with the key, or the default value if the key is not found</returns>
-        [CLMethod]
+        [CLMethod(ReturnTypeArguments = new[] { "V" })]
         public object Get(object key, object defaultValue = null)
         {
             if (Dict.ContainsKey(key))

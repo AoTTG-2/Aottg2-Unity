@@ -1,0 +1,113 @@
+{
+  "kind": "component",
+  "name": "NavmeshObstacleBuiltin",
+  "description": "",
+  "instanceFields": [
+    {
+      "label": "Radius",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "The radius of the obstacle.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Height",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "The height of the obstacle.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Scale",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "The scale of the obstacle",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Center",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "The center of the obstacle.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Carving",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Whether the obstacle carves the NavMesh.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "CarveOnlyStationary",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Whether the obstacle only carves when stationary.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Shape",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "The shape of the obstacle.",
+      "readonly": false,
+      "private": false
+    }
+  ],
+  "instanceMethods": [
+    {
+      "label": "AutoScale",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Auto scales the obstacle to fit the colliders.",
+      "parameters": [],
+      "kind": "function"
+    }
+  ],
+  "staticFields": [
+    {
+      "label": "ShapeBox",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "The NavMeshObstacleShape Box.",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "ShapeCapsule",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "The NavMeshObstacleShape Capsule.",
+      "readonly": true,
+      "private": false
+    }
+  ],
+  "staticMethods": [],
+  "constructors": []
+}

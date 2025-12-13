@@ -1,0 +1,86 @@
+{
+  "kind": "extension",
+  "name": "RoomData",
+  "description": "Store and retrieve room variables. Room data is cleared upon joining or creating a new lobby and does not reset between game rounds. Supports float, string, bool, and int types. Note that RoomData is local only and does not sync.You must use network messages to sync room variables.",
+  "extends": [
+    "Object"
+  ],
+  "instanceFields": [],
+  "instanceMethods": [],
+  "staticFields": [],
+  "staticMethods": [
+    {
+      "label": "SetProperty",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Sets the property with given name to the object value. Valid value types are float, string, bool, and int.",
+      "parameters": [
+        {
+          "name": "property",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "value",
+          "type": {
+            "name": "Object",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "GetProperty",
+      "returnType": {
+        "name": "Object",
+        "typeArguments": []
+      },
+      "description": "Gets the property with given name. If property does not exist, returns defaultValue.",
+      "parameters": [
+        {
+          "name": "property",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "defaultValue",
+          "type": {
+            "name": "Object",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Clear",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Clears all room data.",
+      "parameters": [],
+      "kind": "function"
+    }
+  ],
+  "constructors": []
+}

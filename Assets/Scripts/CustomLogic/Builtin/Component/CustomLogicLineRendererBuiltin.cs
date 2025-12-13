@@ -9,7 +9,7 @@ namespace CustomLogic
     /// <summary>
     /// Represents a LineRenderer
     /// </summary>
-    [CLType(Name = "LineRenderer", Static = true)]
+    [CLType(Name = "LineRenderer", Static = true, IsComponent = true)]
     partial class CustomLogicLineRendererBuiltin : BuiltinClassInstance
     {
         public LineRenderer Value = null;
@@ -145,7 +145,7 @@ namespace CustomLogic
             set => Value.receiveShadows = value;
         }
 
-        [CLProperty(description: "The gradient of the line renderer")]
+        [CLProperty(description: "The gradient of the line renderer", TypeArguments = new[] { "Color" })]
         public CustomLogicListBuiltin ColorGradient
         {
             get
@@ -177,7 +177,7 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(description: "The alpha gradient of the line renderer")]
+        [CLProperty(description: "The alpha gradient of the line renderer", TypeArguments = new[] { "float" })]
         public CustomLogicListBuiltin AlphaGradient
         {
             get
@@ -206,7 +206,7 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(description: "The width curve of the line renderer")]
+        [CLProperty(description: "The width curve of the line renderer", TypeArguments = new[] { "Vector2" })]
         public CustomLogicListBuiltin WidthCurve
         {
             get
@@ -250,7 +250,7 @@ namespace CustomLogic
             set => Value.colorGradient.mode = (GradientMode)System.Enum.Parse(typeof(GradientMode), value);
         }
 
-        [CLMethod(description: "Create a new LineRenderer"), Obsolete("Create a new instance with LineRenderer() instead.")]
+        [CLMethod(Description = "Create a new LineRenderer"), Obsolete("Create a new instance with LineRenderer() instead.")]
         public static CustomLogicLineRendererBuiltin CreateLineRenderer()
         {
             return new CustomLogicLineRendererBuiltin();

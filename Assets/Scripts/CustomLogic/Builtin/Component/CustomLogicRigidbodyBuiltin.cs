@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace CustomLogic
 {
-    [CLType(Name = "RigidbodyBuiltin", Static = true, Abstract = true, Description = "")]
+    [CLType(Name = "RigidbodyBuiltin", Static = true, Abstract = true, Description = "", IsComponent = true)]
     partial class CustomLogicRigidbodyBuiltin : BuiltinComponentInstance
     {
         public Rigidbody Value;
@@ -43,16 +43,16 @@ namespace CustomLogic
         }
 
         // Add Static Getters for ForceMode
-        [CLProperty(Name = "ForceModeAcceleration", Static = true, Description = "ForceMode.Acceleration")]
+        [CLProperty(Name = "ForceModeAcceleration", Description = "ForceMode.Acceleration")]
         public static int ForceModeAcceleration => (int)ForceMode.Acceleration;
 
-        [CLProperty(Name = "ForceModeForce", Static = true, Description = "ForceMode.Force")]
+        [CLProperty(Name = "ForceModeForce", Description = "ForceMode.Force")]
         public static int ForceModeForce => (int)ForceMode.Force;
 
-        [CLProperty(Name = "ForceModeImpulse", Static = true, Description = "ForceMode.Impulse")]
+        [CLProperty(Name = "ForceModeImpulse", Description = "ForceMode.Impulse")]
         public static int ForceModeImpulse => (int)ForceMode.Impulse;
 
-        [CLProperty(Name = "ForceModeVelocityChange", Static = true, Description = "ForceMode.VelocityChange")]
+        [CLProperty(Name = "ForceModeVelocityChange", Description = "ForceMode.VelocityChange")]
         public static int ForceModeVelocityChange => (int)ForceMode.VelocityChange;
 
         [CLProperty(Description = "The MapObject this rigidbody is attached to.")]

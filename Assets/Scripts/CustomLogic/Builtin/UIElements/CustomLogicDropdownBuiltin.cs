@@ -61,7 +61,7 @@ namespace CustomLogic
         /// <summary>
         /// Gets the list of available choices
         /// </summary>
-        [CLProperty]
+        [CLProperty(TypeArguments = new[] { "string" })]
         public CustomLogicListBuiltin Choices
         {
             get

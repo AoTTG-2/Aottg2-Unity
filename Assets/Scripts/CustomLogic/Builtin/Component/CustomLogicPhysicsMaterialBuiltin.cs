@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace CustomLogic
 {
-    [CLType(Name = "PhysicsMaterialBuiltin", Static = true, Abstract = true, Description = "")]
+    [CLType(Name = "PhysicsMaterialBuiltin", Static = true, Abstract = true, Description = "", IsComponent = true)]
     partial class CustomLogicPhysicsMaterialBuiltin : BuiltinComponentInstance
     {
         public CustomPhysicsMaterial Value;
@@ -20,16 +20,16 @@ namespace CustomLogic
             Value = (CustomPhysicsMaterial)Component;
         }
 
-        [CLProperty(Static = true, Description = "PhysicMaterialCombine.Minimum")]
+        [CLProperty(Description = "PhysicMaterialCombine.Minimum")]
         public static int FrictionCombineMinimum => (int)PhysicMaterialCombine.Minimum;
 
-        [CLProperty(Static = true, Description = "PhysicMaterialCombine.Multiply")]
+        [CLProperty(Description = "PhysicMaterialCombine.Multiply")]
         public static int FrictionCombineMultiply => (int)PhysicMaterialCombine.Multiply;
 
-        [CLProperty(Static = true, Description = "PhysicMaterialCombine.Maximum")]
+        [CLProperty(Description = "PhysicMaterialCombine.Maximum")]
         public static int FrictionCombineMaximum => (int)PhysicMaterialCombine.Maximum;
 
-        [CLProperty(Static = true, Description = "PhysicMaterialCombine.Average")]
+        [CLProperty(Description = "PhysicMaterialCombine.Average")]
         public static int FrictionCombineAverage => (int)PhysicMaterialCombine.Average;
 
         // Static Friction

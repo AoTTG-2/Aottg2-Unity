@@ -1,0 +1,103 @@
+{
+  "kind": "component",
+  "name": "AudioSource",
+  "description": "",
+  "instanceFields": [
+    {
+      "label": "Volume",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Volume of the sound.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Time",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Sound playback position.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "IsPlaying",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Is the sound currently playing.",
+      "readonly": true,
+      "private": false
+    }
+  ],
+  "instanceMethods": [
+    {
+      "label": "Play",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Plays the sound.",
+      "parameters": [],
+      "kind": "function"
+    },
+    {
+      "label": "PlayDelayed",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Plays the sound after n seconds.",
+      "parameters": [
+        {
+          "name": "seconds",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Stop",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Stops the sound.",
+      "parameters": [],
+      "kind": "function"
+    },
+    {
+      "label": "Pause",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Pauses the sound.",
+      "parameters": [],
+      "kind": "function"
+    },
+    {
+      "label": "Unpause",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Unpauses the sound.",
+      "parameters": [],
+      "kind": "function"
+    }
+  ],
+  "staticFields": [],
+  "staticMethods": [],
+  "constructors": []
+}

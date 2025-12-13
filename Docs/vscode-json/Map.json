@@ -1,0 +1,459 @@
+{
+  "kind": "extension",
+  "name": "Map",
+  "description": "Finding, creating, and destroying map objects.",
+  "extends": [
+    "Object"
+  ],
+  "instanceFields": [],
+  "instanceMethods": [],
+  "staticFields": [],
+  "staticMethods": [
+    {
+      "label": "FindAllMapObjects",
+      "returnType": {
+        "name": "List",
+        "typeArguments": [
+          {
+            "name": "MapObject",
+            "typeArguments": []
+          }
+        ]
+      },
+      "description": "Find all map objects",
+      "parameters": [],
+      "kind": "function"
+    },
+    {
+      "label": "FindMapObjectByName",
+      "returnType": {
+        "name": "MapObject",
+        "typeArguments": []
+      },
+      "description": "Find a map object by name",
+      "parameters": [
+        {
+          "name": "objectName",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "FindMapObjectsByName",
+      "returnType": {
+        "name": "List",
+        "typeArguments": [
+          {
+            "name": "MapObject",
+            "typeArguments": []
+          }
+        ]
+      },
+      "description": "Find all map objects by name",
+      "parameters": [
+        {
+          "name": "objectName",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "FindMapObjectsByRegex",
+      "returnType": {
+        "name": "List",
+        "typeArguments": [
+          {
+            "name": "MapObject",
+            "typeArguments": []
+          }
+        ]
+      },
+      "description": "Find all map objects by regex pattern",
+      "parameters": [
+        {
+          "name": "pattern",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "sorted",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "FindMapObjectByComponent",
+      "returnType": {
+        "name": "MapObject",
+        "typeArguments": []
+      },
+      "description": "Find all map objects by component",
+      "parameters": [
+        {
+          "name": "className",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "FindMapObjectsByComponent",
+      "returnType": {
+        "name": "List",
+        "typeArguments": [
+          {
+            "name": "MapObject",
+            "typeArguments": []
+          }
+        ]
+      },
+      "description": "Find all map objects by component",
+      "parameters": [
+        {
+          "name": "className",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "FindMapObjectByID",
+      "returnType": {
+        "name": "MapObject",
+        "typeArguments": []
+      },
+      "description": "Find a map object by ID",
+      "parameters": [
+        {
+          "name": "id",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "FindMapObjectByTag",
+      "returnType": {
+        "name": "MapObject",
+        "typeArguments": []
+      },
+      "description": "Find a map object by tag",
+      "parameters": [
+        {
+          "name": "tag",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "FindMapObjectsByTag",
+      "returnType": {
+        "name": "List",
+        "typeArguments": [
+          {
+            "name": "MapObject",
+            "typeArguments": []
+          }
+        ]
+      },
+      "description": "Find all map objects by tag",
+      "parameters": [
+        {
+          "name": "tag",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "FindMapObjectsByPlayer",
+      "returnType": {
+        "name": "List",
+        "typeArguments": [
+          {
+            "name": "MapObject",
+            "typeArguments": []
+          }
+        ]
+      },
+      "description": "Find a map objects of Player",
+      "parameters": [
+        {
+          "name": "player",
+          "type": {
+            "name": "Player",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "CreateMapObject",
+      "returnType": {
+        "name": "MapObject",
+        "typeArguments": []
+      },
+      "description": "Create a new map object",
+      "parameters": [
+        {
+          "name": "prefab",
+          "type": {
+            "name": "Prefab",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "position",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": true,
+          "isVariadic": false
+        },
+        {
+          "name": "rotation",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": true,
+          "isVariadic": false
+        },
+        {
+          "name": "scale",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "CreateMapObjectRaw",
+      "returnType": {
+        "name": "MapObject",
+        "typeArguments": []
+      },
+      "description": "Create a new map object",
+      "parameters": [
+        {
+          "name": "prefab",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "PrefabFromMapObject",
+      "returnType": {
+        "name": "Prefab",
+        "typeArguments": []
+      },
+      "description": "Create a new prefab object from the current object",
+      "parameters": [
+        {
+          "name": "mapObject",
+          "type": {
+            "name": "MapObject",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "clearComponents",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "DestroyMapObject",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Destroy a map object",
+      "parameters": [
+        {
+          "name": "mapObject",
+          "type": {
+            "name": "MapObject",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "includeChildren",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "CopyMapObject",
+      "returnType": {
+        "name": "MapObject",
+        "typeArguments": []
+      },
+      "description": "Copy a map object",
+      "parameters": [
+        {
+          "name": "mapObject",
+          "type": {
+            "name": "MapObject",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "includeChildren",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "DestroyMapTargetable",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Destroy a map targetable",
+      "parameters": [
+        {
+          "name": "targetable",
+          "type": {
+            "name": "MapTargetable",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "UpdateNavMesh",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Update the nav mesh",
+      "parameters": [],
+      "kind": "function"
+    },
+    {
+      "label": "UpdateNavMeshAsync",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Update the nav mesh asynchronously",
+      "parameters": [],
+      "kind": "function"
+    }
+  ],
+  "constructors": []
+}

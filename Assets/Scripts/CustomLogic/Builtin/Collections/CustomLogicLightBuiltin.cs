@@ -27,22 +27,22 @@ namespace CustomLogic
             MapLoader.RegisterMapLight(Value, type == LightType.Directional);
         }
 
-        [CLProperty(Static = true, Description = "LightType.Directional")]
+        [CLProperty(Description = "LightType.Directional")]
         public static int LightTypeDirectional => (int)LightType.Directional;
 
-        [CLProperty(Static = true, Description = "LightType.Point")]
+        [CLProperty(Description = "LightType.Point")]
         public static int LightTypePoint => (int)LightType.Point;
 
-        [CLProperty(Static = true, Description = "LightType.Point")]
+        [CLProperty(Description = "LightType.Point")]
         public static int LightTypeSpot => (int)LightType.Spot;
 
-        [CLProperty(Static = true, Description = "LightShadows.None")]
+        [CLProperty(Description = "LightShadows.None")]
         public static int ShadowTypeNone => (int)LightShadows.None;
 
-        [CLProperty(Static = true, Description = "LightShadows.Hard")]
+        [CLProperty(Description = "LightShadows.Hard")]
         public static int ShadowTypeHard => (int)LightShadows.Hard;
 
-        [CLProperty(Static = true, Description = "LightShadows.Soft")]
+        [CLProperty(Description = "LightShadows.Soft")]
         public static int ShadowTypeSoft => (int)LightShadows.Soft;
 
         [CLProperty(Description = "The type of the light.")]
