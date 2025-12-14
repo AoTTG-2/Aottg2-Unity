@@ -590,5 +590,292 @@ class Main
             var fullResult = offlineEvaluator.EvaluateMethod(mainInstance, "TestFullComponent");
             Assert.AreEqual(2, fullResult, "FullComponent should return 2");
         }
+
+        [Test]
+        public void TestBaseLogicConvertDoesNotInterfereWithModeLogic()
+        {
+            // Test that BaseLogic defining a class called Convert does not interfere
+            // with ModeLogic's ability to use the builtin Convert class
+            string baseLogic = @"
+# BaseLogic defines its own Convert class
+class Convert
+{
+    _value = 0;
+    
+    function Init(val)
+    {
+        self._value = val;
+    }
+    
+    function GetValue()
+    {
+        return self._value;
+    }
+}
+
+extension BaseUtils
+{
+    function CreateConverter(val)
+    {
+        # BaseLogic can instantiate its own Convert class
+        converter = Convert(val);
+        return converter.GetValue();
+    }
+}";
+
+            string modeLogic = @"
+class Main
+{
+    function Init()
+    {
+    }
+    
+    function TestBuiltinConvert()
+    {
+        # ModeLogic should still be able to use builtin Convert
+        intValue = Convert.ToInt(5.7);
+        floatValue = Convert.ToFloat(""3.14"");
+        stringValue = Convert.ToString(42);
+        boolValue = Convert.ToBool(1);
+        
+        # Store results
+        result = List();
+        result.Add(intValue);
+        result.Add(floatValue);
+        result.Add(stringValue);
+        result.Add(boolValue);
+        return result;
+    }
+    
+    function TestBaseLogicConverter()
+    {
+        # ModeLogic can also call BaseLogic's CreateConverter
+        # which uses BaseLogic's Convert class
+        value = BaseUtils.CreateConverter(100);
+        return value;
+    }
+}";
+
+            var compiler = new CustomLogicCompiler();
+            compiler.AddSourceFile(new CustomLogicSourceFile("BaseLogic.cl", baseLogic, CustomLogicSourceType.BaseLogic));
+            compiler.AddSourceFile(new CustomLogicSourceFile("Mode.cl", modeLogic, CustomLogicSourceType.ModeLogic));
+            
+            var offlineEvaluator = new OfflineCustomLogicEvaluator(compiler);
+            var mainInstance = offlineEvaluator.GetMainInstance();
+            
+            // Test that ModeLogic can use builtin Convert
+            var builtinResult = offlineEvaluator.EvaluateMethod(mainInstance, "TestBuiltinConvert");
+            Assert.IsNotNull(builtinResult, "TestBuiltinConvert should return a result");
+            Assert.IsInstanceOf<CustomLogicListBuiltin>(builtinResult, "Result should be a List");
+            
+            var builtinList = (CustomLogicListBuiltin)builtinResult;
+            Assert.AreEqual(4, builtinList.List.Count, "Result list should have 4 elements");
+            
+            // Verify builtin Convert methods work correctly in ModeLogic
+            Assert.AreEqual(5, builtinList.List[0], "Convert.ToInt(5.7) should return 5");
+            Assert.AreEqual(3.14f, builtinList.List[1], "Convert.ToFloat('3.14') should return 3.14");
+            Assert.AreEqual("42", builtinList.List[2], "Convert.ToString(42) should return '42'");
+            Assert.AreEqual(true, builtinList.List[3], "Convert.ToBool(1) should return true");
+            
+            // Test that BaseLogic's Convert class works in BaseLogic
+            var baseLogicResult = offlineEvaluator.EvaluateMethod(mainInstance, "TestBaseLogicConverter");
+            Assert.AreEqual(100, baseLogicResult, "BaseLogic's Convert class should work correctly and return 100");
+            
+            // Verify no errors were captured
+            Assert.IsFalse(offlineEvaluator.HasErrors(), "Should not have any errors");
+        }
+
+        [Test]
+        public void TestModeLogicCanCallBaseLogic()
+        {
+            // Test that ModeLogic can call various types of BaseLogic functionality
+            string baseLogic = @"
+# BaseLogic provides utility functions and classes
+extension MathHelper
+{
+    function Add(a, b)
+    {
+        return a + b;
+    }
+    
+    function Multiply(a, b)
+    {
+        return a * b;
+    }
+    
+    function Power(base, exponent)
+    {
+        result = 1;
+        for (i in Range(exponent))
+        {
+            result = result * base;
+        }
+        return result;
+    }
+}
+
+class Calculator
+{
+    _value = 0;
+    
+    function Init(initialValue)
+    {
+        self._value = initialValue;
+    }
+    
+    function Add(amount)
+    {
+        self._value = self._value + amount;
+        return self;
+    }
+    
+    function Multiply(factor)
+    {
+        self._value = self._value * factor;
+        return self;
+    }
+    
+    function GetValue()
+    {
+        return self._value;
+    }
+}
+
+extension StringHelper
+{
+    function Repeat(text, count)
+    {
+        result = """";
+        for (i in Range(count))
+        {
+            result = result + text;
+        }
+        return result;
+    }
+    
+    function Join(items, separator)
+    {
+        result = """";
+        first = true;
+        for (item in items)
+        {
+            if (!first)
+            {
+                result = result + separator;
+            }
+            result = result + Convert.ToString(item);
+            first = false;
+        }
+        return result;
+    }
+}";
+            string modeLogic = @"
+class Main
+{
+    function Init()
+    {
+    }
+    
+    function TestBasicMath()
+    {
+        # Call BaseLogic extension methods
+        sum = MathHelper.Add(5, 3);
+        product = MathHelper.Multiply(4, 7);
+        squared = MathHelper.Power(3, 2);
+        
+        result = List();
+        result.Add(sum);
+        result.Add(product);
+        result.Add(squared);
+        return result;
+    }
+    
+    function TestCalculatorClass()
+    {
+        # Create and use BaseLogic class
+        calc = Calculator(10);
+        calc.Add(5).Multiply(2);
+        return calc.GetValue();
+    }
+    
+    function TestStringOperations()
+    {
+        # Use BaseLogic string utilities
+        repeated = StringHelper.Repeat(""X"", 3);
+        
+        items = List();
+        items.Add(1);
+        items.Add(2);
+        items.Add(3);
+        joined = StringHelper.Join(items, "","");
+        
+        result = List();
+        result.Add(repeated);
+        result.Add(joined);
+        return result;
+    }
+    
+    function TestComplexWorkflow()
+    {
+        # Combine multiple BaseLogic features
+        calc1 = Calculator(5);
+        calc1.Add(MathHelper.Add(2, 3)).Multiply(2);
+        
+        calc2 = Calculator(10);
+        calc2.Multiply(MathHelper.Power(2, 3));
+        
+        values = List();
+        values.Add(calc1.GetValue());
+        values.Add(calc2.GetValue());
+        
+        summary = StringHelper.Join(values, "" + "");
+        
+        result = List();
+        result.Add(calc1.GetValue());
+        result.Add(calc2.GetValue());
+        result.Add(summary);
+        return result;
+    }
+}";
+            var compiler = new CustomLogicCompiler();
+            compiler.AddSourceFile(new CustomLogicSourceFile("BaseLogic.cl", baseLogic, CustomLogicSourceType.BaseLogic));
+            compiler.AddSourceFile(new CustomLogicSourceFile("Mode.cl", modeLogic, CustomLogicSourceType.ModeLogic));
+            
+            var offlineEvaluator = new OfflineCustomLogicEvaluator(compiler);
+            var mainInstance = offlineEvaluator.GetMainInstance();
+            
+            // Test basic math operations
+            var mathResult = offlineEvaluator.EvaluateMethod(mainInstance, "TestBasicMath");
+            Assert.IsNotNull(mathResult, "TestBasicMath should return a result");
+            var mathList = (CustomLogicListBuiltin)mathResult;
+            Assert.AreEqual(3, mathList.List.Count, "Math result should have 3 elements");
+            Assert.AreEqual(8, mathList.List[0], "5 + 3 = 8");
+            Assert.AreEqual(28, mathList.List[1], "4 * 7 = 28");
+            Assert.AreEqual(9, mathList.List[2], "3^2 = 9");
+            
+            // Test Calculator class
+            var calcResult = offlineEvaluator.EvaluateMethod(mainInstance, "TestCalculatorClass");
+            Assert.AreEqual(30, calcResult, "(10 + 5) * 2 = 30");
+            
+            // Test string operations
+            var stringResult = offlineEvaluator.EvaluateMethod(mainInstance, "TestStringOperations");
+            Assert.IsNotNull(stringResult, "TestStringOperations should return a result");
+            var stringList = (CustomLogicListBuiltin)stringResult;
+            Assert.AreEqual(2, stringList.List.Count, "String result should have 2 elements");
+            Assert.AreEqual("XXX", stringList.List[0], "Repeat 'X' 3 times = 'XXX'");
+            Assert.AreEqual("1,2,3", stringList.List[1], "Join [1,2,3] with ',' = '1,2,3'");
+            
+            // Test complex workflow
+            var workflowResult = offlineEvaluator.EvaluateMethod(mainInstance, "TestComplexWorkflow");
+            Assert.IsNotNull(workflowResult, "TestComplexWorkflow should return a result");
+            var workflowList = (CustomLogicListBuiltin)workflowResult;
+            Assert.AreEqual(3, workflowList.List.Count, "Workflow result should have 3 elements");
+            Assert.AreEqual(20, workflowList.List[0], "(5 + (2+3)) * 2 = 20");
+            Assert.AreEqual(80, workflowList.List[1], "10 * 2^3 = 80");
+            Assert.AreEqual("20 + 80", workflowList.List[2], "Joined summary should be '20 + 80'");
+            
+            // Verify no errors were captured
+            Assert.IsFalse(offlineEvaluator.HasErrors(), "Should not have any errors");
+        }
     }
 }

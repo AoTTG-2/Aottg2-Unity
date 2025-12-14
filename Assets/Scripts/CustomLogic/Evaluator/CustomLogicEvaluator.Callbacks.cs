@@ -17,8 +17,6 @@ namespace CustomLogic
 {
     internal partial class CustomLogicEvaluator
     {
-        #region Callbacks
-
         public void Start(Dictionary<string, BaseSetting> modeSettings)
         {
             try
@@ -326,8 +324,5 @@ namespace CustomLogic
                 }
             }
         }
-
-        #endregion
-
     }
 }

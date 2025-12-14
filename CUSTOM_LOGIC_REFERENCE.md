@@ -1791,3 +1791,241 @@ Custom Logic is a powerful, Python/CSharp-like scripting system that allows user
 
 The system is fully integrated with Unity and provides a safe, sandboxed environment for user scripts while maintaining the flexibility needed for creative game modes.
 
+## Code Flow
+```mermaid
+graph TB
+    subgraph "Source Files & File Types"
+        SF1["BaseLogic.cl<br/>(CustomLogicSourceType.BaseLogic)<br/>- Core utilities, protected from overrides"]
+        SF2["Addon.cl<br/>(CustomLogicSourceType.Addon)<br/>- Community libraries, reusable"]
+        SF3["MapLogic.cl<br/>(CustomLogicSourceType.MapLogic)<br/>- Map-specific components"]
+        SF4["ModeLogic.cl<br/>(CustomLogicSourceType.ModeLogic)<br/>- Game mode main logic"]
+    end
+
+    subgraph "Compilation Pipeline"
+        CMP["CustomLogicCompiler"]
+        SF1 -->|AddSourceFile| CMP
+        SF2 -->|AddSourceFile| CMP
+        SF3 -->|AddSourceFile| CMP
+        SF4 -->|AddSourceFile| CMP
+        
+        CMP -->|Compile| COMB["Combined Source String<br/>- Ordered: BaseLogic→Addon→MapLogic→ModeLogic<br/>- Line tracking per file in _lineToFile"]
+        
+        COMB -->|Input| LEX["CustomLogicLexer<br/>- Tokenizes combined source<br/>- Produces CustomLogicToken list"]
+        
+        LEX -->|GetTokens| TOK["List&lt;CustomLogicToken&gt;<br/>- Keywords, symbols, literals, identifiers"]
+        
+        TOK -->|Input| PAR["CustomLogicParser<br/>- Recursive descent parsing<br/>- Tracks namespace per class"]
+        
+        PAR -->|GetStartAst| AST["CustomLogicStartAst<br/>- Classes: Dict&lt;string, ClassDefinitionAst&gt;<br/>- ClassNamespaces: Dict&lt;string, SourceType&gt;<br/>- Tracks which file defines each class"]
+    end
+
+    subgraph "Online Evaluator Flow"
+        direction TB
+        
+        START["CustomLogicEvaluator.Start(modeSettings)"]
+        START --> INIT["Init()"]
+        
+        subgraph "Init() - Phase 1: Create C# Builtin Statics"
+            INIT --> BUILTIN_LOOP["foreach staticType in<br/>CustomLogicBuiltinTypes.StaticTypeNames"]
+            BUILTIN_LOOP --> CREATE_B["CreateClassInstance(staticType, EmptyArgs)<br/>- Math, Convert, String, Random<br/>- Game, Time, Physics, UI<br/>- List, Dict, Set, Vector3, etc."]
+            CREATE_B --> STORE_B["_staticClasses[staticType] = instance<br/>✓ C# builtins always accessible"]
+        end
+        
+        subgraph "Init() - Phase 2: Create User Classes"
+            STORE_B --> USER_LOOP["foreach className in _start.Classes.Keys"]
+            
+            USER_LOOP --> CHECK_MAIN{"className == 'Main'?"}
+            CHECK_MAIN -->|Yes| CREATE_MAIN["CreateStaticClass('Main')<br/>- From user code (ModeLogic)<br/>- Entry point for game logic"]
+            CREATE_MAIN --> STORE_MAIN["_staticClasses['Main'] = instance"]
+            
+            CHECK_MAIN -->|No| CHECK_EXT{"Token.Value ==<br/>Extension?"}
+            
+            CHECK_EXT -->|Yes| GET_NS["Get namespace:<br/>classNamespace = _start.ClassNamespaces[className]<br/>- BaseLogic, Addon, MapLogic, or ModeLogic"]
+            
+            GET_NS --> CREATE_EXT["CreateClassInstance(className, EmptyArgs,<br/>init: false, classNamespace)<br/>instance.Namespace = classNamespace"]
+            
+            CREATE_EXT --> CHECK_CONFLICT{"CustomLogicBuiltinTypes<br/>.StaticTypeNames<br/>.Contains(className)?"}
+            
+            CHECK_CONFLICT -->|Yes - CONFLICT!| NS_STORE["Store in _namespacedStaticClasses:<br/>_namespacedStaticClasses[className][namespace] = instance<br/>⚠️ DO NOT add to _staticClasses<br/>✓ Preserves C# builtin for other namespaces"]
+            
+            CHECK_CONFLICT -->|No - Safe| DEFAULT_STORE["_staticClasses[className] = instance<br/>✓ No conflict, globally accessible"]
+            
+            CHECK_EXT -->|No - Component/Cutscene| SKIP["Skip (handled later)"]
+        end
+        
+        subgraph "Init() - Phase 3: Run Assignments"
+            STORE_MAIN --> RUN_ASSIGN["Run Assignments Phase"]
+            DEFAULT_STORE --> RUN_ASSIGN
+            NS_STORE --> RUN_ASSIGN
+            
+            RUN_ASSIGN --> ASSIGN_STATIC["foreach instance in _staticClasses.Values:<br/>if (instance is not BuiltinClassInstance)<br/>    RunAssignmentsClassInstance(instance)"]
+            
+            RUN_ASSIGN --> ASSIGN_NS["foreach namespaceDict in _namespacedStaticClasses.Values:<br/>    foreach instance in namespaceDict.Values:<br/>        if (instance is not BuiltinClassInstance)<br/>            RunAssignmentsClassInstance(instance)"]
+            
+            ASSIGN_STATIC --> ASSIGN_DONE["Assignment Complete:<br/>- Field defaults set<br/>- Variables dictionary populated"]
+            ASSIGN_NS --> ASSIGN_DONE
+        end
+        
+        subgraph "Init() - Phase 4: Load Map Components"
+            ASSIGN_DONE --> MAP_LOOP["foreach id in MapLoader.IdToMapObject.Keys"]
+            MAP_LOOP --> LOAD_COMP["LoadMapObjectComponents(obj)<br/>- Find component classes<br/>- Instantiate and attach to MapObjects"]
+        end
+        
+        LOAD_COMP --> INIT_DONE["Init() Complete"]
+        
+        subgraph "Start() - Post-Init Phase"
+            INIT_DONE --> SET_TIME["CurrentTime = 0f"]
+            SET_TIME --> GET_MAIN["main = _staticClasses['Main']"]
+            
+            GET_MAIN --> SET_SETTINGS["foreach variableName in modeSettings.Keys:<br/>main.Variables[variableName] = setting.Value<br/>- FloatSetting, StringSetting, IntSetting, BoolSetting"]
+            
+            SET_SETTINGS --> CALL_INIT["foreach instance in _staticClasses.Values:<br/>    EvaluateMethod(instance, 'Init')<br/>    instance.Inited = true"]
+            
+            CALL_INIT --> EVAL_INIT_CB["EvaluateMethodForCallbacks('Init')<br/>- Calls Init on all callbacks"]
+            
+            EVAL_INIT_CB --> ADD_CB["AddCallbacks(_staticClasses['Main'])<br/>- Register Main's methods as callbacks"]
+            
+            ADD_CB --> GAME_START["EvaluateMethodForCallbacks('OnGameStart')<br/>- Trigger game start logic"]
+            
+            GAME_START --> START_CORO["StartCoroutine(OnSecond())<br/>- Begin 1-second timer loop"]
+        end
+    end
+
+    subgraph "Runtime Callbacks (Online)"
+        START_CORO -.->|Every 1s| ON_SEC["OnSecond()<br/>EvaluateMethodForCallbacks('OnSecond')"]
+        
+        UNITY_TICK["Unity FixedUpdate"] -.->|50/sec| ON_TICK["OnTick()<br/>EvaluateMethodForCallbacks('OnTick')<br/>CurrentTime += Time.fixedDeltaTime"]
+        
+        UNITY_FRAME["Unity Update"] -.->|Variable| ON_FRAME["OnFrame()<br/>EvaluateMethodForCallbacks('OnFrame')"]
+        
+        UNITY_LATE["Unity LateUpdate"] -.->|Variable| ON_LATE["OnLateFrame()<br/>EvaluateMethodForCallbacks('OnLateFrame')"]
+        
+        GAME_EVENT["Game Events"] -.-> CB_CHAR["OnCharacterSpawn(character)<br/>OnCharacterDie(victim, killer, killerName)<br/>OnCharacterDamaged(...)"]
+        
+        GAME_EVENT -.-> CB_PLAYER["OnPlayerJoin(player)<br/>OnPlayerLeave(player)<br/>OnPlayerSpawn(player, character)"]
+        
+        GAME_EVENT -.-> CB_OTHER["OnButtonClick(name)<br/>OnChatInput(message)<br/>OnNetworkMessage(sender, message, timestamp)"]
+    end
+
+    subgraph "Offline Evaluator Flow"
+        direction TB
+        
+        OFF_CTOR["OfflineCustomLogicEvaluator<br/>Constructor(script or compiler)"]
+        
+        OFF_CTOR --> INIT_SYMS["InitializeSymbols()<br/>if (CustomLogicSymbols.Symbols.Count == 0)<br/>    CustomLogicSymbols.Init()<br/>- Load language symbols/keywords"]
+        
+        INIT_SYMS --> OFF_COMPILE_START["CompileAndInitialize()"]
+        
+        subgraph "Offline Compilation"
+            OFF_COMPILE_START --> OFF_COMBINE["combinedSource = _compiler.Compile()<br/>- Combines all source files"]
+            
+            OFF_COMBINE --> OFF_LEX["CustomLogicLexer(combinedSource, _compiler)<br/>tokens = lexer.GetTokens()"]
+            
+            OFF_LEX --> OFF_PARSE["CustomLogicParser(tokens, _compiler)<br/>startAst = parser.GetStartAst()"]
+            
+            OFF_PARSE --> OFF_CREATE_EVAL["_evaluator = new CustomLogicEvaluator(startAst, _compiler)"]
+            
+            OFF_CREATE_EVAL --> OFF_CAPTURE["_evaluator.CaptureErrors = true<br/>- Enable error tracking for testing"]
+            
+            OFF_CAPTURE --> OFF_GLOBAL["CustomLogicManager.Evaluator = _evaluator<br/>- Required for builtin callbacks (List.Filter, etc.)"]
+        end
+        
+        OFF_GLOBAL --> OFF_INIT_STATIC["InitializeStaticClasses()"]
+        
+        subgraph "Offline InitializeStaticClasses()"
+            OFF_INIT_STATIC --> OFF_GET_DICTS["Get references:<br/>- staticClasses = _evaluator.GetStaticClasses()<br/>- namespacedStaticClasses = _evaluator.GetNamespacedStaticClasses()"]
+            
+            OFF_GET_DICTS --> OFF_BUILTIN_LOOP["foreach staticType in<br/>CustomLogicBuiltinTypes.StaticTypeNames:<br/>    if (OfflineCompatibleBuiltins.Contains(staticType))"]
+            
+            OFF_BUILTIN_LOOP --> OFF_OFFLINE_COMPAT["OfflineCompatibleBuiltins:<br/>- Math, Convert, Json, Random, String<br/>- List, Set, Dict, Range<br/>- Vector2, Vector3, Quaternion, Color<br/>⚠️ Excludes: Game, UI, Camera, Map, etc."]
+            
+            OFF_OFFLINE_COMPAT --> OFF_CREATE_B["CreateClassInstance(staticType, EmptyArgs)<br/>staticClasses[staticType] = instance"]
+            
+            OFF_CREATE_B --> OFF_USER_LOOP["foreach className in startAst.Classes.Keys"]
+            
+            OFF_USER_LOOP --> OFF_CHECK_MAIN{"className == 'Main'?"}
+            
+            OFF_CHECK_MAIN -->|Yes| OFF_CREATE_MAIN["CreateStaticClassInternal('Main', staticClasses)"]
+            
+            OFF_CHECK_MAIN -->|No| OFF_CHECK_EXT{"Token.Value ==<br/>Extension?"}
+            
+            OFF_CHECK_EXT -->|Yes| OFF_GET_NS["Get namespace from startAst.ClassNamespaces"]
+            
+            OFF_GET_NS --> OFF_CREATE_EXT["_evaluator.CreateClassInstance(className, EmptyArgs,<br/>init: false, classNamespace)<br/>instance.Namespace = classNamespace"]
+            
+            OFF_CREATE_EXT --> OFF_CHECK_CONFLICT{"CustomLogicBuiltinTypes<br/>.StaticTypeNames<br/>.Contains(className)?"}
+            
+            OFF_CHECK_CONFLICT -->|Yes| OFF_NS_STORE["namespacedStaticClasses[className][namespace] = instance<br/>⚠️ DO NOT add to staticClasses"]
+            
+            OFF_CHECK_CONFLICT -->|No| OFF_DEFAULT["staticClasses[className] = instance"]
+            
+            OFF_CREATE_MAIN --> OFF_RUN_ASSIGN["Run Assignments Phase"]
+            OFF_DEFAULT --> OFF_RUN_ASSIGN
+            OFF_NS_STORE --> OFF_RUN_ASSIGN
+            
+            OFF_RUN_ASSIGN --> OFF_ASSIGN_S["foreach instance in staticClasses.Values:<br/>    if (instance is not BuiltinClassInstance)<br/>        RunAssignmentsClassInstance(instance)"]
+            
+            OFF_RUN_ASSIGN --> OFF_ASSIGN_NS["foreach namespaceDict in namespacedStaticClasses.Values:<br/>    foreach instance in namespaceDict.Values:<br/>        if (instance is not BuiltinClassInstance)<br/>            RunAssignmentsClassInstance(instance)"]
+        end
+        
+        OFF_ASSIGN_S --> OFF_CALL_INIT["CallInitOnStaticClasses()"]
+        OFF_ASSIGN_NS --> OFF_CALL_INIT
+        
+        subgraph "Offline CallInitOnStaticClasses()"
+            OFF_CALL_INIT --> OFF_INIT_LOOP["foreach instance in staticClasses.Values:<br/>    _evaluator.EvaluateMethod(instance, 'Init')<br/>    instance.Inited = true"]
+        end
+        
+        OFF_INIT_LOOP --> OFF_GET_MAIN["if (HasMainClass())<br/>    _mainInstance = GetStaticClass('Main')"]
+        
+        OFF_GET_MAIN --> OFF_READY["Offline Evaluator Ready for Testing"]
+    end
+
+    subgraph "Offline Testing Usage"
+        OFF_READY --> TEST_CALL["Test Methods:<br/>- EvaluateMainMethod(methodName, params)<br/>- GetMainVariable(variableName)<br/>- SetMainVariable(variableName, value)<br/>- GetCapturedErrors()<br/>- HasErrors()"]
+    end
+
+    subgraph "Namespace Resolution (Both Evaluators)"
+        RESOLVE["Static Class Reference Resolution<br/>(e.g., Convert.ToInt())"]
+        
+        RESOLVE --> CHECK_CALLER["Check caller's namespace:<br/>classInstance.Namespace"]
+        
+        CHECK_CALLER --> TRY_NS{"_namespacedStaticClasses<br/>.ContainsKey(className)?"}
+        
+        TRY_NS -->|Yes| CHECK_NS_MATCH{"classInstance.Namespace.HasValue<br/>AND match found?"}
+        
+        CHECK_NS_MATCH -->|Yes| USE_NS["Return namespacedStaticClasses[className][namespace]<br/>✓ Use namespace-specific override"]
+        
+        CHECK_NS_MATCH -->|No| TRY_DEFAULT{"_staticClasses<br/>.ContainsKey(className)?"}
+        
+        TRY_NS -->|No| TRY_DEFAULT
+        
+        TRY_DEFAULT -->|Yes| USE_DEFAULT["Return _staticClasses[className]<br/>✓ Use C# builtin or default extension"]
+        
+        TRY_DEFAULT -->|No| NOT_FOUND["Class not found error"]
+    end
+
+    subgraph "Example: Namespace Isolation"
+        EX_BL["BaseLogic.cl defines:<br/>extension BaseUtil {<br/>    function UseConvert() {<br/>        return Convert.ToInt(5.7);<br/>    }<br/>}"]
+        
+        EX_MODE["ModeLogic.cl defines:<br/>extension Convert {<br/>    function ToInt(value) {<br/>        return 100 + value;<br/>    }<br/>}"]
+        
+        EX_BL -->|Namespace: BaseLogic| BL_RESOLVE["BaseUtil.UseConvert() calls Convert.ToInt(5.7)"]
+        EX_MODE -->|Namespace: ModeLogic| MODE_RESOLVE["Main calls Convert.ToInt(5.7)"]
+        
+        BL_RESOLVE --> BL_RESULT["Resolution:<br/>1. Check _namespacedStaticClasses['Convert'][BaseLogic] → Not found<br/>2. Check _staticClasses['Convert'] → C# builtin<br/>✓ Returns: 5 (C# builtin)"]
+        
+        MODE_RESOLVE --> MODE_RESULT["Resolution:<br/>1. Check _namespacedStaticClasses['Convert'][ModeLogic] → Found!<br/>✓ Returns: 105.7 (user override)"]
+    end
+
+    AST --> START
+    AST --> OFF_CTOR
+
+    style START fill:#e1f5ff
+    style OFF_CTOR fill:#fff4e1
+    style BUILTIN_LOOP fill:#e8f5e9
+    style OFF_BUILTIN_LOOP fill:#e8f5e9
+    style NS_STORE fill:#ffebee
+    style OFF_NS_STORE fill:#ffebee
+    style USE_NS fill:#fff9c4
+    style USE_DEFAULT fill:#c8e6c9
+```
