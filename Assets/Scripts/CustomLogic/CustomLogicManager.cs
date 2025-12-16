@@ -42,6 +42,8 @@ namespace CustomLogic
         {
             RoomData.Clear();
             PersistentData.Clear();
+            CameraLocked = false;
+            CursorVisible = false;
         }
 
         public static void Init()
@@ -85,6 +87,8 @@ namespace CustomLogic
             CameraFOV = 0f;
             KeybindDefaultDisabled.Clear();
             KeybindHold.Clear();
+            CameraLocked = false;
+            CursorVisible = false;
         }
 
         public static void ToggleCutscene(bool cutscene)
@@ -256,8 +260,14 @@ namespace CustomLogic
             {
                 string modeName = settings.GameMode.Value;
                 if (modeName == BuiltinLevels.UseMapLogic)
+                {
+                    // No mode logic if using MapLogic -> note after rewrite but before refactor we still loaded modelogic but maplogic came after.
                     modeName = "MapLogic";
-                Compiler.AddSourceFile(new CustomLogicSourceFile($"{modeName}.cl", Logic, CustomLogicSourceType.ModeLogic));
+                }
+                else
+                {
+                    Compiler.AddSourceFile(new CustomLogicSourceFile($"{modeName}.cl", Logic, CustomLogicSourceType.ModeLogic));
+                }
             }
             
             // Compile all sources

@@ -272,6 +272,7 @@ namespace CustomLogic
                 }
             }
             
+            // TODO: Validation?
             foreach (var key in _staticClasses.Keys)
             {
                 var instance = _staticClasses[key];
