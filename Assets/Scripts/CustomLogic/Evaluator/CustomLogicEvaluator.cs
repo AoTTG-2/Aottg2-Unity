@@ -556,23 +556,24 @@ namespace CustomLogic
                 else
                 {
                     // TODO: Add CustomLogic settings panel and add this as an option.
-                    //// Method not found - this is an error condition
-                    //string errorMessage = $"Method {methodName} not found in class {classInstance.ClassName}";
-                    //if (CaptureErrors)
-                    //{
-                    //    CapturedErrors.Add(new CustomLogicError(
-                    //        errorMessage,
-                    //        classInstance.ClassName,
-                    //        methodName,
-                    //        0,
-                    //        "",
-                    //        classInstance.Namespace
-                    //    ));
-                    //}
-                    //else
-                    //{
-                    //    LogCustomLogicError("Custom logic runtime error: " + errorMessage, true);
-                    //}
+                    // Method not found - this is an error condition
+                    string errorMessage = $"Method {methodName} not found in class {classInstance.ClassName}";
+                    if (CaptureErrors)
+                    {
+                        
+                        CapturedErrors.Add(new CustomLogicError(
+                            errorMessage,
+                            classInstance.ClassName,
+                            methodName,
+                            0,
+                            "",
+                            classInstance.Namespace
+                        ));
+                    }
+                    else
+                    {
+                        LogCustomLogicError("Custom logic runtime error: " + errorMessage, true);
+                    }
                     return null;
                 }
 
