@@ -6,7 +6,7 @@
     {
       "label": "Owner",
       "type": {
-        "name": "BuiltinClassInstance",
+        "name": "Object",
         "typeArguments": []
       },
       "description": "The MapObject this rigidbody is attached to.",
