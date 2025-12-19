@@ -62,7 +62,7 @@ namespace CustomLogic
                 Dictionary<string, BaseSetting> settings = new Dictionary<string, BaseSetting>();
                 foreach (string variableName in instance.Variables.Keys)
                 {
-                    if (!variableName.StartsWith("_") && variableName != "Type")
+                    if (!variableName.StartsWith("_") && instance.ShowVariableInInspector(variableName))
                     {
                         object value = instance.Variables[variableName];
                         if (value is float)
@@ -99,7 +99,7 @@ namespace CustomLogic
                 }
                 foreach (string variableName in instance.Variables.Keys)
                 {
-                    if (!variableName.StartsWith("_") && variableName != "Type")
+                    if (!variableName.StartsWith("_") && instance.ShowVariableInInspector(variableName))
                     {
                         object value = instance.Variables[variableName];
                         if (parameterDict.ContainsKey(variableName))
