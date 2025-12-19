@@ -151,6 +151,7 @@ namespace CustomLogic
                 string variableName = ((CustomLogicVariableExpressionAst)assignment.Left).Name;
                 object value = EvaluateExpression(classInstance, new Dictionary<string, object>(), assignment.Right);
                 classInstance.Variables[variableName] = value;
+                if (variableName == "Type") classInstance.SetContainsTypeOverride(true);
             }
 
             foreach (var (name, methodAst) in classAst.Methods)
