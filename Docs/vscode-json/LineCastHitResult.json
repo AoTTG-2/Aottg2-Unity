@@ -59,7 +59,7 @@
     {
       "label": "Collider",
       "type": {
-        "name": "BuiltinClassInstance",
+        "name": "Object",
         "typeArguments": []
       },
       "description": "The collider that was hit",

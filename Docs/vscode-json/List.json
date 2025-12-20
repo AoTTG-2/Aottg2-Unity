@@ -34,7 +34,7 @@
     {
       "label": "Get",
       "returnType": {
-        "name": "Object",
+        "name": "T",
         "typeArguments": []
       },
       "description": "Get the element at the specified index",
@@ -73,7 +73,7 @@
         {
           "name": "value",
           "type": {
-            "name": "Object",
+            "name": "T",
             "typeArguments": []
           },
           "description": "",
@@ -94,7 +94,7 @@
         {
           "name": "value",
           "type": {
-            "name": "Object",
+            "name": "T",
             "typeArguments": []
           },
           "description": "",
@@ -125,7 +125,7 @@
         {
           "name": "value",
           "type": {
-            "name": "Object",
+            "name": "T",
             "typeArguments": []
           },
           "description": "",
@@ -167,7 +167,7 @@
         {
           "name": "value",
           "type": {
-            "name": "Object",
+            "name": "T",
             "typeArguments": []
           },
           "description": "",
@@ -188,7 +188,7 @@
         {
           "name": "value",
           "type": {
-            "name": "Object",
+            "name": "T",
             "typeArguments": []
           },
           "description": "",
@@ -302,7 +302,7 @@
         {
           "name": "initialValue",
           "type": {
-            "name": "Object",
+            "name": "T",
             "typeArguments": []
           },
           "description": "",

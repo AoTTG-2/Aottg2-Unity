@@ -65,20 +65,15 @@
     {
       "label": "Get",
       "returnType": {
-        "name": "Object",
-        "typeArguments": [
-          {
-            "name": "V",
-            "typeArguments": []
-          }
-        ]
+        "name": "V",
+        "typeArguments": []
       },
       "description": "Gets a value from the dictionary",
       "parameters": [
         {
           "name": "key",
           "type": {
-            "name": "Object",
+            "name": "K",
             "typeArguments": []
           },
           "description": "The key of the value to get",
@@ -88,7 +83,7 @@
         {
           "name": "defaultValue",
           "type": {
-            "name": "Object",
+            "name": "V",
             "typeArguments": []
           },
           "description": "The value to return if the key is not found",
@@ -109,7 +104,7 @@
         {
           "name": "key",
           "type": {
-            "name": "Object",
+            "name": "K",
             "typeArguments": []
           },
           "description": "The key of the value to set",
@@ -119,7 +114,7 @@
         {
           "name": "value",
           "type": {
-            "name": "Object",
+            "name": "V",
             "typeArguments": []
           },
           "description": "The value to set",
@@ -140,7 +135,7 @@
         {
           "name": "key",
           "type": {
-            "name": "Object",
+            "name": "K",
             "typeArguments": []
           },
           "description": "The key of the value to remove",
@@ -161,7 +156,7 @@
         {
           "name": "key",
           "type": {
-            "name": "Object",
+            "name": "K",
             "typeArguments": []
           },
           "description": "The key to check",

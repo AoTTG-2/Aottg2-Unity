@@ -65,27 +65,27 @@ namespace CustomLogic
             List.Clear();
         }
 
-        [CLMethod(description: "Get the element at the specified index")]
+        [CLMethod(description: "Get the element at the specified index", ReturnTypeArguments = new[] { "T" })]
         public object Get(int index)
         {
             if (index < 0) index += List.Count;
             return List[index];
         }
 
-        [CLMethod(description: "Set the element at the specified index")]
+        [CLMethod(description: "Set the element at the specified index", ParameterTypeArguments = new[] { null, "T" })]
         public void Set(int index, object value)
         {
             if (index < 0) index += List.Count;
             List[index] = value;
         }
 
-        [CLMethod(description: "Add an element to the end of the list")]
+        [CLMethod(description: "Add an element to the end of the list", ParameterTypeArguments = new[] { "T" })]
         public void Add(object value)
         {
             List.Add(value);
         }
 
-        [CLMethod(description: "Insert an element at the specified index")]
+        [CLMethod(description: "Insert an element at the specified index", ParameterTypeArguments = new[] { null, "T" })]
         public void InsertAt(int index, object value)
         {
             if (index < 0) index += List.Count;
@@ -99,13 +99,13 @@ namespace CustomLogic
             List.RemoveAt(index);
         }
 
-        [CLMethod(description: "Remove the first occurrence of the specified element")]
+        [CLMethod(description: "Remove the first occurrence of the specified element", ParameterTypeArguments = new[] { "T" })]
         public void Remove(object value)
         {
             List.Remove(value);
         }
 
-        [CLMethod(description: "Check if the list contains the specified element")]
+        [CLMethod(description: "Check if the list contains the specified element", ParameterTypeArguments = new[] { "T" })]
         public bool Contains(object value)
         {
             return List.Any(e => CustomLogicManager.Evaluator.CheckEquals(e, value));
@@ -141,7 +141,7 @@ namespace CustomLogic
             return newList;
         }
 
-        [CLMethod(description: "Reduce the list using a custom method, expects a method with the signature object method(acc, element)")]
+        [CLMethod(description: "Reduce the list using a custom method, expects a method with the signature object method(acc, element)", ParameterTypeArguments = new[] { null, "T" })]
         public object Reduce(UserMethod method, object initialValue)
         {
             return List.Aggregate(initialValue, (acc, e) => CustomLogicManager.Evaluator.EvaluateMethod(method, new object[] { acc, e }));

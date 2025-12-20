@@ -42,7 +42,7 @@
         {
           "name": "value",
           "type": {
-            "name": "Object",
+            "name": "T",
             "typeArguments": []
           },
           "description": "",
@@ -63,7 +63,7 @@
         {
           "name": "value",
           "type": {
-            "name": "Object",
+            "name": "T",
             "typeArguments": []
           },
           "description": "",
@@ -84,7 +84,7 @@
         {
           "name": "value",
           "type": {
-            "name": "Object",
+            "name": "T",
             "typeArguments": []
           },
           "description": "",
@@ -106,7 +106,12 @@
           "name": "set",
           "type": {
             "name": "Set",
-            "typeArguments": []
+            "typeArguments": [
+              {
+                "name": "T",
+                "typeArguments": []
+              }
+            ]
           },
           "description": "",
           "isOptional": false,
@@ -127,7 +132,12 @@
           "name": "set",
           "type": {
             "name": "Set",
-            "typeArguments": []
+            "typeArguments": [
+              {
+                "name": "T",
+                "typeArguments": []
+              }
+            ]
           },
           "description": "",
           "isOptional": false,
@@ -148,7 +158,12 @@
           "name": "set",
           "type": {
             "name": "Set",
-            "typeArguments": []
+            "typeArguments": [
+              {
+                "name": "T",
+                "typeArguments": []
+              }
+            ]
           },
           "description": "",
           "isOptional": false,
@@ -169,7 +184,12 @@
           "name": "set",
           "type": {
             "name": "Set",
-            "typeArguments": []
+            "typeArguments": [
+              {
+                "name": "T",
+                "typeArguments": []
+              }
+            ]
           },
           "description": "",
           "isOptional": false,
@@ -190,7 +210,12 @@
           "name": "set",
           "type": {
             "name": "Set",
-            "typeArguments": []
+            "typeArguments": [
+              {
+                "name": "T",
+                "typeArguments": []
+              }
+            ]
           },
           "description": "",
           "isOptional": false,
@@ -211,7 +236,12 @@
           "name": "set",
           "type": {
             "name": "Set",
-            "typeArguments": []
+            "typeArguments": [
+              {
+                "name": "T",
+                "typeArguments": []
+              }
+            ]
           },
           "description": "",
           "isOptional": false,
@@ -232,7 +262,12 @@
           "name": "set",
           "type": {
             "name": "Set",
-            "typeArguments": []
+            "typeArguments": [
+              {
+                "name": "T",
+                "typeArguments": []
+              }
+            ]
           },
           "description": "",
           "isOptional": false,
@@ -253,7 +288,12 @@
           "name": "set",
           "type": {
             "name": "Set",
-            "typeArguments": []
+            "typeArguments": [
+              {
+                "name": "T",
+                "typeArguments": []
+              }
+            ]
           },
           "description": "",
           "isOptional": false,
@@ -274,7 +314,12 @@
           "name": "set",
           "type": {
             "name": "Set",
-            "typeArguments": []
+            "typeArguments": [
+              {
+                "name": "T",
+                "typeArguments": []
+              }
+            ]
           },
           "description": "",
           "isOptional": false,
