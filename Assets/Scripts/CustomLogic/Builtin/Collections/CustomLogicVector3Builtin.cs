@@ -230,7 +230,7 @@ namespace CustomLogic
         /// <param name="b">Vector3</param>
         /// <returns>Vector3</returns>
         [CLMethod, Obsolete("Use multiply operator instead")]
-        public CustomLogicVector3Builtin Multiply(CustomLogicVector3Builtin a, CustomLogicVector3Builtin b)
+        public static CustomLogicVector3Builtin Multiply(CustomLogicVector3Builtin a, CustomLogicVector3Builtin b)
         {
             return new CustomLogicVector3Builtin(Util.MultiplyVectors(a, b));
         }
@@ -242,7 +242,7 @@ namespace CustomLogic
         /// <param name="b">Vector3</param>
         /// <returns>Vector3</returns>
         [CLMethod, Obsolete("Use divide operator instead")]
-        public CustomLogicVector3Builtin Divide(CustomLogicVector3Builtin a, CustomLogicVector3Builtin b)
+        public static CustomLogicVector3Builtin Divide(CustomLogicVector3Builtin a, CustomLogicVector3Builtin b)
         {
             return new CustomLogicVector3Builtin(Util.DivideVectors(a, b));
         }
@@ -251,7 +251,7 @@ namespace CustomLogic
         /// Gets the relational Vector3 "b" using "a" as a reference. This is equivalent to setting MapObject.Forward to Vector "a", and finding the relative "b" vector.
         /// </summary>
         [CLMethod]
-        public CustomLogicVector3Builtin GetRotationDirection(CustomLogicVector3Builtin a, CustomLogicVector3Builtin b)
+        public static CustomLogicVector3Builtin GetRotationDirection(CustomLogicVector3Builtin a, CustomLogicVector3Builtin b)
         {
             var direction = Quaternion.Euler(a) * b;
             return new CustomLogicVector3Builtin(direction);

@@ -140,6 +140,17 @@ namespace CustomLogic
             }
         }
 
+        [CLMethod(Static = true, Description = "Checks if the class instance has a method")]
+        public bool HasMethod(CustomLogicClassInstance cInstance, string methodName)
+        {
+            var eval = CustomLogicManager.Evaluator;
+            if (eval != null)
+            {
+                return eval.HasMethod(cInstance, methodName);
+            }
+            return false;
+        }
+
         [CLMethod(Static = true, Description = "Gets the type of the class instance")]
         public string GetType(CustomLogicClassInstance cInstance)
         {

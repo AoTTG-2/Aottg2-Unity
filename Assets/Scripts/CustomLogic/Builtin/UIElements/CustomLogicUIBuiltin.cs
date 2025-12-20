@@ -148,7 +148,8 @@ namespace CustomLogic
         [CLMethod] public static void AddPopupBottomButton(string popupName, string label, string callback) => Menu.GetCustomPopup(popupName).AddBottomButton(label, callback);
 
         /// <summary>Adds a list of buttons in a row to the popup.</summary>
-        [CLMethod] public static void AddPopupButtons(string popupName, CustomLogicListBuiltin labels, CustomLogicListBuiltin callbacks) => Menu.GetCustomPopup(popupName).AddButtons(labels.List, callbacks.List); // TODO: Add generic type params definitions for generation
+        [CLMethod(ParameterTypeArguments = new[] { null, "List<string>", "List<void>" })]
+        public static void AddPopupButtons(string popupName, CustomLogicListBuiltin labels, CustomLogicListBuiltin callbacks) => Menu.GetCustomPopup(popupName).AddButtons(labels.List, callbacks.List);
 
         /// <summary>Returns a wrapped string given style and args.</summary>
         [CLMethod]
@@ -359,7 +360,7 @@ namespace CustomLogic
         /// <param name="defaultIndex">The index of the initially selected option (default: 0)</param>
         /// <param name="label">The label text displayed next to the dropdown</param>
         /// <param name="valueChangedEvent">The function that will be called when dropdown value changes</param>
-        [CLMethod]
+        [CLMethod(ParameterTypeArguments = new[] { "List<string>", null, null, null })]
         public static CustomLogicDropdownBuiltin Dropdown(CustomLogicListBuiltin choices, int defaultIndex = 0, string label = "", UserMethod valueChangedEvent = null)
         {
             var choicesList = new System.Collections.Generic.List<string>();

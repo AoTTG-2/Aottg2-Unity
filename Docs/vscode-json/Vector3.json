@@ -110,37 +110,6 @@
       "kind": "function"
     },
     {
-      "label": "GetRotationDirection",
-      "returnType": {
-        "name": "Vector3",
-        "typeArguments": []
-      },
-      "description": "Gets the relational Vector3 \"b\" using \"a\" as a reference. This is equivalent to setting MapObject.Forward to Vector \"a\", and finding the relative \"b\" vector.",
-      "parameters": [
-        {
-          "name": "a",
-          "type": {
-            "name": "Vector3",
-            "typeArguments": []
-          },
-          "description": "",
-          "isOptional": false,
-          "isVariadic": false
-        },
-        {
-          "name": "b",
-          "type": {
-            "name": "Vector3",
-            "typeArguments": []
-          },
-          "description": "",
-          "isOptional": false,
-          "isVariadic": false
-        }
-      ],
-      "kind": "function"
-    },
-    {
       "label": "Scale",
       "returnType": {
         "name": "Vector3",
@@ -155,68 +124,6 @@
             "typeArguments": []
           },
           "description": "float | Vector3",
-          "isOptional": false,
-          "isVariadic": false
-        }
-      ],
-      "kind": "function"
-    },
-    {
-      "label": "Multiply",
-      "returnType": {
-        "name": "Vector3",
-        "typeArguments": []
-      },
-      "description": "Returns the multiplication of two Vector3s.",
-      "parameters": [
-        {
-          "name": "a",
-          "type": {
-            "name": "Vector3",
-            "typeArguments": []
-          },
-          "description": "Vector3",
-          "isOptional": false,
-          "isVariadic": false
-        },
-        {
-          "name": "b",
-          "type": {
-            "name": "Vector3",
-            "typeArguments": []
-          },
-          "description": "Vector3",
-          "isOptional": false,
-          "isVariadic": false
-        }
-      ],
-      "kind": "function"
-    },
-    {
-      "label": "Divide",
-      "returnType": {
-        "name": "Vector3",
-        "typeArguments": []
-      },
-      "description": "Returns the division of two Vector3s.",
-      "parameters": [
-        {
-          "name": "a",
-          "type": {
-            "name": "Vector3",
-            "typeArguments": []
-          },
-          "description": "Vector3",
-          "isOptional": false,
-          "isVariadic": false
-        },
-        {
-          "name": "b",
-          "type": {
-            "name": "Vector3",
-            "typeArguments": []
-          },
-          "description": "Vector3",
           "isOptional": false,
           "isVariadic": false
         }
@@ -1041,6 +948,99 @@
             "typeArguments": []
           },
           "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "GetRotationDirection",
+      "returnType": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Gets the relational Vector3 \"b\" using \"a\" as a reference. This is equivalent to setting MapObject.Forward to Vector \"a\", and finding the relative \"b\" vector.",
+      "parameters": [
+        {
+          "name": "a",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "b",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Multiply",
+      "returnType": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Returns the multiplication of two Vector3s.",
+      "parameters": [
+        {
+          "name": "a",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "Vector3",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "b",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "Vector3",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Divide",
+      "returnType": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Returns the division of two Vector3s.",
+      "parameters": [
+        {
+          "name": "a",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "Vector3",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "b",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "Vector3",
           "isOptional": false,
           "isVariadic": false
         }

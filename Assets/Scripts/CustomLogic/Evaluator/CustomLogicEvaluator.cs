@@ -16,7 +16,7 @@ using Utility;
 
 namespace CustomLogic
 {
-    partial class CustomLogicEvaluator
+    internal partial class CustomLogicEvaluator
     {
         public float CurrentTime;
         public bool HasSetMusic = false;
@@ -24,6 +24,9 @@ namespace CustomLogic
         public Dictionary<int, CustomLogicMapObjectBuiltin> IdToMapObjectBuiltin = new Dictionary<int, CustomLogicMapObjectBuiltin>();
         protected CustomLogicStartAst _start;
         protected Dictionary<string, CustomLogicClassInstance> _staticClasses = new Dictionary<string, CustomLogicClassInstance>();
+        // Track namespace-specific static classes (for user-defined extensions that override builtins)
+        protected Dictionary<string, Dictionary<CustomLogicSourceType, CustomLogicClassInstance>> _namespacedStaticClasses = 
+            new Dictionary<string, Dictionary<CustomLogicSourceType, CustomLogicClassInstance>>();
         protected Dictionary<string, List<CustomLogicClassInstance>> _callbacks = new Dictionary<string, List<CustomLogicClassInstance>>();
         public Dictionary<int, Dictionary<string, float>> PlayerIdToLastPropertyChanges = new Dictionary<int, Dictionary<string, float>>();
         public string ScoreboardHeader = "Kills / Deaths / Max / Total";
@@ -36,17 +39,73 @@ namespace CustomLogic
         public bool ShowScoreboardStatus = true;
         public string ForcedCharacterType = string.Empty;
         public string ForcedLoadout = string.Empty;
-        private int _baseLogicOffset = 0;
+        public CustomLogicCompiler Compiler { get; private set; }
+       
+        /// <summary>
+        /// When true, errors are captured for offline testing instead of being logged to game console.
+        /// Errors do not interrupt execution flow but are stored for later inspection.
+        /// </summary>
+        public bool CaptureErrors { get; set; } = false;
+        
+        /// <summary>
+        /// List of captured errors during execution (used for offline testing).
+        /// Each error includes file, line, class, method, and error message.
+        /// </summary>
+        public List<CustomLogicError> CapturedErrors { get; private set; } = new List<CustomLogicError>();
+        
+        /// <summary>
+        /// Stack of currently executing methods (used for error tracking).
+        /// </summary>
+        private Stack<(string className, string methodName, CustomLogicSourceType? ns)> _executionStack = new Stack<(string, string, CustomLogicSourceType?)>();
 
-        public CustomLogicEvaluator(CustomLogicStartAst start, int baseLogicOffset = 0)
+        public CustomLogicEvaluator(CustomLogicStartAst start, CustomLogicCompiler compiler = null)
         {
             _start = start;
-            _baseLogicOffset = baseLogicOffset;
+            Compiler = compiler;
+        }
+        
+        /// <summary>
+        /// Clears all captured errors (useful between test runs).
+        /// </summary>
+        public void ClearCapturedErrors()
+        {
+            CapturedErrors.Clear();
         }
 
         #region Evaluator
         public CustomLogicClassInstance CreateClassInstance(string className, object[] parameterValues, bool init = true)
         {
+            return CreateClassInstance(className, parameterValues, init, null);
+        }
+        
+        /// <summary>
+        /// Creates a class instance with namespace-aware resolution.
+        /// </summary>
+        /// <param name="className">The name of the class to instantiate</param>
+        /// <param name="parameterValues">Parameters to pass to Init</param>
+        /// <param name="init">Whether to call Init</param>
+        /// <param name="callerNamespace">The namespace of the caller (for namespace-aware resolution)</param>
+        public CustomLogicClassInstance CreateClassInstance(string className, object[] parameterValues, bool init, CustomLogicSourceType? callerNamespace)
+        {
+            // Namespace-aware resolution:
+            // 1. Check caller's namespace first (same file)
+            // 2. Check builtins (always available)
+            // 3. Check other namespaces in priority order
+            
+            // Step 1: If caller has a namespace, check for class in same namespace first
+            if (callerNamespace.HasValue && _start.Classes.ContainsKey(className))
+            {
+                if (_start.ClassNamespaces.TryGetValue(className, out var classNamespace))
+                {
+                    if (classNamespace == callerNamespace.Value)
+                    {
+                        // Found in same namespace - use it
+                        return CreateUserClassInstance(className, parameterValues, init, classNamespace);
+                    }
+                }
+            }
+            
+            // Step 2: Check C# builtins (always available to all namespaces)
             if (CustomLogicBuiltinTypes.IsBuiltinType(className))
             {
                 if (CustomLogicBuiltinTypes.IsAbstract(className))
@@ -54,8 +113,27 @@ namespace CustomLogic
 
                 return CustomLogicBuiltinTypes.CreateClassInstance(className, parameterValues);
             }
+            
+            // Step 3: Check user-defined classes from other namespaces
+            // Use first available definition (order matters: BaseLogic, Addon, MapLogic, ModeLogic)
+            if (_start.Classes.ContainsKey(className))
+            {
+                CustomLogicSourceType? classNamespace = null;
+                if (_start.ClassNamespaces.TryGetValue(className, out var ns))
+                    classNamespace = ns;
+                    
+                return CreateUserClassInstance(className, parameterValues, init, classNamespace);
+            }
 
+            // Class not found anywhere
+            throw new Exception($"Class {className} not found");
+        }
+        
+        private CustomLogicClassInstance CreateUserClassInstance(string className, object[] parameterValues, bool init, CustomLogicSourceType? classNamespace)
+        {
             var classInstance = new UserClassInstance(className);
+            classInstance.Namespace = classNamespace;
+            
             if (init)
             {
                 RunAssignmentsClassInstance(classInstance);
@@ -65,7 +143,7 @@ namespace CustomLogic
             return classInstance;
         }
 
-        private void RunAssignmentsClassInstance(CustomLogicClassInstance classInstance)
+        public void RunAssignmentsClassInstance(CustomLogicClassInstance classInstance)
         {
             CustomLogicClassDefinitionAst classAst = _start.Classes[classInstance.ClassName];
             foreach (CustomLogicAssignmentExpressionAst assignment in classAst.Assignments)
@@ -73,6 +151,7 @@ namespace CustomLogic
                 string variableName = ((CustomLogicVariableExpressionAst)assignment.Left).Name;
                 object value = EvaluateExpression(classInstance, new Dictionary<string, object>(), assignment.Right);
                 classInstance.Variables[variableName] = value;
+                if (variableName == "Type") classInstance.SetContainsTypeOverride(true);
             }
 
             foreach (var (name, methodAst) in classAst.Methods)
@@ -251,7 +330,13 @@ namespace CustomLogic
                             bool nextIter = EvaluateBlock(classInstance, localVariables, conditional.Statements, out object nextResult);
                             if (nextIter)
                             {
-                                if (nextResult is not CustomLogicContinueExpressionAst && nextResult is not CustomLogicBreakExpressionAst)
+                                if (nextResult is CustomLogicBreakExpressionAst || nextResult is CustomLogicContinueExpressionAst)
+                                {
+                                    iter = true;
+                                    result = nextResult;
+                                    return iter;
+                                }
+                                else
                                 {
                                     result = nextResult;
                                     return nextIter;
@@ -287,7 +372,13 @@ namespace CustomLogic
                             bool nextIter = EvaluateBlock(classInstance, localVariables, conditional.Statements, out object nextResult);
                             if (nextIter)
                             {
-                                if (nextResult is not CustomLogicContinueExpressionAst && nextResult is not CustomLogicBreakExpressionAst)
+                                if (nextResult is CustomLogicBreakExpressionAst || nextResult is CustomLogicContinueExpressionAst)
+                                {
+                                    iter = true;
+                                    result = nextResult;
+                                    return iter;
+                                }
+                                else
                                 {
                                     result = nextResult;
                                     return nextIter;
@@ -307,7 +398,13 @@ namespace CustomLogic
                             bool nextIter = EvaluateBlock(classInstance, localVariables, conditional.Statements, out object nextResult);
                             if (nextIter)
                             {
-                                if (nextResult is not CustomLogicContinueExpressionAst && nextResult is not CustomLogicBreakExpressionAst)
+                                if (nextResult is CustomLogicBreakExpressionAst || nextResult is CustomLogicContinueExpressionAst)
+                                {
+                                    iter = true;
+                                    result = nextResult;
+                                    return iter;
+                                }
+                                else
                                 {
                                     result = nextResult;
                                     return nextIter;
@@ -458,7 +555,28 @@ namespace CustomLogic
                 else if (_start.Classes[classInstance.ClassName].Methods.ContainsKey(methodName))
                     methodAst = _start.Classes[classInstance.ClassName].Methods[methodName];
                 else
+                {
+                    // TODO: Add CustomLogic settings panel and add this as an option.
+                    // Method not found - this is an error condition
+                    string errorMessage = $"Method {methodName} not found in class {classInstance.ClassName}";
+                    if (CaptureErrors)
+                    {
+                        
+                        CapturedErrors.Add(new CustomLogicError(
+                            errorMessage,
+                            classInstance.ClassName,
+                            methodName,
+                            0,
+                            "",
+                            classInstance.Namespace
+                        ));
+                    }
+                    else
+                    {
+                        LogCustomLogicError("Custom logic runtime error: " + errorMessage, true);
+                    }
                     return null;
+                }
 
                 if (methodAst.Coroutine)
                 {
@@ -471,23 +589,66 @@ namespace CustomLogic
                 }
                 else
                 {
-                    Dictionary<string, object> localVariables = UnityEngine.Pool.DictionaryPool<string, object>.Get();
-                    int maxValues = Math.Min(parameterValues.Length, methodAst.ParameterNames.Count);
-                    for (int i = 0; i < maxValues; i++)
-                        localVariables.Add(methodAst.ParameterNames[i], parameterValues[i]);
-                    EvaluateBlock(classInstance, localVariables, methodAst.Statements, out object result);
-                    UnityEngine.Pool.DictionaryPool<string, object>.Release(localVariables);
-                    return result;
+
+                    // Push current method onto execution stack for error tracking
+                    if (CaptureErrors)
+                        _executionStack.Push((classInstance.ClassName, methodName, classInstance.Namespace));
+                    
+                    try
+                    {
+                        Dictionary<string, object> localVariables = UnityEngine.Pool.DictionaryPool<string, object>.Get();
+                        int maxValues = Math.Min(parameterValues.Length, methodAst.ParameterNames.Count);
+                        for (int i = 0; i < maxValues; i++)
+                            localVariables.Add(methodAst.ParameterNames[i], parameterValues[i]);
+                        EvaluateBlock(classInstance, localVariables, methodAst.Statements, out object result);
+                        UnityEngine.Pool.DictionaryPool<string, object>.Release(localVariables);
+                        return result;
+                    }
+                    finally
+                    {
+                        if (CaptureErrors)
+                            _executionStack.Pop();
+                    }
                 }
             }
             catch (TargetInvocationException e)
             {
-                LogCustomLogicError("Custom logic runtime error at method " + methodName + " in class " + classInstance.ClassName + ": " + e.InnerException?.Message, true);
+                string errorMessage = "Custom logic runtime error at method " + methodName + " in class " + classInstance.ClassName + ": " + e.InnerException?.Message;
+                if (CaptureErrors)
+                {
+                    CapturedErrors.Add(new CustomLogicError(
+                        e.InnerException?.Message ?? e.Message,
+                        classInstance.ClassName,
+                        methodName,
+                        0, // No line number for method-level errors
+                        "",
+                        classInstance.Namespace
+                    ));
+                }
+                else
+                {
+                    LogCustomLogicError(errorMessage, true);
+                }
                 return null;
             }
             catch (Exception e)
             {
-                LogCustomLogicError("Custom logic runtime error at method " + methodName + " in class " + classInstance.ClassName + ": " + e.Message, true);
+                string errorMessage = "Custom logic runtime error at method " + methodName + " in class " + classInstance.ClassName + ": " + e.Message;
+                if (CaptureErrors)
+                {
+                    CapturedErrors.Add(new CustomLogicError(
+                        e.Message,
+                        classInstance.ClassName,
+                        methodName,
+                        0,
+                        "",
+                        classInstance.Namespace
+                    ));
+                }
+                else
+                {
+                    LogCustomLogicError(errorMessage, true);
+                }
                 return null;
             }
         }
@@ -515,23 +676,67 @@ namespace CustomLogic
                 }
                 else
                 {
-                    Dictionary<string, object> localVariables = UnityEngine.Pool.DictionaryPool<string, object>.Get();
-                    int maxValues = Math.Min(parameterValues.Length, ast.ParameterNames.Count);
-                    for (int i = 0; i < maxValues; i++)
-                        localVariables.Add(ast.ParameterNames[i], parameterValues[i]);
-                    EvaluateBlock(classInstance, localVariables, ast.Statements, out object result);
-                    UnityEngine.Pool.DictionaryPool<string, object>.Release(localVariables);
-                    return result;
+                    // Push current method onto execution stack for error tracking
+                    if (CaptureErrors)
+                        _executionStack.Push((classInstance.ClassName, methodName, classInstance.Namespace));
+                    
+                    try
+                    {
+                        Dictionary<string, object> localVariables = UnityEngine.Pool.DictionaryPool<string, object>.Get();
+                        int maxValues = Math.Min(parameterValues.Length, ast.ParameterNames.Count);
+                        for (int i = 0; i < maxValues; i++)
+                            localVariables.Add(ast.ParameterNames[i], parameterValues[i]);
+                        EvaluateBlock(classInstance, localVariables, ast.Statements, out object result);
+                        UnityEngine.Pool.DictionaryPool<string, object>.Release(localVariables);
+                        return result;
+                    }
+                    finally
+                    {
+                        if (CaptureErrors)
+                            _executionStack.Pop();
+                    }
                 }
             }
             catch (TargetInvocationException e)
             {
-                LogCustomLogicError("Custom logic runtime error at method " + methodName + " in class " + classInstance.ClassName + ": " + e.InnerException?.Message, true);
+                string lineInfo = GetLineNumberString(userMethod.Ast.Line);
+                string errorMessage = "Custom logic runtime error at method " + methodName + " in class " + classInstance.ClassName + ": " + e.InnerException?.Message;
+                if (CaptureErrors)
+                {
+                    CapturedErrors.Add(new CustomLogicError(
+                        e.InnerException?.Message ?? e.Message,
+                        classInstance.ClassName,
+                        methodName,
+                        userMethod.Ast.Line,
+                        lineInfo,
+                        classInstance.Namespace
+                    ));
+                }
+                else
+                {
+                    LogCustomLogicError(errorMessage, true);
+                }
                 return null;
             }
             catch (Exception e)
             {
-                LogCustomLogicError("Custom logic runtime error at line " + GetLineNumberString(userMethod.Ast.Line) + " at method " + methodName + " in class " + classInstance.ClassName + ": " + e.Message, true);
+                string lineInfo = GetLineNumberString(userMethod.Ast.Line);
+                string errorMessage = "Custom logic runtime error at line " + lineInfo + " at method " + methodName + " in class " + classInstance.ClassName + ": " + e.Message;
+                if (CaptureErrors)
+                {
+                    CapturedErrors.Add(new CustomLogicError(
+                        e.Message,
+                        classInstance.ClassName,
+                        methodName,
+                        userMethod.Ast.Line,
+                        lineInfo,
+                        classInstance.Namespace
+                    ));
+                }
+                else
+                {
+                    LogCustomLogicError(errorMessage, true);
+                }
                 return null;
             }
         }
@@ -549,8 +754,28 @@ namespace CustomLogic
                     string name = ((CustomLogicVariableExpressionAst)expression).Name;
                     if (name == "self")
                         return classInstance;
-                    else if (_staticClasses.ContainsKey(name))
-                        return _staticClasses[name];
+                    else if (_staticClasses.ContainsKey(name) || _namespacedStaticClasses.ContainsKey(name))
+                    {                        
+                        // Namespace-aware static class resolution
+                        // 1. Check if there's a user-defined extension in the caller's namespace
+                        if (classInstance.Namespace.HasValue && _namespacedStaticClasses.ContainsKey(name))
+                        {
+                            if (_namespacedStaticClasses[name].TryGetValue(classInstance.Namespace.Value, out var namespacedInstance))
+                            {
+                                return namespacedInstance;
+                            }
+                        }
+                        
+                        // 2. Fall back to the default static class (builtin or non-conflicting extension)
+                        if (_staticClasses.ContainsKey(name))
+                        {
+                            var builtinInstance = _staticClasses[name];
+                            return builtinInstance;
+                        }
+                        
+                        // 3. If no default and no namespace match, this shouldn't happen in valid code
+                        throw new Exception($"Static class {name} not found for namespace {classInstance.Namespace}");
+                    }
                     else
                     {
                         object value = localVariables[name];
@@ -569,7 +794,8 @@ namespace CustomLogic
 
                     if (CustomLogicBuiltinTypes.IsBuiltinType(instantiate.Name) || _start.Classes.ContainsKey(instantiate.Name))
                     {
-                        var result = CreateClassInstance(instantiate.Name, parameters, true);
+                        // Pass the caller's namespace for namespace-aware resolution
+                        var result = CreateClassInstance(instantiate.Name, parameters, true, classInstance.Namespace);
                         ArrayPool<object>.Free(parameters);
                         return result;
                     }
@@ -611,7 +837,7 @@ namespace CustomLogic
                 {
                     CustomLogicMethodCallExpressionAst methodCallExpression = (CustomLogicMethodCallExpressionAst)expression;
                     CustomLogicClassInstance methodCallInstance = (CustomLogicClassInstance)EvaluateExpression(classInstance, localVariables, methodCallExpression.Left);
-                    var parameters = ArrayPool<object>.New(methodCallExpression.Parameters.Count); // new object[methodCallExpression.Parameters.Count];
+                    var parameters = ArrayPool<object>.New(methodCallExpression.Parameters.Count);
                     for (int i = 0; i < methodCallExpression.Parameters.Count; i++)
                     {
                         CustomLogicBaseExpressionAst parameterExpression = (CustomLogicBaseExpressionAst)methodCallExpression.Parameters[i];
@@ -649,7 +875,34 @@ namespace CustomLogic
             }
             catch (Exception e)
             {
-                LogCustomLogicError("Custom logic runtime error at line " + GetLineNumberString(expression.Line) + ": " + e.Message, true);
+                string lineInfo = GetLineNumberString(expression.Line);
+                string errorMessage = "Custom logic runtime error at line " + lineInfo + ": " + e.Message;
+                
+                if (CaptureErrors)
+                {
+                    // Get current method from execution stack
+                    string currentMethod = "";
+                    CustomLogicSourceType? currentNamespace = classInstance.Namespace;
+                    if (_executionStack.Count > 0)
+                    {
+                        var (stackClassName, stackMethodName, stackNamespace) = _executionStack.Peek();
+                        currentMethod = stackMethodName;
+                        if (stackNamespace.HasValue)
+                            currentNamespace = stackNamespace;
+                    }
+                    CapturedErrors.Add(new CustomLogicError(
+                        e.Message,
+                        classInstance.ClassName,
+                        currentMethod,
+                        expression.Line,
+                        lineInfo,
+                        currentNamespace
+                    ));
+                }
+                else
+                {
+                    LogCustomLogicError(errorMessage, true);
+                }
             }
             return null;
         }
@@ -823,7 +1076,7 @@ namespace CustomLogic
         }
     }
 
-    public enum ConditionalEvalState
+    internal enum ConditionalEvalState
     {
         None,
         PassedIf,
