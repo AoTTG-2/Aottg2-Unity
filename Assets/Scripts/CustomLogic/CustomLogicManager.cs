@@ -87,6 +87,7 @@ namespace CustomLogic
             CameraFOV = 0f;
             KeybindDefaultDisabled.Clear();
             KeybindHold.Clear();
+            CustomLogicUIBuiltin.ClearLabels();
             CameraLocked = false;
             CursorVisible = false;
         }

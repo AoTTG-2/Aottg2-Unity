@@ -31,6 +31,13 @@ namespace CustomLogic
             set => Value.time = value;
         }
 
+        [CLProperty(description: "Pitch of the sound.")]
+        public float Pitch
+        {
+            get => Value.pitch;
+            set => Value.pitch = value;
+        }
+
         [CLProperty(description: "Is the sound currently playing.")]
         public bool IsPlaying => Value.isPlaying;
 

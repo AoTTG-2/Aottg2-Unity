@@ -24,33 +24,20 @@ namespace CustomLogic
         [CLMethod("Plays the specified animation.")]
         public void PlayAnimation(string anim, float fade = 0.1f, int layer = 0)
         {
-            if (!Value.IsPlaying(anim))
-            {
-                Value.CrossFade(anim, fade);
-                Value[anim].layer = layer;
-            }
+            Value.CrossFade(anim, fade);
+            Value[anim].layer = layer;
         }
 
         [CLMethod("Plays the specified animation starting from a normalized time.")]
         public void PlayAnimationAt(string anim, float normalizedTime, float fade = 0.1f, int layer = 0)
         {
-            if (!Value.IsPlaying(anim))
-            {
-                Value.CrossFade(anim, fade);
-                Value[anim].layer = layer;
-                Value[anim].normalizedTime = normalizedTime;
-            }
+            Value.CrossFade(anim, fade);
+            Value[anim].layer = layer;
+            Value[anim].normalizedTime = normalizedTime;
         }
 
         [CLMethod("Plays the specified animation after the current animation finishes playing.")]
-        public void PlayAnimationQueued(string anim, float fade = 0.1f, int layer = 0)
-        {
-            if (!Value.IsPlaying(anim))
-            {
-                Value.CrossFade(anim, fade);
-                Value[anim].layer = layer;
-            }
-        }
+        public void PlayAnimationQueued(string anim) => Value.PlayQueued(anim);
 
         [CLMethod("Stops the specified animation. Will stop all animations if no name is given.")]
         public void StopAnimation(string anim = null)
@@ -72,6 +59,9 @@ namespace CustomLogic
 
         [CLMethod("Gets the normalized time of the specified animation.")]
         public float GetAnimationNormalizedTime(string anim) => Value[anim].normalizedTime;
+
+        [CLMethod("Sets the normalized playback time of the specified animation.")]
+        public float SetAnimationNormalizedTime(string anim, float normalizedTime) => Value[anim].normalizedTime = normalizedTime;
 
         [CLMethod("Sets the weight of the specified animation.")]
         public float SetAnimationWeight(string anim, float weight) => Value[anim].weight = weight;
