@@ -38,6 +38,11 @@ namespace UI
             ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.TitanHealthMin, UIManager.GetLocale(cat, sub, "MinHealth"), elementWidth: inputWidth);
             ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.TitanHealthMax, UIManager.GetLocale(cat, sub, "MaxHealth"), elementWidth: inputWidth);
             CreateHorizontalDivider(DoublePanelRight);
+            ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.TitanArmDisableTime, UIManager.GetLocale(cat, sub, "ArmDisableTime"), elementWidth: inputWidth);
+            CreateHorizontalDivider(DoublePanelRight);
+            ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.TitanCustomCrippleTimeEnabled, UIManager.GetLocale(cat, sub, "CustomCrippleTimeEnabled"));
+            ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.TitanCustomCrippleTime, UIManager.GetLocale(cat, sub, "CustomCrippleTime"), elementWidth: inputWidth);
+            CreateHorizontalDivider(DoublePanelRight);
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.TitanArmorEnabled, UIManager.GetLocale(cat, sub, "ArmorEnabled"));
             ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.TitanArmor, UIManager.GetLocale(cat, sub, "Armor"), elementWidth: inputWidth);
             CreateHorizontalDivider(DoublePanelRight);
@@ -45,6 +50,6 @@ namespace UI
                 tooltip: UIManager.GetLocale(cat, sub, "StandardModelsTooltip"));
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.TitanSmartMovement, UIManager.GetLocale(cat, sub, "SmartMovement"),
                 tooltip: UIManager.GetLocale(cat, sub, "SmartMovementTooltip"));
-        }
+    }
     }
 }

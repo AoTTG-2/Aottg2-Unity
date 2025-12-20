@@ -15,6 +15,9 @@
         public IntSetting TitanHealthMode = new IntSetting(0, minValue: 0);
         public IntSetting TitanHealthMin = new IntSetting(100, minValue: 0);
         public IntSetting TitanHealthMax = new IntSetting(200, minValue: 0);
+        public IntSetting TitanArmDisableTime = new IntSetting(12, minValue: 0);
+        public BoolSetting TitanCustomCrippleTimeEnabled = new BoolSetting(false);
+        public IntSetting TitanCustomCrippleTime = new IntSetting(12, minValue: 0);
         public BoolSetting TitanArmorEnabled = new BoolSetting(false);
         public BoolSetting TitanArmorCrawlerEnabled = new BoolSetting(false);
         public IntSetting TitanArmor = new IntSetting(1000, minValue: 0);

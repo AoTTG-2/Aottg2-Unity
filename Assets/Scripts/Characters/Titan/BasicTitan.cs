@@ -29,7 +29,6 @@ namespace Characters
         public float BellyFlopTime = 5.5f;
         protected float _leftArmDisabledTimeLeft;
         protected float _rightArmDisabledTimeLeft;
-        protected float ArmDisableTime = 12f;
         public float RockThrow1Speed = 140f;
         protected Vector3 _rockThrowTarget;
         protected float _originalCapsuleValue;
@@ -264,13 +263,13 @@ namespace Characters
             if (left)
             {
                 BasicCache.ForearmBloodL.Play(true);
-                _leftArmDisabledTimeLeft = ArmDisableTime;
+                _leftArmDisabledTimeLeft = SettingsManager.InGameCurrent.Titan.TitanArmDisableTime.Value;
                 LeftArmDisabled = true;
             }
             else
             {
                 BasicCache.ForearmBloodR.Play(true);
-                _rightArmDisabledTimeLeft = ArmDisableTime;
+                _rightArmDisabledTimeLeft = SettingsManager.InGameCurrent.Titan.TitanArmDisableTime.Value;
                 RightArmDisabled = true;
             }
         }
@@ -308,7 +307,7 @@ namespace Characters
             if (LeftArmDisabled)
             {
                 _leftArmDisabledTimeLeft -= Time.deltaTime;
-                if (ArmDisableTime - _leftArmDisabledTimeLeft > 2.5f && !BasicCache.ForearmSmokeL.isPlaying)
+                if (SettingsManager.InGameCurrent.Titan.TitanArmDisableTime.Value - _leftArmDisabledTimeLeft > 2.5f && !BasicCache.ForearmSmokeL.isPlaying)
                     BasicCache.ForearmSmokeL.Play();
                 if (_leftArmDisabledTimeLeft <= 0f)
                 {
@@ -319,7 +318,7 @@ namespace Characters
             if (RightArmDisabled)
             {
                 _rightArmDisabledTimeLeft -= Time.deltaTime;
-                if (ArmDisableTime - _rightArmDisabledTimeLeft > 2.5f && !BasicCache.ForearmSmokeR.isPlaying)
+                if (SettingsManager.InGameCurrent.Titan.TitanArmDisableTime.Value - _rightArmDisabledTimeLeft > 2.5f && !BasicCache.ForearmSmokeR.isPlaying)
                     BasicCache.ForearmSmokeR.Play();
                 if (_rightArmDisabledTimeLeft <= 0f)
                 {

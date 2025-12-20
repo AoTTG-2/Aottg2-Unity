@@ -340,6 +340,10 @@ namespace Characters
             if (BaseTitanAnimations.SitFall != "" && State != TitanState.SitCripple && AI && _disableCooldownLeft <= 0f)
             {
                 _currentCrippleTime = time > 0f ? time : DefaultCrippleTime;
+                if (SettingsManager.InGameCurrent.Titan.TitanCustomCrippleTimeEnabled.Value)
+                {
+                    _currentCrippleTime = SettingsManager.InGameCurrent.Titan.TitanCustomCrippleTime.Value;
+                }
                 StateAction(TitanState.SitFall, BaseTitanAnimations.SitFall);
                 DamagedGrunt();
                 _disableCooldownLeft = _currentCrippleTime + DisableCooldown;
