@@ -8,12 +8,13 @@ using UnityEngine;
 
 namespace CustomLogic
 {
-    partial class CustomLogicEvaluator
+    internal partial class CustomLogicEvaluator
     {
         public string GetLineNumberString(int lineNumber)
         {
-            // More relevant line number for when using MapLogic -> need to expand to handle builtin errors as well since its so annoying.
-            return CustomLogicManager.GetLineNumberString(lineNumber, _baseLogicOffset);
+            if (Compiler != null)
+                return Compiler.FormatLineNumber(lineNumber);
+            return lineNumber.ToString();
         }
 
         private void LogCustomLogicError(string errorMessage, bool showInChat)
@@ -37,6 +38,21 @@ namespace CustomLogic
             }
         }
 
+        public CustomLogicStartAst GetStartAst()
+        {
+            return _start;
+        }
+
+        public Dictionary<string, CustomLogicClassInstance> GetStaticClasses()
+        {
+            return _staticClasses;
+        }
+
+        public Dictionary<string, Dictionary<CustomLogicSourceType, CustomLogicClassInstance>> GetNamespacedStaticClasses()
+        {
+            return _namespacedStaticClasses;
+        }
+
         public Dictionary<string, BaseSetting> GetModeSettings()
         {
             var instance = CreateClassInstance("Main", EmptyArgs, false);
@@ -46,7 +62,7 @@ namespace CustomLogic
                 Dictionary<string, BaseSetting> settings = new Dictionary<string, BaseSetting>();
                 foreach (string variableName in instance.Variables.Keys)
                 {
-                    if (!variableName.StartsWith("_") && variableName != "Type")
+                    if (!variableName.StartsWith("_") && instance.ShowVariableInInspector(variableName))
                     {
                         object value = instance.Variables[variableName];
                         if (value is float)
@@ -83,7 +99,7 @@ namespace CustomLogic
                 }
                 foreach (string variableName in instance.Variables.Keys)
                 {
-                    if (!variableName.StartsWith("_") && variableName != "Type")
+                    if (!variableName.StartsWith("_") && instance.ShowVariableInInspector(variableName))
                     {
                         object value = instance.Variables[variableName];
                         if (parameterDict.ContainsKey(variableName))
@@ -119,6 +135,42 @@ namespace CustomLogic
                     componentNames.Add(className);
             }
             return componentNames;
+        }
+
+        /// <summary>
+        /// Gets a static class instance by name (for testing purposes).
+        /// </summary>
+        public CustomLogicClassInstance GetStaticClass(string className)
+        {
+            if (_staticClasses.ContainsKey(className))
+                return _staticClasses[className];
+            return null;
+        }
+
+        /// <summary>
+        /// Creates a static class instance by name (for testing purposes).
+        /// </summary>
+        public void CreateStaticClass(string className)
+        {
+            if (!_staticClasses.ContainsKey(className))
+            {
+                CustomLogicSourceType? classNamespace = null;
+                if (_start.ClassNamespaces.TryGetValue(className, out var ns))
+                    classNamespace = ns;
+
+                //UnityEngine.Debug.Log($"[NS-DEBUG] CreateStaticClass: Creating '{className}' with namespace '{classNamespace}'");
+                
+                var instance = CreateClassInstance(className, EmptyArgs, false, classNamespace);
+                instance.Namespace = classNamespace;
+                
+                //UnityEngine.Debug.Log($"[NS-DEBUG] CreateStaticClass: Created '{className}', namespace after creation: '{instance.Namespace}'");
+                
+                _staticClasses.Add(className, instance);
+            }
+            else
+            {
+                //UnityEngine.Debug.Log($"[NS-DEBUG] CreateStaticClass: '{className}' already exists in _staticClasses");
+            }
         }
     }
 }

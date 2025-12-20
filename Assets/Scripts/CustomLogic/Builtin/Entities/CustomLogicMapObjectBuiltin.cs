@@ -331,9 +331,12 @@ namespace CustomLogic
                 instance.Enabled = enabled;
             }
 
-            foreach (var comp in _builtinCache.Values)
+            if (_builtinCache != null)
             {
-                comp.Enabled = enabled;
+                foreach (var comp in _builtinCache.Values)
+                {
+                    comp.Enabled = enabled;
+                }
             }
         }
 

@@ -109,7 +109,8 @@ namespace CustomLogic
             if (MapObject.GameObject != null)
             {
                 foreach (var instance in _classInstances)
-                    CustomLogicManager.Evaluator.EvaluateMethod(instance, "OnNetworkTransfer", new object[] { oldOwner, newOwner });
+                    instance.EvaluateMethodForCallbacks("OnNetworkTransfer", new object[] { oldOwner, newOwner });
+                // CustomLogicManager.Evaluator.EvaluateMethod(instance, "OnNetworkTransfer", new object[] { oldOwner, newOwner });
             }
         }
 
@@ -142,7 +143,8 @@ namespace CustomLogic
                 if (MapObject.GameObject != null)
                 {
                     foreach (var instance in _classInstances)
-                        CustomLogicManager.Evaluator.EvaluateMethod(instance, "OnNetworkTransfer", new object[] { oldOwner, newOwner });
+                        instance.EvaluateMethodForCallbacks("OnNetworkTransfer", new object[] { oldOwner, newOwner });
+                    // CustomLogicManager.Evaluator.EvaluateMethod(instance, "OnNetworkTransfer", new object[] { oldOwner, newOwner });
                 }
             }
 
@@ -158,7 +160,8 @@ namespace CustomLogic
             _streamObjects = new List<object>();
             foreach (var instance in _classInstances)
             {
-                CustomLogicManager.Evaluator.EvaluateMethod(instance, "SendNetworkStream");
+                instance.EvaluateMethodForCallbacks("SendNetworkStream");
+                // CustomLogicManager.Evaluator.EvaluateMethod(instance, "SendNetworkStream");
             }
             stream.SendNext(_streamObjects.ToArray());
         }
@@ -170,7 +173,8 @@ namespace CustomLogic
                 return;
             foreach (var instance in _classInstances)
             {
-                CustomLogicManager.Evaluator.EvaluateMethod(instance, "OnNetworkStream");
+                instance.EvaluateMethodForCallbacks("OnNetworkStream");
+                // CustomLogicManager.Evaluator.EvaluateMethod(instance, "OnNetworkStream");
             }
         }
 
@@ -180,7 +184,8 @@ namespace CustomLogic
                 return;
             foreach (var instance in _classInstances)
             {
-                CustomLogicManager.Evaluator.EvaluateMethod(instance, "OnNetworkMessage", new object[] { player, message, sentServerTime });
+                instance.EvaluateMethodForCallbacks("OnNetworkMessage", new object[] { player, message, sentServerTime });
+                // CustomLogicManager.Evaluator.EvaluateMethod(instance, "OnNetworkMessage", new object[] { player, message, sentServerTime });
             }
         }
 

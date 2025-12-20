@@ -13,14 +13,10 @@ using Unity.VisualScripting;
 using UnityEngine;
 using Utility;
 
-using UnityEngine;
-
 namespace CustomLogic
 {
-    partial class CustomLogicEvaluator
+    internal partial class CustomLogicEvaluator
     {
-        #region Callbacks
-
         public void Start(Dictionary<string, BaseSetting> modeSettings)
         {
             try
@@ -158,7 +154,12 @@ namespace CustomLogic
         [CLCallbackAttribute]
         public object OnChatInput(string message)
         {
-            return EvaluateMethod(_staticClasses["Main"], "OnChatInput", new object[] { message });
+            var eval = CustomLogicManager.Evaluator;
+            if (eval != null && eval.HasMethod(_staticClasses["Main"], "OnChatInput"))
+            {
+                return eval.EvaluateMethod(_staticClasses["Main"], "OnChatInput", new object[] { message });
+            }
+            return true;
         }
 
         [CLCallbackAttribute]
@@ -185,7 +186,11 @@ namespace CustomLogic
             _networkCallback[0] = playerBuiltin;
             _networkCallback[1] = message;
             _networkCallback[2] = sentServerTimestamp;
-            EvaluateMethod(_staticClasses["Main"], "OnNetworkMessage", _networkCallback);
+            var eval = CustomLogicManager.Evaluator;
+            if (eval != null && eval.HasMethod(_staticClasses["Main"], "OnNetworkMessage"))
+            {
+                eval.EvaluateMethod(_staticClasses["Main"], "OnNetworkMessage", _networkCallback);
+            }
         }
 
         public static CustomLogicCharacterBuiltin GetCharacterBuiltin(BaseCharacter character)
@@ -219,24 +224,79 @@ namespace CustomLogic
 
         private void Init()
         {
+            // First, create C# builtin static classes
+            // These are the default and always accessible 
             foreach (var staticType in CustomLogicBuiltinTypes.StaticTypeNames)
             {
                 var instance = CustomLogicBuiltinTypes.CreateClassInstance(staticType, EmptyArgs);
                 _staticClasses[staticType] = instance;
             }
-
+            
+            // Then create user-defined static classes (Main and extensions)
+            
             foreach (string className in _start.Classes.Keys)
             {
                 if (className == "Main")
+                {
+                    // Always create Main from user code if it exists
                     CreateStaticClass(className);
+                }
                 else if ((int)_start.Classes[className].Token.Value == (int)CustomLogicSymbol.Extension)
-                    CreateStaticClass(className);
+                {
+                    // Get the namespace for this extension
+                    CustomLogicSourceType? classNamespace = null;
+                    if (_start.ClassNamespaces.TryGetValue(className, out var ns))
+                        classNamespace = ns;
+
+                    var instance = CreateClassInstance(className, EmptyArgs, false, classNamespace);
+                    instance.Namespace = classNamespace;
+                    
+                    // Check if this extension name conflicts with a C# builtin static class
+                    bool conflictsWithBuiltin = CustomLogicBuiltinTypes.StaticTypeNames.Contains(className);
+                    
+                    if (conflictsWithBuiltin)
+                    {   
+                        // Store in namespaced dictionary, do NOT add to _staticClasses
+                        if (!_namespacedStaticClasses.ContainsKey(className))
+                            _namespacedStaticClasses[className] = new Dictionary<CustomLogicSourceType, CustomLogicClassInstance>();
+                            
+                        if (classNamespace.HasValue)
+                            _namespacedStaticClasses[className][classNamespace.Value] = instance;
+                        // NOTE: We intentionally do NOT add to _staticClasses to preserve the builtin
+                    }
+                    else
+                    {
+                        // No conflict with builtin, store as default
+                        _staticClasses[className] = instance;
+                    }
+                }
             }
+            
+            // TODO: Validation?
+            foreach (var key in _staticClasses.Keys)
+            {
+                var instance = _staticClasses[key];
+                var isBuiltin = instance is BuiltinClassInstance;
+            }
+
+            // Run assignments for all class instances in _staticClasses
             foreach (CustomLogicClassInstance instance in _staticClasses.Values)
             {
                 if (instance is not BuiltinClassInstance)
                     RunAssignmentsClassInstance(instance);
             }
+            
+            // Run assignments for all namespace-specific class instances
+            foreach (var namespaceDict in _namespacedStaticClasses.Values)
+            {
+                foreach (var instance in namespaceDict.Values)
+                {
+                    if (instance is not BuiltinClassInstance)
+                        RunAssignmentsClassInstance(instance);
+                }
+            }
+            
+            // Load map objects
             foreach (int id in MapLoader.IdToMapObject.Keys)
             {
                 MapObject obj = MapLoader.IdToMapObject[id];
@@ -265,8 +325,5 @@ namespace CustomLogic
                 }
             }
         }
-
-        #endregion
-
     }
 }
