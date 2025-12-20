@@ -1545,17 +1545,26 @@ component CaptureZone
                 {
                     if (self._lastOwner != self.CurrentOwner)
                     {
-                        self._callbackReceiver.OnCaptured(self, self.CurrentOwner);
+                        if (Convert.HasMethod(self._callbackReceiver, "OnCaptured"))
+                        {
+                            self._callbackReceiver.OnCaptured(self, self.CurrentOwner);
+                        }
                         self._lastOwner = self.CurrentOwner;
                     }
                 }
                 elif (self._state == "Capturing")
                 {
-                    self._callbackReceiver.OnCapturing(self, self._currentCapturer);
+                    if (Convert.HasMethod(self._callbackReceiver, "OnCapturing"))
+                    {
+                        self._callbackReceiver.OnCapturing(self, self._currentCapturer);
+                    }
                 }
                 elif (self._state == "Contested")
                 {
-                    self._callbackReceiver.OnContested(self);
+                    if (Convert.HasMethod(self._callbackReceiver, "OnContested"))
+                    {
+                        self._callbackReceiver.OnContested(self);
+                    }
                 }
 		    }
             self._lastState = self._state;
@@ -2018,12 +2027,15 @@ component Rigidbody
 
     function Init()
     {
-        # self.MapObject.AddBuiltinComponent("Rigidbody", self.Mass, self.Gravity, self.FreezeRotation, self.Interpolate);
-        self.MapObject.AddBuiltinComponent("Rigidbody"); # self.Mass, self.Gravity, self.FreezeRotation, self.Interpolate);
-        self.MapObject.Rigidbody.Mass = self.Mass;
-        self.MapObject.Rigidbody.Gravity = self.Gravity;
-        self.MapObject.Rigidbody.FreezeAllRotations = self.FreezeRotation;
-        self.MapObject.Rigidbody.Interpolate = self.Interpolate;
+        if (self.MapObject.Rigidbody == null)
+        {
+            # self.MapObject.AddBuiltinComponent("Rigidbody", self.Mass, self.Gravity, self.FreezeRotation, self.Interpolate);
+            self.MapObject.AddBuiltinComponent("Rigidbody"); # self.Mass, self.Gravity, self.FreezeRotation, self.Interpolate);
+            self.MapObject.Rigidbody.Mass = self.Mass;
+            self.MapObject.Rigidbody.Gravity = self.Gravity;
+            self.MapObject.Rigidbody.FreezeAllRotations = self.FreezeRotation;
+            self.MapObject.Rigidbody.Interpolate = self.Interpolate;
+        }
     }
 
     function SetVelocity(velocity)
@@ -2421,38 +2433,64 @@ component Wagon
     MoveForce = 20.0;
     JumpVelocity = 20.0;
     MaxMoveSpeed = 50.0;
-    RotateSpeed = 3.0;
     CanSupply = true;
     InfiniteSupply = true;
     MaxSupplyTimes = 0;
-    _inUse = false;
-    _riding = false;
     _horse = null;
     _human = null;
+    _rigidbody = null;
+    _leftWheel = null;
+    _rightWheel = null;
+    _wagonPivot = null;
+    _wagonBase = null;
+    _runSound = null;
+    _dust = null;
+    _leftSitTransform = null;
+    _rightSitTransform = null;
     _collidingHuman = null;
     _collidingDrive = false;
     _collidingRide = false;
     _collidingGas = false;
-    _rigidbody = null;
-    _leftWheel = null;
-    _rightWheel = null;
-    _leftSitTransform = null;
-    _rightSitTransform = null;
+    _inUse = false;
+    _riding = false;
     _supplyTimesLeft = 0;
     _jumpCoolDown = 0.0;
     _delayUnmount = false; # Avoid key conflicts with dash
+    _isGrounded = true;
+    _syncRotation = Quaternion.Identity;
+    _horseRotation = Quaternion.Identity;
 
     function Init()
     {
+        self.MapObject.AddSphereCollider("Region", "Characters", Vector3.Zero, 10.0);
         self._horse = self.MapObject.GetTransform("Horse");
         self._horse.Layer = 17; # NPC
-        self.MapObject.AddSphereCollider("Region", "Characters", Vector3.Zero, 10.0);
-        self._rigidbody = self.MapObject.GetComponent("Rigidbody");
         self._leftWheel = self.MapObject.GetTransform("Carriage/Wheels/LeftWheelPivot");
         self._rightWheel = self.MapObject.GetTransform("Carriage/Wheels/RightWheelPivot");
         self._leftSitTransform = self.MapObject.GetTransform("SitRegionBottomLeft");
         self._rightSitTransform = self.MapObject.GetTransform("SitRegionBottomRight");
+        self._wagonPivot = self.MapObject.GetTransform("WagonPivot");
+        self._wagonBase = self.MapObject.GetTransform("WagonBase");
+        self._runSound = self.MapObject.GetTransform("RunSound");
+        self._dust = self.MapObject.GetTransform("Dust");
         self._supplyTimesLeft = self.MaxSupplyTimes;
+        self._horseRotation = self._horse.QuaternionRotation;
+
+        if (self.MapObject.Rigidbody == null)
+        {
+            self._rigidbody = self.MapObject.AddBuiltinComponent("Rigidbody");
+        }
+        else
+        {
+            self._rigidbody = self.MapObject.Rigidbody;
+        }
+
+        self._rigidbody.FreezeXRotation = false;
+        self._rigidbody.FreezeYRotation = false;
+        self._rigidbody.FreezeZRotation = false;
+        self._rigidbody.CenterOfMass = self._wagonPivot.LocalPosition;
+        self._rigidbody.AngularDrag = 5;
+
     }
 
     function OnNetworkMessage(sender, message)
@@ -2465,6 +2503,18 @@ component Wagon
         {
             self._supplyTimesLeft = Convert.ToInt(String.Substring(message, 1));
         }
+    }
+
+    function OnNetworkStream()
+    {
+        self._syncRotation = Quaternion.FromEuler(self.NetworkView.ReceiveStream());
+        self._isGrounded = self.NetworkView.ReceiveStream();
+    }
+
+    function SendNetworkStream()
+    {
+        self.NetworkView.SendStream(self._horse.QuaternionRotation.Euler);
+        self.NetworkView.SendStream(self._isGrounded);
     }
 
     function OnPlayerJoin(player)
@@ -2560,8 +2610,8 @@ component Wagon
             L = Vector3.Distance(self._leftWheel.Position, self._rightWheel.Position);
             r = self._leftWheel.Scale.Y / 2;
 
-            localVelocity = self.MapObject.Transform.InverseTransformDirection(self._rigidbody.GetVelocity());
-            angularVelocity = self._rigidbody.GetAngularVelocity();
+            localVelocity = self.MapObject.Transform.InverseTransformDirection(self._rigidbody.Velocity);
+            angularVelocity = self._rigidbody.AngularVelocity;
 
             v_x = localVelocity.Z;
             omega = angularVelocity.Y;
@@ -2574,14 +2624,81 @@ component Wagon
 
             self._leftWheel.Rotate(Vector3(leftWheelRotation, 0, 0));
             self._rightWheel.Rotate(Vector3(rightWheelRotation, 0, 0));
-
         }
 
-        if (self._delayUnmount)
+        if (self.NetworkView.Owner == Network.MyPlayer)
         {
-            self._delayUnmount = false;
-            self._human.Unmount(false);
+            self._isGrounded = self.Grounded();
+            upAngle = Vector3.Angle(self.MapObject.Up, Vector3.Up);
+
+            if (self._inUse)
+            {
+                horseTargetDirection = self._horse.Forward;
+                isMoving = self._inUse && self._human.HasTargetDirection;
+
+                if (isMoving)
+                {
+                    horseTargetDirection = self._human.TargetDirection;
+                }
+
+                endRotation = Quaternion.LookRotation(self.MapObject.Up, horseTargetDirection * -1) * Quaternion.FromEuler(Vector3(90, 0, 0));
+                self._horseRotation = Quaternion.Slerp(self._horseRotation, endRotation, 5.0 * Time.TickTime);
+                self._horse.QuaternionRotation = self._horseRotation;
+
+                if (self._isGrounded)
+                {
+                    if (isMoving)
+                    {
+                        spd = self.MoveForce;
+                        dot = Vector3.Dot(self._horse.Forward, Vector3.Up);
+
+                        # deccelerate if the ground is too steep
+                        if (dot > 0.0)
+                        {
+                            spd *= 1.0 - Math.Pow(dot, 0.6);
+                        }
+
+                        self._rigidbody.AddForceOptimized(self._horse.Forward * spd * Time.TickTime / 0.007, self._rigidbody.ForceModeAcceleration, self._horse.Position);
+                    }
+                    else
+                    {
+                        self.Deccelerate();
+                    }
+                }
+            }
+            else
+            {
+                self._horseRotation = self._horse.QuaternionRotation;
+                self.Deccelerate();
+            }
+
+            if (!self._isGrounded)
+            {
+                # stop the wagon from toppling over
+                maxTiltAngle = 45;
+                if (upAngle > maxTiltAngle)
+                {
+                    axis = Vector3.Cross(self.MapObject.Up, Vector3.Up).Normalized;
+                    speed = 10 * Time.TickTime;
+                    self._rigidbody.AddTorqueOptimized(axis * speed * ((upAngle - maxTiltAngle) / maxTiltAngle), self._rigidbody.ForceModeVelocityChange);
+                }
+            }
+
+            velocity = self._rigidbody.Velocity;
+            self._rigidbody.Velocity = velocity.Normalized * Math.Min(velocity.Magnitude, self.MaxMoveSpeed);
+
+            if (self._delayUnmount)
+            {
+                self._delayUnmount = false;
+                self._human.Unmount(false);
+            }
         }
+        else
+        {
+            self._horse.QuaternionRotation = Quaternion.Slerp(self._horse.QuaternionRotation, self._syncRotation, 10.0 * Time.TickTime);
+        }
+
+        self.UpdateHorse();
     }
 
     function OnFrame()
@@ -2596,42 +2713,25 @@ component Wagon
                     self._inUse = false;
                     return;
                 }
-                ySpeed = self._rigidbody.GetVelocity().Y;
-                FrameFactor = Time.FrameTime/0.007;
-                if (ySpeed <= 0.1 && self._jumpCoolDown > 0)
+
+                if (self._isGrounded)
                 {
-                    self._jumpCoolDown -= Time.FrameTime;
-                }
-                if (Input.GetKeyDown("Human/HorseJump") && self._jumpCoolDown <= 0 && Math.Abs(ySpeed) < 0.1)
-                {
-                    velocity = self._rigidbody.GetVelocity();
-                    velocity.Y = self.JumpVelocity;
-                    self._rigidbody.SetVelocity(velocity);
-                    self._jumpCoolDown = 1;
-                }
-                elif (self._human.HasTargetDirection && self._jumpCoolDown <= 0 && Math.Abs(ySpeed) < 0.1)
-                {
-                    self.MapObject.Forward = Vector3.Lerp(self.MapObject.Forward, self._human.TargetDirection, self.RotateSpeed * Time.FrameTime);
-                    self._rigidbody.AddForce(self.MapObject.Forward * self.MoveForce * FrameFactor);
-                    velocity = self._rigidbody.GetVelocity();
-                    self._rigidbody.SetVelocity(velocity.Normalized * Math.Min(velocity.Magnitude, self.MaxMoveSpeed));
-                }
-                else
-                {
-                    velocity = self._rigidbody.GetVelocity();
-                    vh = Vector3(velocity.X, 0.0, velocity.Z);
-                    if (vh.Magnitude < 1)
+                    if (self._jumpCoolDown > 0)
                     {
-                        self._rigidbody.SetVelocity(Vector3.Up * velocity.Y);
+                        self._jumpCoolDown -= Time.FrameTime;
                     }
-                    elif (Math.Abs(velocity.Y) < 0.1 && self._jumpCoolDown <= 0)
+                    elif (Input.GetKeyDown("Human/HorseJump"))
                     {
-                        self._rigidbody.AddForce(-0.5 * vh);
+                        velocity = self._rigidbody.Velocity;
+                        velocity.Y = self.JumpVelocity;
+                        self._rigidbody.Velocity = velocity;
+                        self._jumpCoolDown = 1;
                     }
                 }
+
                 if (self._human.State == "Idle")
                 {
-                    if (self._rigidbody.GetVelocity().Magnitude > 1)
+                    if (self._rigidbody.Velocity.Magnitude > 1)
                     {
                         self._human.PlayAnimation("Armature|horse_run");
                     }
@@ -2646,19 +2746,6 @@ component Wagon
                     self.NetworkView.Transfer(Network.MasterClient);
                     self._inUse = false;
                     return;
-                }
-            }
-            else
-            {
-                velocity = self._rigidbody.GetVelocity();
-                vh = Vector3(velocity.X, 0.0, velocity.Z);
-                if (vh.Magnitude < 1)
-                {
-                    self._rigidbody.SetVelocity(Vector3.Up * velocity.Y);
-                }
-                elif (Math.Abs(velocity.Y) < 0.1 && self._jumpCoolDown <= 0)
-                {
-                    self._rigidbody.AddForce(-0.5 * vh);
                 }
             }
         }
@@ -2697,7 +2784,7 @@ component Wagon
                     }
                 }
             }
-            elif(Input.GetKeyDown("Interaction/Interact"))
+            elif (Input.GetKeyDown("Interaction/Interact"))
             {
                 if (self._collidingGas && !self._inUse)
                 {
@@ -2710,28 +2797,72 @@ component Wagon
                 {
                     self._riding = true;
                     self._human = self._collidingHuman;
-                    posA = self._leftSitTransform.LocalPosition; # Vector3(-1.0, 1.78, -3.5);
-                    posB = self._rightSitTransform.LocalPosition; # Vector3(1.0, 1.78, 1.0);
+                    posA = self._leftSitTransform.LocalPosition;
+                    posB = self._rightSitTransform.LocalPosition;
                     self._human.MountMapObject(self.MapObject, Random.RandomVector3(posA, posB), Vector3(0, 0, 0));
                 }
             }
         }
-        self.UpdateHorse();
     }
 
     function UpdateHorse()
     {
-        if (self._rigidbody.GetVelocity().Magnitude > 1)
+        if (self._rigidbody.Velocity.Magnitude > 1)
         {
             self._horse.PlayAnimation("horse_Run");
-            self.MapObject.GetTransform("RunSound").PlaySound();
-            self.MapObject.GetTransform("Dust").ToggleParticle(true);
+            self._dust.ToggleParticle(true);
         }
         else
         {
             self._horse.PlayAnimation("horse_idle0");
-            self.MapObject.GetTransform("RunSound").StopSound();
-            self.MapObject.GetTransform("Dust").ToggleParticle(false);
+            self._dust.ToggleParticle(false);
+        }
+
+        if (self._rigidbody.Velocity.Magnitude > 1 && self._isGrounded)
+        {
+            self._runSound.PlaySound();
+        }
+        else
+        {
+            self._runSound.StopSound();
+        }
+    }
+
+    function Grounded()
+    {
+        horseCast = Physics.SphereCastAll(self._horse.Position + Vector3.Up * 0.6, self._horse.Position + Vector3.Down * 1.5, 0.5, Physics.CollideWithMapObjects);
+        for (cast in horseCast)
+        {
+            if (cast.Collider != self.MapObject && !cast.ColliderInfo.IsTrigger)
+            {
+                return true;
+            }
+        }
+
+        wagonCast = Physics.BoxCastAll(self._wagonBase.Position + self._wagonBase.Position.Up, self._wagonBase.Position, self._wagonBase.Scale, self._wagonBase.QuaternionRotation, Physics.CollideWithMapObjects);
+        for (cast in wagonCast)
+        {
+            if (cast.Collider != self.MapObject && !cast.ColliderInfo.IsTrigger)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    function Deccelerate()
+    {
+        velocity = self._rigidbody.Velocity;
+        horizontalVelocity = Vector3(velocity.X, 0, velocity.Z);
+        if (horizontalVelocity.Magnitude < 1)
+        {
+            self._rigidbody.Velocity = Vector3.Up * velocity.Y;
+        }
+        elif (self._jumpCoolDown <= 0)
+        {
+            force = -150 * horizontalVelocity * Time.TickTime;
+            self._rigidbody.AddForce(force);
         }
     }
 }

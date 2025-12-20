@@ -459,5 +459,21 @@ namespace Utility
                 main.startSpeedMultiplier = scale;
             }
         }
+
+        public static bool IsValidResourcePath(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+                return false;
+
+            // Use existing validation for each path component
+            string[] parts = path.Split('/');
+            foreach (string part in parts)
+            {
+                if (!Util.IsValidFileName(part))
+                    return false;
+            }
+
+            return true;
+        }
     }
 }

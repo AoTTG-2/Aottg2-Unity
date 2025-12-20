@@ -1,0 +1,557 @@
+{
+  "kind": "extension",
+  "name": "String",
+  "description": "String manipulation functions.",
+  "extends": [
+    "Object"
+  ],
+  "instanceFields": [],
+  "instanceMethods": [],
+  "staticFields": [
+    {
+      "label": "Newline",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Returns the newline character.",
+      "readonly": true,
+      "private": false
+    }
+  ],
+  "staticMethods": [
+    {
+      "label": "FormatFloat",
+      "returnType": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Formats a float to a string with the specified number of decimal places.",
+      "parameters": [
+        {
+          "name": "val",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "decimals",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "FormatFromList",
+      "returnType": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Equivalent to C# string.format(string, List<string>).",
+      "parameters": [
+        {
+          "name": "str",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "list",
+          "type": {
+            "name": "List",
+            "typeArguments": [
+              {
+                "name": "string",
+                "typeArguments": []
+              }
+            ]
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Split",
+      "returnType": {
+        "name": "List",
+        "typeArguments": [
+          {
+            "name": "string",
+            "typeArguments": []
+          }
+        ]
+      },
+      "description": "Split the string into a list. Can pass in either a string to split on or a list of strings to split on, the last optional param can remove all empty entries.",
+      "parameters": [
+        {
+          "name": "toSplit",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "splitter",
+          "type": {
+            "name": "Object",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "removeEmptyEntries",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Join",
+      "returnType": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Joins a list of strings into a single string with the specified separator.",
+      "parameters": [
+        {
+          "name": "list",
+          "type": {
+            "name": "List",
+            "typeArguments": [
+              {
+                "name": "string",
+                "typeArguments": []
+              }
+            ]
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "separator",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Substring",
+      "returnType": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Returns a substring starting from the specified index.",
+      "parameters": [
+        {
+          "name": "str",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "startIndex",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "SubstringWithLength",
+      "returnType": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Returns a substring of the specified length starting from the specified start index.",
+      "parameters": [
+        {
+          "name": "str",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "startIndex",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "length",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Length",
+      "returnType": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "Length of the string.",
+      "parameters": [
+        {
+          "name": "str",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Replace",
+      "returnType": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Replaces all occurrences of a substring with another substring.",
+      "parameters": [
+        {
+          "name": "str",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "replace",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "with",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Contains",
+      "returnType": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Checks if the string contains the specified substring.",
+      "parameters": [
+        {
+          "name": "str",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "match",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "StartsWith",
+      "returnType": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Checks if the string starts with the specified substring.",
+      "parameters": [
+        {
+          "name": "str",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "match",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "EndsWith",
+      "returnType": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Checks if the string ends with the specified substring.",
+      "parameters": [
+        {
+          "name": "str",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "match",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Trim",
+      "returnType": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Trims whitespace from the start and end of the string.",
+      "parameters": [
+        {
+          "name": "str",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Insert",
+      "returnType": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Inserts a substring at the specified index.",
+      "parameters": [
+        {
+          "name": "str",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "insert",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "index",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Capitalize",
+      "returnType": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Capitalizes the first letter of the string.",
+      "parameters": [
+        {
+          "name": "str",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "ToUpper",
+      "returnType": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Converts the string to uppercase.",
+      "parameters": [
+        {
+          "name": "str",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "ToLower",
+      "returnType": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Converts the string to lowercase.",
+      "parameters": [
+        {
+          "name": "str",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "IndexOf",
+      "returnType": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "Returns the index of the given string.",
+      "parameters": [
+        {
+          "name": "str",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "substring",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    }
+  ],
+  "constructors": []
+}

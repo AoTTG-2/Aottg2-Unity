@@ -1,0 +1,128 @@
+{
+  "kind": "class",
+  "name": "ProgressBar",
+  "description": "A UI element that represents a progress bar for displaying progress from 0% to 100%",
+  "extends": [
+    "VisualElement"
+  ],
+  "instanceFields": [
+    {
+      "label": "Title",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "The title text displayed on the progress bar",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Value",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "The current value of the progress bar (0-100)",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "LowValue",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "The minimum value of the progress bar (default: 0)",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "HighValue",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "The maximum value of the progress bar (default: 100)",
+      "readonly": false,
+      "private": false
+    }
+  ],
+  "instanceMethods": [
+    {
+      "label": "OnValueChanged",
+      "returnType": {
+        "name": "ProgressBar",
+        "typeArguments": []
+      },
+      "description": "Sets the method to be called when the progress bar value changes",
+      "parameters": [
+        {
+          "name": "valueChangedEvent",
+          "type": {
+            "name": "function",
+            "typeArguments": []
+          },
+          "description": "Method that will be called with the new value as parameter",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "SetValueWithoutNotify",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Sets the value of the progress bar without triggering any change events",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "GetPercentage",
+      "returnType": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Gets the current progress as a percentage (0-100)",
+      "parameters": [],
+      "kind": "function"
+    },
+    {
+      "label": "SetPercentage",
+      "returnType": {
+        "name": "ProgressBar",
+        "typeArguments": []
+      },
+      "description": "Sets the progress by percentage (0-100)",
+      "parameters": [
+        {
+          "name": "percentage",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    }
+  ],
+  "staticFields": [],
+  "staticMethods": [],
+  "constructors": []
+}

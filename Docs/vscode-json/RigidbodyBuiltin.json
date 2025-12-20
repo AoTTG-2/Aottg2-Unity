@@ -1,0 +1,602 @@
+{
+  "kind": "component",
+  "name": "RigidbodyBuiltin",
+  "description": "",
+  "instanceFields": [
+    {
+      "label": "Owner",
+      "type": {
+        "name": "Object",
+        "typeArguments": []
+      },
+      "description": "The MapObject this rigidbody is attached to.",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "Position",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "The position of the Rigidbody in world space. This is the same as the position of the GameObject it is attached to.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Rotation",
+      "type": {
+        "name": "Quaternion",
+        "typeArguments": []
+      },
+      "description": "The rotation of the Rigidbody in world space. This is the same as the rotation of the GameObject it is attached to.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Velocity",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "The velocity of the Rigidbody in world space.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "AngularVelocity",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "The angular velocity of the Rigidbody in world space.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "AngularDrag",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "The angular damping of the Rigidbody. This is a multiplier applied to the angular velocity every frame, reducing it over time.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Mass",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "The Mass of the Rigidbody",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "UseGravity",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Whether or not the Rigidbody use gravity.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Gravity",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "The force of gravity applied to the Rigidbody. If null, the Rigidbody will use Unity's default gravity settings and will enable gravity. If Vector3 is provided, it will apply that as a custom gravity force using ConstantForce and disable gravity.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "FreezeXPosition",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "If the x movement axis is frozen",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "FreezeYPosition",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "If the y movement axis is frozen",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "FreezeZPosition",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "If the z movement axis is frozen",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "FreezeXRotation",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "If the x rotation axis is frozen",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "FreezeYRotation",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "If the y rotation axis is frozen",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "FreezeZRotation",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "If the z rotation axis is frozen",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "FreezeAllRotations",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Freeze all rotations",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "FreezeAllPositions",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Freeze all positions. This will also freeze all rotations.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "IsKinematic",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "If the Rigidbody is kinematic. Kinematic bodies are not affected by forces and can only be moved manually.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Interpolate",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Interpolation mode of the Rigidbody. If true, it will interpolate between frames.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "CenterOfMass",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "The center of mass of the Rigidbody in local space.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "CollisionDetectionMode",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "The collision detection mode of the Rigidbody. This determines how collisions are detected and resolved.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "DetectCollisions",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "If the Rigidbody detects collisions. If false, it will not collide with other colliders.",
+      "readonly": false,
+      "private": false
+    }
+  ],
+  "instanceMethods": [
+    {
+      "label": "AddForce",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Apply a force to the Rigidbody - legacy version, please use optimized if possible.",
+      "parameters": [
+        {
+          "name": "force",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "forceMode",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": true,
+          "isVariadic": false
+        },
+        {
+          "name": "atPoint",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "AddForceOptimized",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Apply a force to the Rigidbody.",
+      "parameters": [
+        {
+          "name": "force",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "forceMode",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": true,
+          "isVariadic": false
+        },
+        {
+          "name": "atPoint",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "AddTorque",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Apply a torque to the Rigidbody - legacy version, please use optimized if possible.",
+      "parameters": [
+        {
+          "name": "torque",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "forceMode",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "AddTorqueOptimized",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Apply a torque to the Rigidbody.",
+      "parameters": [
+        {
+          "name": "torque",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "forceMode",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "AddExplosionForce",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Apply an explosion force to the Rigidbody.",
+      "parameters": [
+        {
+          "name": "explosionForce",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "explosionPosition",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "explosionRadius",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "upwardsModifier",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": true,
+          "isVariadic": false
+        },
+        {
+          "name": "forceMode",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Move",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Move the Rigidbody to a new position. This will not apply any forces, it will just set the position directly.",
+      "parameters": [
+        {
+          "name": "position",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "rotation",
+          "type": {
+            "name": "Quaternion",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "MovePosition",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Move the Rigidbody to a new position. This will apply forces to move the Rigidbody to the new position.",
+      "parameters": [
+        {
+          "name": "position",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "MoveRotation",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Move the Rigidbody to a new rotation. This will apply forces to rotate the Rigidbody to the new rotation.",
+      "parameters": [
+        {
+          "name": "rotation",
+          "type": {
+            "name": "Quaternion",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "ResetCenterOfMass",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Reset the center of mass of the Rigidbody to the default value (0, 0, 0). This will also reset the inertia tensor.",
+      "parameters": [],
+      "kind": "function"
+    },
+    {
+      "label": "PublishTransform",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Publish the current position and rotation of the Rigidbody to the MapObject. This will update the MapObject's transform to match the Rigidbody's transform.",
+      "parameters": [],
+      "kind": "function"
+    },
+    {
+      "label": "SweepTest",
+      "returnType": {
+        "name": "Object",
+        "typeArguments": []
+      },
+      "description": "Checks if the rigidbody would collide with anything, returns a LineCastHitResult object.",
+      "parameters": [
+        {
+          "name": "direction",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "distance",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    }
+  ],
+  "staticFields": [
+    {
+      "label": "ForceModeAcceleration",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "ForceMode.Acceleration",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "ForceModeForce",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "ForceMode.Force",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "ForceModeImpulse",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "ForceMode.Impulse",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "ForceModeVelocityChange",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "ForceMode.VelocityChange",
+      "readonly": true,
+      "private": false
+    }
+  ],
+  "staticMethods": [],
+  "constructors": []
+}

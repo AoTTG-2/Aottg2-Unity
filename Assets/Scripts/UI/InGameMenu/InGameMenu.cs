@@ -12,6 +12,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using Utility;
+using UnityEngine.UIElements;
 
 namespace UI
 {
@@ -75,6 +76,9 @@ namespace UI
         private InGameManager _gameManager;
         private Dictionary<string, BasePopup> _customPopups = new Dictionary<string, BasePopup>();
         private string[] trackedProperties = new string[] { "Kills", "Deaths", "HighestDamage", "TotalDamage" };
+        private UIDocument _uiDocument;
+
+        public VisualElement RootVisualElement => _uiDocument.rootVisualElement;
 
         public override void Setup()
         {
@@ -94,6 +98,7 @@ namespace UI
             SetupMinimap();
             SetupSnapshot();
             HideAllMenus();
+            _uiDocument = GetComponent<UIDocument>();
         }
 
         public void ApplyUISettings()
@@ -417,6 +422,57 @@ namespace UI
             if (StylebarHandler != null)
                 return StylebarHandler.GetRank();
             return 0;
+        }
+
+        public void SetLabelActive(string label, bool active)
+        {
+            if (label == "TopCenter")
+                _topCenterLabel.gameObject.SetActive(active);
+            else if (label == "TopLeft")
+                _topLeftLabel.gameObject.SetActive(active);
+            else if (label == "TopRight")
+                _topRightLabel.gameObject.SetActive(active);
+            else if (label == "MiddleCenter")
+                _middleCenterLabel.gameObject.SetActive(active);
+            else if (label == "MiddleLeft")
+                _middleLeftLabel.gameObject.SetActive(active);
+            else if (label == "MiddleRight")
+                _middleRightLabel.gameObject.SetActive(active);
+            else if (label == "BottomLeft")
+                _bottomLeftLabel.gameObject.SetActive(active);
+            else if (label == "BottomRight")
+                _bottomRightLabel.gameObject.SetActive(active);
+            else if (label == "BottomCenter")
+                _bottomCenterLabel.gameObject.SetActive(active);
+        }
+
+        public void SetKDRPanelActive(bool active)
+        {
+            TopLeftHud.SetActive(active);
+        }
+
+        public void SetMinimapActive(bool active)
+        {
+            if (AllowMap())
+                _minimapPanel.SetActive(active);
+        }
+
+        public void SetChatPanelActive(bool active)
+        {
+            ChatPanel.gameObject.SetActive(active);
+        }
+
+        public void SetFeedPanelActive(bool active)
+        {
+            if (SettingsManager.UISettings.FeedConsole.Value == false)
+                return;
+
+            FeedPanel.gameObject.SetActive(active);
+        }
+
+        public void SetBottomHUDActive(bool active)
+        {
+            HUDBottomHandler.SetBottomHUDActive(active);
         }
 
         public void SetLabel(string label, string message, float time)

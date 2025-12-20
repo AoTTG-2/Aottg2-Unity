@@ -1,0 +1,324 @@
+{
+  "kind": "extension",
+  "name": "Camera",
+  "description": "References the main game camera.",
+  "extends": [
+    "Object"
+  ],
+  "instanceFields": [],
+  "instanceMethods": [],
+  "staticFields": [
+    {
+      "label": "IsManual",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Is camera in manual mode.",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "Position",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Position of the camera.",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "Rotation",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Rotation of the camera.",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "Velocity",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Velocity of the camera.",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "FOV",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Field of view of the camera.",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "CameraMode",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Current camera mode. TPS, Original, FPS.",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "Forward",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Forward vector of the camera.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Right",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Right vector of the camera.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Up",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Up vector of the camera.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "FollowDistance",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Distance from the camera to the character.",
+      "readonly": false,
+      "private": false
+    }
+  ],
+  "staticMethods": [
+    {
+      "label": "SetManual",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Sets the camera manual mode. If true, camera will only be controlled by custom logic. If false, camera will follow the spawned or spectated player and read input.",
+      "parameters": [
+        {
+          "name": "manual",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "True to enable manual mode, false to disable.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "SetPosition",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Sets camera position.",
+      "parameters": [
+        {
+          "name": "position",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "SetRotation",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Sets camera rotation.",
+      "parameters": [
+        {
+          "name": "rotation",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "SetVelocity",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Sets camera velocity.",
+      "parameters": [
+        {
+          "name": "velocity",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "LookAt",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Sets the camera forward direction such that it is looking at a world position.",
+      "parameters": [
+        {
+          "name": "position",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "The world position to look at",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "SetFOV",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Sets the camera field of view.",
+      "parameters": [
+        {
+          "name": "fov",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The new field of view. Use 0 to use the default field of view.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "SetCameraMode",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Forces the player to use a certain camera mode, taking priority over their camera setting.",
+      "parameters": [
+        {
+          "name": "mode",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "The camera mode. Accepted values are TPS, Original, FPS.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "ResetDistance",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Resets the follow distance to player's settings.",
+      "parameters": [],
+      "kind": "function"
+    },
+    {
+      "label": "ResetCameraMode",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Resets the camera mode to player's settings.",
+      "parameters": [],
+      "kind": "function"
+    },
+    {
+      "label": "SetCameraLocked",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Locks or unlocks the camera to prevent or allow camera movement.",
+      "parameters": [
+        {
+          "name": "locked",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "SetCursorVisible",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Sets the visibility of the cursor.",
+      "parameters": [
+        {
+          "name": "visible",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    }
+  ],
+  "constructors": []
+}

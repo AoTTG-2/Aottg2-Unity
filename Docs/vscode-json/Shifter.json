@@ -1,0 +1,462 @@
+{
+  "kind": "class",
+  "name": "Shifter",
+  "description": "Represents a Shifter character. Only character owner can modify fields and call functions unless otherwise specified.",
+  "extends": [
+    "Character"
+  ],
+  "instanceFields": [
+    {
+      "label": "Size",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Shifter's size.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "RunSpeedBase",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Shifter's base run speed. Final run speed is RunSpeedBase + Size * RunSpeedPerLevel.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "WalkSpeedBase",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Shifter's base walk speed. Final walk speed is WalkSpeedBase + Size * WalkSpeedPerLevel.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "WalkSpeedPerLevel",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Shifter's walk speed added per level.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "RunSpeedPerLevel",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Shifter's run speed added per level.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "TurnSpeed",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Shifter's turn speed when running turn animation.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "RotateSpeed",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Shifter's rotate speed when rotating body.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "JumpForce",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Shifter's jump force when jumping.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "ActionPause",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Shifter's pause delay after performing an action.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "AttackPause",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Shifter's pause delay after performing an attack.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "TurnPause",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Shifter's pause delay after performing a turn.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "DetectRange",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "(AI) shifter's detect range.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "FocusRange",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "(AI) shifter's focus range.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "FocusTime",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "(AI) shifter's focus time before switching targets.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "FarAttackCooldown",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "(AI) Shifter's cooldown after performing a ranged attack.",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "AttackWait",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "(AI) Shifter's wait time between being in range to attack and performing the attack.",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "AttackSpeedMultiplier",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Shifter's attack animation speed.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "UsePathfinding",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "(AI) Shifter uses pathfinding.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "AIEnabled",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Enable/Disable AI Behavior (Shifter will not attack/target but pathfinding/move methods will still work).",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "NapePosition",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "The shifter's nape position.",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "DeathAnimLength",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "The length of the death animation.",
+      "readonly": false,
+      "private": false
+    }
+  ],
+  "instanceMethods": [
+    {
+      "label": "MoveTo",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Causes the (AI) shifter to move towards a position. If ignoreEnemies is true, will not engage enemies along the way.",
+      "parameters": [
+        {
+          "name": "position",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "range",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "ignoreEnemies",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "MoveToExact",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Causes the (AI) shifter to move towards a position. If ignoreEnemies is true, will not engage enemies along the way.",
+      "parameters": [
+        {
+          "name": "position",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "timeoutPadding",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "MoveToExactCallback",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Sort the list using a custom method, expects a method with the signature int method(a,b)",
+      "parameters": [
+        {
+          "name": "method",
+          "type": {
+            "name": "function",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "position",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "range",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": true,
+          "isVariadic": false
+        },
+        {
+          "name": "timeoutPadding",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Target",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Causes the (AI) shifter to target an enemy character or MapTargetable for focusTime seconds. If focusTime is 0 it will use the default focus time.",
+      "parameters": [
+        {
+          "name": "enemyObj",
+          "type": {
+            "name": "Object",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "focus",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Idle",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Causes the (AI) shifter to idle for time seconds before beginning to wander. During idle the titan will not react or move at all.",
+      "parameters": [
+        {
+          "name": "time",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Wander",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Causes the (AI) shifter to cancel any move commands and begin wandering randomly.",
+      "parameters": [],
+      "kind": "function"
+    },
+    {
+      "label": "Blind",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Causes the shifter to enter the blind state.",
+      "parameters": [],
+      "kind": "function"
+    },
+    {
+      "label": "Cripple",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Causes the shifter to enter the cripple state.",
+      "parameters": [
+        {
+          "name": "time",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Attack",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Causes the shifter to perform the given attack, if able.",
+      "parameters": [
+        {
+          "name": "attack",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    }
+  ],
+  "staticFields": [],
+  "staticMethods": [],
+  "constructors": []
+}

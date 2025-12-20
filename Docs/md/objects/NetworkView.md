@@ -43,10 +43,10 @@ TODO: Bother someone for good practice example - maybe move this into Networking
 
 
 ### Methods
-<pre class="language-typescript"><code class="lang-typescript">function Transfer(player: <a data-footnote-ref href="#user-content-fn-28">Player</a>)</code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function Transfer(player: <a data-footnote-ref href="#user-content-fn-25">Player</a>)</code></pre>
 > Owner only. Transfer ownership of this NetworkView to another player.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function SendMessage(target: <a data-footnote-ref href="#user-content-fn-28">Player</a>, msg: string)</code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function SendMessage(target: <a data-footnote-ref href="#user-content-fn-25">Player</a>, msg: string)</code></pre>
 > Send a message to a target player. This will be received in any of the MapObject attached components through the OnNetworkMessage callback.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function SendMessageAll(msg: string)</code></pre>
@@ -55,62 +55,76 @@ TODO: Bother someone for good practice example - maybe move this into Networking
 <pre class="language-typescript"><code class="lang-typescript">function SendMessageOthers(msg: string)</code></pre>
 > Send a message to players excluding myself.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function SendStream(obj: <a data-footnote-ref href="#user-content-fn-45">Object</a>)</code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function SendStream(obj: <a data-footnote-ref href="#user-content-fn-59">Object</a>)</code></pre>
 > Send an object to the network sync stream.
 This represents sending data from the object owner to all non-owner observers,
 and should only be called in the SendNetworkStream callback in the attached component.
 It only works with some object types: primitives and Vector3.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function ReceiveStream() -> <a data-footnote-ref href="#user-content-fn-45">Object</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function ReceiveStream() -> <a data-footnote-ref href="#user-content-fn-59">Object</a></code></pre>
 > Receive an object through the network sync stream.
 This represents receiving data from the object owner as a non-owner observer,
 and should only be called in the OnNetworkStream callback.
 > 
 
-[^0]: [Camera](../static/Camera.md)
-[^1]: [Character](../objects/Character.md)
-[^2]: [Collider](../objects/Collider.md)
-[^3]: [Collision](../objects/Collision.md)
-[^4]: [Color](../objects/Color.md)
-[^5]: [Convert](../static/Convert.md)
-[^6]: [Cutscene](../static/Cutscene.md)
-[^7]: [Dict](../objects/Dict.md)
-[^8]: [Game](../static/Game.md)
-[^9]: [Human](../objects/Human.md)
-[^10]: [Input](../static/Input.md)
-[^11]: [Json](../static/Json.md)
-[^12]: [LightBuiltin](../static/LightBuiltin.md)
-[^13]: [LineCastHitResult](../objects/LineCastHitResult.md)
-[^14]: [LineRenderer](../objects/LineRenderer.md)
-[^15]: [List](../objects/List.md)
-[^16]: [Locale](../static/Locale.md)
-[^17]: [LodBuiltin](../static/LodBuiltin.md)
-[^18]: [Map](../static/Map.md)
-[^19]: [MapObject](../objects/MapObject.md)
-[^20]: [MapTargetable](../objects/MapTargetable.md)
-[^21]: [Math](../static/Math.md)
-[^22]: [NavmeshObstacleBuiltin](../static/NavmeshObstacleBuiltin.md)
-[^23]: [Network](../static/Network.md)
+[^0]: [Color](../objects/Color.md)
+[^1]: [Dict](../objects/Dict.md)
+[^2]: [LightBuiltin](../static/LightBuiltin.md)
+[^3]: [LineCastHitResult](../objects/LineCastHitResult.md)
+[^4]: [List](../objects/List.md)
+[^5]: [Quaternion](../objects/Quaternion.md)
+[^6]: [Range](../objects/Range.md)
+[^7]: [Set](../objects/Set.md)
+[^8]: [Vector2](../objects/Vector2.md)
+[^9]: [Vector3](../objects/Vector3.md)
+[^10]: [Animation](../objects/Animation.md)
+[^11]: [Animator](../objects/Animator.md)
+[^12]: [AudioSource](../objects/AudioSource.md)
+[^13]: [Collider](../objects/Collider.md)
+[^14]: [Collision](../objects/Collision.md)
+[^15]: [LineRenderer](../objects/LineRenderer.md)
+[^16]: [LodBuiltin](../static/LodBuiltin.md)
+[^17]: [MapTargetable](../objects/MapTargetable.md)
+[^18]: [NavmeshObstacleBuiltin](../static/NavmeshObstacleBuiltin.md)
+[^19]: [PhysicsMaterialBuiltin](../static/PhysicsMaterialBuiltin.md)
+[^20]: [RigidbodyBuiltin](../static/RigidbodyBuiltin.md)
+[^21]: [Character](../objects/Character.md)
+[^22]: [Human](../objects/Human.md)
+[^23]: [MapObject](../objects/MapObject.md)
 [^24]: [NetworkView](../objects/NetworkView.md)
-[^25]: [PersistentData](../static/PersistentData.md)
-[^26]: [Physics](../static/Physics.md)
-[^27]: [PhysicsMaterialBuiltin](../static/PhysicsMaterialBuiltin.md)
-[^28]: [Player](../objects/Player.md)
-[^29]: [Prefab](../objects/Prefab.md)
-[^30]: [Quaternion](../objects/Quaternion.md)
-[^31]: [Random](../objects/Random.md)
-[^32]: [Range](../objects/Range.md)
-[^33]: [RigidbodyBuiltin](../static/RigidbodyBuiltin.md)
-[^34]: [RoomData](../static/RoomData.md)
-[^35]: [Set](../objects/Set.md)
-[^36]: [Shifter](../objects/Shifter.md)
-[^37]: [String](../static/String.md)
-[^38]: [Time](../static/Time.md)
-[^39]: [Titan](../objects/Titan.md)
-[^40]: [Transform](../objects/Transform.md)
-[^41]: [UI](../static/UI.md)
-[^42]: [Vector2](../objects/Vector2.md)
-[^43]: [Vector3](../objects/Vector3.md)
-[^44]: [WallColossal](../objects/WallColossal.md)
-[^45]: [Object](../objects/Object.md)
-[^46]: [Component](../objects/Component.md)
+[^25]: [Player](../objects/Player.md)
+[^26]: [Prefab](../objects/Prefab.md)
+[^27]: [Shifter](../objects/Shifter.md)
+[^28]: [Titan](../objects/Titan.md)
+[^29]: [Transform](../objects/Transform.md)
+[^30]: [WallColossal](../objects/WallColossal.md)
+[^31]: [Camera](../static/Camera.md)
+[^32]: [Cutscene](../static/Cutscene.md)
+[^33]: [Game](../static/Game.md)
+[^34]: [Input](../static/Input.md)
+[^35]: [Locale](../static/Locale.md)
+[^36]: [Map](../static/Map.md)
+[^37]: [Network](../static/Network.md)
+[^38]: [PersistentData](../static/PersistentData.md)
+[^39]: [Physics](../static/Physics.md)
+[^40]: [RoomData](../static/RoomData.md)
+[^41]: [Time](../static/Time.md)
+[^42]: [Button](../objects/Button.md)
+[^43]: [Dropdown](../objects/Dropdown.md)
+[^44]: [Icon](../objects/Icon.md)
+[^45]: [Image](../objects/Image.md)
+[^46]: [Label](../objects/Label.md)
+[^47]: [ProgressBar](../objects/ProgressBar.md)
+[^48]: [ScrollView](../objects/ScrollView.md)
+[^49]: [Slider](../objects/Slider.md)
+[^50]: [TextField](../objects/TextField.md)
+[^51]: [Toggle](../objects/Toggle.md)
+[^52]: [UI](../static/UI.md)
+[^53]: [VisualElement](../objects/VisualElement.md)
+[^54]: [Convert](../static/Convert.md)
+[^55]: [Json](../static/Json.md)
+[^56]: [Math](../static/Math.md)
+[^57]: [Random](../objects/Random.md)
+[^58]: [String](../static/String.md)
+[^59]: [Object](../objects/Object.md)
+[^60]: [Component](../objects/Component.md)

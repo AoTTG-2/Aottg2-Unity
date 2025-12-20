@@ -1,0 +1,370 @@
+{
+  "kind": "class",
+  "name": "Set",
+  "description": "Collection of unique elements",
+  "typeParameters": [
+    "T"
+  ],
+  "extends": [
+    "Object"
+  ],
+  "instanceFields": [
+    {
+      "label": "Count",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "The number of elements in the set",
+      "readonly": true,
+      "private": false
+    }
+  ],
+  "instanceMethods": [
+    {
+      "label": "Clear",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Clear all set elements",
+      "parameters": [],
+      "kind": "function"
+    },
+    {
+      "label": "Contains",
+      "returnType": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Check if the set contains the specified element",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "T",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Add",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Add an element to the set",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "T",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Remove",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Remove the element from the set",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "T",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Union",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Union with another set",
+      "parameters": [
+        {
+          "name": "set",
+          "type": {
+            "name": "Set",
+            "typeArguments": [
+              {
+                "name": "T",
+                "typeArguments": []
+              }
+            ]
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Intersect",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Intersect with another set",
+      "parameters": [
+        {
+          "name": "set",
+          "type": {
+            "name": "Set",
+            "typeArguments": [
+              {
+                "name": "T",
+                "typeArguments": []
+              }
+            ]
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Difference",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Difference with another set",
+      "parameters": [
+        {
+          "name": "set",
+          "type": {
+            "name": "Set",
+            "typeArguments": [
+              {
+                "name": "T",
+                "typeArguments": []
+              }
+            ]
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "IsSubsetOf",
+      "returnType": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Check if the set is a subset of another set",
+      "parameters": [
+        {
+          "name": "set",
+          "type": {
+            "name": "Set",
+            "typeArguments": [
+              {
+                "name": "T",
+                "typeArguments": []
+              }
+            ]
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "IsSupersetOf",
+      "returnType": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Check if the set is a superset of another set",
+      "parameters": [
+        {
+          "name": "set",
+          "type": {
+            "name": "Set",
+            "typeArguments": [
+              {
+                "name": "T",
+                "typeArguments": []
+              }
+            ]
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "IsProperSubsetOf",
+      "returnType": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Check if the set is a proper subset of another set",
+      "parameters": [
+        {
+          "name": "set",
+          "type": {
+            "name": "Set",
+            "typeArguments": [
+              {
+                "name": "T",
+                "typeArguments": []
+              }
+            ]
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "IsProperSupersetOf",
+      "returnType": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Check if the set is a proper superset of another set",
+      "parameters": [
+        {
+          "name": "set",
+          "type": {
+            "name": "Set",
+            "typeArguments": [
+              {
+                "name": "T",
+                "typeArguments": []
+              }
+            ]
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Overlaps",
+      "returnType": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Check if the set overlaps with another set",
+      "parameters": [
+        {
+          "name": "set",
+          "type": {
+            "name": "Set",
+            "typeArguments": [
+              {
+                "name": "T",
+                "typeArguments": []
+              }
+            ]
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "SetEquals",
+      "returnType": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Check if the set has the same elements as another set",
+      "parameters": [
+        {
+          "name": "set",
+          "type": {
+            "name": "Set",
+            "typeArguments": [
+              {
+                "name": "T",
+                "typeArguments": []
+              }
+            ]
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "ToList",
+      "returnType": {
+        "name": "List",
+        "typeArguments": [
+          {
+            "name": "T",
+            "typeArguments": []
+          }
+        ]
+      },
+      "description": "Convert the set to a list",
+      "parameters": [],
+      "kind": "function"
+    }
+  ],
+  "staticFields": [],
+  "staticMethods": [],
+  "constructors": [
+    {
+      "parameters": [],
+      "description": ""
+    },
+    {
+      "parameters": [
+        {
+          "name": "parameterValues",
+          "type": {
+            "name": "Object",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": true
+        }
+      ],
+      "description": ""
+    }
+  ]
+}

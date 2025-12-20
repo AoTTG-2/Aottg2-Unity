@@ -1,0 +1,391 @@
+{
+  "kind": "extension",
+  "name": "Locale",
+  "description": "Internationalization (Locale) utility for managing localized strings. Supports single-level (non-recursive) language fallbacks and automatic UI language detection.",
+  "extends": [
+    "Object"
+  ],
+  "instanceFields": [],
+  "instanceMethods": [],
+  "staticFields": [
+    {
+      "label": "ArabicLanguage",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Arabic language code",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "BrazilianPortugueseLanguage",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Brazilian Portuguese language code",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "ChineseLanguage",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Chinese language code",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "CzechLanguage",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Czech language code",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "DutchLanguage",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Dutch language code",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "EnglishLanguage",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "English language code",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "FrenchLanguage",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "French language code",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "GermanLanguage",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "German language code",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "GreekLanguage",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Greek language code",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "IndonesianLanguage",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Indonesian language code",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "ItalianLanguage",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Italian language code",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "JapaneseLanguage",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Japanese language code",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "KoreanLanguage",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Korean language code",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "PolishLanguage",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Polish language code",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "RussianLanguage",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Russian language code",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "SpanishLanguage",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Spanish language code",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "TraditionalChineseLanguage",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Traditional Chinese language code",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "TurkishLanguage",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Turkish language code",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "UkrainianLanguage",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Ukrainian language code",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "CurrentLanguage",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Returns the current language (e.g. \"English\" or \"简体中文\").",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "DefaultLanguage",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "The default language to use when a string is not found in the current language pack. English by default.",
+      "readonly": false,
+      "private": false
+    }
+  ],
+  "staticMethods": [
+    {
+      "label": "Get",
+      "returnType": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Get the localized string for the given key. Searches the current UI language, then any registered fallbacks, and finally the default language. Throws an exception if the key is not found in any language pack.",
+      "parameters": [
+        {
+          "name": "key",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Set",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Set or override a localized string for the specified language and key.",
+      "parameters": [
+        {
+          "name": "language",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "key",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "value",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "RegisterLanguage",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Register a single-level (non-recursive) fallback: if a string is not found in 'fromLanguage', the system will search only in 'toLanguage', without chaining further.",
+      "parameters": [
+        {
+          "name": "language",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "strings",
+          "type": {
+            "name": "Dict",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "RegisterLanguages",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Register all localized strings from JSON files for a specific category across all available languages. Use 'internal://' prefix for internal files (e.g., 'internal://BasicTutorialMap') or no prefix for external files (e.g., 'MyCustomMod').",
+      "parameters": [
+        {
+          "name": "pattern",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "RegisterFallback",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Register a fallback language. When a string is not found in 'fromLanguage', it will try 'toLanguage'.",
+      "parameters": [
+        {
+          "name": "fromLanguage",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "toLanguage",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "RemoveFallback",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Remove a language fallback.",
+      "parameters": [
+        {
+          "name": "fromLanguage",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    }
+  ],
+  "constructors": []
+}

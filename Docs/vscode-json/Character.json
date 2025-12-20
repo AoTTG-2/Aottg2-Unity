@@ -1,0 +1,794 @@
+{
+  "kind": "class",
+  "name": "Character",
+  "description": "Character is the base class that `Human`, `Titan`, and `Shifter` inherit from. Only character owner can modify properties and call functions unless otherwise specified.",
+  "extends": [
+    "Object"
+  ],
+  "instanceFields": [
+    {
+      "label": "Name",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Character's name.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Guild",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Character's guild.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Player",
+      "type": {
+        "name": "Player",
+        "typeArguments": []
+      },
+      "description": "Player who owns this character.",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "IsAI",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Is this character AI?",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "ViewID",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "Network view ID of the character.",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "IsMine",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Is this character mine?",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "IsMainCharacter",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Character belongs to my player and is the main character (the camera-followed player).",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "Transform",
+      "type": {
+        "name": "Transform",
+        "typeArguments": []
+      },
+      "description": "Unity transform of the character.",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "Position",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Position of the character.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Rotation",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Rotation of the character.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "QuaternionRotation",
+      "type": {
+        "name": "Quaternion",
+        "typeArguments": []
+      },
+      "description": "Quaternion rotation of the character.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Velocity",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Velocity of the character.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Forward",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Forward direction of the character.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Right",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Right direction of the character.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Up",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Up direction of the character.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "HasTargetDirection",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "If the character has a target direction it is turning towards.",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "TargetDirection",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "The character's target direction.",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "Team",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Team character belongs to.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Health",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Character's current health.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "MaxHealth",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Character's maximum health.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "CustomDamageEnabled",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Is custom damage dealing enabled.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "CustomDamage",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "Amount of custom damage to deal per attack.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "CurrentAnimation",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Character's current playing animation.",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "Grounded",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Character's grounded status.",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "Rigidbody",
+      "type": {
+        "name": "RigidbodyBuiltin",
+        "typeArguments": []
+      },
+      "description": "Character's rigidbody component (if available).",
+      "readonly": true,
+      "private": false
+    }
+  ],
+  "instanceMethods": [
+    {
+      "label": "GetKilled",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Kills the character. Callable by non-owners.",
+      "parameters": [
+        {
+          "name": "killer",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "Killer name",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "GetDamaged",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Damages the character and kills it if its health reaches 0. Callable by non-owners.",
+      "parameters": [
+        {
+          "name": "killer",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "Killer name",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "damage",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "Damage amount",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Emote",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Causes the character to emote. The list of available emotes is the same as those shown in the in-game emote menu.",
+      "parameters": [
+        {
+          "name": "emote",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "PlayAnimation",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Causes the character to play an animation.",
+      "parameters": [
+        {
+          "name": "animation",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "Name of the animation. Available animations can be found here: [Human](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/d631c1648d1432de6f95f07c2f158ff710cdd76d/Assets/Scripts/Characters/Human/HumanAnimations.cs), [Titan](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/d631c1648d1432de6f95f07c2f158ff710cdd76d/Assets/Scripts/Characters/Titan/BasicTitanAnimations.cs), [Annie](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/d631c1648d1432de6f95f07c2f158ff710cdd76d/Assets/Scripts/Characters/Shifters/Annie/AnnieAnimations.cs), [Eren](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/d631c1648d1432de6f95f07c2f158ff710cdd76d/Assets/Scripts/Characters/Shifters/Eren/ErenAnimations.cs) Use the right-hand string value for the animation. Note that shifters also have all titan animations.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "fade",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "Fade time. If provided, will crossfade the animation by this timestep",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "PlayAnimationAt",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Causes the character to play an animation at a specific time.",
+      "parameters": [
+        {
+          "name": "animation",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "t",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "fade",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": true,
+          "isVariadic": false
+        },
+        {
+          "name": "force",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "GetAnimationSpeed",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Gets the animation speed of a given animation.",
+      "parameters": [
+        {
+          "name": "animation",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "SetAnimationSpeed",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Sets the animation speed of a given animation.",
+      "parameters": [
+        {
+          "name": "animation",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "speed",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "synced",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "IsPlayingAnimation",
+      "returnType": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Returns true if the animation is playing.",
+      "parameters": [
+        {
+          "name": "animation",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "GetAnimationNormalizedTime",
+      "returnType": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Returns true if the animation is playing.",
+      "parameters": [
+        {
+          "name": "animation",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "ForceAnimation",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Forces the character to play an animation.",
+      "parameters": [
+        {
+          "name": "animation",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "Name of the animation. Available animations can be found here: [Human](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/d631c1648d1432de6f95f07c2f158ff710cdd76d/Assets/Scripts/Characters/Human/HumanAnimations.cs), [Titan](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/d631c1648d1432de6f95f07c2f158ff710cdd76d/Assets/Scripts/Characters/Titan/BasicTitanAnimations.cs), [Annie](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/d631c1648d1432de6f95f07c2f158ff710cdd76d/Assets/Scripts/Characters/Shifters/Annie/AnnieAnimations.cs), [Eren](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/d631c1648d1432de6f95f07c2f158ff710cdd76d/Assets/Scripts/Characters/Shifters/Eren/ErenAnimations.cs) Use the right-hand string value for the animation. Note that shifters also have all titan animations.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "fade",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "Fade time. If provided, will crossfade the animation by this timestep",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "GetAnimationLength",
+      "returnType": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Gets the length of animation.",
+      "parameters": [
+        {
+          "name": "animation",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "IsPlayingSound",
+      "returnType": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Returns true if the character is playing a sound. Available sound names can be found here: Humans, Shifters, Titans. Note that shifters also have all titan sounds.",
+      "parameters": [
+        {
+          "name": "sound",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "PlaySound",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Plays a sound if present in the character.",
+      "parameters": [
+        {
+          "name": "sound",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "Name of the sound to play. Available sound names can be found here: [Human](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/refs/heads/main/Assets/Scripts/Characters/Human/HumanSounds.cs), [Shifters](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/refs/heads/main/Assets/Scripts/Characters/Shifters/ShifterSounds.cs), [Titans](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/refs/heads/main/Assets/Scripts/Characters/Titan/TitanSounds.cs). Note that shifters also have all titan sounds",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "StopSound",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Stops a sound if present in the character.",
+      "parameters": [
+        {
+          "name": "sound",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "Name of the sound to stop.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "FadeSound",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Fades the sound volume to a specific volume between 0.0 and 1.0 over [time] seconds. Does not play or stop the sound.",
+      "parameters": [
+        {
+          "name": "sound",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "volume",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "time",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "LookAt",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Rotates the character such that it is looking towards a world position.",
+      "parameters": [
+        {
+          "name": "position",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "AddForce",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Adds a force to the character with given force vector and optional mode.",
+      "parameters": [
+        {
+          "name": "force",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "Force vector",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "mode",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "Force mode. Valid modes are Force, Acceleration, Impulse, VelocityChange",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "Reveal",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Reveal the titan for a set number of seconds.",
+      "parameters": [
+        {
+          "name": "delay",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "AddOutline",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Adds an outline effect with the given color and mode.",
+      "parameters": [
+        {
+          "name": "color",
+          "type": {
+            "name": "Color",
+            "typeArguments": []
+          },
+          "description": "Outline color",
+          "isOptional": true,
+          "isVariadic": false
+        },
+        {
+          "name": "mode",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "Outline mode. Valid modes are: OutlineAll, OutlineVisible, OutlineHidden, OutlineAndSilhouette, SilhouetteOnly, OutlineAndLightenColor",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "RemoveOutline",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Removes the outline effect from the character.",
+      "parameters": [],
+      "kind": "function"
+    }
+  ],
+  "staticFields": [],
+  "staticMethods": [],
+  "constructors": []
+}

@@ -7,5 +7,6 @@ namespace CustomLogic.Editor.Models
         public TypeReference Type { get; set; }
         public string DefaultValue { get; set; }
         public bool IsOptional { get; set; }
+        public bool IsVariadic { get; set; }
     }
 }

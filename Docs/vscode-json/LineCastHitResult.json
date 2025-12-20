@@ -1,0 +1,84 @@
+{
+  "kind": "class",
+  "name": "LineCastHitResult",
+  "description": "The result of a Physics.LineCast",
+  "extends": [
+    "Object"
+  ],
+  "instanceFields": [
+    {
+      "label": "IsCharacter",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "true if the linecast hit a character",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "IsMapObject",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "true if the linecast hit a map object",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "Distance",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "The distance to the hit point",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "Point",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "The point in world space where the linecast hit",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "Normal",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "The normal of the surface the linecast hit",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "Collider",
+      "type": {
+        "name": "Object",
+        "typeArguments": []
+      },
+      "description": "The collider that was hit",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "ColliderInfo",
+      "type": {
+        "name": "Collider",
+        "typeArguments": []
+      },
+      "description": "The collider that was hit",
+      "readonly": true,
+      "private": false
+    }
+  ],
+  "instanceMethods": [],
+  "staticFields": [],
+  "staticMethods": [],
+  "constructors": []
+}
