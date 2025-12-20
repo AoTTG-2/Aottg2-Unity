@@ -26,7 +26,7 @@ namespace CustomLogic
         [CLConstructor]
         public CustomLogicUIBuiltin()
         {
-            LastSetLabels.Clear();
+
         }
 
         public void OnPlayerJoin(Player player)
@@ -41,6 +41,11 @@ namespace CustomLogic
                     RPCManager.PhotonView.RPC(SetLabelRpc, player, SetLabelRpcArgs);
                 }
             }
+        }
+
+        public static void ClearLabels()
+        {
+            LastSetLabels.Clear();
         }
 
         /// <summary>"TopCenter" constant</summary>

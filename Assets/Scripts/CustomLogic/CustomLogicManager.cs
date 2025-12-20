@@ -93,6 +93,7 @@ namespace CustomLogic
             CameraFOV = 0f;
             KeybindDefaultDisabled.Clear();
             KeybindHold.Clear();
+            CustomLogicUIBuiltin.ClearLabels();
         }
 
         public static void ToggleCutscene(bool cutscene)
