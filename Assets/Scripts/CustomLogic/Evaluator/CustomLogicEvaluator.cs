@@ -589,8 +589,10 @@ namespace CustomLogic
                 }
                 else
                 {
+
                     // Push current method onto execution stack for error tracking
-                    _executionStack.Push((classInstance.ClassName, methodName, classInstance.Namespace));
+                    if (CaptureErrors)
+                        _executionStack.Push((classInstance.ClassName, methodName, classInstance.Namespace));
                     
                     try
                     {
@@ -604,7 +606,8 @@ namespace CustomLogic
                     }
                     finally
                     {
-                        _executionStack.Pop();
+                        if (CaptureErrors)
+                            _executionStack.Pop();
                     }
                 }
             }
@@ -674,7 +677,8 @@ namespace CustomLogic
                 else
                 {
                     // Push current method onto execution stack for error tracking
-                    _executionStack.Push((classInstance.ClassName, methodName, classInstance.Namespace));
+                    if (CaptureErrors)
+                        _executionStack.Push((classInstance.ClassName, methodName, classInstance.Namespace));
                     
                     try
                     {
@@ -688,7 +692,8 @@ namespace CustomLogic
                     }
                     finally
                     {
-                        _executionStack.Pop();
+                        if (CaptureErrors)
+                            _executionStack.Pop();
                     }
                 }
             }
@@ -873,19 +878,18 @@ namespace CustomLogic
                 string lineInfo = GetLineNumberString(expression.Line);
                 string errorMessage = "Custom logic runtime error at line " + lineInfo + ": " + e.Message;
                 
-                // Get current method from execution stack
-                string currentMethod = "";
-                CustomLogicSourceType? currentNamespace = classInstance.Namespace;
-                if (_executionStack.Count > 0)
-                {
-                    var (stackClassName, stackMethodName, stackNamespace) = _executionStack.Peek();
-                    currentMethod = stackMethodName;
-                    if (stackNamespace.HasValue)
-                        currentNamespace = stackNamespace;
-                }
-                
                 if (CaptureErrors)
                 {
+                    // Get current method from execution stack
+                    string currentMethod = "";
+                    CustomLogicSourceType? currentNamespace = classInstance.Namespace;
+                    if (_executionStack.Count > 0)
+                    {
+                        var (stackClassName, stackMethodName, stackNamespace) = _executionStack.Peek();
+                        currentMethod = stackMethodName;
+                        if (stackNamespace.HasValue)
+                            currentNamespace = stackNamespace;
+                    }
                     CapturedErrors.Add(new CustomLogicError(
                         e.Message,
                         classInstance.ClassName,
