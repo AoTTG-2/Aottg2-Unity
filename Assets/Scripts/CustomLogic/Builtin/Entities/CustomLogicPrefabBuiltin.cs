@@ -31,9 +31,10 @@ namespace CustomLogic
         }
 
         [CLProperty]
-        public string Type
+        public string AssetType
         {
-            get => Value.Type; set
+            get => Value.Type;
+            set
             {
                 Value.Type = value;
                 Refresh();

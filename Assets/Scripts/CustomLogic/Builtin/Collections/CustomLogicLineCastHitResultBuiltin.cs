@@ -7,7 +7,21 @@ namespace CustomLogic
     partial class CustomLogicLineCastHitResultBuiltin : BuiltinClassInstance, ICustomLogicCopyable, ICustomLogicEquals
     {
         [CLProperty("true if the linecast hit a character", ReadOnly = true)]
-        public bool IsCharacter { get; set; }
+        public bool IsCharacter
+        {
+            get
+            {
+                if (Variables.TryGetValue("IsCharacter", out var value) && value is bool boolValue)
+                {
+                    return boolValue;
+                }
+                return false;
+            }
+            set
+            {
+                Variables["IsCharacter"] = value;
+            }
+        }
 
         [CLProperty("true if the linecast hit a map object", ReadOnly = true)]
         public bool IsMapObject { get; set; }
