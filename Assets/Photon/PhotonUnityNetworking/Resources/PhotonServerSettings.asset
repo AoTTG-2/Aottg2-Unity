@@ -141,6 +141,12 @@ MonoBehaviour:
   - FadeSoundRPC
   - InitDynamic
   - InitDynamicRPC
+  - ToggleSteam
+  - ToggleSteamRPC
+  - SetLeftHandHealthRPC
+  - SetRightHandHealthRPC
+  - SetLeftHandStateRPC
+  - SetRightHandStateRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

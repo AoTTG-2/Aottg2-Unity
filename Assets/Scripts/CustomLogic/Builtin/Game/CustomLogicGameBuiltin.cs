@@ -577,6 +577,46 @@ namespace CustomLogic
             EffectSpawner.Spawn(effectName, position, Quaternion.Euler(rotation), scale, true, settings);
         }
 
+        /// <summary>
+        /// Spawns an effect.
+        /// </summary>
+        /// <param name="effectName">Name of the effect. Effect names can be found [here](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/refs/heads/main/Assets/Scripts/Effects/EffectPrefabs.cs) (left-hand variable name)</param>
+        /// <param name="position">Spawn position</param>
+        /// <param name="rotation">Spawn rotation</param>
+        /// <param name="scale">Spawn scale</param>
+        /// <param name="tsExplodeColor">Thunderspear explode color (Only valid when `effectName` is "ThunderspearExplode")</param>
+        /// <param name="tsKillSound">
+        /// Optional. Thunderspear explode sound (Only valid when `effectName` is "ThunderspearExplode"). Valid values are: "Kill", "Air", "Ground", "ArmorHit", "CloseShot", "MaxRangeShot"
+        /// </param>
+        [CLMethod(Static = true, Description = "Spawn an effect")]
+        public void SpawnUnscaledEffect(string effectName, CustomLogicVector3Builtin position, CustomLogicVector3Builtin rotation, CustomLogicColorBuiltin tsExplodeColor = null, string tsKillSound = null)
+        {
+            var field = typeof(EffectPrefabs).GetField(effectName);
+            if (field == null)
+                return;
+            effectName = (string)field.GetValue(null);
+            object[] settings = null;
+            if (effectName == EffectPrefabs.ThunderspearExplode)
+            {
+                Color color = tsExplodeColor.Value.ToColor();
+                TSKillType killSound = TSKillType.Kill;
+                if (tsKillSound != null)
+                {
+                    killSound = tsKillSound switch
+                    {
+                        "Air" => TSKillType.Air,
+                        "Ground" => TSKillType.Ground,
+                        "ArmorHit" => TSKillType.ArmorHit,
+                        "CloseShot" => TSKillType.CloseShot,
+                        "MaxRangeShot" => TSKillType.MaxRangeShot,
+                        _ => TSKillType.Kill
+                    };
+                }
+                settings = new object[] { color, killSound };
+            }
+            EffectSpawner.Spawn(effectName, position, Quaternion.Euler(rotation), 1, false, settings);
+        }
+
         [CLMethod(Static = true, Description = "Spawn a player")]
         public void SpawnPlayer(CustomLogicPlayerBuiltin player, bool force)
         {

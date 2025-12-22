@@ -17,6 +17,8 @@ namespace Controllers
         protected override bool _stationaryAI => true;
 
         protected List<string> WallAttacks = new List<string>() { "AttackSweep", "AttackWallSlap1L", "AttackWallSlap1R", "AttackWallSlap2L", "AttackWallSlap2R" };
+        protected List<string> LeftHandedAttacks = new List<string>() { "AttackWallSlap1L", "AttackWallSlap2L" };
+        protected List<string> RightHandedAttacks = new List<string>() { "AttackSweep", "AttackWallSlap1R", "AttackWallSlap2R" };
         public float WallAttackCooldownLeft = 5f;
         public float WallAttackCooldown = 5f;
 
@@ -36,9 +38,24 @@ namespace Controllers
 
         public void WallAttack()
         {
+            WallColossalShifter shifter = (_titan as WallColossalShifter);
             if (_titan.CanAttack())
             {
-                string attack = RandomGen.ChooseRandom(WallAttacks);
+                List<string> validAttacks = WallAttacks;
+                if (shifter.LeftHandState == ColossalHandState.Broken && shifter.RightHandState == ColossalHandState.Broken)
+                {
+                    return;
+                }
+                else if (shifter.LeftHandState == ColossalHandState.Broken)
+                {
+                    validAttacks = RightHandedAttacks;
+                }
+                else if (shifter.RightHandState == ColossalHandState.Broken)
+                {
+                    validAttacks = LeftHandedAttacks;
+                }
+
+                    string attack = RandomGen.ChooseRandom(validAttacks);
                 _titan.Attack(attack);
                 WallAttackCooldownLeft = WallAttackCooldown;
             }
