@@ -105,7 +105,9 @@
 		"TutorialPopup.Title": "Tutorial",
 		"TutorialPopup.BasicButton": "Basic",
 		"TutorialPopup.AdvancedButton": "Advanced",
-		"TutorialPopup.VideoButton": "Video Tutorials",
+		"TutorialPopup.VideoBasicTutorialsButton": "Basic Video Tutorials",
+		"TutorialPopup.VideoAdvancedTutorialsButton": "Advanced Video Tutorials",
+		"TutorialPopup.VideoMiscTutorialsButton": "Misc Video Tutorials",
 		"AboutPopup.Changelog": "Changelog",
 		"AboutPopup.Help": "Help"
 	},
