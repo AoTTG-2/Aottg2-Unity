@@ -855,17 +855,27 @@ namespace UI
                 (_emojiPanel != null && _emojiPanel.activeSelf && 
                  RectTransformUtility.RectangleContainsScreenPoint(GetCachedRectTransform(_emojiPanel), mousePosition))
             );
+            bool pointerAlreadySet = (CursorManager.State == CursorState.Pointer);
             if (Input.GetMouseButtonDown(0))
             {
-                _wasChatUIClicked = isOverChatUI;
-                if (!isOverChatUI)
+                if (pointerAlreadySet)
+                {
+                    _wasChatUIClicked = isOverChatUI;
+                }
+                else
+                {
+                    _wasChatUIClicked = false;
+                }
+
+                if (!isOverChatUI && pointerAlreadySet)
                 {
                     _isInteractingWithChatUI = false;
                     ChatManager.ClearLastSuggestions();
                     IgnoreNextActivation = false;
                 }
             }
-            if (isOverChatUI)
+
+            if (isOverChatUI && pointerAlreadySet)
             {
                 _isInteractingWithChatUI = true;
             }
