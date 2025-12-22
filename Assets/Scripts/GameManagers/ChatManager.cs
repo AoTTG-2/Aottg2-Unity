@@ -36,6 +36,8 @@ namespace GameManagers
             public string[] Parameters { get; private set; }
             public AutofillType AutofillType { get; set; } = AutofillType.None;
 
+            public bool ExcludeFromHelp { get; set; } = false;
+
             public CommandAttribute(CommandAttribute commandAttribute)
             {
                 Name = commandAttribute.Name;
@@ -43,9 +45,10 @@ namespace GameManagers
                 Alias = commandAttribute.Alias;
                 Command = commandAttribute.Command;
                 AutofillType = commandAttribute.AutofillType;
+                ExcludeFromHelp = commandAttribute.ExcludeFromHelp;
             }
 
-            public CommandAttribute(string name, string description, AutofillType autofillType = AutofillType.None)
+            public CommandAttribute(string name, string description, AutofillType autofillType = AutofillType.None, bool excludeFromHelp = false)
             {
                 Name = name;
                 Description = description;
@@ -54,6 +57,7 @@ namespace GameManagers
                                      .Cast<Match>()
                                      .Select(m => m.Groups[1].Value)
                                      .ToArray();
+                ExcludeFromHelp = excludeFromHelp;
             }
         }
 
@@ -620,7 +624,7 @@ namespace GameManagers
                 KickPlayer(player, ban: true);
         }
 
-        [CommandAttribute("ipban", "/ipban [ID]: IP ban the player with ID (mod only)", AutofillType.PlayerID)]
+        [CommandAttribute("ipban", "/ipban [ID]: IP ban the player with ID (mod only)", AutofillType.PlayerID, excludeFromHelp: true)]
         private static void IPBan(string[] args)
         {
             var player = GetPlayer(args);
@@ -628,7 +632,7 @@ namespace GameManagers
             AnticheatManager.IPBan(player);
         }
 
-        [CommandAttribute("ipunban", "/ipunban [IP]: Unban the given IP address (mod only)", AutofillType.None)]
+        [CommandAttribute("ipunban", "/ipunban [IP]: Unban the given IP address (mod only)", AutofillType.None, excludeFromHelp: true)]
         private static void IPUnban(string[] args)
         {
             if (args.Length > 0)
@@ -637,7 +641,7 @@ namespace GameManagers
             }
         }
 
-        [CommandAttribute("superban", "/superban [ID]: IP and hardware ban the player with ID (mod only). Cannot be undone!", AutofillType.PlayerID)]
+        [CommandAttribute("superban", "/superban [ID]: IP and hardware ban the player with ID (mod only). Cannot be undone!", AutofillType.PlayerID, excludeFromHelp: true)]
         private static void Superban(string[] args)
         {
             var player = GetPlayer(args);
@@ -645,7 +649,7 @@ namespace GameManagers
             AnticheatManager.Superban(player);
         }
 
-        [CommandAttribute("removesuperbans", "/removesuperbans: Clear all superbans on the region.", AutofillType.None)]
+        [CommandAttribute("removesuperbans", "/removesuperbans: Clear all superbans on the region.", AutofillType.None, excludeFromHelp: true)]
         private static void Removesuperbans(string[] args)
         {
             AnticheatManager.ClearSuperbans();
@@ -757,13 +761,18 @@ namespace GameManagers
                     displayPage = 1;
                 }
             }
-            int totalPages = (int)Math.Ceiling((double)CommandsCache.Count / elementsPerPage);
+
+            Dictionary<string, CommandAttribute> filteredCommands = CommandsCache
+                .Where(kv => !kv.Value.ExcludeFromHelp)
+                .ToDictionary(kv => kv.Key, kv => kv.Value);
+
+            int totalPages = (int)Math.Ceiling((double)filteredCommands.Count / elementsPerPage);
             if (displayPage < 1 || displayPage > totalPages)
             {
                 AddLine($"Page {displayPage} does not exist.", ChatTextColor.Error);
                 return;
             }
-            List<CommandAttribute> pageElements = Util.PaginateDictionary(CommandsCache, displayPage, elementsPerPage);
+            List<CommandAttribute> pageElements = Util.PaginateDictionary(filteredCommands, displayPage, elementsPerPage);
             string help = "----Command list----" + "\n";
             foreach (CommandAttribute element in pageElements)
             {
