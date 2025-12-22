@@ -1223,12 +1223,29 @@ namespace GameManagers
                         SuggestionState.IsTabCompleting = false;
                         SuggestionState.SetOriginalContext(partial, spaceIndex + 1, input.Length);
                         var players = new List<Player>();
+                        string partialLower = partial.ToLower();
+                        bool isNumeric = partial.All(char.IsDigit);
                         foreach (var p in PhotonNetwork.PlayerList)
                         {
-                            if (string.IsNullOrEmpty(partial) ||
-                                p.ActorNumber.ToString().StartsWith(partial))
+                            if (isNumeric)
                             {
-                                players.Add(p);
+                                if (string.IsNullOrEmpty(partial) ||
+                                    p.ActorNumber.ToString().StartsWith(partial))
+                                {
+                                    players.Add(p);
+                                }
+                            }
+                            else
+                            {
+                                string name = p.GetStringProperty(PlayerProperty.Name)
+                                             .FilterSizeTag()
+                                             .StripRichText()
+                                             .ToLower();
+                                if (string.IsNullOrEmpty(partial) ||
+                                    name.StartsWith(partialLower))
+                                {
+                                    players.Add(p);
+                                }
                             }
                         }
                         players.Sort((a, b) => a.ActorNumber.CompareTo(b.ActorNumber));
