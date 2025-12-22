@@ -1,4 +1,5 @@
-﻿using Settings;
+﻿using Photon.Realtime;
+using Settings;
 using System.Collections.Generic;
 using UnityEngine;
 using Utility;
@@ -96,19 +97,27 @@ namespace Map
 
         private void DeserializeSection(string currentSection, List<string> currentSectionItems)
         {
-            string currentSectionCSV = string.Join(Delimiter.ToString(), currentSectionItems.ToArray());
-            if (currentSection == "Options")
-                Options.Deserialize(currentSectionCSV);
-            else if (currentSection == "CustomAssets")
-                CustomAssets.Deserialize(currentSectionCSV);
-            else if (currentSection == "Objects")
-                Objects.Deserialize(currentSectionCSV);
-            else if (currentSection == "Logic")
-                Logic = currentSectionCSV;
-            else if (currentSection == "Weather")
+            try
             {
-                Weather.DeserializeFromJsonString(currentSectionCSV);
-                Weather.Preset.Value = false;
+                string currentSectionCSV = string.Join(Delimiter.ToString(), currentSectionItems.ToArray());
+                if (currentSection == "Options")
+                    Options.Deserialize(currentSectionCSV);
+                else if (currentSection == "CustomAssets")
+                    CustomAssets.Deserialize(currentSectionCSV);
+                else if (currentSection == "Objects")
+                    Objects.Deserialize(currentSectionCSV);
+                else if (currentSection == "Logic")
+                    Logic = currentSectionCSV;
+                else if (currentSection == "Weather")
+                {
+                    Weather.DeserializeFromJsonString(currentSectionCSV);
+                    Weather.Preset.Value = false;
+                }
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError("Error deserializing MapScript section " + currentSection + ": " + e.ToString());
+                throw e;
             }
         }
     }
