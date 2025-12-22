@@ -15,18 +15,18 @@ using Utility;
 
 namespace Characters
 {
-    class WallColossalShifter : BaseShifter
+    partial class WallColossalShifter : BaseShifter
     {
         public ColossalSteamState SteamState => _steamState;
         public ColossalHandState LeftHandState => _leftHandState;
         public ColossalHandState RightHandState => _rightHandState;
 
-        protected WallColossalComponentCache ColossalCache;
+        public WallColossalComponentCache ColossalCache;
         protected WallColossalAnimations ColossalAnimations;
         protected float _steamTimeLeft;
         protected float _steamBlowAwayTimeLeft;
         protected ColossalSteamState _steamState;
-        protected float WarningSteamTime = 3f;
+        public float WarningSteamTime = 3f;
         protected override float SizeMultiplier => 22f;
 
         public int MaxLeftHandHealth = 1000;
@@ -40,10 +40,10 @@ namespace Characters
         public float RightHandRecoveryTimeLeft = 0f;
         public float HandRecoveryTime = 15f;
 
-        protected float SteamBlowAwayForce = 30f;
-        protected float DefaultBlowAwayForce = 50f;
-        protected float BlowAwayMaxDistance = 60f;
-        protected float BlowAwaySteamTime = 0.5f;
+        public float SteamBlowAwayForce = 30f;
+        public float DefaultBlowAwayForce = 50f;
+        public float BlowAwayMaxDistance = 60f;
+        public float BlowAwaySteamTime = 0.5f;
 
 
         public override bool CheckNapeAngle(Vector3 hitPosition, float maxAngle)
@@ -231,8 +231,16 @@ namespace Characters
                     ToggleParticleSystem(ColossalCache.ColossalSteam2, false);
                     FadeSound(ShifterSounds.ColossalSteam1, 0f, 1f);
                     FadeSound(ShifterSounds.ColossalSteam2, 0f, 1f);
+                    
                     if (ColossalCache?.SteamHitbox != null)
                         ColossalCache.SteamHitbox.Deactivate();
+                    
+                    // Disable warning zone
+                    if (ColossalCache?.SteamWarningZone != null)
+                    {
+                        ColossalCache.SteamWarningZone.SetActive(false);
+                        ColossalCache.SteamWarningZoneComponent?.SetActive(false);
+                    }
                     break;
                     
                 case ColossalSteamState.Warning:
@@ -240,8 +248,20 @@ namespace Characters
                     ToggleParticleSystem(ColossalCache.ColossalSteam2, false);
                     FadeSound(ShifterSounds.ColossalSteam1, 0.6f, 0f);
                     PlaySound(ShifterSounds.ColossalSteam1);
+                    
                     if (ColossalCache?.SteamHitbox != null)
                         ColossalCache.SteamHitbox.Deactivate();
+                    
+                    // Enable warning zone
+                    if (ColossalCache?.SteamWarningZone != null)
+                    {
+                        ColossalCache.SteamWarningZone.SetActive(true);
+                        if (ColossalCache.SteamWarningZoneComponent != null)
+                        {
+                            ColossalCache.SteamWarningZoneComponent.Initialize(this);
+                            ColossalCache.SteamWarningZoneComponent.SetActive(true);
+                        }
+                    }
                     break;
                     
                 case ColossalSteamState.Damage:
@@ -250,8 +270,21 @@ namespace Characters
                     FadeSound(ShifterSounds.ColossalSteam1, 0f, 1f);
                     FadeSound(ShifterSounds.ColossalSteam2, 1f, 0f);
                     PlaySound(ShifterSounds.ColossalSteam2);
+                    
                     if (ColossalCache?.SteamHitbox != null)
                         ColossalCache.SteamHitbox.Activate();
+                    
+                    // Keep warning zone active during damage phase
+                    // (players already in the zone should still see the warning effect)
+                    if (ColossalCache?.SteamWarningZone != null)
+                    {
+                        ColossalCache.SteamWarningZone.SetActive(true);
+                        if (ColossalCache.SteamWarningZoneComponent != null)
+                        {
+                            ColossalCache.SteamWarningZoneComponent.Initialize(this);
+                            ColossalCache.SteamWarningZoneComponent.SetActive(true);
+                        }
+                    }
                     break;
             }
         }
@@ -526,14 +559,14 @@ namespace Characters
         }
     }
 
-    enum ColossalSteamState
+    public enum ColossalSteamState
     {
         Off,
         Warning,
         Damage
     }
 
-    enum ColossalHandState
+    public enum ColossalHandState
     {
         Healthy,
         Broken

@@ -147,6 +147,9 @@ MonoBehaviour:
   - SetRightHandHealthRPC
   - SetLeftHandStateRPC
   - SetRightHandStateRPC
+  - ToggleBuff1RPC
+  - ToggleBuff2RPC
+  - ToggleFire1RPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

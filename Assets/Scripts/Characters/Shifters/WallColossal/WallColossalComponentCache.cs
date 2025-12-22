@@ -1,5 +1,6 @@
 ﻿using Unity.VisualScripting;
 using UnityEngine;
+using Utility;
 
 namespace Characters
 {
@@ -20,6 +21,9 @@ namespace Characters
         // WallColossal/Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_R/upper_arm_R/ArmSmokeParticle
         public ParticleSystem RightHandSteam;
 
+        public GameObject SteamWarningZone;
+        public WallColossalSteamWarningZone SteamWarningZoneComponent;
+
         public WallColossalComponentCache(GameObject owner): base(owner)
         {
             Head = Transform.Find("Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/neck/head");
@@ -37,6 +41,36 @@ namespace Characters
 
             LoadAudio("Shifters/Prefabs/ShifterSounds", Neck);
             LoadAudio("Titans/Prefabs/TitanSounds", Neck);
+
+            // Create warning zone (25% larger than the steam hitbox)
+            if (SteamHitbox != null && SteamHitbox._collider != null)
+            {
+                // Create a separate GameObject for the warning zone
+                SteamWarningZone = new GameObject("SteamWarningZone");
+                SteamWarningZone.transform.SetParent(SteamHitbox.transform.parent);
+                SteamWarningZone.transform.localPosition = SteamHitbox.transform.localPosition;
+                SteamWarningZone.transform.localRotation = SteamHitbox.transform.localRotation;
+                SteamWarningZone.layer = PhysicsLayer.Hitbox;
+
+                // Add the warning zone component
+                SteamWarningZoneComponent = SteamWarningZone.AddComponent<WallColossalSteamWarningZone>();
+
+                // Copy and scale the collider
+                BoxCollider sourceCollider = SteamHitbox._collider as BoxCollider;
+
+                var warningCollider = SteamWarningZone.AddComponent<BoxCollider>();
+                warningCollider.center = sourceCollider.center;
+                warningCollider.size = sourceCollider.size * 2.4f;
+                warningCollider.isTrigger = true;
+                
+                // Add rigidbody for trigger detection
+                var rb = SteamWarningZone.AddComponent<Rigidbody>();
+                rb.isKinematic = true;
+                rb.useGravity = false;
+                
+                // Start disabled
+                SteamWarningZone.SetActive(false);
+            }
         }
     }
 }

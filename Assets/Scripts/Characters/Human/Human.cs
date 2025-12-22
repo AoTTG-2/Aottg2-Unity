@@ -74,6 +74,9 @@ namespace Characters
         private float _grabIFrames = 0f;
         private bool _bladeTrailActive;
         private int _bladeFireState;
+        private bool _buff1Active;
+        private bool _buff2Active;
+        private bool _fire1Active;
 
         // physics
         public float ReelInAxis = 0f;
@@ -966,6 +969,8 @@ namespace Characters
 
         protected override IEnumerator WaitAndDie()
         {
+            DisableAllCustomParticleEffects();
+
             if (State == HumanState.Grab)
                 PlaySound(HumanSounds.Death5);
             else
@@ -974,6 +979,7 @@ namespace Characters
                 MusicManager.PlayDeathSong();
             }
             EffectSpawner.Spawn(EffectPrefabs.Blood2, Cache.Transform.position, Cache.Transform.rotation);
+
             yield return new WaitForSeconds(2f);
             PhotonNetwork.Destroy(gameObject);
         }
@@ -3685,6 +3691,128 @@ namespace Characters
                 rightFire1.gameObject.SetActive(false);
                 leftFire2.gameObject.SetActive(true);
                 rightFire2.gameObject.SetActive(true);
+            }
+        }
+
+        /// <summary>
+        /// Toggles the Buff1 particle effect
+        /// </summary>
+        /// <param name="toggle">True to enable, false to disable</param>
+        public void ToggleBuff1(bool toggle)
+        {
+            if (IsMine())
+            {
+                if (toggle != _buff1Active)
+                    Cache.PhotonView.RPC(nameof(ToggleBuff1RPC), RpcTarget.All, new object[] { toggle });
+                _buff1Active = toggle;
+            }
+        }
+
+        [PunRPC]
+        protected void ToggleBuff1RPC(bool toggle, PhotonMessageInfo info)
+        {
+            if (info.Sender != null && info.Sender != Cache.PhotonView.Owner)
+                return;
+            if (!FinishSetup || HumanCache.Buff1 == null)
+                return;
+
+            SetParticleSystemsActive(HumanCache.Buff1, toggle);
+        }
+
+        /// <summary>
+        /// Toggles the Buff2 particle effect
+        /// </summary>
+        /// <param name="toggle">True to enable, false to disable</param>
+        public void ToggleBuff2(bool toggle)
+        {
+            if (IsMine())
+            {
+                if (toggle != _buff2Active)
+                    Cache.PhotonView.RPC(nameof(ToggleBuff2RPC), RpcTarget.All, new object[] { toggle });
+                _buff2Active = toggle;
+            }
+        }
+
+        [PunRPC]
+        protected void ToggleBuff2RPC(bool toggle, PhotonMessageInfo info)
+        {
+            if (info.Sender != null && info.Sender != Cache.PhotonView.Owner)
+                return;
+            if (!FinishSetup || HumanCache.Buff2 == null)
+                return;
+
+            SetParticleSystemsActive(HumanCache.Buff2, toggle);
+        }
+
+        /// <summary>
+        /// Toggles the Fire1 particle effect
+        /// </summary>
+        /// <param name="toggle">True to enable, false to disable</param>
+        public void ToggleFire1(bool toggle)
+        {
+            if (IsMine())
+            {
+                if (toggle != _fire1Active)
+                    Cache.PhotonView.RPC(nameof(ToggleFire1RPC), RpcTarget.All, new object[] { toggle });
+                _fire1Active = toggle;
+            }
+        }
+
+        [PunRPC]
+        protected void ToggleFire1RPC(bool toggle, PhotonMessageInfo info)
+        {
+            if (info.Sender != null && info.Sender != Cache.PhotonView.Owner)
+                return;
+            if (!FinishSetup || HumanCache.Fire1 == null)
+                return;
+            SetParticleSystemsActive(HumanCache.Fire1, toggle);
+        }
+
+        /// <summary>
+        /// Helper method to enable/disable all particle systems in a transform hierarchy
+        /// </summary>
+        /// <param name="parent">Parent transform containing particle systems</param>
+        /// <param name="active">True to enable, false to disable</param>
+        private void SetParticleSystemsActive(Transform parent, bool active)
+        {
+            if (parent == null)
+                return;
+
+            // Get all particle systems including in children
+            ParticleSystem[] particleSystems = parent.GetComponentsInChildren<ParticleSystem>(true);
+
+            foreach (ParticleSystem ps in particleSystems)
+            {
+                if (ps != null)
+                {
+                    var emission = ps.emission;
+                    emission.enabled = active;
+
+                    if (active)
+                    {
+                        if (!ps.isPlaying)
+                            ps.Play();
+                    }
+                    else
+                    {
+                        if (ps.isPlaying)
+                            ps.Stop();
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Disables all custom particle effects (Buff1, Buff2, Fire1)
+        /// Should be called on death
+        /// </summary>
+        private void DisableAllCustomParticleEffects()
+        {
+            if (IsMine())
+            {
+                ToggleBuff1(false);
+                ToggleBuff2(false);
+                ToggleFire1(false);
             }
         }
 

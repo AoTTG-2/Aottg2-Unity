@@ -2162,6 +2162,7 @@ MonoBehaviour:
   TransformingToHuman: 0
   PreviousHumanGas: 0
   DeathAnimationLength: 2
+  WarningSteamTime: 3
   MaxLeftHandHealth: 1000
   MaxRightHandHealth: 1000
   CurrentLeftHandHealth: 1000
@@ -2169,6 +2170,10 @@ MonoBehaviour:
   LeftHandRecoveryTimeLeft: 0
   RightHandRecoveryTimeLeft: 0
   HandRecoveryTime: 10
+  SteamBlowAwayForce: 30
+  DefaultBlowAwayForce: 50
+  BlowAwayMaxDistance: 60
+  BlowAwaySteamTime: 0.5
 --- !u!1 &5719381906269093821 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100172, guid: 820e0d72f75c9b2479564c9073bc1bfb, type: 3}
