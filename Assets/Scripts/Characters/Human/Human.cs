@@ -1113,6 +1113,16 @@ namespace Characters
             else
                 base.GetHitRPC(viewId, name, damage, type, collider);
         }
+
+        [PunRPC]
+        public override void GetDamagedRPC(string name, int damage)
+        {
+            if (Dead || IsInvincible)
+                return;
+
+            base.GetDamagedRPC(name, damage);
+        }
+
         public override void OnHit(BaseHitbox hitbox, object victim, Collider collider, string type, bool firstHit)
         {
             if (hitbox != null)
