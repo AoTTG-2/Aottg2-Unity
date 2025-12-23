@@ -27,25 +27,115 @@ namespace CustomLogic
             Shifter = shifter;
             Controller = shifter.GetComponent<WallColossalAIController>();
         }
-        [CLProperty(Description = "Colossal's current hand health.")]
+
+        [CLProperty(Description = "Colossal's current hand health (applies to both hands for backward compatibility).")]
         public int HandHealth
         {
-            get => Shifter.CurrentHandHealth;
+            get => (Shifter.CurrentLeftHandHealth + Shifter.CurrentRightHandHealth) / 2;
             set
             {
                 if (Shifter.IsMine())
-                    Shifter.SetCurrentHandHealth(value);
+                {
+                    Shifter.SetCurrentLeftHandHealth(value);
+                    Shifter.SetCurrentRightHandHealth(value);
+                }
             }
         }
 
-        [CLProperty(Description = "Colossal's maximum hand health.")]
+        [CLProperty(Description = "Colossal's maximum hand health (applies to both hands for backward compatibility).")]
         public int MaxHandHealth
         {
-            get => Shifter.MaxHandHealth;
+            get => (Shifter.MaxLeftHandHealth + Shifter.MaxRightHandHealth) / 2;
             set
             {
                 if (Shifter.IsMine())
-                    Shifter.SetMaxHandHealth(value);
+                {
+                    Shifter.SetMaxLeftHandHealth(value);
+                    Shifter.SetMaxRightHandHealth(value);
+                }
+            }
+        }
+
+        [CLProperty(Description = "Colossal's current left hand health.")]
+        public int LeftHandHealth
+        {
+            get => Shifter.CurrentLeftHandHealth;
+            set
+            {
+                if (Shifter.IsMine())
+                    Shifter.SetCurrentLeftHandHealth(value);
+            }
+        }
+
+        [CLProperty(Description = "Colossal's maximum left hand health.")]
+        public int MaxLeftHandHealth
+        {
+            get => Shifter.MaxLeftHandHealth;
+            set
+            {
+                if (Shifter.IsMine())
+                    Shifter.SetMaxLeftHandHealth(value);
+            }
+        }
+
+        [CLProperty(Description = "Colossal's current right hand health.")]
+        public int RightHandHealth
+        {
+            get => Shifter.CurrentRightHandHealth;
+            set
+            {
+                if (Shifter.IsMine())
+                    Shifter.SetCurrentRightHandHealth(value);
+            }
+        }
+
+        [CLProperty(Description = "Colossal's maximum right hand health.")]
+        public int MaxRightHandHealth
+        {
+            get => Shifter.MaxRightHandHealth;
+            set
+            {
+                if (Shifter.IsMine())
+                    Shifter.SetMaxRightHandHealth(value);
+            }
+        }
+
+        [CLProperty(Description = "Colossal's left hand state (Healthy or Broken).")]
+        public string LeftHandState => Shifter.LeftHandState.ToString();
+
+        [CLProperty(Description = "Colossal's right hand state (Healthy or Broken).")]
+        public string RightHandState => Shifter.RightHandState.ToString();
+
+        [CLProperty(Description = "Time in seconds for a hand to fully recover from broken state.")]
+        public float HandRecoveryTime
+        {
+            get => Shifter.HandRecoveryTime;
+            set
+            {
+                if (Shifter.IsMine())
+                    Shifter.HandRecoveryTime = value;
+            }
+        }
+
+        [CLProperty(Description = "Time remaining in seconds for left hand to recover (0 if not recovering).")]
+        public float LeftHandRecoveryTimeLeft
+        {
+            get => Shifter.LeftHandRecoveryTimeLeft;
+            set
+            {
+                if (Shifter.IsMine())
+                    Shifter.LeftHandRecoveryTimeLeft = value;
+            }
+        }
+
+        [CLProperty(Description = "Time remaining in seconds for right hand to recover (0 if not recovering).")]
+        public float RightHandRecoveryTimeLeft
+        {
+            get => Shifter.RightHandRecoveryTimeLeft;
+            set
+            {
+                if (Shifter.IsMine())
+                    Shifter.RightHandRecoveryTimeLeft = value;
             }
         }
 
@@ -70,7 +160,7 @@ namespace CustomLogic
         }
 
         [CLProperty(Description = "Colossal's current steam state (Off, Warning, or Damage).")]
-        public string SteamState => Shifter._steamState.ToString();
+        public string SteamState => Shifter.SteamState.ToString();
 
 
         [CLMethod("Causes the colossal to perform steam attack.")]

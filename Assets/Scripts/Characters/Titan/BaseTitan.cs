@@ -166,6 +166,13 @@ namespace Characters
             return EnableAI && !Dead && (State == TitanState.Idle && _stateTimeLeft <= 0f) || State == TitanState.Run || State == TitanState.Walk || State == TitanState.Sprint;
         }
 
+        public virtual bool CanEmote()
+        {
+            if (!AI)
+                return EnableAI && !Dead && (State == TitanState.Idle && _stateTimeLeft <= 0f) || State == TitanState.Run || State == TitanState.Walk || State == TitanState.Sprint;
+            return EnableAI && !Dead && State != TitanState.Dead;
+        }
+
         public virtual bool CanStun()
         {
             return State != TitanState.Stun && !Dead && EnableAI;

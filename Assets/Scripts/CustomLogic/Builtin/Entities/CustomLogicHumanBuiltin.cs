@@ -505,5 +505,33 @@ namespace CustomLogic
                 Human.Stats.DisablePerks();
         }
 
+        /// <summary>
+        /// Enables or disables a particle effect by name
+        /// </summary>
+        /// <param name="effectName">Name of the effect: "Buff1", "Buff2", or "Fire1"</param>
+        /// <param name="enabled">True to enable, false to disable</param>
+        [CLMethod(description: "Enables or disables a particle effect. Available effects: Buff1, Buff2, Fire1")]
+        public void SetParticleEffect(string effectName, bool enabled)
+        {
+            if (!Human.IsMine())
+                return;
+
+            switch (effectName)
+            {
+                case "Buff1":
+                    Human.ToggleBuff1(enabled);
+                    break;
+                case "Buff2":
+                    Human.ToggleBuff2(enabled);
+                    break;
+                case "Fire1":
+                    Human.ToggleFire1(enabled);
+                    break;
+                default:
+                    // Invalid effect name, do nothing
+                    break;
+            }
+        }
+
     }
 }

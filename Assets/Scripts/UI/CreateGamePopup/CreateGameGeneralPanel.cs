@@ -19,6 +19,8 @@ namespace UI
             string cat = "CreateGamePopup";
             string sub = "General";
             ElementStyle dropdownStyle = new ElementStyle(titleWidth: 200f, themePanel: ThemePanel);
+
+            
             string[] mapNames = BuiltinLevels.GetMapNames(settings.General.MapCategory.Value);
             if (!mapNames.Contains(settings.General.MapName.Value))
             {
@@ -30,7 +32,14 @@ namespace UI
             string mapCategory = SettingsManager.InGameUI.General.MapCategory.Value;
             string mapName = SettingsManager.InGameUI.General.MapName.Value;
             MapScript script = new MapScript();
-            script.Deserialize(BuiltinLevels.LoadMap(mapCategory, mapName));
+            try
+            {
+                script.Deserialize(BuiltinLevels.LoadMap(mapCategory, mapName));
+            }
+            catch
+            {
+                // Need a non-persisting banner to show up here as popups break when used in setup.
+            }
             bool hasMapLogic = script.Logic.Trim() != string.Empty;
             string[] gameModes = BuiltinLevels.GetGameModes(settings.General.MapCategory.Value, settings.General.MapName.Value, hasMapLogic);
             if (!gameModes.Contains(settings.General.GameMode.Value))
