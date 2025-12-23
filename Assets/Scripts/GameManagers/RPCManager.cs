@@ -55,9 +55,8 @@ namespace GameManagers
         public void LoadSkyboxRPC(string urls, PhotonMessageInfo info)
         {
             var manager = (InGameManager)SceneLoader.CurrentGameManager;
-            string[] urlArr = urls.Split(',');
             if (info.Sender == PhotonNetwork.MasterClient)
-                manager.StartCoroutine(manager.OnLoadSkyboxRPC(urlArr));
+                manager.StartCoroutine(manager.OnLoadSkyboxRPC(urls.Split(',')));
         }
 
         [PunRPC]
@@ -139,9 +138,9 @@ namespace GameManagers
         }
 
         [PunRPC]
-        public void StopVoiceRPC(PhotonMessageInfo Info)
+        public void StopVoiceRPC(int viewId, PhotonMessageInfo info)
         {
-            EmoteHandler.OnStopVoiceRPC(Info);
+            EmoteHandler.OnStopVoiceRPC(viewId, info);
         }
 
         [PunRPC]
@@ -237,6 +236,7 @@ namespace GameManagers
         [PunRPC]
         public void AnnounceRPC(string message, PhotonMessageInfo info)
         {
+            if (info.Sender != null && info.Sender != PhotonNetwork.MasterClient) return;
             ChatManager.OnAnnounceRPC(message);
         }
 

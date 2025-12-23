@@ -243,11 +243,14 @@ namespace Characters
         }
 
         [PunRPC]
-        public void InitRPC(bool ai, string name, string guild)
+        public void InitRPC(bool ai, string name, string guild, PhotonMessageInfo info)
         {
-            AI = ai;
-            Name = name;
-            Guild = guild;
+            if (info.Sender == null || info.Sender == photonView.Owner)
+            {
+                AI = ai;
+                Name = name;
+                Guild = guild;
+            }
         }
 
         [PunRPC]
