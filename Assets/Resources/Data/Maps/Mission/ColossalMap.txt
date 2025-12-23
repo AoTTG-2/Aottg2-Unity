@@ -477,25 +477,6 @@ Scene,Decor/Box1,2767,0,1,1,1,0,Box1,603,10.45856,53,0,299.3333,0,0.75,0.75,0.75
 Scene,Decor/Box1,2768,0,1,1,1,0,Box1,604.2816,10.45856,84.18816,0,299.3333,0,0.75,0.75,0.75,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Barrel4,2769,0,1,1,1,0,Barrel4,483.6082,10.27209,-61.77251,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Barrel4,2770,0,1,1,1,0,Barrel4,477.1974,12.62389,-53.61294,292.0137,45.26635,274.1263,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Geometry/Cuboid,2779,0,1,1,1,0,Cuboid,-3.700378,19.518,-408.3779,0,0,0,1.948371,1.36248,13.25029,Physical,Entities,Default,Basic|255/255/255/255|Brick/Brick7|1.5/3|0/0,;
-Scene,Geometry/Cuboid,2772,0,1,1,1,0,Cuboid,-3.700378,19.77507,-408.3779,0,0,0,1.843331,1.36248,13.16654,Physical,Entities,Default,Basic|255/255/255/255|Nature/Grass4|0.5/2|0/0,;
-Scene,Nature/Tree18,2773,0,1,1,1,0,Tree18,-4.679422,26.49871,-458.855,0,0,0,0.1,0.1,0.1,None,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Tree18,2774,0,1,1,1,0,Tree18,-4.679422,26.49871,-428.3138,0,0,0,0.1,0.1,0.1,None,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Tree18,2775,0,1,1,1,0,Tree18,-4.679422,26.49871,-388.9454,0,0,0,0.1,0.1,0.1,None,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Tree18,2776,0,1,1,1,0,Tree18,-4.679422,26.49871,-357.7726,0,0,0,0.1,0.1,0.1,None,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Field3,2786,0,1,1,1,0,Field3,-4.121251,26.50008,-405.4602,0,270,0,0.25,0.2,0.25,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Field3,2785,0,1,1,1,0,Field3,-4.121251,26.50008,-423.0572,0,270,0,0.25,0.2,0.25,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Field3,2784,0,1,1,1,0,Field3,-4.121251,26.50008,-442.6237,0,270,0,0.25,0.2,0.25,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Field3,2783,0,1,1,1,0,Field3,-4.121251,26.50008,-463.3177,0,270,0,0.25,0.2,0.25,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Field3,2787,0,1,1,1,0,Field3,-4.121251,26.50008,-388.6117,0,270,0,0.25,0.2,0.25,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Field3,2788,0,1,1,1,0,Field3,-4.121251,26.50008,-371.2019,0,270,0,0.25,0.2,0.25,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Field3,2789,0,1,1,1,0,Field3,-4.121251,26.50008,-354.6767,0,270,0,0.25,0.2,0.25,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Field3,2790,0,1,1,1,0,Field3,-4.121251,26.50008,-365.0645,0,0,0,0.2,0.2,0.2,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Field3,2791,0,1,1,1,0,Field3,-3.608257,26.50008,-379.1835,0,180,0,0.2,0.2,0.2,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Field3,2792,0,1,1,1,0,Field3,-3.608257,26.50008,-414.4652,0,180,0,0.2,0.2,0.2,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Field3,2793,0,1,1,1,0,Field3,-3.608257,26.50008,-451.5694,0,180,0,0.2,0.2,0.2,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Field3,2794,0,1,1,1,0,Field3,-3.608257,26.50008,-433.897,0,0,0,0.2,0.2,0.2,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Field3,2795,0,1,1,1,0,Field3,-3.608257,26.50008,-395.1432,0,0,0,0.2,0.2,0.2,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Tree12,2810,0,1,1,1,0,Tree12,-396.7007,42.04031,-84.24413,0,0,0,0.2,0.33,0.2,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Tree12,2811,0,1,1,1,0,Tree12,-334.1427,41.58248,28.27917,0,0,0,0.2,0.33,0.2,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Bell1b,2926,0,1,0,1,1,Bell1b,482,111,-505,0,0,0,1.5,1.5,1.5,Physical,Entities,Default,Default|255/255/255/255,Bell|ResetDelay:0.3|LureTitans:false|LureRadius:100|LureDuration:5|VelocityHitThreshold:30;
@@ -1147,48 +1128,59 @@ class Main
 	_wallGateDestroyed = null;
 	_hasFinalDialogue = false;
 	_bossHealthBar = null;
+	_difficulty = 1;
 
 	function OnGameStart()
 	{
 		Game.SetPlaylist("Battle");
-		difficulty = Game.GetGeneralSetting("Difficulty");
-		if (difficulty == 0)
+		self._difficulty = Game.GetGeneralSetting("Difficulty");
+		if (self._difficulty == 0)
 		{
 			self._handCooldown = 1000.0;
 		}
-		elif (difficulty == 1)
+		elif (self._difficulty == 1)
 		{
 			self._handCooldown = 10.0;
 		}
-		elif (difficulty == 2)
+		elif (self._difficulty == 2)
 		{
 			self._handCooldown = 7.0;
 		}
-		elif (difficulty == 3)
+		elif (self._difficulty == 3)
 		{
 			self._handCooldown = 5.5;
 		}
-		elif (difficulty == 4)
+		elif (self._difficulty == 4)
 		{
 			self._handCooldown = 4.0;
 		}
-
 		self._bossHealthBar = BossHealthBar("Colossal Titan", 1000.0, "Top", true);
-
-        # Set hand health values
-        self._bossHealthBar.SetLeftHandMaxHealth(500.0);
-        self._bossHealthBar.SetLeftHandHealth(500.0);
-        self._bossHealthBar.SetRightHandMaxHealth(500.0);
-        self._bossHealthBar.SetRightHandHealth(500.0);
-
-        # Show the health bar
-        self._bossHealthBar.Show();
-
 		self._wallGateStart = Map.FindMapObjectByName("WallGateStart");
 		self._wallGateDestroyed = Map.FindMapObjectByName("WallGateDestroyed");
 		if (Network.IsMasterClient)
 		{
+			self.ColossalCutscene();
 			Network.SendMessageAll("StartCutscene");
+		}
+		elif (!self._hasKicked)
+		{
+			Cutscene.Start("MainCutscene", true);
+		}
+	}
+
+	function OnPlayerJoin(player)
+	{
+		if (self._hasKicked)
+		{
+			if (self._colossal != null)
+			{
+				Network.SendMessage(player, "SetColossal " + self._colossal.ViewID);
+			}
+			if (self._hasKicked)
+			{
+				Network.SendMessage(player, "DestroyGate");
+				Network.SendMessage(player, "SetHealthBar");
+			}
 		}
 	}
 
@@ -1202,14 +1194,51 @@ class Main
 			}
 			elif (message == "DestroyGate")
 			{
-				self._wallGateStart.Active = false;
-				self._wallGateDestroyed.Active = true;
+				self.SetDestroyedGate();
 			}
 			elif (message == "FinalDialogue")
 			{
 				self.FinalDialogue();
 			}
+			elif (message == "SetHealthBar")
+			{
+				self.SetHealthBar();
+			}
+			elif (message == "SetColossal")
+			{
+				viewID = Convert.ToInt(String.Substring(message, 12));
+				self._colossal = Game.FindCharacterByViewID(viewID);
+			}
 		}
+	}
+
+	coroutine ColossalCutscene()
+	{
+		spawnPosition = Vector3(0, 8, 755);
+		startRotation = Vector3(0, 180, 0);
+		Game.SpawnEffect("ColossalSpawn", Vector3(0, 150, 765), Vector3(-90, 0, 0), 5.0);
+		wait 2.5;
+		colossal = Game.SpawnShifterAt("WallColossal", spawnPosition, -180);
+		colossal.Size = 0.945;
+		rb = colossal.Rigidbody;
+		rb.FreezeAllPositions = true;
+		rb.FreezeAllRotations = true;
+		Network.SendMessageAll("SetColossal " + colossal.ViewID);
+		self._colossal = colossal;
+		wait 1.0;
+		colossal.Attack("AttackKick");
+		colossal.WallAttackCooldownLeft = 999;
+		wait 1.0;
+		Network.SendMessageAll("DestroyGate");
+		position = Vector3(0, 50, 650);
+		velocity = Vector3(0, 200, -200);
+		gravity = Vector3(0, -9000, 0);
+		Game.SpawnUnscaledEffect("ColossalKick", position, Vector3(0,180,0));
+		Game.SpawnProjectile("Rock2", position, Vector3.Zero, velocity, gravity, 10000, "Titan", 15.0);
+		wait 3.5;
+		Network.SendMessageAll("SetHealthBar");
+		colossal.WallAttackCooldownLeft = 5.0;
+		Main._titanSpawnTimeLeft = 5.0;
 	}
 
 	function FinalDialogue()
@@ -1219,99 +1248,106 @@ class Main
 
 	function OnTick()
 	{
-		if (Network.IsMasterClient && !Game.IsEnding)
+		if (!Game.IsEnding)
 		{
-			self._titanSpawnTimeLeft -= Time.TickTime;
-			titans = Game.Titans.Count;
-			humans = Game.Humans.Count;
-			aiShifters = Game.AIShifters.Count;
-			playerShifters = Game.PlayerShifters.Count;
-			if (humans > 0 || playerShifters > 0)
+			if (Network.IsMasterClient)
 			{
-				self._hasSpawned = true;
-			}
-			if (aiShifters > 0)
-			{
-				self._hasSpawnedEnemy = true;
-			}
-			if (aiShifters == 0 && self._hasSpawnedEnemy)
-			{
-				if (titans > 0 && !self._hasFinalDialogue)
+				self._titanSpawnTimeLeft -= Time.TickTime;
+				titans = Game.Titans.Count;
+				humans = Game.Humans.Count;
+				aiShifters = Game.AIShifters.Count;
+				playerShifters = Game.PlayerShifters.Count;
+				if (humans > 0 || playerShifters > 0)
 				{
-					self._hasFinalDialogue = true;
-					Network.SendMessageAll("FinalDialogue");
-					return;
+					self._hasSpawned = true;
 				}
-				if (titans <= 0)
+				if (aiShifters > 0)
 				{
-					UI.SetLabelAll("TopCenter", "");
-					UI.SetLabelAll("MiddleCenter", "Humanity wins!");
+					self._hasSpawnedEnemy = true;
+				}
+				if (aiShifters == 0 && self._hasSpawnedEnemy)
+				{
+					if (titans > 0 && !self._hasFinalDialogue)
+					{
+						self._hasFinalDialogue = true;
+						Network.SendMessageAll("FinalDialogue");
+						return;
+					}
+					if (titans <= 0)
+					{
+						UI.SetLabelAll("TopCenter", "");
+						UI.SetLabelAll("MiddleCenter", "Humanity wins!");
+						Game.End(10.0);
+						return;
+					}
+				}
+				if (humans == 0 && playerShifters == 0 && self._hasSpawned)
+				{
+					UI.SetLabelAll("MiddleCenter", "Humanity failed!");
 					Game.End(10.0);
 					return;
 				}
-			}
-			if (humans == 0 && playerShifters == 0 && self._hasSpawned)
-			{
-				UI.SetLabelAll("MiddleCenter", "Humanity failed!");
-				Game.End(10.0);
-				return;
-			}
-			if (self._colossal != null && self._hasKicked)
-			{
-				if (self._handMode)
-				{
-					#UI.SetLabelAll("TopCenter", "<b><size=28><color=#008000>Colossal Hand: </color>" + self._colossal.HandHealth + "</size></b>");
-					if (self._colossal.LeftHandHealth <= 0 && self._colossal.RightHandHealth <= 0)
-					{
-						self._handMode = false;
-						self._colossal.StopSteam();
-						self._handCooldownLeft = self._handCooldown;
-					}
-				}
 				else
 				{
-					#UI.SetLabelAll("TopCenter", "<b><size=28><color=#ff0000>Colossal Nape: </color>" + self._colossal.Health + "</size></b>");
-					self._handCooldownLeft -= Time.TickTime;
-					if (self._handCooldownLeft <= 0)
+					UI.SetLabelAll("TopCenter", "");
+				}
+
+				if (self._colossal != null && self._hasKicked)
+				{
+					if (Network.IsMasterClient)
 					{
-						if (self._colossal.SteamState == "Off")
+						if (self._handMode)
 						{
-							self._colossal.AttackSteam();
+							#UI.SetLabelAll("TopCenter", "<b><size=28><color=#008000>Colossal Hand: </color>" + self._colossal.HandHealth + "</size></b>");
+							if (self._colossal.LeftHandHealth <= 0 && self._colossal.RightHandHealth <= 0)
+							{
+								self._handMode = false;
+								self._colossal.StopSteam();
+								self._handCooldownLeft = self._handCooldown;
+							}
 						}
 						else
 						{
-							self._handMode = true;
-							self._colossal.HandHealth = self._colossal.MaxHandHealth;
+							#UI.SetLabelAll("TopCenter", "<b><size=28><color=#ff0000>Colossal Nape: </color>" + self._colossal.Health + "</size></b>");
+							self._handCooldownLeft -= Time.TickTime;
+							if (self._handCooldownLeft <= 0)
+							{
+								if (self._colossal.SteamState == "Off")
+								{
+									self._colossal.AttackSteam();
+								}
+								else
+								{
+									self._handMode = true;
+									self._colossal.HandHealth = self._colossal.MaxHandHealth;
+								}
+							}
 						}
 					}
 				}
-
-				if (self._bossHealthBar != null)
+				elif (titans > 0)
 				{
-					self._bossHealthBar.SetMaxHealth(self._colossal.MaxHealth);
-					self._bossHealthBar.SetCurrentHealth(self._colossal.Health);
-					self._bossHealthBar.SetLeftHandMaxHealth(self._colossal.MaxLeftHandHealth);
-					self._bossHealthBar.SetLeftHandHealth(self._colossal.LeftHandHealth);
-					self._bossHealthBar.SetRightHandMaxHealth(self._colossal.MaxRightHandHealth);
-					self._bossHealthBar.SetRightHandHealth(self._colossal.RightHandHealth);
-					if (self._bossHealthBar.IsDead())
-					{
-						self._bossHealthBar.Hide();
-					}
+					Game.Debug(titans);
+					UI.SetLabelAll("TopCenter", "Titans Left: " + titans);
+				}
+				if (self._difficulty > 0 && self._titanSpawnTimeLeft <= 0 && titans < self.MaxTitans && self._colossal != null)
+				{
+					self._titanSpawnTimeLeft = self.TitanSpawnTime;
+					self.SpawnTitan();
 				}
 			}
-			elif (titans > 0)
+		}
+
+		if (self._colossal != null && self._bossHealthBar != null)
+		{
+			# Game.Print(self._colossal.Health);
+			self._bossHealthBar.SetCurrentHealth(self._colossal.Health);
+			self._bossHealthBar.SetLeftHandHealth(self._colossal.LeftHandHealth);
+			self._bossHealthBar.SetRightHandHealth(self._colossal.RightHandHealth);
+
+			if (self._bossHealthBar.IsDead())
 			{
-				UI.SetLabelAll("TopCenter", "Titans Left: " + titans);
-			}
-			else
-			{
-				UI.SetLabelAll("TopCenter", "");
-			}
-			if (self._titanSpawnTimeLeft <= 0 && titans < self.MaxTitans && self._colossal != null)
-			{
-				self._titanSpawnTimeLeft = self.TitanSpawnTime;
-				self.SpawnTitan();
+				self._bossHealthBar.Hide();
 			}
 		}
 	}
@@ -1325,6 +1361,25 @@ class Main
 		titan.DetectRange = 150;
 		titan.FocusRange = 300;
 	}
+
+	function SetHealthBar()
+	{
+		self._bossHealthBar.SetMaxHealth(self._colossal.MaxHealth);
+		self._bossHealthBar.SetCurrentHealth(self._colossal.Health);
+		self._bossHealthBar.SetLeftHandMaxHealth(self._colossal.MaxLeftHandHealth);
+		self._bossHealthBar.SetLeftHandHealth(self._colossal.LeftHandHealth);
+		self._bossHealthBar.SetRightHandMaxHealth(self._colossal.MaxRightHandHealth);
+		self._bossHealthBar.SetRightHandHealth(self._colossal.RightHandHealth);
+		self._bossHealthBar.Show();
+	}
+
+	function SetDestroyedGate()
+	{
+		self._wallGateStart.Active = false;
+		self._wallGateDestroyed.Active = true;
+		self._hasKicked = true;
+	}
+
 }
 
 cutscene MainCutscene
@@ -1338,58 +1393,17 @@ cutscene MainCutscene
 		Camera.SetRotation(startRotation);
 		Camera.SetVelocity(velocity);
 		Cutscene.ShowDialogue("Armin1", "Armin", "The colossal titan is coming, prepare yourselves!");
-		Game.SpawnEffect("ColossalSpawn", Vector3(0, 150, 765), Vector3(-90, 0, 0), 5.0);
-		wait 2.5;
-		human = Network.MyPlayer.Character;
-		if (human != null && human.Type == "Human")
-		{
-			human.IsInvincible = true;
-			human.InvincibleTimeLeft = 100.0;
-		}
-		if (Network.IsMasterClient)
-		{
-			colossal = Game.SpawnShifterAt("WallColossal", spawnPosition, -180);
-			colossal.Size = 0.945;
-			rb = colossal.Rigidbody;
-			rb.FreezeXPosition = true;
-			rb.FreezeYPosition = true;
-			rb.FreezeZPosition = true;
-			Main._colossal = colossal;
-		}
-		wait 1.0;
-		if (Network.IsMasterClient)
-		{
-			colossal.Attack("AttackKick");
-			colossal.WallAttackCooldownLeft = 2.0;
-			Main._hasKicked = true;
-		}
-		wait 0.5;
+		wait 4.0;
 		Camera.SetPosition(Vector3(200, 120, 400));
 		Camera.SetRotation(Vector3(0, -50, 0));
 		Camera.SetVelocity(velocity * -1.0);
-		wait 0.5;
-		if (Network.IsMasterClient)
-		{
-			Network.SendMessageAll("DestroyGate");
-			position = Vector3(0, 50, 650);
-			velocity = Vector3(0, 200, -200);
-			gravity = Vector3(0, -9000, 0);
-            Game.SpawnUnscaledEffect("ColossalKick", position, Vector3(0,180,0));
-			Game.SpawnProjectile("Rock2", position, Vector3.Zero, velocity, gravity, 10000, "Titan", 15.0);
-		}
-		wait 2.0;
+		wait 2.5;
 		Camera.SetPosition(Vector3(-150, 340, 630));
 		Camera.SetRotation(Vector3(0, 70, 0));
 		Camera.SetVelocity(Vector3.Zero);
 		Cutscene.HideDialogue();
 		wait 1.5;
 		Cutscene.ShowDialogue("Armin1", "Armin", "We can't get close to the Colossal titan with all the steam. Attack his hands first to distract him!");
-		wait 6.0;
-		if (human != null && human.Type == "Human")
-		{
-			human.InvincibleTimeLeft = 1.0;
-		}
-		Main._titanSpawnTimeLeft = 5.0;
 	}
 }
 
@@ -1491,7 +1505,7 @@ class BossHealthBar
     _healthBarFill = null;
     _nameLabel = null;
     _healthLabel = null;
-    _isVisible = false;
+    _isVisible = true;
 
     # Hand health bars (vertical)
     _leftHandContainer = null;
