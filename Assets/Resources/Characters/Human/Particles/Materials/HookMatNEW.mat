@@ -39,6 +39,7 @@ Material:
     m_Floats:
     - _BUILTIN_QueueControl: 0
     - _BUILTIN_QueueOffset: 0
+    - _Distance_Fade: 82.9
     - _Float: 0.8
     - _Float_1: 0
     - _Mult: 1000
