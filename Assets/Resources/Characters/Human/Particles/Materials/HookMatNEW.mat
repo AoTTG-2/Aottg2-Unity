@@ -39,9 +39,9 @@ Material:
     m_Floats:
     - _BUILTIN_QueueControl: 0
     - _BUILTIN_QueueOffset: 0
-    - _Float: 0.9
+    - _Float: 0.8
     - _Float_1: 0
-    - _Mult: 200
+    - _Mult: 1000
     m_Colors:
     - _GlintTile: {r: 1.96, g: 0.32, b: 0, a: 0}
     - _Tiling: {r: 250, g: 1, b: 0, a: 0}
