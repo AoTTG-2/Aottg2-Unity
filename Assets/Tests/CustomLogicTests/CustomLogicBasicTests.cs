@@ -280,5 +280,184 @@ class Main
             var evaluator = new OfflineCustomLogicEvaluator(script);
             Assert.AreEqual(12, evaluator.EvaluateMainMethod("TestCounter"));
         }
+
+        [Test]
+        public void TestNullComparisonsWithCustomEquals()
+        {
+            string script = @"
+class CustomObject
+{
+    _value = 0;
+    _equalsCallCount = 0;
+    
+    function Init(value)
+    {
+        self._value = value;
+    }
+    
+    function __Eq__(a, b)
+    {
+        self._equalsCallCount = self._equalsCallCount + 1;
+        
+        # Both are CustomObject instances
+        return a._value == b._value;
+    }
+    
+    function GetEqualsCallCount()
+    {
+        return self._equalsCallCount;
+    }
+}
+
+class Main
+{
+    _obj1 = null;
+    _obj2 = null;
+    _obj3 = null;
+    _nullRef = null;
+    
+    function Init()
+    {
+        self._obj1 = CustomObject(10);
+        self._obj2 = CustomObject(20);
+        self._obj3 = CustomObject(10);
+    }
+    
+    function TestNullVsNull()
+    {
+        return self._nullRef == null;
+    }
+    
+    function TestNullVsObject()
+    {
+        return self._nullRef == self._obj1;
+    }
+    
+    function TestObjectVsNull()
+    {
+        return self._obj1 == self._nullRef;
+    }
+    
+    function TestNullVsNullReverse()
+    {
+        return null == self._nullRef;
+    }
+    
+    function TestObjectVsNullReverse()
+    {
+        return null == self._obj1;
+    }
+    
+    function TestObjectVsObject_Equal()
+    {
+        return self._obj1 == self._obj3;
+    }
+    
+    function TestObjectVsObject_NotEqual()
+    {
+        return self._obj1 == self._obj2;
+    }
+    
+    function TestNotEqualsNull()
+    {
+        return self._obj1 != null;
+    }
+    
+    function TestNotEqualsNullReverse()
+    {
+        return null != self._obj1;
+    }
+    
+    function TestNotEqualsBothNull()
+    {
+        return self._nullRef != null;
+    }
+    
+    function TestAssignmentAndComparison()
+    {
+        temp = self._obj1;
+        return temp == self._obj1;
+    }
+    
+    function TestReassignmentToNull()
+    {
+        temp = self._obj1;
+        temp = null;
+        return temp == null;
+    }
+    
+    function TestEqualsCallCount()
+    {
+        # This should call __Eq__ once
+        self._obj1 = CustomObject(10);
+        self._obj2 = CustomObject(20);
+        self._obj3 = CustomObject(10);
+        result = self._obj1 == self._obj3;
+        return self._obj1.GetEqualsCallCount();
+    }
+    
+    function TestNullDoesNotCallEquals()
+    {
+        # Reset call count
+        self._obj1 = CustomObject(10);
+        # This should NOT call __Eq__ (should return false immediately)
+        result = self._obj1 == null;
+        return self._obj1.GetEqualsCallCount();
+    }
+}";
+
+            var evaluator = new OfflineCustomLogicEvaluator(script);
+            
+            // Test null vs null
+            Assert.AreEqual(true, evaluator.EvaluateMainMethod("TestNullVsNull"), 
+                "null == null should be true");
+            
+            // Test null vs object
+            Assert.AreEqual(false, evaluator.EvaluateMainMethod("TestNullVsObject"), 
+                "null == object should be false");
+            
+            // Test object vs null
+            Assert.AreEqual(false, evaluator.EvaluateMainMethod("TestObjectVsNull"), 
+                "object == null should be false");
+            
+            // Test reverse comparisons
+            Assert.AreEqual(true, evaluator.EvaluateMainMethod("TestNullVsNullReverse"), 
+                "null == null (reverse) should be true");
+            
+            Assert.AreEqual(false, evaluator.EvaluateMainMethod("TestObjectVsNullReverse"), 
+                "null == object (reverse) should be false");
+            
+            // Test object vs object comparisons
+            Assert.AreEqual(true, evaluator.EvaluateMainMethod("TestObjectVsObject_Equal"), 
+                "objects with same value should be equal");
+            
+            Assert.AreEqual(false, evaluator.EvaluateMainMethod("TestObjectVsObject_NotEqual"), 
+                "objects with different values should not be equal");
+            
+            // Test != operator
+            Assert.AreEqual(true, evaluator.EvaluateMainMethod("TestNotEqualsNull"), 
+                "object != null should be true");
+            
+            Assert.AreEqual(true, evaluator.EvaluateMainMethod("TestNotEqualsNullReverse"), 
+                "null != object should be true");
+            
+            Assert.AreEqual(false, evaluator.EvaluateMainMethod("TestNotEqualsBothNull"), 
+                "null != null should be false");
+            
+            // Test assignment and comparison
+            Assert.AreEqual(true, evaluator.EvaluateMainMethod("TestAssignmentAndComparison"), 
+                "assigned reference should equal original");
+            
+            Assert.AreEqual(true, evaluator.EvaluateMainMethod("TestReassignmentToNull"), 
+                "reassigned to null should equal null");
+            
+            // Test that __Eq__ is called when comparing objects
+            Assert.AreEqual(1, evaluator.EvaluateMainMethod("TestEqualsCallCount"), 
+                "__Eq__ should be called once when comparing two objects");
+            
+            // Test that __Eq__ is NOT called when comparing with null
+            Assert.AreEqual(0, evaluator.EvaluateMainMethod("TestNullDoesNotCallEquals"), 
+                "__Eq__ should NOT be called when comparing object with null");
+        }
     }
 }

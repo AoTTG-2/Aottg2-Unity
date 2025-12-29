@@ -456,7 +456,10 @@ namespace CustomLogic
                 return Character == null;
             if (!(other is CustomLogicCharacterBuiltin))
                 return false;
-            return Character == ((CustomLogicCharacterBuiltin)other).Character;
+            var otherCharacter = ((CustomLogicCharacterBuiltin)other).Character;
+            if (Character == null)
+                return otherCharacter == null;
+            return Character == otherCharacter;
         }
 
         [CLMethod]
