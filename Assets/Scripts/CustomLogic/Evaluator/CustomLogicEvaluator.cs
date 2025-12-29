@@ -1033,6 +1033,8 @@ namespace CustomLogic
         {
             if (left == null && right == null)
                 return true;
+            if (left == null || right == null)
+                return false;
             if (left is CustomLogicClassInstance)
             {
                 CustomLogicClassInstance leftInstance = (CustomLogicClassInstance)left;
@@ -1059,9 +1061,7 @@ namespace CustomLogic
                     return (bool)result;
                 }
             }
-            if (left != null)
-                return left.Equals(right);
-            return right.Equals(left);
+            return left.Equals(right);
         }
 
         public static T ConvertTo<T>(object obj)
