@@ -37,7 +37,7 @@
       "private": false
     },
     {
-      "label": "ExludeLayers",
+      "label": "ExcludeLayers",
       "type": {
         "name": "int",
         "typeArguments": []

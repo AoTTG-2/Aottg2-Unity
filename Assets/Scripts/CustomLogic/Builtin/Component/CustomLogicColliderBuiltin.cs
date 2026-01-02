@@ -37,7 +37,7 @@ namespace CustomLogic
 
         /// <inheritdoc cref="Collider.excludeLayers"/>
         [CLProperty(Description = "The layers that this Collider should exclude when deciding if the Collider can contact another Collider.")]
-        public int ExludeLayers
+        public int ExcludeLayers
         {
             get => collider.excludeLayers;
             set => collider.excludeLayers = value;

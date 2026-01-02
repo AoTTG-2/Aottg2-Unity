@@ -9,7 +9,7 @@ Overloads operators:
 |AttachedArticulationBody|[Transform](../objects/Transform.md)|True|The transform of the rigidbody this collider is attached to.|
 |ContactOffset|float|False|The contact offset used by the collider to avoid tunneling.|
 |Enabled|bool|False|Whether the collider is enabled.|
-|ExludeLayers|int|False|The layers that this Collider should exclude when deciding if the Collider can contact another Collider.|
+|ExcludeLayers|int|False|The layers that this Collider should exclude when deciding if the Collider can contact another Collider.|
 |IncludeLayers|int|False|The additional layers that this Collider should include when deciding if the Collider can contact another Collider.|
 |IsTrigger|bool|False|Whether the collider is a trigger. Triggers don't cause physical collisions.|
 |Center|[Vector3](../objects/Vector3.md)|True|The center of the collider's bounding box in world space.|
