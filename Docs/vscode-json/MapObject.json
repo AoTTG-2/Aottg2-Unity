@@ -282,7 +282,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the component to add.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -303,7 +303,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the component to remove.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -324,7 +324,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the component to get.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -345,7 +345,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the component.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -355,7 +355,7 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "Whether the component should be enabled.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -376,7 +376,7 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "Whether all components should be enabled.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -397,7 +397,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The collision mode (e.g., \"Region\", \"Hitboxes\").",
           "isOptional": false,
           "isVariadic": false
         },
@@ -407,7 +407,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "What the collider should collide with (e.g., \"Hitboxes\").",
           "isOptional": false,
           "isVariadic": false
         },
@@ -417,7 +417,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The center position of the sphere collider.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -427,7 +427,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The radius of the sphere collider.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -448,7 +448,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The collision mode (e.g., \"Region\", \"Hitboxes\").",
           "isOptional": false,
           "isVariadic": false
         },
@@ -458,7 +458,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "What the collider should collide with (e.g., \"Hitboxes\").",
           "isOptional": false,
           "isVariadic": false
         },
@@ -468,7 +468,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The center position of the box collider (optional, defaults to calculated bounds).",
           "isOptional": true,
           "isVariadic": false
         },
@@ -478,7 +478,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The size of the box collider (optional, defaults to calculated bounds).",
           "isOptional": true,
           "isVariadic": false
         }
@@ -499,7 +499,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The team that can target this (e.g., \"Human\", \"Titan\").",
           "isOptional": false,
           "isVariadic": false
         },
@@ -509,7 +509,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The center position of the sphere target.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -519,7 +519,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The radius of the sphere target.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -540,7 +540,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The team that can target this (e.g., \"Human\", \"Titan\").",
           "isOptional": false,
           "isVariadic": false
         },
@@ -550,7 +550,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The center position of the box target.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -560,7 +560,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The size of the box target.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -581,7 +581,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the child object to get.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -599,7 +599,7 @@
           }
         ]
       },
-      "description": "Get all child objects",
+      "description": "Get all child objects.",
       "parameters": [],
       "kind": "function"
     },
@@ -617,7 +617,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the transform to get.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -638,7 +638,7 @@
             "name": "Color",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The color to set.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -659,7 +659,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The position to check.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -672,7 +672,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "Get the bounds average center",
+      "description": "Get the bounds average center.",
       "parameters": [],
       "kind": "function"
     },
@@ -682,7 +682,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "Get the bounds center",
+      "description": "Get the bounds center.",
       "parameters": [],
       "kind": "function"
     },
@@ -692,7 +692,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "Get the bounds size",
+      "description": "Get the bounds size.",
       "parameters": [],
       "kind": "function"
     },
@@ -702,7 +702,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "Get the bounds min",
+      "description": "Get the bounds min.",
       "parameters": [],
       "kind": "function"
     },
@@ -712,7 +712,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "Get the bounds max",
+      "description": "Get the bounds max.",
       "parameters": [],
       "kind": "function"
     },
@@ -722,7 +722,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "Get the bounds extents",
+      "description": "Get the bounds extents.",
       "parameters": [],
       "kind": "function"
     },
@@ -737,7 +737,7 @@
           }
         ]
       },
-      "description": "Get the corners of the bounds",
+      "description": "Get the corners of the bounds.",
       "parameters": [],
       "kind": "function"
     },
@@ -755,7 +755,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The tag to check for.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -776,7 +776,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the builtin component to add (e.g., \"DayLight\").",
           "isOptional": false,
           "isVariadic": false
         }
@@ -797,7 +797,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the builtin component to get.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -818,7 +818,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the builtin component to remove.",
           "isOptional": false,
           "isVariadic": false
         }

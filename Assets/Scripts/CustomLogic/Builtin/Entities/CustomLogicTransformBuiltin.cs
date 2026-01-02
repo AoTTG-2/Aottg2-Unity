@@ -3,10 +3,7 @@ using UnityEngine;
 
 namespace CustomLogic
 {
-    /// <summary>
-    /// Represents a transform.
-    /// </summary>
-    [CLType(Name = "Transform", Abstract = true)]
+    [CLType(Name = "Transform", Abstract = true, Description = "Represents a transform.")]
     partial class CustomLogicTransformBuiltin : BuiltinClassInstance, ICustomLogicEquals
     {
         public readonly Transform Value;
@@ -191,7 +188,9 @@ namespace CustomLogic
         }
 
         [CLMethod("Gets the transform of the specified child.")]
-        public CustomLogicTransformBuiltin GetTransform(string name)
+        public CustomLogicTransformBuiltin GetTransform(
+            [CLParam("The name of the child transform to find.")]
+            string name)
         {
             var transform = Value.Find(name);
             return transform != null ? new CustomLogicTransformBuiltin(transform) : null;
@@ -209,7 +208,9 @@ namespace CustomLogic
         }
 
         [CLMethod("Checks if the given animation is playing.")]
-        public bool IsPlayingAnimation(string anim)
+        public bool IsPlayingAnimation(
+            [CLParam("The name of the animation to check.")]
+            string anim)
         {
             if (_animation != null)
                 return _animation.IsPlaying(anim);
@@ -223,7 +224,11 @@ namespace CustomLogic
         }
 
         [CLMethod("Plays the specified animation.")]
-        public void PlayAnimation(string anim, float fade = 0.1f)
+        public void PlayAnimation(
+            [CLParam("The name of the animation to play.")]
+            string anim,
+            [CLParam("The fade time in seconds for cross-fading (default: 0.1).")]
+            float fade = 0.1f)
         {
             if (_animation != null)
             {
@@ -242,7 +247,9 @@ namespace CustomLogic
         }
 
         [CLMethod("Gets the length of the specified animation.")]
-        public float GetAnimationLength(string anim)
+        public float GetAnimationLength(
+            [CLParam("The name of the animation.")]
+            string anim)
         {
             if (_animation != null)
                 return _animation.GetAnimationLength(anim);
@@ -266,7 +273,9 @@ namespace CustomLogic
         }
 
         [CLMethod("Toggles the particle system.")]
-        public void ToggleParticle(bool enabled)
+        public void ToggleParticle(
+            [CLParam("Whether to enable or disable the particle emission.")]
+            bool enabled)
         {
             if (!_particleSystem.isPlaying)
                 _particleSystem.Play();
@@ -274,39 +283,58 @@ namespace CustomLogic
             emission.enabled = enabled;
         }
 
-        /// <inheritdoc cref="Transform.InverseTransformDirection(Vector3)"/>
-        [CLMethod] public CustomLogicVector3Builtin InverseTransformDirection(CustomLogicVector3Builtin direction) => Value.InverseTransformDirection(direction);
+        [CLMethod("Transforms a direction from world space to local space. Returns: The direction in local space.")]
+        public CustomLogicVector3Builtin InverseTransformDirection(
+            [CLParam("The direction vector in world space.")]
+            CustomLogicVector3Builtin direction)
+            => Value.InverseTransformDirection(direction);
 
-        /// <inheritdoc cref="Transform.InverseTransformPoint(Vector3)"/>
-        [CLMethod] public CustomLogicVector3Builtin InverseTransformPoint(CustomLogicVector3Builtin point) => Value.InverseTransformPoint(point);
+        [CLMethod("Transforms a position from world space to local space. Returns: The position in local space.")]
+        public CustomLogicVector3Builtin InverseTransformPoint(
+            [CLParam("The point in world space.")]
+            CustomLogicVector3Builtin point)
+            => Value.InverseTransformPoint(point);
 
-        /// <inheritdoc cref="Transform.TransformDirection(Vector3)"/>
-        [CLMethod] public CustomLogicVector3Builtin TransformDirection(CustomLogicVector3Builtin direction) => Value.TransformDirection(direction);
+        [CLMethod("Transforms a direction from local space to world space. Returns: The direction in world space.")]
+        public CustomLogicVector3Builtin TransformDirection(
+            [CLParam("The direction vector in local space.")]
+            CustomLogicVector3Builtin direction)
+            => Value.TransformDirection(direction);
 
-        /// <inheritdoc cref="Transform.TransformPoint(Vector3)"/>
-        [CLMethod] public CustomLogicVector3Builtin TransformPoint(CustomLogicVector3Builtin point) => Value.TransformPoint(point);
+        [CLMethod("Transforms a position from local space to world space. Returns: The position in world space.")]
+        public CustomLogicVector3Builtin TransformPoint(
+            [CLParam("The point in local space.")]
+            CustomLogicVector3Builtin point)
+            => Value.TransformPoint(point);
 
-        /// <inheritdoc cref="Transform.Rotate(Vector3)"/>
-        [CLMethod]
-        public void Rotate(CustomLogicVector3Builtin rotation)
+        [CLMethod("Rotates the transform by the given rotation in euler angles.")]
+        public void Rotate(
+            [CLParam("The rotation in euler angles to apply.")]
+            CustomLogicVector3Builtin rotation)
         {
             Value.Rotate(rotation);
             _needSetLocalRotation = true;
             _needSetRotation = true;
         }
 
-        /// <inheritdoc cref="Transform.RotateAround(Vector3, Vector3, float)"/>
-        [CLMethod]
-        public void RotateAround(CustomLogicVector3Builtin point, CustomLogicVector3Builtin axis, float angle)
+        [CLMethod("Rotates the transform around a point by the given angle.")]
+        public void RotateAround(
+            [CLParam("The point to rotate around.")]
+            CustomLogicVector3Builtin point,
+            [CLParam("The axis to rotate around.")]
+            CustomLogicVector3Builtin axis,
+            [CLParam("The angle in degrees to rotate.")]
+            float angle)
         {
             _needSetLocalRotation = true;
             _needSetRotation = true;
             Value.RotateAround(point.Value, axis.Value, angle);
         }
 
-        /// <inheritdoc cref="Transform.LookAt(Vector3)"/>
-        [CLMethod]
-        public void LookAt(CustomLogicVector3Builtin target)
+        [CLMethod("Rotates the transform to look at the target position.")]
+        public void LookAt(
+            [CLParam("The world position to look at.")]
+            CustomLogicVector3Builtin target)
         {
             _needSetLocalRotation = true;
             _needSetRotation = true;
@@ -314,14 +342,18 @@ namespace CustomLogic
         }
 
         [CLMethod("Sets the enabled state of all child renderers.")]
-        public void SetRenderersEnabled(bool enabled)
+        public void SetRenderersEnabled(
+            [CLParam("Whether to enable or disable the renderers.")]
+            bool enabled)
         {
             foreach (var renderer in Value.GetComponentsInChildren<Renderer>())
                 renderer.enabled = enabled;
         }
 
         [CLMethod("Gets colliders of the transform.", ReturnTypeArguments = new[] { "Collider" })]
-        public CustomLogicListBuiltin GetColliders(bool recursive = false)
+        public CustomLogicListBuiltin GetColliders(
+            [CLParam("If true, includes colliders from all children recursively (default: false).")]
+            bool recursive = false)
         {
             var listBuiltin = new CustomLogicListBuiltin();
             if (recursive)
@@ -344,7 +376,7 @@ namespace CustomLogic
         public static implicit operator CustomLogicTransformBuiltin(Transform value) => new CustomLogicTransformBuiltin(value);
         public static implicit operator Transform(CustomLogicTransformBuiltin value) => value.Value;
 
-        [CLMethod]
+        [CLMethod("Checks if two transforms are equal. Returns: True if the transforms are equal, false otherwise.")]
         public bool __Eq__(object self, object other)
         {
             return (self, other) switch
@@ -355,7 +387,7 @@ namespace CustomLogic
             };
         }
 
-        [CLMethod]
+        [CLMethod("Gets the hash code of the transform. Returns: The hash code.")]
         public int __Hash__() => Value == null ? 0 : Value.GetHashCode();
     }
 }

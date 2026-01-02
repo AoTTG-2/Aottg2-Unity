@@ -6,10 +6,7 @@ using Utility;
 
 namespace CustomLogic
 {
-    /// <summary>
-    /// MapObject represents a map object created in the editor or spawned at runtime using Map static methods.
-    /// </summary>
-    [CLType(Name = "MapObject", Abstract = true)]
+    [CLType(Name = "MapObject", Abstract = true, Description = "MapObject represents a map object created in the editor or spawned at runtime using Map static methods.")]
     partial class CustomLogicMapObjectBuiltin : BuiltinClassInstance
     {
         public MapObject Value;
@@ -25,24 +22,24 @@ namespace CustomLogic
             Value = obj;
         }
 
-        [CLProperty(description: "Object does not move")]
+        [CLProperty("Object does not move")]
         public bool Static => Value.ScriptObject.Static;
 
-        [CLProperty(description: "The position of the object")]
+        [CLProperty("The position of the object")]
         public CustomLogicVector3Builtin Position
         {
             get => new CustomLogicVector3Builtin(Value.GameObject.transform.position);
             set => Value.GameObject.transform.position = value.Value;
         }
 
-        [CLProperty(description: "The local position of the object")]
+        [CLProperty("The local position of the object")]
         public CustomLogicVector3Builtin LocalPosition
         {
             get => new CustomLogicVector3Builtin(Value.GameObject.transform.localPosition);
             set => Value.GameObject.transform.localPosition = value.Value;
         }
 
-        [CLProperty(description: "The rotation of the object")]
+        [CLProperty("The rotation of the object")]
         public CustomLogicVector3Builtin Rotation
         {
             get
@@ -62,7 +59,7 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(description: "The local rotation of the object")]
+        [CLProperty("The local rotation of the object")]
         public CustomLogicVector3Builtin LocalRotation
         {
             get
@@ -82,42 +79,42 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(description: "The rotation of the object as a quaternion")]
+        [CLProperty("The rotation of the object as a quaternion")]
         public CustomLogicQuaternionBuiltin QuaternionRotation
         {
             get => new CustomLogicQuaternionBuiltin(Value.GameObject.transform.rotation);
             set => Value.GameObject.transform.rotation = value.Value;
         }
 
-        [CLProperty(description: "The local rotation of the object as a quaternion")]
+        [CLProperty("The local rotation of the object as a quaternion")]
         public CustomLogicQuaternionBuiltin QuaternionLocalRotation
         {
             get => new CustomLogicQuaternionBuiltin(Value.GameObject.transform.localRotation);
             set => Value.GameObject.transform.localRotation = value.Value;
         }
 
-        [CLProperty(description: "The forward direction of the object")]
+        [CLProperty("The forward direction of the object")]
         public CustomLogicVector3Builtin Forward
         {
             get => new CustomLogicVector3Builtin(Value.GameObject.transform.forward.normalized);
             set => Value.GameObject.transform.forward = value.Value;
         }
 
-        [CLProperty(description: "The up direction of the object")]
+        [CLProperty("The up direction of the object")]
         public CustomLogicVector3Builtin Up
         {
             get => new CustomLogicVector3Builtin(Value.GameObject.transform.up.normalized);
             set => Value.GameObject.transform.up = value.Value;
         }
 
-        [CLProperty(description: "The right direction of the object")]
+        [CLProperty("The right direction of the object")]
         public CustomLogicVector3Builtin Right
         {
             get => new CustomLogicVector3Builtin(Value.GameObject.transform.right.normalized);
             set => Value.GameObject.transform.right = value.Value;
         }
 
-        [CLProperty(description: "The scale of the object")]
+        [CLProperty("The scale of the object")]
         public CustomLogicVector3Builtin Scale
         {
             get
@@ -134,10 +131,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(description: "The name of the object")]
+        [CLProperty("The name of the object")]
         public string Name => Value.ScriptObject.Name;
 
-        [CLProperty(description: "The parent of the object")]
+        [CLProperty("The parent of the object")]
         public object Parent
         {
             get
@@ -168,20 +165,20 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(description: "Whether the object is active")]
+        [CLProperty("Whether the object is active")]
         public bool Active
         {
             get => Value.GameObject.activeSelf;
             set => Value.GameObject.SetActive(value);
         }
 
-        [CLProperty(description: "The transform of the object")]
+        [CLProperty("The transform of the object")]
         public CustomLogicTransformBuiltin Transform => new CustomLogicTransformBuiltin(Value.GameObject.transform);
 
-        [CLProperty(description: "Whether the object has a renderer")]
+        [CLProperty("Whether the object has a renderer")]
         public bool HasRenderer => Value.renderCache.Length > 0;
 
-        [CLProperty(description: "The color of the object")]
+        [CLProperty("The color of the object")]
         public CustomLogicColorBuiltin Color
         {
             get
@@ -198,7 +195,7 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(description: "The x tiling of the object's texture")]
+        [CLProperty("The x tiling of the object's texture")]
         public float TextureTilingX
         {
             get
@@ -214,7 +211,7 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(description: "The y tiling of the object's texture")]
+        [CLProperty("The y tiling of the object's texture")]
         public float TextureTilingY
         {
             get
@@ -230,7 +227,7 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(description: "The x offset of the object's texture")]
+        [CLProperty("The x offset of the object's texture")]
         public float TextureOffsetX
         {
             get
@@ -246,7 +243,7 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(description: "The y offset of the object's texture")]
+        [CLProperty("The y offset of the object's texture")]
         public float TextureOffsetY
         {
             get
@@ -262,44 +259,54 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(description: "The ID of the object")]
+        [CLProperty("The ID of the object")]
         public int ID => Value.ScriptObject.Id;
 
 
-        [CLProperty(description: "The tag of the object")]
+        [CLProperty("The tag of the object")]
         public string Tag
         {
             get => Value.GameObject.tag;
             set => MapLoader.RegisterTag(value, Value);
         }
 
-        [CLProperty(description: "The layer of the object")]
+        [CLProperty("The layer of the object")]
         public int Layer
         {
             get => Value.GameObject.layer;
             set => Value.GameObject.layer = value;
         }
 
-        [CLMethod(description: "Add a component to the object")]
-        public CustomLogicComponentInstance AddComponent(string name)
+        [CLMethod("Add a component to the object")]
+        public CustomLogicComponentInstance AddComponent(
+            [CLParam("The name of the component to add.")]
+            string name)
         {
             return CustomLogicManager.Evaluator.AddMapObjectComponent(Value, name);
         }
 
-        [CLMethod(description: "Remove a component from the object")]
-        public void RemoveComponent(string name)
+        [CLMethod("Remove a component from the object")]
+        public void RemoveComponent(
+            [CLParam("The name of the component to remove.")]
+            string name)
         {
             CustomLogicManager.Evaluator.RemoveComponent(Value.FindComponentInstance(name));
         }
 
-        [CLMethod(description: "Get a component from the object")]
-        public CustomLogicComponentInstance GetComponent(string name)
+        [CLMethod("Get a component from the object")]
+        public CustomLogicComponentInstance GetComponent(
+            [CLParam("The name of the component to get.")]
+            string name)
         {
             return Value.FindComponentInstance(name);
         }
 
-        [CLMethod(description: "Set whether a component is enabled")]
-        public void SetComponentEnabled(string name, bool enabled)
+        [CLMethod("Set whether a component is enabled")]
+        public void SetComponentEnabled(
+            [CLParam("The name of the component.")]
+            string name,
+            [CLParam("Whether the component should be enabled.")]
+            bool enabled)
         {
             var clComp = Value.FindComponentInstance(name);
             if (clComp != null)
@@ -323,8 +330,10 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod(description: "Set whether all components are enabled")]
-        public void SetComponentsEnabled(bool enabled)
+        [CLMethod("Set whether all components are enabled")]
+        public void SetComponentsEnabled(
+            [CLParam("Whether all components should be enabled.")]
+            bool enabled)
         {
             foreach (var instance in Value.ComponentInstances)
             {
@@ -340,8 +349,16 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod(description: "Add a sphere collider to the object")]
-        public void AddSphereCollider(string collideMode, string collideWith, CustomLogicVector3Builtin center, float radius)
+        [CLMethod("Add a sphere collider to the object")]
+        public void AddSphereCollider(
+            [CLParam("The collision mode (e.g., \"Region\", \"Hitboxes\").")]
+            string collideMode,
+            [CLParam("What the collider should collide with (e.g., \"Hitboxes\").")]
+            string collideWith,
+            [CLParam("The center position of the sphere collider.")]
+            CustomLogicVector3Builtin center,
+            [CLParam("The radius of the sphere collider.")]
+            float radius)
         {
             Vector3 scale = Value.BaseScale;
             center = Util.DivideVectors(center, scale);
@@ -363,8 +380,16 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod(description: "Add a box collider to the object")]
-        public void AddBoxCollider(string collideMode, string collideWith, CustomLogicVector3Builtin center = null, CustomLogicVector3Builtin size = null)
+        [CLMethod("Add a box collider to the object")]
+        public void AddBoxCollider(
+            [CLParam("The collision mode (e.g., \"Region\", \"Hitboxes\").")]
+            string collideMode,
+            [CLParam("What the collider should collide with (e.g., \"Hitboxes\").")]
+            string collideWith,
+            [CLParam("The center position of the box collider (optional, defaults to calculated bounds).")]
+            CustomLogicVector3Builtin center = null,
+            [CLParam("The size of the box collider (optional, defaults to calculated bounds).")]
+            CustomLogicVector3Builtin size = null)
         {
             Vector3 centerV;
             Vector3 sizeV;
@@ -422,8 +447,14 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod(description: "Add a sphere target to the object")]
-        public CustomLogicMapTargetableBuiltin AddSphereTarget(string team, CustomLogicVector3Builtin center, float radius)
+        [CLMethod("Add a sphere target to the object")]
+        public CustomLogicMapTargetableBuiltin AddSphereTarget(
+            [CLParam("The team that can target this (e.g., \"Human\", \"Titan\").")]
+            string team,
+            [CLParam("The center position of the sphere target.")]
+            CustomLogicVector3Builtin center,
+            [CLParam("The radius of the sphere target.")]
+            float radius)
         {
             string collideMode = "Region";
             string collideWith = "Hitboxes";
@@ -450,8 +481,14 @@ namespace CustomLogic
             return new CustomLogicMapTargetableBuiltin(go, targetable);
         }
 
-        [CLMethod(description: "Add a box target to the object")]
-        public CustomLogicMapTargetableBuiltin AddBoxTarget(string team, CustomLogicVector3Builtin center, CustomLogicVector3Builtin size)
+        [CLMethod("Add a box target to the object")]
+        public CustomLogicMapTargetableBuiltin AddBoxTarget(
+            [CLParam("The team that can target this (e.g., \"Human\", \"Titan\").")]
+            string team,
+            [CLParam("The center position of the box target.")]
+            CustomLogicVector3Builtin center,
+            [CLParam("The size of the box target.")]
+            CustomLogicVector3Builtin size)
         {
             string collideMode = "Region";
             string collideWith = "Hitboxes";
@@ -478,8 +515,10 @@ namespace CustomLogic
             return new CustomLogicMapTargetableBuiltin(go, targetable);
         }
 
-        [CLMethod(description: "Get a child object by name")]
-        public CustomLogicMapObjectBuiltin GetChild(string name)
+        [CLMethod("Get a child object by name")]
+        public CustomLogicMapObjectBuiltin GetChild(
+            [CLParam("The name of the child object to get.")]
+            string name)
         {
             if (MapLoader.IdToChildren.ContainsKey(Value.ScriptObject.Id))
             {
@@ -496,7 +535,7 @@ namespace CustomLogic
             return null;
         }
 
-        [CLMethod(description: "Get all child objects", ReturnTypeArguments = new[] { "MapObject" })]
+        [CLMethod("Get all child objects.", ReturnTypeArguments = new[] { "MapObject" })]
         public CustomLogicListBuiltin GetChildren()
         {
             CustomLogicListBuiltin listBuiltin = new CustomLogicListBuiltin();
@@ -514,8 +553,10 @@ namespace CustomLogic
             return listBuiltin;
         }
 
-        [CLMethod(description: "Get a child transform by name")]
-        public CustomLogicTransformBuiltin GetTransform(string name)
+        [CLMethod("Get a child transform by name")]
+        public CustomLogicTransformBuiltin GetTransform(
+            [CLParam("The name of the transform to get.")]
+            string name)
         {
             Transform transform = Value.GameObject.transform.Find(name);
             if (transform != null)
@@ -525,8 +566,10 @@ namespace CustomLogic
             return null;
         }
 
-        [CLMethod(description: "Set the color of all renderers on the object")]
-        public void SetColorAll(CustomLogicColorBuiltin color)
+        [CLMethod("Set the color of all renderers on the object")]
+        public void SetColorAll(
+            [CLParam("The color to set.")]
+            CustomLogicColorBuiltin color)
         {
             if (Value.ScriptObject.Static)
             {
@@ -538,8 +581,10 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod(description: "Check if a position is within the object's bounds")]
-        public bool InBounds(CustomLogicVector3Builtin position)
+        [CLMethod("Check if a position is within the object's bounds")]
+        public bool InBounds(
+            [CLParam("The position to check.")]
+            CustomLogicVector3Builtin position)
         {
             // Iterate over colliders and check if the param position is within the bounds
             // Check all colliders on the object and on its children
@@ -553,7 +598,7 @@ namespace CustomLogic
             return false;
         }
 
-        [CLMethod(Description = "Get the bounds average center")]
+        [CLMethod("Get the bounds average center.")]
         public CustomLogicVector3Builtin GetBoundsAverageCenter()
         {
             // Check all colliders on the object and on its children
@@ -572,7 +617,7 @@ namespace CustomLogic
             return new CustomLogicVector3Builtin(Value.GameObject.transform.position);
         }
 
-        [CLMethod(Description = "Get the bounds center")]
+        [CLMethod("Get the bounds center.")]
         public CustomLogicVector3Builtin GetBoundsCenter()
         {
             if (Value.colliderCache.Length == 0)
@@ -582,7 +627,7 @@ namespace CustomLogic
             return new CustomLogicVector3Builtin(Value.colliderCache[0].bounds.center);
         }
 
-        [CLMethod(Description = "Get the bounds size")]
+        [CLMethod("Get the bounds size.")]
         public CustomLogicVector3Builtin GetBoundsSize()
         {
             if (Value.colliderCache.Length == 0)
@@ -592,7 +637,7 @@ namespace CustomLogic
             return new CustomLogicVector3Builtin(Value.colliderCache[0].bounds.size);
         }
 
-        [CLMethod(Description = "Get the bounds min")]
+        [CLMethod("Get the bounds min.")]
         public CustomLogicVector3Builtin GetBoundsMin()
         {
             if (Value.colliderCache.Length == 0)
@@ -602,7 +647,7 @@ namespace CustomLogic
             return new CustomLogicVector3Builtin(Value.colliderCache[0].bounds.min);
         }
 
-        [CLMethod(Description = "Get the bounds max")]
+        [CLMethod("Get the bounds max.")]
         public CustomLogicVector3Builtin GetBoundsMax()
         {
             if (Value.colliderCache.Length == 0)
@@ -612,7 +657,7 @@ namespace CustomLogic
             return new CustomLogicVector3Builtin(Value.colliderCache[0].bounds.max);
         }
 
-        [CLMethod(Description = "Get the bounds extents")]
+        [CLMethod("Get the bounds extents.")]
         public CustomLogicVector3Builtin GetBoundsExtents()
         {
             if (Value.colliderCache.Length == 0)
@@ -622,7 +667,7 @@ namespace CustomLogic
             return new CustomLogicVector3Builtin(Value.colliderCache[0].bounds.extents);
         }
 
-        [CLMethod(Description = "Get the corners of the bounds", ReturnTypeArguments = new[] { "Vector3" })]
+        [CLMethod("Get the corners of the bounds.", ReturnTypeArguments = new[] { "Vector3" })]
         public CustomLogicListBuiltin GetCorners()
         {
             if (Value.colliderCache.Length == 0)
@@ -662,14 +707,18 @@ namespace CustomLogic
             return result;
         }
 
-        [CLMethod(description: "Whether or not the object has the given tag")]
-        public bool HasTag(string tag)
+        [CLMethod("Whether or not the object has the given tag")]
+        public bool HasTag(
+            [CLParam("The tag to check for.")]
+            string tag)
         {
             return MapLoader.HasTag(Value, tag);
         }
 
-        [CLMethod(description: "Add a builtin component to the MapObject")]
-        public object AddBuiltinComponent(string name)
+        [CLMethod("Add a builtin component to the MapObject")]
+        public object AddBuiltinComponent(
+            [CLParam("The name of the builtin component to add (e.g., \"DayLight\").")]
+            string name)
         {
             // Add the component and add to cache.
             if (_builtinCache == null)
@@ -721,8 +770,10 @@ namespace CustomLogic
             return _builtinCache[name];
         }
 
-        [CLMethod(description: "Gets a builtin component to the MapObject")]
-        public object GetBuiltinComponent(string name)
+        [CLMethod("Gets a builtin component to the MapObject")]
+        public object GetBuiltinComponent(
+            [CLParam("The name of the builtin component to get.")]
+            string name)
         {
             if (_builtinCache == null || !_builtinCache.ContainsKey(name))
             {
@@ -731,8 +782,10 @@ namespace CustomLogic
             return _builtinCache[name];
         }
 
-        [CLMethod(description: "Remove a builtin component from the MapObject")]
-        public void RemoveBuiltinComponent(string name)
+        [CLMethod("Remove a builtin component from the MapObject")]
+        public void RemoveBuiltinComponent(
+            [CLParam("The name of the builtin component to remove.")]
+            string name)
         {
             if (_builtinCache == null || !_builtinCache.ContainsKey(name))
             {
@@ -746,14 +799,14 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod(description: "Serialize the current object to a csv.")]
+        [CLMethod("Serialize the current object to a csv.")]
         public string ConvertToCSV()
         {
             return Value.ScriptObject.Serialize();
         }
 
         // Prop to get RigidBody
-        [CLProperty(description: "The Rigidbody component of the MapObject, is null if not added.")]
+        [CLProperty("The Rigidbody component of the MapObject, is null if not added.")]
         public CustomLogicRigidbodyBuiltin Rigidbody
         {
             get
@@ -762,7 +815,7 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(description: "The NetworkView attached to the MapObject, is null if not initialized yet.")]
+        [CLProperty("The NetworkView attached to the MapObject, is null if not initialized yet.")]
         public CustomLogicNetworkViewBuiltin NetworkView { get; set; }
 
         private void AssertRendererGet()

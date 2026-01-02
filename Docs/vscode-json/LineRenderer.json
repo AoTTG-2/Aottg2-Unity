@@ -1,7 +1,7 @@
 {
   "kind": "component",
   "name": "LineRenderer",
-  "description": "Represents a LineRenderer",
+  "description": "Represents a LineRenderer.",
   "extends": [
     "Object"
   ],
@@ -12,7 +12,7 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "The width of the line at the start",
+      "description": "The width of the line at the start.",
       "readonly": false,
       "private": false
     },
@@ -22,7 +22,7 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "The width of the line at the end",
+      "description": "The width of the line at the end.",
       "readonly": false,
       "private": false
     },
@@ -32,7 +32,7 @@
         "name": "Color",
         "typeArguments": []
       },
-      "description": "The color of the line",
+      "description": "The color of the line.",
       "readonly": false,
       "private": false
     },
@@ -42,7 +42,7 @@
         "name": "int",
         "typeArguments": []
       },
-      "description": "The number of points in the line",
+      "description": "The number of points in the line.",
       "readonly": false,
       "private": false
     },
@@ -52,7 +52,7 @@
         "name": "bool",
         "typeArguments": []
       },
-      "description": "Is the line renderer enabled",
+      "description": "Is the line renderer enabled.",
       "readonly": false,
       "private": false
     },
@@ -62,7 +62,7 @@
         "name": "bool",
         "typeArguments": []
       },
-      "description": "Is the line renderer a loop",
+      "description": "Is the line renderer a loop.",
       "readonly": false,
       "private": false
     },
@@ -72,7 +72,7 @@
         "name": "int",
         "typeArguments": []
       },
-      "description": "The number of corner vertices",
+      "description": "The number of corner vertices.",
       "readonly": false,
       "private": false
     },
@@ -82,7 +82,7 @@
         "name": "int",
         "typeArguments": []
       },
-      "description": "The number of end cap vertices",
+      "description": "The number of end cap vertices.",
       "readonly": false,
       "private": false
     },
@@ -92,7 +92,7 @@
         "name": "string",
         "typeArguments": []
       },
-      "description": "The alignment of the line renderer",
+      "description": "The alignment of the line renderer.",
       "readonly": false,
       "private": false
     },
@@ -102,7 +102,7 @@
         "name": "string",
         "typeArguments": []
       },
-      "description": "The texture mode of the line renderer",
+      "description": "The texture mode of the line renderer.",
       "readonly": false,
       "private": false
     },
@@ -112,7 +112,7 @@
         "name": "bool",
         "typeArguments": []
       },
-      "description": "Is the line renderer in world space",
+      "description": "Is the line renderer in world space.",
       "readonly": false,
       "private": false
     },
@@ -122,7 +122,7 @@
         "name": "string",
         "typeArguments": []
       },
-      "description": "Does the line renderer cast shadows",
+      "description": "Does the line renderer cast shadows.",
       "readonly": false,
       "private": false
     },
@@ -132,7 +132,7 @@
         "name": "bool",
         "typeArguments": []
       },
-      "description": "Does the line renderer receive shadows",
+      "description": "Does the line renderer receive shadows.",
       "readonly": false,
       "private": false
     },
@@ -147,7 +147,7 @@
           }
         ]
       },
-      "description": "The gradient of the line renderer",
+      "description": "The gradient of the line renderer.",
       "readonly": false,
       "private": false
     },
@@ -162,7 +162,7 @@
           }
         ]
       },
-      "description": "The alpha gradient of the line renderer",
+      "description": "The alpha gradient of the line renderer.",
       "readonly": false,
       "private": false
     },
@@ -177,7 +177,7 @@
           }
         ]
       },
-      "description": "The width curve of the line renderer",
+      "description": "The width curve of the line renderer.",
       "readonly": false,
       "private": false
     },
@@ -187,7 +187,7 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "The width multiplier of the line renderer",
+      "description": "The width multiplier of the line renderer.",
       "readonly": false,
       "private": false
     },
@@ -197,7 +197,7 @@
         "name": "string",
         "typeArguments": []
       },
-      "description": "The color gradient mode of the line renderer",
+      "description": "The color gradient mode of the line renderer.",
       "readonly": false,
       "private": false
     }
@@ -209,7 +209,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Remove the line renderer (can also be done by removing all references to this object)",
+      "description": "Remove the line renderer (can also be done by removing all references to this object).",
       "parameters": [],
       "kind": "function"
     },
@@ -219,7 +219,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "Get the position of a point in the line renderer",
+      "description": "Get the position of a point in the line renderer.",
       "parameters": [
         {
           "name": "index",
@@ -240,7 +240,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Set the position of a point in the line renderer",
+      "description": "Set the position of a point in the line renderer.",
       "parameters": [
         {
           "name": "index",
@@ -274,7 +274,7 @@
         "name": "LineRenderer",
         "typeArguments": []
       },
-      "description": "Create a new LineRenderer",
+      "description": "Create a new LineRenderer.",
       "parameters": [],
       "kind": "function"
     }
@@ -282,7 +282,7 @@
   "constructors": [
     {
       "parameters": [],
-      "description": "Default constructor, Creates a black line with a width of 1"
+      "description": "Default constructor, creates a black line with a width of 1."
     },
     {
       "parameters": [
@@ -292,7 +292,7 @@
             "name": "Color",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The color of the line.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -302,12 +302,12 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
-          "isOptional": false,
+          "description": "The width of the line.",
+          "isOptional": true,
           "isVariadic": false
         }
       ],
-      "description": "Creates a line with the given color and width"
+      "description": "Creates a line with the given color and width."
     }
   ]
 }

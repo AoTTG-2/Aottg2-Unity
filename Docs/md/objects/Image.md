@@ -1,7 +1,7 @@
 # Image
 Inherits from [Object](../objects/Object.md)
 
-UI element for setting background images on visual elements
+UI element for setting background images on visual elements.
 
 ### Example
 ```csharp
@@ -14,12 +14,12 @@ container.SetBackgroundImage(image);
 ### Properties
 |Name|Type|Readonly|Description|
 |---|---|---|---|
-|ImagePath|string|False|Get the current image path|
+|ImagePath|string|False|The current image path. Setting this will load the image from the resource path.|
 
 
 ### Methods
 <pre class="language-typescript"><code class="lang-typescript">function SetImage(imagePath: string) -> <a data-footnote-ref href="#user-content-fn-45">Image</a></code></pre>
-> Set the image from a resource path
+> Set the image from a resource path.
 > 
 > **Parameters**:
 > - `imagePath`: Path to the image resource (e.g., "Icons/Game/BladeIcon")
