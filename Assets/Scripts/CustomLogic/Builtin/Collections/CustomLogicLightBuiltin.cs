@@ -23,7 +23,6 @@ namespace CustomLogic
             Value.intensity = 1f;
             Value.shadows = LightShadows.Soft;
             Value.shadowStrength = 0.8f;
-            Value.shadowBias = 0.2f;
             MapLoader.RegisterMapLight(Value, type == LightType.Directional);
         }
 
