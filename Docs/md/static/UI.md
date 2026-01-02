@@ -22,41 +22,98 @@ UI label functions.
 <pre class="language-typescript"><code class="lang-typescript">function SetLabel(label: string, message: string)</code></pre>
 > Sets the label at a certain location. Valid types: "TopCenter", "TopLeft", "TopRight", "MiddleCenter", "MiddleLeft", "MiddleRight", "BottomLeft", "BottomRight", "BottomCenter".
 > 
+> **Parameters**:
+> - `label`: The label location.
+> - `message`: The message to display.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function SetLabelForTime(label: string, message: string, time: float)</code></pre>
 > Sets the label for a certain time, after which it will be cleared.
+> 
+> **Parameters**:
+> - `label`: The label location.
+> - `message`: The message to display.
+> - `time`: The time in seconds before the label is cleared.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function SetLabelAll(label: string, message: string)</code></pre>
 > Sets the label for all players. Master client only. Be careful not to call this often.
 > 
+> **Parameters**:
+> - `label`: The label location.
+> - `message`: The message to display.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function SetLabelForTimeAll(label: string, message: string, time: float)</code></pre>
 > Sets the label for all players for a certain time. Master client only.
+> 
+> **Parameters**:
+> - `label`: The label location.
+> - `message`: The message to display.
+> - `time`: The time in seconds before the label is cleared.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function CreatePopup(popupName: string, title: string, width: int, height: int) -> string</code></pre>
 > Creates a new popup. This popup is hidden until shown.
 > 
+> **Parameters**:
+> - `popupName`: The name of the popup.
+> - `title`: The title of the popup.
+> - `width`: The width of the popup.
+> - `height`: The height of the popup.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function ShowPopup(popupName: string)</code></pre>
 > Shows the popup with given name.
+> 
+> **Parameters**:
+> - `popupName`: The name of the popup to show.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function HidePopup(popupName: string)</code></pre>
 > Hides the popup with given name.
 > 
+> **Parameters**:
+> - `popupName`: The name of the popup to hide.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function ClearPopup(popupName: string)</code></pre>
 > Clears all elements in popup with given name.
+> 
+> **Parameters**:
+> - `popupName`: The name of the popup to clear.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function AddPopupLabel(popupName: string, label: string)</code></pre>
 > Adds a text row to the popup with label as content.
 > 
+> **Parameters**:
+> - `popupName`: The name of the popup.
+> - `label`: The label text to add.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function AddPopupButton(popupName: string, label: string, callback: string)</code></pre>
 > Adds a button row to the popup with given button name and display text. When button is pressed, OnButtonClick is called in Main with buttonName parameter.
+> 
+> **Parameters**:
+> - `popupName`: The name of the popup.
+> - `label`: The button display text.
+> - `callback`: The callback name that will be passed to OnButtonClick in Main.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function AddPopupBottomButton(popupName: string, label: string, callback: string)</code></pre>
 > Adds a button to the bottom bar of the popup.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function AddPopupButtons(popupName: string, labels: <a data-footnote-ref href="#user-content-fn-4">List</a>, callbacks: <a data-footnote-ref href="#user-content-fn-4">List</a>)</code></pre>
+> **Parameters**:
+> - `popupName`: The name of the popup.
+> - `label`: The button display text.
+> - `callback`: The callback name that will be passed to OnButtonClick in Main.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function AddPopupButtons(popupName: string, labels: <a data-footnote-ref href="#user-content-fn-4">List</a><string>, callbacks: <a data-footnote-ref href="#user-content-fn-4">List</a><void>)</code></pre>
 > Adds a list of buttons in a row to the popup.
+> 
+> **Parameters**:
+> - `popupName`: The name of the popup.
+> - `labels`: List of button display texts.
+> - `callbacks`: List of callback names that will be passed to OnButtonClick in Main.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function WrapStyleTag(text: string, style: string, arg: string = null) -> string</code></pre>
 > Returns a wrapped string given style and args.
+> 
+> **Parameters**:
+> - `text`: The text to wrap.
+> - `style`: The style tag name.
+> - `arg`: Optional style argument.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function ShowChangeCharacterMenu()</code></pre>
 > Shows the change character menu if main character is Human.
@@ -64,38 +121,69 @@ UI label functions.
 <pre class="language-typescript"><code class="lang-typescript">function SetScoreboardHeader(header: string)</code></pre>
 > Sets the display of the scoreboard header (default "Kills / Deaths...")
 > 
+> **Parameters**:
+> - `header`: The header text to display.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function SetScoreboardProperty(property: string)</code></pre>
 > Sets which Player custom property to read from to display on the scoreboard. If set to empty string, will use the default "Kills / Deaths..." display.
+> 
+> **Parameters**:
+> - `property`: The property name to read from Player custom properties.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function GetThemeColor(panel: string, category: string, item: string) -> <a data-footnote-ref href="#user-content-fn-0">Color</a></code></pre>
 > Gets the color of the specified item. See theme json for reference.
 > 
+> **Parameters**:
+> - `panel`: The panel name.
+> - `category`: The category name.
+> - `item`: The item name.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function IsPopupActive(popupName: string) -> bool</code></pre>
 > Returns if the given popup is active
+> 
+> **Parameters**:
+> - `popupName`: The name of the popup to check.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function SetLabelActive(label: string, active: bool)</code></pre>
 > Sets whether a label is active or not.
 > 
+> **Parameters**:
+> - `label`: The label name.
+> - `active`: Whether the label should be active.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function SetKDRPanelActive(active: bool)</code></pre>
 > Sets whether the KDR panel (top-left) is active or not.
+> 
+> **Parameters**:
+> - `active`: Whether the KDR panel should be active.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function SetMinimapActive(active: bool)</code></pre>
 > Sets whether the minimap is active or not.
 > 
+> **Parameters**:
+> - `active`: Whether the minimap should be active.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function SetChatPanelActive(active: bool)</code></pre>
 > Sets whether the chat panel is active or not.
+> 
+> **Parameters**:
+> - `active`: Whether the chat panel should be active.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function SetFeedPanelActive(active: bool)</code></pre>
 > Sets whether the feed panel is active or not.
 > 
+> **Parameters**:
+> - `active`: Whether the feed panel should be active.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function SetBottomHUDActive(active: bool)</code></pre>
-> Sets whether the bottom HUD is active or not.
-This can only be used when the character is alive.
+> Sets whether the bottom HUD is active or not. This can only be used when the character is alive.
+> 
+> **Parameters**:
+> - `active`: Whether the bottom HUD should be active.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function GetRootVisualElement() -> <a data-footnote-ref href="#user-content-fn-53">VisualElement</a></code></pre>
-> Returns the root `VisualElement` which you can add other elements to.
+> Returns the root `VisualElement` which you can add other elements to. Returns: The root `VisualElement`
 > 
-> **Returns**: The root `VisualElement`
 <pre class="language-typescript"><code class="lang-typescript">function VisualElement() -> <a data-footnote-ref href="#user-content-fn-53">VisualElement</a></code></pre>
 > Creates a new `VisualElement`.
 > 
@@ -115,6 +203,9 @@ This can only be used when the character is alive.
 <pre class="language-typescript"><code class="lang-typescript">function TextField(label: string = "") -> <a data-footnote-ref href="#user-content-fn-50">TextField</a></code></pre>
 > Creates a new `TextField` with optional label.
 > 
+> **Parameters**:
+> - `label`: The label text displayed next to the TextField (default: empty).
+> 
 <pre class="language-typescript"><code class="lang-typescript">function Toggle(label: string = "", valueChangedEvent: function = null) -> <a data-footnote-ref href="#user-content-fn-51">Toggle</a></code></pre>
 > Creates a new `Toggle` with optional label and value changed event.
 > 
@@ -123,8 +214,7 @@ This can only be used when the character is alive.
 > - `valueChangedEvent`: The function that will be called when toggle value changes
 > 
 <pre class="language-typescript"><code class="lang-typescript">function Slider(lowValue: float = 0, highValue: float = 100, tickInterval: float = 0, label: string = "", valueChangedEvent: function = null) -> <a data-footnote-ref href="#user-content-fn-49">Slider</a></code></pre>
-> Creates a new `Slider` for floating-point values with optional range, tick interval, and value changed event.
-The slider will snap to values at multiples of the tick interval.
+> Creates a new `Slider` for floating-point values with optional range, tick interval, and value changed event. The slider will snap to values at multiples of the tick interval.
 > 
 > **Parameters**:
 > - `lowValue`: The minimum value of the slider
@@ -134,8 +224,7 @@ The slider will snap to values at multiples of the tick interval.
 > - `valueChangedEvent`: The function that will be called when slider value changes
 > 
 <pre class="language-typescript"><code class="lang-typescript">function SliderInt(lowValue: int = 0, highValue: int = 100, tickInterval: int = 1, label: string = "", valueChangedEvent: function = null) -> <a data-footnote-ref href="#user-content-fn-49">Slider</a></code></pre>
-> Creates a new `Slider` for integer values with optional range, tick interval, and value changed event.
-The slider will snap to values at multiples of the tick interval.
+> Creates a new `Slider` for integer values with optional range, tick interval, and value changed event. The slider will snap to values at multiples of the tick interval.
 > 
 > **Parameters**:
 > - `lowValue`: The minimum value of the slider
@@ -144,7 +233,7 @@ The slider will snap to values at multiples of the tick interval.
 > - `label`: The label text displayed next to the slider
 > - `valueChangedEvent`: The function that will be called when slider value changes
 > 
-<pre class="language-typescript"><code class="lang-typescript">function Dropdown(choices: <a data-footnote-ref href="#user-content-fn-4">List</a>, defaultIndex: int = 0, label: string = "", valueChangedEvent: function = null) -> <a data-footnote-ref href="#user-content-fn-43">Dropdown</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function Dropdown(choices: <a data-footnote-ref href="#user-content-fn-4">List</a><string>, defaultIndex: int = 0, label: string = "", valueChangedEvent: function = null) -> <a data-footnote-ref href="#user-content-fn-43">Dropdown</a></code></pre>
 > Creates a new `Dropdown` with a list of choices and optional label and value changed event.
 > 
 > **Parameters**:
@@ -172,7 +261,7 @@ The slider will snap to values at multiples of the tick interval.
 > - `iconPath`: Path to the icon resource (e.g., "Icons/Game/BladeIcon")
 > 
 <pre class="language-typescript"><code class="lang-typescript">function Image(iconPath: string = "") -> <a data-footnote-ref href="#user-content-fn-45">Image</a></code></pre>
-> Creates a new `Icon` element for displaying images/icons.
+> Creates a new `Image` element for displaying images/icons.
 > 
 > **Parameters**:
 > - `iconPath`: Path to the icon resource (e.g., "Icons/Game/BladeIcon")

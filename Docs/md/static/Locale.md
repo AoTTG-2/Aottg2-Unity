@@ -1,8 +1,7 @@
 # Locale
 Inherits from [Object](../objects/Object.md)
 
-Internationalization (Locale) utility for managing localized strings.
-Supports single-level (non-recursive) language fallbacks and automatic UI language detection.
+Internationalization (Locale) utility for managing localized strings. Supports single-level (non-recursive) language fallbacks and automatic UI language detection.
 
 ### Example
 ```csharp
@@ -92,7 +91,7 @@ Game.Print("missing_key: " + Locale.Get("missing_key"));
 ### Static Properties
 |Name|Type|Readonly|Description|
 |---|---|---|---|
-|ArabicLanguage|string|True|Arabic language code|
+|ArabicLanguage|string|True|Arabic language code.|
 |BrazilianPortugueseLanguage|string|True|Brazilian Portuguese language code|
 |ChineseLanguage|string|True|Chinese language code|
 |CzechLanguage|string|True|Czech language code|

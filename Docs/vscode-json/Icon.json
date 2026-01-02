@@ -1,7 +1,7 @@
 {
   "kind": "class",
   "name": "Icon",
-  "description": "UI element for displaying icons/images",
+  "description": "UI element for displaying icons/images.",
   "extends": [
     "VisualElement"
   ],
@@ -12,7 +12,7 @@
         "name": "string",
         "typeArguments": []
       },
-      "description": "Get the current icon path",
+      "description": "The current icon path. Setting this will load the icon from the resource path.",
       "readonly": false,
       "private": false
     },
@@ -22,7 +22,7 @@
         "name": "string",
         "typeArguments": []
       },
-      "description": "Get or set the scale mode for the icon",
+      "description": "The scale mode for the icon. Valid values: ScaleAndCrop, ScaleToFit, StretchToFill.",
       "readonly": false,
       "private": false
     }
@@ -34,7 +34,7 @@
         "name": "Icon",
         "typeArguments": []
       },
-      "description": "Set the icon to display from a resource path",
+      "description": "Set the icon to display from a resource path.",
       "parameters": [
         {
           "name": "iconPath",
@@ -55,7 +55,7 @@
         "name": "Icon",
         "typeArguments": []
       },
-      "description": "Set the tint color of the icon",
+      "description": "Set the tint color of the icon.",
       "parameters": [
         {
           "name": "color",
@@ -63,7 +63,7 @@
             "name": "Color",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The color to tint the icon with.",
           "isOptional": false,
           "isVariadic": false
         }

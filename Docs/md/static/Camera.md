@@ -20,9 +20,7 @@ References the main game camera.
 
 ### Static Methods
 <pre class="language-typescript"><code class="lang-typescript">function SetManual(manual: bool)</code></pre>
-> Sets the camera manual mode.
-If true, camera will only be controlled by custom logic.
-If false, camera will follow the spawned or spectated player and read input.
+> Sets the camera manual mode. If true, camera will only be controlled by custom logic. If false, camera will follow the spawned or spectated player and read input.
 > 
 > **Parameters**:
 > - `manual`: True to enable manual mode, false to disable.
@@ -30,17 +28,26 @@ If false, camera will follow the spawned or spectated player and read input.
 <pre class="language-typescript"><code class="lang-typescript">function SetPosition(position: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>)</code></pre>
 > Sets camera position.
 > 
+> **Parameters**:
+> - `position`: The world position to set the camera to.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function SetRotation(rotation: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>)</code></pre>
 > Sets camera rotation.
 > 
+> **Parameters**:
+> - `rotation`: The euler angles rotation to set the camera to.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function SetVelocity(velocity: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>)</code></pre>
 > Sets camera velocity.
+> 
+> **Parameters**:
+> - `velocity`: The velocity vector to set for the camera.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function LookAt(position: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>)</code></pre>
 > Sets the camera forward direction such that it is looking at a world position.
 > 
 > **Parameters**:
-> - `position`: The world position to look at
+> - `position`: The world position to look at.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function SetFOV(fov: float)</code></pre>
 > Sets the camera field of view.
@@ -49,8 +56,7 @@ If false, camera will follow the spawned or spectated player and read input.
 > - `fov`: The new field of view. Use 0 to use the default field of view.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function SetCameraMode(mode: string)</code></pre>
-> Forces the player to use a certain camera mode,
-taking priority over their camera setting.
+> Forces the player to use a certain camera mode, taking priority over their camera setting.
 > 
 > **Parameters**:
 > - `mode`: The camera mode. Accepted values are TPS, Original, FPS.
@@ -64,8 +70,14 @@ taking priority over their camera setting.
 <pre class="language-typescript"><code class="lang-typescript">function SetCameraLocked(locked: bool)</code></pre>
 > Locks or unlocks the camera to prevent or allow camera movement.
 > 
+> **Parameters**:
+> - `locked`: If true, locks the camera to prevent movement.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function SetCursorVisible(visible: bool)</code></pre>
 > Sets the visibility of the cursor.
+> 
+> **Parameters**:
+> - `visible`: If true, makes the cursor visible.
 > 
 
 [^0]: [Color](../objects/Color.md)

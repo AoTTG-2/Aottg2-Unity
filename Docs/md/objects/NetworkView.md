@@ -1,12 +1,7 @@
 # NetworkView
 Inherits from [Object](../objects/Object.md)
 
-Represents a network view on a map object that has the "networked" flag.
-Note1: messages sent from a mapobjects network view are not component scoped, all components will receive the same message.
-If you intend for a mapobject to have multiple message sending components, preface the message with the component name to determine scope.
-Note2: Rooms and Players have bandwidth limits, exceeding the limits via CL will result in either the player being kicked or the room being shut down.
-When possible, use basic message passing for state sync and then run logic locally instead of repeatedly sending state over the network. Also
-avoid cases where message sending increases heavily with the number of players in the room.
+Represents a network view on a map object that has the "networked" flag. Note1: messages sent from a mapobjects network view are not component scoped, all components will receive the same message. If you intend for a mapobject to have multiple message sending components, preface the message with the component name to determine scope. Note2: Rooms and Players have bandwidth limits, exceeding the limits via CL will result in either the player being kicked or the room being shut down. When possible, use basic message passing for state sync and then run logic locally instead of repeatedly sending state over the network. Also avoid cases where message sending increases heavily with the number of players in the room.
 
 ### Example
 ```csharp
@@ -56,15 +51,10 @@ TODO: Bother someone for good practice example - maybe move this into Networking
 > Send a message to players excluding myself.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function SendStream(obj: <a data-footnote-ref href="#user-content-fn-59">Object</a>)</code></pre>
-> Send an object to the network sync stream.
-This represents sending data from the object owner to all non-owner observers,
-and should only be called in the SendNetworkStream callback in the attached component.
-It only works with some object types: primitives and Vector3.
+> Send an object to the network sync stream. This represents sending data from the object owner to all non-owner observers, and should only be called in the SendNetworkStream callback in the attached component. It only works with some object types: primitives and Vector3.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function ReceiveStream() -> <a data-footnote-ref href="#user-content-fn-59">Object</a></code></pre>
-> Receive an object through the network sync stream.
-This represents receiving data from the object owner as a non-owner observer,
-and should only be called in the OnNetworkStream callback.
+> Receive an object through the network sync stream. This represents receiving data from the object owner as a non-owner observer, and should only be called in the OnNetworkStream callback.
 > 
 
 [^0]: [Color](../objects/Color.md)
