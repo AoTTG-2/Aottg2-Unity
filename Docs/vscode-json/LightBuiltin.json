@@ -1,7 +1,7 @@
 {
   "kind": "extension",
   "name": "LightBuiltin",
-  "description": "",
+  "description": "Represents a Light component that can be directional, point, or spot light with configurable properties.",
   "instanceFields": [
     {
       "label": "TypeOfLight",

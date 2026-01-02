@@ -4,12 +4,7 @@ using UnityEngine.UIElements;
 
 namespace CustomLogic
 {
-    /// <summary>
-    /// ScrollView UI element that provides scrollable content.
-    /// 
-    /// Note: Most methods return self to allow method chaining
-    /// </summary>
-    [CLType(Name = "ScrollView")]
+    [CLType(Name = "ScrollView", Description = "ScrollView UI element that provides scrollable content. Note: Most methods return self to allow method chaining.")]
     partial class CustomLogicScrollViewBuiltin : CustomLogicVisualElementBuiltin
     {
         private readonly ScrollView _scrollView;
@@ -19,40 +14,28 @@ namespace CustomLogic
             _scrollView = scrollView;
         }
 
-        /// <summary>
-        /// The current scroll offset
-        /// </summary>
-        [CLProperty]
+        [CLProperty("The current scroll offset.")]
         public CustomLogicVector2Builtin ScrollOffset
         {
             get => new CustomLogicVector2Builtin(_scrollView.scrollOffset);
             set => _scrollView.scrollOffset = value;
         }
 
-        /// <summary>
-        /// Controls the scrolling speed when using the scroll wheel
-        /// </summary>
-        [CLProperty]
+        [CLProperty("Controls the scrolling speed when using the scroll wheel.")]
         public float ScrollDecelerationRate
         {
             get => _scrollView.scrollDecelerationRate;
             set => _scrollView.scrollDecelerationRate = value;
         }
 
-        /// <summary>
-        /// Controls the sensitivity/speed of mouse wheel scrolling
-        /// </summary>
-        [CLProperty]
+        [CLProperty("Controls the sensitivity/speed of mouse wheel scrolling.")]
         public float MouseWheelScrollSize
         {
             get => _scrollView.mouseWheelScrollSize;
             set => _scrollView.mouseWheelScrollSize = value;
         }
 
-        /// <summary>
-        /// Enable or disable horizontal scrolling
-        /// </summary>
-        [CLProperty]
+        [CLProperty("Enable or disable horizontal scrolling.")]
         public bool HorizontalScrollEnabled
         {
             get => _scrollView.mode == ScrollViewMode.Horizontal || _scrollView.mode == ScrollViewMode.VerticalAndHorizontal;
@@ -80,10 +63,7 @@ namespace CustomLogic
             }
         }
 
-        /// <summary>
-        /// Enable or disable vertical scrolling
-        /// </summary>
-        [CLProperty]
+        [CLProperty("Enable or disable vertical scrolling.")]
         public bool VerticalScrollEnabled
         {
             get => _scrollView.mode == ScrollViewMode.Vertical || _scrollView.mode == ScrollViewMode.VerticalAndHorizontal;
@@ -111,12 +91,10 @@ namespace CustomLogic
             }
         }
 
-        /// <summary>
-        /// The behavior to use when scrolling reaches limits of the content
-        /// </summary>
-        /// <param name="value">Acceptable values are: `Clamped`, `Elastic`, and `Unrestricted`</param>
-        [CLMethod]
-        public CustomLogicScrollViewBuiltin Elasticity(string value)
+        [CLMethod("The behavior to use when scrolling reaches limits of the content.")]
+        public CustomLogicScrollViewBuiltin Elasticity(
+            [CLParam("Acceptable values are: `Clamped`, `Elastic`, and `Unrestricted`")]
+            string value)
         {
             _scrollView.touchScrollBehavior = value switch
             {
@@ -128,39 +106,31 @@ namespace CustomLogic
             return this;
         }
 
-        /// <summary>
-        /// Controls the rate at which scrolling movement slows after a user scrolling action
-        /// </summary>
-        [CLMethod]
-        public CustomLogicScrollViewBuiltin SetScrollDecelerationRate(float rate)
+        [CLMethod("Controls the rate at which scrolling movement slows after a user scrolling action.")]
+        public CustomLogicScrollViewBuiltin SetScrollDecelerationRate(
+            [CLParam("The deceleration rate (0-1, where 1 is fastest deceleration).")]
+            float rate)
         {
             _scrollView.scrollDecelerationRate = Mathf.Clamp01(rate);
             return this;
         }
 
-        /// <summary>
-        /// Set the scroll offset
-        /// </summary>
-        [CLMethod]
-        public CustomLogicScrollViewBuiltin SetScrollOffset(CustomLogicVector2Builtin offset)
+        [CLMethod("Set the scroll offset.")]
+        public CustomLogicScrollViewBuiltin SetScrollOffset(
+            [CLParam("The scroll offset vector (x, y).")]
+            CustomLogicVector2Builtin offset)
         {
             _scrollView.scrollOffset = offset;
             return this;
         }
 
-        /// <summary>
-        /// Scroll to the top of the content
-        /// </summary>
-        [CLMethod]
+        [CLMethod("Scroll to the top of the content.")]
         public void ScrollToTop()
         {
             _scrollView.scrollOffset = new Vector2(_scrollView.scrollOffset.x, 0);
         }
 
-        /// <summary>
-        /// Scroll to the bottom of the content
-        /// </summary>
-        [CLMethod]
+        [CLMethod("Scroll to the bottom of the content.")]
         public void ScrollToBottom()
         {
             _scrollView.ScrollTo(_scrollView.contentContainer);

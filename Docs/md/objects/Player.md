@@ -28,8 +28,15 @@ Represents a network player. Only master client or player may modify fields.
 <pre class="language-typescript"><code class="lang-typescript">function GetCustomProperty(property: string) -> <a data-footnote-ref href="#user-content-fn-59">Object</a></code></pre>
 > Get a custom property at given key. Must be a primitive type. This is synced to all clients.
 > 
+> **Parameters**:
+> - `property`: The property key to get.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function SetCustomProperty(property: string, value: <a data-footnote-ref href="#user-content-fn-59">Object</a>)</code></pre>
 > Sets a custom property at given key. Must be a primitive type. This is synced to all clients.
+> 
+> **Parameters**:
+> - `property`: The property key to set.
+> - `value`: The value to set (must be a primitive type).
 > 
 <pre class="language-typescript"><code class="lang-typescript">function ClearKDR()</code></pre>
 > Clears kills, deaths, highestdamage, and totaldamage properties.

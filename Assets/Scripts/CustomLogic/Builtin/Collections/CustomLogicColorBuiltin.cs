@@ -5,50 +5,45 @@ using ColorUtility = UnityEngine.ColorUtility;
 
 namespace CustomLogic
 {
-    /// <summary>
-    /// Represents a color. Every component is in the range [0, 255].
-    /// </summary>
-    /// <remarks>
-    /// Implements `__Copy__` which means that this class will act like a struct.
-    /// </remarks>
-    /// <code>
-    /// Game.Print(color.ToHexString()) // Prints the color in hex format
-    /// </code>
-    [CLType(Name = "Color", Static = true, Description = "")]
+    [CLType(Name = "Color", Static = true, Description = "Represents a color with RGBA components in the range [0, 255]. Implements copy semantics, acting like a struct.")]
     partial class CustomLogicColorBuiltin : BuiltinClassInstance, ICustomLogicEquals, ICustomLogicCopyable, ICustomLogicMathOperators, ICustomLogicToString
     {
         public Color255 Value = new Color255();
 
-        /// <summary>
-        /// Default constructor, creates a white color.
-        /// </summary>
-        [CLConstructor]
+        [CLConstructor("Default constructor, creates a white color.")]
         public CustomLogicColorBuiltin() { }
 
-        /// <summary>
-        /// Creates a color from a hex string
-        /// </summary>
-        [CLConstructor]
-        public CustomLogicColorBuiltin(string hexString)
+        [CLConstructor("Creates a color from a hex string.")]
+        public CustomLogicColorBuiltin(
+            [CLParam("The hex color string.")]
+            string hexString)
         {
             if (ColorUtility.TryParseHtmlString(hexString, out var c))
                 Value = new Color255(c);
         }
 
-        /// <summary>
-        /// Creates a color from RGB
-        /// </summary>
-        [CLConstructor]
-        public CustomLogicColorBuiltin(int r, int g, int b)
+        [CLConstructor("Creates a color from RGB.")]
+        public CustomLogicColorBuiltin(
+            [CLParam("The red component (0-255).")]
+            int r,
+            [CLParam("The green component (0-255).")]
+            int g,
+            [CLParam("The blue component (0-255).")]
+            int b)
         {
             Value = new Color255(r, g, b);
         }
 
-        /// <summary>
-        /// Creates a color from RGBA
-        /// </summary>
-        [CLConstructor]
-        public CustomLogicColorBuiltin(int r, int g, int b, int a)
+        [CLConstructor("Creates a color from RGBA.")]
+        public CustomLogicColorBuiltin(
+            [CLParam("The red component (0-255).")]
+            int r,
+            [CLParam("The green component (0-255).")]
+            int g,
+            [CLParam("The blue component (0-255).")]
+            int b,
+            [CLParam("The alpha component (0-255).")]
+            int a)
         {
             Value = new Color255(r, g, b, a);
         }
@@ -64,55 +59,60 @@ namespace CustomLogic
             Value = value;
         }
 
-        [CLProperty(Description = "Red component of the color")]
+        [CLProperty("Red component of the color.")]
         public int R
         {
             get => Value.R;
             set => Value.R = value;
         }
 
-        [CLProperty(Description = "Green component of the color")]
+        [CLProperty("Green component of the color.")]
         public int G
         {
             get => Value.G;
             set => Value.G = value;
         }
 
-        [CLProperty(Description = "Blue component of the color")]
+        [CLProperty("Blue component of the color.")]
         public int B
         {
             get => Value.B;
             set => Value.B = value;
         }
 
-        [CLProperty(Description = "Alpha component of the color")]
+        [CLProperty("Alpha component of the color.")]
         public int A
         {
             get => Value.A;
             set => Value.A = value;
         }
 
-        [CLMethod(Description = "Converts the color to a hex string")]
+        [CLMethod("Converts the color to a hex string.")]
         public string ToHexString()
         {
             return Value.ToColor().ToHexString();
         }
 
-        /// <summary>
-        /// Linearly interpolates between colors `a` and `b` by `t`
-        /// </summary>
-        /// <param name="a">Color to interpolate from</param>
-        /// <param name="b">Color to interpolate to</param>
-        /// <param name="t">Interpolation factor. 0 = `a`, 1 = `b`</param>
-        /// <returns>A new color between `a` and `b`</returns>
-        [CLMethod]
-        public static CustomLogicColorBuiltin Lerp(CustomLogicColorBuiltin a, CustomLogicColorBuiltin b, float t)
+        [CLMethod("Linearly interpolates between two colors. Returns: A new color between `a` and `b`.")]
+        public static CustomLogicColorBuiltin Lerp(
+            [CLParam("Color to interpolate from")]
+            CustomLogicColorBuiltin a,
+            [CLParam("Color to interpolate to")]
+            CustomLogicColorBuiltin b,
+            [CLParam("Interpolation factor. 0 = `a`, 1 = `b`")]
+            float t)
         {
             return new CustomLogicColorBuiltin(Color255.Lerp(a.Value, b.Value, t));
         }
 
-        [CLMethod(Description = "Creates a gradient color from two colors")]
-        public static CustomLogicColorBuiltin Gradient(CustomLogicColorBuiltin a, CustomLogicColorBuiltin b, float t)
+        [CLMethod("Creates a gradient color from two colors. Returns: A new color interpolated between the two colors.")]
+        public static CustomLogicColorBuiltin Gradient(
+            [CLParam("The first color.")]
+            CustomLogicColorBuiltin a,
+            [CLParam("The second color.")]
+            CustomLogicColorBuiltin b,
+            [CLParam("The interpolation factor (0 = a, 1 = b).")]
+            float t)
         {
             // TODO: isn't this the same as Lerp?
 
@@ -149,7 +149,7 @@ namespace CustomLogic
             return new CustomLogicColorBuiltin(value);
         }
 
-        [CLMethod]
+        [CLMethod("Checks if two colors are equal. Returns: True if the colors are equal, false otherwise.")]
         public bool __Eq__(object self, object other)
         {
             return (self, other) switch
@@ -159,25 +159,25 @@ namespace CustomLogic
             };
         }
 
-        [CLMethod]
+        [CLMethod("Gets the hash code of the color. Returns: The hash code.")]
         public int __Hash__()
         {
             return Value.GetHashCode();
         }
 
-        [CLMethod]
+        [CLMethod("Creates a copy of this color. Returns: A new Color with the same RGBA values.")]
         public object __Copy__()
         {
             return new CustomLogicColorBuiltin(new Color255(Value.R, Value.G, Value.B, Value.A));
         }
 
-        [CLMethod]
+        [CLMethod("Converts the color to a string. Returns: A string representation of the color.")]
         public string __Str__()
         {
             return ToString();
         }
 
-        [CLMethod]
+        [CLMethod("Adds two colors component-wise. Returns: A new color with added components (clamped to 0-255).")]
         public object __Add__(object self, object other)
         {
             return (self, other) switch
@@ -192,7 +192,7 @@ namespace CustomLogic
             };
         }
 
-        [CLMethod]
+        [CLMethod("Subtracts two colors component-wise. Returns: A new color with subtracted components (clamped to 0-255).")]
         public object __Sub__(object self, object other)
         {
             return (self, other) switch
@@ -207,7 +207,7 @@ namespace CustomLogic
             };
         }
 
-        [CLMethod]
+        [CLMethod("Multiplies two colors component-wise. Returns: A new color with multiplied components (clamped to 0-255).")]
         public object __Mul__(object self, object other)
         {
             return (self, other) switch
@@ -222,7 +222,7 @@ namespace CustomLogic
             };
         }
 
-        [CLMethod]
+        [CLMethod("Divides two colors component-wise. Returns: A new color with divided components (clamped to 0-255).")]
         public object __Div__(object self, object other)
         {
             return (self, other) switch

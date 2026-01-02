@@ -218,14 +218,15 @@ namespace CustomLogic.Editor
                         _sb.AppendLine("> ");
                     }
 
-                    if (method.Info.Parameters != null && method.Info.Parameters.Count > 0)
+                    var hasParameterDocs = method.Parameters != null && method.Parameters.Any(p => p.Info != null && !string.IsNullOrEmpty(p.Info.Summary));
+                    if (hasParameterDocs)
                     {
                         _sb.AppendLine("> **Parameters**:");
                         foreach (var parameter in method.Parameters)
                         {
-                            if (method.Info.Parameters.TryGetValue(parameter.Name, out var parameterInfo) == false)
+                            if (parameter.Info == null || string.IsNullOrEmpty(parameter.Info.Summary))
                                 continue;
-                            _sb.AppendLine($"> - `{parameter.Name}`: {TrimAndCleanLines(parameterInfo)}");
+                            _sb.AppendLine($"> - `{parameter.Name}`: {TrimAndCleanLines(parameter.Info.Summary)}");
                         }
                         _sb.AppendLine("> ");
                     }

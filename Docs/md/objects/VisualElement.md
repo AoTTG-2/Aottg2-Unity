@@ -1,59 +1,80 @@
 # VisualElement
 Inherits from [Object](../objects/Object.md)
 
-Base class for all UI elements
-
-Note: Most methods return self to allow method chaining
+Base class for all UI elements. Note: Most methods return self to allow method chaining.
 
 ### Properties
 |Name|Type|Readonly|Description|
 |---|---|---|---|
-|ChildCount|int|True|Number of child elements|
+|ChildCount|int|True|The number of child elements in this visual element.|
 
 
 ### Methods
 <pre class="language-typescript"><code class="lang-typescript">function Add(visualElement: <a data-footnote-ref href="#user-content-fn-53">VisualElement</a>) -> <a data-footnote-ref href="#user-content-fn-53">VisualElement</a></code></pre>
-> Add a child element
+> Add a child element.
+> 
+> **Parameters**:
+> - `visualElement`: The visual element to add as a child.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function Remove(visualElement: <a data-footnote-ref href="#user-content-fn-53">VisualElement</a>)</code></pre>
-> Remove a child elemend
+> Remove a child element.
+> 
+> **Parameters**:
+> - `visualElement`: The visual element to remove.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function RemoveFromHierarchy()</code></pre>
-> Removes this element from its parent hierarchy
+> Removes this element from its parent hierarchy.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function Clear()</code></pre>
+> Remove all child elements.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function GetElementAt(index: int) -> <a data-footnote-ref href="#user-content-fn-53">VisualElement</a></code></pre>
-> Get child element at index
+> Get child element at index.
+> 
+> **Parameters**:
+> - `index`: The index of the child element to get.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function QueryByName(name: string) -> <a data-footnote-ref href="#user-content-fn-53">VisualElement</a></code></pre>
-> Query child element by name
+> Query child element by name. Returns: The first child element with the matching name.
 > 
-> **Returns**: The first child element with the matching name
+> **Parameters**:
+> - `name`: The name of the element to find.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function QueryByClassName(className: string) -> <a data-footnote-ref href="#user-content-fn-53">VisualElement</a></code></pre>
-> Query child element by class name
+> Query child element by class name. Returns: The first child element with the matching class name.
 > 
-> **Returns**: The first child element with the matching class name
+> **Parameters**:
+> - `className`: The class name of the element to find.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function RegisterMouseEnterEventCallback(method: function) -> <a data-footnote-ref href="#user-content-fn-53">VisualElement</a></code></pre>
-> Register a callback for mouse enter event
-
-Mouse enter event is fired when the mouse pointer enters an element or one of its children
+> Register a callback for mouse enter event. Mouse enter event is fired when the mouse pointer enters an element or one of its children
+> 
+> **Parameters**:
+> - `method`: The method to call when the mouse enters the element.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function RegisterMouseLeaveEventCallback(method: function) -> <a data-footnote-ref href="#user-content-fn-53">VisualElement</a></code></pre>
-> Register a callback for mouse leave event
-
-Mouse leave event is fired when the mouse pointer exits an element and all its children
+> Register a callback for mouse leave event. Mouse leave event is fired when the mouse pointer exits an element and all its children
+> 
+> **Parameters**:
+> - `method`: The method to call when the mouse leaves the element.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function RegisterClickEventCallback(method: function) -> <a data-footnote-ref href="#user-content-fn-53">VisualElement</a></code></pre>
 > Register a callback for click event
 > 
+> **Parameters**:
+> - `method`: The method to call when the element is clicked.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function RegisterFocusInEventCallback(method: function) -> <a data-footnote-ref href="#user-content-fn-53">VisualElement</a></code></pre>
-> Register a callback for focus in event
-
-Focus in event is fired immediately before an element gains focus
+> Register a callback for focus in event. Focus in event is fired immediately before an element gains focus
+> 
+> **Parameters**:
+> - `method`: The method to call when the element gains focus.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function RegisterFocusOutEventCallback(method: function) -> <a data-footnote-ref href="#user-content-fn-53">VisualElement</a></code></pre>
-> Register a callback for focus out event.
-
-Focus out event is fired immediately before an element loses focus
+> Register a callback for focus out event. Focus out event is fired immediately before an element loses focus
+> 
+> **Parameters**:
+> - `method`: The method to call when the element loses focus.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function Opacity(value: float) -> <a data-footnote-ref href="#user-content-fn-53">VisualElement</a></code></pre>
 > Set the opacity of the element
@@ -61,16 +82,16 @@ Focus out event is fired immediately before an element loses focus
 > **Parameters**:
 > - `value`: a value between 0 and 100
 > 
-<pre class="language-typescript"><code class="lang-typescript">function Active(value: bool) -> <a data-footnote-ref href="#user-content-fn-53">VisualElement</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function Active(value: bool = True) -> <a data-footnote-ref href="#user-content-fn-53">VisualElement</a></code></pre>
 > Set the element to be active or inactive
 > 
-<pre class="language-typescript"><code class="lang-typescript">function Visible(value: bool) -> <a data-footnote-ref href="#user-content-fn-53">VisualElement</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function Visible(value: bool = True) -> <a data-footnote-ref href="#user-content-fn-53">VisualElement</a></code></pre>
 > Set the element to be visible or hidden
 > 
 <pre class="language-typescript"><code class="lang-typescript">function TransitionDuration(value: float) -> <a data-footnote-ref href="#user-content-fn-53">VisualElement</a></code></pre>
-> Set the element to be visible or hidden
+> Set the transition duration of the element
 > 
-<pre class="language-typescript"><code class="lang-typescript">function Absolute(value: bool) -> <a data-footnote-ref href="#user-content-fn-53">VisualElement</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function Absolute(value: bool = True) -> <a data-footnote-ref href="#user-content-fn-53">VisualElement</a></code></pre>
 > Set the element to be absolute or relative positioned
 > 
 <pre class="language-typescript"><code class="lang-typescript">function Left(value: float, percentage: bool = False) -> <a data-footnote-ref href="#user-content-fn-53">VisualElement</a></code></pre>
@@ -230,6 +251,55 @@ Focus out event is fired immediately before an element loses focus
 > 
 <pre class="language-typescript"><code class="lang-typescript">function Color(color: <a data-footnote-ref href="#user-content-fn-0">Color</a>) -> <a data-footnote-ref href="#user-content-fn-53">VisualElement</a></code></pre>
 > Set the text color of the element
+> 
+<pre class="language-typescript"><code class="lang-typescript">function TextAlign(value: string) -> <a data-footnote-ref href="#user-content-fn-53">VisualElement</a></code></pre>
+> Set the text alignment of the element
+> 
+> **Parameters**:
+> - `value`: Valid values are: `UpperLeft`, `UpperCenter`, `UpperRight`, `MiddleLeft`, `MiddleCenter`, `MiddleRight`, `LowerLeft`, `LowerCenter`, `LowerRight`
+> 
+<pre class="language-typescript"><code class="lang-typescript">function TextWrap(value: bool = True) -> <a data-footnote-ref href="#user-content-fn-53">VisualElement</a></code></pre>
+> Set whether the text should wrap or not
+> 
+<pre class="language-typescript"><code class="lang-typescript">function TextOverflow(value: string) -> <a data-footnote-ref href="#user-content-fn-53">VisualElement</a></code></pre>
+> Set the text overflow behavior
+> 
+> **Parameters**:
+> - `value`: Acceptable values are: `Clip`, `Ellipsis`
+> 
+<pre class="language-typescript"><code class="lang-typescript">function TextOutlineWidth(value: float) -> <a data-footnote-ref href="#user-content-fn-53">VisualElement</a></code></pre>
+> Set the text outline width
+> 
+<pre class="language-typescript"><code class="lang-typescript">function TextOutlineColor(value: <a data-footnote-ref href="#user-content-fn-0">Color</a>) -> <a data-footnote-ref href="#user-content-fn-53">VisualElement</a></code></pre>
+> Set the text outline color
+> 
+<pre class="language-typescript"><code class="lang-typescript">function TextShadowColor(value: <a data-footnote-ref href="#user-content-fn-0">Color</a>) -> <a data-footnote-ref href="#user-content-fn-53">VisualElement</a></code></pre>
+> Set the text shadow color
+> 
+<pre class="language-typescript"><code class="lang-typescript">function TextShadowOffset(horizontal: float, vertical: float) -> <a data-footnote-ref href="#user-content-fn-53">VisualElement</a></code></pre>
+> Set the text shadow offset
+> 
+> **Parameters**:
+> - `horizontal`: horizontal offset
+> - `vertical`: vertical offset
+> 
+<pre class="language-typescript"><code class="lang-typescript">function TextShadowHorizontalOffset(value: float) -> <a data-footnote-ref href="#user-content-fn-53">VisualElement</a></code></pre>
+> Set the text shadow horizontal offset
+> 
+<pre class="language-typescript"><code class="lang-typescript">function TextShadowVerticalOffset(value: float) -> <a data-footnote-ref href="#user-content-fn-53">VisualElement</a></code></pre>
+> Set the text shadow vertical offset
+> 
+<pre class="language-typescript"><code class="lang-typescript">function TextShadowBlurRadius(value: float) -> <a data-footnote-ref href="#user-content-fn-53">VisualElement</a></code></pre>
+> Set the text shadow blur radius
+> 
+<pre class="language-typescript"><code class="lang-typescript">function TextLetterSpacing(value: float) -> <a data-footnote-ref href="#user-content-fn-53">VisualElement</a></code></pre>
+> Set the text letter spacing
+> 
+<pre class="language-typescript"><code class="lang-typescript">function TextWordSpacing(value: float) -> <a data-footnote-ref href="#user-content-fn-53">VisualElement</a></code></pre>
+> Set the text word spacing
+> 
+<pre class="language-typescript"><code class="lang-typescript">function TextParagraphSpacing(value: float) -> <a data-footnote-ref href="#user-content-fn-53">VisualElement</a></code></pre>
+> Set the text paragraph spacing
 > 
 <pre class="language-typescript"><code class="lang-typescript">function BackgroundColor(color: <a data-footnote-ref href="#user-content-fn-0">Color</a>) -> <a data-footnote-ref href="#user-content-fn-53">VisualElement</a></code></pre>
 > Set the background color of the element

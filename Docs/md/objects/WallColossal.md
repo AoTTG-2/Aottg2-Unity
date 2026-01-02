@@ -1,7 +1,7 @@
 # WallColossal
 Inherits from [Shifter](../objects/Shifter.md)
 
-Only character owner can modify fields and call functions unless otherwise specified.
+Represents a WallColossal character. Only character owner can modify fields and call functions unless otherwise specified.
 
 ### Example
 ```csharp
@@ -17,8 +17,17 @@ function OnCharacterSpawn(character) {
 ### Properties
 |Name|Type|Readonly|Description|
 |---|---|---|---|
-|HandHealth|int|False|Colossal's current hand health.|
-|MaxHandHealth|int|False|Colossal's maximum hand health.|
+|HandHealth|int|False|Colossal's current hand health (applies to both hands for backward compatibility).|
+|MaxHandHealth|int|False|Colossal's maximum hand health (applies to both hands for backward compatibility).|
+|LeftHandHealth|int|False|Colossal's current left hand health.|
+|MaxLeftHandHealth|int|False|Colossal's maximum left hand health.|
+|RightHandHealth|int|False|Colossal's current right hand health.|
+|MaxRightHandHealth|int|False|Colossal's maximum right hand health.|
+|LeftHandState|string|True|Colossal's left hand state (Healthy or Broken).|
+|RightHandState|string|True|Colossal's right hand state (Healthy or Broken).|
+|HandRecoveryTime|float|False|Time in seconds for a hand to fully recover from broken state.|
+|LeftHandRecoveryTimeLeft|float|False|Time remaining in seconds for left hand to recover (0 if not recovering).|
+|RightHandRecoveryTimeLeft|float|False|Time remaining in seconds for right hand to recover (0 if not recovering).|
 |WallAttackCooldown|float|False|Colossal's (AI) wall attack cooldown per attack.|
 |WallAttackCooldownLeft|float|False|Colossal's (AI) wall attack cooldown remaining.|
 |SteamState|string|True|Colossal's current steam state (Off, Warning, or Damage).|

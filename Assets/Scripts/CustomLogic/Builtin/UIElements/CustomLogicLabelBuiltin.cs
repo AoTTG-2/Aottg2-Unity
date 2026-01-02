@@ -2,10 +2,7 @@ using UnityEngine.UIElements;
 
 namespace CustomLogic
 {
-    /// <summary>
-    /// UI element for displaying text
-    /// </summary>
-    [CLType(Name = "Label", Abstract = true)]
+    [CLType(Name = "Label", Abstract = true, Description = "UI element for displaying text.")]
     partial class CustomLogicLabelBuiltin : CustomLogicVisualElementBuiltin
     {
         private readonly Label _label;
@@ -15,20 +12,14 @@ namespace CustomLogic
             _label = label;
         }
 
-        /// <summary>
-        /// The text displayed by the Label
-        /// </summary>
-        [CLProperty]
+        [CLProperty("The text displayed by the Label.")]
         public string Text
         {
             get => _label.text;
             set => _label.text = value;
         }
 
-        /// <summary>
-        /// When false, rich text tags will not be parsed
-        /// </summary>
-        [CLProperty]
+        [CLProperty("When false, rich text tags will not be parsed.")]
         public bool EnableRichText
         {
             get => _label.enableRichText;

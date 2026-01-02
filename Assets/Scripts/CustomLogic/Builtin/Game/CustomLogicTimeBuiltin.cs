@@ -2,13 +2,10 @@
 
 namespace CustomLogic
 {
-    /// <summary>
-    /// Time functions.
-    /// </summary>
-    [CLType(Name = "Time", Static = true, Abstract = true)]
+    [CLType(Name = "Time", Static = true, Abstract = true, Description = "Time functions.")]
     partial class CustomLogicTimeBuiltin : BuiltinClassInstance
     {
-        [CLConstructor]
+        [CLConstructor("Creates a new Time instance.")]
         public CustomLogicTimeBuiltin() { }
 
         [CLProperty("Time between each tick (0.02 seconds)")]
