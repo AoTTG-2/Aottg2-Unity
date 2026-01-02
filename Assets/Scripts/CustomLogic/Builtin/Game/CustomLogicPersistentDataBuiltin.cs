@@ -70,7 +70,7 @@ namespace CustomLogic
             Directory.CreateDirectory(FolderPaths.PersistentData);
 
             if (!Util.IsValidFileName(fileName))
-                throw new System.Exception("PersistentData.LoadFromFile only supports legal fileName characters.");
+                throw new System.Exception("PersistentData.SaveToFile only supports legal fileName characters.");
 
             var path = Path.Combine(FolderPaths.PersistentData, fileName + ".txt");
             JSONNode node = new JSONObject();
