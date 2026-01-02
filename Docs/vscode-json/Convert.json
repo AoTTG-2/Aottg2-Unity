@@ -23,7 +23,7 @@
             "name": "Object",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The value to convert (can be string, float, int, or bool).",
           "isOptional": false,
           "isVariadic": false
         }
@@ -44,7 +44,7 @@
             "name": "Object",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The value to convert (can be string, float, int, or bool).",
           "isOptional": false,
           "isVariadic": false
         }
@@ -65,7 +65,7 @@
             "name": "Object",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The value to convert (can be string, float, int, or bool).",
           "isOptional": false,
           "isVariadic": false
         }
@@ -86,7 +86,7 @@
             "name": "Object",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The value to convert.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -107,7 +107,7 @@
             "name": "Object",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The value to check.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -128,7 +128,7 @@
             "name": "Object",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The value to check.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -149,7 +149,7 @@
             "name": "Object",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The value to check.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -170,7 +170,7 @@
             "name": "Object",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The value to check.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -191,7 +191,7 @@
             "name": "Object",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The value to check.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -212,7 +212,7 @@
             "name": "Object",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The value to check.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -233,7 +233,7 @@
             "name": "Object",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The value to check.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -254,7 +254,7 @@
             "name": "class",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The class instance to check.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -264,7 +264,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the variable to check for.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -285,7 +285,7 @@
             "name": "class",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The class instance to define the variable on.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -295,7 +295,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the variable to define.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -305,7 +305,7 @@
             "name": "Object",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The value to assign to the variable.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -326,7 +326,7 @@
             "name": "class",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The class instance to remove the variable from.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -336,7 +336,38 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the variable to remove.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "HasMethod",
+      "returnType": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Checks if the class instance has a method",
+      "parameters": [
+        {
+          "name": "cInstance",
+          "type": {
+            "name": "class",
+            "typeArguments": []
+          },
+          "description": "The class instance to check.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "methodName",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "The name of the method to check for.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -357,7 +388,7 @@
             "name": "class",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The class instance to get the type of.",
           "isOptional": false,
           "isVariadic": false
         }

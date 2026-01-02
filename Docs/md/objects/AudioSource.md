@@ -1,9 +1,13 @@
 # AudioSource
+
+Represents an AudioSource component for playing audio clips.
+
 ### Properties
 |Name|Type|Readonly|Description|
 |---|---|---|---|
 |Volume|float|False|Volume of the sound.|
 |Time|float|False|Sound playback position.|
+|Pitch|float|False|Pitch of the sound.|
 |IsPlaying|bool|True|Is the sound currently playing.|
 
 
@@ -13,6 +17,9 @@
 > 
 <pre class="language-typescript"><code class="lang-typescript">function PlayDelayed(seconds: float)</code></pre>
 > Plays the sound after n seconds.
+> 
+> **Parameters**:
+> - `seconds`: The delay in seconds before playing the sound.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function Stop()</code></pre>
 > Stops the sound.

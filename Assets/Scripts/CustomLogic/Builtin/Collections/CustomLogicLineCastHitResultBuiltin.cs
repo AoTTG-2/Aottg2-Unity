@@ -1,9 +1,6 @@
 namespace CustomLogic
 {
-    /// <summary>
-    /// The result of a Physics.LineCast
-    /// </summary>
-    [CLType(Name = "LineCastHitResult", Abstract = true)]
+    [CLType(Name = "LineCastHitResult", Abstract = true, Description = "The result of a Physics.LineCast")]
     partial class CustomLogicLineCastHitResultBuiltin : BuiltinClassInstance, ICustomLogicCopyable, ICustomLogicEquals
     {
         [CLProperty("true if the linecast hit a character", ReadOnly = true)]
@@ -55,13 +52,13 @@ namespace CustomLogic
             };
         }
 
-        [CLMethod]
+        [CLMethod("Creates a copy of this linecast hit result. Returns: A new LineCastHitResult with the same values.")]
         public object __Copy__()
         {
             return Copy();
         }
 
-        [CLMethod]
+        [CLMethod("Checks if two linecast hit results are equal. Returns: True if the hit results are equal, false otherwise.")]
         public bool __Eq__(object self, object other)
         {
             return (self, other) switch
@@ -73,7 +70,7 @@ namespace CustomLogic
             };
         }
 
-        [CLMethod]
+        [CLMethod("Gets the hash code of the linecast hit result. Returns: The hash code.")]
         public int __Hash__()
         {
             return Point.__Hash__() ^

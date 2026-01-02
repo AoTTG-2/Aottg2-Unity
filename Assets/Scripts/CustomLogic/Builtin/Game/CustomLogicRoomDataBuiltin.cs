@@ -4,14 +4,10 @@ using UnityEngine.SocialPlatforms;
 
 namespace CustomLogic
 {
-    /// <summary>
-    /// Store and retrieve room variables. Room data is cleared upon joining or creating a new lobby and does not reset between game rounds. Supports float, string, bool, and int types.
-    /// Note that RoomData is local only and does not sync.You must use network messages to sync room variables.
-    /// </summary>
-    [CLType(Name = "RoomData", Static = true, Abstract = true)]
+    [CLType(Name = "RoomData", Static = true, Abstract = true, Description = "Store and retrieve room variables. Room data is cleared upon joining or creating a new lobby and does not reset between game rounds. Supports float, string, bool, and int types. Note that RoomData is local only and does not sync. You must use network messages to sync room variables.")]
     partial class CustomLogicRoomDataBuiltin : BuiltinClassInstance
     {
-        [CLConstructor]
+        [CLConstructor("Creates a new RoomData instance.")]
         public CustomLogicRoomDataBuiltin() { }
 
         [CLMethod("Sets the property with given name to the object value. Valid value types are float, string, bool, and int.")]

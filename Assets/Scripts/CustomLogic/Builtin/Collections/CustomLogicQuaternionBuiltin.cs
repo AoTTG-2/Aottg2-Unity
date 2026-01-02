@@ -2,22 +2,24 @@
 
 namespace CustomLogic
 {
-    /// <summary>
-    /// Represents a quaternion.
-    /// </summary>
-    [CLType(Name = "Quaternion", Static = true)]
+    [CLType(Name = "Quaternion", Static = true, Description = "Represents a quaternion.")]
     partial class CustomLogicQuaternionBuiltin : BuiltinClassInstance, ICustomLogicMathOperators, ICustomLogicEquals, ICustomLogicCopyable
     {
         public Quaternion Value = Quaternion.identity;
 
-        [CLConstructor]
+        [CLConstructor("Default constructor, creates an identity quaternion (no rotation).")]
         public CustomLogicQuaternionBuiltin() { }
 
-        /// <summary>
-        /// Creates a new Quaternion from the given values.
-        /// </summary>
-        [CLConstructor]
-        public CustomLogicQuaternionBuiltin(float x, float y, float z, float w)
+        [CLConstructor("Creates a new Quaternion from the given values.")]
+        public CustomLogicQuaternionBuiltin(
+            [CLParam("The X component.")]
+            float x,
+            [CLParam("The Y component.")]
+            float y,
+            [CLParam("The Z component.")]
+            float z,
+            [CLParam("The W component.")]
+            float w)
         {
             Value = new Quaternion(x, y, z, w);
         }
@@ -27,96 +29,148 @@ namespace CustomLogic
             Value = value;
         }
 
-        /// <inheritdoc cref="Quaternion.x"/>
-        [CLProperty]
+        [CLProperty("The X component of the quaternion.")]
         public float X
         {
             get => Value.x;
             set => Value.x = value;
         }
 
-        /// <inheritdoc cref="Quaternion.y"/>
-        [CLProperty]
+        [CLProperty("The Y component of the quaternion.")]
         public float Y
         {
             get => Value.y;
             set => Value.y = value;
         }
 
-        /// <inheritdoc cref="Quaternion.z"/>
-        [CLProperty]
+        [CLProperty("The Z component of the quaternion.")]
         public float Z
         {
             get => Value.z;
             set => Value.z = value;
         }
 
-        /// <inheritdoc cref="Quaternion.w"/>
-        [CLProperty]
+        [CLProperty("The W component of the quaternion.")]
         public float W
         {
             get => Value.w;
             set => Value.w = value;
         }
 
-        /// <inheritdoc cref="Quaternion.eulerAngles"/>
-        [CLProperty]
+        [CLProperty("Returns or sets the euler angle representation of the rotation.")]
         public CustomLogicVector3Builtin Euler
         {
             get => Value.eulerAngles;
             set => Value = Quaternion.Euler(value);
         }
 
-        /// <inheritdoc cref="Quaternion.identity"/>
-        [CLProperty] public static CustomLogicQuaternionBuiltin Identity => Quaternion.identity;
+        [CLProperty("The identity rotation (no rotation).")]
+        public static CustomLogicQuaternionBuiltin Identity => Quaternion.identity;
 
-        /// <inheritdoc cref="Quaternion.Lerp"/>
-        [CLMethod] public static CustomLogicQuaternionBuiltin Lerp(CustomLogicQuaternionBuiltin a, CustomLogicQuaternionBuiltin b, float t) => Quaternion.Lerp(a, b, t);
+        [CLMethod("Linearly interpolates between two rotations.")]
+        public static CustomLogicQuaternionBuiltin Lerp(
+            [CLParam("The start rotation.")]
+            CustomLogicQuaternionBuiltin a,
+            [CLParam("The end rotation.")]
+            CustomLogicQuaternionBuiltin b,
+            [CLParam("The interpolation factor (clamped between 0 and 1).")]
+            float t)
+            => Quaternion.Lerp(a, b, t);
 
-        /// <inheritdoc cref="Quaternion.LerpUnclamped"/>
-        [CLMethod] public static CustomLogicQuaternionBuiltin LerpUnclamped(CustomLogicQuaternionBuiltin a, CustomLogicQuaternionBuiltin b, float t) => Quaternion.LerpUnclamped(a, b, t);
+        [CLMethod("Linearly interpolates between two rotations without clamping.")]
+        public static CustomLogicQuaternionBuiltin LerpUnclamped(
+            [CLParam("The start rotation.")]
+            CustomLogicQuaternionBuiltin a,
+            [CLParam("The end rotation.")]
+            CustomLogicQuaternionBuiltin b,
+            [CLParam("The interpolation factor (not clamped).")]
+            float t)
+            => Quaternion.LerpUnclamped(a, b, t);
 
-        /// <inheritdoc cref="Quaternion.Slerp"/>
-        [CLMethod] public static CustomLogicQuaternionBuiltin Slerp(CustomLogicQuaternionBuiltin a, CustomLogicQuaternionBuiltin b, float t) => Quaternion.Slerp(a, b, t);
+        [CLMethod("Spherically interpolates between two rotations.")]
+        public static CustomLogicQuaternionBuiltin Slerp(
+            [CLParam("The start rotation.")]
+            CustomLogicQuaternionBuiltin a,
+            [CLParam("The end rotation.")]
+            CustomLogicQuaternionBuiltin b,
+            [CLParam("The interpolation factor (clamped between 0 and 1).")]
+            float t)
+            => Quaternion.Slerp(a, b, t);
 
-        /// <inheritdoc cref="Quaternion.SlerpUnclamped"/>
-        [CLMethod] public static CustomLogicQuaternionBuiltin SlerpUnclamped(CustomLogicQuaternionBuiltin a, CustomLogicQuaternionBuiltin b, float t) => Quaternion.SlerpUnclamped(a, b, t);
+        [CLMethod("Spherically interpolates between two rotations without clamping.")]
+        public static CustomLogicQuaternionBuiltin SlerpUnclamped(
+            [CLParam("The start rotation.")]
+            CustomLogicQuaternionBuiltin a,
+            [CLParam("The end rotation.")]
+            CustomLogicQuaternionBuiltin b,
+            [CLParam("The interpolation factor (not clamped).")]
+            float t)
+            => Quaternion.SlerpUnclamped(a, b, t);
 
-        /// <summary>
-        /// Returns the Quaternion rotation from the given euler angles.
-        /// </summary>
-        [CLMethod] public static CustomLogicQuaternionBuiltin FromEuler(CustomLogicVector3Builtin euler) => Quaternion.Euler(euler);
+        [CLMethod("Creates a rotation from euler angles.")]
+        public static CustomLogicQuaternionBuiltin FromEuler(
+            [CLParam("The euler angles in degrees (x, y, z).")]
+            CustomLogicVector3Builtin euler)
+            => Quaternion.Euler(euler);
 
-        /// <inheritdoc cref="Quaternion.LookRotation(Vector3, Vector3)"/>
-        [CLMethod]
-        public static CustomLogicQuaternionBuiltin LookRotation(CustomLogicVector3Builtin forward, CustomLogicVector3Builtin upwards = null)
+        [CLMethod("Creates a rotation that looks in the specified direction.")]
+        public static CustomLogicQuaternionBuiltin LookRotation(
+            [CLParam("The forward direction vector.")]
+            CustomLogicVector3Builtin forward,
+            [CLParam("Optional. The upwards direction vector (default: Vector3.up).")]
+            CustomLogicVector3Builtin upwards = null)
         {
             if (upwards == null)
                 return new CustomLogicQuaternionBuiltin(Quaternion.LookRotation(forward));
             return new CustomLogicQuaternionBuiltin(Quaternion.LookRotation(forward, upwards));
         }
 
-        /// <inheritdoc cref="Quaternion.FromToRotation(Vector3, Vector3)"/>
-        [CLMethod] public static CustomLogicQuaternionBuiltin FromToRotation(CustomLogicVector3Builtin a, CustomLogicVector3Builtin b) => Quaternion.FromToRotation(a, b);
+        [CLMethod("Creates a rotation from one direction to another.")]
+        public static CustomLogicQuaternionBuiltin FromToRotation(
+            [CLParam("The source direction vector.")]
+            CustomLogicVector3Builtin a,
+            [CLParam("The target direction vector.")]
+            CustomLogicVector3Builtin b)
+            => Quaternion.FromToRotation(a, b);
 
-        /// <inheritdoc cref="Quaternion.Inverse"/>
-        [CLMethod] public static CustomLogicQuaternionBuiltin Inverse(CustomLogicQuaternionBuiltin q) => Quaternion.Inverse(q);
+        [CLMethod("Returns the inverse of a quaternion.")]
+        public static CustomLogicQuaternionBuiltin Inverse(
+            [CLParam("The quaternion to invert.")]
+            CustomLogicQuaternionBuiltin q)
+            => Quaternion.Inverse(q);
 
-        /// <inheritdoc cref="Quaternion.RotateTowards(Quaternion, Quaternion, float)"/>
-        [CLMethod] public static CustomLogicQuaternionBuiltin RotateTowards(CustomLogicQuaternionBuiltin from, CustomLogicQuaternionBuiltin to, float maxDegreesDelta) => Quaternion.RotateTowards(from, to, maxDegreesDelta);
+        [CLMethod("Rotates a rotation towards a target rotation.")]
+        public static CustomLogicQuaternionBuiltin RotateTowards(
+            [CLParam("The current rotation.")]
+            CustomLogicQuaternionBuiltin from,
+            [CLParam("The target rotation.")]
+            CustomLogicQuaternionBuiltin to,
+            [CLParam("The maximum change in degrees.")]
+            float maxDegreesDelta)
+            => Quaternion.RotateTowards(from, to, maxDegreesDelta);
 
-        /// <inheritdoc cref="Quaternion.AngleAxis(float, Vector3)"/>
-        [CLMethod] public static CustomLogicQuaternionBuiltin AngleAxis(float angle, CustomLogicVector3Builtin axis) => Quaternion.AngleAxis(angle, axis);
+        [CLMethod("Creates a rotation that rotates around a specified axis by a specified angle.")]
+        public static CustomLogicQuaternionBuiltin AngleAxis(
+            [CLParam("The angle in degrees.")]
+            float angle,
+            [CLParam("The axis to rotate around.")]
+            CustomLogicVector3Builtin axis)
+            => Quaternion.AngleAxis(angle, axis);
 
-        /// <inheritdoc cref="Quaternion.Angle(Quaternion, Quaternion)"/>
-        [CLMethod] public static float Angle(CustomLogicQuaternionBuiltin a, CustomLogicQuaternionBuiltin b) => Quaternion.Angle(a, b);
+        [CLMethod("Calculates the angle between two rotations.")]
+        public static float Angle(
+            [CLParam("The first rotation.")]
+            CustomLogicQuaternionBuiltin a,
+            [CLParam("The second rotation.")]
+            CustomLogicQuaternionBuiltin b)
+            => Quaternion.Angle(a, b);
 
         public override string ToString()
         {
             return Value.ToString();
         }
 
-        [CLMethod]
+        [CLMethod("Creates a copy of this quaternion. Returns: A new Quaternion with the same values.")]
         public object __Copy__()
         {
             var value = new Quaternion(Value.x, Value.y, Value.z, Value.w);
@@ -126,7 +180,7 @@ namespace CustomLogic
         public object __Add__(object self, object other) => throw CustomLogicUtils.OperatorException(nameof(__Add__), self, other);
         public object __Sub__(object self, object other) => throw CustomLogicUtils.OperatorException(nameof(__Sub__), self, other);
 
-        [CLMethod]
+        [CLMethod("Multiplies two quaternions or a quaternion by a vector. Returns: A new quaternion or vector with the multiplied result.")]
         public object __Mul__(object self, object other)
         {
             return (self, other) switch
@@ -139,7 +193,7 @@ namespace CustomLogic
 
         public object __Div__(object self, object other) => throw CustomLogicUtils.OperatorException(nameof(__Div__), self, other);
 
-        [CLMethod]
+        [CLMethod("Checks if two quaternions are equal. Returns: True if the quaternions are equal, false otherwise.")]
         public bool __Eq__(object self, object other)
         {
             if (other is CustomLogicQuaternionBuiltin quat && self is CustomLogicQuaternionBuiltin quat2)
@@ -148,7 +202,7 @@ namespace CustomLogic
             return false;
         }
 
-        [CLMethod]
+        [CLMethod("Gets the hash code of the quaternion. Returns: The hash code.")]
         public int __Hash__() => Value.GetHashCode();
 
         public object __Mod__(object self, object other)
