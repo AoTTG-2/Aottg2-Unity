@@ -53,7 +53,7 @@ Game.Print(result.Collider);
 > Returns a point on the given collider that is closest to the specified location.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function ComputePenetration(colliderA: <a data-footnote-ref href="#user-content-fn-13">Collider</a>, positionA: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, rotationA: <a data-footnote-ref href="#user-content-fn-5">Quaternion</a>, colliderB: <a data-footnote-ref href="#user-content-fn-13">Collider</a>, positionB: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, rotationB: <a data-footnote-ref href="#user-content-fn-5">Quaternion</a>) -> <a data-footnote-ref href="#user-content-fn-9">Vector3</a></code></pre>
-> Compute the minimal translation required to separate the given colliders apart at specified poses.
+> Compute the minimal translation required to separate the given colliders apart at specified poses. Returns Vector3.Zero if the colliders are not intersecting.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function AreCollidersOverlapping(colliderA: <a data-footnote-ref href="#user-content-fn-13">Collider</a>, positionA: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, rotationA: <a data-footnote-ref href="#user-content-fn-5">Quaternion</a>, colliderB: <a data-footnote-ref href="#user-content-fn-13">Collider</a>, positionB: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, rotationB: <a data-footnote-ref href="#user-content-fn-5">Quaternion</a>) -> bool</code></pre>
 > Check if the the given colliders at specified poses are apart or overlapping.

@@ -207,11 +207,12 @@ namespace CustomLogic
             return new CustomLogicVector3Builtin(Physics.ClosestPoint(point.Value, collider.collider, position.Value, rotation.Value));
         }
 
-        [CLMethod("Compute the minimal translation required to separate the given colliders apart at specified poses.")]
+        [CLMethod("Compute the minimal translation required to separate the given colliders apart at specified poses. Returns Vector3.Zero if the colliders are not intersecting.")]
         public static CustomLogicVector3Builtin ComputePenetration(CustomLogicColliderBuiltin colliderA, CustomLogicVector3Builtin positionA, CustomLogicQuaternionBuiltin rotationA, CustomLogicColliderBuiltin colliderB, CustomLogicVector3Builtin positionB, CustomLogicQuaternionBuiltin rotationB)
         {
-
             bool intersected = Physics.ComputePenetration(colliderA.collider, positionA.Value, rotationA.Value, colliderB.collider, positionB, rotationB, out Vector3 direction, out float distance);
+            if (!intersected)
+                return CustomLogicVector3Builtin.Zero;
             return new CustomLogicVector3Builtin(direction * distance);
         }
 

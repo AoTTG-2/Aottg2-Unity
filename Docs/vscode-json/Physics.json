@@ -478,7 +478,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "Compute the minimal translation required to separate the given colliders apart at specified poses.",
+      "description": "Compute the minimal translation required to separate the given colliders apart at specified poses. Returns Vector3.Zero if the colliders are not intersecting.",
       "parameters": [
         {
           "name": "colliderA",
