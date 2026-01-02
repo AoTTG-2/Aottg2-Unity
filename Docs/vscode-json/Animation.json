@@ -1,7 +1,7 @@
 {
   "kind": "component",
   "name": "Animation",
-  "description": "",
+  "description": "Represents an Animation component for playing legacy animation clips.",
   "instanceFields": [],
   "instanceMethods": [
     {
@@ -18,7 +18,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the animation to check.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -39,7 +39,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the animation to play.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -49,7 +49,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The fade time in seconds for cross-fading (default: 0.1).",
           "isOptional": true,
           "isVariadic": false
         },
@@ -59,7 +59,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The animation layer to play on (default: 0).",
           "isOptional": true,
           "isVariadic": false
         }
@@ -80,7 +80,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the animation to play.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -90,7 +90,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The normalized time (0-1) to start the animation from.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -100,7 +100,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The fade time in seconds for cross-fading (default: 0.1).",
           "isOptional": true,
           "isVariadic": false
         },
@@ -110,7 +110,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The animation layer to play on (default: 0).",
           "isOptional": true,
           "isVariadic": false
         }
@@ -131,28 +131,8 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the animation to queue.",
           "isOptional": false,
-          "isVariadic": false
-        },
-        {
-          "name": "fade",
-          "type": {
-            "name": "float",
-            "typeArguments": []
-          },
-          "description": "",
-          "isOptional": true,
-          "isVariadic": false
-        },
-        {
-          "name": "layer",
-          "type": {
-            "name": "int",
-            "typeArguments": []
-          },
-          "description": "",
-          "isOptional": true,
           "isVariadic": false
         }
       ],
@@ -172,7 +152,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the animation to stop. If null, stops all animations.",
           "isOptional": true,
           "isVariadic": false
         }
@@ -193,7 +173,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the animation.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -203,7 +183,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The playback speed multiplier (1.0 = normal speed).",
           "isOptional": false,
           "isVariadic": false
         }
@@ -224,7 +204,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the animation.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -245,7 +225,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the animation.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -266,7 +246,38 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the animation.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "SetAnimationNormalizedTime",
+      "returnType": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Sets the normalized playback time of the specified animation.",
+      "parameters": [
+        {
+          "name": "anim",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "The name of the animation.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "normalizedTime",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The normalized time (0-1) to set.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -287,7 +298,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the animation.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -297,7 +308,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The weight value (0-1) to set.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -318,7 +329,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the animation.",
           "isOptional": false,
           "isVariadic": false
         }

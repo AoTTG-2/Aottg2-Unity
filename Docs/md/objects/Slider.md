@@ -1,30 +1,33 @@
 # Slider
 Inherits from [VisualElement](../objects/VisualElement.md)
 
-A UI element that represents a horizontal slider for selecting numeric values (both int and float)
+A UI element that represents a horizontal slider for selecting numeric values (both int and float).
 
 ### Properties
 |Name|Type|Readonly|Description|
 |---|---|---|---|
-|Label|string|False|The label text displayed next to the Slider|
-|Value|[Object](../objects/Object.md)|False|The current value of the Slider (returns int for integer sliders, float for float sliders)|
-|LowValue|[Object](../objects/Object.md)|False|The minimum value of the Slider (returns int for integer sliders, float for float sliders)|
-|HighValue|[Object](../objects/Object.md)|False|The maximum value of the Slider (returns int for integer sliders, float for float sliders)|
+|Label|string|False|The label text displayed next to the Slider.|
+|Value|[Object](../objects/Object.md)|False|The current value of the Slider (returns int for integer sliders, float for float sliders).|
+|LowValue|[Object](../objects/Object.md)|False|The minimum value of the Slider (returns int for integer sliders, float for float sliders).|
+|HighValue|[Object](../objects/Object.md)|False|The maximum value of the Slider (returns int for integer sliders, float for float sliders).|
 |PageSize|float|False|The page size for the slider. This is the amount by which the slider value changes when clicking in the slider track area. For integer sliders, this also controls the snapping/tick interval.|
-|Direction|string|False|The direction of the slider (Horizontal or Vertical)|
-|ShowInputField|bool|False|If true, the slider will show a text field for direct input|
-|IsIntSlider|bool|True|Returns true if this is an integer slider, false if it's a float slider|
+|Direction|string|False|The direction of the slider (Horizontal or Vertical).|
+|ShowInputField|bool|False|If true, the slider will show a text field for direct input.|
+|IsIntSlider|bool|True|Returns true if this is an integer slider, false if it's a float slider.|
 
 
 ### Methods
 <pre class="language-typescript"><code class="lang-typescript">function OnValueChanged(valueChangedEvent: function) -> <a data-footnote-ref href="#user-content-fn-49">Slider</a></code></pre>
-> Sets the method to be called when the Slider value changes
+> Sets the method to be called when the Slider value changes.
 > 
 > **Parameters**:
 > - `valueChangedEvent`: Method that will be called with the new value as parameter (int for integer sliders, float for float sliders)
 > 
 <pre class="language-typescript"><code class="lang-typescript">function SetValueWithoutNotify(value: <a data-footnote-ref href="#user-content-fn-59">Object</a>)</code></pre>
-> Sets the value of the Slider without triggering any change events
+> Sets the value of the Slider without triggering any change events.
+> 
+> **Parameters**:
+> - `value`: The value to set (int for integer sliders, float for float sliders).
 > 
 
 [^0]: [Color](../objects/Color.md)

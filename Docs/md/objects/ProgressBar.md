@@ -1,32 +1,38 @@
 # ProgressBar
 Inherits from [VisualElement](../objects/VisualElement.md)
 
-A UI element that represents a progress bar for displaying progress from 0% to 100%
+A UI element that represents a progress bar for displaying progress from 0% to 100%.
 
 ### Properties
 |Name|Type|Readonly|Description|
 |---|---|---|---|
-|Title|string|False|The title text displayed on the progress bar|
-|Value|float|False|The current value of the progress bar (0-100)|
-|LowValue|float|False|The minimum value of the progress bar (default: 0)|
-|HighValue|float|False|The maximum value of the progress bar (default: 100)|
+|Title|string|False|The title text displayed on the progress bar.|
+|Value|float|False|The current value of the progress bar (0-100).|
+|LowValue|float|False|The minimum value of the progress bar (default: 0).|
+|HighValue|float|False|The maximum value of the progress bar (default: 100).|
 
 
 ### Methods
 <pre class="language-typescript"><code class="lang-typescript">function OnValueChanged(valueChangedEvent: function) -> <a data-footnote-ref href="#user-content-fn-47">ProgressBar</a></code></pre>
-> Sets the method to be called when the progress bar value changes
+> Sets the method to be called when the progress bar value changes.
 > 
 > **Parameters**:
 > - `valueChangedEvent`: Method that will be called with the new value as parameter
 > 
 <pre class="language-typescript"><code class="lang-typescript">function SetValueWithoutNotify(value: float)</code></pre>
-> Sets the value of the progress bar without triggering any change events
+> Sets the value of the progress bar without triggering any change events.
+> 
+> **Parameters**:
+> - `value`: The value to set.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function GetPercentage() -> float</code></pre>
-> Gets the current progress as a percentage (0-100)
+> Gets the current progress as a percentage (0-100).
 > 
 <pre class="language-typescript"><code class="lang-typescript">function SetPercentage(percentage: float) -> <a data-footnote-ref href="#user-content-fn-47">ProgressBar</a></code></pre>
-> Sets the progress by percentage (0-100)
+> Sets the progress by percentage (0-100).
+> 
+> **Parameters**:
+> - `percentage`: The percentage value (0-100).
 > 
 
 [^0]: [Color](../objects/Color.md)

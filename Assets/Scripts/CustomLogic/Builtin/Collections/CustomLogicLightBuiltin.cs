@@ -3,14 +3,14 @@ using UnityEngine;
 
 namespace CustomLogic
 {
-    [CLType(Name = "LightBuiltin", Static = true, Abstract = true, Description = "")]
+    [CLType(Name = "LightBuiltin", Static = true, Abstract = true, Description = "Represents a Light component that can be directional, point, or spot light with configurable properties.")]
     partial class CustomLogicLightBuiltin : BuiltinComponentInstance
     {
         public Light Value;
         public CustomLogicMapObjectBuiltin OwnerMapObject;
         public GameObject Owner;
 
-        [CLConstructor]
+        [CLConstructor("Creates an empty light instance.")]
         public CustomLogicLightBuiltin() : base(null) { }
 
         public CustomLogicLightBuiltin(CustomLogicMapObjectBuiltin owner, LightType type) : base(GetOrAddComponent<Light>(owner.Value.GameObject))

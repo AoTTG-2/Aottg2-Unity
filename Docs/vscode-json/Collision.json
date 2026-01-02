@@ -62,7 +62,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The contact index (0 to ContactCount-1).",
           "isOptional": false,
           "isVariadic": false
         }
@@ -83,7 +83,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The contact index (0 to ContactCount-1).",
           "isOptional": false,
           "isVariadic": false
         }
@@ -104,7 +104,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The contact index (0 to ContactCount-1).",
           "isOptional": false,
           "isVariadic": false
         }
@@ -125,7 +125,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The contact index (0 to ContactCount-1).",
           "isOptional": false,
           "isVariadic": false
         }

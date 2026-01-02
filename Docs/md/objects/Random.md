@@ -1,8 +1,7 @@
 # Random
 Inherits from [Object](../objects/Object.md)
 
-Random can be initialized as a class with an int given as the seed value.
-Note that this is optional, and you can reference Random directly as a static class.
+Random can be initialized as a class with an int given as the seed value. Note that this is optional, and you can reference Random directly as a static class.
 
 ### Example
 ```csharp
@@ -22,8 +21,8 @@ compared = a == b;    # Always True
 ```
 ### Initialization
 ```csharp
-Random()
-Random(seed: int)
+Random() // Creates a new Random instance with default seed.
+Random(seed: int) // Creates a new Random instance with the specified seed.
 ```
 
 ### Methods

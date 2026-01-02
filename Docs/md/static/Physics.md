@@ -1,7 +1,7 @@
 # Physics
 Inherits from [Object](../objects/Object.md)
 
-Static Physics class. Contains some common physics functions
+Static Physics class. Contains some common physics functions.
 
 ### Example
 ```csharp
@@ -32,7 +32,7 @@ Game.Print(result.Collider);
 
 ### Static Methods
 <pre class="language-typescript"><code class="lang-typescript">function LineCast(start: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, end: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, collideWith: string) -> <a data-footnote-ref href="#user-content-fn-3">LineCastHitResult</a></code></pre>
-> Performs a line cast between two points, returns a LineCastHitResult object
+> Performs a line cast between two points, returns a LineCastHitResult object.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function LineCastAll(start: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, end: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, collideWith: string) -> <a data-footnote-ref href="#user-content-fn-4">List</a><<a data-footnote-ref href="#user-content-fn-3">LineCastHitResult</a>></code></pre>
 > Performs a line cast between two points and returns a LineCastHitResult object for each element hit.

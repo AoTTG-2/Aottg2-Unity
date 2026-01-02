@@ -22,7 +22,7 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "",
+      "description": "The contact offset used by the collider to avoid tunneling.",
       "readonly": false,
       "private": false
     },
@@ -32,7 +32,7 @@
         "name": "bool",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Whether the collider is enabled.",
       "readonly": false,
       "private": false
     },
@@ -42,7 +42,7 @@
         "name": "int",
         "typeArguments": []
       },
-      "description": "",
+      "description": "The layers that this Collider should exclude when deciding if the Collider can contact another Collider.",
       "readonly": false,
       "private": false
     },
@@ -62,7 +62,7 @@
         "name": "bool",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Whether the collider is a trigger. Triggers don't cause physical collisions.",
       "readonly": false,
       "private": false
     },
@@ -72,7 +72,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "",
+      "description": "The center of the collider's bounding box in world space.",
       "readonly": true,
       "private": false
     },
@@ -82,7 +82,7 @@
         "name": "bool",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Whether the collider provides contact information.",
       "readonly": false,
       "private": false
     },
@@ -134,7 +134,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Gets the closest point on the collider to the given position. Returns: The closest point on the collider.",
       "parameters": [
         {
           "name": "position",
@@ -142,7 +142,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The position to find the closest point to.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -155,7 +155,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Gets the closest point on the collider's bounding box to the given position. Returns: The closest point on the bounding box.",
       "parameters": [
         {
           "name": "position",
@@ -163,7 +163,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The position to find the closest point on bounds to.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -176,7 +176,7 @@
         "name": "LineCastHitResult",
         "typeArguments": []
       },
-      "description": "Runs a raycast physics check between start to end and checks if it hits any collider with the given collideWith layer. Returns a Collider object if it hit something otherwise returns null.",
+      "description": "Runs a raycast physics check between start to end and checks if it hits any collider with the given collideWith layer. Returns: A LineCastHitResult if it hit something, otherwise returns null.",
       "parameters": [
         {
           "name": "start",
@@ -184,7 +184,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The start position of the raycast.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -194,7 +194,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The end position of the raycast.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -204,7 +204,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The layer name to check collisions with.",
           "isOptional": false,
           "isVariadic": false
         }
