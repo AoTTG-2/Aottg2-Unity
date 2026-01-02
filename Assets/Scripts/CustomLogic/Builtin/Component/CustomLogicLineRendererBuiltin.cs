@@ -252,13 +252,19 @@ namespace CustomLogic
         }
 
         [CLMethod("Get the position of a point in the line renderer.")]
-        public CustomLogicVector3Builtin GetPosition(int index)
+        public CustomLogicVector3Builtin GetPosition(
+            [CLParam("The index of the point (0 to PositionCount-1).")]
+            int index)
         {
             return new CustomLogicVector3Builtin(Value.GetPosition(index));
         }
 
         [CLMethod("Set the position of a point in the line renderer.")]
-        public void SetPosition(int index, CustomLogicVector3Builtin position)
+        public void SetPosition(
+            [CLParam("The index of the point to set (0 to PositionCount-1).")]
+            int index,
+            [CLParam("The position to set.")]
+            CustomLogicVector3Builtin position)
         {
             Value.SetPosition(index, position.Value);
         }

@@ -23,17 +23,17 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the property.",
           "isOptional": false,
           "isVariadic": false
         },
         {
           "name": "value",
           "type": {
-            "name": "Object",
+            "name": "float|int|string|bool|null",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The value to set (must be float, string, bool, int, or null).",
           "isOptional": false,
           "isVariadic": false
         }
@@ -54,7 +54,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the property.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -64,7 +64,7 @@
             "name": "Object",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The default value to return if the property does not exist.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -85,7 +85,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the file to load from.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -95,7 +95,7 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "Whether the file is encrypted.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -116,7 +116,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the file to save to.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -126,7 +126,7 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "Whether to encrypt the file.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -157,7 +157,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The file name to validate.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -178,7 +178,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The file name to check.",
           "isOptional": false,
           "isVariadic": false
         }

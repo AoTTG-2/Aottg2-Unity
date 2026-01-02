@@ -89,7 +89,7 @@
             "name": "Player",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The player to send the message to.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -99,7 +99,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The message to send.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -120,7 +120,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The message to send.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -141,7 +141,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The message to send.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -162,7 +162,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The player ID to find.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -183,7 +183,7 @@
             "name": "double",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The first timestamp.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -193,7 +193,7 @@
             "name": "double",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The second timestamp.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -211,10 +211,10 @@
         {
           "name": "target",
           "type": {
-            "name": "Object",
+            "name": "Player|int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The player to kick (can be Player object or int ID).",
           "isOptional": false,
           "isVariadic": false
         },
@@ -224,7 +224,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The reason for kicking the player (default: '.').",
           "isOptional": true,
           "isVariadic": false
         }

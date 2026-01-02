@@ -184,7 +184,9 @@ namespace CustomLogic
         }
 
         [CLMethod("Owner only. Transfer ownership of this NetworkView to another player.")]
-        public void Transfer(CustomLogicPlayerBuiltin player)
+        public void Transfer(
+            [CLParam("The player to transfer ownership to.")]
+            CustomLogicPlayerBuiltin player)
         {
             if (Sync.photonView.IsMine)
             {
@@ -193,25 +195,35 @@ namespace CustomLogic
         }
 
         [CLMethod("Send a message to a target player. This will be received in any of the MapObject attached components through the OnNetworkMessage callback.")]
-        public void SendMessage(CustomLogicPlayerBuiltin target, string msg)
+        public void SendMessage(
+            [CLParam("The target player to send the message to.")]
+            CustomLogicPlayerBuiltin target,
+            [CLParam("The message to send.")]
+            string msg)
         {
             Sync.SendMessage(target.Player, msg);
         }
 
         [CLMethod("Send a message to all players including myself.")]
-        public void SendMessageAll(string msg)
+        public void SendMessageAll(
+            [CLParam("The message to send.")]
+            string msg)
         {
             Sync.SendMessageAll(msg);
         }
 
         [CLMethod("Send a message to players excluding myself.")]
-        public void SendMessageOthers(string msg)
+        public void SendMessageOthers(
+            [CLParam("The message to send.")]
+            string msg)
         {
             Sync.SendMessageOthers(msg);
         }
 
         [CLMethod("Send an object to the network sync stream. This represents sending data from the object owner to all non-owner observers, and should only be called in the SendNetworkStream callback in the attached component. It only works with some object types: primitives and Vector3.")]
-        public void SendStream(object obj)
+        public void SendStream(
+            [CLParam("The object to send.")]
+            object obj)
         {
             obj = SerializeStreamObj(obj);
             _streamObjects.Add(obj);

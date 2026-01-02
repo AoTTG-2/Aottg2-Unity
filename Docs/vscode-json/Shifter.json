@@ -232,7 +232,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The target position to move to.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -242,7 +242,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The stopping range from the target position.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -252,7 +252,7 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "If true, will not engage enemies along the way.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -273,7 +273,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The exact target position to move to.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -283,7 +283,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The timeout padding in seconds (default: 1).",
           "isOptional": true,
           "isVariadic": false
         }
@@ -304,7 +304,7 @@
             "name": "function",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The callback method to call during movement (receives this shifter as parameter).",
           "isOptional": false,
           "isVariadic": false
         },
@@ -314,7 +314,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The exact target position to move to.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -324,7 +324,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The stopping range from the target position (default: 10).",
           "isOptional": true,
           "isVariadic": false
         },
@@ -334,7 +334,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The timeout padding in seconds (default: 1).",
           "isOptional": true,
           "isVariadic": false
         }
@@ -352,10 +352,10 @@
         {
           "name": "enemyObj",
           "type": {
-            "name": "Object",
+            "name": "Character|MapTargetable",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The enemy to target (can be Character or MapTargetable).",
           "isOptional": false,
           "isVariadic": false
         },
@@ -365,7 +365,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The focus time in seconds (0 uses default focus time).",
           "isOptional": false,
           "isVariadic": false
         }
@@ -386,7 +386,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The idle time in seconds.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -427,7 +427,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The cripple duration in seconds.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -448,7 +448,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the attack to perform.",
           "isOptional": false,
           "isVariadic": false
         }

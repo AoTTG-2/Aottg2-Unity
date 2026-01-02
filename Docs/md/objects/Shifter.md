@@ -47,17 +47,39 @@ function OnCharacterSpawn(character)
 <pre class="language-typescript"><code class="lang-typescript">function MoveTo(position: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, range: float, ignoreEnemies: bool)</code></pre>
 > Causes the (AI) shifter to move towards a position. If ignoreEnemies is true, will not engage enemies along the way.
 > 
+> **Parameters**:
+> - `position`: The target position to move to.
+> - `range`: The stopping range from the target position.
+> - `ignoreEnemies`: If true, will not engage enemies along the way.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function MoveToExact(position: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, timeoutPadding: float = 1)</code></pre>
 > Causes the (AI) shifter to move towards a position. If ignoreEnemies is true, will not engage enemies along the way.
+> 
+> **Parameters**:
+> - `position`: The exact target position to move to.
+> - `timeoutPadding`: The timeout padding in seconds (default: 1).
 > 
 <pre class="language-typescript"><code class="lang-typescript">function MoveToExactCallback(method: function, position: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, range: float = 10, timeoutPadding: float = 1)</code></pre>
 > Causes the (AI) shifter to move towards a position with a callback. The callback method will be called during movement and will receive this shifter as a parameter.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function Target(enemyObj: <a data-footnote-ref href="#user-content-fn-59">Object</a>, focus: float)</code></pre>
+> **Parameters**:
+> - `method`: The callback method to call during movement (receives this shifter as parameter).
+> - `position`: The exact target position to move to.
+> - `range`: The stopping range from the target position (default: 10).
+> - `timeoutPadding`: The timeout padding in seconds (default: 1).
+> 
+<pre class="language-typescript"><code class="lang-typescript">function Target(enemyObj: Character|MapTargetable, focus: float)</code></pre>
 > Causes the (AI) shifter to target an enemy character or MapTargetable for focusTime seconds. If focusTime is 0 it will use the default focus time.
+> 
+> **Parameters**:
+> - `enemyObj`: The enemy to target (can be Character or MapTargetable).
+> - `focus`: The focus time in seconds (0 uses default focus time).
 > 
 <pre class="language-typescript"><code class="lang-typescript">function Idle(time: float)</code></pre>
 > Causes the (AI) shifter to idle for time seconds before beginning to wander. During idle the titan will not react or move at all.
+> 
+> **Parameters**:
+> - `time`: The idle time in seconds.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function Wander()</code></pre>
 > Causes the (AI) shifter to cancel any move commands and begin wandering randomly.
@@ -68,8 +90,14 @@ function OnCharacterSpawn(character)
 <pre class="language-typescript"><code class="lang-typescript">function Cripple(time: float)</code></pre>
 > Causes the shifter to enter the cripple state.
 > 
+> **Parameters**:
+> - `time`: The cripple duration in seconds.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function Attack(attack: string)</code></pre>
 > Causes the shifter to perform the given attack, if able.
+> 
+> **Parameters**:
+> - `attack`: The name of the attack to perform.
 > 
 
 [^0]: [Color](../objects/Color.md)

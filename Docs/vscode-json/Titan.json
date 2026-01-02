@@ -272,7 +272,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The target position to move to.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -282,7 +282,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The stopping range from the target position.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -292,7 +292,7 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "If true, will not engage enemies along the way.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -310,10 +310,10 @@
         {
           "name": "enemyObj",
           "type": {
-            "name": "Object",
+            "name": "Character|MapTargetable",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The enemy to target (can be Character or MapTargetable).",
           "isOptional": false,
           "isVariadic": false
         },
@@ -323,7 +323,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The focus time in seconds (0 uses default focus time).",
           "isOptional": false,
           "isVariadic": false
         }
@@ -354,7 +354,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The idle time in seconds.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -395,7 +395,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The cripple duration in seconds (0 uses default time).",
           "isOptional": false,
           "isVariadic": false
         }

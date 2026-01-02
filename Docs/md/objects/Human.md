@@ -76,14 +76,32 @@ function OnCharacterSpawn(character)
 <pre class="language-typescript"><code class="lang-typescript">function MountMapObject(mapObject: <a data-footnote-ref href="#user-content-fn-23">MapObject</a>, positionOffset: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, rotationOffset: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, canMountedAttack: bool = False)</code></pre>
 > Mounts the human on a map object.
 > 
+> **Parameters**:
+> - `mapObject`: The map object to mount on.
+> - `positionOffset`: The position offset from the mount point.
+> - `rotationOffset`: The rotation offset from the mount point.
+> - `canMountedAttack`: If true, allows the human to attack while mounted (default: false).
+> 
 <pre class="language-typescript"><code class="lang-typescript">function MountTransform(transform: <a data-footnote-ref href="#user-content-fn-29">Transform</a>, positionOffset: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, rotationOffset: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, canMountedAttack: bool = False)</code></pre>
 > Mounts the human on a transform.
+> 
+> **Parameters**:
+> - `transform`: The transform to mount on.
+> - `positionOffset`: The position offset from the mount point.
+> - `rotationOffset`: The rotation offset from the mount point.
+> - `canMountedAttack`: If true, allows the human to attack while mounted (default: false).
 > 
 <pre class="language-typescript"><code class="lang-typescript">function Unmount(immediate: bool = True)</code></pre>
 > Unmounts the human.
 > 
+> **Parameters**:
+> - `immediate`: If true, unmounts immediately without animation (default: true).
+> 
 <pre class="language-typescript"><code class="lang-typescript">function SetSpecial(special: string)</code></pre>
 > Sets the special of the human.
+> 
+> **Parameters**:
+> - `special`: The name of the special to set.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function ActivateSpecial()</code></pre>
 > Activates the special of the human.

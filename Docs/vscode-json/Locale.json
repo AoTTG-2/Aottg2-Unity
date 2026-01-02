@@ -234,7 +234,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The key of the localized string to get.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -255,7 +255,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The language code (e.g., 'English', 'Russian', etc.).",
           "isOptional": false,
           "isVariadic": false
         },
@@ -265,7 +265,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The key of the localized string.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -275,7 +275,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The localized string value.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -296,7 +296,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The language code to register.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -304,9 +304,18 @@
           "name": "strings",
           "type": {
             "name": "Dict",
-            "typeArguments": []
+            "typeArguments": [
+              {
+                "name": "string",
+                "typeArguments": []
+              },
+              {
+                "name": "string",
+                "typeArguments": []
+              }
+            ]
           },
-          "description": "",
+          "description": "The dictionary containing key-value pairs of localized strings.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -327,7 +336,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The category pattern. Use 'internal://' prefix for internal files or no prefix for external files.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -348,7 +357,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The language code that will fallback to another language.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -358,7 +367,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The language code to fallback to.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -379,7 +388,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The language code to remove the fallback for.",
           "isOptional": false,
           "isVariadic": false
         }

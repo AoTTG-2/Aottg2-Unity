@@ -34,7 +34,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The float value to format.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -44,7 +44,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The number of decimal places.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -106,17 +106,22 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The string to split.",
           "isOptional": false,
           "isVariadic": false
         },
         {
           "name": "splitter",
           "type": {
-            "name": "Object",
-            "typeArguments": []
+            "name": "string|List",
+            "typeArguments": [
+              {
+                "name": "string",
+                "typeArguments": []
+              }
+            ]
           },
-          "description": "",
+          "description": "The separator string or list of separator strings.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -126,7 +131,7 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "Whether to remove empty entries from the result.",
           "isOptional": true,
           "isVariadic": false
         }
@@ -183,7 +188,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The string to get a substring from.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -193,7 +198,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The starting index.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -214,7 +219,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The string to get a substring from.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -224,7 +229,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The starting index.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -234,7 +239,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The length of the substring.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -255,7 +260,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The string to get the length of.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -276,7 +281,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The string to perform replacement on.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -286,7 +291,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The substring to replace.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -296,7 +301,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The replacement substring.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -317,7 +322,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The string to check.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -327,7 +332,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The substring to search for.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -348,7 +353,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The string to check.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -358,7 +363,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The substring to check for.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -379,7 +384,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The string to check.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -389,7 +394,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The substring to check for.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -410,7 +415,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The string to trim.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -431,7 +436,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The string to insert into.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -441,7 +446,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The substring to insert.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -451,7 +456,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The index to insert at.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -472,7 +477,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The string to capitalize.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -493,7 +498,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The string to convert.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -514,7 +519,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The string to convert.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -535,7 +540,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The string to search in.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -545,7 +550,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The substring to find.",
           "isOptional": false,
           "isVariadic": false
         }

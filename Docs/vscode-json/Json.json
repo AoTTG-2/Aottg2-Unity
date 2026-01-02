@@ -23,7 +23,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The json string to load.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -44,7 +44,7 @@
             "name": "Object",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The object to save to json.",
           "isOptional": false,
           "isVariadic": false
         }

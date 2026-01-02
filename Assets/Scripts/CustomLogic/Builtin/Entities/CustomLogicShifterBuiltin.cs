@@ -164,21 +164,39 @@ namespace CustomLogic
         }
 
         [CLMethod("Causes the (AI) shifter to move towards a position. If ignoreEnemies is true, will not engage enemies along the way.")]
-        public void MoveTo(CustomLogicVector3Builtin position, float range, bool ignoreEnemies)
+        public void MoveTo(
+            [CLParam("The target position to move to.")]
+            CustomLogicVector3Builtin position,
+            [CLParam("The stopping range from the target position.")]
+            float range,
+            [CLParam("If true, will not engage enemies along the way.")]
+            bool ignoreEnemies)
         {
             if (Shifter.IsMine() && !Shifter.Dead && Shifter.AI)
                 Controller.MoveTo(position.Value, range, ignoreEnemies);
         }
 
         [CLMethod("Causes the (AI) shifter to move towards a position. If ignoreEnemies is true, will not engage enemies along the way.")]
-        public void MoveToExact(CustomLogicVector3Builtin position, float timeoutPadding = 1)
+        public void MoveToExact(
+            [CLParam("The exact target position to move to.")]
+            CustomLogicVector3Builtin position,
+            [CLParam("The timeout padding in seconds (default: 1).")]
+            float timeoutPadding = 1)
         {
             if (Shifter.IsMine() && !Shifter.Dead && Shifter.AI)
                 Controller.MoveToExact(position.Value, timeoutPadding);
         }
 
         [CLMethod("Causes the (AI) shifter to move towards a position with a callback. The callback method will be called during movement and will receive this shifter as a parameter.")]
-        public void MoveToExactCallback(UserMethod method, CustomLogicVector3Builtin position, float range = 10, float timeoutPadding = 1)
+        public void MoveToExactCallback(
+            [CLParam("The callback method to call during movement (receives this shifter as parameter).")]
+            UserMethod method,
+            [CLParam("The exact target position to move to.")]
+            CustomLogicVector3Builtin position,
+            [CLParam("The stopping range from the target position (default: 10).")]
+            float range = 10,
+            [CLParam("The timeout padding in seconds (default: 1).")]
+            float timeoutPadding = 1)
         {
             if (Shifter.IsMine() && !Shifter.Dead && Shifter.AI)
             {
@@ -191,7 +209,11 @@ namespace CustomLogic
         }
 
         [CLMethod("Causes the (AI) shifter to target an enemy character or MapTargetable for focusTime seconds. If focusTime is 0 it will use the default focus time.")]
-        public void Target(object enemyObj, float focus)
+        public void Target(
+            [CLParam("The enemy to target (can be Character or MapTargetable).", Type = "Character|MapTargetable")]
+            object enemyObj,
+            [CLParam("The focus time in seconds (0 uses default focus time).")]
+            float focus)
         {
             if (Shifter.IsMine() && !Shifter.Dead && Shifter.AI)
             {
@@ -203,7 +225,9 @@ namespace CustomLogic
         }
 
         [CLMethod("Causes the (AI) shifter to idle for time seconds before beginning to wander. During idle the titan will not react or move at all.")]
-        public void Idle(float time)
+        public void Idle(
+            [CLParam("The idle time in seconds.")]
+            float time)
         {
             if (Shifter.IsMine() && !Shifter.Dead && Shifter.AI)
                 Controller.ForceIdle(time);
@@ -224,14 +248,18 @@ namespace CustomLogic
         }
 
         [CLMethod("Causes the shifter to enter the cripple state.")]
-        public void Cripple(float time)
+        public void Cripple(
+            [CLParam("The cripple duration in seconds.")]
+            float time)
         {
             if (Shifter.IsMine() && !Shifter.Dead)
                 Shifter.Cripple(time);
         }
 
         [CLMethod("Causes the shifter to perform the given attack, if able.")]
-        public void Attack(string attack)
+        public void Attack(
+            [CLParam("The name of the attack to perform.")]
+            string attack)
         {
             if (Shifter.IsMine() && !Shifter.Dead && Shifter.CanAttack())
                 Shifter.Attack(attack);

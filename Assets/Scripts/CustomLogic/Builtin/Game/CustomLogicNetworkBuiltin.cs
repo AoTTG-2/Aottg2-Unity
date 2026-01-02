@@ -49,25 +49,35 @@ namespace CustomLogic
         public int Ping => PhotonNetwork.GetPing();
 
         [CLMethod(Static = true, Description = "Send a message to a player.")]
-        public void SendMessage(CustomLogicPlayerBuiltin player, string message)
+        public void SendMessage(
+            [CLParam("The player to send the message to.")]
+            CustomLogicPlayerBuiltin player,
+            [CLParam("The message to send.")]
+            string message)
         {
             RPCManager.PhotonView.RPC(nameof(RPCManager.SendMessageRPC), player.Player, new object[] { message });
         }
 
         [CLMethod(Static = true, Description = "Send a message to all players.")]
-        public void SendMessageAll(string message)
+        public void SendMessageAll(
+            [CLParam("The message to send.")]
+            string message)
         {
             RPCManager.PhotonView.RPC(nameof(RPCManager.SendMessageRPC), RpcTarget.All, new object[] { message });
         }
 
         [CLMethod(Static = true, Description = "Send a message to all players except the sender.")]
-        public void SendMessageOthers(string message)
+        public void SendMessageOthers(
+            [CLParam("The message to send.")]
+            string message)
         {
             RPCManager.PhotonView.RPC(nameof(RPCManager.SendMessageRPC), RpcTarget.Others, new object[] { message });
         }
 
         [CLMethod(Static = true, Description = "Finds a player in the room by id.")]
-        public CustomLogicPlayerBuiltin FindPlayer(int id)
+        public CustomLogicPlayerBuiltin FindPlayer(
+            [CLParam("The player ID to find.")]
+            int id)
         {
             Player player = Util.FindPlayerById(id);
             if (player != null)
@@ -76,14 +86,22 @@ namespace CustomLogic
         }
 
         [CLMethod(Static = true, Description = "Get the difference between two photon timestamps.")]
-        public double GetTimestampDifference(double timestamp1, double timestamp2)
+        public double GetTimestampDifference(
+            [CLParam("The first timestamp.")]
+            double timestamp1,
+            [CLParam("The second timestamp.")]
+            double timestamp2)
         {
             // Handle the wrap around case photon timestamps have for the user since most will likely ignore it otherwise.
             return Util.GetPhotonTimestampDifference(timestamp1, timestamp2);
         }
 
         [CLMethod(Static = true, Description = "Kick the given player by id or player reference.")]
-        public void KickPlayer(object target, string reason = ".")
+        public void KickPlayer(
+            [CLParam("The player to kick (can be Player object or int ID).", Type = "Player|int")]
+            object target,
+            [CLParam("The reason for kicking the player (default: '.').")]
+            string reason = ".")
         {
             Photon.Realtime.Player player = null;
             if (target is int)

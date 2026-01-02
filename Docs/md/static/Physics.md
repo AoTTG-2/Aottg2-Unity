@@ -34,29 +34,87 @@ Game.Print(result.Collider);
 <pre class="language-typescript"><code class="lang-typescript">function LineCast(start: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, end: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, collideWith: string) -> <a data-footnote-ref href="#user-content-fn-3">LineCastHitResult</a></code></pre>
 > Performs a line cast between two points, returns a LineCastHitResult object.
 > 
+> **Parameters**:
+> - `start`: The start position of the line cast.
+> - `end`: The end position of the line cast.
+> - `collideWith`: The collision layer to check against (e.g., 'Entities', 'MapObjects', etc.).
+> 
 <pre class="language-typescript"><code class="lang-typescript">function LineCastAll(start: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, end: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, collideWith: string) -> <a data-footnote-ref href="#user-content-fn-4">List</a><<a data-footnote-ref href="#user-content-fn-3">LineCastHitResult</a>></code></pre>
 > Performs a line cast between two points and returns a LineCastHitResult object for each element hit.
+> 
+> **Parameters**:
+> - `start`: The start position of the line cast.
+> - `end`: The end position of the line cast.
+> - `collideWith`: The collision layer to check against (e.g., 'Entities', 'MapObjects', etc.).
 > 
 <pre class="language-typescript"><code class="lang-typescript">function SphereCast(start: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, end: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, radius: float, collideWith: string) -> <a data-footnote-ref href="#user-content-fn-59">Object</a></code></pre>
 > Performs a sphere cast between two points, returns the object hit (Human, Titan, etc...).
 > 
+> **Parameters**:
+> - `start`: The start position of the sphere cast.
+> - `end`: The end position of the sphere cast.
+> - `radius`: The radius of the sphere.
+> - `collideWith`: The collision layer to check against (e.g., 'Entities', 'MapObjects', etc.).
+> 
 <pre class="language-typescript"><code class="lang-typescript">function SphereCastAll(start: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, end: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, radius: float, collideWith: string) -> <a data-footnote-ref href="#user-content-fn-4">List</a><<a data-footnote-ref href="#user-content-fn-3">LineCastHitResult</a>></code></pre>
 > Performs a sphere cast between two points and returns a LineCastHitResult object for each element hit.
+> 
+> **Parameters**:
+> - `start`: The start position of the sphere cast.
+> - `end`: The end position of the sphere cast.
+> - `radius`: The radius of the sphere.
+> - `collideWith`: The collision layer to check against (e.g., 'Entities', 'MapObjects', etc.).
 > 
 <pre class="language-typescript"><code class="lang-typescript">function BoxCast(start: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, end: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, dimensions: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, orientation: <a data-footnote-ref href="#user-content-fn-5">Quaternion</a>, collideWith: string) -> <a data-footnote-ref href="#user-content-fn-59">Object</a></code></pre>
 > Performs a box cast between two points, returns the object hit (Human, Titan, etc...).
 > 
+> **Parameters**:
+> - `start`: The start position of the box cast.
+> - `end`: The end position of the box cast.
+> - `dimensions`: The dimensions of the box.
+> - `orientation`: The orientation of the box.
+> - `collideWith`: The collision layer to check against (e.g., 'Entities', 'MapObjects', etc.).
+> 
 <pre class="language-typescript"><code class="lang-typescript">function BoxCastAll(start: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, end: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, dimensions: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, orientation: <a data-footnote-ref href="#user-content-fn-5">Quaternion</a>, collideWith: string) -> <a data-footnote-ref href="#user-content-fn-4">List</a><<a data-footnote-ref href="#user-content-fn-3">LineCastHitResult</a>></code></pre>
 > Performs a box cast between two points and returns a LineCastHitResult object for each element hit.
+> 
+> **Parameters**:
+> - `start`: The start position of the box cast.
+> - `end`: The end position of the box cast.
+> - `dimensions`: The dimensions of the box.
+> - `orientation`: The orientation of the box.
+> - `collideWith`: The collision layer to check against (e.g., 'Entities', 'MapObjects', etc.).
 > 
 <pre class="language-typescript"><code class="lang-typescript">function ClosestPoint(point: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, collider: <a data-footnote-ref href="#user-content-fn-13">Collider</a>, position: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, rotation: <a data-footnote-ref href="#user-content-fn-5">Quaternion</a>) -> <a data-footnote-ref href="#user-content-fn-9">Vector3</a></code></pre>
 > Returns a point on the given collider that is closest to the specified location.
 > 
+> **Parameters**:
+> - `point`: The point to find the closest point to.
+> - `collider`: The collider to check.
+> - `position`: The position of the collider.
+> - `rotation`: The rotation of the collider.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function ComputePenetration(colliderA: <a data-footnote-ref href="#user-content-fn-13">Collider</a>, positionA: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, rotationA: <a data-footnote-ref href="#user-content-fn-5">Quaternion</a>, colliderB: <a data-footnote-ref href="#user-content-fn-13">Collider</a>, positionB: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, rotationB: <a data-footnote-ref href="#user-content-fn-5">Quaternion</a>) -> <a data-footnote-ref href="#user-content-fn-9">Vector3</a></code></pre>
 > Compute the minimal translation required to separate the given colliders apart at specified poses. Returns Vector3.Zero if the colliders are not intersecting.
 > 
+> **Parameters**:
+> - `colliderA`: The first collider.
+> - `positionA`: The position of the first collider.
+> - `rotationA`: The rotation of the first collider.
+> - `colliderB`: The second collider.
+> - `positionB`: The position of the second collider.
+> - `rotationB`: The rotation of the second collider.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function AreCollidersOverlapping(colliderA: <a data-footnote-ref href="#user-content-fn-13">Collider</a>, positionA: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, rotationA: <a data-footnote-ref href="#user-content-fn-5">Quaternion</a>, colliderB: <a data-footnote-ref href="#user-content-fn-13">Collider</a>, positionB: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, rotationB: <a data-footnote-ref href="#user-content-fn-5">Quaternion</a>) -> bool</code></pre>
 > Check if the the given colliders at specified poses are apart or overlapping.
+> 
+> **Parameters**:
+> - `colliderA`: The first collider.
+> - `positionA`: The position of the first collider.
+> - `rotationA`: The rotation of the first collider.
+> - `colliderB`: The second collider.
+> - `positionB`: The position of the second collider.
+> - `rotationB`: The rotation of the second collider.
 > 
 
 [^0]: [Color](../objects/Color.md)

@@ -11,7 +11,11 @@ namespace CustomLogic
         public CustomLogicRoomDataBuiltin() { }
 
         [CLMethod("Sets the property with given name to the object value. Valid value types are float, string, bool, and int.")]
-        public static void SetProperty(string property, object value)
+        public static void SetProperty(
+            [CLParam("The name of the property.")]
+            string property,
+            [CLParam("The value to set (must be float, string, bool, int, or null).", Type = "float|int|string|bool|null")]
+            object value)
         {
             if (value is not (null or float or int or string or bool))
                 throw new System.Exception("RoomData.SetProperty only supports null, float, int, string, or bool values.");
@@ -20,7 +24,11 @@ namespace CustomLogic
         }
 
         [CLMethod("Gets the property with given name. If property does not exist, returns defaultValue.")]
-        public static object GetProperty(string property, object defaultValue)
+        public static object GetProperty(
+            [CLParam("The name of the property.")]
+            string property,
+            [CLParam("The default value to return if the property does not exist.")]
+            object defaultValue)
         {
             return CustomLogicManager.RoomData.GetValueOrDefault(property, defaultValue);
         }

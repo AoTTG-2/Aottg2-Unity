@@ -39,8 +39,15 @@ LineRenderer(color: Color, width: float = 1) // Creates a line with the given co
 <pre class="language-typescript"><code class="lang-typescript">function GetPosition(index: int) -> <a data-footnote-ref href="#user-content-fn-9">Vector3</a></code></pre>
 > Get the position of a point in the line renderer.
 > 
+> **Parameters**:
+> - `index`: The index of the point (0 to PositionCount-1).
+> 
 <pre class="language-typescript"><code class="lang-typescript">function SetPosition(index: int, position: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>)</code></pre>
 > Set the position of a point in the line renderer.
+> 
+> **Parameters**:
+> - `index`: The index of the point to set (0 to PositionCount-1).
+> - `position`: The position to set.
 > 
 
 ### Static Methods

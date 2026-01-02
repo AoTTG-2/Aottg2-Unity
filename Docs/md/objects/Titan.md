@@ -49,14 +49,26 @@ function OnCharacterSpawn(character)
 <pre class="language-typescript"><code class="lang-typescript">function MoveTo(position: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, range: float, ignoreEnemies: bool)</code></pre>
 > Causes the (AI) titan to move towards a position and stopping when within specified range. If ignoreEnemies is true, will not engage enemies along the way.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function Target(enemyObj: <a data-footnote-ref href="#user-content-fn-59">Object</a>, focus: float)</code></pre>
+> **Parameters**:
+> - `position`: The target position to move to.
+> - `range`: The stopping range from the target position.
+> - `ignoreEnemies`: If true, will not engage enemies along the way.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function Target(enemyObj: Character|MapTargetable, focus: float)</code></pre>
 > Causes the (AI) titan to target an enemy character or MapTargetable for focusTime seconds. If focusTime is 0 it will use the default focus time
+> 
+> **Parameters**:
+> - `enemyObj`: The enemy to target (can be Character or MapTargetable).
+> - `focus`: The focus time in seconds (0 uses default focus time).
 > 
 <pre class="language-typescript"><code class="lang-typescript">function GetTarget() -> <a data-footnote-ref href="#user-content-fn-59">Object</a></code></pre>
 > Gets the target currently focused by this character. Returns null if no target is set.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function Idle(time: float)</code></pre>
 > Causes the (AI) titan to idle for time seconds before beginning to wander. During idle the titan will not react or move at all.
+> 
+> **Parameters**:
+> - `time`: The idle time in seconds.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function Wander()</code></pre>
 > Causes the (AI) titan to cancel any move commands and begin wandering randomly.
@@ -66,6 +78,9 @@ function OnCharacterSpawn(character)
 > 
 <pre class="language-typescript"><code class="lang-typescript">function Cripple(time: float)</code></pre>
 > Causes the titan to enter the cripple state for time seconds. Using 0 will use the default cripple time.
+> 
+> **Parameters**:
+> - `time`: The cripple duration in seconds (0 uses default time).
 > 
 
 [^0]: [Color](../objects/Color.md)

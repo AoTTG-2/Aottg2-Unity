@@ -4,11 +4,19 @@ Inherits from [Object](../objects/Object.md)
 Store and retrieve room variables. Room data is cleared upon joining or creating a new lobby and does not reset between game rounds. Supports float, string, bool, and int types. Note that RoomData is local only and does not sync. You must use network messages to sync room variables.
 
 ### Static Methods
-<pre class="language-typescript"><code class="lang-typescript">function SetProperty(property: string, value: <a data-footnote-ref href="#user-content-fn-59">Object</a>)</code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function SetProperty(property: string, value: float|int|string|bool|null)</code></pre>
 > Sets the property with given name to the object value. Valid value types are float, string, bool, and int.
+> 
+> **Parameters**:
+> - `property`: The name of the property.
+> - `value`: The value to set (must be float, string, bool, int, or null).
 > 
 <pre class="language-typescript"><code class="lang-typescript">function GetProperty(property: string, defaultValue: <a data-footnote-ref href="#user-content-fn-59">Object</a>) -> <a data-footnote-ref href="#user-content-fn-59">Object</a></code></pre>
 > Gets the property with given name. If property does not exist, returns defaultValue.
+> 
+> **Parameters**:
+> - `property`: The name of the property.
+> - `defaultValue`: The default value to return if the property does not exist.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function Clear()</code></pre>
 > Clears all room data.

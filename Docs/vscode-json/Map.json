@@ -38,7 +38,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the map object to find.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -64,7 +64,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the map objects to find.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -90,7 +90,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The regex pattern to match against map object names.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -100,7 +100,7 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "If true, sorts the results by name (default: false).",
           "isOptional": true,
           "isVariadic": false
         }
@@ -121,7 +121,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The class name of the component to search for.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -147,7 +147,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The class name of the component to search for.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -168,7 +168,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The ID of the map object to find.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -189,7 +189,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The tag to search for.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -215,7 +215,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The tag to search for.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -241,7 +241,7 @@
             "name": "Player",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The player to find map objects for.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -262,7 +262,7 @@
             "name": "Prefab",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The prefab to instantiate.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -272,7 +272,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The position to spawn at (default: null, uses prefab position).",
           "isOptional": true,
           "isVariadic": false
         },
@@ -282,7 +282,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The rotation to spawn with (default: null, uses prefab rotation).",
           "isOptional": true,
           "isVariadic": false
         },
@@ -292,7 +292,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The scale to spawn with (default: null, uses prefab scale).",
           "isOptional": true,
           "isVariadic": false
         }
@@ -313,7 +313,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The serialized prefab string to instantiate.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -334,7 +334,7 @@
             "name": "MapObject",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The map object to create a prefab from.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -344,7 +344,7 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "If true, clears all components from the prefab (default: false).",
           "isOptional": true,
           "isVariadic": false
         }
@@ -365,7 +365,7 @@
             "name": "MapObject",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The map object to destroy.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -375,7 +375,7 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "If true, also destroys all child objects.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -396,7 +396,7 @@
             "name": "MapObject",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The map object to copy.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -406,7 +406,7 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "If true, also copies all child objects (default: true).",
           "isOptional": true,
           "isVariadic": false
         }
@@ -427,7 +427,7 @@
             "name": "MapTargetable",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The map targetable to destroy.",
           "isOptional": false,
           "isVariadic": false
         }

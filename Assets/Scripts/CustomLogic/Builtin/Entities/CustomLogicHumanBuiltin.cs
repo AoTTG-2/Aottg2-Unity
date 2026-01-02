@@ -414,28 +414,48 @@ namespace CustomLogic
         }
 
         [CLMethod("Mounts the human on a map object.")]
-        public void MountMapObject(CustomLogicMapObjectBuiltin mapObject, CustomLogicVector3Builtin positionOffset, CustomLogicVector3Builtin rotationOffset, bool canMountedAttack = false)
+        public void MountMapObject(
+            [CLParam("The map object to mount on.")]
+            CustomLogicMapObjectBuiltin mapObject,
+            [CLParam("The position offset from the mount point.")]
+            CustomLogicVector3Builtin positionOffset,
+            [CLParam("The rotation offset from the mount point.")]
+            CustomLogicVector3Builtin rotationOffset,
+            [CLParam("If true, allows the human to attack while mounted (default: false).")]
+            bool canMountedAttack = false)
         {
             if (Human.IsMine())
                 Human.Mount(mapObject.Value, positionOffset.Value, rotationOffset.Value, canMountedAttack);
         }
 
         [CLMethod("Mounts the human on a transform.")]
-        public void MountTransform(CustomLogicTransformBuiltin transform, CustomLogicVector3Builtin positionOffset, CustomLogicVector3Builtin rotationOffset, bool canMountedAttack = false)
+        public void MountTransform(
+            [CLParam("The transform to mount on.")]
+            CustomLogicTransformBuiltin transform,
+            [CLParam("The position offset from the mount point.")]
+            CustomLogicVector3Builtin positionOffset,
+            [CLParam("The rotation offset from the mount point.")]
+            CustomLogicVector3Builtin rotationOffset,
+            [CLParam("If true, allows the human to attack while mounted (default: false).")]
+            bool canMountedAttack = false)
         {
             if (Human.IsMine())
                 Human.Mount(transform.Value, positionOffset.Value, rotationOffset.Value, canMountedAttack);
         }
 
         [CLMethod("Unmounts the human.")]
-        public void Unmount(bool immediate = true)
+        public void Unmount(
+            [CLParam("If true, unmounts immediately without animation (default: true).")]
+            bool immediate = true)
         {
             if (Human.IsMine())
                 Human.Unmount(immediate);
         }
 
         [CLMethod("Sets the special of the human.")]
-        public void SetSpecial(string special)
+        public void SetSpecial(
+            [CLParam("The name of the special to set.")]
+            string special)
         {
             if (Human.IsMine())
                 Human.SetSpecial(special);

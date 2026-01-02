@@ -7,8 +7,14 @@ Serializes and deserializes primitive and struct values from and to json strings
 <pre class="language-typescript"><code class="lang-typescript">function LoadFromString(json: string) -> <a data-footnote-ref href="#user-content-fn-59">Object</a></code></pre>
 > Loads a json string into a custom logic object.
 > 
+> **Parameters**:
+> - `json`: The json string to load.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function SaveToString(obj: <a data-footnote-ref href="#user-content-fn-59">Object</a>) -> string</code></pre>
 > Saves a custom logic object into a json string.
+> 
+> **Parameters**:
+> - `obj`: The object to save to json.
 > 
 
 [^0]: [Color](../objects/Color.md)

@@ -18,20 +18,41 @@ Networking functions.
 <pre class="language-typescript"><code class="lang-typescript">function SendMessage(player: <a data-footnote-ref href="#user-content-fn-25">Player</a>, message: string)</code></pre>
 > Send a message to a player.
 > 
+> **Parameters**:
+> - `player`: The player to send the message to.
+> - `message`: The message to send.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function SendMessageAll(message: string)</code></pre>
 > Send a message to all players.
+> 
+> **Parameters**:
+> - `message`: The message to send.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function SendMessageOthers(message: string)</code></pre>
 > Send a message to all players except the sender.
 > 
+> **Parameters**:
+> - `message`: The message to send.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function FindPlayer(id: int) -> <a data-footnote-ref href="#user-content-fn-25">Player</a></code></pre>
 > Finds a player in the room by id.
+> 
+> **Parameters**:
+> - `id`: The player ID to find.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function GetTimestampDifference(timestamp1: double, timestamp2: double) -> double</code></pre>
 > Get the difference between two photon timestamps.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function KickPlayer(target: <a data-footnote-ref href="#user-content-fn-59">Object</a>, reason: string = ".")</code></pre>
+> **Parameters**:
+> - `timestamp1`: The first timestamp.
+> - `timestamp2`: The second timestamp.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function KickPlayer(target: Player|int, reason: string = ".")</code></pre>
 > Kick the given player by id or player reference.
+> 
+> **Parameters**:
+> - `target`: The player to kick (can be Player object or int ID).
+> - `reason`: The reason for kicking the player (default: '.').
 > 
 
 [^0]: [Color](../objects/Color.md)

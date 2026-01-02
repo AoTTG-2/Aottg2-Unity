@@ -227,7 +227,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The index of the point (0 to PositionCount-1).",
           "isOptional": false,
           "isVariadic": false
         }
@@ -248,7 +248,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The index of the point to set (0 to PositionCount-1).",
           "isOptional": false,
           "isVariadic": false
         },
@@ -258,7 +258,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The position to set.",
           "isOptional": false,
           "isVariadic": false
         }

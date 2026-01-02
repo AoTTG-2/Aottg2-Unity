@@ -13,6 +13,10 @@ String manipulation functions.
 <pre class="language-typescript"><code class="lang-typescript">function FormatFloat(val: float, decimals: int) -> string</code></pre>
 > Formats a float to a string with the specified number of decimal places.
 > 
+> **Parameters**:
+> - `val`: The float value to format.
+> - `decimals`: The number of decimal places.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function FormatFromList(str: string, list: <a data-footnote-ref href="#user-content-fn-4">List</a><string>) -> string</code></pre>
 > Equivalent to C# string.format(string, List<string>).
 > 
@@ -20,8 +24,13 @@ String manipulation functions.
 > - `str`: The format string.
 > - `list`: The list of values to format.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function Split(toSplit: string, splitter: <a data-footnote-ref href="#user-content-fn-59">Object</a>, removeEmptyEntries: bool = False) -> <a data-footnote-ref href="#user-content-fn-4">List</a><string></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function Split(toSplit: string, splitter: string|List<string>, removeEmptyEntries: bool = False) -> <a data-footnote-ref href="#user-content-fn-4">List</a><string></code></pre>
 > Split the string into a list. Can pass in either a string to split on or a list of strings to split on, the last optional param can remove all empty entries.
+> 
+> **Parameters**:
+> - `toSplit`: The string to split.
+> - `splitter`: The separator string or list of separator strings.
+> - `removeEmptyEntries`: Whether to remove empty entries from the result.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function Join(list: <a data-footnote-ref href="#user-content-fn-4">List</a><string>, separator: string) -> string</code></pre>
 > Joins a list of strings into a single string with the specified separator.
@@ -33,41 +42,91 @@ String manipulation functions.
 <pre class="language-typescript"><code class="lang-typescript">function Substring(str: string, startIndex: int) -> string</code></pre>
 > Returns a substring starting from the specified index.
 > 
+> **Parameters**:
+> - `str`: The string to get a substring from.
+> - `startIndex`: The starting index.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function SubstringWithLength(str: string, startIndex: int, length: int) -> string</code></pre>
 > Returns a substring of the specified length starting from the specified start index.
+> 
+> **Parameters**:
+> - `str`: The string to get a substring from.
+> - `startIndex`: The starting index.
+> - `length`: The length of the substring.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function Length(str: string) -> int</code></pre>
 > Length of the string.
 > 
+> **Parameters**:
+> - `str`: The string to get the length of.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function Replace(str: string, replace: string, with: string) -> string</code></pre>
 > Replaces all occurrences of a substring with another substring.
+> 
+> **Parameters**:
+> - `str`: The string to perform replacement on.
+> - `replace`: The substring to replace.
+> - `with`: The replacement substring.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function Contains(str: string, match: string) -> bool</code></pre>
 > Checks if the string contains the specified substring.
 > 
+> **Parameters**:
+> - `str`: The string to check.
+> - `match`: The substring to search for.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function StartsWith(str: string, match: string) -> bool</code></pre>
 > Checks if the string starts with the specified substring.
+> 
+> **Parameters**:
+> - `str`: The string to check.
+> - `match`: The substring to check for.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function EndsWith(str: string, match: string) -> bool</code></pre>
 > Checks if the string ends with the specified substring.
 > 
+> **Parameters**:
+> - `str`: The string to check.
+> - `match`: The substring to check for.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function Trim(str: string) -> string</code></pre>
 > Trims whitespace from the start and end of the string.
+> 
+> **Parameters**:
+> - `str`: The string to trim.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function Insert(str: string, insert: string, index: int) -> string</code></pre>
 > Inserts a substring at the specified index.
 > 
+> **Parameters**:
+> - `str`: The string to insert into.
+> - `insert`: The substring to insert.
+> - `index`: The index to insert at.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function Capitalize(str: string) -> string</code></pre>
 > Capitalizes the first letter of the string.
+> 
+> **Parameters**:
+> - `str`: The string to capitalize.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function ToUpper(str: string) -> string</code></pre>
 > Converts the string to uppercase.
 > 
+> **Parameters**:
+> - `str`: The string to convert.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function ToLower(str: string) -> string</code></pre>
 > Converts the string to lowercase.
 > 
+> **Parameters**:
+> - `str`: The string to convert.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function IndexOf(str: string, substring: string) -> int</code></pre>
 > Returns the index of the given string.
+> 
+> **Parameters**:
+> - `str`: The string to search in.
+> - `substring`: The substring to find.
 > 
 
 [^0]: [Color](../objects/Color.md)

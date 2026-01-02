@@ -21,7 +21,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The minimum value (inclusive).",
           "isOptional": false,
           "isVariadic": false
         },
@@ -31,7 +31,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The maximum value (exclusive).",
           "isOptional": false,
           "isVariadic": false
         }
@@ -52,7 +52,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The minimum value (inclusive).",
           "isOptional": false,
           "isVariadic": false
         },
@@ -62,7 +62,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The maximum value (inclusive).",
           "isOptional": false,
           "isVariadic": false
         }
@@ -93,7 +93,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The minimum Vector3 values.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -103,7 +103,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The maximum Vector3 values.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -124,7 +124,7 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "If true, the y component will be zero.",
           "isOptional": true,
           "isVariadic": false
         }
@@ -155,7 +155,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The X coordinate for the noise sample.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -165,7 +165,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The Y coordinate for the noise sample.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -189,7 +189,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The minimum value (inclusive).",
           "isOptional": false,
           "isVariadic": false
         },
@@ -199,7 +199,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The maximum value (exclusive).",
           "isOptional": false,
           "isVariadic": false
         }
@@ -220,7 +220,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The minimum value (inclusive).",
           "isOptional": false,
           "isVariadic": false
         },
@@ -230,7 +230,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The maximum value (inclusive).",
           "isOptional": false,
           "isVariadic": false
         }
@@ -261,7 +261,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The minimum Vector3 values.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -271,7 +271,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The maximum Vector3 values.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -292,7 +292,7 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "If true, the y component will be zero.",
           "isOptional": true,
           "isVariadic": false
         }
@@ -323,7 +323,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The X coordinate for the noise sample.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -333,7 +333,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The Y coordinate for the noise sample.",
           "isOptional": false,
           "isVariadic": false
         }

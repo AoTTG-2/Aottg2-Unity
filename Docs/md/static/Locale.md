@@ -118,20 +118,42 @@ Game.Print("missing_key: " + Locale.Get("missing_key"));
 <pre class="language-typescript"><code class="lang-typescript">function Get(key: string) -> string</code></pre>
 > Get the localized string for the given key. Searches the current UI language, then any registered fallbacks, and finally the default language. Throws an exception if the key is not found in any language pack.
 > 
+> **Parameters**:
+> - `key`: The key of the localized string to get.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function Set(language: string, key: string, value: string)</code></pre>
 > Set or override a localized string for the specified language and key.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function RegisterLanguage(language: string, strings: <a data-footnote-ref href="#user-content-fn-1">Dict</a>)</code></pre>
+> **Parameters**:
+> - `language`: The language code (e.g., 'English', 'Russian', etc.).
+> - `key`: The key of the localized string.
+> - `value`: The localized string value.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function RegisterLanguage(language: string, strings: <a data-footnote-ref href="#user-content-fn-1">Dict</a><string,string>)</code></pre>
 > Register a single-level (non-recursive) fallback: if a string is not found in 'fromLanguage', the system will search only in 'toLanguage', without chaining further.
+> 
+> **Parameters**:
+> - `language`: The language code to register.
+> - `strings`: The dictionary containing key-value pairs of localized strings.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function RegisterLanguages(pattern: string)</code></pre>
 > Register all localized strings from JSON files for a specific category across all available languages. Use 'internal://' prefix for internal files (e.g., 'internal://BasicTutorialMap') or no prefix for external files (e.g., 'MyCustomMod').
 > 
+> **Parameters**:
+> - `pattern`: The category pattern. Use 'internal://' prefix for internal files or no prefix for external files.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function RegisterFallback(fromLanguage: string, toLanguage: string)</code></pre>
 > Register a fallback language. When a string is not found in 'fromLanguage', it will try 'toLanguage'.
 > 
+> **Parameters**:
+> - `fromLanguage`: The language code that will fallback to another language.
+> - `toLanguage`: The language code to fallback to.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function RemoveFallback(fromLanguage: string)</code></pre>
 > Remove a language fallback.
+> 
+> **Parameters**:
+> - `fromLanguage`: The language code to remove the fallback for.
 > 
 
 [^0]: [Color](../objects/Color.md)

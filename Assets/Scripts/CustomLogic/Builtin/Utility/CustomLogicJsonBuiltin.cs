@@ -13,7 +13,9 @@ namespace CustomLogic
         }
 
         [CLMethod("Loads a json string into a custom logic object.")]
-        public static object LoadFromString(string json)
+        public static object LoadFromString(
+            [CLParam("The json string to load.")]
+            string json)
         {
             string jsonTrim = json.Trim();
             JSONNode jsonNode;
@@ -37,7 +39,9 @@ namespace CustomLogic
         }
 
         [CLMethod("Saves a custom logic object into a json string.")]
-        public static string SaveToString(object obj)
+        public static string SaveToString(
+            [CLParam("The object to save to json.")]
+            object obj)
         {
             JSONNode json = SaveJSON(obj);
             return json.ToString(aIndent: 4);
