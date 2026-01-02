@@ -7,17 +7,14 @@ using Utility;
 
 namespace CustomLogic
 {
-    /// <summary>
-    /// Finding, creating, and destroying map objects.
-    /// </summary>
-    [CLType(Name = "Map", Static = true, Abstract = true)]
+    [CLType(Name = "Map", Static = true, Abstract = true, Description = "Finding, creating, and destroying map objects.")]
     partial class CustomLogicMapBuiltin : BuiltinClassInstance
     {
         private static RateLimit _instantiateLimit = null;
         private static int _instantiateCount = 0;
         private static int _allowedInstantiateCount = 100;
 
-        [CLConstructor]
+        [CLConstructor("Creates a new Map instance.")]
         public CustomLogicMapBuiltin()
         {
             if (PhotonNetwork.IsMasterClient)
@@ -32,7 +29,7 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod(Static = true, Description = "Find all map objects", ReturnTypeArguments = new[] { "MapObject" })]
+        [CLMethod(Static = true, ReturnTypeArguments = new[] { "MapObject" }, Description = "Find all map objects.")]
         public CustomLogicListBuiltin FindAllMapObjects()
         {
             CustomLogicListBuiltin listBuiltin = new CustomLogicListBuiltin();
@@ -43,7 +40,7 @@ namespace CustomLogic
             return listBuiltin;
         }
 
-        [CLMethod(Static = true, Description = "Find a map object by name")]
+        [CLMethod(Static = true, Description = "Find a map object by name.")]
         public CustomLogicMapObjectBuiltin FindMapObjectByName(string objectName)
         {
             foreach (MapObject mapObject in MapLoader.GoToMapObject.Values)
@@ -54,7 +51,7 @@ namespace CustomLogic
             return null;
         }
 
-        [CLMethod(Static = true, Description = "Find all map objects by name", ReturnTypeArguments = new[] { "MapObject" })]
+        [CLMethod(Static = true, ReturnTypeArguments = new[] { "MapObject" }, Description = "Find all map objects by name.")]
         public CustomLogicListBuiltin FindMapObjectsByName(string objectName)
         {
             CustomLogicListBuiltin listBuiltin = new CustomLogicListBuiltin();
@@ -66,7 +63,7 @@ namespace CustomLogic
             return listBuiltin;
         }
 
-        [CLMethod(Static = true, Description = "Find all map objects by regex pattern", ReturnTypeArguments = new[] { "MapObject" })]
+        [CLMethod(Static = true, ReturnTypeArguments = new[] { "MapObject" }, Description = "Find all map objects by regex pattern.")]
         public CustomLogicListBuiltin FindMapObjectsByRegex(string pattern, bool sorted = false)
         {
             CustomLogicListBuiltin listBuiltin = new CustomLogicListBuiltin();
@@ -87,14 +84,14 @@ namespace CustomLogic
             return listBuiltin;
         }
 
-        [CLMethod(Static = true, Description = "Find all map objects by component")]
+        [CLMethod(Static = true, Description = "Find all map objects by component.")]
         public CustomLogicMapObjectBuiltin FindMapObjectByComponent(string className)
         {
             CustomLogicListBuiltin listBuiltin = FindMapObjectsByComponent(className);
             return (CustomLogicMapObjectBuiltin)(listBuiltin.Count > 0 ? listBuiltin.Get(0) : null);
         }
 
-        [CLMethod(Static = true, Description = "Find all map objects by component", ReturnTypeArguments = new[] { "MapObject" })]
+        [CLMethod(Static = true, ReturnTypeArguments = new[] { "MapObject" }, Description = "Find all map objects by component.")]
         public CustomLogicListBuiltin FindMapObjectsByComponent(string className)
         {
             CustomLogicListBuiltin listBuiltin = new CustomLogicListBuiltin();
@@ -112,7 +109,7 @@ namespace CustomLogic
             return listBuiltin;
         }
 
-        [CLMethod(Static = true, Description = "Find a map object by ID")]
+        [CLMethod(Static = true, Description = "Find a map object by ID.")]
         public CustomLogicMapObjectBuiltin FindMapObjectByID(int id)
         {
             if (MapLoader.IdToMapObject.ContainsKey(id))
@@ -120,7 +117,7 @@ namespace CustomLogic
             return null;
         }
 
-        [CLMethod(Static = true, Description = "Find a map object by tag")]
+        [CLMethod(Static = true, Description = "Find a map object by tag.")]
         public CustomLogicMapObjectBuiltin FindMapObjectByTag(string tag)
         {
             if (MapLoader.Tags.ContainsKey(tag))
@@ -131,7 +128,7 @@ namespace CustomLogic
             return null;
         }
 
-        [CLMethod(Static = true, Description = "Find all map objects by tag", ReturnTypeArguments = new[] { "MapObject" })]
+        [CLMethod(Static = true, ReturnTypeArguments = new[] { "MapObject" }, Description = "Find all map objects by tag.")]
         public CustomLogicListBuiltin FindMapObjectsByTag(string tag)
         {
             CustomLogicListBuiltin listBuiltin = new CustomLogicListBuiltin();
@@ -145,7 +142,7 @@ namespace CustomLogic
             return listBuiltin;
         }
 
-        [CLMethod(Static = true, Description = "Find a map objects of Player", ReturnTypeArguments = new[] { "MapObject" })]
+        [CLMethod(Static = true, ReturnTypeArguments = new[] { "MapObject" }, Description = "Find a map objects of Player.")]
         public CustomLogicListBuiltin FindMapObjectsByPlayer(CustomLogicPlayerBuiltin player)
         {
             CustomLogicListBuiltin listBuiltin = new CustomLogicListBuiltin();
@@ -159,7 +156,7 @@ namespace CustomLogic
             return listBuiltin;
         }
 
-        [CLMethod(Static = true, Description = "Create a new map object")]
+        [CLMethod(Static = true, Description = "Create a new map object.")]
         public CustomLogicMapObjectBuiltin CreateMapObject(CustomLogicPrefabBuiltin prefab, CustomLogicVector3Builtin position = null, CustomLogicVector3Builtin rotation = null, CustomLogicVector3Builtin scale = null)
         {
             var scriptSerial = prefab.Value.Serialize();
@@ -180,7 +177,7 @@ namespace CustomLogic
             return CreateRuntimeMapObject(script);
         }
 
-        [CLMethod(Static = true, Description = "Create a new map object")]
+        [CLMethod(Static = true, Description = "Create a new map object.")]
         public CustomLogicMapObjectBuiltin CreateMapObjectRaw(string prefab)
         {
             prefab = string.Join("", prefab.Split('\n'));
@@ -194,14 +191,14 @@ namespace CustomLogic
             return CreateRuntimeMapObject(script);
         }
 
-        [CLMethod(Static = true, Description = "Create a new prefab object from the current object")]
+        [CLMethod(Static = true, Description = "Create a new prefab object from the current object.")]
         public CustomLogicPrefabBuiltin PrefabFromMapObject(CustomLogicMapObjectBuiltin mapObject, bool clearComponents = false)
         {
             string serialized = mapObject.Value.ScriptObject.Serialize();
             return new CustomLogicPrefabBuiltin(serialized, clearComponents);
         }
 
-        [CLMethod(Static = true, Description = "Destroy a map object")]
+        [CLMethod(Static = true, Description = "Destroy a map object.")]
         public void DestroyMapObject(CustomLogicMapObjectBuiltin mapObject, bool includeChildren)
         {
             if (mapObject.Value.ScriptObject.Networked)
@@ -217,7 +214,7 @@ namespace CustomLogic
             DestroyMapObjectBuiltin(mapObject, includeChildren);
         }
 
-        [CLMethod(Static = true, Description = "Copy a map object")]
+        [CLMethod(Static = true, Description = "Copy a map object.")]
         public CustomLogicMapObjectBuiltin CopyMapObject(CustomLogicMapObjectBuiltin mapObject, bool includeChildren = true)
         {
             var copy = CopyMapObject(mapObject.Value, mapObject.Value.Parent, includeChildren);
@@ -225,20 +222,20 @@ namespace CustomLogic
             return new CustomLogicMapObjectBuiltin(copy);
         }
 
-        [CLMethod(Static = true, Description = "Destroy a map targetable")]
+        [CLMethod(Static = true, Description = "Destroy a map targetable.")]
         public void DestroyMapTargetable(CustomLogicMapTargetableBuiltin targetable)
         {
             Object.Destroy(targetable.GameObject);
             MapLoader.MapTargetables.Remove(targetable.Value);
         }
 
-        [CLMethod(Static = true, Description = "Update the nav mesh")]
+        [CLMethod(Static = true, Description = "Update the nav mesh.")]
         public void UpdateNavMesh()
         {
             MapLoader.UpdateNavMesh().Wait();
         }
 
-        [CLMethod(Static = true, Description = "Update the nav mesh asynchronously")]
+        [CLMethod(Static = true, Description = "Update the nav mesh asynchronously.")]
         public void UpdateNavMeshAsync()
         {
             _ = MapLoader.UpdateNavMesh();

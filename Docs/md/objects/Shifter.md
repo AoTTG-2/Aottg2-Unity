@@ -1,8 +1,7 @@
 # Shifter
 Inherits from [Character](../objects/Character.md)
 
-Represents a Shifter character.
-Only character owner can modify fields and call functions unless otherwise specified.
+Represents a Shifter character. Only character owner can modify fields and call functions unless otherwise specified.
 
 ### Example
 ```csharp
@@ -52,7 +51,7 @@ function OnCharacterSpawn(character)
 > Causes the (AI) shifter to move towards a position. If ignoreEnemies is true, will not engage enemies along the way.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function MoveToExactCallback(method: function, position: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, range: float = 10, timeoutPadding: float = 1)</code></pre>
-> Sort the list using a custom method, expects a method with the signature int method(a,b)
+> Causes the (AI) shifter to move towards a position with a callback. The callback method will be called during movement and will receive this shifter as a parameter.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function Target(enemyObj: <a data-footnote-ref href="#user-content-fn-59">Object</a>, focus: float)</code></pre>
 > Causes the (AI) shifter to target an enemy character or MapTargetable for focusTime seconds. If focusTime is 0 it will use the default focus time.

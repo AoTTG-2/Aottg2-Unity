@@ -6,10 +6,6 @@ using UI;
 
 namespace CustomLogic
 {
-    /// <summary>
-    /// Internationalization (Locale) utility for managing localized strings.
-    /// Supports single-level (non-recursive) language fallbacks and automatic UI language detection.
-    /// </summary>
     /// <code>
     /// # Register individual strings for different languages
     /// Locale.Set(Locale.EnglishLanguage, "welcome", "Welcome to the game!");
@@ -94,13 +90,13 @@ namespace CustomLogic
     /// # Missing key throws an exception
     /// Game.Print("missing_key: " + Locale.Get("missing_key"));
     /// </code>
-    [CLType(Name = "Locale", Abstract = true, Static = true)]
+    [CLType(Name = "Locale", Abstract = true, Static = true, Description = "Internationalization (Locale) utility for managing localized strings. Supports single-level (non-recursive) language fallbacks and automatic UI language detection.")]
     partial class CustomLogicLocaleBuiltin : BuiltinClassInstance
     {
         private static readonly Dictionary<string, Dictionary<string, string>> _languages = new Dictionary<string, Dictionary<string, string>>();
         private static readonly Dictionary<string, string> _languageFallbacks = new Dictionary<string, string>();
 
-        [CLConstructor]
+        [CLConstructor("Creates a new Locale instance.")]
         public CustomLogicLocaleBuiltin()
         {
             DefaultLanguage = EnglishLanguage;
@@ -109,7 +105,7 @@ namespace CustomLogic
             RegisterFallback(ChineseLanguage, TraditionalChineseLanguage);
         }
 
-        [CLProperty(Description = "Arabic language code")]
+        [CLProperty("Arabic language code.")]
         public static string ArabicLanguage => UILanguages.Arabic;
 
         [CLProperty(Description = "Brazilian Portuguese language code")]
@@ -166,13 +162,13 @@ namespace CustomLogic
         [CLProperty(Description = "Ukrainian language code")]
         public static string UkrainianLanguage => UILanguages.Ukrainian;
 
-        [CLProperty(Description = "Returns the current language (e.g. \"English\" or \"简体中文\").")]
+        [CLProperty("Returns the current language (e.g. \"English\" or \"简体中文\").")]
         public static string CurrentLanguage => SettingsManager.GeneralSettings.Language.Value;
 
-        [CLProperty(Description = "The default language to use when a string is not found in the current language pack. English by default.")]
+        [CLProperty("The default language to use when a string is not found in the current language pack. English by default.")]
         public static string DefaultLanguage { get; set; }
 
-        [CLMethod(Description = "Get the localized string for the given key. Searches the current UI language, then any registered fallbacks, and finally the default language. Throws an exception if the key is not found in any language pack.")]
+        [CLMethod("Get the localized string for the given key. Searches the current UI language, then any registered fallbacks, and finally the default language. Throws an exception if the key is not found in any language pack.")]
         public static string Get(string key)
         {
             var currentLang = SettingsManager.GeneralSettings.Language.Value;
@@ -184,7 +180,7 @@ namespace CustomLogic
             throw new Exception("Localized string not found: " + key);
         }
 
-        [CLMethod(Description = "Set or override a localized string for the specified language and key.")]
+        [CLMethod("Set or override a localized string for the specified language and key.")]
         public static void Set(string language, string key, string value)
         {
             if (!_languages.TryGetValue(language, out var languagePack))
@@ -196,7 +192,7 @@ namespace CustomLogic
             languagePack[key] = value;
         }
 
-        [CLMethod(Description = "Register a single-level (non-recursive) fallback: if a string is not found in 'fromLanguage', the system will search only in 'toLanguage', without chaining further.")]
+        [CLMethod("Register a single-level (non-recursive) fallback: if a string is not found in 'fromLanguage', the system will search only in 'toLanguage', without chaining further.")]
         public static void RegisterLanguage(string language, CustomLogicDictBuiltin strings)
         {
             var dictionary = new Dictionary<string, string>(strings.Dict.Count);
@@ -205,20 +201,20 @@ namespace CustomLogic
             _languages[language] = dictionary;
         }
 
-        [CLMethod(Description = "Register all localized strings from JSON files for a specific category across all available languages. Use 'internal://' prefix for internal files (e.g., 'internal://BasicTutorialMap') or no prefix for external files (e.g., 'MyCustomMod').")]
+        [CLMethod("Register all localized strings from JSON files for a specific category across all available languages. Use 'internal://' prefix for internal files (e.g., 'internal://BasicTutorialMap') or no prefix for external files (e.g., 'MyCustomMod').")]
         public static void RegisterLanguages(string pattern)
         {
             foreach (var languagePair in UIManager.GetLocaleCategoryStrings(pattern))
                 _languages[languagePair.Key] = languagePair.Value;
         }
 
-        [CLMethod(Description = "Register a fallback language. When a string is not found in 'fromLanguage', it will try 'toLanguage'.")]
+        [CLMethod("Register a fallback language. When a string is not found in 'fromLanguage', it will try 'toLanguage'.")]
         public static void RegisterFallback(string fromLanguage, string toLanguage)
         {
             _languageFallbacks[fromLanguage] = toLanguage;
         }
 
-        [CLMethod(Description = "Remove a language fallback.")]
+        [CLMethod("Remove a language fallback.")]
         public static void RemoveFallback(string fromLanguage)
         {
             _languageFallbacks.Remove(fromLanguage);

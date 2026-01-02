@@ -1,52 +1,113 @@
 # Animator
+
+Represents an Animator component for controlling animations using Animator Controller.
+
 ### Methods
 <pre class="language-typescript"><code class="lang-typescript">function IsPlaying(anim: string, layer: int = 0) -> bool</code></pre>
 > Checks if the given animation is playing.
 > 
+> **Parameters**:
+> - `anim`: The name of the animation to check.
+> - `layer`: The animation layer to check (default: 0).
+> 
 <pre class="language-typescript"><code class="lang-typescript">function PlayAnimation(anim: string, fade: float = 0.1, layer: int = 0)</code></pre>
 > Plays the specified animation.
+> 
+> **Parameters**:
+> - `anim`: The name of the animation to play.
+> - `fade`: The fade time in seconds for cross-fading (default: 0.1).
+> - `layer`: The animation layer to play on (default: 0).
 > 
 <pre class="language-typescript"><code class="lang-typescript">function PlayAnimationAt(anim: string, normalizedTime: float, fade: float = 0.1, layer: int = 0)</code></pre>
 > Plays the specified animation starting from a normalized time.
 > 
+> **Parameters**:
+> - `anim`: The name of the animation to play.
+> - `normalizedTime`: The normalized time (0-1) to start the animation from.
+> - `fade`: The fade time in seconds for cross-fading (default: 0.1).
+> - `layer`: The animation layer to play on (default: 0).
+> 
 <pre class="language-typescript"><code class="lang-typescript">function SetAnimationSpeed(speed: float)</code></pre>
 > Sets the animation playback speed.
+> 
+> **Parameters**:
+> - `speed`: The playback speed multiplier (1.0 = normal speed).
 > 
 <pre class="language-typescript"><code class="lang-typescript">function GetAnimationLength(anim: string) -> float</code></pre>
 > Gets the length of the specified animation.
 > 
+> **Parameters**:
+> - `anim`: The name of the animation.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function GetAnimatorFloat(name: string) -> float</code></pre>
 > Gets an animation float parameter.
+> 
+> **Parameters**:
+> - `name`: The name of the float parameter.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function GetAnimatorInt(name: string) -> int</code></pre>
 > Gets an animation int parameter.
 > 
+> **Parameters**:
+> - `name`: The name of the int parameter.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function GetAnimatorBool(name: string) -> bool</code></pre>
 > Gets an animation bool parameter.
+> 
+> **Parameters**:
+> - `name`: The name of the bool parameter.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function SetAnimatorFloat(name: string, value: float)</code></pre>
 > Sets an animation float parameter.
 > 
+> **Parameters**:
+> - `name`: The name of the float parameter.
+> - `value`: The value to set.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function SetAnimatorInt(name: string, value: int)</code></pre>
 > Sets an animation int parameter.
+> 
+> **Parameters**:
+> - `name`: The name of the int parameter.
+> - `value`: The value to set.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function SetAnimatorBool(name: string, value: bool)</code></pre>
 > Sets an animation bool parameter.
 > 
+> **Parameters**:
+> - `name`: The name of the bool parameter.
+> - `value`: The value to set.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function SetAnimatorTrigger(name: string)</code></pre>
 > Sets an animation trigger.
+> 
+> **Parameters**:
+> - `name`: The name of the trigger parameter.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function ResetAnimatorTrigger(name: string)</code></pre>
 > Resets an animation trigger.
 > 
+> **Parameters**:
+> - `name`: The name of the trigger parameter to reset.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function SetLayerWeight(layer: int, weight: float)</code></pre>
 > Sets the weight of the specified layer.
+> 
+> **Parameters**:
+> - `layer`: The layer index.
+> - `weight`: The weight value (0-1) to set.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function GetLayerWeight(layer: int)</code></pre>
 > Gets the weight of the specified layer.
 > 
+> **Parameters**:
+> - `layer`: The layer index.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function GetAnimationNormalizedTime(layer: int = 0) -> float</code></pre>
 > Gets the normalized time of the current animation.
+> 
+> **Parameters**:
+> - `layer`: The animation layer to check (default: 0).
 > 
 
 [^0]: [Color](../objects/Color.md)

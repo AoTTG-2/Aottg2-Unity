@@ -12,7 +12,7 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "",
+      "description": "The X component of the vector.",
       "readonly": false,
       "private": false
     },
@@ -22,7 +22,7 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "",
+      "description": "The Y component of the vector.",
       "readonly": false,
       "private": false
     },
@@ -32,7 +32,7 @@
         "name": "Vector2",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Returns a normalized copy of this vector (magnitude of 1).",
       "readonly": true,
       "private": false
     },
@@ -42,7 +42,7 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Returns the length of this vector.",
       "readonly": true,
       "private": false
     },
@@ -52,7 +52,7 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Returns the squared length of this vector (faster than Magnitude).",
       "readonly": true,
       "private": false
     }
@@ -64,7 +64,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Sets the X and Y components of the vector.",
       "parameters": [
         {
           "name": "x",
@@ -72,7 +72,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The X component.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -82,7 +82,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The Y component.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -95,7 +95,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Normalizes the vector in place.",
       "parameters": [],
       "kind": "function"
     }
@@ -107,7 +107,7 @@
         "name": "Vector2",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Shorthand for writing Vector2(0, 0).",
       "readonly": true,
       "private": false
     },
@@ -117,7 +117,7 @@
         "name": "Vector2",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Shorthand for writing Vector2(1, 1).",
       "readonly": true,
       "private": false
     },
@@ -127,7 +127,7 @@
         "name": "Vector2",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Shorthand for writing Vector2(0, 1).",
       "readonly": true,
       "private": false
     },
@@ -137,7 +137,7 @@
         "name": "Vector2",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Shorthand for writing Vector2(0, -1).",
       "readonly": true,
       "private": false
     },
@@ -147,7 +147,7 @@
         "name": "Vector2",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Shorthand for writing Vector2(-1, 0).",
       "readonly": true,
       "private": false
     },
@@ -157,7 +157,7 @@
         "name": "Vector2",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Shorthand for writing Vector2(1, 0).",
       "readonly": true,
       "private": false
     },
@@ -167,7 +167,7 @@
         "name": "Vector2",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Shorthand for writing Vector2(float.NegativeInfinity, float.NegativeInfinity).",
       "readonly": true,
       "private": false
     },
@@ -177,7 +177,7 @@
         "name": "Vector2",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Shorthand for writing Vector2(float.PositiveInfinity, float.PositiveInfinity).",
       "readonly": true,
       "private": false
     }
@@ -189,7 +189,7 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Calculates the angle between two vectors.",
       "parameters": [
         {
           "name": "from",
@@ -197,7 +197,7 @@
             "name": "Vector2",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The vector from which the angular difference is measured.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -207,7 +207,7 @@
             "name": "Vector2",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The vector to which the angular difference is measured.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -220,7 +220,7 @@
         "name": "Vector2",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Clamps the magnitude of a vector to a maximum value.",
       "parameters": [
         {
           "name": "vector",
@@ -228,7 +228,7 @@
             "name": "Vector2",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The vector to clamp.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -238,7 +238,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The maximum length of the vector.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -251,7 +251,7 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Calculates the distance between two points.",
       "parameters": [
         {
           "name": "a",
@@ -259,7 +259,7 @@
             "name": "Vector2",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The first point.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -269,7 +269,7 @@
             "name": "Vector2",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The second point.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -282,7 +282,7 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Calculates the dot product of two vectors.",
       "parameters": [
         {
           "name": "a",
@@ -290,7 +290,7 @@
             "name": "Vector2",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The first vector.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -300,7 +300,7 @@
             "name": "Vector2",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The second vector.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -313,7 +313,7 @@
         "name": "Vector2",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Linearly interpolates between two vectors.",
       "parameters": [
         {
           "name": "a",
@@ -321,7 +321,7 @@
             "name": "Vector2",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The start value.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -331,7 +331,7 @@
             "name": "Vector2",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The end value.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -341,7 +341,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The interpolation factor (clamped between 0 and 1).",
           "isOptional": false,
           "isVariadic": false
         }
@@ -354,7 +354,7 @@
         "name": "Vector2",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Linearly interpolates between two vectors without clamping.",
       "parameters": [
         {
           "name": "a",
@@ -362,7 +362,7 @@
             "name": "Vector2",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The start value.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -372,7 +372,7 @@
             "name": "Vector2",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The end value.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -382,7 +382,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The interpolation factor (not clamped).",
           "isOptional": false,
           "isVariadic": false
         }
@@ -395,7 +395,7 @@
         "name": "Vector2",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Returns a vector that is made from the largest components of two vectors.",
       "parameters": [
         {
           "name": "a",
@@ -403,7 +403,7 @@
             "name": "Vector2",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The first vector.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -413,7 +413,7 @@
             "name": "Vector2",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The second vector.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -426,7 +426,7 @@
         "name": "Vector2",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Returns a vector that is made from the smallest components of two vectors.",
       "parameters": [
         {
           "name": "a",
@@ -434,7 +434,7 @@
             "name": "Vector2",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The first vector.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -444,7 +444,7 @@
             "name": "Vector2",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The second vector.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -457,7 +457,7 @@
         "name": "Vector2",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Moves a point towards a target position.",
       "parameters": [
         {
           "name": "current",
@@ -465,7 +465,7 @@
             "name": "Vector2",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The current position.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -475,7 +475,7 @@
             "name": "Vector2",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The target position.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -485,7 +485,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The maximum distance to move.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -498,7 +498,7 @@
         "name": "Vector2",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Reflects a vector off a plane defined by a normal vector.",
       "parameters": [
         {
           "name": "inDirection",
@@ -506,7 +506,7 @@
             "name": "Vector2",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The incoming direction vector.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -516,7 +516,7 @@
             "name": "Vector2",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The normal vector of the surface.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -529,7 +529,7 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Calculates the signed angle between two vectors.",
       "parameters": [
         {
           "name": "from",
@@ -537,7 +537,7 @@
             "name": "Vector2",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The vector from which the angular difference is measured.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -547,7 +547,7 @@
             "name": "Vector2",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The vector to which the angular difference is measured.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -560,7 +560,7 @@
         "name": "Vector2",
         "typeArguments": []
       },
-      "description": "Smoothly transitions the current vector position towards the target vector position using the currentVelocity as state. smoothTime and maxSpeed adjust the aggressiveness of the motion.",
+      "description": "Smoothly dampens a vector towards a target over time.",
       "parameters": [
         {
           "name": "current",
@@ -568,7 +568,7 @@
             "name": "Vector2",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The current position.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -578,7 +578,7 @@
             "name": "Vector2",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The target position.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -588,7 +588,7 @@
             "name": "Vector2",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The current velocity (modified by the function).",
           "isOptional": false,
           "isVariadic": false
         },
@@ -598,7 +598,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The time it takes to reach the target (approximately).",
           "isOptional": false,
           "isVariadic": false
         },
@@ -608,7 +608,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The maximum speed.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -619,7 +619,7 @@
   "constructors": [
     {
       "parameters": [],
-      "description": ""
+      "description": "Default constructor, initializes the Vector2 to (0, 0)."
     },
     {
       "parameters": [
@@ -629,12 +629,12 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The value for X and Y components.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "description": ""
+      "description": "Initializes the Vector2 to (xy, xy)."
     },
     {
       "parameters": [
@@ -644,7 +644,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The X component.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -654,12 +654,12 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The Y component.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "description": ""
+      "description": "Initializes the Vector2 to (x, y)."
     }
   ]
 }

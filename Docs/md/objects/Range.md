@@ -21,9 +21,9 @@ for (a in Range(1, 10, 2))
 ```
 ### Initialization
 ```csharp
-Range(end: int) // Creates a range from 0 to end-1
-Range(start: int, end: int) // Creates a range from start to end-1
-Range(start: int, end: int, step: int) // Creates a range from start to end-1 with the specified step
+Range(end: int) // Creates a range from 0 to end-1.
+Range(start: int, end: int) // Creates a range from start to end-1.
+Range(start: int, end: int, step: int) // Creates a range from start to end-1 with the specified step.
 ```
 
 [^0]: [Color](../objects/Color.md)

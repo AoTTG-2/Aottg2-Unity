@@ -2,10 +2,7 @@ using UnityEngine.UIElements;
 
 namespace CustomLogic
 {
-    /// <summary>
-    /// A UI element that represents a horizontal slider for selecting numeric values (both int and float)
-    /// </summary>
-    [CLType(Name = "Slider", Abstract = true)]
+    [CLType(Name = "Slider", Abstract = true, Description = "A UI element that represents a horizontal slider for selecting numeric values (both int and float).")]
     partial class CustomLogicSliderBuiltin : CustomLogicVisualElementBuiltin
     {
         private readonly Slider _floatSlider;
@@ -44,10 +41,7 @@ namespace CustomLogic
             CustomLogicManager.Evaluator.EvaluateMethod(_valueChangedEvent, new object[] { value });
         }
 
-        /// <summary>
-        /// The label text displayed next to the Slider
-        /// </summary>
-        [CLProperty]
+        [CLProperty("The label text displayed next to the Slider.")]
         public string Label
         {
             get => _isIntSlider ? _intSlider.label : _floatSlider.label;
@@ -60,10 +54,7 @@ namespace CustomLogic
             }
         }
 
-        /// <summary>
-        /// The current value of the Slider (returns int for integer sliders, float for float sliders)
-        /// </summary>
-        [CLProperty]
+        [CLProperty("The current value of the Slider (returns int for integer sliders, float for float sliders).")]
         public object Value
         {
             get
@@ -91,10 +82,7 @@ namespace CustomLogic
             }
         }
 
-        /// <summary>
-        /// The minimum value of the Slider (returns int for integer sliders, float for float sliders)
-        /// </summary>
-        [CLProperty]
+        [CLProperty("The minimum value of the Slider (returns int for integer sliders, float for float sliders).")]
         public object LowValue
         {
             get
@@ -122,10 +110,7 @@ namespace CustomLogic
             }
         }
 
-        /// <summary>
-        /// The maximum value of the Slider (returns int for integer sliders, float for float sliders)
-        /// </summary>
-        [CLProperty]
+        [CLProperty("The maximum value of the Slider (returns int for integer sliders, float for float sliders).")]
         public object HighValue
         {
             get
@@ -153,11 +138,7 @@ namespace CustomLogic
             }
         }
 
-        /// <summary>
-        /// The page size for the slider. This is the amount by which the slider value changes when clicking in the slider track area.
-        /// For integer sliders, this also controls the snapping/tick interval.
-        /// </summary>
-        [CLProperty]
+        [CLProperty("The page size for the slider. This is the amount by which the slider value changes when clicking in the slider track area. For integer sliders, this also controls the snapping/tick interval.")]
         public float PageSize
         {
             get => _isIntSlider ? _intSlider.pageSize : _floatSlider.pageSize;
@@ -170,10 +151,7 @@ namespace CustomLogic
             }
         }
 
-        /// <summary>
-        /// The direction of the slider (Horizontal or Vertical)
-        /// </summary>
-        [CLProperty]
+        [CLProperty("The direction of the slider (Horizontal or Vertical).")]
         public string Direction
         {
             get => _isIntSlider ? _intSlider.direction.ToString() : _floatSlider.direction.ToString();
@@ -196,10 +174,7 @@ namespace CustomLogic
             }
         }
 
-        /// <summary>
-        /// If true, the slider will show a text field for direct input
-        /// </summary>
-        [CLProperty]
+        [CLProperty("If true, the slider will show a text field for direct input.")]
         public bool ShowInputField
         {
             get => _isIntSlider ? _intSlider.showInputField : _floatSlider.showInputField;
@@ -212,28 +187,22 @@ namespace CustomLogic
             }
         }
 
-        /// <summary>
-        /// Returns true if this is an integer slider, false if it's a float slider
-        /// </summary>
-        [CLProperty]
+        [CLProperty("Returns true if this is an integer slider, false if it's a float slider.")]
         public bool IsIntSlider => _isIntSlider;
 
-        /// <summary>
-        /// Sets the method to be called when the Slider value changes
-        /// </summary>
-        /// <param name="valueChangedEvent">Method that will be called with the new value as parameter (int for integer sliders, float for float sliders)</param>
-        [CLMethod]
-        public CustomLogicSliderBuiltin OnValueChanged(UserMethod valueChangedEvent)
+        [CLMethod("Sets the method to be called when the Slider value changes.")]
+        public CustomLogicSliderBuiltin OnValueChanged(
+            [CLParam("Method that will be called with the new value as parameter (int for integer sliders, float for float sliders)")]
+            UserMethod valueChangedEvent)
         {
             _valueChangedEvent = valueChangedEvent;
             return this;
         }
 
-        /// <summary>
-        /// Sets the value of the Slider without triggering any change events
-        /// </summary>
-        [CLMethod]
-        public void SetValueWithoutNotify(object value)
+        [CLMethod("Sets the value of the Slider without triggering any change events.")]
+        public void SetValueWithoutNotify(
+            [CLParam("The value to set (int for integer sliders, float for float sliders).")]
+            object value)
         {
             if (_isIntSlider)
             {

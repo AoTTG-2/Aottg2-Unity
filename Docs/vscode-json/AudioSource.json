@@ -1,7 +1,7 @@
 {
   "kind": "component",
   "name": "AudioSource",
-  "description": "",
+  "description": "Represents an AudioSource component for playing audio clips.",
   "instanceFields": [
     {
       "label": "Volume",
@@ -20,6 +20,16 @@
         "typeArguments": []
       },
       "description": "Sound playback position.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "Pitch",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Pitch of the sound.",
       "readonly": false,
       "private": false
     },
@@ -59,7 +69,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The delay in seconds before playing the sound.",
           "isOptional": false,
           "isVariadic": false
         }

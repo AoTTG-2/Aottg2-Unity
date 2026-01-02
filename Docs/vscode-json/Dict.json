@@ -16,7 +16,7 @@
         "name": "int",
         "typeArguments": []
       },
-      "description": "Number of elements in the dictionary",
+      "description": "Number of elements in the dictionary.",
       "readonly": true,
       "private": false
     },
@@ -31,7 +31,7 @@
           }
         ]
       },
-      "description": "Keys in the dictionary",
+      "description": "Keys in the dictionary.",
       "readonly": true,
       "private": false
     },
@@ -46,7 +46,7 @@
           }
         ]
       },
-      "description": "Values in the dictionary",
+      "description": "Values in the dictionary.",
       "readonly": true,
       "private": false
     }
@@ -58,7 +58,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Clears the dictionary",
+      "description": "Clears the dictionary.",
       "parameters": [],
       "kind": "function"
     },
@@ -68,7 +68,7 @@
         "name": "V",
         "typeArguments": []
       },
-      "description": "Gets a value from the dictionary",
+      "description": "Gets a value from the dictionary. Returns: The value associated with the key, or the default value if the key is not found.",
       "parameters": [
         {
           "name": "key",
@@ -99,7 +99,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Sets a value in the dictionary",
+      "description": "Sets a value in the dictionary.",
       "parameters": [
         {
           "name": "key",
@@ -130,7 +130,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Removes a value from the dictionary",
+      "description": "Removes a value from the dictionary.",
       "parameters": [
         {
           "name": "key",
@@ -151,7 +151,7 @@
         "name": "bool",
         "typeArguments": []
       },
-      "description": "Checks if the dictionary contains a key",
+      "description": "Checks if the dictionary contains a key. Returns: True if the dictionary contains the key, false otherwise.",
       "parameters": [
         {
           "name": "key",
@@ -172,7 +172,7 @@
   "constructors": [
     {
       "parameters": [],
-      "description": "Creates an empty dictionary"
+      "description": "Creates an empty dictionary."
     },
     {
       "parameters": [
@@ -182,12 +182,12 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The initial capacity of the dictionary.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "description": "Creates a dictionary with the specified capacity"
+      "description": "Creates a dictionary with the specified capacity."
     }
   ]
 }

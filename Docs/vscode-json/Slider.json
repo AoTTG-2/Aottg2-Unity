@@ -1,7 +1,7 @@
 {
   "kind": "class",
   "name": "Slider",
-  "description": "A UI element that represents a horizontal slider for selecting numeric values (both int and float)",
+  "description": "A UI element that represents a horizontal slider for selecting numeric values (both int and float).",
   "extends": [
     "VisualElement"
   ],
@@ -12,7 +12,7 @@
         "name": "string",
         "typeArguments": []
       },
-      "description": "The label text displayed next to the Slider",
+      "description": "The label text displayed next to the Slider.",
       "readonly": false,
       "private": false
     },
@@ -22,7 +22,7 @@
         "name": "Object",
         "typeArguments": []
       },
-      "description": "The current value of the Slider (returns int for integer sliders, float for float sliders)",
+      "description": "The current value of the Slider (returns int for integer sliders, float for float sliders).",
       "readonly": false,
       "private": false
     },
@@ -32,7 +32,7 @@
         "name": "Object",
         "typeArguments": []
       },
-      "description": "The minimum value of the Slider (returns int for integer sliders, float for float sliders)",
+      "description": "The minimum value of the Slider (returns int for integer sliders, float for float sliders).",
       "readonly": false,
       "private": false
     },
@@ -42,7 +42,7 @@
         "name": "Object",
         "typeArguments": []
       },
-      "description": "The maximum value of the Slider (returns int for integer sliders, float for float sliders)",
+      "description": "The maximum value of the Slider (returns int for integer sliders, float for float sliders).",
       "readonly": false,
       "private": false
     },
@@ -62,7 +62,7 @@
         "name": "string",
         "typeArguments": []
       },
-      "description": "The direction of the slider (Horizontal or Vertical)",
+      "description": "The direction of the slider (Horizontal or Vertical).",
       "readonly": false,
       "private": false
     },
@@ -72,7 +72,7 @@
         "name": "bool",
         "typeArguments": []
       },
-      "description": "If true, the slider will show a text field for direct input",
+      "description": "If true, the slider will show a text field for direct input.",
       "readonly": false,
       "private": false
     },
@@ -82,7 +82,7 @@
         "name": "bool",
         "typeArguments": []
       },
-      "description": "Returns true if this is an integer slider, false if it's a float slider",
+      "description": "Returns true if this is an integer slider, false if it's a float slider.",
       "readonly": true,
       "private": false
     }
@@ -94,7 +94,7 @@
         "name": "Slider",
         "typeArguments": []
       },
-      "description": "Sets the method to be called when the Slider value changes",
+      "description": "Sets the method to be called when the Slider value changes.",
       "parameters": [
         {
           "name": "valueChangedEvent",
@@ -115,7 +115,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Sets the value of the Slider without triggering any change events",
+      "description": "Sets the value of the Slider without triggering any change events.",
       "parameters": [
         {
           "name": "value",
@@ -123,7 +123,7 @@
             "name": "Object",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The value to set (int for integer sliders, float for float sliders).",
           "isOptional": false,
           "isVariadic": false
         }

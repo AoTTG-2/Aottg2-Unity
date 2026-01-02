@@ -264,7 +264,7 @@
             "name": "Object",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The message to print.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -285,7 +285,7 @@
             "name": "Object",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The message to print.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -306,7 +306,7 @@
             "name": "Object",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The message to print.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -327,7 +327,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the setting to get.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -348,7 +348,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the setting to get.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -369,7 +369,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the setting to get.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -390,7 +390,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The delay in seconds before ending the game.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -411,7 +411,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The Photon view ID of the character.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -432,7 +432,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The type of titan to spawn.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -453,7 +453,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The type of titan to spawn.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -463,7 +463,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The spawn position.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -473,7 +473,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The Y rotation in degrees (default: 0).",
           "isOptional": true,
           "isVariadic": false
         }
@@ -499,7 +499,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The type of titan to spawn.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -509,7 +509,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The number of titans to spawn.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -530,7 +530,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The type of titan to spawn.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -540,7 +540,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The number of titans to spawn.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -566,7 +566,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The type of titan to spawn.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -576,7 +576,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The number of titans to spawn.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -586,7 +586,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The spawn position.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -596,7 +596,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The Y rotation in degrees (default: 0).",
           "isOptional": true,
           "isVariadic": false
         }
@@ -617,7 +617,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The type of titan to spawn.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -627,7 +627,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The number of titans to spawn.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -637,7 +637,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The spawn position.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -647,7 +647,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The Y rotation in degrees (default: 0).",
           "isOptional": true,
           "isVariadic": false
         }
@@ -668,7 +668,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The type of shifter to spawn.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -689,7 +689,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The type of shifter to spawn.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -699,7 +699,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The spawn position.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -709,7 +709,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The Y rotation in degrees (default: 0).",
           "isOptional": true,
           "isVariadic": false
         }
@@ -800,7 +800,7 @@
             "name": "Object",
             "typeArguments": []
           },
-          "description": "Optional. Type depends on projectile: >   - Thunderspear: float (explosion radius) >   - Flare: Color (flare color) >   - Rock1: float (rock size) >   - Others: unused",
+          "description": "Optional. Type depends on projectile: Thunderspear: float (explosion radius), Flare: Color (flare color), Rock1: float (rock size), Others: unused",
           "isOptional": true,
           "isVariadic": false
         },
@@ -810,7 +810,7 @@
             "name": "Object",
             "typeArguments": []
           },
-          "description": "Optional. Type depends on projectile: >   - Thunderspear: Color (projectile color) >   - Others: unused",
+          "description": "Optional. Type depends on projectile: Thunderspear: Color (projectile color), Others: unused",
           "isOptional": true,
           "isVariadic": false
         }
@@ -901,7 +901,7 @@
             "name": "Object",
             "typeArguments": []
           },
-          "description": "Optional. Type depends on projectile: >   - Thunderspear: float (explosion radius) >   - Flare: Color (flare color) >   - Rock1: float (rock size) >   - Others: unused",
+          "description": "Optional. Type depends on projectile: Thunderspear: float (explosion radius), Flare: Color (flare color), Rock1: float (rock size), Others: unused",
           "isOptional": true,
           "isVariadic": false
         },
@@ -911,7 +911,7 @@
             "name": "Object",
             "typeArguments": []
           },
-          "description": "Optional. Type depends on projectile: >   - Thunderspear: Color (projectile color) >   - Others: unused",
+          "description": "Optional. Type depends on projectile: Thunderspear: Color (projectile color), Others: unused",
           "isOptional": true,
           "isVariadic": false
         }
@@ -924,7 +924,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Spawns an effect.",
+      "description": "Spawn an effect",
       "parameters": [
         {
           "name": "effectName",
@@ -972,7 +972,7 @@
             "name": "Color",
             "typeArguments": []
           },
-          "description": "Thunderspear explode color (Only valid when `effectName` is \"ThunderspearExplode\")",
+          "description": "Thunderspear explode color (Only valid when effectName is \"ThunderspearExplode\")",
           "isOptional": true,
           "isVariadic": false
         },
@@ -982,7 +982,68 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "Optional. Thunderspear explode sound (Only valid when `effectName` is \"ThunderspearExplode\"). Valid values are: \"Kill\", \"Air\", \"Ground\", \"ArmorHit\", \"CloseShot\", \"MaxRangeShot\"",
+          "description": "Optional. Thunderspear explode sound (Only valid when effectName is \"ThunderspearExplode\"). Valid values are: \"Kill\", \"Air\", \"Ground\", \"ArmorHit\", \"CloseShot\", \"MaxRangeShot\"",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function"
+    },
+    {
+      "label": "SpawnUnscaledEffect",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Spawn an unscaled effect",
+      "parameters": [
+        {
+          "name": "effectName",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "Name of the effect. Effect names can be found [here](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/refs/heads/main/Assets/Scripts/Effects/EffectPrefabs.cs) (left-hand variable name)",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "position",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "Spawn position",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "rotation",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "Spawn rotation",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "tsExplodeColor",
+          "type": {
+            "name": "Color",
+            "typeArguments": []
+          },
+          "description": "Thunderspear explode color (Only valid when effectName is \"ThunderspearExplode\")",
+          "isOptional": true,
+          "isVariadic": false
+        },
+        {
+          "name": "tsKillSound",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "Optional. Thunderspear explode sound (Only valid when effectName is \"ThunderspearExplode\"). Valid values are: \"Kill\", \"Air\", \"Ground\", \"ArmorHit\", \"CloseShot\", \"MaxRangeShot\"",
           "isOptional": true,
           "isVariadic": false
         }
@@ -1003,7 +1064,7 @@
             "name": "Player",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The player to spawn.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -1013,7 +1074,7 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "If true, forces respawn even if the player is already alive.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -1034,7 +1095,7 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "If true, forces respawn even if players are already alive.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -1055,7 +1116,7 @@
             "name": "Player",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The player to spawn.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -1065,7 +1126,7 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "If true, forces respawn even if the player is already alive.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -1075,7 +1136,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The spawn position.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -1085,7 +1146,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The Y rotation in degrees (default: 0).",
           "isOptional": true,
           "isVariadic": false
         }
@@ -1106,7 +1167,7 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "If true, forces respawn even if players are already alive.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -1116,7 +1177,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The spawn position.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -1126,7 +1187,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The Y rotation in degrees (default: 0).",
           "isOptional": true,
           "isVariadic": false
         }
@@ -1147,7 +1208,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the playlist to set.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -1168,7 +1229,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the song to set.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -1189,7 +1250,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The start position of the ray.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -1199,7 +1260,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The direction vector of the ray.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -1209,7 +1270,7 @@
             "name": "Color",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The color of the ray.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -1219,7 +1280,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The duration in seconds to display the ray.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -1240,7 +1301,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The damage value to display.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -1261,7 +1322,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the killer.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -1271,7 +1332,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the victim.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -1281,7 +1342,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The score value.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -1291,7 +1352,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The weapon name.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -1312,7 +1373,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the killer.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -1322,7 +1383,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the victim.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -1332,7 +1393,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The score value.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -1342,7 +1403,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The weapon name.",
           "isOptional": false,
           "isVariadic": false
         }

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace CustomLogic
 {
-    [CLType(Name = "PhysicsMaterialBuiltin", Static = true, Abstract = true, Description = "", IsComponent = true)]
+    [CLType(Name = "PhysicsMaterialBuiltin", Static = true, Abstract = true, Description = "Represents a physics material that defines friction and bounciness properties for colliders.", IsComponent = true)]
     partial class CustomLogicPhysicsMaterialBuiltin : BuiltinComponentInstance
     {
         public CustomPhysicsMaterial Value;
@@ -20,20 +20,20 @@ namespace CustomLogic
             Value = (CustomPhysicsMaterial)Component;
         }
 
-        [CLProperty(Description = "PhysicMaterialCombine.Minimum")]
+        [CLProperty("PhysicMaterialCombine.Minimum.")]
         public static int FrictionCombineMinimum => (int)PhysicMaterialCombine.Minimum;
 
-        [CLProperty(Description = "PhysicMaterialCombine.Multiply")]
+        [CLProperty("PhysicMaterialCombine.Multiply.")]
         public static int FrictionCombineMultiply => (int)PhysicMaterialCombine.Multiply;
 
-        [CLProperty(Description = "PhysicMaterialCombine.Maximum")]
+        [CLProperty("PhysicMaterialCombine.Maximum.")]
         public static int FrictionCombineMaximum => (int)PhysicMaterialCombine.Maximum;
 
-        [CLProperty(Description = "PhysicMaterialCombine.Average")]
+        [CLProperty("PhysicMaterialCombine.Average.")]
         public static int FrictionCombineAverage => (int)PhysicMaterialCombine.Average;
 
         // Static Friction
-        [CLProperty(Description = "The static friction of the material.")]
+        [CLProperty("The static friction of the material.")]
         public float StaticFriction
         {
             get => Value.StaticFriction;
@@ -41,7 +41,7 @@ namespace CustomLogic
         }
 
         // Dynamic Friction
-        [CLProperty(Description = "The dynamic friction of the material.")]
+        [CLProperty("The dynamic friction of the material.")]
         public float DynamicFriction
         {
             get => Value.DynamicFriction;
@@ -49,7 +49,7 @@ namespace CustomLogic
         }
 
         // Bounciness
-        [CLProperty(Description = "The bounciness of the material.")]
+        [CLProperty("The bounciness of the material.")]
         public float Bounciness
         {
             get => Value.Bounciness;
@@ -57,7 +57,7 @@ namespace CustomLogic
         }
 
         // Combine Mode
-        [CLProperty(Description = "The friction combine mode of the material.")]
+        [CLProperty("The friction combine mode of the material.")]
         public int FrictionCombine
         {
             get => (int)Value.FrictionCombine;
@@ -65,7 +65,7 @@ namespace CustomLogic
         }
 
         // Bounce Combine Mode
-        [CLProperty(Description = "The bounce combine mode of the material.")]
+        [CLProperty("The bounce combine mode of the material.")]
         public int BounceCombine
         {
             get => (int)Value.BounceCombine;
@@ -73,8 +73,10 @@ namespace CustomLogic
         }
 
 
-        [CLMethod(description: "Setup the material.")]
-        public void Setup(bool allChildColliders)
+        [CLMethod("Setup the material.")]
+        public void Setup(
+            [CLParam("If true, applies the material to all child colliders as well.")]
+            bool allChildColliders)
         {
             Value.Setup(allChildColliders);
         }

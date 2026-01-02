@@ -6,29 +6,29 @@ Networking functions.
 ### Static Properties
 |Name|Type|Readonly|Description|
 |---|---|---|---|
-|IsMasterClient|bool|True|Is the player the master client|
-|Players|[List](../objects/List.md)<[Player](../objects/Player.md)>|True|The list of players in the room|
-|MasterClient|[Player](../objects/Player.md)|True|The master client|
-|MyPlayer|[Player](../objects/Player.md)|True|The local player|
-|NetworkTime|double|True|The network time|
-|Ping|int|True|The local player's ping|
+|IsMasterClient|bool|True|Is the player the master client.|
+|Players|[List](../objects/List.md)<[Player](../objects/Player.md)>|True|The list of players in the room.|
+|MasterClient|[Player](../objects/Player.md)|True|The master client.|
+|MyPlayer|[Player](../objects/Player.md)|True|The local player.|
+|NetworkTime|double|True|The network time.|
+|Ping|int|True|The local player's ping.|
 
 
 ### Static Methods
 <pre class="language-typescript"><code class="lang-typescript">function SendMessage(player: <a data-footnote-ref href="#user-content-fn-25">Player</a>, message: string)</code></pre>
-> Send a message to a player
+> Send a message to a player.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function SendMessageAll(message: string)</code></pre>
-> Send a message to all players
+> Send a message to all players.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function SendMessageOthers(message: string)</code></pre>
-> Send a message to all players except the sender
+> Send a message to all players except the sender.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function FindPlayer(id: int) -> <a data-footnote-ref href="#user-content-fn-25">Player</a></code></pre>
 > Finds a player in the room by id.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function GetTimestampDifference(timestamp1: double, timestamp2: double) -> double</code></pre>
-> Get the difference between two photon timestamps
+> Get the difference between two photon timestamps.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function KickPlayer(target: <a data-footnote-ref href="#user-content-fn-59">Object</a>, reason: string = ".")</code></pre>
 > Kick the given player by id or player reference.

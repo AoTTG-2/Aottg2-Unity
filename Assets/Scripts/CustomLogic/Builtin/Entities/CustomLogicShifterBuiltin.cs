@@ -3,10 +3,6 @@ using Controllers;
 
 namespace CustomLogic
 {
-    /// <summary>
-    /// Represents a Shifter character.
-    /// Only character owner can modify fields and call functions unless otherwise specified.
-    /// </summary>
     /// <code>
     /// function OnCharacterSpawn(character)
     /// {
@@ -20,7 +16,7 @@ namespace CustomLogic
     ///     }
     /// }
     /// </code>
-    [CLType(Name = "Shifter", Abstract = true)]
+    [CLType(Name = "Shifter", Abstract = true, Description = "Represents a Shifter character. Only character owner can modify fields and call functions unless otherwise specified.")]
     partial class CustomLogicShifterBuiltin : CustomLogicCharacterBuiltin
     {
         public readonly BaseShifter Shifter;
@@ -181,7 +177,7 @@ namespace CustomLogic
                 Controller.MoveToExact(position.Value, timeoutPadding);
         }
 
-        [CLMethod(description: "Sort the list using a custom method, expects a method with the signature int method(a,b)")]
+        [CLMethod("Causes the (AI) shifter to move towards a position with a callback. The callback method will be called during movement and will receive this shifter as a parameter.")]
         public void MoveToExactCallback(UserMethod method, CustomLogicVector3Builtin position, float range = 10, float timeoutPadding = 1)
         {
             if (Shifter.IsMine() && !Shifter.Dead && Shifter.AI)

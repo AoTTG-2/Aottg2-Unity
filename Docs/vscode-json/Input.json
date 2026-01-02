@@ -15,7 +15,7 @@
         "name": "string",
         "typeArguments": []
       },
-      "description": "Gets the key name the player assigned to the key setting",
+      "description": "Gets the key name the player assigned to the key setting.",
       "parameters": [
         {
           "name": "key",
@@ -23,7 +23,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The key setting path (e.g., \"General/Attack\" or \"CustomKey/Space\").",
           "isOptional": false,
           "isVariadic": false
         }
@@ -36,7 +36,7 @@
         "name": "bool",
         "typeArguments": []
       },
-      "description": "Returns true if the key is being held down",
+      "description": "Returns true if the key is being held down.",
       "parameters": [
         {
           "name": "key",
@@ -44,7 +44,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The key setting path (e.g., \"General/Attack\" or \"CustomKey/Space\").",
           "isOptional": false,
           "isVariadic": false
         }
@@ -57,7 +57,7 @@
         "name": "bool",
         "typeArguments": []
       },
-      "description": "Returns true if the key was pressed down this frame",
+      "description": "Returns true if the key was pressed down this frame.",
       "parameters": [
         {
           "name": "key",
@@ -65,7 +65,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The key setting path (e.g., \"General/Attack\" or \"CustomKey/Space\").",
           "isOptional": false,
           "isVariadic": false
         }
@@ -78,7 +78,7 @@
         "name": "bool",
         "typeArguments": []
       },
-      "description": "Returns true if the key was released this frame",
+      "description": "Returns true if the key was released this frame.",
       "parameters": [
         {
           "name": "key",
@@ -86,7 +86,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The key setting path (e.g., \"General/Attack\" or \"CustomKey/Space\").",
           "isOptional": false,
           "isVariadic": false
         }
@@ -99,7 +99,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "Returns the position the player is aiming at",
+      "description": "Returns the position the player is aiming at.",
       "parameters": [],
       "kind": "function"
     },
@@ -109,7 +109,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "Returns the ray the player is aiming at",
+      "description": "Returns the ray the player is aiming at.",
       "parameters": [],
       "kind": "function"
     },
@@ -119,7 +119,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "Returns the speed of the mouse",
+      "description": "Returns the speed of the mouse.",
       "parameters": [],
       "kind": "function"
     },
@@ -129,7 +129,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "Returns the position of the mouse",
+      "description": "Returns the position of the mouse.",
       "parameters": [],
       "kind": "function"
     },
@@ -139,7 +139,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "Returns the dimensions of the screen",
+      "description": "Returns the dimensions of the screen.",
       "parameters": [],
       "kind": "function"
     },
@@ -149,7 +149,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Sets whether the key is enabled by default",
+      "description": "Sets whether the key is enabled by default.",
       "parameters": [
         {
           "name": "key",
@@ -157,7 +157,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The key setting path (e.g., \"General/Attack\" or \"CustomKey/Space\").",
           "isOptional": false,
           "isVariadic": false
         },
@@ -167,7 +167,7 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "Whether the key should be enabled by default.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -180,7 +180,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Sets whether the key is being held down",
+      "description": "Sets whether the key is being held down.",
       "parameters": [
         {
           "name": "key",
@@ -188,7 +188,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The key setting path (e.g., \"General/Attack\" or \"CustomKey/Space\").",
           "isOptional": false,
           "isVariadic": false
         },
@@ -198,7 +198,7 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "Whether the key should be held down.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -211,7 +211,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Sets whether all keys in the specified category are enabled by default. Valid categories: General, Human, Titan, Interaction",
+      "description": "Sets whether all keys in the specified category are enabled by default. Valid categories: General, Human, Titan, Interaction.",
       "parameters": [
         {
           "name": "category",
@@ -219,7 +219,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The category name: \"General\", \"Human\", \"Titan\", or \"Interaction\".",
           "isOptional": false,
           "isVariadic": false
         },
@@ -229,7 +229,7 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "Whether the keys should be enabled by default.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -242,7 +242,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Sets whether all General category keys are enabled by default",
+      "description": "Sets whether all General category keys are enabled by default.",
       "parameters": [
         {
           "name": "enabled",
@@ -250,7 +250,7 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "Whether the keys should be enabled by default.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -263,7 +263,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Sets whether all Interaction category keys are enabled by default",
+      "description": "Sets whether all Interaction category keys are enabled by default.",
       "parameters": [
         {
           "name": "enabled",
@@ -271,7 +271,7 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "Whether the keys should be enabled by default.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -284,7 +284,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Sets whether all Titan category keys are enabled by default",
+      "description": "Sets whether all Titan category keys are enabled by default.",
       "parameters": [
         {
           "name": "enabled",
@@ -292,7 +292,7 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "Whether the keys should be enabled by default.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -305,7 +305,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Sets whether all Human category keys are enabled by default",
+      "description": "Sets whether all Human category keys are enabled by default.",
       "parameters": [
         {
           "name": "enabled",
@@ -313,7 +313,7 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "Whether the keys should be enabled by default.",
           "isOptional": false,
           "isVariadic": false
         }

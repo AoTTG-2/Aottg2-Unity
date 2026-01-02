@@ -8,42 +8,109 @@ Overloads operators:
 `__Copy__`, `*`, `==`, `__Hash__`
 ### Initialization
 ```csharp
-Quaternion()
+Quaternion() // Default constructor, creates an identity quaternion (no rotation).
 Quaternion(x: float, y: float, z: float, w: float) // Creates a new Quaternion from the given values.
 ```
 
 ### Properties
 |Name|Type|Readonly|Description|
 |---|---|---|---|
-|X|float|False||
-|Y|float|False||
-|Z|float|False||
-|W|float|False||
-|Euler|[Vector3](../objects/Vector3.md)|False||
+|X|float|False|The X component of the quaternion.|
+|Y|float|False|The Y component of the quaternion.|
+|Z|float|False|The Z component of the quaternion.|
+|W|float|False|The W component of the quaternion.|
+|Euler|[Vector3](../objects/Vector3.md)|False|Returns or sets the euler angle representation of the rotation.|
 
 
 ### Static Properties
 |Name|Type|Readonly|Description|
 |---|---|---|---|
-|Identity|[Quaternion](../objects/Quaternion.md)|True||
+|Identity|[Quaternion](../objects/Quaternion.md)|True|The identity rotation (no rotation).|
 
 
 ### Methods
 
 ### Static Methods
 <pre class="language-typescript"><code class="lang-typescript">function Lerp(a: <a data-footnote-ref href="#user-content-fn-5">Quaternion</a>, b: <a data-footnote-ref href="#user-content-fn-5">Quaternion</a>, t: float) -> <a data-footnote-ref href="#user-content-fn-5">Quaternion</a></code></pre>
+> Linearly interpolates between two rotations.
+> 
+> **Parameters**:
+> - `a`: The start rotation.
+> - `b`: The end rotation.
+> - `t`: The interpolation factor (clamped between 0 and 1).
+> 
 <pre class="language-typescript"><code class="lang-typescript">function LerpUnclamped(a: <a data-footnote-ref href="#user-content-fn-5">Quaternion</a>, b: <a data-footnote-ref href="#user-content-fn-5">Quaternion</a>, t: float) -> <a data-footnote-ref href="#user-content-fn-5">Quaternion</a></code></pre>
+> Linearly interpolates between two rotations without clamping.
+> 
+> **Parameters**:
+> - `a`: The start rotation.
+> - `b`: The end rotation.
+> - `t`: The interpolation factor (not clamped).
+> 
 <pre class="language-typescript"><code class="lang-typescript">function Slerp(a: <a data-footnote-ref href="#user-content-fn-5">Quaternion</a>, b: <a data-footnote-ref href="#user-content-fn-5">Quaternion</a>, t: float) -> <a data-footnote-ref href="#user-content-fn-5">Quaternion</a></code></pre>
+> Spherically interpolates between two rotations.
+> 
+> **Parameters**:
+> - `a`: The start rotation.
+> - `b`: The end rotation.
+> - `t`: The interpolation factor (clamped between 0 and 1).
+> 
 <pre class="language-typescript"><code class="lang-typescript">function SlerpUnclamped(a: <a data-footnote-ref href="#user-content-fn-5">Quaternion</a>, b: <a data-footnote-ref href="#user-content-fn-5">Quaternion</a>, t: float) -> <a data-footnote-ref href="#user-content-fn-5">Quaternion</a></code></pre>
+> Spherically interpolates between two rotations without clamping.
+> 
+> **Parameters**:
+> - `a`: The start rotation.
+> - `b`: The end rotation.
+> - `t`: The interpolation factor (not clamped).
+> 
 <pre class="language-typescript"><code class="lang-typescript">function FromEuler(euler: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>) -> <a data-footnote-ref href="#user-content-fn-5">Quaternion</a></code></pre>
-> Returns the Quaternion rotation from the given euler angles.
+> Creates a rotation from euler angles.
+> 
+> **Parameters**:
+> - `euler`: The euler angles in degrees (x, y, z).
 > 
 <pre class="language-typescript"><code class="lang-typescript">function LookRotation(forward: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, upwards: <a data-footnote-ref href="#user-content-fn-9">Vector3</a> = null) -> <a data-footnote-ref href="#user-content-fn-5">Quaternion</a></code></pre>
+> Creates a rotation that looks in the specified direction.
+> 
+> **Parameters**:
+> - `forward`: The forward direction vector.
+> - `upwards`: Optional. The upwards direction vector (default: Vector3.up).
+> 
 <pre class="language-typescript"><code class="lang-typescript">function FromToRotation(a: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, b: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>) -> <a data-footnote-ref href="#user-content-fn-5">Quaternion</a></code></pre>
+> Creates a rotation from one direction to another.
+> 
+> **Parameters**:
+> - `a`: The source direction vector.
+> - `b`: The target direction vector.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function Inverse(q: <a data-footnote-ref href="#user-content-fn-5">Quaternion</a>) -> <a data-footnote-ref href="#user-content-fn-5">Quaternion</a></code></pre>
+> Returns the inverse of a quaternion.
+> 
+> **Parameters**:
+> - `q`: The quaternion to invert.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function RotateTowards(from: <a data-footnote-ref href="#user-content-fn-5">Quaternion</a>, to: <a data-footnote-ref href="#user-content-fn-5">Quaternion</a>, maxDegreesDelta: float) -> <a data-footnote-ref href="#user-content-fn-5">Quaternion</a></code></pre>
+> Rotates a rotation towards a target rotation.
+> 
+> **Parameters**:
+> - `from`: The current rotation.
+> - `to`: The target rotation.
+> - `maxDegreesDelta`: The maximum change in degrees.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function AngleAxis(angle: float, axis: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>) -> <a data-footnote-ref href="#user-content-fn-5">Quaternion</a></code></pre>
+> Creates a rotation that rotates around a specified axis by a specified angle.
+> 
+> **Parameters**:
+> - `angle`: The angle in degrees.
+> - `axis`: The axis to rotate around.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function Angle(a: <a data-footnote-ref href="#user-content-fn-5">Quaternion</a>, b: <a data-footnote-ref href="#user-content-fn-5">Quaternion</a>) -> float</code></pre>
+> Calculates the angle between two rotations.
+> 
+> **Parameters**:
+> - `a`: The first rotation.
+> - `b`: The second rotation.
+> 
 
 [^0]: [Color](../objects/Color.md)
 [^1]: [Dict](../objects/Dict.md)

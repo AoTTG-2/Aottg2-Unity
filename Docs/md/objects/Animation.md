@@ -1,37 +1,87 @@
 # Animation
+
+Represents an Animation component for playing legacy animation clips.
+
 ### Methods
 <pre class="language-typescript"><code class="lang-typescript">function IsPlaying(anim: string) -> bool</code></pre>
 > Checks if the given animation is playing.
 > 
+> **Parameters**:
+> - `anim`: The name of the animation to check.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function PlayAnimation(anim: string, fade: float = 0.1, layer: int = 0)</code></pre>
 > Plays the specified animation.
+> 
+> **Parameters**:
+> - `anim`: The name of the animation to play.
+> - `fade`: The fade time in seconds for cross-fading (default: 0.1).
+> - `layer`: The animation layer to play on (default: 0).
 > 
 <pre class="language-typescript"><code class="lang-typescript">function PlayAnimationAt(anim: string, normalizedTime: float, fade: float = 0.1, layer: int = 0)</code></pre>
 > Plays the specified animation starting from a normalized time.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function PlayAnimationQueued(anim: string, fade: float = 0.1, layer: int = 0)</code></pre>
+> **Parameters**:
+> - `anim`: The name of the animation to play.
+> - `normalizedTime`: The normalized time (0-1) to start the animation from.
+> - `fade`: The fade time in seconds for cross-fading (default: 0.1).
+> - `layer`: The animation layer to play on (default: 0).
+> 
+<pre class="language-typescript"><code class="lang-typescript">function PlayAnimationQueued(anim: string)</code></pre>
 > Plays the specified animation after the current animation finishes playing.
+> 
+> **Parameters**:
+> - `anim`: The name of the animation to queue.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function StopAnimation(anim: string = null)</code></pre>
 > Stops the specified animation. Will stop all animations if no name is given.
 > 
+> **Parameters**:
+> - `anim`: The name of the animation to stop. If null, stops all animations.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function SetAnimationSpeed(name: string, speed: float)</code></pre>
 > Sets the playback speed of the specified animation.
+> 
+> **Parameters**:
+> - `name`: The name of the animation.
+> - `speed`: The playback speed multiplier (1.0 = normal speed).
 > 
 <pre class="language-typescript"><code class="lang-typescript">function GetAnimationSpeed(name: string) -> float</code></pre>
 > Gets the playback speed of the specified animation.
 > 
+> **Parameters**:
+> - `name`: The name of the animation.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function GetAnimationLength(anim: string) -> float</code></pre>
 > Gets the length of the specified animation.
+> 
+> **Parameters**:
+> - `anim`: The name of the animation.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function GetAnimationNormalizedTime(anim: string) -> float</code></pre>
 > Gets the normalized time of the specified animation.
 > 
+> **Parameters**:
+> - `anim`: The name of the animation.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function SetAnimationNormalizedTime(anim: string, normalizedTime: float) -> float</code></pre>
+> Sets the normalized playback time of the specified animation.
+> 
+> **Parameters**:
+> - `anim`: The name of the animation.
+> - `normalizedTime`: The normalized time (0-1) to set.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function SetAnimationWeight(anim: string, weight: float) -> float</code></pre>
 > Sets the weight of the specified animation.
 > 
+> **Parameters**:
+> - `anim`: The name of the animation.
+> - `weight`: The weight value (0-1) to set.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function GetAnimationWeight(anim: string) -> float</code></pre>
 > Gets the weight of the specified animation.
+> 
+> **Parameters**:
+> - `anim`: The name of the animation.
 > 
 
 [^0]: [Color](../objects/Color.md)

@@ -12,7 +12,7 @@
         "name": "string",
         "typeArguments": []
       },
-      "description": "The weapon the human is using",
+      "description": "The weapon the human is using.",
       "readonly": false,
       "private": false
     },
@@ -22,7 +22,7 @@
         "name": "string",
         "typeArguments": []
       },
-      "description": "The current special the human is using",
+      "description": "The current special the human is using.",
       "readonly": false,
       "private": false
     },
@@ -42,7 +42,7 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "The cooldown of the special",
+      "description": "The cooldown of the special.",
       "readonly": false,
       "private": false
     },
@@ -52,7 +52,7 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "The live time of the shifter special",
+      "description": "The live time of the shifter special.",
       "readonly": false,
       "private": false
     },
@@ -62,7 +62,7 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "The ratio of the special cooldown",
+      "description": "The ratio of the special cooldown.",
       "readonly": true,
       "private": false
     },
@@ -72,7 +72,7 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "The current gas of the human",
+      "description": "The current gas of the human.",
       "readonly": false,
       "private": false
     },
@@ -82,7 +82,7 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "The max gas of the human",
+      "description": "The max gas of the human.",
       "readonly": false,
       "private": false
     },
@@ -92,7 +92,7 @@
         "name": "int",
         "typeArguments": []
       },
-      "description": "The acceleration of the human",
+      "description": "The acceleration of the human.",
       "readonly": false,
       "private": false
     },
@@ -102,8 +102,18 @@
         "name": "int",
         "typeArguments": []
       },
-      "description": "The speed of the human",
+      "description": "The speed of the human.",
       "readonly": false,
+      "private": false
+    },
+    {
+      "label": "HorseTransform",
+      "type": {
+        "name": "Transform",
+        "typeArguments": []
+      },
+      "description": "The transform of the horse belonging to this human. Returns null if horses are disabled.",
+      "readonly": true,
       "private": false
     },
     {
@@ -112,7 +122,7 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "The speed of the horse",
+      "description": "The speed of the horse.",
       "readonly": false,
       "private": false
     },
@@ -122,7 +132,7 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "The current blade durability",
+      "description": "The current blade durability.",
       "readonly": false,
       "private": false
     },
@@ -132,7 +142,7 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "The max blade durability",
+      "description": "The max blade durability.",
       "readonly": false,
       "private": false
     },
@@ -142,7 +152,7 @@
         "name": "int",
         "typeArguments": []
       },
-      "description": "The current blade",
+      "description": "The current blade.",
       "readonly": false,
       "private": false
     },
@@ -152,7 +162,7 @@
         "name": "int",
         "typeArguments": []
       },
-      "description": "The max number of blades held",
+      "description": "The max number of blades held.",
       "readonly": false,
       "private": false
     },
@@ -162,7 +172,7 @@
         "name": "int",
         "typeArguments": []
       },
-      "description": "The current ammo round",
+      "description": "The current ammo round.",
       "readonly": false,
       "private": false
     },
@@ -172,7 +182,7 @@
         "name": "int",
         "typeArguments": []
       },
-      "description": "The max ammo round",
+      "description": "The max ammo round.",
       "readonly": false,
       "private": false
     },
@@ -182,7 +192,7 @@
         "name": "int",
         "typeArguments": []
       },
-      "description": "The current ammo left",
+      "description": "The current ammo left.",
       "readonly": false,
       "private": false
     },
@@ -192,7 +202,7 @@
         "name": "int",
         "typeArguments": []
       },
-      "description": "The max total ammo",
+      "description": "The max total ammo.",
       "readonly": false,
       "private": false
     },
@@ -202,7 +212,7 @@
         "name": "bool",
         "typeArguments": []
       },
-      "description": "Whether the left hook is enabled",
+      "description": "Whether the left hook is enabled.",
       "readonly": false,
       "private": false
     },
@@ -212,7 +222,7 @@
         "name": "bool",
         "typeArguments": []
       },
-      "description": "Whether the right hook is enabled",
+      "description": "Whether the right hook is enabled.",
       "readonly": false,
       "private": false
     },
@@ -222,7 +232,7 @@
         "name": "bool",
         "typeArguments": []
       },
-      "description": "Whether the human is mounted",
+      "description": "Whether the human is mounted.",
       "readonly": true,
       "private": false
     },
@@ -232,7 +242,7 @@
         "name": "MapObject",
         "typeArguments": []
       },
-      "description": "The map object the human is mounted on",
+      "description": "The map object the human is mounted on.",
       "readonly": true,
       "private": false
     },
@@ -242,7 +252,7 @@
         "name": "Transform",
         "typeArguments": []
       },
-      "description": "The transform the human is mounted on",
+      "description": "The transform the human is mounted on.",
       "readonly": true,
       "private": false
     },
@@ -252,7 +262,7 @@
         "name": "bool",
         "typeArguments": []
       },
-      "description": "Whether the human auto refills gas",
+      "description": "Whether the human auto refills gas.",
       "readonly": false,
       "private": false
     },
@@ -262,7 +272,7 @@
         "name": "string",
         "typeArguments": []
       },
-      "description": "The state of the human",
+      "description": "The state of the human.",
       "readonly": true,
       "private": false
     },
@@ -272,7 +282,7 @@
         "name": "bool",
         "typeArguments": []
       },
-      "description": "Whether the human can dodge",
+      "description": "Whether the human can dodge.",
       "readonly": false,
       "private": false
     },
@@ -282,7 +292,7 @@
         "name": "bool",
         "typeArguments": []
       },
-      "description": "Whether the human is invincible",
+      "description": "Whether the human is invincible.",
       "readonly": false,
       "private": false
     },
@@ -292,7 +302,7 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "The time left for invincibility",
+      "description": "The time left for invincibility.",
       "readonly": false,
       "private": false
     },
@@ -314,7 +324,7 @@
         "name": "bool",
         "typeArguments": []
       },
-      "description": "Refills the gas of the human",
+      "description": "Refills the gas of the human.",
       "parameters": [],
       "kind": "function"
     },
@@ -324,7 +334,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Refills the gas of the human immediately",
+      "description": "Refills the gas of the human immediately.",
       "parameters": [],
       "kind": "function"
     },
@@ -334,7 +344,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Clears all hooks",
+      "description": "Clears all hooks.",
       "parameters": [],
       "kind": "function"
     },
@@ -344,7 +354,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Clears the left hook",
+      "description": "Clears the left hook.",
       "parameters": [],
       "kind": "function"
     },
@@ -354,7 +364,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Clears the right hook",
+      "description": "Clears the right hook.",
       "parameters": [],
       "kind": "function"
     },
@@ -384,7 +394,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Mounts the human on a map object",
+      "description": "Mounts the human on a map object.",
       "parameters": [
         {
           "name": "mapObject",
@@ -435,7 +445,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Mounts the human on a transform",
+      "description": "Mounts the human on a transform.",
       "parameters": [
         {
           "name": "transform",
@@ -486,7 +496,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Unmounts the human",
+      "description": "Unmounts the human.",
       "parameters": [
         {
           "name": "immediate",
@@ -507,7 +517,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Sets the special of the human",
+      "description": "Sets the special of the human.",
       "parameters": [
         {
           "name": "special",
@@ -528,7 +538,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Activates the special of the human",
+      "description": "Activates the special of the human.",
       "parameters": [],
       "kind": "function"
     },
@@ -538,7 +548,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Sets the weapon of the human",
+      "description": "Sets the weapon for the human. Available weapons: \"Blade\", \"AHSS\", \"APG\", \"Thunderspear\".",
       "parameters": [
         {
           "name": "weapon",
@@ -559,8 +569,39 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Disables all perks of the human",
+      "description": "Disables all perks of the human.",
       "parameters": [],
+      "kind": "function"
+    },
+    {
+      "label": "SetParticleEffect",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Enables or disables a particle effect. Available effects: Buff1, Buff2, Fire1.",
+      "parameters": [
+        {
+          "name": "effectName",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "Name of the effect: \"Buff1\", \"Buff2\", or \"Fire1\"",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "enabled",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "True to enable, false to disable",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
       "kind": "function"
     }
   ],

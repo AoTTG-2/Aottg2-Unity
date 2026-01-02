@@ -6,14 +6,6 @@ using Utility;
 
 namespace CustomLogic
 {
-    /// <summary>
-    /// Represents a network view on a map object that has the "networked" flag.
-    /// Note1: messages sent from a mapobjects network view are not component scoped, all components will receive the same message.
-    /// If you intend for a mapobject to have multiple message sending components, preface the message with the component name to determine scope.
-    /// Note2: Rooms and Players have bandwidth limits, exceeding the limits via CL will result in either the player being kicked or the room being shut down.
-    /// When possible, use basic message passing for state sync and then run logic locally instead of repeatedly sending state over the network. Also
-    /// avoid cases where message sending increases heavily with the number of players in the room.
-    /// </summary>
     /// <code>
     /// # The following is for a component scoped object, in general this is bad practice if the component is widely used.
     /// # OnPlayerJoin, every object with this component will send a message to the player that joined, if you use 100 objects with this, 100 messages will be sent.
@@ -40,7 +32,7 @@ namespace CustomLogic
     /// # Good Practice would be to have a single component that handles the message pass and defers the value to all registered components.
     /// TODO: Bother someone for good practice example - maybe move this into Networking Summary Page.
     /// </code>
-    [CLType(Name = "NetworkView", Abstract = true)]
+    [CLType(Name = "NetworkView", Abstract = true, Description = "Represents a network view on a map object that has the \"networked\" flag. Note1: messages sent from a mapobjects network view are not component scoped, all components will receive the same message. If you intend for a mapobject to have multiple message sending components, preface the message with the component name to determine scope. Note2: Rooms and Players have bandwidth limits, exceeding the limits via CL will result in either the player being kicked or the room being shut down. When possible, use basic message passing for state sync and then run logic locally instead of repeatedly sending state over the network. Also avoid cases where message sending increases heavily with the number of players in the room.")]
     partial class CustomLogicNetworkViewBuiltin : BuiltinClassInstance
     {
         public readonly MapObject MapObject;
@@ -52,8 +44,10 @@ namespace CustomLogic
         private bool _isTransformSynced = true;
 
 
-        [CLConstructor]
-        public CustomLogicNetworkViewBuiltin(MapObject obj)
+        [CLConstructor("Creates a new NetworkView instance.")]
+        public CustomLogicNetworkViewBuiltin(
+            [CLParam("The map object to create a network view for.")]
+            MapObject obj)
         {
             MapObject = obj;
         }
@@ -216,25 +210,14 @@ namespace CustomLogic
             Sync.SendMessageOthers(msg);
         }
 
-        /// <summary>
-        /// Send an object to the network sync stream.
-        /// This represents sending data from the object owner to all non-owner observers,
-        /// and should only be called in the SendNetworkStream callback in the attached component.
-        /// It only works with some object types: primitives and Vector3.
-        /// </summary>
-        [CLMethod]
+        [CLMethod("Send an object to the network sync stream. This represents sending data from the object owner to all non-owner observers, and should only be called in the SendNetworkStream callback in the attached component. It only works with some object types: primitives and Vector3.")]
         public void SendStream(object obj)
         {
             obj = SerializeStreamObj(obj);
             _streamObjects.Add(obj);
         }
 
-        /// <summary>
-        /// Receive an object through the network sync stream.
-        /// This represents receiving data from the object owner as a non-owner observer,
-        /// and should only be called in the OnNetworkStream callback.
-        /// </summary>
-        [CLMethod]
+        [CLMethod("Receive an object through the network sync stream. This represents receiving data from the object owner as a non-owner observer, and should only be called in the OnNetworkStream callback.")]
         public object ReceiveStream()
         {
             var obj = _streamObjects[0];

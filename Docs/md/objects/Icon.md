@@ -1,7 +1,7 @@
 # Icon
 Inherits from [VisualElement](../objects/VisualElement.md)
 
-UI element for displaying icons/images
+UI element for displaying icons/images.
 
 ### Example
 ```csharp
@@ -18,19 +18,22 @@ weaponIcon.SetIcon("Icons/Game/ThunderSpearIcon"); # Change the icon dynamically
 ### Properties
 |Name|Type|Readonly|Description|
 |---|---|---|---|
-|IconPath|string|False|Get the current icon path|
-|ScaleMode|string|False|Get or set the scale mode for the icon|
+|IconPath|string|False|The current icon path. Setting this will load the icon from the resource path.|
+|ScaleMode|string|False|The scale mode for the icon. Valid values: ScaleAndCrop, ScaleToFit, StretchToFill.|
 
 
 ### Methods
 <pre class="language-typescript"><code class="lang-typescript">function SetIcon(iconPath: string) -> <a data-footnote-ref href="#user-content-fn-44">Icon</a></code></pre>
-> Set the icon to display from a resource path
+> Set the icon to display from a resource path.
 > 
 > **Parameters**:
 > - `iconPath`: Path to the icon resource (e.g., "Icons/Game/BladeIcon")
 > 
 <pre class="language-typescript"><code class="lang-typescript">function SetTintColor(color: <a data-footnote-ref href="#user-content-fn-0">Color</a>) -> <a data-footnote-ref href="#user-content-fn-44">Icon</a></code></pre>
-> Set the tint color of the icon
+> Set the tint color of the icon.
+> 
+> **Parameters**:
+> - `color`: The color to tint the icon with.
 > 
 
 [^0]: [Color](../objects/Color.md)

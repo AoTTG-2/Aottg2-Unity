@@ -20,7 +20,7 @@
           }
         ]
       },
-      "description": "Find all map objects",
+      "description": "Find all map objects.",
       "parameters": [],
       "kind": "function"
     },
@@ -30,7 +30,7 @@
         "name": "MapObject",
         "typeArguments": []
       },
-      "description": "Find a map object by name",
+      "description": "Find a map object by name.",
       "parameters": [
         {
           "name": "objectName",
@@ -56,7 +56,7 @@
           }
         ]
       },
-      "description": "Find all map objects by name",
+      "description": "Find all map objects by name.",
       "parameters": [
         {
           "name": "objectName",
@@ -82,7 +82,7 @@
           }
         ]
       },
-      "description": "Find all map objects by regex pattern",
+      "description": "Find all map objects by regex pattern.",
       "parameters": [
         {
           "name": "pattern",
@@ -113,7 +113,7 @@
         "name": "MapObject",
         "typeArguments": []
       },
-      "description": "Find all map objects by component",
+      "description": "Find all map objects by component.",
       "parameters": [
         {
           "name": "className",
@@ -139,7 +139,7 @@
           }
         ]
       },
-      "description": "Find all map objects by component",
+      "description": "Find all map objects by component.",
       "parameters": [
         {
           "name": "className",
@@ -160,7 +160,7 @@
         "name": "MapObject",
         "typeArguments": []
       },
-      "description": "Find a map object by ID",
+      "description": "Find a map object by ID.",
       "parameters": [
         {
           "name": "id",
@@ -181,7 +181,7 @@
         "name": "MapObject",
         "typeArguments": []
       },
-      "description": "Find a map object by tag",
+      "description": "Find a map object by tag.",
       "parameters": [
         {
           "name": "tag",
@@ -207,7 +207,7 @@
           }
         ]
       },
-      "description": "Find all map objects by tag",
+      "description": "Find all map objects by tag.",
       "parameters": [
         {
           "name": "tag",
@@ -233,7 +233,7 @@
           }
         ]
       },
-      "description": "Find a map objects of Player",
+      "description": "Find a map objects of Player.",
       "parameters": [
         {
           "name": "player",
@@ -254,7 +254,7 @@
         "name": "MapObject",
         "typeArguments": []
       },
-      "description": "Create a new map object",
+      "description": "Create a new map object.",
       "parameters": [
         {
           "name": "prefab",
@@ -305,7 +305,7 @@
         "name": "MapObject",
         "typeArguments": []
       },
-      "description": "Create a new map object",
+      "description": "Create a new map object.",
       "parameters": [
         {
           "name": "prefab",
@@ -326,7 +326,7 @@
         "name": "Prefab",
         "typeArguments": []
       },
-      "description": "Create a new prefab object from the current object",
+      "description": "Create a new prefab object from the current object.",
       "parameters": [
         {
           "name": "mapObject",
@@ -357,7 +357,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Destroy a map object",
+      "description": "Destroy a map object.",
       "parameters": [
         {
           "name": "mapObject",
@@ -388,7 +388,7 @@
         "name": "MapObject",
         "typeArguments": []
       },
-      "description": "Copy a map object",
+      "description": "Copy a map object.",
       "parameters": [
         {
           "name": "mapObject",
@@ -419,7 +419,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Destroy a map targetable",
+      "description": "Destroy a map targetable.",
       "parameters": [
         {
           "name": "targetable",
@@ -440,7 +440,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Update the nav mesh",
+      "description": "Update the nav mesh.",
       "parameters": [],
       "kind": "function"
     },
@@ -450,7 +450,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Update the nav mesh asynchronously",
+      "description": "Update the nav mesh asynchronously.",
       "parameters": [],
       "kind": "function"
     }

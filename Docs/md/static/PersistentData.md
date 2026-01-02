@@ -1,9 +1,7 @@
 # PersistentData
 Inherits from [Object](../objects/Object.md)
 
-Store and retrieve persistent data. Persistent data can be saved and loaded from file. Supports float, int, string, and bool types.
-Note that any game mode may use the same file names, so it is recommended that you choose unique file names when saving and loading.
-Saved files are located in Documents/Aottg2/PersistentData.
+Store and retrieve persistent data. Persistent data can be saved and loaded from file. Supports float, int, string, and bool types. Note that any game mode may use the same file names, so it is recommended that you choose unique file names when saving and loading. Saved files are located in Documents/Aottg2/PersistentData.
 
 ### Static Methods
 <pre class="language-typescript"><code class="lang-typescript">function SetProperty(property: string, value: <a data-footnote-ref href="#user-content-fn-59">Object</a>)</code></pre>

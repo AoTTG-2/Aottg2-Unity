@@ -7,13 +7,13 @@ Overloads operators:
 |Name|Type|Readonly|Description|
 |---|---|---|---|
 |AttachedArticulationBody|[Transform](../objects/Transform.md)|True|The transform of the rigidbody this collider is attached to.|
-|ContactOffset|float|False||
-|Enabled|bool|False||
-|ExludeLayers|int|False||
+|ContactOffset|float|False|The contact offset used by the collider to avoid tunneling.|
+|Enabled|bool|False|Whether the collider is enabled.|
+|ExludeLayers|int|False|The layers that this Collider should exclude when deciding if the Collider can contact another Collider.|
 |IncludeLayers|int|False|The additional layers that this Collider should include when deciding if the Collider can contact another Collider.|
-|IsTrigger|bool|False||
-|Center|[Vector3](../objects/Vector3.md)|True||
-|ProvidesContacts|bool|False||
+|IsTrigger|bool|False|Whether the collider is a trigger. Triggers don't cause physical collisions.|
+|Center|[Vector3](../objects/Vector3.md)|True|The center of the collider's bounding box in world space.|
+|ProvidesContacts|bool|False|Whether the collider provides contact information.|
 |MaterialName|string|True|The name of the physics material on the collider.|
 |SharedMaterialName|string|True|The name of the shared physics material on this collider.|
 |Transform|[Transform](../objects/Transform.md)|True|The collider's transform.|
@@ -22,10 +22,24 @@ Overloads operators:
 
 ### Methods
 <pre class="language-typescript"><code class="lang-typescript">function ClosestPoint(position: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>) -> <a data-footnote-ref href="#user-content-fn-9">Vector3</a></code></pre>
+> Gets the closest point on the collider to the given position. Returns: The closest point on the collider.
+> 
+> **Parameters**:
+> - `position`: The position to find the closest point to.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function ClosestPointOnBounds(position: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>) -> <a data-footnote-ref href="#user-content-fn-9">Vector3</a></code></pre>
+> Gets the closest point on the collider's bounding box to the given position. Returns: The closest point on the bounding box.
+> 
+> **Parameters**:
+> - `position`: The position to find the closest point on bounds to.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function Raycast(start: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, end: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, collideWith: string) -> <a data-footnote-ref href="#user-content-fn-3">LineCastHitResult</a></code></pre>
-> Runs a raycast physics check between start to end and checks if it hits any collider with the given collideWith layer.
-Returns a Collider object if it hit something otherwise returns null.
+> Runs a raycast physics check between start to end and checks if it hits any collider with the given collideWith layer. Returns: A LineCastHitResult if it hit something, otherwise returns null.
+> 
+> **Parameters**:
+> - `start`: The start position of the raycast.
+> - `end`: The end position of the raycast.
+> - `collideWith`: The layer name to check collisions with.
 > 
 
 [^0]: [Color](../objects/Color.md)

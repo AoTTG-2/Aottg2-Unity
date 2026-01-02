@@ -5,9 +5,6 @@ using Utility;
 
 namespace CustomLogic
 {
-    /// <summary>
-    /// UI element for displaying icons/images
-    /// </summary>
     /// <code>
     /// # Example: Create an icon element
     /// icon = UI.CreateIcon("Icons/Game/BladeIcon")
@@ -19,7 +16,7 @@ namespace CustomLogic
     /// weaponIcon = UI.CreateIcon("Icons/Game/AHSSIcon");
     /// weaponIcon.SetIcon("Icons/Game/ThunderSpearIcon"); # Change the icon dynamically
     /// </code>
-    [CLType(Name = "Icon", Abstract = true)]
+    [CLType(Name = "Icon", Abstract = true, Description = "UI element for displaying icons/images.")]
     partial class CustomLogicIconBuiltin : CustomLogicVisualElementBuiltin
     {
         private readonly Image _image;
@@ -31,17 +28,15 @@ namespace CustomLogic
             _currentIconPath = string.Empty;
         }
 
-        /// <summary>
-        /// Set the icon to display from a resource path
-        /// </summary>
-        /// <param name="iconPath">Path to the icon resource (e.g., "Icons/Game/BladeIcon")</param>
         /// <example>
         /// icon.SetIcon("Icons/Game/BladeIcon");
         /// icon.SetIcon("Icons/Specials/NoneSpecialIcon");
         /// icon.SetIcon("Icons/Profile/Eren1Icon");
         /// </example>
-        [CLMethod]
-        public CustomLogicIconBuiltin SetIcon(string iconPath)
+        [CLMethod("Set the icon to display from a resource path.")]
+        public CustomLogicIconBuiltin SetIcon(
+            [CLParam("Path to the icon resource (e.g., \"Icons/Game/BladeIcon\")")]
+            string iconPath)
         {
             if (string.IsNullOrEmpty(iconPath))
             {
@@ -77,33 +72,26 @@ namespace CustomLogic
             return this;
         }
 
-        /// <summary>
-        /// Get the current icon path
-        /// </summary>
-        [CLProperty]
+        [CLProperty("The current icon path. Setting this will load the icon from the resource path.")]
         public string IconPath
         {
             get => _currentIconPath;
             set => SetIcon(value);
         }
 
-        /// <summary>
-        /// Set the tint color of the icon
-        /// </summary>
-        [CLMethod]
-        public CustomLogicIconBuiltin SetTintColor(CustomLogicColorBuiltin color)
+        [CLMethod("Set the tint color of the icon.")]
+        public CustomLogicIconBuiltin SetTintColor(
+            [CLParam("The color to tint the icon with.")]
+            CustomLogicColorBuiltin color)
         {
             _image.tintColor = color.Value.ToColor();
             return this;
         }
 
-        /// <summary>
-        /// Get or set the scale mode for the icon
-        /// </summary>
         /// <remarks>
         /// Valid values: "ScaleAndCrop", "ScaleToFit", "StretchToFill"
         /// </remarks>
-        [CLProperty]
+        [CLProperty("The scale mode for the icon. Valid values: ScaleAndCrop, ScaleToFit, StretchToFill.")]
         public string ScaleMode
         {
             get => _image.scaleMode.ToString();

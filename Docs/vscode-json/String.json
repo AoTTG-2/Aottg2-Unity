@@ -65,7 +65,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The format string.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -80,7 +80,7 @@
               }
             ]
           },
-          "description": "",
+          "description": "The list of values to format.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -152,7 +152,7 @@
               }
             ]
           },
-          "description": "",
+          "description": "The list of strings to join.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -162,7 +162,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The separator string.",
           "isOptional": false,
           "isVariadic": false
         }

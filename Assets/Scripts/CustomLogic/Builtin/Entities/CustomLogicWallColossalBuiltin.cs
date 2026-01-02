@@ -3,9 +3,6 @@ using Controllers;
 
 namespace CustomLogic
 {
-    /// <summary>
-    /// Only character owner can modify fields and call functions unless otherwise specified.
-    /// </summary>
     /// <code>
     /// function OnCharacterSpawn(character) {
     ///     if (character.IsMine &amp;&amp; character.Type == "WallColossal") {
@@ -16,7 +13,7 @@ namespace CustomLogic
     ///     }
     /// }
     /// </code>
-    [CLType(Name = "WallColossal", Abstract = true)]
+    [CLType(Name = "WallColossal", Abstract = true, Description = "Represents a WallColossal character. Only character owner can modify fields and call functions unless otherwise specified.")]
     partial class CustomLogicWallColossalBuiltin : CustomLogicShifterBuiltin
     {
         public readonly WallColossalShifter Shifter;
@@ -28,7 +25,7 @@ namespace CustomLogic
             Controller = shifter.GetComponent<WallColossalAIController>();
         }
 
-        [CLProperty(Description = "Colossal's current hand health (applies to both hands for backward compatibility).")]
+        [CLProperty("Colossal's current hand health (applies to both hands for backward compatibility).")]
         public int HandHealth
         {
             get => (Shifter.CurrentLeftHandHealth + Shifter.CurrentRightHandHealth) / 2;
@@ -42,7 +39,7 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(Description = "Colossal's maximum hand health (applies to both hands for backward compatibility).")]
+        [CLProperty("Colossal's maximum hand health (applies to both hands for backward compatibility).")]
         public int MaxHandHealth
         {
             get => (Shifter.MaxLeftHandHealth + Shifter.MaxRightHandHealth) / 2;
@@ -56,7 +53,7 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(Description = "Colossal's current left hand health.")]
+        [CLProperty("Colossal's current left hand health.")]
         public int LeftHandHealth
         {
             get => Shifter.CurrentLeftHandHealth;
@@ -67,7 +64,7 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(Description = "Colossal's maximum left hand health.")]
+        [CLProperty("Colossal's maximum left hand health.")]
         public int MaxLeftHandHealth
         {
             get => Shifter.MaxLeftHandHealth;
@@ -78,7 +75,7 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(Description = "Colossal's current right hand health.")]
+        [CLProperty("Colossal's current right hand health.")]
         public int RightHandHealth
         {
             get => Shifter.CurrentRightHandHealth;
@@ -89,7 +86,7 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(Description = "Colossal's maximum right hand health.")]
+        [CLProperty("Colossal's maximum right hand health.")]
         public int MaxRightHandHealth
         {
             get => Shifter.MaxRightHandHealth;
@@ -100,13 +97,13 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(Description = "Colossal's left hand state (Healthy or Broken).")]
+        [CLProperty("Colossal's left hand state (Healthy or Broken).")]
         public string LeftHandState => Shifter.LeftHandState.ToString();
 
-        [CLProperty(Description = "Colossal's right hand state (Healthy or Broken).")]
+        [CLProperty("Colossal's right hand state (Healthy or Broken).")]
         public string RightHandState => Shifter.RightHandState.ToString();
 
-        [CLProperty(Description = "Time in seconds for a hand to fully recover from broken state.")]
+        [CLProperty("Time in seconds for a hand to fully recover from broken state.")]
         public float HandRecoveryTime
         {
             get => Shifter.HandRecoveryTime;
@@ -117,7 +114,7 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(Description = "Time remaining in seconds for left hand to recover (0 if not recovering).")]
+        [CLProperty("Time remaining in seconds for left hand to recover (0 if not recovering).")]
         public float LeftHandRecoveryTimeLeft
         {
             get => Shifter.LeftHandRecoveryTimeLeft;
@@ -128,7 +125,7 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(Description = "Time remaining in seconds for right hand to recover (0 if not recovering).")]
+        [CLProperty("Time remaining in seconds for right hand to recover (0 if not recovering).")]
         public float RightHandRecoveryTimeLeft
         {
             get => Shifter.RightHandRecoveryTimeLeft;
@@ -139,7 +136,7 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(Description = "Colossal's (AI) wall attack cooldown per attack.")]
+        [CLProperty("Colossal's (AI) wall attack cooldown per attack.")]
         public float WallAttackCooldown
         {
             get => Controller.WallAttackCooldown;
@@ -149,7 +146,7 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(Description = "Colossal's (AI) wall attack cooldown remaining.")]
+        [CLProperty("Colossal's (AI) wall attack cooldown remaining.")]
         public float WallAttackCooldownLeft
         {
             get => Controller.WallAttackCooldownLeft;
@@ -159,7 +156,7 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(Description = "Colossal's current steam state (Off, Warning, or Damage).")]
+        [CLProperty("Colossal's current steam state (Off, Warning, or Damage).")]
         public string SteamState => Shifter.SteamState.ToString();
 
 

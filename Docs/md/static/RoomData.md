@@ -1,8 +1,7 @@
 # RoomData
 Inherits from [Object](../objects/Object.md)
 
-Store and retrieve room variables. Room data is cleared upon joining or creating a new lobby and does not reset between game rounds. Supports float, string, bool, and int types.
-Note that RoomData is local only and does not sync.You must use network messages to sync room variables.
+Store and retrieve room variables. Room data is cleared upon joining or creating a new lobby and does not reset between game rounds. Supports float, string, bool, and int types. Note that RoomData is local only and does not sync. You must use network messages to sync room variables.
 
 ### Static Methods
 <pre class="language-typescript"><code class="lang-typescript">function SetProperty(property: string, value: <a data-footnote-ref href="#user-content-fn-59">Object</a>)</code></pre>

@@ -9,20 +9,15 @@ using System.Xml;
 
 namespace CustomLogic
 {
-    /// <summary>
-    /// Store and retrieve persistent data. Persistent data can be saved and loaded from file. Supports float, int, string, and bool types.
-    /// Note that any game mode may use the same file names, so it is recommended that you choose unique file names when saving and loading.
-    /// Saved files are located in Documents/Aottg2/PersistentData.
-    /// </summary>
-    [CLType(Name = "PersistentData", Static = true, Abstract = true)]
+    [CLType(Name = "PersistentData", Static = true, Abstract = true, Description = "Store and retrieve persistent data. Persistent data can be saved and loaded from file. Supports float, int, string, and bool types. Note that any game mode may use the same file names, so it is recommended that you choose unique file names when saving and loading. Saved files are located in Documents/Aottg2/PersistentData.")]
     partial class CustomLogicPersistentDataBuiltin : BuiltinClassInstance
     {
-        [CLConstructor]
+        [CLConstructor("Creates a new PersistentData instance.")]
         public CustomLogicPersistentDataBuiltin()
         {
         }
 
-        [CLMethod(Description = "Sets the property with given name to the object value. Valid value types are float, string, bool, and int.")]
+        [CLMethod("Sets the property with given name to the object value. Valid value types are float, string, bool, and int.")]
         public static void SetProperty(string property, object value)
         {
             if (value is not (null or float or int or string or bool))
@@ -31,13 +26,13 @@ namespace CustomLogic
             CustomLogicManager.PersistentData[property] = value;
         }
 
-        [CLMethod(Description = "Gets the property with given name. If property does not exist, returns defaultValue.")]
+        [CLMethod("Gets the property with given name. If property does not exist, returns defaultValue.")]
         public static object GetProperty(string property, object defaultValue)
         {
             return CustomLogicManager.PersistentData.GetValueOrDefault(property, defaultValue);
         }
 
-        [CLMethod(Description = "Loads persistent data from given file name. If encrypted is true, will treat the file as having been saved as encrypted.")]
+        [CLMethod("Loads persistent data from given file name. If encrypted is true, will treat the file as having been saved as encrypted.")]
         public static void LoadFromFile(string fileName, bool encrypted)
         {
             Directory.CreateDirectory(FolderPaths.PersistentData);
@@ -69,7 +64,7 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod(Description = "Saves current persistent data to given file name. If encrypted is true, will also encrypt the file instead of using plaintext.")]
+        [CLMethod("Saves current persistent data to given file name. If encrypted is true, will also encrypt the file instead of using plaintext.")]
         public static void SaveToFile(string fileName, bool encrypted)
         {
             Directory.CreateDirectory(FolderPaths.PersistentData);
@@ -103,19 +98,19 @@ namespace CustomLogic
             File.WriteAllText(path, text);
         }
 
-        [CLMethod(Description = "Clears current persistent data.")]
+        [CLMethod("Clears current persistent data.")]
         public static void Clear()
         {
             CustomLogicManager.PersistentData.Clear();
         }
 
-        [CLMethod(Description = "Determines whether or not the given fileName will be allowed for use when saving/loading a file.")]
+        [CLMethod("Determines whether or not the given fileName will be allowed for use when saving/loading a file.")]
         public static bool IsValidFileName(string fileName)
         {
             return Util.IsValidFileName(fileName);
         }
 
-        [CLMethod(Description = "Determines whether the file given already exists. Throws an error if given an invalid file name.")]
+        [CLMethod("Determines whether the file given already exists. Throws an error if given an invalid file name.")]
         public static bool FileExists(string fileName)
         {
             if (!Util.IsValidFileName(fileName))

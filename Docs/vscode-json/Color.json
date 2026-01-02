@@ -1,7 +1,7 @@
 {
   "kind": "extension",
   "name": "Color",
-  "description": "Represents a color. Every component is in the range [0, 255].",
+  "description": "Represents a color with RGBA components in the range [0, 255]. Implements copy semantics, acting like a struct.",
   "extends": [
     "Object"
   ],
@@ -12,7 +12,7 @@
         "name": "int",
         "typeArguments": []
       },
-      "description": "Red component of the color",
+      "description": "Red component of the color.",
       "readonly": false,
       "private": false
     },
@@ -22,7 +22,7 @@
         "name": "int",
         "typeArguments": []
       },
-      "description": "Green component of the color",
+      "description": "Green component of the color.",
       "readonly": false,
       "private": false
     },
@@ -32,7 +32,7 @@
         "name": "int",
         "typeArguments": []
       },
-      "description": "Blue component of the color",
+      "description": "Blue component of the color.",
       "readonly": false,
       "private": false
     },
@@ -42,7 +42,7 @@
         "name": "int",
         "typeArguments": []
       },
-      "description": "Alpha component of the color",
+      "description": "Alpha component of the color.",
       "readonly": false,
       "private": false
     }
@@ -54,7 +54,7 @@
         "name": "string",
         "typeArguments": []
       },
-      "description": "Converts the color to a hex string",
+      "description": "Converts the color to a hex string.",
       "parameters": [],
       "kind": "function"
     }
@@ -67,7 +67,7 @@
         "name": "Color",
         "typeArguments": []
       },
-      "description": "Linearly interpolates between colors `a` and `b` by `t`",
+      "description": "Linearly interpolates between two colors. Returns: A new color between `a` and `b`.",
       "parameters": [
         {
           "name": "a",
@@ -108,7 +108,7 @@
         "name": "Color",
         "typeArguments": []
       },
-      "description": "Creates a gradient color from two colors",
+      "description": "Creates a gradient color from two colors. Returns: A new color interpolated between the two colors.",
       "parameters": [
         {
           "name": "a",
@@ -116,7 +116,7 @@
             "name": "Color",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The first color.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -126,7 +126,7 @@
             "name": "Color",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The second color.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -136,7 +136,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The interpolation factor (0 = a, 1 = b).",
           "isOptional": false,
           "isVariadic": false
         }
@@ -157,12 +157,12 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The hex color string.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "description": "Creates a color from a hex string"
+      "description": "Creates a color from a hex string."
     },
     {
       "parameters": [
@@ -172,7 +172,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The red component (0-255).",
           "isOptional": false,
           "isVariadic": false
         },
@@ -182,7 +182,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The green component (0-255).",
           "isOptional": false,
           "isVariadic": false
         },
@@ -192,12 +192,12 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The blue component (0-255).",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "description": "Creates a color from RGB"
+      "description": "Creates a color from RGB."
     },
     {
       "parameters": [
@@ -207,7 +207,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The red component (0-255).",
           "isOptional": false,
           "isVariadic": false
         },
@@ -217,7 +217,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The green component (0-255).",
           "isOptional": false,
           "isVariadic": false
         },
@@ -227,7 +227,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The blue component (0-255).",
           "isOptional": false,
           "isVariadic": false
         },
@@ -237,12 +237,12 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The alpha component (0-255).",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "description": "Creates a color from RGBA"
+      "description": "Creates a color from RGBA."
     }
   ]
 }

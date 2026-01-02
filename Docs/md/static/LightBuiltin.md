@@ -1,4 +1,7 @@
 # LightBuiltin
+
+Represents a Light component that can be directional, point, or spot light with configurable properties.
+
 ### Properties
 |Name|Type|Readonly|Description|
 |---|---|---|---|

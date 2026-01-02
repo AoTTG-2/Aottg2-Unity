@@ -15,7 +15,7 @@
         "name": "Object",
         "typeArguments": []
       },
-      "description": "Loads a json string into a custom logic object",
+      "description": "Loads a json string into a custom logic object.",
       "parameters": [
         {
           "name": "json",
@@ -36,7 +36,7 @@
         "name": "string",
         "typeArguments": []
       },
-      "description": "Saves a custom logic object into a json string",
+      "description": "Saves a custom logic object into a json string.",
       "parameters": [
         {
           "name": "obj",

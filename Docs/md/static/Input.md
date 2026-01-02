@@ -5,52 +5,88 @@ Reading player key inputs. Note that inputs are best handled in OnFrame rather t
 
 ### Static Methods
 <pre class="language-typescript"><code class="lang-typescript">function GetKeyName(key: string) -> string</code></pre>
-> Gets the key name the player assigned to the key setting
+> Gets the key name the player assigned to the key setting.
+> 
+> **Parameters**:
+> - `key`: The key setting path (e.g., "General/Attack" or "CustomKey/Space").
 > 
 <pre class="language-typescript"><code class="lang-typescript">function GetKeyHold(key: string) -> bool</code></pre>
-> Returns true if the key is being held down
+> Returns true if the key is being held down.
+> 
+> **Parameters**:
+> - `key`: The key setting path (e.g., "General/Attack" or "CustomKey/Space").
 > 
 <pre class="language-typescript"><code class="lang-typescript">function GetKeyDown(key: string) -> bool</code></pre>
-> Returns true if the key was pressed down this frame
+> Returns true if the key was pressed down this frame.
+> 
+> **Parameters**:
+> - `key`: The key setting path (e.g., "General/Attack" or "CustomKey/Space").
 > 
 <pre class="language-typescript"><code class="lang-typescript">function GetKeyUp(key: string) -> bool</code></pre>
-> Returns true if the key was released this frame
+> Returns true if the key was released this frame.
+> 
+> **Parameters**:
+> - `key`: The key setting path (e.g., "General/Attack" or "CustomKey/Space").
 > 
 <pre class="language-typescript"><code class="lang-typescript">function GetMouseAim() -> <a data-footnote-ref href="#user-content-fn-9">Vector3</a></code></pre>
-> Returns the position the player is aiming at
+> Returns the position the player is aiming at.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function GetCursorAimDirection() -> <a data-footnote-ref href="#user-content-fn-9">Vector3</a></code></pre>
-> Returns the ray the player is aiming at
+> Returns the ray the player is aiming at.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function GetMouseSpeed() -> <a data-footnote-ref href="#user-content-fn-9">Vector3</a></code></pre>
-> Returns the speed of the mouse
+> Returns the speed of the mouse.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function GetMousePosition() -> <a data-footnote-ref href="#user-content-fn-9">Vector3</a></code></pre>
-> Returns the position of the mouse
+> Returns the position of the mouse.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function GetScreenDimensions() -> <a data-footnote-ref href="#user-content-fn-9">Vector3</a></code></pre>
-> Returns the dimensions of the screen
+> Returns the dimensions of the screen.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function SetKeyDefaultEnabled(key: string, enabled: bool)</code></pre>
-> Sets whether the key is enabled by default
+> Sets whether the key is enabled by default.
+> 
+> **Parameters**:
+> - `key`: The key setting path (e.g., "General/Attack" or "CustomKey/Space").
+> - `enabled`: Whether the key should be enabled by default.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function SetKeyHold(key: string, enabled: bool)</code></pre>
-> Sets whether the key is being held down
+> Sets whether the key is being held down.
+> 
+> **Parameters**:
+> - `key`: The key setting path (e.g., "General/Attack" or "CustomKey/Space").
+> - `enabled`: Whether the key should be held down.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function SetCategoryKeysEnabled(category: string, enabled: bool)</code></pre>
-> Sets whether all keys in the specified category are enabled by default. Valid categories: General, Human, Titan, Interaction
+> Sets whether all keys in the specified category are enabled by default. Valid categories: General, Human, Titan, Interaction.
+> 
+> **Parameters**:
+> - `category`: The category name: "General", "Human", "Titan", or "Interaction".
+> - `enabled`: Whether the keys should be enabled by default.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function SetGeneralKeysEnabled(enabled: bool)</code></pre>
-> Sets whether all General category keys are enabled by default
+> Sets whether all General category keys are enabled by default.
+> 
+> **Parameters**:
+> - `enabled`: Whether the keys should be enabled by default.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function SetInteractionKeysEnabled(enabled: bool)</code></pre>
-> Sets whether all Interaction category keys are enabled by default
+> Sets whether all Interaction category keys are enabled by default.
+> 
+> **Parameters**:
+> - `enabled`: Whether the keys should be enabled by default.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function SetTitanKeysEnabled(enabled: bool)</code></pre>
-> Sets whether all Titan category keys are enabled by default
+> Sets whether all Titan category keys are enabled by default.
+> 
+> **Parameters**:
+> - `enabled`: Whether the keys should be enabled by default.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function SetHumanKeysEnabled(enabled: bool)</code></pre>
-> Sets whether all Human category keys are enabled by default
+> Sets whether all Human category keys are enabled by default.
+> 
+> **Parameters**:
+> - `enabled`: Whether the keys should be enabled by default.
 > 
 
 [^0]: [Color](../objects/Color.md)

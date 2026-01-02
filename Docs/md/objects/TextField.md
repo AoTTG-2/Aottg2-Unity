@@ -1,25 +1,31 @@
 # TextField
 Inherits from [VisualElement](../objects/VisualElement.md)
 
-A UI element that lets the user input and edit text
+A UI element that lets the user input and edit text.
 
 ### Properties
 |Name|Type|Readonly|Description|
 |---|---|---|---|
-|IsDelayed|bool|False|If true, the value property isn't updated until either the Enter key is pressed or the TextField loses focus|
-|Multiline|bool|False|If true, the TextField supports multiple lines of text|
-|Label|string|False|The label text displayed next to the TextField|
-|Value|string|False|The value of the TextField|
-|SelectionColor|[Color](../objects/Color.md)|False|Color used to highlight selected text inside the field|
-|CursorColor|[Color](../objects/Color.md)|False|Color of the text cursor (caret)|
+|IsDelayed|bool|False|If true, the value property isn't updated until either the Enter key is pressed or the TextField loses focus.|
+|Multiline|bool|False|If true, the TextField supports multiple lines of text.|
+|Label|string|False|The label text displayed next to the TextField.|
+|Value|string|False|The value of the TextField.|
+|SelectionColor|[Color](../objects/Color.md)|False|Color used to highlight selected text inside the field.|
+|CursorColor|[Color](../objects/Color.md)|False|Color of the text cursor (caret).|
 
 
 ### Methods
 <pre class="language-typescript"><code class="lang-typescript">function RegisterValueChangedEventCallback(changeEvent: function) -> <a data-footnote-ref href="#user-content-fn-50">TextField</a></code></pre>
-> Registers a callback to be invoked when the value of the TextField changes
+> Registers a callback to be invoked when the value of the TextField changes.
+> 
+> **Parameters**:
+> - `changeEvent`: The method to call when the value changes. It will receive (newValue, previousValue) as parameters.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function SetValueWithoutNotify(value: string)</code></pre>
-> Sets the value of the TextField without triggering any change events
+> Sets the value of the TextField without triggering any change events.
+> 
+> **Parameters**:
+> - `value`: The value to set.
 > 
 
 [^0]: [Color](../objects/Color.md)

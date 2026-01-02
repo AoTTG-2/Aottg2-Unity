@@ -1,46 +1,46 @@
 # LineRenderer
 Inherits from [Object](../objects/Object.md)
 
-Represents a LineRenderer
+Represents a LineRenderer.
 
 ### Initialization
 ```csharp
-LineRenderer() // Default constructor, Creates a black line with a width of 1
-LineRenderer(color: Color, width: float) // Creates a line with the given color and width
+LineRenderer() // Default constructor, creates a black line with a width of 1.
+LineRenderer(color: Color, width: float = 1) // Creates a line with the given color and width.
 ```
 
 ### Properties
 |Name|Type|Readonly|Description|
 |---|---|---|---|
-|StartWidth|float|False|The width of the line at the start|
-|EndWidth|float|False|The width of the line at the end|
-|LineColor|[Color](../objects/Color.md)|False|The color of the line|
-|PositionCount|int|False|The number of points in the line|
-|Enabled|bool|False|Is the line renderer enabled|
-|Loop|bool|False|Is the line renderer a loop|
-|NumCornerVertices|int|False|The number of corner vertices|
-|NumCapVertices|int|False|The number of end cap vertices|
-|Alignment|string|False|The alignment of the line renderer|
-|TextureMode|string|False|The texture mode of the line renderer|
-|UseWorldSpace|bool|False|Is the line renderer in world space|
-|ShadowCastingMode|string|False|Does the line renderer cast shadows|
-|ReceiveShadows|bool|False|Does the line renderer receive shadows|
-|ColorGradient|[List](../objects/List.md)<[Color](../objects/Color.md)>|False|The gradient of the line renderer|
-|AlphaGradient|[List](../objects/List.md)<float>|False|The alpha gradient of the line renderer|
-|WidthCurve|[List](../objects/List.md)<[Vector2](../objects/Vector2.md)>|False|The width curve of the line renderer|
-|WidthMultiplier|float|False|The width multiplier of the line renderer|
-|ColorGradientMode|string|False|The color gradient mode of the line renderer|
+|StartWidth|float|False|The width of the line at the start.|
+|EndWidth|float|False|The width of the line at the end.|
+|LineColor|[Color](../objects/Color.md)|False|The color of the line.|
+|PositionCount|int|False|The number of points in the line.|
+|Enabled|bool|False|Is the line renderer enabled.|
+|Loop|bool|False|Is the line renderer a loop.|
+|NumCornerVertices|int|False|The number of corner vertices.|
+|NumCapVertices|int|False|The number of end cap vertices.|
+|Alignment|string|False|The alignment of the line renderer.|
+|TextureMode|string|False|The texture mode of the line renderer.|
+|UseWorldSpace|bool|False|Is the line renderer in world space.|
+|ShadowCastingMode|string|False|Does the line renderer cast shadows.|
+|ReceiveShadows|bool|False|Does the line renderer receive shadows.|
+|ColorGradient|[List](../objects/List.md)<[Color](../objects/Color.md)>|False|The gradient of the line renderer.|
+|AlphaGradient|[List](../objects/List.md)<float>|False|The alpha gradient of the line renderer.|
+|WidthCurve|[List](../objects/List.md)<[Vector2](../objects/Vector2.md)>|False|The width curve of the line renderer.|
+|WidthMultiplier|float|False|The width multiplier of the line renderer.|
+|ColorGradientMode|string|False|The color gradient mode of the line renderer.|
 
 
 ### Methods
 <pre class="language-typescript"><code class="lang-typescript">function Destroy()</code></pre>
-> Remove the line renderer (can also be done by removing all references to this object)
+> Remove the line renderer (can also be done by removing all references to this object).
 > 
 <pre class="language-typescript"><code class="lang-typescript">function GetPosition(index: int) -> <a data-footnote-ref href="#user-content-fn-9">Vector3</a></code></pre>
-> Get the position of a point in the line renderer
+> Get the position of a point in the line renderer.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function SetPosition(index: int, position: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>)</code></pre>
-> Set the position of a point in the line renderer
+> Set the position of a point in the line renderer.
 > 
 
 ### Static Methods
@@ -50,7 +50,7 @@ LineRenderer(color: Color, width: float) // Creates a line with the given color 
 **Obsolete**: Create a new instance with LineRenderer() instead.
 {% endhint %}
 
-> Create a new LineRenderer
+> Create a new LineRenderer.
 > 
 
 [^0]: [Color](../objects/Color.md)

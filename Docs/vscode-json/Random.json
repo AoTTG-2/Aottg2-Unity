@@ -344,7 +344,7 @@
   "constructors": [
     {
       "parameters": [],
-      "description": ""
+      "description": "Creates a new Random instance with default seed."
     },
     {
       "parameters": [
@@ -354,12 +354,12 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The seed value for the random number generator.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "description": ""
+      "description": "Creates a new Random instance with the specified seed."
     }
   ]
 }

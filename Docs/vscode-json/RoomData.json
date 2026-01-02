@@ -1,7 +1,7 @@
 {
   "kind": "extension",
   "name": "RoomData",
-  "description": "Store and retrieve room variables. Room data is cleared upon joining or creating a new lobby and does not reset between game rounds. Supports float, string, bool, and int types. Note that RoomData is local only and does not sync.You must use network messages to sync room variables.",
+  "description": "Store and retrieve room variables. Room data is cleared upon joining or creating a new lobby and does not reset between game rounds. Supports float, string, bool, and int types. Note that RoomData is local only and does not sync. You must use network messages to sync room variables.",
   "extends": [
     "Object"
   ],

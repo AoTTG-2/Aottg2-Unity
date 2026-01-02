@@ -1,7 +1,7 @@
 {
   "kind": "class",
   "name": "TextField",
-  "description": "A UI element that lets the user input and edit text",
+  "description": "A UI element that lets the user input and edit text.",
   "extends": [
     "VisualElement"
   ],
@@ -12,7 +12,7 @@
         "name": "bool",
         "typeArguments": []
       },
-      "description": "If true, the value property isn't updated until either the Enter key is pressed or the TextField loses focus",
+      "description": "If true, the value property isn't updated until either the Enter key is pressed or the TextField loses focus.",
       "readonly": false,
       "private": false
     },
@@ -22,7 +22,7 @@
         "name": "bool",
         "typeArguments": []
       },
-      "description": "If true, the TextField supports multiple lines of text",
+      "description": "If true, the TextField supports multiple lines of text.",
       "readonly": false,
       "private": false
     },
@@ -32,7 +32,7 @@
         "name": "string",
         "typeArguments": []
       },
-      "description": "The label text displayed next to the TextField",
+      "description": "The label text displayed next to the TextField.",
       "readonly": false,
       "private": false
     },
@@ -42,7 +42,7 @@
         "name": "string",
         "typeArguments": []
       },
-      "description": "The value of the TextField",
+      "description": "The value of the TextField.",
       "readonly": false,
       "private": false
     },
@@ -52,7 +52,7 @@
         "name": "Color",
         "typeArguments": []
       },
-      "description": "Color used to highlight selected text inside the field",
+      "description": "Color used to highlight selected text inside the field.",
       "readonly": false,
       "private": false
     },
@@ -62,7 +62,7 @@
         "name": "Color",
         "typeArguments": []
       },
-      "description": "Color of the text cursor (caret)",
+      "description": "Color of the text cursor (caret).",
       "readonly": false,
       "private": false
     }
@@ -74,7 +74,7 @@
         "name": "TextField",
         "typeArguments": []
       },
-      "description": "Registers a callback to be invoked when the value of the TextField changes",
+      "description": "Registers a callback to be invoked when the value of the TextField changes.",
       "parameters": [
         {
           "name": "changeEvent",
@@ -82,7 +82,7 @@
             "name": "function",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The method to call when the value changes. It will receive (newValue, previousValue) as parameters.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -95,7 +95,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Sets the value of the TextField without triggering any change events",
+      "description": "Sets the value of the TextField without triggering any change events.",
       "parameters": [
         {
           "name": "value",
@@ -103,7 +103,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The value to set.",
           "isOptional": false,
           "isVariadic": false
         }

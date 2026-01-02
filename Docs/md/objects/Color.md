@@ -1,51 +1,49 @@
 # Color
 Inherits from [Object](../objects/Object.md)
 
-Represents a color. Every component is in the range [0, 255].
+Represents a color with RGBA components in the range [0, 255]. Implements copy semantics, acting like a struct.
 
 ### Remarks
-Implements `__Copy__` which means that this class will act like a struct.
-
 Overloads operators: 
 `==`, `__Hash__`, `__Copy__`, `__Str__`, `+`, `-`, `*`, `/`
-### Example
-```csharp
-Game.Print(color.ToHexString()) // Prints the color in hex format
-```
 ### Initialization
 ```csharp
 Color() // Default constructor, creates a white color.
-Color(hexString: string) // Creates a color from a hex string
-Color(r: int, g: int, b: int) // Creates a color from RGB
-Color(r: int, g: int, b: int, a: int) // Creates a color from RGBA
+Color(hexString: string) // Creates a color from a hex string.
+Color(r: int, g: int, b: int) // Creates a color from RGB.
+Color(r: int, g: int, b: int, a: int) // Creates a color from RGBA.
 ```
 
 ### Properties
 |Name|Type|Readonly|Description|
 |---|---|---|---|
-|R|int|False|Red component of the color|
-|G|int|False|Green component of the color|
-|B|int|False|Blue component of the color|
-|A|int|False|Alpha component of the color|
+|R|int|False|Red component of the color.|
+|G|int|False|Green component of the color.|
+|B|int|False|Blue component of the color.|
+|A|int|False|Alpha component of the color.|
 
 
 ### Methods
 <pre class="language-typescript"><code class="lang-typescript">function ToHexString() -> string</code></pre>
-> Converts the color to a hex string
+> Converts the color to a hex string.
 > 
 
 ### Static Methods
 <pre class="language-typescript"><code class="lang-typescript">function Lerp(a: <a data-footnote-ref href="#user-content-fn-0">Color</a>, b: <a data-footnote-ref href="#user-content-fn-0">Color</a>, t: float) -> <a data-footnote-ref href="#user-content-fn-0">Color</a></code></pre>
-> Linearly interpolates between colors `a` and `b` by `t`
+> Linearly interpolates between two colors. Returns: A new color between `a` and `b`.
 > 
 > **Parameters**:
 > - `a`: Color to interpolate from
 > - `b`: Color to interpolate to
 > - `t`: Interpolation factor. 0 = `a`, 1 = `b`
 > 
-> **Returns**: A new color between `a` and `b`
 <pre class="language-typescript"><code class="lang-typescript">function Gradient(a: <a data-footnote-ref href="#user-content-fn-0">Color</a>, b: <a data-footnote-ref href="#user-content-fn-0">Color</a>, t: float) -> <a data-footnote-ref href="#user-content-fn-0">Color</a></code></pre>
-> Creates a gradient color from two colors
+> Creates a gradient color from two colors. Returns: A new color interpolated between the two colors.
+> 
+> **Parameters**:
+> - `a`: The first color.
+> - `b`: The second color.
+> - `t`: The interpolation factor (0 = a, 1 = b).
 > 
 
 [^0]: [Color](../objects/Color.md)

@@ -1,4 +1,7 @@
 # PhysicsMaterialBuiltin
+
+Represents a physics material that defines friction and bounciness properties for colliders.
+
 ### Properties
 |Name|Type|Readonly|Description|
 |---|---|---|---|
@@ -12,15 +15,18 @@
 ### Static Properties
 |Name|Type|Readonly|Description|
 |---|---|---|---|
-|FrictionCombineMinimum|int|True|PhysicMaterialCombine.Minimum|
-|FrictionCombineMultiply|int|True|PhysicMaterialCombine.Multiply|
-|FrictionCombineMaximum|int|True|PhysicMaterialCombine.Maximum|
-|FrictionCombineAverage|int|True|PhysicMaterialCombine.Average|
+|FrictionCombineMinimum|int|True|PhysicMaterialCombine.Minimum.|
+|FrictionCombineMultiply|int|True|PhysicMaterialCombine.Multiply.|
+|FrictionCombineMaximum|int|True|PhysicMaterialCombine.Maximum.|
+|FrictionCombineAverage|int|True|PhysicMaterialCombine.Average.|
 
 
 ### Methods
 <pre class="language-typescript"><code class="lang-typescript">function Setup(allChildColliders: bool)</code></pre>
 > Setup the material.
+> 
+> **Parameters**:
+> - `allChildColliders`: If true, applies the material to all child colliders as well.
 > 
 
 [^0]: [Color](../objects/Color.md)

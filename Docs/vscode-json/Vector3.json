@@ -12,7 +12,7 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "",
+      "description": "The X component of the vector.",
       "readonly": false,
       "private": false
     },
@@ -22,7 +22,7 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "",
+      "description": "The Y component of the vector.",
       "readonly": false,
       "private": false
     },
@@ -32,7 +32,7 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "",
+      "description": "The Z component of the vector.",
       "readonly": false,
       "private": false
     },
@@ -42,7 +42,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Returns a normalized copy of this vector (magnitude of 1).",
       "readonly": true,
       "private": false
     },
@@ -52,7 +52,7 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Returns the length of this vector.",
       "readonly": true,
       "private": false
     },
@@ -62,7 +62,7 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Returns the squared length of this vector (faster than Magnitude).",
       "readonly": true,
       "private": false
     }
@@ -74,7 +74,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Sets the X, Y, and Z components of the vector.",
       "parameters": [
         {
           "name": "x",
@@ -82,7 +82,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The X component.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -92,7 +92,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The Y component.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -102,7 +102,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The Z component.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -115,7 +115,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "Returns the Vector3 multiplied by scale.",
+      "description": "Scales the vector by a float or Vector3. Returns: A new scaled vector.",
       "parameters": [
         {
           "name": "scale",
@@ -123,7 +123,7 @@
             "name": "Object",
             "typeArguments": []
           },
-          "description": "float | Vector3",
+          "description": "The scale value (float or Vector3).",
           "isOptional": false,
           "isVariadic": false
         }
@@ -138,7 +138,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Shorthand for writing Vector3(0, 0, 0).",
       "readonly": true,
       "private": false
     },
@@ -148,7 +148,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Shorthand for writing Vector3(1, 1, 1).",
       "readonly": true,
       "private": false
     },
@@ -158,7 +158,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Shorthand for writing Vector3(0, 1, 0).",
       "readonly": true,
       "private": false
     },
@@ -168,7 +168,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Shorthand for writing Vector3(0, -1, 0).",
       "readonly": true,
       "private": false
     },
@@ -178,7 +178,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Shorthand for writing Vector3(-1, 0, 0).",
       "readonly": true,
       "private": false
     },
@@ -188,7 +188,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Shorthand for writing Vector3(1, 0, 0).",
       "readonly": true,
       "private": false
     },
@@ -198,7 +198,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Shorthand for writing Vector3(0, 0, 1).",
       "readonly": true,
       "private": false
     },
@@ -208,7 +208,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Shorthand for writing Vector3(0, 0, -1).",
       "readonly": true,
       "private": false
     },
@@ -218,7 +218,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Shorthand for writing Vector3(float.NegativeInfinity, float.NegativeInfinity, float.NegativeInfinity).",
       "readonly": true,
       "private": false
     },
@@ -228,7 +228,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Shorthand for writing Vector3(float.PositiveInfinity, float.PositiveInfinity, float.PositiveInfinity).",
       "readonly": true,
       "private": false
     }
@@ -240,7 +240,7 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Calculates the angle between two vectors.",
       "parameters": [
         {
           "name": "from",
@@ -248,7 +248,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The vector from which the angular difference is measured.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -258,7 +258,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The vector to which the angular difference is measured.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -271,7 +271,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Clamps the magnitude of a vector to a maximum value.",
       "parameters": [
         {
           "name": "vector",
@@ -279,7 +279,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The vector to clamp.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -289,7 +289,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The maximum length of the vector.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -302,7 +302,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Calculates the cross product of two vectors.",
       "parameters": [
         {
           "name": "a",
@@ -310,7 +310,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The first vector.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -320,7 +320,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The second vector.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -333,7 +333,7 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Calculates the distance between two points.",
       "parameters": [
         {
           "name": "a",
@@ -341,7 +341,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The first point.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -351,7 +351,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The second point.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -364,7 +364,7 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Calculates the dot product of two vectors.",
       "parameters": [
         {
           "name": "a",
@@ -372,7 +372,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The first vector.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -382,7 +382,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The second vector.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -395,7 +395,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Linearly interpolates between two vectors.",
       "parameters": [
         {
           "name": "a",
@@ -403,7 +403,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The start value.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -413,7 +413,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The end value.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -423,7 +423,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The interpolation factor (clamped between 0 and 1).",
           "isOptional": false,
           "isVariadic": false
         }
@@ -436,7 +436,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Linearly interpolates between two vectors without clamping.",
       "parameters": [
         {
           "name": "a",
@@ -444,7 +444,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The start value.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -454,7 +454,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The end value.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -464,7 +464,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The interpolation factor (not clamped).",
           "isOptional": false,
           "isVariadic": false
         }
@@ -477,7 +477,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Returns a vector that is made from the largest components of two vectors.",
       "parameters": [
         {
           "name": "a",
@@ -485,7 +485,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The first vector.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -495,7 +495,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The second vector.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -508,7 +508,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Returns a vector that is made from the smallest components of two vectors.",
       "parameters": [
         {
           "name": "a",
@@ -516,7 +516,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The first vector.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -526,7 +526,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The second vector.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -539,7 +539,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Moves a point towards a target position.",
       "parameters": [
         {
           "name": "current",
@@ -547,7 +547,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The current position.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -557,7 +557,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The target position.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -567,7 +567,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The maximum distance to move.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -580,7 +580,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Returns a normalized copy of the vector.",
       "parameters": [
         {
           "name": "value",
@@ -588,7 +588,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The vector to normalize.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -601,7 +601,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Makes vectors normalized and orthogonal to each other. Normalizes normal. Normalizes tangent and makes sure it is orthogonal to normal (that is, angle between them is 90 degrees). Honestly just go look up the unity docs for this one idk. This one uses references so the Vectors will be modified in place.",
+      "description": "Orthonormalizes two vectors (normalizes the normal vector and makes the tangent vector orthogonal to it).",
       "parameters": [
         {
           "name": "normal",
@@ -609,7 +609,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The normal vector (will be normalized).",
           "isOptional": false,
           "isVariadic": false
         },
@@ -619,7 +619,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The tangent vector (will be normalized and made orthogonal to normal).",
           "isOptional": false,
           "isVariadic": false
         }
@@ -632,7 +632,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Projects a vector onto another vector.",
       "parameters": [
         {
           "name": "a",
@@ -640,7 +640,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The vector to project.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -650,7 +650,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The vector to project onto.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -663,7 +663,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Projects a vector onto a plane defined by a normal vector.",
       "parameters": [
         {
           "name": "vector",
@@ -671,7 +671,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The vector to project.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -681,7 +681,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The plane normal vector.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -694,7 +694,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Reflects a vector off a plane defined by a normal vector.",
       "parameters": [
         {
           "name": "inDirection",
@@ -702,7 +702,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The incoming direction vector.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -712,7 +712,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The normal vector of the surface.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -725,7 +725,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Rotates a vector towards a target vector.",
       "parameters": [
         {
           "name": "current",
@@ -733,7 +733,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The current direction vector.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -743,7 +743,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The target direction vector.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -753,7 +753,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The maximum change in radians.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -763,7 +763,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The maximum change in magnitude.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -776,7 +776,7 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Calculates the signed angle between two vectors.",
       "parameters": [
         {
           "name": "from",
@@ -784,7 +784,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The vector from which the angular difference is measured.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -794,7 +794,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The vector to which the angular difference is measured.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -804,7 +804,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The axis around which the rotation is measured.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -817,7 +817,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Spherically interpolates between two vectors.",
       "parameters": [
         {
           "name": "a",
@@ -825,7 +825,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The start value.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -835,7 +835,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The end value.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -845,7 +845,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The interpolation factor (clamped between 0 and 1).",
           "isOptional": false,
           "isVariadic": false
         }
@@ -858,7 +858,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Spherically interpolates between two vectors without clamping.",
       "parameters": [
         {
           "name": "a",
@@ -866,7 +866,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The start value.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -876,7 +876,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The end value.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -886,7 +886,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The interpolation factor (not clamped).",
           "isOptional": false,
           "isVariadic": false
         }
@@ -899,7 +899,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "Smoothly damps current towards target with currentVelocity as state. smoothTime and maxSpeed control how aggressive the transition is.",
+      "description": "Smoothly dampens a vector towards a target over time.",
       "parameters": [
         {
           "name": "current",
@@ -907,7 +907,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The current position.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -917,7 +917,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The target position.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -927,7 +927,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The current velocity (modified by the function).",
           "isOptional": false,
           "isVariadic": false
         },
@@ -937,7 +937,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The time it takes to reach the target (approximately).",
           "isOptional": false,
           "isVariadic": false
         },
@@ -947,7 +947,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The maximum speed.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -960,7 +960,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "Gets the relational Vector3 \"b\" using \"a\" as a reference. This is equivalent to setting MapObject.Forward to Vector \"a\", and finding the relative \"b\" vector.",
+      "description": "Gets the direction vector transformed by a rotation. Returns: A new direction vector.",
       "parameters": [
         {
           "name": "a",
@@ -968,7 +968,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The reference rotation vector (e.g., forward direction).",
           "isOptional": false,
           "isVariadic": false
         },
@@ -978,7 +978,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The vector to transform relative to the reference.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -991,7 +991,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "Returns the multiplication of two Vector3s.",
+      "description": "Multiplies two vectors component-wise. Returns: A new vector with multiplied components.",
       "parameters": [
         {
           "name": "a",
@@ -999,7 +999,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "Vector3",
+          "description": "The first vector.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -1009,7 +1009,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "Vector3",
+          "description": "The second vector.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -1022,7 +1022,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "Returns the division of two Vector3s.",
+      "description": "Divides two vectors component-wise. Returns: A new vector with divided components.",
       "parameters": [
         {
           "name": "a",
@@ -1030,7 +1030,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "Vector3",
+          "description": "The first vector.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -1040,7 +1040,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "Vector3",
+          "description": "The second vector.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -1061,7 +1061,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The value for X, Y, and Z components.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -1076,7 +1076,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The X component.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -1086,7 +1086,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The Y component.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -1101,7 +1101,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The X component.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -1111,7 +1111,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The Y component.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -1121,7 +1121,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The Z component.",
           "isOptional": false,
           "isVariadic": false
         }

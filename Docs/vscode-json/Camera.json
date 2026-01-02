@@ -145,7 +145,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The world position to set the camera to.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -166,7 +166,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The euler angles rotation to set the camera to.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -187,7 +187,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The velocity vector to set for the camera.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -208,7 +208,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "The world position to look at",
+          "description": "The world position to look at.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -291,7 +291,7 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "If true, locks the camera to prevent movement.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -312,7 +312,7 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "If true, makes the cursor visible.",
           "isOptional": false,
           "isVariadic": false
         }

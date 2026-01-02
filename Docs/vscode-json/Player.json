@@ -182,7 +182,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The property key to get.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -203,7 +203,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The property key to set.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -213,7 +213,7 @@
             "name": "Object",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The value to set (must be a primitive type).",
           "isOptional": false,
           "isVariadic": false
         }

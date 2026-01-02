@@ -14,7 +14,7 @@ namespace CustomLogic
             collision = (Collision)parameters[0];
         }
 
-        [CLProperty(Description = "The collider involved in the collision.")]
+        [CLProperty("The collider involved in the collision.")]
         public CustomLogicColliderBuiltin Collider
         {
             get
@@ -23,35 +23,43 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(Description = "The impulse response of the collision.")]
+        [CLProperty("The impulse response of the collision.")]
         public CustomLogicVector3Builtin Impulse => collision.impulse;
 
-        [CLProperty(Description = "The relative velocity of the collision. (sum of velocities)")]
+        [CLProperty("The relative velocity of the collision. (sum of velocities)")]
         public CustomLogicVector3Builtin RelativeVelocity => collision.relativeVelocity;
 
-        [CLProperty(Description = "The number of contacts in the collision, iterate over this in conjunction with the GetContact Point, Norm, Impulse, and Separation.")]
+        [CLProperty("The number of contacts in the collision, iterate over this in conjunction with the GetContact Point, Norm, Impulse, and Separation.")]
         public int ContactCount => collision.contactCount;
 
-        [CLMethod(Description = "The contact point of the collision.")]
-        public CustomLogicVector3Builtin GetContactPoint(int index)
+        [CLMethod("The contact point of the collision.")]
+        public CustomLogicVector3Builtin GetContactPoint(
+            [CLParam("The contact index (0 to ContactCount-1).")]
+            int index)
         {
             return new CustomLogicVector3Builtin(collision.GetContact(index).point);
         }
 
-        [CLMethod(Description = "The contact norm of the collision.")]
-        public CustomLogicVector3Builtin GetContactNorms(int index)
+        [CLMethod("The contact norm of the collision.")]
+        public CustomLogicVector3Builtin GetContactNorms(
+            [CLParam("The contact index (0 to ContactCount-1).")]
+            int index)
         {
             return new CustomLogicVector3Builtin(collision.GetContact(index).normal);
         }
 
-        [CLMethod(Description = "The contact impulse of the collision.")]
-        public CustomLogicVector3Builtin GetContactImpulses(int index)
+        [CLMethod("The contact impulse of the collision.")]
+        public CustomLogicVector3Builtin GetContactImpulses(
+            [CLParam("The contact index (0 to ContactCount-1).")]
+            int index)
         {
             return new CustomLogicVector3Builtin(collision.GetContact(index).impulse);
         }
 
-        [CLMethod(Description = "The separation between colliders at the given contact point.")]
-        public CustomLogicVector3Builtin GetContactSeparations(int index)
+        [CLMethod("The separation between colliders at the given contact point.")]
+        public CustomLogicVector3Builtin GetContactSeparations(
+            [CLParam("The contact index (0 to ContactCount-1).")]
+            int index)
         {
             return new CustomLogicVector3Builtin(collision.GetContact(index).separation);
         }

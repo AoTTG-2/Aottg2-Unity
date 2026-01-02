@@ -1,4 +1,7 @@
 # RigidbodyBuiltin
+
+Represents a Rigidbody component that enables physics simulation for game objects.
+
 ### Properties
 |Name|Type|Readonly|Description|
 |---|---|---|---|
@@ -39,26 +42,61 @@
 <pre class="language-typescript"><code class="lang-typescript">function AddForce(force: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, forceMode: string = "Acceleration", atPoint: <a data-footnote-ref href="#user-content-fn-9">Vector3</a> = null)</code></pre>
 > Apply a force to the Rigidbody - legacy version, please use optimized if possible.
 > 
+> **Parameters**:
+> - `force`: The force vector to apply.
+> - `forceMode`: The force mode: "Force", "Acceleration", "Impulse", or "VelocityChange" (default: "Acceleration").
+> - `atPoint`: Optional. If provided, applies force at this world position instead of center of mass.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function AddForceOptimized(force: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, forceMode: int = 5, atPoint: <a data-footnote-ref href="#user-content-fn-9">Vector3</a> = null)</code></pre>
 > Apply a force to the Rigidbody.
+> 
+> **Parameters**:
+> - `force`: The force vector to apply.
+> - `forceMode`: The force mode as integer (use ForceModeAcceleration, ForceModeForce, ForceModeImpulse, or ForceModeVelocityChange constants, default: 5).
+> - `atPoint`: Optional. If provided, applies force at this world position instead of center of mass.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function AddTorque(torque: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, forceMode: string)</code></pre>
 > Apply a torque to the Rigidbody - legacy version, please use optimized if possible.
 > 
+> **Parameters**:
+> - `torque`: The torque vector to apply.
+> - `forceMode`: The force mode: "Force", "Acceleration", "Impulse", or "VelocityChange".
+> 
 <pre class="language-typescript"><code class="lang-typescript">function AddTorqueOptimized(torque: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, forceMode: int = 5)</code></pre>
 > Apply a torque to the Rigidbody.
+> 
+> **Parameters**:
+> - `torque`: The torque vector to apply.
+> - `forceMode`: The force mode as integer (use ForceModeAcceleration, ForceModeForce, ForceModeImpulse, or ForceModeVelocityChange constants, default: 5).
 > 
 <pre class="language-typescript"><code class="lang-typescript">function AddExplosionForce(explosionForce: float, explosionPosition: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, explosionRadius: float, upwardsModifier: float = 0, forceMode: int = 5)</code></pre>
 > Apply an explosion force to the Rigidbody.
 > 
+> **Parameters**:
+> - `explosionForce`: The force of the explosion.
+> - `explosionPosition`: The center position of the explosion.
+> - `explosionRadius`: The radius of the explosion.
+> - `upwardsModifier`: Adjustment to the apparent position of the explosion to make it seem to lift objects (default: 0.0).
+> - `forceMode`: The force mode as integer (use ForceModeAcceleration, ForceModeForce, ForceModeImpulse, or ForceModeVelocityChange constants, default: 5).
+> 
 <pre class="language-typescript"><code class="lang-typescript">function Move(position: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, rotation: <a data-footnote-ref href="#user-content-fn-5">Quaternion</a>)</code></pre>
 > Move the Rigidbody to a new position. This will not apply any forces, it will just set the position directly.
+> 
+> **Parameters**:
+> - `position`: The new position.
+> - `rotation`: The new rotation.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function MovePosition(position: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>)</code></pre>
 > Move the Rigidbody to a new position. This will apply forces to move the Rigidbody to the new position.
 > 
+> **Parameters**:
+> - `position`: The target position.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function MoveRotation(rotation: <a data-footnote-ref href="#user-content-fn-5">Quaternion</a>)</code></pre>
 > Move the Rigidbody to a new rotation. This will apply forces to rotate the Rigidbody to the new rotation.
+> 
+> **Parameters**:
+> - `rotation`: The target rotation.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function ResetCenterOfMass()</code></pre>
 > Reset the center of mass of the Rigidbody to the default value (0, 0, 0). This will also reset the inertia tensor.
@@ -68,6 +106,10 @@
 > 
 <pre class="language-typescript"><code class="lang-typescript">function SweepTest(direction: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, distance: float) -> <a data-footnote-ref href="#user-content-fn-59">Object</a></code></pre>
 > Checks if the rigidbody would collide with anything, returns a LineCastHitResult object.
+> 
+> **Parameters**:
+> - `direction`: The direction to sweep in.
+> - `distance`: The distance to sweep.
 > 
 
 [^0]: [Color](../objects/Color.md)

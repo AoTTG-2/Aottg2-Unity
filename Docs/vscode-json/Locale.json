@@ -14,7 +14,7 @@
         "name": "string",
         "typeArguments": []
       },
-      "description": "Arabic language code",
+      "description": "Arabic language code.",
       "readonly": true,
       "private": false
     },

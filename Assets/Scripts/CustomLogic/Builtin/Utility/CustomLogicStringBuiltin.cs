@@ -4,13 +4,10 @@ using Utility;
 
 namespace CustomLogic
 {
-    /// <summary>
-    /// String manipulation functions.
-    /// </summary>
-    [CLType(Name = "String", Static = true, Abstract = true)]
+    [CLType(Name = "String", Static = true, Abstract = true, Description = "String manipulation functions.")]
     partial class CustomLogicStringBuiltin : BuiltinClassInstance
     {
-        [CLConstructor]
+        [CLConstructor("Creates a new String instance.")]
         public CustomLogicStringBuiltin() { }
 
         [CLProperty("Returns the newline character.")]
@@ -22,13 +19,17 @@ namespace CustomLogic
             return Util.FormatFloat(val, decimals);
         }
 
-        [CLMethod("Equivalent to C# string.format(string, List<string>).", ParameterTypeArguments = new[] { null, "List<string>" })]
-        public static string FormatFromList(string str, CustomLogicListBuiltin list)
+        [CLMethod("Equivalent to C# string.format(string, List<string>).")]
+        public static string FormatFromList(
+            [CLParam("The format string.")]
+            string str,
+            [CLParam("The list of values to format.", Type = "List<string>")]
+            CustomLogicListBuiltin list)
         {
             return string.Format(str, list.List.ToArray());
         }
 
-        [CLMethod(Description = "Split the string into a list. Can pass in either a string to split on or a list of strings to split on, the last optional param can remove all empty entries.", ReturnTypeArguments = new[] { "string" })]
+        [CLMethod(ReturnTypeArguments = new[] { "string" }, Description = "Split the string into a list. Can pass in either a string to split on or a list of strings to split on, the last optional param can remove all empty entries.")]
         public static CustomLogicListBuiltin Split(string toSplit, object splitter, bool removeEmptyEntries = false)
         {
             var options = removeEmptyEntries
@@ -61,8 +62,12 @@ namespace CustomLogic
             return list;
         }
 
-        [CLMethod("Joins a list of strings into a single string with the specified separator.", ParameterTypeArguments = new[] { "List<string>", null })]
-        public static string Join(CustomLogicListBuiltin list, string separator)
+        [CLMethod("Joins a list of strings into a single string with the specified separator.")]
+        public static string Join(
+            [CLParam("The list of strings to join.", Type = "List<string>")]
+            CustomLogicListBuiltin list,
+            [CLParam("The separator string.")]
+            string separator)
         {
             var strList = new List<string>();
             foreach (var obj in list.List)

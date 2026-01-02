@@ -15,12 +15,12 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The end value (exclusive).",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "description": "Creates a range from 0 to end-1"
+      "description": "Creates a range from 0 to end-1."
     },
     {
       "parameters": [
@@ -30,7 +30,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The start value.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -40,12 +40,12 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The end value (exclusive).",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "description": "Creates a range from start to end-1"
+      "description": "Creates a range from start to end-1."
     },
     {
       "parameters": [
@@ -55,7 +55,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The start value.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -65,7 +65,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The end value (exclusive).",
           "isOptional": false,
           "isVariadic": false
         },
@@ -75,12 +75,12 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The step value.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "description": "Creates a range from start to end-1 with the specified step"
+      "description": "Creates a range from start to end-1 with the specified step."
     }
   ]
 }

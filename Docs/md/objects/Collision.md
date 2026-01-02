@@ -13,14 +13,26 @@ Inherits from [Object](../objects/Object.md)
 <pre class="language-typescript"><code class="lang-typescript">function GetContactPoint(index: int) -> <a data-footnote-ref href="#user-content-fn-9">Vector3</a></code></pre>
 > The contact point of the collision.
 > 
+> **Parameters**:
+> - `index`: The contact index (0 to ContactCount-1).
+> 
 <pre class="language-typescript"><code class="lang-typescript">function GetContactNorms(index: int) -> <a data-footnote-ref href="#user-content-fn-9">Vector3</a></code></pre>
 > The contact norm of the collision.
+> 
+> **Parameters**:
+> - `index`: The contact index (0 to ContactCount-1).
 > 
 <pre class="language-typescript"><code class="lang-typescript">function GetContactImpulses(index: int) -> <a data-footnote-ref href="#user-content-fn-9">Vector3</a></code></pre>
 > The contact impulse of the collision.
 > 
+> **Parameters**:
+> - `index`: The contact index (0 to ContactCount-1).
+> 
 <pre class="language-typescript"><code class="lang-typescript">function GetContactSeparations(index: int) -> <a data-footnote-ref href="#user-content-fn-9">Vector3</a></code></pre>
 > The separation between colliders at the given contact point.
+> 
+> **Parameters**:
+> - `index`: The contact index (0 to ContactCount-1).
 > 
 
 [^0]: [Color](../objects/Color.md)

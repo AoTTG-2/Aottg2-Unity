@@ -1,25 +1,28 @@
 # Toggle
 Inherits from [VisualElement](../objects/VisualElement.md)
 
-A UI element that represents a toggle button with on/off states
+A UI element that represents a toggle button with on/off states.
 
 ### Properties
 |Name|Type|Readonly|Description|
 |---|---|---|---|
-|Label|string|False|The label text displayed next to the Toggle|
-|Text|string|False|The text displayed by the Toggle|
-|Value|bool|False|The current value of the Toggle (true = checked, false = unchecked)|
+|Label|string|False|The label text displayed next to the Toggle.|
+|Text|string|False|The text displayed by the Toggle.|
+|Value|bool|False|The current value of the Toggle (true = checked, false = unchecked).|
 
 
 ### Methods
 <pre class="language-typescript"><code class="lang-typescript">function OnValueChanged(valueChangedEvent: function) -> <a data-footnote-ref href="#user-content-fn-51">Toggle</a></code></pre>
-> Sets the method to be called when the Toggle value changes
+> Sets the method to be called when the Toggle value changes.
 > 
 > **Parameters**:
 > - `valueChangedEvent`: Method that will be called with the new boolean value as parameter
 > 
 <pre class="language-typescript"><code class="lang-typescript">function SetValueWithoutNotify(value: bool)</code></pre>
-> Sets the value of the Toggle without triggering any change events
+> Sets the value of the Toggle without triggering any change events.
+> 
+> **Parameters**:
+> - `value`: The value to set.
 > 
 
 [^0]: [Color](../objects/Color.md)

@@ -1,8 +1,7 @@
 # Titan
 Inherits from [Character](../objects/Character.md)
 
-Represents a Titan character.
-Only character owner can modify fields and call functions unless otherwise specified.
+Represents a Titan character. Only character owner can modify fields and call functions unless otherwise specified.
 
 ### Example
 ```csharp

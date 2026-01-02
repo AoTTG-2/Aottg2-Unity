@@ -1,8 +1,7 @@
 # Character
 Inherits from [Object](../objects/Object.md)
 
-Character is the base class that `Human`, `Titan`, and `Shifter` inherit from.
-Only character owner can modify properties and call functions unless otherwise specified.
+Character is the base class that `Human`, `Titan`, and `Shifter` inherit from. Only character owner can modify properties and call functions unless otherwise specified.
 
 ### Remarks
 Overloads operators: 
@@ -65,77 +64,93 @@ function OnCharacterSpawn(character)
 
 ### Methods
 <pre class="language-typescript"><code class="lang-typescript">function GetKilled(killer: string)</code></pre>
-> Kills the character. Callable by non-owners.
+> Kills the character.
 > 
 > **Parameters**:
-> - `killer`: Killer name
+> - `killer`: Killer name.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function GetDamaged(killer: string, damage: int)</code></pre>
-> Damages the character and kills it if its health reaches 0. Callable by non-owners.
+> Damages the character.
 > 
 > **Parameters**:
-> - `killer`: Killer name
-> - `damage`: Damage amount
+> - `killer`: Killer name.
+> - `damage`: Damage amount.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function Emote(emote: string)</code></pre>
 > Causes the character to emote. The list of available emotes is the same as those shown in the in-game emote menu.
+> 
+> **Parameters**:
+> - `emote`: Name of the emote to play.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function PlayAnimation(animation: string, fade: float = 0.1)</code></pre>
 > Causes the character to play an animation.
 > 
 > **Parameters**:
-> - `animation`: Name of the animation.
-Available animations can be found here: [Human](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/d631c1648d1432de6f95f07c2f158ff710cdd76d/Assets/Scripts/Characters/Human/HumanAnimations.cs), [Titan](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/d631c1648d1432de6f95f07c2f158ff710cdd76d/Assets/Scripts/Characters/Titan/BasicTitanAnimations.cs), [Annie](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/d631c1648d1432de6f95f07c2f158ff710cdd76d/Assets/Scripts/Characters/Shifters/Annie/AnnieAnimations.cs), [Eren](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/d631c1648d1432de6f95f07c2f158ff710cdd76d/Assets/Scripts/Characters/Shifters/Eren/ErenAnimations.cs)
-
-Use the right-hand string value for the animation.
-
-Note that shifters also have all titan animations.
-> - `fade`: Fade time. If provided, will crossfade the animation by this timestep
+> - `animation`: Name of the animation. Available animations can be found here: Human, Titan, Annie, Eren. Use the right-hand string value for the animation. Note that shifters also have all titan animations.
+> - `fade`: Fade time. If provided, will crossfade the animation by this timestep.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function PlayAnimationAt(animation: string, t: float, fade: float = 0.1, force: bool = False)</code></pre>
 > Causes the character to play an animation at a specific time.
 > 
+> **Parameters**:
+> - `animation`: Name of the animation.
+> - `t`: Time in the animation to start playing.
+> - `fade`: Fade time.
+> - `force`: Whether to force the animation even if it's already playing.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function GetAnimationSpeed(animation: string)</code></pre>
 > Gets the animation speed of a given animation.
+> 
+> **Parameters**:
+> - `animation`: Name of the animation.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function SetAnimationSpeed(animation: string, speed: float, synced: bool = True)</code></pre>
 > Sets the animation speed of a given animation.
 > 
+> **Parameters**:
+> - `animation`: Name of the animation.
+> - `speed`: The animation speed multiplier.
+> - `synced`: Whether to sync the speed across the network.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function IsPlayingAnimation(animation: string) -> bool</code></pre>
-> Returns true if the animation is playing.
-> 
-<pre class="language-typescript"><code class="lang-typescript">function GetAnimationNormalizedTime(animation: string) -> float</code></pre>
-> Returns true if the animation is playing.
-> 
-<pre class="language-typescript"><code class="lang-typescript">function ForceAnimation(animation: string, fade: float = 0.1)</code></pre>
-> Forces the character to play an animation.
+> Returns true if the animation is playing. Returns: True if the animation is playing, false otherwise.
 > 
 > **Parameters**:
 > - `animation`: Name of the animation.
-Available animations can be found here: [Human](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/d631c1648d1432de6f95f07c2f158ff710cdd76d/Assets/Scripts/Characters/Human/HumanAnimations.cs), [Titan](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/d631c1648d1432de6f95f07c2f158ff710cdd76d/Assets/Scripts/Characters/Titan/BasicTitanAnimations.cs), [Annie](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/d631c1648d1432de6f95f07c2f158ff710cdd76d/Assets/Scripts/Characters/Shifters/Annie/AnnieAnimations.cs), [Eren](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/d631c1648d1432de6f95f07c2f158ff710cdd76d/Assets/Scripts/Characters/Shifters/Eren/ErenAnimations.cs)
-
-Use the right-hand string value for the animation.
-
-Note that shifters also have all titan animations.
-> - `fade`: Fade time. If provided, will crossfade the animation by this timestep
 > 
-<pre class="language-typescript"><code class="lang-typescript">function GetAnimationLength(animation: string) -> float</code></pre>
-> Gets the length of animation.
-> 
-<pre class="language-typescript"><code class="lang-typescript">function IsPlayingSound(sound: string) -> bool</code></pre>
-> Returns true if the character is playing a sound. Available sound names can be found here: Humans, Shifters, Titans. Note that shifters also have all titan sounds.
-> 
-<pre class="language-typescript"><code class="lang-typescript">function PlaySound(sound: string)</code></pre>
-> Plays a sound if present in the character.
+<pre class="language-typescript"><code class="lang-typescript">function GetAnimationNormalizedTime(animation: string) -> float</code></pre>
+> Gets the normalized time of the currently playing animation. Returns: The normalized time (0-1) of the animation.
 > 
 > **Parameters**:
-> - `sound`: Name of the sound to play.
-Available sound names can be found here: [Human](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/refs/heads/main/Assets/Scripts/Characters/Human/HumanSounds.cs), [Shifters](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/refs/heads/main/Assets/Scripts/Characters/Shifters/ShifterSounds.cs), [Titans](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/refs/heads/main/Assets/Scripts/Characters/Titan/TitanSounds.cs).
-
-Note that shifters also have all titan sounds
+> - `animation`: Name of the animation.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function ForceAnimation(animation: string, fade: float = 0.1)</code></pre>
+> Forces the character to play an animation, even if it's already playing.
+> 
+> **Parameters**:
+> - `animation`: Name of the animation. Available animations can be found here: Human, Titan, Annie, Eren. Use the right-hand string value for the animation. Note that shifters also have all titan animations.
+> - `fade`: Fade time. If provided, will crossfade the animation by this timestep.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function GetAnimationLength(animation: string) -> float</code></pre>
+> Gets the length of animation. Returns: The length of the animation in seconds.
+> 
+> **Parameters**:
+> - `animation`: Name of the animation.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function IsPlayingSound(sound: string) -> bool</code></pre>
+> Returns true if the character is playing a sound. Returns: True if the sound is playing, false otherwise. Available sound names can be found here: Humans, Shifters, Titans. Note that shifters also have all titan sounds.
+> 
+> **Parameters**:
+> - `sound`: Name of the sound.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function PlaySound(sound: string)</code></pre>
+> Plays a sound for the character.
+> 
+> **Parameters**:
+> - `sound`: Name of the sound to play. Available sound names can be found here: Human, Shifters, Titans. Note that shifters also have all titan sounds.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function StopSound(sound: string)</code></pre>
-> Stops a sound if present in the character.
+> Stops a sound for the character.
 > 
 > **Parameters**:
 > - `sound`: Name of the sound to stop.
@@ -143,25 +158,36 @@ Note that shifters also have all titan sounds
 <pre class="language-typescript"><code class="lang-typescript">function FadeSound(sound: string, volume: float, time: float)</code></pre>
 > Fades the sound volume to a specific volume between 0.0 and 1.0 over [time] seconds. Does not play or stop the sound.
 > 
+> **Parameters**:
+> - `sound`: Name of the sound.
+> - `volume`: Target volume (0.0 to 1.0).
+> - `time`: Time in seconds to fade over.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function LookAt(position: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>)</code></pre>
 > Rotates the character such that it is looking towards a world position.
+> 
+> **Parameters**:
+> - `position`: The world position to look at.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function AddForce(force: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, mode: string = "Acceleration")</code></pre>
 > Adds a force to the character with given force vector and optional mode.
 > 
 > **Parameters**:
-> - `force`: Force vector
-> - `mode`: Force mode. Valid modes are Force, Acceleration, Impulse, VelocityChange
+> - `force`: Force vector.
+> - `mode`: Force mode. Valid modes are Force, Acceleration, Impulse, VelocityChange.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function Reveal(delay: float)</code></pre>
 > Reveal the titan for a set number of seconds.
+> 
+> **Parameters**:
+> - `delay`: Delay in seconds before revealing.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function AddOutline(color: <a data-footnote-ref href="#user-content-fn-0">Color</a> = null, mode: string = "OutlineAll")</code></pre>
 > Adds an outline effect with the given color and mode.
 > 
 > **Parameters**:
-> - `color`: Outline color
-> - `mode`: Outline mode. Valid modes are: OutlineAll, OutlineVisible, OutlineHidden, OutlineAndSilhouette, SilhouetteOnly, OutlineAndLightenColor
+> - `color`: Outline color.
+> - `mode`: Outline mode. Valid modes are: OutlineAll, OutlineVisible, OutlineHidden, OutlineAndSilhouette, SilhouetteOnly, OutlineAndLightenColor.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function RemoveOutline()</code></pre>
 > Removes the outline effect from the character.

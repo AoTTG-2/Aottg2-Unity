@@ -38,77 +38,139 @@ MapObject represents a map object created in the editor or spawned at runtime us
 <pre class="language-typescript"><code class="lang-typescript">function AddComponent(name: string) -> component</code></pre>
 > Add a component to the object
 > 
+> **Parameters**:
+> - `name`: The name of the component to add.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function RemoveComponent(name: string)</code></pre>
 > Remove a component from the object
+> 
+> **Parameters**:
+> - `name`: The name of the component to remove.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function GetComponent(name: string) -> component</code></pre>
 > Get a component from the object
 > 
+> **Parameters**:
+> - `name`: The name of the component to get.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function SetComponentEnabled(name: string, enabled: bool)</code></pre>
 > Set whether a component is enabled
+> 
+> **Parameters**:
+> - `name`: The name of the component.
+> - `enabled`: Whether the component should be enabled.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function SetComponentsEnabled(enabled: bool)</code></pre>
 > Set whether all components are enabled
 > 
+> **Parameters**:
+> - `enabled`: Whether all components should be enabled.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function AddSphereCollider(collideMode: string, collideWith: string, center: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, radius: float)</code></pre>
 > Add a sphere collider to the object
+> 
+> **Parameters**:
+> - `collideMode`: The collision mode (e.g., "Region", "Hitboxes").
+> - `collideWith`: What the collider should collide with (e.g., "Hitboxes").
+> - `center`: The center position of the sphere collider.
+> - `radius`: The radius of the sphere collider.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function AddBoxCollider(collideMode: string, collideWith: string, center: <a data-footnote-ref href="#user-content-fn-9">Vector3</a> = null, size: <a data-footnote-ref href="#user-content-fn-9">Vector3</a> = null)</code></pre>
 > Add a box collider to the object
 > 
+> **Parameters**:
+> - `collideMode`: The collision mode (e.g., "Region", "Hitboxes").
+> - `collideWith`: What the collider should collide with (e.g., "Hitboxes").
+> - `center`: The center position of the box collider (optional, defaults to calculated bounds).
+> - `size`: The size of the box collider (optional, defaults to calculated bounds).
+> 
 <pre class="language-typescript"><code class="lang-typescript">function AddSphereTarget(team: string, center: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, radius: float) -> <a data-footnote-ref href="#user-content-fn-17">MapTargetable</a></code></pre>
 > Add a sphere target to the object
+> 
+> **Parameters**:
+> - `team`: The team that can target this (e.g., "Human", "Titan").
+> - `center`: The center position of the sphere target.
+> - `radius`: The radius of the sphere target.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function AddBoxTarget(team: string, center: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, size: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>) -> <a data-footnote-ref href="#user-content-fn-17">MapTargetable</a></code></pre>
 > Add a box target to the object
 > 
+> **Parameters**:
+> - `team`: The team that can target this (e.g., "Human", "Titan").
+> - `center`: The center position of the box target.
+> - `size`: The size of the box target.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function GetChild(name: string) -> <a data-footnote-ref href="#user-content-fn-23">MapObject</a></code></pre>
 > Get a child object by name
 > 
+> **Parameters**:
+> - `name`: The name of the child object to get.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function GetChildren() -> <a data-footnote-ref href="#user-content-fn-4">List</a><<a data-footnote-ref href="#user-content-fn-23">MapObject</a>></code></pre>
-> Get all child objects
+> Get all child objects.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function GetTransform(name: string) -> <a data-footnote-ref href="#user-content-fn-29">Transform</a></code></pre>
 > Get a child transform by name
 > 
+> **Parameters**:
+> - `name`: The name of the transform to get.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function SetColorAll(color: <a data-footnote-ref href="#user-content-fn-0">Color</a>)</code></pre>
 > Set the color of all renderers on the object
+> 
+> **Parameters**:
+> - `color`: The color to set.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function InBounds(position: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>) -> bool</code></pre>
 > Check if a position is within the object's bounds
 > 
+> **Parameters**:
+> - `position`: The position to check.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function GetBoundsAverageCenter() -> <a data-footnote-ref href="#user-content-fn-9">Vector3</a></code></pre>
-> Get the bounds average center
+> Get the bounds average center.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function GetBoundsCenter() -> <a data-footnote-ref href="#user-content-fn-9">Vector3</a></code></pre>
-> Get the bounds center
+> Get the bounds center.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function GetBoundsSize() -> <a data-footnote-ref href="#user-content-fn-9">Vector3</a></code></pre>
-> Get the bounds size
+> Get the bounds size.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function GetBoundsMin() -> <a data-footnote-ref href="#user-content-fn-9">Vector3</a></code></pre>
-> Get the bounds min
+> Get the bounds min.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function GetBoundsMax() -> <a data-footnote-ref href="#user-content-fn-9">Vector3</a></code></pre>
-> Get the bounds max
+> Get the bounds max.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function GetBoundsExtents() -> <a data-footnote-ref href="#user-content-fn-9">Vector3</a></code></pre>
-> Get the bounds extents
+> Get the bounds extents.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function GetCorners() -> <a data-footnote-ref href="#user-content-fn-4">List</a><<a data-footnote-ref href="#user-content-fn-9">Vector3</a>></code></pre>
-> Get the corners of the bounds
+> Get the corners of the bounds.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function HasTag(tag: string) -> bool</code></pre>
 > Whether or not the object has the given tag
 > 
+> **Parameters**:
+> - `tag`: The tag to check for.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function AddBuiltinComponent(name: string) -> <a data-footnote-ref href="#user-content-fn-59">Object</a></code></pre>
 > Add a builtin component to the MapObject
+> 
+> **Parameters**:
+> - `name`: The name of the builtin component to add (e.g., "DayLight").
 > 
 <pre class="language-typescript"><code class="lang-typescript">function GetBuiltinComponent(name: string) -> <a data-footnote-ref href="#user-content-fn-59">Object</a></code></pre>
 > Gets a builtin component to the MapObject
 > 
+> **Parameters**:
+> - `name`: The name of the builtin component to get.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function RemoveBuiltinComponent(name: string)</code></pre>
 > Remove a builtin component from the MapObject
+> 
+> **Parameters**:
+> - `name`: The name of the builtin component to remove.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function ConvertToCSV() -> string</code></pre>
 > Serialize the current object to a csv.

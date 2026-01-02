@@ -1,13 +1,13 @@
 # Label
 Inherits from [VisualElement](../objects/VisualElement.md)
 
-UI element for displaying text
+UI element for displaying text.
 
 ### Properties
 |Name|Type|Readonly|Description|
 |---|---|---|---|
-|Text|string|False|The text displayed by the Label|
-|EnableRichText|bool|False|When false, rich text tags will not be parsed|
+|Text|string|False|The text displayed by the Label.|
+|EnableRichText|bool|False|When false, rich text tags will not be parsed.|
 
 
 [^0]: [Color](../objects/Color.md)

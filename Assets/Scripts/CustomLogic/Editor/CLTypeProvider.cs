@@ -13,9 +13,6 @@ namespace CustomLogic.Editor
     {
         private const BindingFlags MemberFlags = BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance | BindingFlags.DeclaredOnly;
 
-        // TODO: Generic types
-        // TODO: Optional and variadic params
-
         private static readonly Dictionary<string, string> _typeNameMap = new()
         {
             ["Int32"] = "int",
@@ -215,6 +212,14 @@ namespace CustomLogic.Editor
                 typeParameters = clTypeAttribute.TypeParameters;
             }
 
+            var typeXmlInfo = XmlInfo.FromTypeXml(xmlDocument, type);
+            
+            // Priority: attribute description > XML documentation
+            if (!string.IsNullOrEmpty(clTypeAttribute.Description))
+            {
+                typeXmlInfo.Summary = clTypeAttribute.Description;
+            }
+
             var clType = new CLType
             {
                 Name = className,
@@ -223,7 +228,7 @@ namespace CustomLogic.Editor
                 InheritBaseMembers = inheritBaseMembers,
                 IsComponent = isComponent,
                 TypeParameters = typeParameters,
-                Info = XmlInfo.FromTypeXml(xmlDocument, type, clTypeAttribute),
+                Info = typeXmlInfo,
                 ObsoleteMessage = CustomLogicReflectionUtils.GetObsoleteMessage(type),
             };
 
@@ -262,18 +267,48 @@ namespace CustomLogic.Editor
                     var clParameters = new List<CLParameter>(parameterNames.Count);
                     for (int j = 0; j < parameterNames.Count; j++)
                     {
+                        var parameterType = parameterTypes[j];
+                        var parameterInfo = parameters[j];
+                        
+                        var clParamAttribute = parameterInfo.GetCustomAttribute<CLParamAttribute>();
+                        
+                        if (clParamAttribute != null && !string.IsNullOrEmpty(clParamAttribute.Type))
+                        {
+                            parameterType = ParseTypeReferenceString(clParamAttribute.Type);
+                        }
+                        
+                        XmlInfo parameterXmlInfo = null;
+                        if (clParamAttribute != null && !string.IsNullOrEmpty(clParamAttribute.Description))
+                        {
+                            parameterXmlInfo = new XmlInfo
+                            {
+                                Summary = clParamAttribute.Description
+                            };
+                        }
+                        
                         clParameters.Add(new CLParameter
                         {
                             Name = parameterNames[j],
-                            Type = parameterTypes[j],
+                            Type = parameterType,
                             DefaultValue = parameterValues[j],
-                            IsVariadic = CustomLogicReflectionUtils.IsVariadicParameter(parameters[j])
+                            IsOptional = parameterInfo.IsOptional,
+                            IsVariadic = CustomLogicReflectionUtils.IsVariadicParameter(parameters[j]),
+                            Info = parameterXmlInfo
                         });
+                    }
+
+                    var ctorAttribute = ctor.GetCustomAttribute<CLConstructorAttribute>();
+                    var ctorXmlInfo = XmlInfo.FromConstructorXml(xmlDocument, type, ctor);
+                    
+                    // Priority: attribute description > XML documentation
+                    if (ctorAttribute != null && !string.IsNullOrEmpty(ctorAttribute.Description))
+                    {
+                        ctorXmlInfo.Summary = ctorAttribute.Description;
                     }
 
                     output[i] = new CLConstructor
                     {
-                        Info = XmlInfo.FromConstructorXml(xmlDocument, type, ctor),
+                        Info = ctorXmlInfo,
                         Parameters = clParameters.ToArray(),
                         ObsoleteMessage = CustomLogicReflectionUtils.GetObsoleteMessage(ctor),
                     };
@@ -330,12 +365,20 @@ namespace CustomLogic.Editor
                     typeRef.Arguments = clPropertyAttribute.TypeArguments.Select(arg => new TypeReference(arg)).ToArray();
                 }
 
+                var propertyXmlInfo = XmlInfo.FromPropertyXml(xmlDocument, type, property);
+                
+                // Priority: attribute description > XML documentation
+                if (!string.IsNullOrEmpty(clPropertyAttribute.Description))
+                {
+                    propertyXmlInfo.Summary = clPropertyAttribute.Description;
+                }
+
                 var cLProperty = new CLProperty
                 {
                     Name = property.Name,
                     Type = typeRef,
                     IsReadonly = clPropertyAttribute.ReadOnly || !property.CanWrite,
-                    Info = XmlInfo.FromPropertyXml(xmlDocument, type, property, clPropertyAttribute),
+                    Info = propertyXmlInfo,
                     ObsoleteMessage = CustomLogicReflectionUtils.GetObsoleteMessage(property),
                 };
 
@@ -356,12 +399,20 @@ namespace CustomLogic.Editor
                     typeRef.Arguments = clPropertyAttribute.TypeArguments.Select(arg => new TypeReference(arg)).ToArray();
                 }
 
+                var fieldXmlInfo = XmlInfo.FromFieldXml(xmlDocument, type, field);
+                
+                // Priority: attribute description > XML documentation
+                if (!string.IsNullOrEmpty(clPropertyAttribute.Description))
+                {
+                    fieldXmlInfo.Summary = clPropertyAttribute.Description;
+                }
+
                 var cLProperty = new CLProperty
                 {
                     Name = field.Name,
                     Type = typeRef,
                     IsReadonly = clPropertyAttribute.ReadOnly,
-                    Info = XmlInfo.FromFieldXml(xmlDocument, type, field, clPropertyAttribute),
+                    Info = fieldXmlInfo,
                     ObsoleteMessage = CustomLogicReflectionUtils.GetObsoleteMessage(field),
                 };
 
@@ -406,17 +457,35 @@ namespace CustomLogic.Editor
                 }).ToList();
                 var parameterValues = parameters.Select(x => CustomLogicReflectionUtils.GetDefaultValueAsString(x)).ToList();
 
+                var info = XmlInfo.FromMethodXml(xmlDocument, type, method);
+                
+                // Priority: attribute description > XML documentation
+                if (clMethodAttribute != null && !string.IsNullOrEmpty(clMethodAttribute.Description))
+                {
+                    info.Summary = clMethodAttribute.Description;
+                }
+
                 var clParameters = new List<CLParameter>(parameterNames.Count);
                 for (int j = 0; j < parameterNames.Count; j++)
                 {
                     var parameterType = parameterTypes[j];
+                    var parameterInfo = parameters[j];
                     
-                    // Apply parameter type arguments from attribute if specified
-                    if (clMethodAttribute?.ParameterTypeArguments != null && 
-                        j < clMethodAttribute.ParameterTypeArguments.Length &&
-                        !string.IsNullOrEmpty(clMethodAttribute.ParameterTypeArguments[j]))
+                    var clParamAttribute = parameterInfo.GetCustomAttribute<CLParamAttribute>();
+                    
+                    // Apply parameter type arguments from CLParamAttribute if specified
+                    if (clParamAttribute != null && !string.IsNullOrEmpty(clParamAttribute.Type))
                     {
-                        parameterType = ParseTypeReferenceString(clMethodAttribute.ParameterTypeArguments[j]);
+                        parameterType = ParseTypeReferenceString(clParamAttribute.Type);
+                    }
+                    
+                    XmlInfo parameterXmlInfo = null;
+                    if (clParamAttribute != null && !string.IsNullOrEmpty(clParamAttribute.Description))
+                    {
+                        parameterXmlInfo = new XmlInfo
+                        {
+                            Summary = clParamAttribute.Description
+                        };
                     }
                     
                     clParameters.Add(new CLParameter
@@ -424,22 +493,10 @@ namespace CustomLogic.Editor
                         Name = parameterNames[j],
                         Type = parameterType,
                         DefaultValue = parameterValues[j],
-                        IsOptional = parameters[j].IsOptional,
-                        IsVariadic = CustomLogicReflectionUtils.IsVariadicParameter(parameters[j])
+                        IsOptional = parameterInfo.IsOptional,
+                        IsVariadic = CustomLogicReflectionUtils.IsVariadicParameter(parameterInfo),
+                        Info = parameterXmlInfo
                     });
-                }
-
-                var info = XmlInfo.FromMethodXml(xmlDocument, type, method, clMethodAttribute);
-                if (info.Parameters.Count > 0)
-                {
-                    foreach (var parameter in clParameters)
-                    {
-                        if (info.Parameters.ContainsKey(parameter.Name))
-                        {
-                            parameter.Info ??= new XmlInfo();
-                            parameter.Info.Summary = info.Parameters[parameter.Name];
-                        }
-                    }
                 }
 
                 var returnTypeRef = new TypeReference(ResolveTypeName(method.ReturnType));

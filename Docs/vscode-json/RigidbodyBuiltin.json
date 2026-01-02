@@ -1,7 +1,7 @@
 {
   "kind": "component",
   "name": "RigidbodyBuiltin",
-  "description": "",
+  "description": "Represents a Rigidbody component that enables physics simulation for game objects.",
   "instanceFields": [
     {
       "label": "Owner",
@@ -239,7 +239,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The force vector to apply.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -249,7 +249,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The force mode: \"Force\", \"Acceleration\", \"Impulse\", or \"VelocityChange\" (default: \"Acceleration\").",
           "isOptional": true,
           "isVariadic": false
         },
@@ -259,7 +259,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "Optional. If provided, applies force at this world position instead of center of mass.",
           "isOptional": true,
           "isVariadic": false
         }
@@ -280,7 +280,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The force vector to apply.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -290,7 +290,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The force mode as integer (use ForceModeAcceleration, ForceModeForce, ForceModeImpulse, or ForceModeVelocityChange constants, default: 5).",
           "isOptional": true,
           "isVariadic": false
         },
@@ -300,7 +300,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "Optional. If provided, applies force at this world position instead of center of mass.",
           "isOptional": true,
           "isVariadic": false
         }
@@ -321,7 +321,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The torque vector to apply.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -331,7 +331,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The force mode: \"Force\", \"Acceleration\", \"Impulse\", or \"VelocityChange\".",
           "isOptional": false,
           "isVariadic": false
         }
@@ -352,7 +352,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The torque vector to apply.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -362,7 +362,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The force mode as integer (use ForceModeAcceleration, ForceModeForce, ForceModeImpulse, or ForceModeVelocityChange constants, default: 5).",
           "isOptional": true,
           "isVariadic": false
         }
@@ -383,7 +383,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The force of the explosion.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -393,7 +393,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The center position of the explosion.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -403,7 +403,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The radius of the explosion.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -413,7 +413,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "Adjustment to the apparent position of the explosion to make it seem to lift objects (default: 0.0).",
           "isOptional": true,
           "isVariadic": false
         },
@@ -423,7 +423,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The force mode as integer (use ForceModeAcceleration, ForceModeForce, ForceModeImpulse, or ForceModeVelocityChange constants, default: 5).",
           "isOptional": true,
           "isVariadic": false
         }
@@ -444,7 +444,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The new position.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -454,7 +454,7 @@
             "name": "Quaternion",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The new rotation.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -475,7 +475,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The target position.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -496,7 +496,7 @@
             "name": "Quaternion",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The target rotation.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -537,7 +537,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The direction to sweep in.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -547,7 +547,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The distance to sweep.",
           "isOptional": false,
           "isVariadic": false
         }

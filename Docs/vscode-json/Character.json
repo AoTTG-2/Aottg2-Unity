@@ -264,7 +264,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Kills the character. Callable by non-owners.",
+      "description": "Kills the character.",
       "parameters": [
         {
           "name": "killer",
@@ -272,7 +272,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "Killer name",
+          "description": "Killer name.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -285,7 +285,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Damages the character and kills it if its health reaches 0. Callable by non-owners.",
+      "description": "Damages the character.",
       "parameters": [
         {
           "name": "killer",
@@ -293,7 +293,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "Killer name",
+          "description": "Killer name.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -303,7 +303,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "Damage amount",
+          "description": "Damage amount.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -324,7 +324,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "Name of the emote to play.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -345,7 +345,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "Name of the animation. Available animations can be found here: [Human](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/d631c1648d1432de6f95f07c2f158ff710cdd76d/Assets/Scripts/Characters/Human/HumanAnimations.cs), [Titan](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/d631c1648d1432de6f95f07c2f158ff710cdd76d/Assets/Scripts/Characters/Titan/BasicTitanAnimations.cs), [Annie](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/d631c1648d1432de6f95f07c2f158ff710cdd76d/Assets/Scripts/Characters/Shifters/Annie/AnnieAnimations.cs), [Eren](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/d631c1648d1432de6f95f07c2f158ff710cdd76d/Assets/Scripts/Characters/Shifters/Eren/ErenAnimations.cs) Use the right-hand string value for the animation. Note that shifters also have all titan animations.",
+          "description": "Name of the animation. Available animations can be found here: Human, Titan, Annie, Eren. Use the right-hand string value for the animation. Note that shifters also have all titan animations.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -355,7 +355,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "Fade time. If provided, will crossfade the animation by this timestep",
+          "description": "Fade time. If provided, will crossfade the animation by this timestep.",
           "isOptional": true,
           "isVariadic": false
         }
@@ -376,7 +376,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "Name of the animation.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -386,7 +386,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "Time in the animation to start playing.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -396,7 +396,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "Fade time.",
           "isOptional": true,
           "isVariadic": false
         },
@@ -406,7 +406,7 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "Whether to force the animation even if it's already playing.",
           "isOptional": true,
           "isVariadic": false
         }
@@ -427,7 +427,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "Name of the animation.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -448,7 +448,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "Name of the animation.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -458,7 +458,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The animation speed multiplier.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -468,7 +468,7 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "Whether to sync the speed across the network.",
           "isOptional": true,
           "isVariadic": false
         }
@@ -481,7 +481,7 @@
         "name": "bool",
         "typeArguments": []
       },
-      "description": "Returns true if the animation is playing.",
+      "description": "Returns true if the animation is playing. Returns: True if the animation is playing, false otherwise.",
       "parameters": [
         {
           "name": "animation",
@@ -489,7 +489,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "Name of the animation.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -502,7 +502,7 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "Returns true if the animation is playing.",
+      "description": "Gets the normalized time of the currently playing animation. Returns: The normalized time (0-1) of the animation.",
       "parameters": [
         {
           "name": "animation",
@@ -510,7 +510,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "Name of the animation.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -523,7 +523,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Forces the character to play an animation.",
+      "description": "Forces the character to play an animation, even if it's already playing.",
       "parameters": [
         {
           "name": "animation",
@@ -531,7 +531,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "Name of the animation. Available animations can be found here: [Human](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/d631c1648d1432de6f95f07c2f158ff710cdd76d/Assets/Scripts/Characters/Human/HumanAnimations.cs), [Titan](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/d631c1648d1432de6f95f07c2f158ff710cdd76d/Assets/Scripts/Characters/Titan/BasicTitanAnimations.cs), [Annie](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/d631c1648d1432de6f95f07c2f158ff710cdd76d/Assets/Scripts/Characters/Shifters/Annie/AnnieAnimations.cs), [Eren](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/d631c1648d1432de6f95f07c2f158ff710cdd76d/Assets/Scripts/Characters/Shifters/Eren/ErenAnimations.cs) Use the right-hand string value for the animation. Note that shifters also have all titan animations.",
+          "description": "Name of the animation. Available animations can be found here: Human, Titan, Annie, Eren. Use the right-hand string value for the animation. Note that shifters also have all titan animations.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -541,7 +541,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "Fade time. If provided, will crossfade the animation by this timestep",
+          "description": "Fade time. If provided, will crossfade the animation by this timestep.",
           "isOptional": true,
           "isVariadic": false
         }
@@ -554,7 +554,7 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "Gets the length of animation.",
+      "description": "Gets the length of animation. Returns: The length of the animation in seconds.",
       "parameters": [
         {
           "name": "animation",
@@ -562,7 +562,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "Name of the animation.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -575,7 +575,7 @@
         "name": "bool",
         "typeArguments": []
       },
-      "description": "Returns true if the character is playing a sound. Available sound names can be found here: Humans, Shifters, Titans. Note that shifters also have all titan sounds.",
+      "description": "Returns true if the character is playing a sound. Returns: True if the sound is playing, false otherwise. Available sound names can be found here: Humans, Shifters, Titans. Note that shifters also have all titan sounds.",
       "parameters": [
         {
           "name": "sound",
@@ -583,7 +583,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "Name of the sound.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -596,7 +596,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Plays a sound if present in the character.",
+      "description": "Plays a sound for the character.",
       "parameters": [
         {
           "name": "sound",
@@ -604,7 +604,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "Name of the sound to play. Available sound names can be found here: [Human](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/refs/heads/main/Assets/Scripts/Characters/Human/HumanSounds.cs), [Shifters](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/refs/heads/main/Assets/Scripts/Characters/Shifters/ShifterSounds.cs), [Titans](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/refs/heads/main/Assets/Scripts/Characters/Titan/TitanSounds.cs). Note that shifters also have all titan sounds",
+          "description": "Name of the sound to play. Available sound names can be found here: Human, Shifters, Titans. Note that shifters also have all titan sounds.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -617,7 +617,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Stops a sound if present in the character.",
+      "description": "Stops a sound for the character.",
       "parameters": [
         {
           "name": "sound",
@@ -646,7 +646,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "Name of the sound.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -656,7 +656,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "Target volume (0.0 to 1.0).",
           "isOptional": false,
           "isVariadic": false
         },
@@ -666,7 +666,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "Time in seconds to fade over.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -687,7 +687,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The world position to look at.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -708,7 +708,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "Force vector",
+          "description": "Force vector.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -718,7 +718,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "Force mode. Valid modes are Force, Acceleration, Impulse, VelocityChange",
+          "description": "Force mode. Valid modes are Force, Acceleration, Impulse, VelocityChange.",
           "isOptional": true,
           "isVariadic": false
         }
@@ -739,7 +739,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "Delay in seconds before revealing.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -760,7 +760,7 @@
             "name": "Color",
             "typeArguments": []
           },
-          "description": "Outline color",
+          "description": "Outline color.",
           "isOptional": true,
           "isVariadic": false
         },
@@ -770,7 +770,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "Outline mode. Valid modes are: OutlineAll, OutlineVisible, OutlineHidden, OutlineAndSilhouette, SilhouetteOnly, OutlineAndLightenColor",
+          "description": "Outline mode. Valid modes are: OutlineAll, OutlineVisible, OutlineHidden, OutlineAndSilhouette, SilhouetteOnly, OutlineAndLightenColor.",
           "isOptional": true,
           "isVariadic": false
         }

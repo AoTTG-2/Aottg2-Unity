@@ -12,16 +12,13 @@ using Utility;
 
 namespace CustomLogic
 {
-    /// <summary>
-    /// Game functions such as spawning titans and managing game state.
-    /// </summary>
-    [CLType(Name = "Game", Abstract = true, Static = true)]
+    [CLType(Name = "Game", Abstract = true, Static = true, Description = "Game functions such as spawning titans and managing game state.")]
     partial class CustomLogicGameBuiltin : BuiltinClassInstance
     {
         private string _lastSetTopLabel = string.Empty;
         private Dictionary<string, CustomLogicListBuiltin> _cachedLists = new Dictionary<string, CustomLogicListBuiltin>();
 
-        [CLConstructor]
+        [CLConstructor("Creates a new Game instance.")]
         public CustomLogicGameBuiltin()
         {
         }
@@ -296,7 +293,9 @@ namespace CustomLogic
 
         // Add CLMethods
         [CLMethod(Static = true, Description = "Print a debug statement to the console")]
-        public void Debug(object message)
+        public void Debug(
+            [CLParam("The message to print.")]
+            object message)
         {
             if (message == null)
                 message = "null";
@@ -304,7 +303,9 @@ namespace CustomLogic
         }
 
         [CLMethod(Static = true, Description = "Print a message to the chat")]
-        public void Print(object message)
+        public void Print(
+            [CLParam("The message to print.")]
+            object message)
         {
             if (message == null)
                 message = "null";
@@ -312,41 +313,53 @@ namespace CustomLogic
         }
 
         [CLMethod(Static = true, Description = "Print a message to all players")]
-        public void PrintAll(object message)
+        public void PrintAll(
+            [CLParam("The message to print.")]
+            object message)
         {
             ChatManager.SendChatAll(message.ToString(), ChatTextColor.System);
         }
 
         [CLMethod(Static = true, Description = "Get a general setting")]
-        public object GetGeneralSetting(string settingName)
+        public object GetGeneralSetting(
+            [CLParam("The name of the setting to get.")]
+            string settingName)
         {
             var setting = SettingsManager.InGameCurrent.General.TypedSettings[settingName];
             return setting.GetType().GetProperty("Value").GetValue(setting);
         }
 
         [CLMethod(Static = true, Description = "Get a titan setting")]
-        public object GetTitanSetting(string settingName)
+        public object GetTitanSetting(
+            [CLParam("The name of the setting to get.")]
+            string settingName)
         {
             var setting = SettingsManager.InGameCurrent.Titan.TypedSettings[settingName];
             return setting.GetType().GetProperty("Value").GetValue(setting);
         }
 
         [CLMethod(Static = true, Description = "Get a misc setting")]
-        public object GetMiscSetting(string settingName)
+        public object GetMiscSetting(
+            [CLParam("The name of the setting to get.")]
+            string settingName)
         {
             var setting = SettingsManager.InGameCurrent.Misc.TypedSettings[settingName];
             return setting.GetType().GetProperty("Value").GetValue(setting);
         }
 
         [CLMethod(Static = true, Description = "End the game")]
-        public void End(float delay)
+        public void End(
+            [CLParam("The delay in seconds before ending the game.")]
+            float delay)
         {
             if (PhotonNetwork.IsMasterClient)
                 RPCManager.PhotonView.RPC(nameof(RPCManager.EndGameRPC), RpcTarget.All, new object[] { delay });
         }
 
         [CLMethod(Static = true, Description = "Find a character by view ID")]
-        public CustomLogicCharacterBuiltin FindCharacterByViewID(int viewID)
+        public CustomLogicCharacterBuiltin FindCharacterByViewID(
+            [CLParam("The Photon view ID of the character.")]
+            int viewID)
         {
             var character = Util.FindCharacterByViewId(viewID);
             if (character == null || character.Dead)
@@ -355,7 +368,9 @@ namespace CustomLogic
         }
 
         [CLMethod(Static = true, Description = "Spawn a titan")]
-        public CustomLogicTitanBuiltin SpawnTitan(string type)
+        public CustomLogicTitanBuiltin SpawnTitan(
+            [CLParam("The type of titan to spawn.")]
+            string type)
         {
             if (PhotonNetwork.IsMasterClient)
             {
@@ -366,7 +381,13 @@ namespace CustomLogic
         }
 
         [CLMethod(Static = true, Description = "Spawn a titan at a position")]
-        public CustomLogicTitanBuiltin SpawnTitanAt(string type, CustomLogicVector3Builtin position, float rotationY = 0f)
+        public CustomLogicTitanBuiltin SpawnTitanAt(
+            [CLParam("The type of titan to spawn.")]
+            string type,
+            [CLParam("The spawn position.")]
+            CustomLogicVector3Builtin position,
+            [CLParam("The Y rotation in degrees (default: 0).")]
+            float rotationY = 0f)
         {
             if (PhotonNetwork.IsMasterClient)
             {
@@ -377,7 +398,11 @@ namespace CustomLogic
         }
 
         [CLMethod(Static = true, Description = "Spawn titans", ReturnTypeArguments = new[] { "Titan" })]
-        public CustomLogicListBuiltin SpawnTitans(string type, int count)
+        public CustomLogicListBuiltin SpawnTitans(
+            [CLParam("The type of titan to spawn.")]
+            string type,
+            [CLParam("The number of titans to spawn.")]
+            int count)
         {
             if (PhotonNetwork.IsMasterClient)
             {
@@ -390,14 +415,26 @@ namespace CustomLogic
         }
 
         [CLMethod(Static = true, Description = "Spawn titans asynchronously")]
-        public void SpawnTitansAsync(string type, int count)
+        public void SpawnTitansAsync(
+            [CLParam("The type of titan to spawn.")]
+            string type,
+            [CLParam("The number of titans to spawn.")]
+            int count)
         {
             if (PhotonNetwork.IsMasterClient)
                 _inGameManager.SpawnAITitansAsync(type, count);
         }
 
         [CLMethod(Static = true, Description = "Spawn titans at a position", ReturnTypeArguments = new[] { "Titan" })]
-        public CustomLogicListBuiltin SpawnTitansAt(string type, int count, CustomLogicVector3Builtin position, float rotationY = 0f)
+        public CustomLogicListBuiltin SpawnTitansAt(
+            [CLParam("The type of titan to spawn.")]
+            string type,
+            [CLParam("The number of titans to spawn.")]
+            int count,
+            [CLParam("The spawn position.")]
+            CustomLogicVector3Builtin position,
+            [CLParam("The Y rotation in degrees (default: 0).")]
+            float rotationY = 0f)
         {
             if (PhotonNetwork.IsMasterClient)
             {
@@ -413,14 +450,24 @@ namespace CustomLogic
         }
 
         [CLMethod(Static = true, Description = "Spawn titans at a position asynchronously")]
-        public void SpawnTitansAtAsync(string type, int count, CustomLogicVector3Builtin position, float rotationY = 0f)
+        public void SpawnTitansAtAsync(
+            [CLParam("The type of titan to spawn.")]
+            string type,
+            [CLParam("The number of titans to spawn.")]
+            int count,
+            [CLParam("The spawn position.")]
+            CustomLogicVector3Builtin position,
+            [CLParam("The Y rotation in degrees (default: 0).")]
+            float rotationY = 0f)
         {
             if (PhotonNetwork.IsMasterClient)
                 _inGameManager.SpawnAITitansAtAsync(type, count, position.Value, rotationY);
         }
 
         [CLMethod(Static = true, Description = "Spawn a shifter")]
-        public CustomLogicShifterBuiltin SpawnShifter(string type)
+        public CustomLogicShifterBuiltin SpawnShifter(
+            [CLParam("The type of shifter to spawn.")]
+            string type)
         {
             if (PhotonNetwork.IsMasterClient)
             {
@@ -433,7 +480,13 @@ namespace CustomLogic
         }
 
         [CLMethod(Static = true, Description = "Spawn a shifter at a position")]
-        public CustomLogicShifterBuiltin SpawnShifterAt(string type, CustomLogicVector3Builtin position, float rotationY = 0f)
+        public CustomLogicShifterBuiltin SpawnShifterAt(
+            [CLParam("The type of shifter to spawn.")]
+            string type,
+            [CLParam("The spawn position.")]
+            CustomLogicVector3Builtin position,
+            [CLParam("The Y rotation in degrees (default: 0).")]
+            float rotationY = 0f)
         {
             if (PhotonNetwork.IsMasterClient)
             {
@@ -445,30 +498,26 @@ namespace CustomLogic
             return null;
         }
 
-        /// <summary>
-        /// Spawn a projectile.
-        /// Note: `extraParam` and `extraParam2` are optional. They may or may not be used depending on the value of `projectileName`
-        /// </summary>
-        /// <param name="projectileName">Name of the projectile. Valid values are: "Thunderspear", "CannonBall", "Flare", "BladeThrow", "SmokeBomb", "Rock1"</param>
-        /// <param name="position">Spawn position</param>
-        /// <param name="rotation">Spawn rotation</param>
-        /// <param name="velocity">Spawn velocity</param>
-        /// <param name="gravity">Spawn gravity</param>
-        /// <param name="liveTime">Live time of the projectile</param>
-        /// <param name="team">The team that the projectile belongs to</param>
-        /// <param name="extraParam">
-        /// Optional. Type depends on projectile:
-        /// >   - Thunderspear: float (explosion radius)
-        /// >   - Flare: Color (flare color)
-        /// >   - Rock1: float (rock size)
-        /// >   - Others: unused</param>
-        /// <param name="extraParam2">
-        /// Optional. Type depends on projectile:
-        /// >   - Thunderspear: Color (projectile color)
-        /// >   - Others: unused
-        /// </param>
-        [CLMethod(Static = true, Description = "Spawn a projectile")]
-        public void SpawnProjectile(string projectileName, CustomLogicVector3Builtin position, CustomLogicVector3Builtin rotation, CustomLogicVector3Builtin velocity, CustomLogicVector3Builtin gravity, float liveTime, string team, object extraParam = null, object extraParam2 = null)
+        [CLMethod(Static = true, Description = "Spawn a projectile. Note: `extraParam` and `extraParam2` are optional. They may or may not be used depending on the value of `projectileName`")]
+        public void SpawnProjectile(
+            [CLParam("Name of the projectile. Valid values are: \"Thunderspear\", \"CannonBall\", \"Flare\", \"BladeThrow\", \"SmokeBomb\", \"Rock1\"")]
+            string projectileName,
+            [CLParam("Spawn position")]
+            CustomLogicVector3Builtin position,
+            [CLParam("Spawn rotation")]
+            CustomLogicVector3Builtin rotation,
+            [CLParam("Spawn velocity")]
+            CustomLogicVector3Builtin velocity,
+            [CLParam("Spawn gravity")]
+            CustomLogicVector3Builtin gravity,
+            [CLParam("Live time of the projectile")]
+            float liveTime,
+            [CLParam("The team that the projectile belongs to")]
+            string team,
+            [CLParam("Optional. Type depends on projectile: Thunderspear: float (explosion radius), Flare: Color (flare color), Rock1: float (rock size), Others: unused")]
+            object extraParam = null,
+            [CLParam("Optional. Type depends on projectile: Thunderspear: Color (projectile color), Others: unused")]
+            object extraParam2 = null)
         {
             object[] settings = null;
             if (projectileName == ProjectilePrefabs.Thunderspear)
@@ -490,30 +539,26 @@ namespace CustomLogic
             ProjectileSpawner.Spawn(projectileName, position, Quaternion.Euler(rotation), velocity, gravity, liveTime, -1, team, settings);
         }
 
-        /// <summary>
-        /// Spawn a projectile with an owner.
-        /// Note: `extraParam` and `extraParam2` are optional. They may or may not be used depending on the value of `projectileName`
-        /// </summary>
-        /// <param name="projectileName">Name of the projectile. Valid values are: "Thunderspear", "CannonBall", "Flare", "BladeThrow", "SmokeBomb", "Rock1"</param>
-        /// <param name="position">Spawn position</param>
-        /// <param name="rotation">Spawn rotation</param>
-        /// <param name="velocity">Spawn velocity</param>
-        /// <param name="gravity">Spawn gravity</param>
-        /// <param name="liveTime">Live time of the projectile</param>
-        /// <param name="owner">The character that the projectile belongs to</param>
-        /// <param name="extraParam">
-        /// Optional. Type depends on projectile:
-        /// >   - Thunderspear: float (explosion radius)
-        /// >   - Flare: Color (flare color)
-        /// >   - Rock1: float (rock size)
-        /// >   - Others: unused</param>
-        /// <param name="extraParam2">
-        /// Optional. Type depends on projectile:
-        /// >   - Thunderspear: Color (projectile color)
-        /// >   - Others: unused
-        /// </param>
-        [CLMethod(Static = true, Description = "Spawn a projectile with an owner")]
-        public void SpawnProjectileWithOwner(string projectileName, CustomLogicVector3Builtin position, CustomLogicVector3Builtin rotation, CustomLogicVector3Builtin velocity, CustomLogicVector3Builtin gravity, float liveTime, CustomLogicCharacterBuiltin owner, object extraParam = null, object extraParam2 = null)
+        [CLMethod(Static = true, Description = "Spawn a projectile with an owner. Note: `extraParam` and `extraParam2` are optional. They may or may not be used depending on the value of `projectileName`")]
+        public void SpawnProjectileWithOwner(
+            [CLParam("Name of the projectile. Valid values are: \"Thunderspear\", \"CannonBall\", \"Flare\", \"BladeThrow\", \"SmokeBomb\", \"Rock1\"")]
+            string projectileName,
+            [CLParam("Spawn position")]
+            CustomLogicVector3Builtin position,
+            [CLParam("Spawn rotation")]
+            CustomLogicVector3Builtin rotation,
+            [CLParam("Spawn velocity")]
+            CustomLogicVector3Builtin velocity,
+            [CLParam("Spawn gravity")]
+            CustomLogicVector3Builtin gravity,
+            [CLParam("Live time of the projectile")]
+            float liveTime,
+            [CLParam("The character that the projectile belongs to")]
+            CustomLogicCharacterBuiltin owner,
+            [CLParam("Optional. Type depends on projectile: Thunderspear: float (explosion radius), Flare: Color (flare color), Rock1: float (rock size), Others: unused")]
+            object extraParam = null,
+            [CLParam("Optional. Type depends on projectile: Thunderspear: Color (projectile color), Others: unused")]
+            object extraParam2 = null)
         {
             BaseCharacter character = owner.Character;
             object[] settings = null;
@@ -537,19 +582,20 @@ namespace CustomLogic
                 character.Team, settings);
         }
 
-        /// <summary>
-        /// Spawns an effect.
-        /// </summary>
-        /// <param name="effectName">Name of the effect. Effect names can be found [here](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/refs/heads/main/Assets/Scripts/Effects/EffectPrefabs.cs) (left-hand variable name)</param>
-        /// <param name="position">Spawn position</param>
-        /// <param name="rotation">Spawn rotation</param>
-        /// <param name="scale">Spawn scale</param>
-        /// <param name="tsExplodeColor">Thunderspear explode color (Only valid when `effectName` is "ThunderspearExplode")</param>
-        /// <param name="tsKillSound">
-        /// Optional. Thunderspear explode sound (Only valid when `effectName` is "ThunderspearExplode"). Valid values are: "Kill", "Air", "Ground", "ArmorHit", "CloseShot", "MaxRangeShot"
-        /// </param>
         [CLMethod(Static = true, Description = "Spawn an effect")]
-        public void SpawnEffect(string effectName, CustomLogicVector3Builtin position, CustomLogicVector3Builtin rotation, float scale, CustomLogicColorBuiltin tsExplodeColor = null, string tsKillSound = null)
+        public void SpawnEffect(
+            [CLParam("Name of the effect. Effect names can be found [here](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/refs/heads/main/Assets/Scripts/Effects/EffectPrefabs.cs) (left-hand variable name)")]
+            string effectName,
+            [CLParam("Spawn position")]
+            CustomLogicVector3Builtin position,
+            [CLParam("Spawn rotation")]
+            CustomLogicVector3Builtin rotation,
+            [CLParam("Spawn scale")]
+            float scale,
+            [CLParam("Thunderspear explode color (Only valid when effectName is \"ThunderspearExplode\")")]
+            CustomLogicColorBuiltin tsExplodeColor = null,
+            [CLParam("Optional. Thunderspear explode sound (Only valid when effectName is \"ThunderspearExplode\"). Valid values are: \"Kill\", \"Air\", \"Ground\", \"ArmorHit\", \"CloseShot\", \"MaxRangeShot\"")]
+            string tsKillSound = null)
         {
             var field = typeof(EffectPrefabs).GetField(effectName);
             if (field == null)
@@ -577,19 +623,18 @@ namespace CustomLogic
             EffectSpawner.Spawn(effectName, position, Quaternion.Euler(rotation), scale, true, settings);
         }
 
-        /// <summary>
-        /// Spawns an effect.
-        /// </summary>
-        /// <param name="effectName">Name of the effect. Effect names can be found [here](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/refs/heads/main/Assets/Scripts/Effects/EffectPrefabs.cs) (left-hand variable name)</param>
-        /// <param name="position">Spawn position</param>
-        /// <param name="rotation">Spawn rotation</param>
-        /// <param name="scale">Spawn scale</param>
-        /// <param name="tsExplodeColor">Thunderspear explode color (Only valid when `effectName` is "ThunderspearExplode")</param>
-        /// <param name="tsKillSound">
-        /// Optional. Thunderspear explode sound (Only valid when `effectName` is "ThunderspearExplode"). Valid values are: "Kill", "Air", "Ground", "ArmorHit", "CloseShot", "MaxRangeShot"
-        /// </param>
-        [CLMethod(Static = true, Description = "Spawn an effect")]
-        public void SpawnUnscaledEffect(string effectName, CustomLogicVector3Builtin position, CustomLogicVector3Builtin rotation, CustomLogicColorBuiltin tsExplodeColor = null, string tsKillSound = null)
+        [CLMethod(Static = true, Description = "Spawn an unscaled effect")]
+        public void SpawnUnscaledEffect(
+            [CLParam("Name of the effect. Effect names can be found [here](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/refs/heads/main/Assets/Scripts/Effects/EffectPrefabs.cs) (left-hand variable name)")]
+            string effectName,
+            [CLParam("Spawn position")]
+            CustomLogicVector3Builtin position,
+            [CLParam("Spawn rotation")]
+            CustomLogicVector3Builtin rotation,
+            [CLParam("Thunderspear explode color (Only valid when effectName is \"ThunderspearExplode\")")]
+            CustomLogicColorBuiltin tsExplodeColor = null,
+            [CLParam("Optional. Thunderspear explode sound (Only valid when effectName is \"ThunderspearExplode\"). Valid values are: \"Kill\", \"Air\", \"Ground\", \"ArmorHit\", \"CloseShot\", \"MaxRangeShot\"")]
+            string tsKillSound = null)
         {
             var field = typeof(EffectPrefabs).GetField(effectName);
             if (field == null)
@@ -618,7 +663,11 @@ namespace CustomLogic
         }
 
         [CLMethod(Static = true, Description = "Spawn a player")]
-        public void SpawnPlayer(CustomLogicPlayerBuiltin player, bool force)
+        public void SpawnPlayer(
+            [CLParam("The player to spawn.")]
+            CustomLogicPlayerBuiltin player,
+            [CLParam("If true, forces respawn even if the player is already alive.")]
+            bool force)
         {
             if (player.Player == PhotonNetwork.LocalPlayer)
                 _inGameManager.SpawnPlayer(force);
@@ -627,14 +676,24 @@ namespace CustomLogic
         }
 
         [CLMethod(Static = true, Description = "Spawn a player for all players")]
-        public void SpawnPlayerAll(bool force)
+        public void SpawnPlayerAll(
+            [CLParam("If true, forces respawn even if players are already alive.")]
+            bool force)
         {
             if (PhotonNetwork.IsMasterClient)
                 RPCManager.PhotonView.RPC(nameof(RPCManager.SpawnPlayerRPC), RpcTarget.All, new object[] { force });
         }
 
         [CLMethod(Static = true, Description = "Spawn a player at a position")]
-        public void SpawnPlayerAt(CustomLogicPlayerBuiltin player, bool force, CustomLogicVector3Builtin position, float rotationY = 0f)
+        public void SpawnPlayerAt(
+            [CLParam("The player to spawn.")]
+            CustomLogicPlayerBuiltin player,
+            [CLParam("If true, forces respawn even if the player is already alive.")]
+            bool force,
+            [CLParam("The spawn position.")]
+            CustomLogicVector3Builtin position,
+            [CLParam("The Y rotation in degrees (default: 0).")]
+            float rotationY = 0f)
         {
             if (player.Player == PhotonNetwork.LocalPlayer)
                 _inGameManager.SpawnPlayerAt(force, position.Value, rotationY);
@@ -643,46 +702,82 @@ namespace CustomLogic
         }
 
         [CLMethod(Static = true, Description = "Spawn a player at a position for all players")]
-        public void SpawnPlayerAtAll(bool force, CustomLogicVector3Builtin position, float rotationY = 0f)
+        public void SpawnPlayerAtAll(
+            [CLParam("If true, forces respawn even if players are already alive.")]
+            bool force,
+            [CLParam("The spawn position.")]
+            CustomLogicVector3Builtin position,
+            [CLParam("The Y rotation in degrees (default: 0).")]
+            float rotationY = 0f)
         {
             if (PhotonNetwork.IsMasterClient)
                 RPCManager.PhotonView.RPC(nameof(RPCManager.SpawnPlayerAtRPC), RpcTarget.All, new object[] { force, position.Value, rotationY });
         }
 
         [CLMethod(Static = true, Description = "Set the music playlist")]
-        public void SetPlaylist(string playlist)
+        public void SetPlaylist(
+            [CLParam("The name of the playlist to set.")]
+            string playlist)
         {
             MusicManager.SetPlaylist(playlist);
             CustomLogicManager.Evaluator.HasSetMusic = true;
         }
 
         [CLMethod(Static = true, Description = "Set the music song")]
-        public void SetSong(string song)
+        public void SetSong(
+            [CLParam("The name of the song to set.")]
+            string song)
         {
             MusicManager.SetSong(song);
             CustomLogicManager.Evaluator.HasSetMusic = true;
         }
 
         [CLMethod(Static = true, Description = "Draw a ray")]
-        public void DrawRay(CustomLogicVector3Builtin start, CustomLogicVector3Builtin dir, CustomLogicColorBuiltin color, float duration)
+        public void DrawRay(
+            [CLParam("The start position of the ray.")]
+            CustomLogicVector3Builtin start,
+            [CLParam("The direction vector of the ray.")]
+            CustomLogicVector3Builtin dir,
+            [CLParam("The color of the ray.")]
+            CustomLogicColorBuiltin color,
+            [CLParam("The duration in seconds to display the ray.")]
+            float duration)
         {
             UnityEngine.Debug.DrawRay(start.Value, dir.Value, color.Value.ToColor(), duration);
         }
 
         [CLMethod(Static = true, Description = "Show the kill score")]
-        public void ShowKillScore(int damage)
+        public void ShowKillScore(
+            [CLParam("The damage value to display.")]
+            int damage)
         {
             ((InGameMenu)UIManager.CurrentMenu).ShowKillScore(damage, true);
         }
 
         [CLMethod(Static = true, Description = "Show the kill feed")]
-        public void ShowKillFeed(string killer, string victim, int score, string weapon)
+        public void ShowKillFeed(
+            [CLParam("The name of the killer.")]
+            string killer,
+            [CLParam("The name of the victim.")]
+            string victim,
+            [CLParam("The score value.")]
+            int score,
+            [CLParam("The weapon name.")]
+            string weapon)
         {
             ((InGameMenu)UIManager.CurrentMenu).ShowKillFeed(killer, victim, score, weapon);
         }
 
         [CLMethod(Static = true, Description = "Show the kill feed for all players")]
-        public void ShowKillFeedAll(string killer, string victim, int score, string weapon)
+        public void ShowKillFeedAll(
+            [CLParam("The name of the killer.")]
+            string killer,
+            [CLParam("The name of the victim.")]
+            string victim,
+            [CLParam("The score value.")]
+            int score,
+            [CLParam("The weapon name.")]
+            string weapon)
         {
             RPCManager.PhotonView.RPC(nameof(RPCManager.ShowKillFeedRPC), RpcTarget.All, new object[] { killer, victim, score, weapon });
         }
