@@ -1,7 +1,7 @@
 {
   "kind": "component",
   "name": "PhysicsMaterialBuiltin",
-  "description": "",
+  "description": "Represents a physics material that defines friction and bounciness properties for colliders.",
   "instanceFields": [
     {
       "label": "StaticFriction",
@@ -69,7 +69,7 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "If true, applies the material to all child colliders as well.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -84,7 +84,7 @@
         "name": "int",
         "typeArguments": []
       },
-      "description": "PhysicMaterialCombine.Minimum",
+      "description": "PhysicMaterialCombine.Minimum.",
       "readonly": true,
       "private": false
     },
@@ -94,7 +94,7 @@
         "name": "int",
         "typeArguments": []
       },
-      "description": "PhysicMaterialCombine.Multiply",
+      "description": "PhysicMaterialCombine.Multiply.",
       "readonly": true,
       "private": false
     },
@@ -104,7 +104,7 @@
         "name": "int",
         "typeArguments": []
       },
-      "description": "PhysicMaterialCombine.Maximum",
+      "description": "PhysicMaterialCombine.Maximum.",
       "readonly": true,
       "private": false
     },
@@ -114,7 +114,7 @@
         "name": "int",
         "typeArguments": []
       },
-      "description": "PhysicMaterialCombine.Average",
+      "description": "PhysicMaterialCombine.Average.",
       "readonly": true,
       "private": false
     }

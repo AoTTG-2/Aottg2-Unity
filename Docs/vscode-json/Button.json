@@ -1,7 +1,7 @@
 {
   "kind": "class",
   "name": "Button",
-  "description": "A UI element that represents a clickable button",
+  "description": "A UI element that represents a clickable button.",
   "extends": [
     "VisualElement"
   ],
@@ -12,7 +12,7 @@
         "name": "string",
         "typeArguments": []
       },
-      "description": "The text displayed by the Button",
+      "description": "The text displayed by the Button.",
       "readonly": false,
       "private": false
     },
@@ -22,7 +22,7 @@
         "name": "bool",
         "typeArguments": []
       },
-      "description": "When false, rich text tags will not be parsed",
+      "description": "When false, rich text tags will not be parsed.",
       "readonly": false,
       "private": false
     }
@@ -34,7 +34,7 @@
         "name": "Button",
         "typeArguments": []
       },
-      "description": "Sets the method to be called when the Button is clicked",
+      "description": "Sets the method to be called when the Button is clicked.",
       "parameters": [
         {
           "name": "clickEvent",
@@ -42,7 +42,7 @@
             "name": "function",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The method to call when the button is clicked.",
           "isOptional": false,
           "isVariadic": false
         }

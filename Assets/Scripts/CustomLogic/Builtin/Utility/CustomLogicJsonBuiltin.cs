@@ -4,21 +4,18 @@ using SimpleJSONFixed;
 
 namespace CustomLogic
 {
-    /// <summary>
-    /// Serializes and deserializes primitive and struct values from and to json strings.
-    /// Supports float, int, string, bool, Vector3, Quaternion, Color, Dict, and List.
-    /// Dict and List must contain only the supported types, and can be nested.
-    /// </summary>
-    [CLType(Name = "Json", Static = true, Abstract = true)]
+    [CLType(Name = "Json", Static = true, Abstract = true, Description = "Serializes and deserializes primitive and struct values from and to json strings. Supports float, int, string, bool, Vector3, Quaternion, Color, Dict, and List. Dict and List must contain only the supported types, and can be nested.")]
     partial class CustomLogicJsonBuiltin : BuiltinClassInstance
     {
-        [CLConstructor]
+        [CLConstructor("Creates a new Json instance.")]
         public CustomLogicJsonBuiltin()
         {
         }
 
-        [CLMethod(description: "Loads a json string into a custom logic object")]
-        public static object LoadFromString(string json)
+        [CLMethod("Loads a json string into a custom logic object.")]
+        public static object LoadFromString(
+            [CLParam("The json string to load.")]
+            string json)
         {
             string jsonTrim = json.Trim();
             JSONNode jsonNode;
@@ -41,8 +38,10 @@ namespace CustomLogic
 
         }
 
-        [CLMethod(description: "Saves a custom logic object into a json string")]
-        public static string SaveToString(object obj)
+        [CLMethod("Saves a custom logic object into a json string.")]
+        public static string SaveToString(
+            [CLParam("The object to save to json.")]
+            object obj)
         {
             JSONNode json = SaveJSON(obj);
             return json.ToString(aIndent: 4);
@@ -63,7 +62,7 @@ namespace CustomLogic
                 foreach (string key in json.Keys)
                 {
                     var node = json[key];
-                    dict.Dict.Add(key, LoadJSON(node));
+                    dict.Set(key, LoadJSON(node));
                 }
                 return dict;
             }
@@ -108,11 +107,11 @@ namespace CustomLogic
             {
                 var node = new JSONObject();
                 var dict = (CustomLogicDictBuiltin)obj;
-                foreach (object key in dict.Dict.Keys)
+                foreach (object key in dict.Keys.List)
                 {
                     if (!(key is string))
                         throw new System.Exception("Saving invalid json type: dict must have string keys.");
-                    node.Add((string)key, SaveJSON(dict.Dict[key]));
+                    node.Add((string)key, SaveJSON(dict.Get(key)));
                 }
                 return node;
             }

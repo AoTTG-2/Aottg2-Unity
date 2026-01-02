@@ -1,4 +1,7 @@
 # NavmeshObstacleBuiltin
+
+Represents a NavMesh obstacle component that can carve or block navigation mesh paths.
+
 ### Properties
 |Name|Type|Readonly|Description|
 |---|---|---|---|

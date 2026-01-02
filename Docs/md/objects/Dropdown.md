@@ -1,38 +1,50 @@
 # Dropdown
 Inherits from [VisualElement](../objects/VisualElement.md)
 
-A UI element that represents a dropdown selection field
+A UI element that represents a dropdown selection field.
 
 ### Properties
 |Name|Type|Readonly|Description|
 |---|---|---|---|
-|Label|string|False|The label text displayed next to the Dropdown|
-|Value|string|False|The currently selected value (option text)|
-|Index|int|False|The index of the currently selected option (0-based)|
-|Choices|[List](../objects/List.md)<string>|False|Gets the list of available choices|
+|Label|string|False|The label text displayed next to the Dropdown.|
+|Value|string|False|The currently selected value (option text).|
+|Index|int|False|The index of the currently selected option (0-based).|
+|Choices|[List](../objects/List.md)<string>|False|Gets the list of available choices.|
 
 
 ### Methods
 <pre class="language-typescript"><code class="lang-typescript">function OnValueChanged(valueChangedEvent: function) -> <a data-footnote-ref href="#user-content-fn-43">Dropdown</a></code></pre>
-> Sets the method to be called when the Dropdown value changes
+> Sets the method to be called when the Dropdown value changes.
 > 
 > **Parameters**:
 > - `valueChangedEvent`: Method that will be called with the new selected value as parameter
 > 
 <pre class="language-typescript"><code class="lang-typescript">function SetValueWithoutNotify(value: string)</code></pre>
-> Sets the value of the Dropdown without triggering any change events
+> Sets the value of the Dropdown without triggering any change events.
+> 
+> **Parameters**:
+> - `value`: The value to set.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function SetIndexWithoutNotify(index: int)</code></pre>
-> Sets the index of the selected option without triggering any change events
+> Sets the index of the selected option without triggering any change events.
+> 
+> **Parameters**:
+> - `index`: The index of the option to select (0-based).
 > 
 <pre class="language-typescript"><code class="lang-typescript">function AddChoice(choice: string) -> <a data-footnote-ref href="#user-content-fn-43">Dropdown</a></code></pre>
-> Adds a choice to the dropdown options
+> Adds a choice to the dropdown options.
+> 
+> **Parameters**:
+> - `choice`: The choice text to add.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function RemoveChoice(choice: string) -> <a data-footnote-ref href="#user-content-fn-43">Dropdown</a></code></pre>
-> Removes a choice from the dropdown options
+> Removes a choice from the dropdown options.
+> 
+> **Parameters**:
+> - `choice`: The choice text to remove.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function ClearChoices() -> <a data-footnote-ref href="#user-content-fn-43">Dropdown</a></code></pre>
-> Clears all choices from the dropdown
+> Clears all choices from the dropdown.
 > 
 
 [^0]: [Color](../objects/Color.md)

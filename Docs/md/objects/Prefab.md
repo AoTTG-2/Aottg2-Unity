@@ -1,35 +1,36 @@
 # Prefab
 Inherits from [Object](../objects/Object.md)
 
-Will expand this further later, currently only handles single elements, not children.
-Should be able to take in a serialized CSV describing the object and populate a child array/parent object when done.
+Represents a prefab object that can be instantiated in the map. Currently handles single elements, not children.
 
 ### Initialization
 ```csharp
-Prefab()
-Prefab(prefabCSV: string, clearComponents: bool)
+Prefab() // Creates a new empty Prefab instance.
+Prefab(prefabCSV: string, clearComponents: bool = False) // Creates a new Prefab instance from a serialized CSV string.
 ```
 
 ### Properties
 |Name|Type|Readonly|Description|
 |---|---|---|---|
-|Type|string|False||
-|Asset|string|False||
-|Active|bool|False||
-|Static|bool|False||
-|Visible|bool|False||
-|Name|string|False||
-|Position|[Vector3](../objects/Vector3.md)|False||
-|Rotation|[Vector3](../objects/Vector3.md)|False||
-|Scale|[Vector3](../objects/Vector3.md)|False||
-|CollideMode|string|False||
-|CollideWith|string|False||
-|PhysicsMaterial|string|False||
-|PersistsOwnership|bool|False||
+|AssetType|string|False|The type of the prefab asset.|
+|Asset|string|False|The asset path/name of the prefab.|
+|Active|bool|False|Whether the prefab is active.|
+|Static|bool|False|Whether the prefab is marked as static.|
+|Visible|bool|False|Whether the prefab is visible.|
+|Name|string|False|The name of the prefab.|
+|Position|[Vector3](../objects/Vector3.md)|False|The position of the prefab in world space.|
+|Rotation|[Vector3](../objects/Vector3.md)|False|The rotation of the prefab in euler angles.|
+|Scale|[Vector3](../objects/Vector3.md)|False|The scale of the prefab.|
+|CollideMode|string|False|The collision mode of the prefab.|
+|CollideWith|string|False|The layers that this prefab can collide with.|
+|PhysicsMaterial|string|False|The name of the physics material applied to the prefab.|
+|PersistsOwnership|bool|False|If true and this prefab is spawned at runtime with networking, the ownership will transfer to host if the player who spawned it leaves.|
 
 
 ### Methods
 <pre class="language-typescript"><code class="lang-typescript">function ClearComponents()</code></pre>
+> Clears all components from the prefab.
+> 
 
 [^0]: [Color](../objects/Color.md)
 [^1]: [Dict](../objects/Dict.md)

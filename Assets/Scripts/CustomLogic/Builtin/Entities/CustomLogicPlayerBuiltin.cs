@@ -7,16 +7,15 @@ using UnityEngine;
 
 namespace CustomLogic
 {
-    /// <summary>
-    /// Represents a network player. Only master client or player may modify fields.
-    /// </summary>
-    [CLType(Name = "Player", Abstract = true)]
+    [CLType(Name = "Player", Abstract = true, Description = "Represents a network player. Only master client or player may modify fields.")]
     partial class CustomLogicPlayerBuiltin : BuiltinClassInstance, ICustomLogicEquals
     {
         public readonly Player Player;
 
-        [CLConstructor]
-        public CustomLogicPlayerBuiltin(Player player)
+        [CLConstructor("Creates a new Player instance.")]
+        public CustomLogicPlayerBuiltin(
+            [CLParam("The Photon player to wrap.")]
+            Player player)
         {
             Player = player;
         }
@@ -54,11 +53,8 @@ namespace CustomLogic
         [CLProperty("Player guild.")]
         public string Guild => Player.GetStringProperty(PlayerProperty.Guild);
 
-        /// <summary>
-        /// Player's chosen team ("None", "Blue", "Red", "Titan", "Human").
-        /// Note that this may be different from the character's final team (Character.Team field) if the character's team field is modified.
-        /// </summary>
-        [CLProperty] public string Team => Player.GetStringProperty(PlayerProperty.Team);
+        [CLProperty("Player's chosen team (\"None\", \"Blue\", \"Red\", \"Titan\", \"Human\"). Note that this may be different from the character's final team (Character.Team field) if the character's team field is modified.")]
+        public string Team => Player.GetStringProperty(PlayerProperty.Team);
 
         [CLProperty("Player's spawn status (\"Alive\", \"Dead\", \"Spectating\").")]
         public string Status => Player.GetStringProperty(PlayerProperty.Status);
@@ -145,13 +141,19 @@ namespace CustomLogic
         }
 
         [CLMethod("Get a custom property at given key. Must be a primitive type. This is synced to all clients.")]
-        public object GetCustomProperty(string property)
+        public object GetCustomProperty(
+            [CLParam("The property key to get.")]
+            string property)
         {
             return Player.GetCustomProperty("CL:" + property);
         }
 
         [CLMethod("Sets a custom property at given key. Must be a primitive type. This is synced to all clients.")]
-        public void SetCustomProperty(string property, object value)
+        public void SetCustomProperty(
+            [CLParam("The property key to set.")]
+            string property,
+            [CLParam("The value to set (must be a primitive type).")]
+            object value)
         {
             if (!PhotonNetwork.IsMasterClient && Player != PhotonNetwork.LocalPlayer)
                 return;

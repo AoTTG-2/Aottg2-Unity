@@ -42,7 +42,7 @@
             "name": "Player",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The player to transfer ownership to.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -63,7 +63,7 @@
             "name": "Player",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The target player to send the message to.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -73,7 +73,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The message to send.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -94,7 +94,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The message to send.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -115,7 +115,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The message to send.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -136,7 +136,7 @@
             "name": "Object",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The object to send.",
           "isOptional": false,
           "isVariadic": false
         }
