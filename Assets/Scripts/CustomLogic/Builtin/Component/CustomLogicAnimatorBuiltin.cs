@@ -131,7 +131,7 @@ namespace CustomLogic
             => Value.SetLayerWeight(layer, weight);
 
         [CLMethod("Gets the weight of the specified layer.")]
-        public void GetLayerWeight(
+        public float GetLayerWeight(
             [CLParam("The layer index.")]
             int layer)
             => Value.GetLayerWeight(layer);

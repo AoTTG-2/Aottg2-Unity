@@ -97,7 +97,7 @@ Represents an Animator component for controlling animations using Animator Contr
 > - `layer`: The layer index.
 > - `weight`: The weight value (0-1) to set.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function GetLayerWeight(layer: int)</code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function GetLayerWeight(layer: int) -> float</code></pre>
 > Gets the weight of the specified layer.
 > 
 > **Parameters**:

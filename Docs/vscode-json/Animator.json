@@ -401,7 +401,7 @@
     {
       "label": "GetLayerWeight",
       "returnType": {
-        "name": "void",
+        "name": "float",
         "typeArguments": []
       },
       "description": "Gets the weight of the specified layer.",
