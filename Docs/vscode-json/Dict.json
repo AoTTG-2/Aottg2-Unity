@@ -31,7 +31,7 @@
           }
         ]
       },
-      "description": "Keys in the dictionary.",
+      "description": "Keys snapshot. Returns a stable snapshot list of all keys. The returned list is read-only - any attempt to modify it will throw an exception. The snapshot remains unchanged even if the dictionary is mutated later. After dictionary mutations, accessing Keys again creates a new snapshot object. Access is O(1) when the dictionary has not changed. Rebuild after mutations is O(n) and allocates new snapshot objects. Calling Keys/Values after frequent mutations will allocate.",
       "readonly": true,
       "private": false
     },
@@ -46,7 +46,7 @@
           }
         ]
       },
-      "description": "Values in the dictionary.",
+      "description": "Values snapshot. Returns a stable snapshot list of all values. The returned list is read-only - any attempt to modify it will throw an exception. The snapshot remains unchanged even if the dictionary is mutated later. After dictionary mutations (Set/Remove/Clear), accessing Values again creates a new snapshot object. Access is O(1) when the dictionary has not changed. Rebuild after mutations is O(n) and allocates new snapshot objects. Calling Keys/Values after frequent mutations will allocate.",
       "readonly": true,
       "private": false
     }
@@ -68,7 +68,7 @@
         "name": "V",
         "typeArguments": []
       },
-      "description": "Gets a value from the dictionary. Returns: The value associated with the key, or the default value if the key is not found.",
+      "description": "Gets a value from the dictionary. Returns the value associated with the key, or defaultValue if the key is not found. If the stored value is null, Get returns null (even if defaultValue is provided).",
       "parameters": [
         {
           "name": "key",
@@ -99,7 +99,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Sets a value in the dictionary.",
+      "description": "Sets the value for the key. Overwrites the existing value if the key is already present. Do not mutate key objects after inserting.",
       "parameters": [
         {
           "name": "key",

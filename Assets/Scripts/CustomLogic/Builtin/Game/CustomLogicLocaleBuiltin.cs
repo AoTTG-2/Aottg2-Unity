@@ -195,9 +195,9 @@ namespace CustomLogic
         [CLMethod("Register a single-level (non-recursive) fallback: if a string is not found in 'fromLanguage', the system will search only in 'toLanguage', without chaining further.")]
         public static void RegisterLanguage(string language, CustomLogicDictBuiltin strings)
         {
-            var dictionary = new Dictionary<string, string>(strings.Dict.Count);
-            foreach (var pair in strings.Dict)
-                dictionary[pair.Key.ToString()] = pair.Value.ToString();
+            var dictionary = new Dictionary<string, string>(strings.Count);
+            foreach (var key in strings.Keys.List)
+                dictionary[key.ToString()] = strings.Get(key).ToString();
             _languages[language] = dictionary;
         }
 

@@ -13,8 +13,8 @@ Dict(capacity: int) // Creates a dictionary with the specified capacity.
 |Name|Type|Readonly|Description|
 |---|---|---|---|
 |Count|int|True|Number of elements in the dictionary.|
-|Keys|[List](../objects/List.md)<K>|True|Keys in the dictionary.|
-|Values|[List](../objects/List.md)<V>|True|Values in the dictionary.|
+|Keys|[List](../objects/List.md)<K>|True|Keys snapshot. Returns a stable snapshot list of all keys. The returned list is read-only - any attempt to modify it will throw an exception. The snapshot remains unchanged even if the dictionary is mutated later. After dictionary mutations, accessing Keys again creates a new snapshot object. Access is O(1) when the dictionary has not changed. Rebuild after mutations is O(n) and allocates new snapshot objects. Calling Keys/Values after frequent mutations will allocate.|
+|Values|[List](../objects/List.md)<V>|True|Values snapshot. Returns a stable snapshot list of all values. The returned list is read-only - any attempt to modify it will throw an exception. The snapshot remains unchanged even if the dictionary is mutated later. After dictionary mutations (Set/Remove/Clear), accessing Values again creates a new snapshot object. Access is O(1) when the dictionary has not changed. Rebuild after mutations is O(n) and allocates new snapshot objects. Calling Keys/Values after frequent mutations will allocate.|
 
 
 ### Methods
@@ -22,14 +22,14 @@ Dict(capacity: int) // Creates a dictionary with the specified capacity.
 > Clears the dictionary.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function Get(key: K, defaultValue: V = null) -> <a data-footnote-ref href="#user-content-fn-59">Object</a><V></code></pre>
-> Gets a value from the dictionary. Returns: The value associated with the key, or the default value if the key is not found.
+> Gets a value from the dictionary. Returns the value associated with the key, or defaultValue if the key is not found. If the stored value is null, Get returns null (even if defaultValue is provided).
 > 
 > **Parameters**:
 > - `key`: The key of the value to get
 > - `defaultValue`: The value to return if the key is not found
 > 
 <pre class="language-typescript"><code class="lang-typescript">function Set(key: K, value: V)</code></pre>
-> Sets a value in the dictionary.
+> Sets the value for the key. Overwrites the existing value if the key is already present. Do not mutate key objects after inserting.
 > 
 > **Parameters**:
 > - `key`: The key of the value to set

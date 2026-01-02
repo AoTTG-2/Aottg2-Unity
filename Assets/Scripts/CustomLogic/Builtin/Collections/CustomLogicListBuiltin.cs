@@ -41,6 +41,7 @@ namespace CustomLogic
     partial class CustomLogicListBuiltin : BuiltinClassInstance
     {
         public List<object> List = new List<object>();
+        private readonly bool _isReadOnly;
 
         [CLConstructor("Creates an empty list.")]
         public CustomLogicListBuiltin()
@@ -55,12 +56,20 @@ namespace CustomLogic
             foreach (var item in parameterValues) List.Add(item);
         }
 
+        public CustomLogicListBuiltin(IEnumerable<object> enumerable, bool isReadOnly = false)
+        {
+            List = new List<object>(enumerable);
+            _isReadOnly = isReadOnly;
+        }
+
         [CLProperty("The number of elements in the list.")]
         public int Count => List.Count;
 
         [CLMethod("Clear all list elements.")]
         public void Clear()
         {
+            if (_isReadOnly)
+                throw new System.Exception("Cannot modify a read-only list.");
             List.Clear();
         }
 
@@ -80,6 +89,8 @@ namespace CustomLogic
             [CLParam("The value to set.", Type = "T")]
             object value)
         {
+            if (_isReadOnly)
+                throw new System.Exception("Cannot modify a read-only list.");
             if (index < 0) index += List.Count;
             List[index] = value;
         }
@@ -89,6 +100,8 @@ namespace CustomLogic
             [CLParam("The element to add.", Type = "T")]
             object value)
         {
+            if (_isReadOnly)
+                throw new System.Exception("Cannot modify a read-only list.");
             List.Add(value);
         }
 
@@ -99,6 +112,8 @@ namespace CustomLogic
             [CLParam("The element to insert.", Type = "T")]
             object value)
         {
+            if (_isReadOnly)
+                throw new System.Exception("Cannot modify a read-only list.");
             if (index < 0) index += List.Count;
             List.Insert(index, value);
         }
@@ -108,6 +123,8 @@ namespace CustomLogic
             [CLParam("The index of the element to remove (negative indices count from the end).")]
             int index)
         {
+            if (_isReadOnly)
+                throw new System.Exception("Cannot modify a read-only list.");
             if (index < 0) index += List.Count;
             List.RemoveAt(index);
         }
@@ -117,6 +134,8 @@ namespace CustomLogic
             [CLParam("The element to remove.", Type = "T")]
             object value)
         {
+            if (_isReadOnly)
+                throw new System.Exception("Cannot modify a read-only list.");
             List.Remove(value);
         }
 
@@ -131,6 +150,8 @@ namespace CustomLogic
         [CLMethod("Sort the list.")]
         public void Sort()
         {
+            if (_isReadOnly)
+                throw new System.Exception("Cannot modify a read-only list.");
             List.Sort();
         }
 
@@ -139,6 +160,8 @@ namespace CustomLogic
             [CLParam("The comparison method that returns an int: negative if a < b, 0 if a == b, positive if a > b.")]
             UserMethod method)
         {
+            if (_isReadOnly)
+                throw new System.Exception("Cannot modify a read-only list.");
             List.Sort((a, b) => (int)CustomLogicManager.Evaluator.EvaluateMethod(method, new object[] { a, b }));
         }
 

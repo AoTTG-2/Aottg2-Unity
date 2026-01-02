@@ -58,7 +58,7 @@ namespace CustomLogic
                 foreach (string key in json.Keys)
                 {
                     var node = json[key];
-                    dict.Dict.Add(key, LoadJSON(node));
+                    dict.Set(key, LoadJSON(node));
                 }
                 return dict;
             }
@@ -103,11 +103,11 @@ namespace CustomLogic
             {
                 var node = new JSONObject();
                 var dict = (CustomLogicDictBuiltin)obj;
-                foreach (object key in dict.Dict.Keys)
+                foreach (object key in dict.Keys.List)
                 {
                     if (!(key is string))
                         throw new System.Exception("Saving invalid json type: dict must have string keys.");
-                    node.Add((string)key, SaveJSON(dict.Dict[key]));
+                    node.Add((string)key, SaveJSON(dict.Get(key)));
                 }
                 return node;
             }
