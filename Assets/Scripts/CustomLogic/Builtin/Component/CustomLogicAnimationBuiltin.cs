@@ -97,7 +97,7 @@ namespace CustomLogic
             => Value[anim].normalizedTime;
 
         [CLMethod("Sets the normalized playback time of the specified animation.")]
-        public float SetAnimationNormalizedTime(
+        public void SetAnimationNormalizedTime(
             [CLParam("The name of the animation.")]
             string anim,
             [CLParam("The normalized time (0-1) to set.")]
@@ -105,7 +105,7 @@ namespace CustomLogic
             => Value[anim].normalizedTime = normalizedTime;
 
         [CLMethod("Sets the weight of the specified animation.")]
-        public float SetAnimationWeight(
+        public void SetAnimationWeight(
             [CLParam("The name of the animation.")]
             string anim,
             [CLParam("The weight value (0-1) to set.")]

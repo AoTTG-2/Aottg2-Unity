@@ -63,14 +63,14 @@ Represents an Animation component for playing legacy animation clips.
 > **Parameters**:
 > - `anim`: The name of the animation.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function SetAnimationNormalizedTime(anim: string, normalizedTime: float) -> float</code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function SetAnimationNormalizedTime(anim: string, normalizedTime: float)</code></pre>
 > Sets the normalized playback time of the specified animation.
 > 
 > **Parameters**:
 > - `anim`: The name of the animation.
 > - `normalizedTime`: The normalized time (0-1) to set.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function SetAnimationWeight(anim: string, weight: float) -> float</code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function SetAnimationWeight(anim: string, weight: float)</code></pre>
 > Sets the weight of the specified animation.
 > 
 > **Parameters**:
