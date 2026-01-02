@@ -182,7 +182,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the child transform to find.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -218,7 +218,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the animation to check.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -239,7 +239,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the animation to play.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -249,7 +249,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The fade time in seconds for cross-fading (default: 0.1).",
           "isOptional": true,
           "isVariadic": false
         }
@@ -270,7 +270,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the animation.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -311,7 +311,7 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "Whether to enable or disable the particle emission.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -324,7 +324,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Transforms a direction from world space to local space. Returns: The direction in local space.",
       "parameters": [
         {
           "name": "direction",
@@ -332,7 +332,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The direction vector in world space.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -345,7 +345,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Transforms a position from world space to local space. Returns: The position in local space.",
       "parameters": [
         {
           "name": "point",
@@ -353,7 +353,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The point in world space.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -366,7 +366,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Transforms a direction from local space to world space. Returns: The direction in world space.",
       "parameters": [
         {
           "name": "direction",
@@ -374,7 +374,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The direction vector in local space.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -387,7 +387,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Transforms a position from local space to world space. Returns: The position in world space.",
       "parameters": [
         {
           "name": "point",
@@ -395,7 +395,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The point in local space.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -408,7 +408,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Rotates the transform by the given rotation in euler angles.",
       "parameters": [
         {
           "name": "rotation",
@@ -416,7 +416,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The rotation in euler angles to apply.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -429,7 +429,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Rotates the transform around a point by the given angle.",
       "parameters": [
         {
           "name": "point",
@@ -437,7 +437,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The point to rotate around.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -447,7 +447,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The axis to rotate around.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -457,7 +457,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The angle in degrees to rotate.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -470,7 +470,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Rotates the transform to look at the target position.",
       "parameters": [
         {
           "name": "target",
@@ -478,7 +478,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The world position to look at.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -499,7 +499,7 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "Whether to enable or disable the renderers.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -525,7 +525,7 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "If true, includes colliders from all children recursively (default: false).",
           "isOptional": true,
           "isVariadic": false
         }

@@ -3,10 +3,6 @@ using Utility;
 
 namespace CustomLogic
 {
-    /// <summary>
-    /// Random can be initialized as a class with an int given as the seed value.
-    /// Note that this is optional, and you can reference Random directly as a static class.
-    /// </summary>
     /// <code>
     /// # Use random methods directly
     /// r = Random.RandomInt(0, 100);
@@ -22,17 +18,19 @@ namespace CustomLogic
     /// b = generator2.RandomInt(0, 100);
     /// compared = a == b;    # Always True
     /// </code>
-    [CLType(Name = "Random", Static = true)]
+    [CLType(Name = "Random", Static = true, Description = "Random can be initialized as a class with an int given as the seed value. Note that this is optional, and you can reference Random directly as a static class.")]
     partial class CustomLogicRandomBuiltin : BuiltinClassInstance
     {
         public Unity.Mathematics.Random Rand;
         public readonly bool UseInstanceRandom;
 
-        [CLConstructor]
+        [CLConstructor("Creates a new Random instance with default seed.")]
         public CustomLogicRandomBuiltin() { }
 
-        [CLConstructor]
-        public CustomLogicRandomBuiltin(int seed)
+        [CLConstructor("Creates a new Random instance with the specified seed.")]
+        public CustomLogicRandomBuiltin(
+            [CLParam("The seed value for the random number generator.")]
+            int seed)
         {
             Rand = new Unity.Mathematics.Random((uint)seed);
             UseInstanceRandom = true;

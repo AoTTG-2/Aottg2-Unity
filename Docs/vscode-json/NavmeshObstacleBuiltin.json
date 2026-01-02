@@ -1,7 +1,7 @@
 {
   "kind": "component",
   "name": "NavmeshObstacleBuiltin",
-  "description": "",
+  "description": "Represents a NavMesh obstacle component that can carve or block navigation mesh paths.",
   "instanceFields": [
     {
       "label": "Radius",

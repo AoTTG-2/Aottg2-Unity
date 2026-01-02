@@ -296,7 +296,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Sort the list using a custom method, expects a method with the signature int method(a,b)",
+      "description": "Causes the (AI) shifter to move towards a position with a callback. The callback method will be called during movement and will receive this shifter as a parameter.",
       "parameters": [
         {
           "name": "method",
