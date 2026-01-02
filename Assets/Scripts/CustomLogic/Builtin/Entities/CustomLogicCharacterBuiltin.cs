@@ -281,13 +281,14 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod("Gets the animation speed of a given animation.")]
-        public void GetAnimationSpeed(
+        [CLMethod("Gets the animation speed of a given animation. Returns 1.0 if the character is not owned by the player or is dead.")]
+        public float GetAnimationSpeed(
             [CLParam("Name of the animation.")]
             string animation)
         {
             if (Character.IsMine() && !Character.Dead)
-                Character.GetAnimationSpeed(animation);
+                return Character.GetAnimationSpeed(animation);
+            return 1.0f;
         }
 
         [CLMethod("Sets the animation speed of a given animation.")]

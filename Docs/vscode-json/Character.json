@@ -416,10 +416,10 @@
     {
       "label": "GetAnimationSpeed",
       "returnType": {
-        "name": "void",
+        "name": "float",
         "typeArguments": []
       },
-      "description": "Gets the animation speed of a given animation.",
+      "description": "Gets the animation speed of a given animation. Returns 1.0 if the character is not owned by the player or is dead.",
       "parameters": [
         {
           "name": "animation",

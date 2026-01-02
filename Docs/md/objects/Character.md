@@ -98,8 +98,8 @@ function OnCharacterSpawn(character)
 > - `fade`: Fade time.
 > - `force`: Whether to force the animation even if it's already playing.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function GetAnimationSpeed(animation: string)</code></pre>
-> Gets the animation speed of a given animation.
+<pre class="language-typescript"><code class="lang-typescript">function GetAnimationSpeed(animation: string) -> float</code></pre>
+> Gets the animation speed of a given animation. Returns 1.0 if the character is not owned by the player or is dead.
 > 
 > **Parameters**:
 > - `animation`: Name of the animation.
