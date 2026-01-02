@@ -4,20 +4,15 @@ using SimpleJSONFixed;
 
 namespace CustomLogic
 {
-    /// <summary>
-    /// Serializes and deserializes primitive and struct values from and to json strings.
-    /// Supports float, int, string, bool, Vector3, Quaternion, Color, Dict, and List.
-    /// Dict and List must contain only the supported types, and can be nested.
-    /// </summary>
-    [CLType(Name = "Json", Static = true, Abstract = true)]
+    [CLType(Name = "Json", Static = true, Abstract = true, Description = "Serializes and deserializes primitive and struct values from and to json strings. Supports float, int, string, bool, Vector3, Quaternion, Color, Dict, and List. Dict and List must contain only the supported types, and can be nested.")]
     partial class CustomLogicJsonBuiltin : BuiltinClassInstance
     {
-        [CLConstructor]
+        [CLConstructor("Creates a new Json instance.")]
         public CustomLogicJsonBuiltin()
         {
         }
 
-        [CLMethod(description: "Loads a json string into a custom logic object")]
+        [CLMethod("Loads a json string into a custom logic object.")]
         public static object LoadFromString(string json)
         {
             string jsonTrim = json.Trim();
@@ -41,7 +36,7 @@ namespace CustomLogic
 
         }
 
-        [CLMethod(description: "Saves a custom logic object into a json string")]
+        [CLMethod("Saves a custom logic object into a json string.")]
         public static string SaveToString(object obj)
         {
             JSONNode json = SaveJSON(obj);

@@ -4,10 +4,6 @@ using Map;
 
 namespace CustomLogic
 {
-    /// <summary>
-    /// Represents a Titan character.
-    /// Only character owner can modify fields and call functions unless otherwise specified.
-    /// </summary>
     /// <code>
     /// function OnCharacterSpawn(character)
     /// {
@@ -19,7 +15,7 @@ namespace CustomLogic
     ///     }
     /// }
     /// </code>
-    [CLType(Name = "Titan", Abstract = true)]
+    [CLType(Name = "Titan", Abstract = true, Description = "Represents a Titan character. Only character owner can modify fields and call functions unless otherwise specified.")]
     partial class CustomLogicTitanBuiltin : CustomLogicCharacterBuiltin
     {
         public readonly BasicTitan Titan;

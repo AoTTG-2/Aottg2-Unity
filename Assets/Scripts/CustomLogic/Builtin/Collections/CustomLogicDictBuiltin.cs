@@ -5,69 +5,58 @@ namespace CustomLogic
 {
     // TODO: Make dict lookup constant time
     // TODO: Keys and Values does not need to create a new list every time
-    /// <summary>
-    /// Collection of key-value pairs.
-    /// Keys must be unique.
-    /// </summary>
-    [CLType(Name = "Dict", TypeParameters = new[] { "K", "V" })]
+    [CLType(Name = "Dict", TypeParameters = new[] { "K", "V" }, Description = "Collection of key-value pairs. Keys must be unique.")]
     partial class CustomLogicDictBuiltin : BuiltinClassInstance
     {
         public readonly Dictionary<object, object> Dict;
 
-        /// <summary>
-        /// Creates an empty dictionary
-        /// </summary>
-        [CLConstructor]
+        [CLConstructor("Creates an empty dictionary.")]
         public CustomLogicDictBuiltin()
         {
             Dict = new Dictionary<object, object>();
         }
 
-        /// <summary>
-        /// Creates a dictionary with the specified capacity
-        /// </summary>
-        [CLConstructor]
-        public CustomLogicDictBuiltin(int capacity)
+        [CLConstructor("Creates a dictionary with the specified capacity.")]
+        public CustomLogicDictBuiltin(
+            [CLParam("The initial capacity of the dictionary.")]
+            int capacity)
         {
             Dict = new Dictionary<object, object>(capacity);
         }
 
-        [CLProperty(description: "Number of elements in the dictionary")]
+        [CLProperty("Number of elements in the dictionary.")]
         public int Count => Dict.Count;
 
-        [CLProperty(description: "Keys in the dictionary", TypeArguments = new[] { "K" })]
+        [CLProperty(TypeArguments = new[] { "K" }, Description = "Keys in the dictionary.")]
         public CustomLogicListBuiltin Keys => new CustomLogicListBuiltin { List = new List<object>(Dict.Keys) };
 
-        [CLProperty(description: "Values in the dictionary", TypeArguments = new[] { "V" })]
+        [CLProperty(TypeArguments = new[] { "V" }, Description = "Values in the dictionary.")]
         public CustomLogicListBuiltin Values => new CustomLogicListBuiltin { List = new List<object>(Dict.Values) };
 
-        [CLMethod(description: "Clears the dictionary")]
+        [CLMethod("Clears the dictionary.")]
         public void Clear()
         {
             Dict.Clear();
         }
 
-        /// <summary>
-        /// Gets a value from the dictionary
-        /// </summary>
-        /// <param name="key">The key of the value to get</param>
-        /// <param name="defaultValue">The value to return if the key is not found</param>
-        /// <returns>The value associated with the key, or the default value if the key is not found</returns>
-        [CLMethod(ReturnTypeArguments = new[] { "V" }, ParameterTypeArguments = new[] { "K", "V" })]
-        public object Get(object key, object defaultValue = null)
+        [CLMethod(ReturnTypeArguments = new[] { "V" }, Description = "Gets a value from the dictionary. Returns: The value associated with the key, or the default value if the key is not found.")]
+        public object Get(
+            [CLParam("The key of the value to get", Type = "K")]
+            object key,
+            [CLParam("The value to return if the key is not found", Type = "V")]
+            object defaultValue = null)
         {
             if (Dict.ContainsKey(key))
                 return Dict[key];
             return defaultValue;
         }
 
-        /// <summary>
-        /// Sets a value in the dictionary
-        /// </summary>
-        /// <param name="key">The key of the value to set</param>
-        /// <param name="value">The value to set</param>
-        [CLMethod(ParameterTypeArguments = new[] { "K", "V" })]
-        public void Set(object key, object value)
+        [CLMethod("Sets a value in the dictionary.")]
+        public void Set(
+            [CLParam("The key of the value to set", Type = "K")]
+            object key,
+            [CLParam("The value to set", Type = "V")]
+            object value)
         {
             if (Dict.ContainsKey(key))
                 Dict[key] = value;
@@ -75,24 +64,19 @@ namespace CustomLogic
                 Dict.Add(key, value);
         }
 
-        /// <summary>
-        /// Removes a value from the dictionary
-        /// </summary>
-        /// <param name="key">The key of the value to remove</param>
-        [CLMethod(ParameterTypeArguments = new[] { "K" })]
-        public void Remove(object key)
+        [CLMethod("Removes a value from the dictionary.")]
+        public void Remove(
+            [CLParam("The key of the value to remove", Type = "K")]
+            object key)
         {
             if (Dict.ContainsKey(key))
                 Dict.Remove(key);
         }
 
-        /// <summary>
-        /// Checks if the dictionary contains a key
-        /// </summary>
-        /// <param name="key">The key to check</param>
-        /// <returns>True if the dictionary contains the key, false otherwise</returns>
-        [CLMethod(ParameterTypeArguments = new[] { "K" })]
-        public bool Contains(object key)
+        [CLMethod(Description = "Checks if the dictionary contains a key. Returns: True if the dictionary contains the key, false otherwise.")]
+        public bool Contains(
+            [CLParam("The key to check", Type = "K")]
+            object key)
         {
             return Dict.ContainsKey(key);
         }

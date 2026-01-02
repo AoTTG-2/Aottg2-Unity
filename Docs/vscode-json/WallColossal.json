@@ -1,7 +1,7 @@
 {
   "kind": "class",
   "name": "WallColossal",
-  "description": "Only character owner can modify fields and call functions unless otherwise specified.",
+  "description": "Represents a WallColossal character. Only character owner can modify fields and call functions unless otherwise specified.",
   "extends": [
     "Shifter"
   ],
@@ -12,7 +12,7 @@
         "name": "int",
         "typeArguments": []
       },
-      "description": "Colossal's current hand health.",
+      "description": "Colossal's current hand health (applies to both hands for backward compatibility).",
       "readonly": false,
       "private": false
     },
@@ -22,7 +22,97 @@
         "name": "int",
         "typeArguments": []
       },
-      "description": "Colossal's maximum hand health.",
+      "description": "Colossal's maximum hand health (applies to both hands for backward compatibility).",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "LeftHandHealth",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "Colossal's current left hand health.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "MaxLeftHandHealth",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "Colossal's maximum left hand health.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "RightHandHealth",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "Colossal's current right hand health.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "MaxRightHandHealth",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "Colossal's maximum right hand health.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "LeftHandState",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Colossal's left hand state (Healthy or Broken).",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "RightHandState",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Colossal's right hand state (Healthy or Broken).",
+      "readonly": true,
+      "private": false
+    },
+    {
+      "label": "HandRecoveryTime",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Time in seconds for a hand to fully recover from broken state.",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "LeftHandRecoveryTimeLeft",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Time remaining in seconds for left hand to recover (0 if not recovering).",
+      "readonly": false,
+      "private": false
+    },
+    {
+      "label": "RightHandRecoveryTimeLeft",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Time remaining in seconds for right hand to recover (0 if not recovering).",
       "readonly": false,
       "private": false
     },

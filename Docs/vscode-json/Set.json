@@ -1,7 +1,7 @@
 {
   "kind": "class",
   "name": "Set",
-  "description": "Collection of unique elements",
+  "description": "Collection of unique elements.",
   "typeParameters": [
     "T"
   ],
@@ -15,7 +15,7 @@
         "name": "int",
         "typeArguments": []
       },
-      "description": "The number of elements in the set",
+      "description": "The number of elements in the set.",
       "readonly": true,
       "private": false
     }
@@ -27,7 +27,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Clear all set elements",
+      "description": "Clear all set elements.",
       "parameters": [],
       "kind": "function"
     },
@@ -37,7 +37,7 @@
         "name": "bool",
         "typeArguments": []
       },
-      "description": "Check if the set contains the specified element",
+      "description": "Check if the set contains the specified element.",
       "parameters": [
         {
           "name": "value",
@@ -45,7 +45,7 @@
             "name": "T",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The element to check for.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -58,7 +58,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Add an element to the set",
+      "description": "Add an element to the set.",
       "parameters": [
         {
           "name": "value",
@@ -66,7 +66,7 @@
             "name": "T",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The element to add.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -79,7 +79,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Remove the element from the set",
+      "description": "Remove the element from the set.",
       "parameters": [
         {
           "name": "value",
@@ -87,7 +87,7 @@
             "name": "T",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The element to remove.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -100,7 +100,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Union with another set",
+      "description": "Union with another set (adds all elements from the other set to this set).",
       "parameters": [
         {
           "name": "set",
@@ -113,7 +113,7 @@
               }
             ]
           },
-          "description": "",
+          "description": "The set to union with.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -126,7 +126,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Intersect with another set",
+      "description": "Intersect with another set (keeps only elements that are in both sets).",
       "parameters": [
         {
           "name": "set",
@@ -139,7 +139,7 @@
               }
             ]
           },
-          "description": "",
+          "description": "The set to intersect with.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -152,7 +152,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Difference with another set",
+      "description": "Difference with another set (removes all elements that are in the other set).",
       "parameters": [
         {
           "name": "set",
@@ -165,7 +165,7 @@
               }
             ]
           },
-          "description": "",
+          "description": "The set to compute the difference with.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -178,7 +178,7 @@
         "name": "bool",
         "typeArguments": []
       },
-      "description": "Check if the set is a subset of another set",
+      "description": "Check if the set is a subset of another set.",
       "parameters": [
         {
           "name": "set",
@@ -191,7 +191,7 @@
               }
             ]
           },
-          "description": "",
+          "description": "The set to check against.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -204,7 +204,7 @@
         "name": "bool",
         "typeArguments": []
       },
-      "description": "Check if the set is a superset of another set",
+      "description": "Check if the set is a superset of another set.",
       "parameters": [
         {
           "name": "set",
@@ -217,7 +217,7 @@
               }
             ]
           },
-          "description": "",
+          "description": "The set to check against.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -230,7 +230,7 @@
         "name": "bool",
         "typeArguments": []
       },
-      "description": "Check if the set is a proper subset of another set",
+      "description": "Check if the set is a proper subset of another set (subset but not equal).",
       "parameters": [
         {
           "name": "set",
@@ -243,7 +243,7 @@
               }
             ]
           },
-          "description": "",
+          "description": "The set to check against.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -256,7 +256,7 @@
         "name": "bool",
         "typeArguments": []
       },
-      "description": "Check if the set is a proper superset of another set",
+      "description": "Check if the set is a proper superset of another set (superset but not equal).",
       "parameters": [
         {
           "name": "set",
@@ -269,7 +269,7 @@
               }
             ]
           },
-          "description": "",
+          "description": "The set to check against.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -282,7 +282,7 @@
         "name": "bool",
         "typeArguments": []
       },
-      "description": "Check if the set overlaps with another set",
+      "description": "Check if the set overlaps with another set (has at least one element in common).",
       "parameters": [
         {
           "name": "set",
@@ -295,7 +295,7 @@
               }
             ]
           },
-          "description": "",
+          "description": "The set to check against.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -308,7 +308,7 @@
         "name": "bool",
         "typeArguments": []
       },
-      "description": "Check if the set has the same elements as another set",
+      "description": "Check if the set has the same elements as another set.",
       "parameters": [
         {
           "name": "set",
@@ -321,7 +321,7 @@
               }
             ]
           },
-          "description": "",
+          "description": "The set to compare with.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -339,7 +339,7 @@
           }
         ]
       },
-      "description": "Convert the set to a list",
+      "description": "Convert the set to a list.",
       "parameters": [],
       "kind": "function"
     }
@@ -349,7 +349,7 @@
   "constructors": [
     {
       "parameters": [],
-      "description": ""
+      "description": "Creates an empty set."
     },
     {
       "parameters": [
@@ -359,12 +359,12 @@
             "name": "Object",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The values to add to the set.",
           "isOptional": false,
           "isVariadic": true
         }
       ],
-      "description": ""
+      "description": "Creates a set with the specified values."
     }
   ]
 }
