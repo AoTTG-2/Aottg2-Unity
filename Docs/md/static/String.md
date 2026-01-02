@@ -13,14 +13,22 @@ String manipulation functions.
 <pre class="language-typescript"><code class="lang-typescript">function FormatFloat(val: float, decimals: int) -> string</code></pre>
 > Formats a float to a string with the specified number of decimal places.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function FormatFromList(str: string, list: <a data-footnote-ref href="#user-content-fn-4">List</a>) -> string</code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function FormatFromList(str: string, list: <a data-footnote-ref href="#user-content-fn-4">List</a><string>) -> string</code></pre>
 > Equivalent to C# string.format(string, List<string>).
+> 
+> **Parameters**:
+> - `str`: The format string.
+> - `list`: The list of values to format.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function Split(toSplit: string, splitter: <a data-footnote-ref href="#user-content-fn-59">Object</a>, removeEmptyEntries: bool = False) -> <a data-footnote-ref href="#user-content-fn-4">List</a><string></code></pre>
 > Split the string into a list. Can pass in either a string to split on or a list of strings to split on, the last optional param can remove all empty entries.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function Join(list: <a data-footnote-ref href="#user-content-fn-4">List</a>, separator: string) -> string</code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function Join(list: <a data-footnote-ref href="#user-content-fn-4">List</a><string>, separator: string) -> string</code></pre>
 > Joins a list of strings into a single string with the specified separator.
+> 
+> **Parameters**:
+> - `list`: The list of strings to join.
+> - `separator`: The separator string.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function Substring(str: string, startIndex: int) -> string</code></pre>
 > Returns a substring starting from the specified index.

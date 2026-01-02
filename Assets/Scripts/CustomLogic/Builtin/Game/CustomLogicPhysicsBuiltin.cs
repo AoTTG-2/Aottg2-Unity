@@ -4,9 +4,6 @@ using Utility;
 
 namespace CustomLogic
 {
-    /// <summary>
-    /// Static Physics class. Contains some common physics functions
-    /// </summary>
     /// <code>
     /// start = Vector3(0);
     /// end = Vector3(10);
@@ -19,15 +16,15 @@ namespace CustomLogic
     /// Game.Print(result.Distance);
     /// Game.Print(result.Collider);
     /// </code>
-    [CLType(Name = "Physics", Static = true, Abstract = true)]
+    [CLType(Name = "Physics", Static = true, Abstract = true, Description = "Static Physics class. Contains some common physics functions.")]
     partial class CustomLogicPhysicsBuiltin : BuiltinClassInstance
     {
-        [CLConstructor]
+        [CLConstructor("Creates a new Physics instance.")]
         public CustomLogicPhysicsBuiltin()
         {
         }
 
-        [CLProperty(Description = "All Collide Mode")]
+        [CLProperty("All Collide Mode")]
         public static string CollideWithAll => MapObjectCollideWith.All;
 
         [CLProperty(Description = "MapObject Collide Mode")]
@@ -54,7 +51,7 @@ namespace CustomLogic
         [CLProperty(Description = "MapEditor Collide Mode")]
         public static string CollideWithMapEditor => MapObjectCollideWith.MapEditor;
 
-        [CLMethod(Description = "Performs a line cast between two points, returns a LineCastHitResult object")]
+        [CLMethod("Performs a line cast between two points, returns a LineCastHitResult object.")]
         public static CustomLogicLineCastHitResultBuiltin LineCast(CustomLogicVector3Builtin start, CustomLogicVector3Builtin end, string collideWith)
         {
             RaycastHit hit;
@@ -81,7 +78,7 @@ namespace CustomLogic
             return null;
         }
 
-        [CLMethod(Description = "Performs a line cast between two points and returns a LineCastHitResult object for each element hit.", ReturnTypeArguments = new[] { "LineCastHitResult" })]
+        [CLMethod(ReturnTypeArguments = new[] { "LineCastHitResult" }, Description = "Performs a line cast between two points and returns a LineCastHitResult object for each element hit.")]
         public static CustomLogicListBuiltin LineCastAll(CustomLogicVector3Builtin start, CustomLogicVector3Builtin end, string collideWith)
         {
             var startPosition = start.Value;
@@ -112,7 +109,7 @@ namespace CustomLogic
             return results;
         }
 
-        [CLMethod(Description = "Performs a sphere cast between two points, returns the object hit (Human, Titan, etc...).")]
+        [CLMethod("Performs a sphere cast between two points, returns the object hit (Human, Titan, etc...).")]
         public static object SphereCast(CustomLogicVector3Builtin start, CustomLogicVector3Builtin end, float radius, string collideWith)
         {
             RaycastHit hit;
@@ -127,7 +124,7 @@ namespace CustomLogic
             return null;
         }
 
-        [CLMethod(Description = "Performs a sphere cast between two points and returns a LineCastHitResult object for each element hit.", ReturnTypeArguments = new[] { "LineCastHitResult" })]
+        [CLMethod(ReturnTypeArguments = new[] { "LineCastHitResult" }, Description = "Performs a sphere cast between two points and returns a LineCastHitResult object for each element hit.")]
         public static CustomLogicListBuiltin SphereCastAll(CustomLogicVector3Builtin start, CustomLogicVector3Builtin end, float radius, string collideWith)
         {
             var startPosition = start.Value;
@@ -158,7 +155,7 @@ namespace CustomLogic
             return results;
         }
 
-        [CLMethod(Description = "Performs a box cast between two points, returns the object hit (Human, Titan, etc...).")]
+        [CLMethod("Performs a box cast between two points, returns the object hit (Human, Titan, etc...).")]
         public static object BoxCast(CustomLogicVector3Builtin start, CustomLogicVector3Builtin end, CustomLogicVector3Builtin dimensions, CustomLogicQuaternionBuiltin orientation, string collideWith)
         {
             var startPosition = start.Value;
@@ -173,7 +170,7 @@ namespace CustomLogic
             return null;
         }
 
-        [CLMethod(Description = "Performs a box cast between two points and returns a LineCastHitResult object for each element hit.", ReturnTypeArguments = new[] { "LineCastHitResult" })]
+        [CLMethod(ReturnTypeArguments = new[] { "LineCastHitResult" }, Description = "Performs a box cast between two points and returns a LineCastHitResult object for each element hit.")]
         public static CustomLogicListBuiltin BoxCastAll(CustomLogicVector3Builtin start, CustomLogicVector3Builtin end, CustomLogicVector3Builtin dimensions, CustomLogicQuaternionBuiltin orientation, string collideWith)
         {
             var startPosition = start.Value;
@@ -204,13 +201,13 @@ namespace CustomLogic
             return results;
         }
 
-        [CLMethod(Description = "Returns a point on the given collider that is closest to the specified location.")]
+        [CLMethod("Returns a point on the given collider that is closest to the specified location.")]
         public static CustomLogicVector3Builtin ClosestPoint(CustomLogicVector3Builtin point, CustomLogicColliderBuiltin collider, CustomLogicVector3Builtin position, CustomLogicQuaternionBuiltin rotation)
         {
             return new CustomLogicVector3Builtin(Physics.ClosestPoint(point.Value, collider.collider, position.Value, rotation.Value));
         }
 
-        [CLMethod(Description = "Compute the minimal translation required to separate the given colliders apart at specified poses.")]
+        [CLMethod("Compute the minimal translation required to separate the given colliders apart at specified poses.")]
         public static CustomLogicVector3Builtin ComputePenetration(CustomLogicColliderBuiltin colliderA, CustomLogicVector3Builtin positionA, CustomLogicQuaternionBuiltin rotationA, CustomLogicColliderBuiltin colliderB, CustomLogicVector3Builtin positionB, CustomLogicQuaternionBuiltin rotationB)
         {
 
@@ -218,7 +215,7 @@ namespace CustomLogic
             return new CustomLogicVector3Builtin(direction * distance);
         }
 
-        [CLMethod(Description = "Check if the the given colliders at specified poses are apart or overlapping.")]
+        [CLMethod("Check if the the given colliders at specified poses are apart or overlapping.")]
         public static bool AreCollidersOverlapping(CustomLogicColliderBuiltin colliderA, CustomLogicVector3Builtin positionA, CustomLogicQuaternionBuiltin rotationA, CustomLogicColliderBuiltin colliderB, CustomLogicVector3Builtin positionB, CustomLogicQuaternionBuiltin rotationB)
         {
             return Physics.ComputePenetration(colliderA.collider, positionA.Value, rotationA.Value, colliderB.collider, positionB, rotationB, out Vector3 direction, out float distance);

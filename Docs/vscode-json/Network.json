@@ -14,7 +14,7 @@
         "name": "bool",
         "typeArguments": []
       },
-      "description": "Is the player the master client",
+      "description": "Is the player the master client.",
       "readonly": true,
       "private": false
     },
@@ -29,7 +29,7 @@
           }
         ]
       },
-      "description": "The list of players in the room",
+      "description": "The list of players in the room.",
       "readonly": true,
       "private": false
     },
@@ -39,7 +39,7 @@
         "name": "Player",
         "typeArguments": []
       },
-      "description": "The master client",
+      "description": "The master client.",
       "readonly": true,
       "private": false
     },
@@ -49,7 +49,7 @@
         "name": "Player",
         "typeArguments": []
       },
-      "description": "The local player",
+      "description": "The local player.",
       "readonly": true,
       "private": false
     },
@@ -59,7 +59,7 @@
         "name": "double",
         "typeArguments": []
       },
-      "description": "The network time",
+      "description": "The network time.",
       "readonly": true,
       "private": false
     },
@@ -69,7 +69,7 @@
         "name": "int",
         "typeArguments": []
       },
-      "description": "The local player's ping",
+      "description": "The local player's ping.",
       "readonly": true,
       "private": false
     }
@@ -81,7 +81,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Send a message to a player",
+      "description": "Send a message to a player.",
       "parameters": [
         {
           "name": "player",
@@ -112,7 +112,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Send a message to all players",
+      "description": "Send a message to all players.",
       "parameters": [
         {
           "name": "message",
@@ -133,7 +133,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Send a message to all players except the sender",
+      "description": "Send a message to all players except the sender.",
       "parameters": [
         {
           "name": "message",
@@ -175,7 +175,7 @@
         "name": "double",
         "typeArguments": []
       },
-      "description": "Get the difference between two photon timestamps",
+      "description": "Get the difference between two photon timestamps.",
       "parameters": [
         {
           "name": "timestamp1",

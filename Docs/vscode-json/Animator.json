@@ -1,7 +1,7 @@
 {
   "kind": "component",
   "name": "Animator",
-  "description": "",
+  "description": "Represents an Animator component for controlling animations using Animator Controller.",
   "instanceFields": [],
   "instanceMethods": [
     {
@@ -18,7 +18,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the animation to check.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -28,7 +28,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The animation layer to check (default: 0).",
           "isOptional": true,
           "isVariadic": false
         }
@@ -49,7 +49,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the animation to play.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -59,7 +59,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The fade time in seconds for cross-fading (default: 0.1).",
           "isOptional": true,
           "isVariadic": false
         },
@@ -69,7 +69,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The animation layer to play on (default: 0).",
           "isOptional": true,
           "isVariadic": false
         }
@@ -90,7 +90,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the animation to play.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -100,7 +100,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The normalized time (0-1) to start the animation from.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -110,7 +110,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The fade time in seconds for cross-fading (default: 0.1).",
           "isOptional": true,
           "isVariadic": false
         },
@@ -120,7 +120,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The animation layer to play on (default: 0).",
           "isOptional": true,
           "isVariadic": false
         }
@@ -141,7 +141,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The playback speed multiplier (1.0 = normal speed).",
           "isOptional": false,
           "isVariadic": false
         }
@@ -162,7 +162,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the animation.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -183,7 +183,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the float parameter.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -204,7 +204,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the int parameter.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -225,7 +225,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the bool parameter.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -246,7 +246,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the float parameter.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -256,7 +256,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The value to set.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -277,7 +277,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the int parameter.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -287,7 +287,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The value to set.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -308,7 +308,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the bool parameter.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -318,7 +318,7 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The value to set.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -339,7 +339,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the trigger parameter.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -360,7 +360,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the trigger parameter to reset.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -381,7 +381,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The layer index.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -391,7 +391,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The weight value (0-1) to set.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -412,7 +412,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The layer index.",
           "isOptional": false,
           "isVariadic": false
         }
@@ -433,7 +433,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The animation layer to check (default: 0).",
           "isOptional": true,
           "isVariadic": false
         }

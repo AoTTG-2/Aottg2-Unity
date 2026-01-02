@@ -1,7 +1,7 @@
 {
   "kind": "extension",
   "name": "Physics",
-  "description": "Static Physics class. Contains some common physics functions",
+  "description": "Static Physics class. Contains some common physics functions.",
   "extends": [
     "Object"
   ],
@@ -106,7 +106,7 @@
         "name": "LineCastHitResult",
         "typeArguments": []
       },
-      "description": "Performs a line cast between two points, returns a LineCastHitResult object",
+      "description": "Performs a line cast between two points, returns a LineCastHitResult object.",
       "parameters": [
         {
           "name": "start",

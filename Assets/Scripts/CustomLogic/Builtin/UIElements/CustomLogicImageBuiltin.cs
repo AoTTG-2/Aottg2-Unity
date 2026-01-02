@@ -4,9 +4,6 @@ using Utility;
 
 namespace CustomLogic
 {
-    /// <summary>
-    /// UI element for setting background images on visual elements
-    /// </summary>
     /// <code>
     /// # Example: Create a background image
     /// container = UI.CreateContainer();
@@ -14,29 +11,27 @@ namespace CustomLogic
     /// image.SetImage("Icons/Game/BladeIcon");
     /// container.SetBackgroundImage(image);
     /// </code>
-    [CLType(Name = "Image", Abstract = true)]
+    [CLType(Name = "Image", Abstract = true, Description = "UI element for setting background images on visual elements.")]
     partial class CustomLogicImageBuiltin : BuiltinClassInstance
     {
         private string _currentImagePath;
         private Texture2D _currentTexture;
 
-        [CLConstructor]
+        [CLConstructor("Creates a new Image instance.")]
         public CustomLogicImageBuiltin()
         {
             _currentImagePath = string.Empty;
             _currentTexture = null;
         }
 
-        /// <summary>
-        /// Set the image from a resource path
-        /// </summary>
-        /// <param name="imagePath">Path to the image resource (e.g., "Icons/Game/BladeIcon")</param>
         /// <example>
         /// image.SetImage("Icons/Game/BladeIcon");
         /// image.SetImage("Icons/Specials/NoneSpecialIcon");
         /// </example>
-        [CLMethod]
-        public CustomLogicImageBuiltin SetImage(string imagePath)
+        [CLMethod("Set the image from a resource path.")]
+        public CustomLogicImageBuiltin SetImage(
+            [CLParam("Path to the image resource (e.g., \"Icons/Game/BladeIcon\")")]
+            string imagePath)
         {
             if (string.IsNullOrEmpty(imagePath))
             {
@@ -72,10 +67,7 @@ namespace CustomLogic
             return this;
         }
 
-        /// <summary>
-        /// Get the current image path
-        /// </summary>
-        [CLProperty]
+        [CLProperty("The current image path. Setting this will load the image from the resource path.")]
         public string ImagePath
         {
             get => _currentImagePath;
