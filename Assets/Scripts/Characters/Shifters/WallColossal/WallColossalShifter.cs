@@ -12,6 +12,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using Utility;
+using Photon.Realtime;
 
 namespace Characters
 {
@@ -45,6 +46,16 @@ namespace Characters
         public float BlowAwayMaxDistance = 60f;
         public float BlowAwaySteamTime = 0.5f;
 
+        public override void OnPlayerEnteredRoom(Player player)
+        {
+            base.OnPlayerEnteredRoom(player);
+            if (IsMine())
+            {
+                Cache.PhotonView.RPC(nameof(SetLeftHandStateRPC), player, new object[] { (byte)_leftHandState });
+                Cache.PhotonView.RPC(nameof(SetRightHandStateRPC), player, new object[] { (byte)_rightHandState });
+                Cache.PhotonView.RPC(nameof(SetSteamStateRPC), player, new object[] { (byte)_steamState });
+            }
+        }
 
         public override bool CheckNapeAngle(Vector3 hitPosition, float maxAngle)
         {
