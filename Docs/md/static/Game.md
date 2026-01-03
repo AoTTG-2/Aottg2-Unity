@@ -23,42 +23,42 @@ Game functions such as spawning titans and managing game state.
 |DefaultAddKillScore|bool|False|Is the kill score added by default?|
 |ShowScoreboardLoadout|bool|False|Is the loadout shown in the scoreboard?|
 |ShowScoreboardStatus|bool|False|Is the status shown in the scoreboard?|
-|ForcedCharacterType|string|False|Forced character type|
-|ForcedLoadout|string|False|Forced loadout|
+|ForcedCharacterType|string|False|Forced character type. Refer to [CharacterTypeEnum](../static/CharacterTypeEnum.md)|
+|ForcedLoadout|string|False|Forced loadout. Refer to [LoadoutEnum](../static/LoadoutEnum.md)|
 
 
 ### Static Methods
-<pre class="language-typescript"><code class="lang-typescript">function Debug(message: <a data-footnote-ref href="#user-content-fn-59">Object</a>)</code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function Debug(message: <a data-footnote-ref href="#user-content-fn-82">Object</a>)</code></pre>
 > Print a debug statement to the console
 > 
 > **Parameters**:
 > - `message`: The message to print.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function Print(message: <a data-footnote-ref href="#user-content-fn-59">Object</a>)</code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function Print(message: <a data-footnote-ref href="#user-content-fn-82">Object</a>)</code></pre>
 > Print a message to the chat
 > 
 > **Parameters**:
 > - `message`: The message to print.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function PrintAll(message: <a data-footnote-ref href="#user-content-fn-59">Object</a>)</code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function PrintAll(message: <a data-footnote-ref href="#user-content-fn-82">Object</a>)</code></pre>
 > Print a message to all players
 > 
 > **Parameters**:
 > - `message`: The message to print.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function GetGeneralSetting(settingName: string) -> <a data-footnote-ref href="#user-content-fn-59">Object</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function GetGeneralSetting(settingName: string) -> <a data-footnote-ref href="#user-content-fn-82">Object</a></code></pre>
 > Get a general setting
 > 
 > **Parameters**:
 > - `settingName`: The name of the setting to get.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function GetTitanSetting(settingName: string) -> <a data-footnote-ref href="#user-content-fn-59">Object</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function GetTitanSetting(settingName: string) -> <a data-footnote-ref href="#user-content-fn-82">Object</a></code></pre>
 > Get a titan setting
 > 
 > **Parameters**:
 > - `settingName`: The name of the setting to get.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function GetMiscSetting(settingName: string) -> <a data-footnote-ref href="#user-content-fn-59">Object</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function GetMiscSetting(settingName: string) -> <a data-footnote-ref href="#user-content-fn-82">Object</a></code></pre>
 > Get a misc setting
 > 
 > **Parameters**:
@@ -80,13 +80,13 @@ Game functions such as spawning titans and managing game state.
 > Spawn a titan
 > 
 > **Parameters**:
-> - `type`: The type of titan to spawn.
+> - `type`: The type of titan to spawn. Refer to [TitanTypeEnum](../static/TitanTypeEnum.md)
 > 
 <pre class="language-typescript"><code class="lang-typescript">function SpawnTitanAt(type: string, position: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, rotationY: float = 0) -> <a data-footnote-ref href="#user-content-fn-28">Titan</a></code></pre>
 > Spawn a titan at a position
 > 
 > **Parameters**:
-> - `type`: The type of titan to spawn.
+> - `type`: The type of titan to spawn. Refer to [TitanTypeEnum](../static/TitanTypeEnum.md)
 > - `position`: The spawn position.
 > - `rotationY`: The Y rotation in degrees (default: 0).
 > 
@@ -94,21 +94,21 @@ Game functions such as spawning titans and managing game state.
 > Spawn titans
 > 
 > **Parameters**:
-> - `type`: The type of titan to spawn.
+> - `type`: The type of titan to spawn. Refer to [TitanTypeEnum](../static/TitanTypeEnum.md)
 > - `count`: The number of titans to spawn.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function SpawnTitansAsync(type: string, count: int)</code></pre>
 > Spawn titans asynchronously
 > 
 > **Parameters**:
-> - `type`: The type of titan to spawn.
+> - `type`: The type of titan to spawn. Refer to [TitanTypeEnum](../static/TitanTypeEnum.md)
 > - `count`: The number of titans to spawn.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function SpawnTitansAt(type: string, count: int, position: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, rotationY: float = 0) -> <a data-footnote-ref href="#user-content-fn-4">List</a><<a data-footnote-ref href="#user-content-fn-28">Titan</a>></code></pre>
 > Spawn titans at a position
 > 
 > **Parameters**:
-> - `type`: The type of titan to spawn.
+> - `type`: The type of titan to spawn. Refer to [TitanTypeEnum](../static/TitanTypeEnum.md)
 > - `count`: The number of titans to spawn.
 > - `position`: The spawn position.
 > - `rotationY`: The Y rotation in degrees (default: 0).
@@ -117,7 +117,7 @@ Game functions such as spawning titans and managing game state.
 > Spawn titans at a position asynchronously
 > 
 > **Parameters**:
-> - `type`: The type of titan to spawn.
+> - `type`: The type of titan to spawn. Refer to [TitanTypeEnum](../static/TitanTypeEnum.md)
 > - `count`: The number of titans to spawn.
 > - `position`: The spawn position.
 > - `rotationY`: The Y rotation in degrees (default: 0).
@@ -126,35 +126,35 @@ Game functions such as spawning titans and managing game state.
 > Spawn a shifter
 > 
 > **Parameters**:
-> - `type`: The type of shifter to spawn.
+> - `type`: The type of shifter to spawn. Refer to [ShifterTypeEnum](../static/ShifterTypeEnum.md)
 > 
 <pre class="language-typescript"><code class="lang-typescript">function SpawnShifterAt(type: string, position: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, rotationY: float = 0) -> <a data-footnote-ref href="#user-content-fn-27">Shifter</a></code></pre>
 > Spawn a shifter at a position
 > 
 > **Parameters**:
-> - `type`: The type of shifter to spawn.
+> - `type`: The type of shifter to spawn. Refer to [ShifterTypeEnum](../static/ShifterTypeEnum.md)
 > - `position`: The spawn position.
 > - `rotationY`: The Y rotation in degrees (default: 0).
 > 
-<pre class="language-typescript"><code class="lang-typescript">function SpawnProjectile(projectileName: string, position: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, rotation: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, velocity: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, gravity: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, liveTime: float, team: string, extraParam: <a data-footnote-ref href="#user-content-fn-59">Object</a> = null, extraParam2: <a data-footnote-ref href="#user-content-fn-59">Object</a> = null)</code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function SpawnProjectile(projectileName: string, position: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, rotation: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, velocity: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, gravity: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, liveTime: float, team: string, extraParam: <a data-footnote-ref href="#user-content-fn-82">Object</a> = null, extraParam2: <a data-footnote-ref href="#user-content-fn-82">Object</a> = null)</code></pre>
 > Spawn a projectile. Note: `extraParam` and `extraParam2` are optional. They may or may not be used depending on the value of `projectileName`
 > 
 > **Parameters**:
-> - `projectileName`: Name of the projectile. Valid values are: "Thunderspear", "CannonBall", "Flare", "BladeThrow", "SmokeBomb", "Rock1"
+> - `projectileName`: Name of the projectile. Refer to [ProjectileNameEnum](../static/ProjectileNameEnum.md)
 > - `position`: Spawn position
 > - `rotation`: Spawn rotation
 > - `velocity`: Spawn velocity
 > - `gravity`: Spawn gravity
 > - `liveTime`: Live time of the projectile
-> - `team`: The team that the projectile belongs to
+> - `team`: The team that the projectile belongs to. Refer to [TeamEnum](../static/TeamEnum.md)
 > - `extraParam`: Optional. Type depends on projectile: Thunderspear: float (explosion radius), Flare: Color (flare color), Rock1: float (rock size), Others: unused
 > - `extraParam2`: Optional. Type depends on projectile: Thunderspear: Color (projectile color), Others: unused
 > 
-<pre class="language-typescript"><code class="lang-typescript">function SpawnProjectileWithOwner(projectileName: string, position: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, rotation: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, velocity: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, gravity: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, liveTime: float, owner: <a data-footnote-ref href="#user-content-fn-21">Character</a>, extraParam: <a data-footnote-ref href="#user-content-fn-59">Object</a> = null, extraParam2: <a data-footnote-ref href="#user-content-fn-59">Object</a> = null)</code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function SpawnProjectileWithOwner(projectileName: string, position: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, rotation: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, velocity: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, gravity: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, liveTime: float, owner: <a data-footnote-ref href="#user-content-fn-21">Character</a>, extraParam: <a data-footnote-ref href="#user-content-fn-82">Object</a> = null, extraParam2: <a data-footnote-ref href="#user-content-fn-82">Object</a> = null)</code></pre>
 > Spawn a projectile with an owner. Note: `extraParam` and `extraParam2` are optional. They may or may not be used depending on the value of `projectileName`
 > 
 > **Parameters**:
-> - `projectileName`: Name of the projectile. Valid values are: "Thunderspear", "CannonBall", "Flare", "BladeThrow", "SmokeBomb", "Rock1"
+> - `projectileName`: Name of the projectile. Refer to [ProjectileNameEnum](../static/ProjectileNameEnum.md)
 > - `position`: Spawn position
 > - `rotation`: Spawn rotation
 > - `velocity`: Spawn velocity
@@ -168,22 +168,22 @@ Game functions such as spawning titans and managing game state.
 > Spawn an effect
 > 
 > **Parameters**:
-> - `effectName`: Name of the effect. Effect names can be found [here](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/refs/heads/main/Assets/Scripts/Effects/EffectPrefabs.cs) (left-hand variable name)
+> - `effectName`: Name of the effect. Refer to [EffectNameEnum](../static/EffectNameEnum.md)
 > - `position`: Spawn position
 > - `rotation`: Spawn rotation
 > - `scale`: Spawn scale
 > - `tsExplodeColor`: Thunderspear explode color (Only valid when effectName is "ThunderspearExplode")
-> - `tsKillSound`: Optional. Thunderspear explode sound (Only valid when effectName is "ThunderspearExplode"). Valid values are: "Kill", "Air", "Ground", "ArmorHit", "CloseShot", "MaxRangeShot"
+> - `tsKillSound`: Optional. Thunderspear explode sound (Only valid when effectName is "ThunderspearExplode"). Refer to [TSKillSoundEnum](../static/TSKillSoundEnum.md)
 > 
 <pre class="language-typescript"><code class="lang-typescript">function SpawnUnscaledEffect(effectName: string, position: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, rotation: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, tsExplodeColor: <a data-footnote-ref href="#user-content-fn-0">Color</a> = null, tsKillSound: string = null)</code></pre>
 > Spawn an unscaled effect
 > 
 > **Parameters**:
-> - `effectName`: Name of the effect. Effect names can be found [here](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/refs/heads/main/Assets/Scripts/Effects/EffectPrefabs.cs) (left-hand variable name)
+> - `effectName`: Name of the effect. Refer to [EffectNameEnum](../static/EffectNameEnum.md)
 > - `position`: Spawn position
 > - `rotation`: Spawn rotation
 > - `tsExplodeColor`: Thunderspear explode color (Only valid when effectName is "ThunderspearExplode")
-> - `tsKillSound`: Optional. Thunderspear explode sound (Only valid when effectName is "ThunderspearExplode"). Valid values are: "Kill", "Air", "Ground", "ArmorHit", "CloseShot", "MaxRangeShot"
+> - `tsKillSound`: Optional. Thunderspear explode sound (Only valid when effectName is "ThunderspearExplode"). Refer to [TSKillSoundEnum](../static/TSKillSoundEnum.md)
 > 
 <pre class="language-typescript"><code class="lang-typescript">function SpawnPlayer(player: <a data-footnote-ref href="#user-content-fn-25">Player</a>, force: bool)</code></pre>
 > Spawn a player
@@ -292,33 +292,56 @@ Game functions such as spawning titans and managing game state.
 [^28]: [Titan](../objects/Titan.md)
 [^29]: [Transform](../objects/Transform.md)
 [^30]: [WallColossal](../objects/WallColossal.md)
-[^31]: [Camera](../static/Camera.md)
-[^32]: [Cutscene](../static/Cutscene.md)
-[^33]: [Game](../static/Game.md)
-[^34]: [Input](../static/Input.md)
-[^35]: [Locale](../static/Locale.md)
-[^36]: [Map](../static/Map.md)
-[^37]: [Network](../static/Network.md)
-[^38]: [PersistentData](../static/PersistentData.md)
-[^39]: [Physics](../static/Physics.md)
-[^40]: [RoomData](../static/RoomData.md)
-[^41]: [Time](../static/Time.md)
-[^42]: [Button](../objects/Button.md)
-[^43]: [Dropdown](../objects/Dropdown.md)
-[^44]: [Icon](../objects/Icon.md)
-[^45]: [Image](../objects/Image.md)
-[^46]: [Label](../objects/Label.md)
-[^47]: [ProgressBar](../objects/ProgressBar.md)
-[^48]: [ScrollView](../objects/ScrollView.md)
-[^49]: [Slider](../objects/Slider.md)
-[^50]: [TextField](../objects/TextField.md)
-[^51]: [Toggle](../objects/Toggle.md)
-[^52]: [UI](../static/UI.md)
-[^53]: [VisualElement](../objects/VisualElement.md)
-[^54]: [Convert](../static/Convert.md)
-[^55]: [Json](../static/Json.md)
-[^56]: [Math](../static/Math.md)
-[^57]: [Random](../objects/Random.md)
-[^58]: [String](../static/String.md)
-[^59]: [Object](../objects/Object.md)
-[^60]: [Component](../objects/Component.md)
+[^31]: [CharacterTypeEnum](../static/CharacterTypeEnum.md)
+[^32]: [CollideModeEnum](../static/CollideModeEnum.md)
+[^33]: [CollideWithEnum](../static/CollideWithEnum.md)
+[^34]: [CollisionDetectionModeEnum](../static/CollisionDetectionModeEnum.md)
+[^35]: [EffectNameEnum](../static/EffectNameEnum.md)
+[^36]: [ForceModeEnum](../static/ForceModeEnum.md)
+[^37]: [HandStateEnum](../static/HandStateEnum.md)
+[^38]: [HumanParticleEffectEnum](../static/HumanParticleEffectEnum.md)
+[^39]: [InputCategoryEnum](../static/InputCategoryEnum.md)
+[^40]: [LanguageEnum](../static/LanguageEnum.md)
+[^41]: [LoadoutEnum](../static/LoadoutEnum.md)
+[^42]: [OutlineModeEnum](../static/OutlineModeEnum.md)
+[^43]: [PhysicMaterialCombineEnum](../static/PhysicMaterialCombineEnum.md)
+[^44]: [PlayerStatusEnum](../static/PlayerStatusEnum.md)
+[^45]: [ProjectileNameEnum](../static/ProjectileNameEnum.md)
+[^46]: [ScaleModeEnum](../static/ScaleModeEnum.md)
+[^47]: [ShifterTypeEnum](../static/ShifterTypeEnum.md)
+[^48]: [SliderDirectionEnum](../static/SliderDirectionEnum.md)
+[^49]: [SteamStateEnum](../static/SteamStateEnum.md)
+[^50]: [TeamEnum](../static/TeamEnum.md)
+[^51]: [TitanTypeEnum](../static/TitanTypeEnum.md)
+[^52]: [TSKillSoundEnum](../static/TSKillSoundEnum.md)
+[^53]: [WeaponEnum](../static/WeaponEnum.md)
+[^54]: [Camera](../static/Camera.md)
+[^55]: [Cutscene](../static/Cutscene.md)
+[^56]: [Game](../static/Game.md)
+[^57]: [Input](../static/Input.md)
+[^58]: [Locale](../static/Locale.md)
+[^59]: [Map](../static/Map.md)
+[^60]: [Network](../static/Network.md)
+[^61]: [PersistentData](../static/PersistentData.md)
+[^62]: [Physics](../static/Physics.md)
+[^63]: [RoomData](../static/RoomData.md)
+[^64]: [Time](../static/Time.md)
+[^65]: [Button](../objects/Button.md)
+[^66]: [Dropdown](../objects/Dropdown.md)
+[^67]: [Icon](../objects/Icon.md)
+[^68]: [Image](../objects/Image.md)
+[^69]: [Label](../objects/Label.md)
+[^70]: [ProgressBar](../objects/ProgressBar.md)
+[^71]: [ScrollView](../objects/ScrollView.md)
+[^72]: [Slider](../objects/Slider.md)
+[^73]: [TextField](../objects/TextField.md)
+[^74]: [Toggle](../objects/Toggle.md)
+[^75]: [UI](../static/UI.md)
+[^76]: [VisualElement](../objects/VisualElement.md)
+[^77]: [Convert](../static/Convert.md)
+[^78]: [Json](../static/Json.md)
+[^79]: [Math](../static/Math.md)
+[^80]: [Random](../objects/Random.md)
+[^81]: [String](../static/String.md)
+[^82]: [Object](../objects/Object.md)
+[^83]: [Component](../objects/Component.md)

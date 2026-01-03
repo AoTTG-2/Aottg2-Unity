@@ -7,8 +7,8 @@ namespace CustomLogic
     [CLType(Name = "String", Static = true, Abstract = true, Description = "String manipulation functions.")]
     partial class CustomLogicStringBuiltin : BuiltinClassInstance
     {
-        [CLConstructor("Creates a new String instance.")]
-        public CustomLogicStringBuiltin() { }
+        [CLConstructor]
+        public CustomLogicStringBuiltin(){}
 
         [CLProperty("Returns the newline character.")]
         public static string Newline => "\n";

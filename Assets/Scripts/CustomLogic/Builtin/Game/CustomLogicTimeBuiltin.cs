@@ -5,8 +5,8 @@ namespace CustomLogic
     [CLType(Name = "Time", Static = true, Abstract = true, Description = "Time functions.")]
     partial class CustomLogicTimeBuiltin : BuiltinClassInstance
     {
-        [CLConstructor("Creates a new Time instance.")]
-        public CustomLogicTimeBuiltin() { }
+        [CLConstructor]
+        public CustomLogicTimeBuiltin(){}
 
         [CLProperty("Time between each tick (0.02 seconds)")]
         public static float TickTime => Time.fixedDeltaTime;

@@ -57,7 +57,7 @@ namespace CustomLogic
         }
 
         // Combine Mode
-        [CLProperty("The friction combine mode of the material.")]
+        [CLProperty("The friction combine mode of the material.", Enum = typeof(CustomLogicPhysicMaterialCombineEnum))]
         public int FrictionCombine
         {
             get => (int)Value.FrictionCombine;
@@ -65,7 +65,7 @@ namespace CustomLogic
         }
 
         // Bounce Combine Mode
-        [CLProperty("The bounce combine mode of the material.")]
+        [CLProperty("The bounce combine mode of the material.", Enum = typeof(CustomLogicPhysicMaterialCombineEnum))]
         public int BounceCombine
         {
             get => (int)Value.BounceCombine;

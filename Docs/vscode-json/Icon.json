@@ -24,7 +24,7 @@
         "name": "string",
         "typeArguments": []
       },
-      "description": "The scale mode for the icon. Valid values: ScaleAndCrop, ScaleToFit, StretchToFill.",
+      "description": "The scale mode for the icon. Refer to ScaleModeEnum",
       "readonly": false,
       "private": false,
       "deprecated": ""

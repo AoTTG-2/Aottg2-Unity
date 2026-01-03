@@ -200,7 +200,7 @@
         "name": "string",
         "typeArguments": []
       },
-      "description": "Team character belongs to.",
+      "description": "Team character belongs to. Refer to TeamEnum",
       "readonly": false,
       "private": false,
       "deprecated": ""
@@ -760,7 +760,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "Force mode. Valid modes are Force, Acceleration, Impulse, VelocityChange.",
+          "description": "Force mode. Default is Acceleration. Refer to ForceModeEnum",
           "isOptional": true,
           "isVariadic": false
         }
@@ -814,7 +814,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "Outline mode. Valid modes are: OutlineAll, OutlineVisible, OutlineHidden, OutlineAndSilhouette, SilhouetteOnly, OutlineAndLightenColor.",
+          "description": "Outline mode. Default is OutlineAll. Refer to OutlineModeEnum",
           "isOptional": true,
           "isVariadic": false
         }

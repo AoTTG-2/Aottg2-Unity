@@ -20,11 +20,8 @@ namespace CustomLogic
 
         private static InGameMenu Menu => (InGameMenu)UIManager.CurrentMenu;
 
-        [CLConstructor("Creates a new UI instance.")]
-        public CustomLogicUIBuiltin()
-        {
-
-        }
+        [CLConstructor]
+        public CustomLogicUIBuiltin(){}
 
         public void OnPlayerJoin(Player player)
         {

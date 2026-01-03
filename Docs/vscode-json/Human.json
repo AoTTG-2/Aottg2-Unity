@@ -13,7 +13,7 @@
         "name": "string",
         "typeArguments": []
       },
-      "description": "The weapon the human is using.",
+      "description": "The weapon the human is using. Refer to WeaponEnum",
       "readonly": false,
       "private": false,
       "deprecated": ""
@@ -592,7 +592,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Sets the weapon for the human. Available weapons: \"Blade\", \"AHSS\", \"APG\", \"Thunderspear\".",
+      "description": "Sets the weapon for the human.",
       "parameters": [
         {
           "name": "weapon",
@@ -600,7 +600,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "Name of the weapon. Available weapons: \"Blade\", \"AHSS\", \"APG\", \"Thunderspear\"",
+          "description": "Name of the weapon. Refer to WeaponEnum",
           "isOptional": false,
           "isVariadic": false
         }
@@ -625,7 +625,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Enables or disables a particle effect. Available effects: Buff1, Buff2, Fire1.",
+      "description": "Enables or disables a particle effect.",
       "parameters": [
         {
           "name": "effectName",
@@ -633,7 +633,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "Name of the effect: \"Buff1\", \"Buff2\", or \"Fire1\"",
+          "description": "Name of the effect. Refer to HumanParticleEffectEnum",
           "isOptional": false,
           "isVariadic": false
         },

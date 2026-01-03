@@ -110,14 +110,25 @@ namespace CustomLogic.Editor
             if (properties == null || properties.Length == 0)
                 return new List<Field>();
 
-            return properties.Select(p => new Field
+            return properties.Select(p =>
             {
-                Label = p.Name,
-                Type = ConvertTypeReference(p.Type),
-                Description = NormalizeDescription(p.Info?.Summary),
-                Readonly = p.IsReadonly,
-                Private = false,
-                Deprecated = p.ObsoleteMessage
+                var description = NormalizeDescription(p.Info?.Summary);
+                if (!string.IsNullOrEmpty(p.EnumName))
+                {
+                    if (!string.IsNullOrEmpty(description))
+                        description += " ";
+                    description += $"Refer to {p.EnumName}";
+                }
+                
+                return new Field
+                {
+                    Label = p.Name,
+                    Type = ConvertTypeReference(p.Type),
+                    Description = description,
+                    Readonly = p.IsReadonly,
+                    Private = false,
+                    Deprecated = p.ObsoleteMessage
+                };
             }).ToList();
         }
 
@@ -158,13 +169,24 @@ namespace CustomLogic.Editor
             if (parameters == null || parameters.Length == 0)
                 return new List<Parameter>();
 
-            return parameters.Select(p => new Parameter
+            return parameters.Select(p =>
             {
-                Name = p.Name,
-                Type = ConvertTypeReference(p.Type),
-                Description = NormalizeDescription(p.Info?.Summary),
-                IsOptional = p.IsOptional,
-                IsVariadic = p.IsVariadic
+                var description = NormalizeDescription(p.Info?.Summary);
+                if (!string.IsNullOrEmpty(p.EnumName))
+                {
+                    if (!string.IsNullOrEmpty(description))
+                        description += " ";
+                    description += $"Refer to {p.EnumName}";
+                }
+                
+                return new Parameter
+                {
+                    Name = p.Name,
+                    Type = ConvertTypeReference(p.Type),
+                    Description = description,
+                    IsOptional = p.IsOptional,
+                    IsVariadic = p.IsVariadic
+                };
             }).ToList();
         }
 

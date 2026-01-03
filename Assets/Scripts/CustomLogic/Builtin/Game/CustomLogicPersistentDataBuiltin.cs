@@ -3,19 +3,14 @@ using System.IO;
 using Utility;
 using SimpleJSONFixed;
 using System.Linq;
-using static UnityEngine.UIElements.UxmlAttributeDescription;
-using System.Runtime.CompilerServices;
-using System.Xml;
 
 namespace CustomLogic
 {
     [CLType(Name = "PersistentData", Static = true, Abstract = true, Description = "Store and retrieve persistent data. Persistent data can be saved and loaded from file. Supports float, int, string, and bool types. Note that any game mode may use the same file names, so it is recommended that you choose unique file names when saving and loading. Saved files are located in Documents/Aottg2/PersistentData.")]
     partial class CustomLogicPersistentDataBuiltin : BuiltinClassInstance
     {
-        [CLConstructor("Creates a new PersistentData instance.")]
-        public CustomLogicPersistentDataBuiltin()
-        {
-        }
+        [CLConstructor]
+        public CustomLogicPersistentDataBuiltin(){}
 
         [CLMethod("Sets the property with given name to the object value. Valid value types are float, string, bool, and int.")]
         public static void SetProperty(

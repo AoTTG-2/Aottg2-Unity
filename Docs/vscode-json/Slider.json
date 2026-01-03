@@ -68,7 +68,7 @@
         "name": "string",
         "typeArguments": []
       },
-      "description": "The direction of the slider (Horizontal or Vertical).",
+      "description": "The direction of the slider. Refer to SliderDirectionEnum",
       "readonly": false,
       "private": false,
       "deprecated": ""

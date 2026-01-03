@@ -1,14 +1,12 @@
-﻿using Photon.Realtime;
-using System.Collections.Generic;
-using UnityEngine.SocialPlatforms;
+﻿using System.Collections.Generic;
 
 namespace CustomLogic
 {
     [CLType(Name = "RoomData", Static = true, Abstract = true, Description = "Store and retrieve room variables. Room data is cleared upon joining or creating a new lobby and does not reset between game rounds. Supports float, string, bool, and int types. Note that RoomData is local only and does not sync. You must use network messages to sync room variables.")]
     partial class CustomLogicRoomDataBuiltin : BuiltinClassInstance
     {
-        [CLConstructor("Creates a new RoomData instance.")]
-        public CustomLogicRoomDataBuiltin() { }
+        [CLConstructor]
+        public CustomLogicRoomDataBuiltin(){}
 
         [CLMethod("Sets the property with given name to the object value. Valid value types are float, string, bool, and int.")]
         public static void SetProperty(

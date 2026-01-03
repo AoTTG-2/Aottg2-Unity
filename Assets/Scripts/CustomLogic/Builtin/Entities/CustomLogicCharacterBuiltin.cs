@@ -163,7 +163,7 @@ namespace CustomLogic
         [CLProperty("The character's target direction.")]
         public CustomLogicVector3Builtin TargetDirection => new CustomLogicVector3Builtin(Character.GetTargetDirection());
 
-        [CLProperty("Team character belongs to.")]
+        [CLProperty("Team character belongs to.", Enum = typeof(CustomLogicTeamEnum))]
         public string Team
         {
             get => Character.Team;
@@ -417,7 +417,7 @@ namespace CustomLogic
         public void AddForce(
             [CLParam("Force vector.")]
             CustomLogicVector3Builtin force,
-            [CLParam("Force mode. Valid modes are Force, Acceleration, Impulse, VelocityChange.")]
+            [CLParam("Force mode. Default is Acceleration.", Enum = typeof(CustomLogicForceModeEnum))]
             string mode = "Acceleration")
         {
             if (!Character.IsMine()) return;
@@ -438,7 +438,7 @@ namespace CustomLogic
         public void AddOutline(
             [CLParam("Outline color.")]
             CustomLogicColorBuiltin color = null,
-            [CLParam("Outline mode. Valid modes are: OutlineAll, OutlineVisible, OutlineHidden, OutlineAndSilhouette, SilhouetteOnly, OutlineAndLightenColor.")]
+            [CLParam("Outline mode. Default is OutlineAll.", Enum = typeof(CustomLogicOutlineModeEnum))]
             string mode = "OutlineAll")
         {
             Color outlineColor = Color.white;

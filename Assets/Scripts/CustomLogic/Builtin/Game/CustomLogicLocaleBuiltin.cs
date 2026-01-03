@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using Settings;
 using UI;
 
@@ -8,9 +7,9 @@ namespace CustomLogic
 {
     /// <code>
     /// # Register individual strings for different languages
-    /// Locale.Set(Locale.EnglishLanguage, "welcome", "Welcome to the game!");
-    /// Locale.Set(Locale.RussianLanguage, "welcome", "Добро пожаловать в игру!");
-    /// Locale.Set(Locale.ChineseLanguage, "welcome", "你好");
+    /// Locale.Set(LanguageEnum.English, "welcome", "Welcome to the game!");
+    /// Locale.Set(LanguageEnum.Russian, "welcome", "Добро пожаловать в игру!");
+    /// Locale.Set(LanguageEnum.Chinese, "welcome", "你好");
     ///
     /// Game.Print("welcome: " + Locale.Get("welcome"));
     ///
@@ -19,19 +18,19 @@ namespace CustomLogic
     /// englishStrings.Set("hello", "Hello");
     /// englishStrings.Set("goodbye", "Goodbye");
     /// englishStrings.Set("score", "Score: {0}");
-    /// Locale.RegisterLanguage(Locale.EnglishLanguage, englishStrings);
+    /// Locale.RegisterLanguage(LanguageEnum.English, englishStrings);
     ///
     /// russianStrings = Dict();
     /// russianStrings.Set("hello", "Привет");
     /// russianStrings.Set("goodbye", "Пока");
     /// russianStrings.Set("score", "Счет: {0}");
-    /// Locale.RegisterLanguage(Locale.RussianLanguage, russianStrings);
+    /// Locale.RegisterLanguage(LanguageEnum.Russian, russianStrings);
     ///
     /// chineseStrings = Dict();
     /// chineseStrings.Set("hello", "你好");
     /// chineseStrings.Set("goodbye", "再见");
     /// chineseStrings.Set("score", "分数: {0}");
-    /// Locale.RegisterLanguage(Locale.ChineseLanguage, chineseStrings);
+    /// Locale.RegisterLanguage(LanguageEnum.Chinese, chineseStrings);
     ///
     /// # Get localized strings (automatically uses current UI language)
     /// Game.Print("hello: " + Locale.Get("hello"));
@@ -68,24 +67,24 @@ namespace CustomLogic
     /// Locale.RegisterLanguages("NonExistingGameMode");
     ///
     /// # Set default fallback language (Russian instead of English)
-    /// Locale.DefaultLanguage = Locale.RussianLanguage;
+    /// Locale.DefaultLanguage = LanguageEnum.Russian;
     ///
     /// # Fallback to default for missing key in current language
-    /// Locale.Set(Locale.RussianLanguage, "russian_key", "Сообщение");
+    /// Locale.Set(LanguageEnum.Russian, "russian_key", "Сообщение");
     /// Game.Print("russian_key: " + Locale.Get("russian_key"));
     ///
     /// # Single-level (non-recursive) fallback: English -> German
-    /// Locale.RegisterFallback(Locale.EnglishLanguage, Locale.GermanLanguage);
-    /// Locale.Set(Locale.GermanLanguage, "german_string", "Hallo");
+    /// Locale.RegisterFallback(LanguageEnum.English, LanguageEnum.German);
+    /// Locale.Set(LanguageEnum.German, "german_string", "Hallo");
     /// Game.Print("german_string: " + Locale.Get("german_string"));
     ///
     /// # By default Traditional Chinese falls back to Simplified Chinese
-    /// Locale.Set(Locale.ChineseLanguage, "chinese_string", "你好");
+    /// Locale.Set(LanguageEnum.Chinese, "chinese_string", "你好");
     /// Game.Print("chinese_string: " + Locale.Get("chinese_string"));
     ///
     /// # Clean up fallbacks
-    /// Locale.RemoveFallback(Locale.ChineseLanguage);
-    /// Locale.RemoveFallback(Locale.TraditionalChineseLanguage);
+    /// Locale.RemoveFallback(LanguageEnum.Chinese);
+    /// Locale.RemoveFallback(LanguageEnum.TraditionalChinese);
     ///
     /// # Missing key throws an exception
     /// Game.Print("missing_key: " + Locale.Get("missing_key"));
@@ -96,76 +95,18 @@ namespace CustomLogic
         private static readonly Dictionary<string, Dictionary<string, string>> _languages = new Dictionary<string, Dictionary<string, string>>();
         private static readonly Dictionary<string, string> _languageFallbacks = new Dictionary<string, string>();
 
-        [CLConstructor("Creates a new Locale instance.")]
-        public CustomLogicLocaleBuiltin()
-        {
-            DefaultLanguage = EnglishLanguage;
+        [CLConstructor]
+        public CustomLogicLocaleBuiltin(){
+            DefaultLanguage = CustomLogicLanguageEnum.English;
 
-            RegisterFallback(TraditionalChineseLanguage, ChineseLanguage);
-            RegisterFallback(ChineseLanguage, TraditionalChineseLanguage);
+            RegisterFallback(CustomLogicLanguageEnum.TraditionalChinese, CustomLogicLanguageEnum.Chinese);
+            RegisterFallback(CustomLogicLanguageEnum.Chinese, CustomLogicLanguageEnum.TraditionalChinese);
         }
-
-        [CLProperty("Arabic language code.")]
-        public static string ArabicLanguage => UILanguages.Arabic;
-
-        [CLProperty(Description = "Brazilian Portuguese language code")]
-        public static string BrazilianPortugueseLanguage => UILanguages.BrazilianPortuguese;
-
-        [CLProperty(Description = "Chinese language code")]
-        public static string ChineseLanguage => UILanguages.Chinese;
-
-        [CLProperty(Description = "Czech language code")]
-        public static string CzechLanguage => UILanguages.Czech;
-
-        [CLProperty(Description = "Dutch language code")]
-        public static string DutchLanguage => UILanguages.Dutch;
-
-        [CLProperty(Description = "English language code")]
-        public static string EnglishLanguage => UILanguages.English;
-
-        [CLProperty(Description = "French language code")]
-        public static string FrenchLanguage => UILanguages.French;
-
-        [CLProperty(Description = "German language code")]
-        public static string GermanLanguage => UILanguages.German;
-
-        [CLProperty(Description = "Greek language code")]
-        public static string GreekLanguage => UILanguages.Greek;
-
-        [CLProperty(Description = "Indonesian language code")]
-        public static string IndonesianLanguage => UILanguages.Indonesian;
-
-        [CLProperty(Description = "Italian language code")]
-        public static string ItalianLanguage => UILanguages.Italian;
-
-        [CLProperty(Description = "Japanese language code")]
-        public static string JapaneseLanguage => UILanguages.Japanese;
-
-        [CLProperty(Description = "Korean language code")]
-        public static string KoreanLanguage => UILanguages.Korean;
-
-        [CLProperty(Description = "Polish language code")]
-        public static string PolishLanguage => UILanguages.Polish;
-
-        [CLProperty(Description = "Russian language code")]
-        public static string RussianLanguage => UILanguages.Russian;
-
-        [CLProperty(Description = "Spanish language code")]
-        public static string SpanishLanguage => UILanguages.Spanish;
-
-        [CLProperty(Description = "Traditional Chinese language code")]
-        public static string TraditionalChineseLanguage => UILanguages.TraditionalChinese;
-
-        [CLProperty(Description = "Turkish language code")]
-        public static string TurkishLanguage => UILanguages.Turkish;
-
-        [CLProperty(Description = "Ukrainian language code")]
-        public static string UkrainianLanguage => UILanguages.Ukrainian;
 
         [CLProperty("Returns the current language (e.g. \"English\" or \"简体中文\").")]
         public static string CurrentLanguage => SettingsManager.GeneralSettings.Language.Value;
 
-        [CLProperty("The default language to use when a string is not found in the current language pack. English by default.")]
+        [CLProperty("The default language to use when a string is not found in the current language pack. English by default.", Enum = typeof(CustomLogicLanguageEnum))]
         public static string DefaultLanguage { get; set; }
 
         [CLMethod("Get the localized string for the given key. Searches the current UI language, then any registered fallbacks, and finally the default language. Throws an exception if the key is not found in any language pack.")]
@@ -184,7 +125,7 @@ namespace CustomLogic
 
         [CLMethod("Set or override a localized string for the specified language and key.")]
         public static void Set(
-            [CLParam("The language code (e.g., 'English', 'Russian', etc.).")]
+            [CLParam("The language code.", Enum = typeof(CustomLogicLanguageEnum))]
             string language,
             [CLParam("The key of the localized string.")]
             string key,
@@ -202,7 +143,7 @@ namespace CustomLogic
 
         [CLMethod("Register a single-level (non-recursive) fallback: if a string is not found in 'fromLanguage', the system will search only in 'toLanguage', without chaining further.")]
         public static void RegisterLanguage(
-            [CLParam("The language code to register.")]
+            [CLParam("The language code to register.", Enum = typeof(CustomLogicLanguageEnum))]
             string language,
             [CLParam("The dictionary containing key-value pairs of localized strings.", Type = "Dict<string, string>")]
             CustomLogicDictBuiltin strings)
@@ -224,9 +165,9 @@ namespace CustomLogic
 
         [CLMethod("Register a fallback language. When a string is not found in 'fromLanguage', it will try 'toLanguage'.")]
         public static void RegisterFallback(
-            [CLParam("The language code that will fallback to another language.")]
+            [CLParam("The language code that will fallback to another language.", Enum = typeof(CustomLogicLanguageEnum))]
             string fromLanguage,
-            [CLParam("The language code to fallback to.")]
+            [CLParam("The language code to fallback to.", Enum = typeof(CustomLogicLanguageEnum))]
             string toLanguage)
         {
             _languageFallbacks[fromLanguage] = toLanguage;
@@ -234,7 +175,7 @@ namespace CustomLogic
 
         [CLMethod("Remove a language fallback.")]
         public static void RemoveFallback(
-            [CLParam("The language code to remove the fallback for.")]
+            [CLParam("The language code to remove the fallback for.", Enum = typeof(CustomLogicLanguageEnum))]
             string fromLanguage)
         {
             _languageFallbacks.Remove(fromLanguage);

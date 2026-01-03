@@ -43,7 +43,7 @@
         "name": "int",
         "typeArguments": []
       },
-      "description": "The friction combine mode of the material.",
+      "description": "The friction combine mode of the material. Refer to PhysicMaterialCombineEnum",
       "readonly": false,
       "private": false,
       "deprecated": ""
@@ -54,7 +54,7 @@
         "name": "int",
         "typeArguments": []
       },
-      "description": "The bounce combine mode of the material.",
+      "description": "The bounce combine mode of the material. Refer to PhysicMaterialCombineEnum",
       "readonly": false,
       "private": false,
       "deprecated": ""

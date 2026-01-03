@@ -230,7 +230,7 @@
         "name": "string",
         "typeArguments": []
       },
-      "description": "The collision detection mode of the Rigidbody. This determines how collisions are detected and resolved.",
+      "description": "The collision detection mode of the Rigidbody. This determines how collisions are detected and resolved. Refer to CollisionDetectionModeEnum",
       "readonly": false,
       "private": false,
       "deprecated": ""
@@ -272,7 +272,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "The force mode: \"Force\", \"Acceleration\", \"Impulse\", or \"VelocityChange\" (default: \"Acceleration\").",
+          "description": "The force mode. Refer to ForceModeEnum",
           "isOptional": true,
           "isVariadic": false
         },
@@ -356,7 +356,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "The force mode: \"Force\", \"Acceleration\", \"Impulse\", or \"VelocityChange\".",
+          "description": "The force mode. Refer to ForceModeEnum",
           "isOptional": false,
           "isVariadic": false
         }

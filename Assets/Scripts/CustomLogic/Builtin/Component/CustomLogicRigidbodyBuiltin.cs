@@ -276,7 +276,7 @@ namespace CustomLogic
         }
 
         // Collision detection mode
-        [CLProperty("The collision detection mode of the Rigidbody. This determines how collisions are detected and resolved.")]
+        [CLProperty("The collision detection mode of the Rigidbody. This determines how collisions are detected and resolved.", Enum = typeof(CustomLogicCollisionDetectionModeEnum))]
         public string CollisionDetectionMode
         {
             get => Value.collisionDetectionMode.ToString();
@@ -314,7 +314,7 @@ namespace CustomLogic
         public void AddForce(
             [CLParam("The force vector to apply.")]
             CustomLogicVector3Builtin force,
-            [CLParam("The force mode: \"Force\", \"Acceleration\", \"Impulse\", or \"VelocityChange\" (default: \"Acceleration\").")]
+            [CLParam("The force mode.", Enum = typeof(CustomLogicForceModeEnum))]
             string forceMode = "Acceleration",
             [CLParam("Optional. If provided, applies force at this world position instead of center of mass.")]
             CustomLogicVector3Builtin? atPoint = null)
@@ -364,7 +364,7 @@ namespace CustomLogic
         public void AddTorque(
             [CLParam("The torque vector to apply.")]
             CustomLogicVector3Builtin torque,
-            [CLParam("The force mode: \"Force\", \"Acceleration\", \"Impulse\", or \"VelocityChange\".")]
+            [CLParam("The force mode.", Enum = typeof(CustomLogicForceModeEnum))]
             string forceMode)
         {
             ForceMode mode = ForceMode.Acceleration;

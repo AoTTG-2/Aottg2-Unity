@@ -97,10 +97,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("Colossal's left hand state (Healthy or Broken).")]
+        [CLProperty("Colossal's left hand state.", Enum = typeof(CustomLogicHandStateEnum))]
         public string LeftHandState => Shifter.LeftHandState.ToString();
 
-        [CLProperty("Colossal's right hand state (Healthy or Broken).")]
+        [CLProperty("Colossal's right hand state.", Enum = typeof(CustomLogicHandStateEnum))]
         public string RightHandState => Shifter.RightHandState.ToString();
 
         [CLProperty("Time in seconds for a hand to fully recover from broken state.")]
@@ -156,7 +156,7 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("Colossal's current steam state (Off, Warning, or Damage).")]
+        [CLProperty("Colossal's current steam state.", Enum = typeof(CustomLogicSteamStateEnum))]
         public string SteamState => Shifter.SteamState.ToString();
 
 

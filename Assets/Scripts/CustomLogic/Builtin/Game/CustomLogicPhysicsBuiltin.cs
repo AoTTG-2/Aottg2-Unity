@@ -19,37 +19,8 @@ namespace CustomLogic
     [CLType(Name = "Physics", Static = true, Abstract = true, Description = "Static Physics class. Contains some common physics functions.")]
     partial class CustomLogicPhysicsBuiltin : BuiltinClassInstance
     {
-        [CLConstructor("Creates a new Physics instance.")]
-        public CustomLogicPhysicsBuiltin()
-        {
-        }
-
-        [CLProperty("All Collide Mode")]
-        public static string CollideWithAll => MapObjectCollideWith.All;
-
-        [CLProperty(Description = "MapObject Collide Mode")]
-        public static string CollideWithMapObjects => MapObjectCollideWith.MapObjects;
-
-        [CLProperty(Description = "Characters Collide Mode")]
-        public static string CollideWithCharacters => MapObjectCollideWith.Characters;
-
-        [CLProperty(Description = "Titans Collide Mode")]
-        public static string CollideWithTitans => MapObjectCollideWith.Titans;
-
-        [CLProperty(Description = "Humans Collide Mode")]
-        public static string CollideWithHumans => MapObjectCollideWith.Humans;
-
-        [CLProperty(Description = "Projectiles Collide Mode")]
-        public static string CollideWithProjectiles => MapObjectCollideWith.Projectiles;
-
-        [CLProperty(Description = "Entities Collide Mode")]
-        public static string CollideWithEntities => MapObjectCollideWith.Entities;
-
-        [CLProperty(Description = "Hitboxes Collide Mode")]
-        public static string CollideWithHitboxes => MapObjectCollideWith.Hitboxes;
-
-        [CLProperty(Description = "MapEditor Collide Mode")]
-        public static string CollideWithMapEditor => MapObjectCollideWith.MapEditor;
+        [CLConstructor]
+        public CustomLogicPhysicsBuiltin(){}
 
         [CLMethod("Performs a line cast between two points, returns a LineCastHitResult object.")]
         public static CustomLogicLineCastHitResultBuiltin LineCast(
@@ -57,7 +28,7 @@ namespace CustomLogic
             CustomLogicVector3Builtin start,
             [CLParam("The end position of the line cast.")]
             CustomLogicVector3Builtin end,
-            [CLParam("The collision layer to check against (e.g., 'Entities', 'MapObjects', etc.).")]
+            [CLParam("The collision layer to check against.", Enum = typeof(CustomLogicCollideWithEnum))]
             string collideWith)
         {
             RaycastHit hit;
@@ -90,7 +61,7 @@ namespace CustomLogic
             CustomLogicVector3Builtin start,
             [CLParam("The end position of the line cast.")]
             CustomLogicVector3Builtin end,
-            [CLParam("The collision layer to check against (e.g., 'Entities', 'MapObjects', etc.).")]
+            [CLParam("The collision layer to check against.", Enum = typeof(CustomLogicCollideWithEnum))]
             string collideWith)
         {
             var startPosition = start.Value;
@@ -129,7 +100,7 @@ namespace CustomLogic
             CustomLogicVector3Builtin end,
             [CLParam("The radius of the sphere.")]
             float radius,
-            [CLParam("The collision layer to check against (e.g., 'Entities', 'MapObjects', etc.).")]
+            [CLParam("The collision layer to check against.", Enum = typeof(CustomLogicCollideWithEnum))]
             string collideWith)
         {
             RaycastHit hit;
@@ -152,7 +123,7 @@ namespace CustomLogic
             CustomLogicVector3Builtin end,
             [CLParam("The radius of the sphere.")]
             float radius,
-            [CLParam("The collision layer to check against (e.g., 'Entities', 'MapObjects', etc.).")]
+            [CLParam("The collision layer to check against.", Enum = typeof(CustomLogicCollideWithEnum))]
             string collideWith)
         {
             var startPosition = start.Value;
@@ -193,7 +164,7 @@ namespace CustomLogic
             CustomLogicVector3Builtin dimensions,
             [CLParam("The orientation of the box.")]
             CustomLogicQuaternionBuiltin orientation,
-            [CLParam("The collision layer to check against (e.g., 'Entities', 'MapObjects', etc.).")]
+            [CLParam("The collision layer to check against.", Enum = typeof(CustomLogicCollideWithEnum))]
             string collideWith)
         {
             var startPosition = start.Value;
@@ -218,7 +189,7 @@ namespace CustomLogic
             CustomLogicVector3Builtin dimensions,
             [CLParam("The orientation of the box.")]
             CustomLogicQuaternionBuiltin orientation,
-            [CLParam("The collision layer to check against (e.g., 'Entities', 'MapObjects', etc.).")]
+            [CLParam("The collision layer to check against.", Enum = typeof(CustomLogicCollideWithEnum))]
             string collideWith)
         {
             var startPosition = start.Value;

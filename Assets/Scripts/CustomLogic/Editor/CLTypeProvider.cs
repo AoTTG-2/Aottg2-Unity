@@ -278,12 +278,23 @@ namespace CustomLogic.Editor
                         }
                         
                         XmlInfo parameterXmlInfo = null;
-                        if (clParamAttribute != null && !string.IsNullOrEmpty(clParamAttribute.Description))
+                        string enumName = null;
+                        if (clParamAttribute != null)
                         {
-                            parameterXmlInfo = new XmlInfo
+                            if (!string.IsNullOrEmpty(clParamAttribute.Description))
                             {
-                                Summary = clParamAttribute.Description
-                            };
+                                parameterXmlInfo = new XmlInfo
+                                {
+                                    Summary = clParamAttribute.Description
+                                };
+                            }
+                            
+                            if (clParamAttribute.Enum != null)
+                            {
+                                var enumType = clParamAttribute.Enum;
+                                var enumClTypeAttribute = CustomLogicReflectionUtils.GetAttribute<CLTypeAttribute>(enumType);
+                                enumName = enumClTypeAttribute != null ? enumClTypeAttribute.Name : enumType.Name;
+                            }
                         }
                         
                         clParameters.Add(new CLParameter
@@ -293,7 +304,8 @@ namespace CustomLogic.Editor
                             DefaultValue = parameterValues[j],
                             IsOptional = parameterInfo.IsOptional,
                             IsVariadic = CustomLogicReflectionUtils.IsVariadicParameter(parameters[j]),
-                            Info = parameterXmlInfo
+                            Info = parameterXmlInfo,
+                            EnumName = enumName
                         });
                     }
 
@@ -368,9 +380,22 @@ namespace CustomLogic.Editor
                 var propertyXmlInfo = XmlInfo.FromPropertyXml(xmlDocument, type, property);
                 
                 // Priority: attribute description > XML documentation
-                if (!string.IsNullOrEmpty(clPropertyAttribute.Description))
+                if (clPropertyAttribute != null)
                 {
-                    propertyXmlInfo.Summary = clPropertyAttribute.Description;
+                    var description = clPropertyAttribute.Description ?? "";
+                    
+                    if (!string.IsNullOrEmpty(description))
+                    {
+                        propertyXmlInfo.Summary = description;
+                    }
+                }
+
+                string enumName = null;
+                if (clPropertyAttribute?.Enum != null)
+                {
+                    var enumType = clPropertyAttribute.Enum;
+                    var enumClTypeAttribute = CustomLogicReflectionUtils.GetAttribute<CLTypeAttribute>(enumType);
+                    enumName = enumClTypeAttribute != null ? enumClTypeAttribute.Name : enumType.Name;
                 }
 
                 var cLProperty = new CLProperty
@@ -380,6 +405,7 @@ namespace CustomLogic.Editor
                     IsReadonly = clPropertyAttribute.ReadOnly || !property.CanWrite,
                     Info = propertyXmlInfo,
                     ObsoleteMessage = CustomLogicReflectionUtils.GetObsoleteMessage(property),
+                    EnumName = enumName,
                 };
 
                 if (isHybrid || isStatic)
@@ -402,9 +428,22 @@ namespace CustomLogic.Editor
                 var fieldXmlInfo = XmlInfo.FromFieldXml(xmlDocument, type, field);
                 
                 // Priority: attribute description > XML documentation
-                if (!string.IsNullOrEmpty(clPropertyAttribute.Description))
+                if (clPropertyAttribute != null)
                 {
-                    fieldXmlInfo.Summary = clPropertyAttribute.Description;
+                    var description = clPropertyAttribute.Description ?? "";
+                    
+                    if (!string.IsNullOrEmpty(description))
+                    {
+                        fieldXmlInfo.Summary = description;
+                    }
+                }
+
+                string enumName = null;
+                if (clPropertyAttribute?.Enum != null)
+                {
+                    var enumType = clPropertyAttribute.Enum;
+                    var enumClTypeAttribute = CustomLogicReflectionUtils.GetAttribute<CLTypeAttribute>(enumType);
+                    enumName = enumClTypeAttribute != null ? enumClTypeAttribute.Name : enumType.Name;
                 }
 
                 var cLProperty = new CLProperty
@@ -414,6 +453,7 @@ namespace CustomLogic.Editor
                     IsReadonly = clPropertyAttribute.ReadOnly,
                     Info = fieldXmlInfo,
                     ObsoleteMessage = CustomLogicReflectionUtils.GetObsoleteMessage(field),
+                    EnumName = enumName,
                 };
 
                 var isStatic = field.IsStatic || clPropertyAttribute.Static;
@@ -480,12 +520,25 @@ namespace CustomLogic.Editor
                     }
                     
                     XmlInfo parameterXmlInfo = null;
-                    if (clParamAttribute != null && !string.IsNullOrEmpty(clParamAttribute.Description))
+                    string enumName = null;
+                    if (clParamAttribute != null)
                     {
-                        parameterXmlInfo = new XmlInfo
+                        var description = clParamAttribute.Description ?? "";
+                        
+                        if (clParamAttribute.Enum != null)
                         {
-                            Summary = clParamAttribute.Description
-                        };
+                            var enumType = clParamAttribute.Enum;
+                            var enumClTypeAttribute = CustomLogicReflectionUtils.GetAttribute<CLTypeAttribute>(enumType);
+                            enumName = enumClTypeAttribute != null ? enumClTypeAttribute.Name : enumType.Name;
+                        }
+                        
+                        if (!string.IsNullOrEmpty(description))
+                        {
+                            parameterXmlInfo = new XmlInfo
+                            {
+                                Summary = description
+                            };
+                        }
                     }
                     
                     clParameters.Add(new CLParameter
@@ -495,7 +548,8 @@ namespace CustomLogic.Editor
                         DefaultValue = parameterValues[j],
                         IsOptional = parameterInfo.IsOptional,
                         IsVariadic = CustomLogicReflectionUtils.IsVariadicParameter(parameterInfo),
-                        Info = parameterXmlInfo
+                        Info = parameterXmlInfo,
+                        EnumName = enumName
                     });
                 }
 

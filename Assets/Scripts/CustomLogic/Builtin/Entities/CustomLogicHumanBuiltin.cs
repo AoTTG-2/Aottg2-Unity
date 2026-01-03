@@ -28,7 +28,7 @@ namespace CustomLogic
             Human = human;
         }
 
-        [CLProperty("The weapon the human is using.")]
+        [CLProperty("The weapon the human is using.", Enum = typeof(CustomLogicWeaponEnum))]
         public string Weapon
         {
             get => Human.Setup.Weapon.ToString();
@@ -471,9 +471,9 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod("Sets the weapon for the human. Available weapons: \"Blade\", \"AHSS\", \"APG\", \"Thunderspear\".")]
+        [CLMethod("Sets the weapon for the human.")]
         public void SetWeapon(
-            [CLParam("Name of the weapon. Available weapons: \"Blade\", \"AHSS\", \"APG\", \"Thunderspear\"")]
+            [CLParam("Name of the weapon.", Enum = typeof(CustomLogicWeaponEnum))]
             string weapon)
         {
             if (!Human.IsMine())
@@ -519,9 +519,9 @@ namespace CustomLogic
                 Human.Stats.DisablePerks();
         }
 
-        [CLMethod("Enables or disables a particle effect. Available effects: Buff1, Buff2, Fire1.")]
+        [CLMethod("Enables or disables a particle effect.")]
         public void SetParticleEffect(
-            [CLParam("Name of the effect: \"Buff1\", \"Buff2\", or \"Fire1\"")]
+            [CLParam("Name of the effect.", Enum = typeof(CustomLogicHumanParticleEffectEnum))]
             string effectName,
             [CLParam("True to enable, false to disable")]
             bool enabled)

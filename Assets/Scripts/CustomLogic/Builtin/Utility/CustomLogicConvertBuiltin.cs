@@ -1,21 +1,15 @@
-using ApplicationManagers;
-using System.Collections.Generic;
 using System.Globalization;
-using UnityEngine;
-using Utility;
 
 namespace CustomLogic
 {
     [CLType(Name = "Convert", Abstract = true, Static = true, Description = "Converting objects to different types.")]
     partial class CustomLogicConvertBuiltin : BuiltinClassInstance
     {
-        [CLConstructor("Creates a new Convert instance.")]
-        public CustomLogicConvertBuiltin()
-        {
-        }
+        [CLConstructor]
+        public CustomLogicConvertBuiltin(){}
 
         [CLMethod(Static = true, Description = "Converts a value to a float")]
-        public float ToFloat(
+        public static float ToFloat(
             [CLParam("The value to convert (can be string, float, int, or bool).")]
             object value)
         {
@@ -31,7 +25,7 @@ namespace CustomLogic
         }
 
         [CLMethod(Static = true, Description = "Converts a value to an int")]
-        public int ToInt(
+        public static int ToInt(
             [CLParam("The value to convert (can be string, float, int, or bool).")]
             object value)
         {
@@ -47,7 +41,7 @@ namespace CustomLogic
         }
 
         [CLMethod(Static = true, Description = "Converts a value to a bool")]
-        public bool ToBool(
+        public static bool ToBool(
             [CLParam("The value to convert (can be string, float, int, or bool).")]
             object value)
         {
@@ -63,7 +57,7 @@ namespace CustomLogic
         }
 
         [CLMethod(Static = true, Description = "Converts a value to a string")]
-        public string ToString(
+        public static string ToString(
             [CLParam("The value to convert.")]
             object value)
         {
@@ -77,7 +71,7 @@ namespace CustomLogic
         }
 
         [CLMethod(Static = true, Description = "Checks if the value is a float")]
-        public bool IsFloat(
+        public static bool IsFloat(
             [CLParam("The value to check.")]
             object value)
         {
@@ -85,7 +79,7 @@ namespace CustomLogic
         }
 
         [CLMethod(Static = true, Description = "Checks if the value is an int")]
-        public bool IsInt(
+        public static bool IsInt(
             [CLParam("The value to check.")]
             object value)
         {
@@ -93,7 +87,7 @@ namespace CustomLogic
         }
 
         [CLMethod(Static = true, Description = "Checks if the value is a bool")]
-        public bool IsBool(
+        public static bool IsBool(
             [CLParam("The value to check.")]
             object value)
         {
@@ -101,7 +95,7 @@ namespace CustomLogic
         }
 
         [CLMethod(Static = true, Description = "Checks if the value is a string")]
-        public bool IsString(
+        public static bool IsString(
             [CLParam("The value to check.")]
             object value)
         {
@@ -109,7 +103,7 @@ namespace CustomLogic
         }
 
         [CLMethod(Static = true, Description = "Checks if the value is an object")]
-        public bool IsObject(
+        public static bool IsObject(
             [CLParam("The value to check.")]
             object value)
         {
@@ -117,7 +111,7 @@ namespace CustomLogic
         }
 
         [CLMethod(Static = true, Description = "Checks if the value is a list")]
-        public bool IsList(
+        public static bool IsList(
             [CLParam("The value to check.")]
             object value)
         {
@@ -125,7 +119,7 @@ namespace CustomLogic
         }
 
         [CLMethod(Static = true, Description = "Checks if the value is a dictionary")]
-        public bool IsDict(
+        public static bool IsDict(
             [CLParam("The value to check.")]
             object value)
         {
@@ -133,7 +127,7 @@ namespace CustomLogic
         }
 
         [CLMethod(Static = true, Description = "Checks if the class instance has a variable")]
-        public bool HasVariable(
+        public static bool HasVariable(
             [CLParam("The class instance to check.")]
             CustomLogicClassInstance cInstance,
             [CLParam("The name of the variable to check for.")]
@@ -143,7 +137,7 @@ namespace CustomLogic
         }
 
         [CLMethod(Static = true, Description = "Defines a variable for the class instance")]
-        public void DefineVariable(
+        public static void DefineVariable(
             [CLParam("The class instance to define the variable on.")]
             CustomLogicClassInstance cInstance,
             [CLParam("The name of the variable to define.")]
@@ -159,7 +153,7 @@ namespace CustomLogic
         }
 
         [CLMethod(Static = true, Description = "Removes a variable from the class instance")]
-        public void RemoveVariable(
+        public static void RemoveVariable(
             [CLParam("The class instance to remove the variable from.")]
             CustomLogicClassInstance cInstance,
             [CLParam("The name of the variable to remove.")]
@@ -173,7 +167,7 @@ namespace CustomLogic
         }
 
         [CLMethod(Static = true, Description = "Checks if the class instance has a method")]
-        public bool HasMethod(
+        public static bool HasMethod(
             [CLParam("The class instance to check.")]
             CustomLogicClassInstance cInstance,
             [CLParam("The name of the method to check for.")]
@@ -188,7 +182,7 @@ namespace CustomLogic
         }
 
         [CLMethod(Static = true, Description = "Gets the type of the class instance")]
-        public string GetType(
+        public static string GetType(
             [CLParam("The class instance to get the type of.")]
             CustomLogicClassInstance cInstance)
         {

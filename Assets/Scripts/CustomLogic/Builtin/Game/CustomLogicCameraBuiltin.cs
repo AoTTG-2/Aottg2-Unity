@@ -8,10 +8,8 @@ namespace CustomLogic
     [CLType(Name = "Camera", Abstract = true, Static = true, Description = "References the main game camera.")]
     partial class CustomLogicCameraBuiltin : BuiltinClassInstance
     {
-        [CLConstructor("Creates a new Camera instance.")]
-        public CustomLogicCameraBuiltin()
-        {
-        }
+        [CLConstructor]
+        public CustomLogicCameraBuiltin(){}
 
         public static InGameCamera CurrentCamera => (InGameCamera)SceneLoader.CurrentCamera;
 

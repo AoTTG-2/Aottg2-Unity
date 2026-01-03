@@ -68,7 +68,7 @@
         "name": "string",
         "typeArguments": []
       },
-      "description": "Player's chosen team (\"None\", \"Blue\", \"Red\", \"Titan\", \"Human\"). Note that this may be different from the character's final team (Character.Team field) if the character's team field is modified.",
+      "description": "Player's chosen team. Note that this may be different from the character's final team (Character.Team field) if the character's team field is modified. Refer to TeamEnum",
       "readonly": true,
       "private": false,
       "deprecated": ""
@@ -79,7 +79,7 @@
         "name": "string",
         "typeArguments": []
       },
-      "description": "Player's spawn status (\"Alive\", \"Dead\", \"Spectating\").",
+      "description": "Player's spawn status. Refer to PlayerStatusEnum",
       "readonly": true,
       "private": false,
       "deprecated": ""
@@ -90,7 +90,7 @@
         "name": "string",
         "typeArguments": []
       },
-      "description": "Player's chosen character (\"Human\", \"Titan\", \"Shifter\")",
+      "description": "Player's chosen character. Refer to CharacterTypeEnum",
       "readonly": true,
       "private": false,
       "deprecated": ""
@@ -101,7 +101,7 @@
         "name": "string",
         "typeArguments": []
       },
-      "description": "Player's chosen loadout (\"Blades\", \"AHSS\", \"APG\", \"Thunderspears\").",
+      "description": "Player's chosen loadout. Refer to LoadoutEnum",
       "readonly": true,
       "private": false,
       "deprecated": ""

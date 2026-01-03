@@ -79,7 +79,7 @@
         "name": "string",
         "typeArguments": []
       },
-      "description": "Colossal's left hand state (Healthy or Broken).",
+      "description": "Colossal's left hand state. Refer to HandStateEnum",
       "readonly": true,
       "private": false,
       "deprecated": ""
@@ -90,7 +90,7 @@
         "name": "string",
         "typeArguments": []
       },
-      "description": "Colossal's right hand state (Healthy or Broken).",
+      "description": "Colossal's right hand state. Refer to HandStateEnum",
       "readonly": true,
       "private": false,
       "deprecated": ""
@@ -156,7 +156,7 @@
         "name": "string",
         "typeArguments": []
       },
-      "description": "Colossal's current steam state (Off, Warning, or Damage).",
+      "description": "Colossal's current steam state. Refer to SteamStateEnum",
       "readonly": true,
       "private": false,
       "deprecated": ""

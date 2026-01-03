@@ -10,215 +10,6 @@
   "instanceMethods": [],
   "staticFields": [
     {
-      "label": "ArabicLanguage",
-      "type": {
-        "name": "string",
-        "typeArguments": []
-      },
-      "description": "Arabic language code.",
-      "readonly": true,
-      "private": false,
-      "deprecated": ""
-    },
-    {
-      "label": "BrazilianPortugueseLanguage",
-      "type": {
-        "name": "string",
-        "typeArguments": []
-      },
-      "description": "Brazilian Portuguese language code",
-      "readonly": true,
-      "private": false,
-      "deprecated": ""
-    },
-    {
-      "label": "ChineseLanguage",
-      "type": {
-        "name": "string",
-        "typeArguments": []
-      },
-      "description": "Chinese language code",
-      "readonly": true,
-      "private": false,
-      "deprecated": ""
-    },
-    {
-      "label": "CzechLanguage",
-      "type": {
-        "name": "string",
-        "typeArguments": []
-      },
-      "description": "Czech language code",
-      "readonly": true,
-      "private": false,
-      "deprecated": ""
-    },
-    {
-      "label": "DutchLanguage",
-      "type": {
-        "name": "string",
-        "typeArguments": []
-      },
-      "description": "Dutch language code",
-      "readonly": true,
-      "private": false,
-      "deprecated": ""
-    },
-    {
-      "label": "EnglishLanguage",
-      "type": {
-        "name": "string",
-        "typeArguments": []
-      },
-      "description": "English language code",
-      "readonly": true,
-      "private": false,
-      "deprecated": ""
-    },
-    {
-      "label": "FrenchLanguage",
-      "type": {
-        "name": "string",
-        "typeArguments": []
-      },
-      "description": "French language code",
-      "readonly": true,
-      "private": false,
-      "deprecated": ""
-    },
-    {
-      "label": "GermanLanguage",
-      "type": {
-        "name": "string",
-        "typeArguments": []
-      },
-      "description": "German language code",
-      "readonly": true,
-      "private": false,
-      "deprecated": ""
-    },
-    {
-      "label": "GreekLanguage",
-      "type": {
-        "name": "string",
-        "typeArguments": []
-      },
-      "description": "Greek language code",
-      "readonly": true,
-      "private": false,
-      "deprecated": ""
-    },
-    {
-      "label": "IndonesianLanguage",
-      "type": {
-        "name": "string",
-        "typeArguments": []
-      },
-      "description": "Indonesian language code",
-      "readonly": true,
-      "private": false,
-      "deprecated": ""
-    },
-    {
-      "label": "ItalianLanguage",
-      "type": {
-        "name": "string",
-        "typeArguments": []
-      },
-      "description": "Italian language code",
-      "readonly": true,
-      "private": false,
-      "deprecated": ""
-    },
-    {
-      "label": "JapaneseLanguage",
-      "type": {
-        "name": "string",
-        "typeArguments": []
-      },
-      "description": "Japanese language code",
-      "readonly": true,
-      "private": false,
-      "deprecated": ""
-    },
-    {
-      "label": "KoreanLanguage",
-      "type": {
-        "name": "string",
-        "typeArguments": []
-      },
-      "description": "Korean language code",
-      "readonly": true,
-      "private": false,
-      "deprecated": ""
-    },
-    {
-      "label": "PolishLanguage",
-      "type": {
-        "name": "string",
-        "typeArguments": []
-      },
-      "description": "Polish language code",
-      "readonly": true,
-      "private": false,
-      "deprecated": ""
-    },
-    {
-      "label": "RussianLanguage",
-      "type": {
-        "name": "string",
-        "typeArguments": []
-      },
-      "description": "Russian language code",
-      "readonly": true,
-      "private": false,
-      "deprecated": ""
-    },
-    {
-      "label": "SpanishLanguage",
-      "type": {
-        "name": "string",
-        "typeArguments": []
-      },
-      "description": "Spanish language code",
-      "readonly": true,
-      "private": false,
-      "deprecated": ""
-    },
-    {
-      "label": "TraditionalChineseLanguage",
-      "type": {
-        "name": "string",
-        "typeArguments": []
-      },
-      "description": "Traditional Chinese language code",
-      "readonly": true,
-      "private": false,
-      "deprecated": ""
-    },
-    {
-      "label": "TurkishLanguage",
-      "type": {
-        "name": "string",
-        "typeArguments": []
-      },
-      "description": "Turkish language code",
-      "readonly": true,
-      "private": false,
-      "deprecated": ""
-    },
-    {
-      "label": "UkrainianLanguage",
-      "type": {
-        "name": "string",
-        "typeArguments": []
-      },
-      "description": "Ukrainian language code",
-      "readonly": true,
-      "private": false,
-      "deprecated": ""
-    },
-    {
       "label": "CurrentLanguage",
       "type": {
         "name": "string",
@@ -235,7 +26,7 @@
         "name": "string",
         "typeArguments": []
       },
-      "description": "The default language to use when a string is not found in the current language pack. English by default.",
+      "description": "The default language to use when a string is not found in the current language pack. English by default. Refer to LanguageEnum",
       "readonly": false,
       "private": false,
       "deprecated": ""
@@ -278,7 +69,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "The language code (e.g., 'English', 'Russian', etc.).",
+          "description": "The language code. Refer to LanguageEnum",
           "isOptional": false,
           "isVariadic": false
         },
@@ -320,7 +111,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "The language code to register.",
+          "description": "The language code to register. Refer to LanguageEnum",
           "isOptional": false,
           "isVariadic": false
         },
@@ -383,7 +174,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "The language code that will fallback to another language.",
+          "description": "The language code that will fallback to another language. Refer to LanguageEnum",
           "isOptional": false,
           "isVariadic": false
         },
@@ -393,7 +184,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "The language code to fallback to.",
+          "description": "The language code to fallback to. Refer to LanguageEnum",
           "isOptional": false,
           "isVariadic": false
         }
@@ -415,7 +206,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "The language code to remove the fallback for.",
+          "description": "The language code to remove the fallback for. Refer to LanguageEnum",
           "isOptional": false,
           "isVariadic": false
         }

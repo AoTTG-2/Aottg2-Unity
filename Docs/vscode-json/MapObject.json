@@ -429,7 +429,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "The collision mode (e.g., \"Region\", \"Hitboxes\").",
+          "description": "The collision mode. Refer to CollideModeEnum",
           "isOptional": false,
           "isVariadic": false
         },
@@ -439,7 +439,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "What the collider should collide with (e.g., \"Hitboxes\").",
+          "description": "What the collider should collide with. Refer to CollideWithEnum",
           "isOptional": false,
           "isVariadic": false
         },
@@ -481,7 +481,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "The collision mode (e.g., \"Region\", \"Hitboxes\").",
+          "description": "The collision mode. Refer to CollideModeEnum",
           "isOptional": false,
           "isVariadic": false
         },
@@ -491,7 +491,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "What the collider should collide with (e.g., \"Hitboxes\").",
+          "description": "What the collider should collide with. Refer to CollideWithEnum",
           "isOptional": false,
           "isVariadic": false
         },
@@ -533,7 +533,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "The team that can target this (e.g., \"Human\", \"Titan\").",
+          "description": "The team that can target this. Refer to TeamEnum",
           "isOptional": false,
           "isVariadic": false
         },
@@ -575,7 +575,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "The team that can target this (e.g., \"Human\", \"Titan\").",
+          "description": "The team that can target this. Refer to TeamEnum",
           "isOptional": false,
           "isVariadic": false
         },
@@ -825,7 +825,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "The name of the builtin component to add (e.g., \"DayLight\").",
+          "description": "The name of the builtin component to add.",
           "isOptional": false,
           "isVariadic": false
         }

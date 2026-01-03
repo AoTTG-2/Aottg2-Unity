@@ -18,10 +18,8 @@ namespace CustomLogic
         private string _lastSetTopLabel = string.Empty;
         private Dictionary<string, CustomLogicListBuiltin> _cachedLists = new Dictionary<string, CustomLogicListBuiltin>();
 
-        [CLConstructor("Creates a new Game instance.")]
-        public CustomLogicGameBuiltin()
-        {
-        }
+        [CLConstructor]
+        public CustomLogicGameBuiltin(){}
 
         private InGameManager _inGameManager => (InGameManager)SceneLoader.CurrentGameManager;
 
@@ -277,14 +275,14 @@ namespace CustomLogic
             set => CustomLogicManager.Evaluator.ShowScoreboardStatus = value;
         }
 
-        [CLProperty(Static = true, Description = "Forced character type")]
+        [CLProperty(Static = true, Description = "Forced character type.", Enum = typeof(CustomLogicCharacterTypeEnum))]
         public string ForcedCharacterType
         {
             get => CustomLogicManager.Evaluator.ForcedCharacterType;
             set => CustomLogicManager.Evaluator.ForcedCharacterType = value;
         }
 
-        [CLProperty(Static = true, Description = "Forced loadout")]
+        [CLProperty(Static = true, Description = "Forced loadout.", Enum = typeof(CustomLogicLoadoutEnum))]
         public string ForcedLoadout
         {
             get => CustomLogicManager.Evaluator.ForcedLoadout;
@@ -369,7 +367,7 @@ namespace CustomLogic
 
         [CLMethod(Static = true, Description = "Spawn a titan")]
         public CustomLogicTitanBuiltin SpawnTitan(
-            [CLParam("The type of titan to spawn.")]
+            [CLParam("The type of titan to spawn.", Enum = typeof(CustomLogicTitanTypeEnum))]
             string type)
         {
             if (PhotonNetwork.IsMasterClient)
@@ -382,7 +380,7 @@ namespace CustomLogic
 
         [CLMethod(Static = true, Description = "Spawn a titan at a position")]
         public CustomLogicTitanBuiltin SpawnTitanAt(
-            [CLParam("The type of titan to spawn.")]
+            [CLParam("The type of titan to spawn.", Enum = typeof(CustomLogicTitanTypeEnum))]
             string type,
             [CLParam("The spawn position.")]
             CustomLogicVector3Builtin position,
@@ -399,7 +397,7 @@ namespace CustomLogic
 
         [CLMethod(Static = true, Description = "Spawn titans", ReturnTypeArguments = new[] { "Titan" })]
         public CustomLogicListBuiltin SpawnTitans(
-            [CLParam("The type of titan to spawn.")]
+            [CLParam("The type of titan to spawn.", Enum = typeof(CustomLogicTitanTypeEnum))]
             string type,
             [CLParam("The number of titans to spawn.")]
             int count)
@@ -416,7 +414,7 @@ namespace CustomLogic
 
         [CLMethod(Static = true, Description = "Spawn titans asynchronously")]
         public void SpawnTitansAsync(
-            [CLParam("The type of titan to spawn.")]
+            [CLParam("The type of titan to spawn.", Enum = typeof(CustomLogicTitanTypeEnum))]
             string type,
             [CLParam("The number of titans to spawn.")]
             int count)
@@ -427,7 +425,7 @@ namespace CustomLogic
 
         [CLMethod(Static = true, Description = "Spawn titans at a position", ReturnTypeArguments = new[] { "Titan" })]
         public CustomLogicListBuiltin SpawnTitansAt(
-            [CLParam("The type of titan to spawn.")]
+            [CLParam("The type of titan to spawn.", Enum = typeof(CustomLogicTitanTypeEnum))]
             string type,
             [CLParam("The number of titans to spawn.")]
             int count,
@@ -451,7 +449,7 @@ namespace CustomLogic
 
         [CLMethod(Static = true, Description = "Spawn titans at a position asynchronously")]
         public void SpawnTitansAtAsync(
-            [CLParam("The type of titan to spawn.")]
+            [CLParam("The type of titan to spawn.", Enum = typeof(CustomLogicTitanTypeEnum))]
             string type,
             [CLParam("The number of titans to spawn.")]
             int count,
@@ -466,7 +464,7 @@ namespace CustomLogic
 
         [CLMethod(Static = true, Description = "Spawn a shifter")]
         public CustomLogicShifterBuiltin SpawnShifter(
-            [CLParam("The type of shifter to spawn.")]
+            [CLParam("The type of shifter to spawn.", Enum = typeof(CustomLogicShifterTypeEnum))]
             string type)
         {
             if (PhotonNetwork.IsMasterClient)
@@ -481,7 +479,7 @@ namespace CustomLogic
 
         [CLMethod(Static = true, Description = "Spawn a shifter at a position")]
         public CustomLogicShifterBuiltin SpawnShifterAt(
-            [CLParam("The type of shifter to spawn.")]
+            [CLParam("The type of shifter to spawn.", Enum = typeof(CustomLogicShifterTypeEnum))]
             string type,
             [CLParam("The spawn position.")]
             CustomLogicVector3Builtin position,
@@ -500,7 +498,7 @@ namespace CustomLogic
 
         [CLMethod(Static = true, Description = "Spawn a projectile. Note: `extraParam` and `extraParam2` are optional. They may or may not be used depending on the value of `projectileName`")]
         public void SpawnProjectile(
-            [CLParam("Name of the projectile. Valid values are: \"Thunderspear\", \"CannonBall\", \"Flare\", \"BladeThrow\", \"SmokeBomb\", \"Rock1\"")]
+            [CLParam("Name of the projectile.", Enum = typeof(CustomLogicProjectileNameEnum))]
             string projectileName,
             [CLParam("Spawn position")]
             CustomLogicVector3Builtin position,
@@ -512,7 +510,7 @@ namespace CustomLogic
             CustomLogicVector3Builtin gravity,
             [CLParam("Live time of the projectile")]
             float liveTime,
-            [CLParam("The team that the projectile belongs to")]
+            [CLParam("The team that the projectile belongs to.", Enum = typeof(CustomLogicTeamEnum))]
             string team,
             [CLParam("Optional. Type depends on projectile: Thunderspear: float (explosion radius), Flare: Color (flare color), Rock1: float (rock size), Others: unused")]
             object extraParam = null,
@@ -541,7 +539,7 @@ namespace CustomLogic
 
         [CLMethod(Static = true, Description = "Spawn a projectile with an owner. Note: `extraParam` and `extraParam2` are optional. They may or may not be used depending on the value of `projectileName`")]
         public void SpawnProjectileWithOwner(
-            [CLParam("Name of the projectile. Valid values are: \"Thunderspear\", \"CannonBall\", \"Flare\", \"BladeThrow\", \"SmokeBomb\", \"Rock1\"")]
+            [CLParam("Name of the projectile.", Enum = typeof(CustomLogicProjectileNameEnum))]
             string projectileName,
             [CLParam("Spawn position")]
             CustomLogicVector3Builtin position,
@@ -584,7 +582,7 @@ namespace CustomLogic
 
         [CLMethod(Static = true, Description = "Spawn an effect")]
         public void SpawnEffect(
-            [CLParam("Name of the effect. Effect names can be found [here](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/refs/heads/main/Assets/Scripts/Effects/EffectPrefabs.cs) (left-hand variable name)")]
+            [CLParam("Name of the effect.", Enum = typeof(CustomLogicEffectNameEnum))]
             string effectName,
             [CLParam("Spawn position")]
             CustomLogicVector3Builtin position,
@@ -594,13 +592,13 @@ namespace CustomLogic
             float scale,
             [CLParam("Thunderspear explode color (Only valid when effectName is \"ThunderspearExplode\")")]
             CustomLogicColorBuiltin tsExplodeColor = null,
-            [CLParam("Optional. Thunderspear explode sound (Only valid when effectName is \"ThunderspearExplode\"). Valid values are: \"Kill\", \"Air\", \"Ground\", \"ArmorHit\", \"CloseShot\", \"MaxRangeShot\"")]
+            [CLParam("Optional. Thunderspear explode sound (Only valid when effectName is \"ThunderspearExplode\").", Enum = typeof(CustomLogicTSKillSoundEnum))]
             string tsKillSound = null)
         {
             var field = typeof(EffectPrefabs).GetField(effectName);
-            if (field == null)
-                return;
-            effectName = (string)field.GetValue(null);
+            if (field != null)
+                effectName = (string)field.GetValue(null);
+            
             object[] settings = null;
             if (effectName == EffectPrefabs.ThunderspearExplode)
             {
@@ -625,7 +623,7 @@ namespace CustomLogic
 
         [CLMethod(Static = true, Description = "Spawn an unscaled effect")]
         public void SpawnUnscaledEffect(
-            [CLParam("Name of the effect. Effect names can be found [here](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/refs/heads/main/Assets/Scripts/Effects/EffectPrefabs.cs) (left-hand variable name)")]
+            [CLParam("Name of the effect.", Enum = typeof(CustomLogicEffectNameEnum))]
             string effectName,
             [CLParam("Spawn position")]
             CustomLogicVector3Builtin position,
@@ -633,13 +631,13 @@ namespace CustomLogic
             CustomLogicVector3Builtin rotation,
             [CLParam("Thunderspear explode color (Only valid when effectName is \"ThunderspearExplode\")")]
             CustomLogicColorBuiltin tsExplodeColor = null,
-            [CLParam("Optional. Thunderspear explode sound (Only valid when effectName is \"ThunderspearExplode\"). Valid values are: \"Kill\", \"Air\", \"Ground\", \"ArmorHit\", \"CloseShot\", \"MaxRangeShot\"")]
+            [CLParam("Optional. Thunderspear explode sound (Only valid when effectName is \"ThunderspearExplode\").", Enum = typeof(CustomLogicTSKillSoundEnum))]
             string tsKillSound = null)
         {
             var field = typeof(EffectPrefabs).GetField(effectName);
-            if (field == null)
-                return;
-            effectName = (string)field.GetValue(null);
+            if (field != null)
+                effectName = (string)field.GetValue(null);
+            
             object[] settings = null;
             if (effectName == EffectPrefabs.ThunderspearExplode)
             {

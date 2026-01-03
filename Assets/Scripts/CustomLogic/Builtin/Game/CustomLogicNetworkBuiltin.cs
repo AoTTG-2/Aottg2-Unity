@@ -1,12 +1,7 @@
-﻿using ApplicationManagers;
-using GameManagers;
+﻿using GameManagers;
 using Photon.Pun;
 using Photon.Realtime;
 using System;
-using System.Collections.Generic;
-using System.Security.Cryptography;
-using UnityEngine;
-using UnityEngine.Diagnostics;
 using Utility;
 
 namespace CustomLogic
@@ -14,16 +9,14 @@ namespace CustomLogic
     [CLType(Name = "Network", Static = true, Abstract = true, Description = "Networking functions.")]
     partial class CustomLogicNetworkBuiltin : BuiltinClassInstance
     {
-        [CLConstructor("Creates a new Network instance.")]
-        public CustomLogicNetworkBuiltin()
-        {
-        }
+        [CLConstructor]
+        public CustomLogicNetworkBuiltin(){}
 
         [CLProperty(Static = true, Description = "Is the player the master client.")]
-        public bool IsMasterClient => PhotonNetwork.IsMasterClient;
+        public static bool IsMasterClient => PhotonNetwork.IsMasterClient;
 
         [CLProperty(Static = true, TypeArguments = new[] { "Player" }, Description = "The list of players in the room.")]
-        public CustomLogicListBuiltin Players
+        public static CustomLogicListBuiltin Players
         {
             get
             {
@@ -37,19 +30,19 @@ namespace CustomLogic
         }
 
         [CLProperty(Static = true, Description = "The master client.")]
-        public CustomLogicPlayerBuiltin MasterClient => new CustomLogicPlayerBuiltin(PhotonNetwork.MasterClient);
+        public static CustomLogicPlayerBuiltin MasterClient => new CustomLogicPlayerBuiltin(PhotonNetwork.MasterClient);
 
         [CLProperty(Static = true, Description = "The local player.")]
-        public CustomLogicPlayerBuiltin MyPlayer => new CustomLogicPlayerBuiltin(PhotonNetwork.LocalPlayer);
+        public static CustomLogicPlayerBuiltin MyPlayer => new CustomLogicPlayerBuiltin(PhotonNetwork.LocalPlayer);
 
         [CLProperty(Static = true, Description = "The network time.")]
-        public double NetworkTime => PhotonNetwork.Time;
+        public static double NetworkTime => PhotonNetwork.Time;
 
         [CLProperty(Static = true, Description = "The local player's ping.")]
-        public int Ping => PhotonNetwork.GetPing();
+        public static int Ping => PhotonNetwork.GetPing();
 
         [CLMethod(Static = true, Description = "Send a message to a player.")]
-        public void SendMessage(
+        public static void SendMessage(
             [CLParam("The player to send the message to.")]
             CustomLogicPlayerBuiltin player,
             [CLParam("The message to send.")]
@@ -59,7 +52,7 @@ namespace CustomLogic
         }
 
         [CLMethod(Static = true, Description = "Send a message to all players.")]
-        public void SendMessageAll(
+        public static void SendMessageAll(
             [CLParam("The message to send.")]
             string message)
         {
@@ -67,7 +60,7 @@ namespace CustomLogic
         }
 
         [CLMethod(Static = true, Description = "Send a message to all players except the sender.")]
-        public void SendMessageOthers(
+        public static void SendMessageOthers(
             [CLParam("The message to send.")]
             string message)
         {
@@ -75,7 +68,7 @@ namespace CustomLogic
         }
 
         [CLMethod(Static = true, Description = "Finds a player in the room by id.")]
-        public CustomLogicPlayerBuiltin FindPlayer(
+        public static CustomLogicPlayerBuiltin FindPlayer(
             [CLParam("The player ID to find.")]
             int id)
         {
@@ -86,7 +79,7 @@ namespace CustomLogic
         }
 
         [CLMethod(Static = true, Description = "Get the difference between two photon timestamps.")]
-        public double GetTimestampDifference(
+        public static double GetTimestampDifference(
             [CLParam("The first timestamp.")]
             double timestamp1,
             [CLParam("The second timestamp.")]
@@ -97,7 +90,7 @@ namespace CustomLogic
         }
 
         [CLMethod(Static = true, Description = "Kick the given player by id or player reference.")]
-        public void KickPlayer(
+        public static void KickPlayer(
             [CLParam("The player to kick (can be Player object or int ID).", Type = "Player|int")]
             object target,
             [CLParam("The reason for kicking the player (default: '.').")]

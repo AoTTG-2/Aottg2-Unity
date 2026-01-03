@@ -107,7 +107,7 @@ namespace CustomLogic
             CustomLogicVector3Builtin start,
             [CLParam("The end position of the raycast.")]
             CustomLogicVector3Builtin end,
-            [CLParam("The layer name to check collisions with.")]
+            [CLParam("The layer name to check collisions with.", Enum = typeof(CustomLogicCollideWithEnum))]
             string collideWith)
         {
             RaycastHit hit;

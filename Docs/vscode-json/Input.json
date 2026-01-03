@@ -223,7 +223,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Sets whether all keys in the specified category are enabled by default. Valid categories: General, Human, Titan, Interaction.",
+      "description": "Sets whether all keys in the specified category are enabled by default.",
       "parameters": [
         {
           "name": "category",
@@ -231,7 +231,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "The category name: \"General\", \"Human\", \"Titan\", or \"Interaction\".",
+          "description": "The category name. Refer to InputCategoryEnum",
           "isOptional": false,
           "isVariadic": false
         },

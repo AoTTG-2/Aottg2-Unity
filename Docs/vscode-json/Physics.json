@@ -8,107 +8,7 @@
   "deprecated": "",
   "instanceFields": [],
   "instanceMethods": [],
-  "staticFields": [
-    {
-      "label": "CollideWithAll",
-      "type": {
-        "name": "string",
-        "typeArguments": []
-      },
-      "description": "All Collide Mode",
-      "readonly": true,
-      "private": false,
-      "deprecated": ""
-    },
-    {
-      "label": "CollideWithMapObjects",
-      "type": {
-        "name": "string",
-        "typeArguments": []
-      },
-      "description": "MapObject Collide Mode",
-      "readonly": true,
-      "private": false,
-      "deprecated": ""
-    },
-    {
-      "label": "CollideWithCharacters",
-      "type": {
-        "name": "string",
-        "typeArguments": []
-      },
-      "description": "Characters Collide Mode",
-      "readonly": true,
-      "private": false,
-      "deprecated": ""
-    },
-    {
-      "label": "CollideWithTitans",
-      "type": {
-        "name": "string",
-        "typeArguments": []
-      },
-      "description": "Titans Collide Mode",
-      "readonly": true,
-      "private": false,
-      "deprecated": ""
-    },
-    {
-      "label": "CollideWithHumans",
-      "type": {
-        "name": "string",
-        "typeArguments": []
-      },
-      "description": "Humans Collide Mode",
-      "readonly": true,
-      "private": false,
-      "deprecated": ""
-    },
-    {
-      "label": "CollideWithProjectiles",
-      "type": {
-        "name": "string",
-        "typeArguments": []
-      },
-      "description": "Projectiles Collide Mode",
-      "readonly": true,
-      "private": false,
-      "deprecated": ""
-    },
-    {
-      "label": "CollideWithEntities",
-      "type": {
-        "name": "string",
-        "typeArguments": []
-      },
-      "description": "Entities Collide Mode",
-      "readonly": true,
-      "private": false,
-      "deprecated": ""
-    },
-    {
-      "label": "CollideWithHitboxes",
-      "type": {
-        "name": "string",
-        "typeArguments": []
-      },
-      "description": "Hitboxes Collide Mode",
-      "readonly": true,
-      "private": false,
-      "deprecated": ""
-    },
-    {
-      "label": "CollideWithMapEditor",
-      "type": {
-        "name": "string",
-        "typeArguments": []
-      },
-      "description": "MapEditor Collide Mode",
-      "readonly": true,
-      "private": false,
-      "deprecated": ""
-    }
-  ],
+  "staticFields": [],
   "staticMethods": [
     {
       "label": "LineCast",
@@ -144,7 +44,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "The collision layer to check against (e.g., 'Entities', 'MapObjects', etc.).",
+          "description": "The collision layer to check against. Refer to CollideWithEnum",
           "isOptional": false,
           "isVariadic": false
         }
@@ -191,7 +91,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "The collision layer to check against (e.g., 'Entities', 'MapObjects', etc.).",
+          "description": "The collision layer to check against. Refer to CollideWithEnum",
           "isOptional": false,
           "isVariadic": false
         }
@@ -243,7 +143,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "The collision layer to check against (e.g., 'Entities', 'MapObjects', etc.).",
+          "description": "The collision layer to check against. Refer to CollideWithEnum",
           "isOptional": false,
           "isVariadic": false
         }
@@ -300,7 +200,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "The collision layer to check against (e.g., 'Entities', 'MapObjects', etc.).",
+          "description": "The collision layer to check against. Refer to CollideWithEnum",
           "isOptional": false,
           "isVariadic": false
         }
@@ -362,7 +262,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "The collision layer to check against (e.g., 'Entities', 'MapObjects', etc.).",
+          "description": "The collision layer to check against. Refer to CollideWithEnum",
           "isOptional": false,
           "isVariadic": false
         }
@@ -429,7 +329,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "The collision layer to check against (e.g., 'Entities', 'MapObjects', etc.).",
+          "description": "The collision layer to check against. Refer to CollideWithEnum",
           "isOptional": false,
           "isVariadic": false
         }

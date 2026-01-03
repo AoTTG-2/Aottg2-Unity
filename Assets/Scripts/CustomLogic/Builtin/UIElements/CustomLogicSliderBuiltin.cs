@@ -151,7 +151,7 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("The direction of the slider (Horizontal or Vertical).")]
+        [CLProperty("The direction of the slider.", Enum = typeof(CustomLogicSliderDirectionEnum))]
         public string Direction
         {
             get => _isIntSlider ? _intSlider.direction.ToString() : _floatSlider.direction.ToString();

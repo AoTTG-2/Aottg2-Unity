@@ -53,16 +53,16 @@ namespace CustomLogic
         [CLProperty("Player guild.")]
         public string Guild => Player.GetStringProperty(PlayerProperty.Guild);
 
-        [CLProperty("Player's chosen team (\"None\", \"Blue\", \"Red\", \"Titan\", \"Human\"). Note that this may be different from the character's final team (Character.Team field) if the character's team field is modified.")]
+        [CLProperty("Player's chosen team. Note that this may be different from the character's final team (Character.Team field) if the character's team field is modified.", Enum = typeof(CustomLogicTeamEnum))]
         public string Team => Player.GetStringProperty(PlayerProperty.Team);
 
-        [CLProperty("Player's spawn status (\"Alive\", \"Dead\", \"Spectating\").")]
+        [CLProperty("Player's spawn status.", Enum = typeof(CustomLogicPlayerStatusEnum))]
         public string Status => Player.GetStringProperty(PlayerProperty.Status);
 
-        [CLProperty("Player's chosen character (\"Human\", \"Titan\", \"Shifter\")")]
+        [CLProperty("Player's chosen character.", Enum = typeof(CustomLogicCharacterTypeEnum))]
         public string CharacterType => Player.GetStringProperty(PlayerProperty.Character);
 
-        [CLProperty("Player's chosen loadout (\"Blades\", \"AHSS\", \"APG\", \"Thunderspears\").")]
+        [CLProperty("Player's chosen loadout.", Enum = typeof(CustomLogicLoadoutEnum))]
         public string Loadout => Player.GetStringProperty(PlayerProperty.Loadout);
 
         [CLProperty("Player's kills.")]

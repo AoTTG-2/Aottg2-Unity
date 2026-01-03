@@ -351,9 +351,9 @@ namespace CustomLogic
 
         [CLMethod("Add a sphere collider to the object")]
         public void AddSphereCollider(
-            [CLParam("The collision mode (e.g., \"Region\", \"Hitboxes\").")]
+            [CLParam("The collision mode.", Enum = typeof(CustomLogicCollideModeEnum))]
             string collideMode,
-            [CLParam("What the collider should collide with (e.g., \"Hitboxes\").")]
+            [CLParam("What the collider should collide with.", Enum = typeof(CustomLogicCollideWithEnum))]
             string collideWith,
             [CLParam("The center position of the sphere collider.")]
             CustomLogicVector3Builtin center,
@@ -382,9 +382,9 @@ namespace CustomLogic
 
         [CLMethod("Add a box collider to the object")]
         public void AddBoxCollider(
-            [CLParam("The collision mode (e.g., \"Region\", \"Hitboxes\").")]
+            [CLParam("The collision mode.", Enum = typeof(CustomLogicCollideModeEnum))]
             string collideMode,
-            [CLParam("What the collider should collide with (e.g., \"Hitboxes\").")]
+            [CLParam("What the collider should collide with.", Enum = typeof(CustomLogicCollideWithEnum))]
             string collideWith,
             [CLParam("The center position of the box collider (optional, defaults to calculated bounds).")]
             CustomLogicVector3Builtin center = null,
@@ -449,7 +449,7 @@ namespace CustomLogic
 
         [CLMethod("Add a sphere target to the object")]
         public CustomLogicMapTargetableBuiltin AddSphereTarget(
-            [CLParam("The team that can target this (e.g., \"Human\", \"Titan\").")]
+            [CLParam("The team that can target this.", Enum = typeof(CustomLogicTeamEnum))]
             string team,
             [CLParam("The center position of the sphere target.")]
             CustomLogicVector3Builtin center,
@@ -483,7 +483,7 @@ namespace CustomLogic
 
         [CLMethod("Add a box target to the object")]
         public CustomLogicMapTargetableBuiltin AddBoxTarget(
-            [CLParam("The team that can target this (e.g., \"Human\", \"Titan\").")]
+            [CLParam("The team that can target this.", Enum = typeof(CustomLogicTeamEnum))]
             string team,
             [CLParam("The center position of the box target.")]
             CustomLogicVector3Builtin center,
@@ -717,7 +717,7 @@ namespace CustomLogic
 
         [CLMethod("Add a builtin component to the MapObject")]
         public object AddBuiltinComponent(
-            [CLParam("The name of the builtin component to add (e.g., \"DayLight\").")]
+            [CLParam("The name of the builtin component to add.")]
             string name)
         {
             // Add the component and add to cache.

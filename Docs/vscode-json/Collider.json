@@ -219,7 +219,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "The layer name to check collisions with.",
+          "description": "The layer name to check collisions with. Refer to CollideWithEnum",
           "isOptional": false,
           "isVariadic": false
         }

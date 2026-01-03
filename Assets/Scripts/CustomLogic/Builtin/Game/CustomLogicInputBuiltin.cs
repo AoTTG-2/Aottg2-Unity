@@ -10,10 +10,8 @@ namespace CustomLogic
     [CLType(Name = "Input", Abstract = true, Static = true, Description = "Reading player key inputs. Note that inputs are best handled in OnFrame rather than OnTick, due to being updated every frame and not every physics tick.")]
     partial class CustomLogicInputBuiltin : BuiltinClassInstance
     {
-        [CLConstructor("Creates a new Input instance.")]
-        public CustomLogicInputBuiltin()
-        {
-        }
+        [CLConstructor]
+        public CustomLogicInputBuiltin(){}
 
         private static KeybindSetting GetKeybind(string key)
         {
@@ -162,9 +160,9 @@ namespace CustomLogic
                 CustomLogicManager.KeybindHold.Add(keybind);
         }
 
-        [CLMethod("Sets whether all keys in the specified category are enabled by default. Valid categories: General, Human, Titan, Interaction.")]
+        [CLMethod("Sets whether all keys in the specified category are enabled by default.")]
         public static void SetCategoryKeysEnabled(
-            [CLParam("The category name: \"General\", \"Human\", \"Titan\", or \"Interaction\".")]
+            [CLParam("The category name.", Enum = typeof(CustomLogicInputCategoryEnum))]
             string category,
             [CLParam("Whether the keys should be enabled by default.")]
             bool enabled)
