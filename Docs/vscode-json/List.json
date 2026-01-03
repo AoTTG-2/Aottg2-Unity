@@ -8,6 +8,7 @@
   "extends": [
     "Object"
   ],
+  "deprecated": "",
   "instanceFields": [
     {
       "label": "Count",
@@ -15,9 +16,10 @@
         "name": "int",
         "typeArguments": []
       },
-      "description": "The number of elements in the list",
+      "description": "The number of elements in the list.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     }
   ],
   "instanceMethods": [
@@ -27,9 +29,10 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Clear all list elements",
+      "description": "Clear all list elements.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Get",
@@ -37,7 +40,7 @@
         "name": "T",
         "typeArguments": []
       },
-      "description": "Get the element at the specified index",
+      "description": "Get the element at the specified index.",
       "parameters": [
         {
           "name": "index",
@@ -45,12 +48,13 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The index of the element to get (negative indices count from the end).",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Set",
@@ -58,7 +62,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Set the element at the specified index",
+      "description": "Set the element at the specified index.",
       "parameters": [
         {
           "name": "index",
@@ -66,7 +70,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The index of the element to set (negative indices count from the end).",
           "isOptional": false,
           "isVariadic": false
         },
@@ -76,12 +80,13 @@
             "name": "T",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The value to set.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Add",
@@ -89,7 +94,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Add an element to the end of the list",
+      "description": "Add an element to the end of the list.",
       "parameters": [
         {
           "name": "value",
@@ -97,12 +102,13 @@
             "name": "T",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The element to add.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "InsertAt",
@@ -110,7 +116,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Insert an element at the specified index",
+      "description": "Insert an element at the specified index.",
       "parameters": [
         {
           "name": "index",
@@ -118,7 +124,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The index at which to insert (negative indices count from the end).",
           "isOptional": false,
           "isVariadic": false
         },
@@ -128,12 +134,13 @@
             "name": "T",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The element to insert.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "RemoveAt",
@@ -141,7 +148,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Remove the element at the specified index",
+      "description": "Remove the element at the specified index.",
       "parameters": [
         {
           "name": "index",
@@ -149,12 +156,13 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The index of the element to remove (negative indices count from the end).",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Remove",
@@ -162,7 +170,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Remove the first occurrence of the specified element",
+      "description": "Remove the first occurrence of the specified element.",
       "parameters": [
         {
           "name": "value",
@@ -170,12 +178,13 @@
             "name": "T",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The element to remove.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Contains",
@@ -183,7 +192,7 @@
         "name": "bool",
         "typeArguments": []
       },
-      "description": "Check if the list contains the specified element",
+      "description": "Check if the list contains the specified element.",
       "parameters": [
         {
           "name": "value",
@@ -191,12 +200,13 @@
             "name": "T",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The element to check for.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Sort",
@@ -204,9 +214,10 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Sort the list",
+      "description": "Sort the list.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SortCustom",
@@ -214,7 +225,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Sort the list using a custom method, expects a method with the signature int method(a,b)",
+      "description": "Sort the list using a custom method, expects a method with the signature int method(a,b).",
       "parameters": [
         {
           "name": "method",
@@ -222,12 +233,13 @@
             "name": "function",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The comparison method that returns an int: negative if a < b, 0 if a == b, positive if a > b.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Filter",
@@ -240,7 +252,7 @@
           }
         ]
       },
-      "description": "Filter the list using a custom method, expects a method with the signature bool method(element)",
+      "description": "Filter the list using a custom method, expects a method with the signature bool method(element).",
       "parameters": [
         {
           "name": "method",
@@ -248,12 +260,13 @@
             "name": "function",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The predicate method that returns true for elements to keep.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Map",
@@ -266,7 +279,7 @@
           }
         ]
       },
-      "description": "Map the list using a custom method, expects a method with the signature object method(element)",
+      "description": "Map the list using a custom method, expects a method with the signature object method(element).",
       "parameters": [
         {
           "name": "method",
@@ -274,12 +287,13 @@
             "name": "function",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The transformation method that returns the mapped value for each element.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Reduce",
@@ -287,7 +301,7 @@
         "name": "Object",
         "typeArguments": []
       },
-      "description": "Reduce the list using a custom method, expects a method with the signature object method(acc, element)",
+      "description": "Reduce the list using a custom method, expects a method with the signature object method(acc, element).",
       "parameters": [
         {
           "name": "method",
@@ -295,7 +309,7 @@
             "name": "function",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The accumulation method that combines the accumulator with each element.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -305,12 +319,13 @@
             "name": "T",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The initial accumulator value.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Randomize",
@@ -325,7 +340,8 @@
       },
       "description": "Returns a randomized version of the list.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "ToSet",
@@ -338,9 +354,10 @@
           }
         ]
       },
-      "description": "Convert the list to a set",
+      "description": "Convert the list to a set.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     }
   ],
   "staticFields": [],
@@ -348,7 +365,8 @@
   "constructors": [
     {
       "parameters": [],
-      "description": ""
+      "description": "Creates an empty list.",
+      "deprecated": ""
     },
     {
       "parameters": [
@@ -358,12 +376,13 @@
             "name": "Object",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The values to add to the list.",
           "isOptional": false,
           "isVariadic": true
         }
       ],
-      "description": ""
+      "description": "Creates a list with the specified values.",
+      "deprecated": ""
     }
   ]
 }

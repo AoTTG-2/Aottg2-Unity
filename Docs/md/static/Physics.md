@@ -1,7 +1,7 @@
 # Physics
 Inherits from [Object](../objects/Object.md)
 
-Static Physics class. Contains some common physics functions
+Static Physics class. Contains some common physics functions.
 
 ### Example
 ```csharp
@@ -16,47 +16,91 @@ Game.Print(result.Normal);
 Game.Print(result.Distance);
 Game.Print(result.Collider);
 ```
-### Static Properties
-|Name|Type|Readonly|Description|
-|---|---|---|---|
-|CollideWithAll|string|True|All Collide Mode|
-|CollideWithMapObjects|string|True|MapObject Collide Mode|
-|CollideWithCharacters|string|True|Characters Collide Mode|
-|CollideWithTitans|string|True|Titans Collide Mode|
-|CollideWithHumans|string|True|Humans Collide Mode|
-|CollideWithProjectiles|string|True|Projectiles Collide Mode|
-|CollideWithEntities|string|True|Entities Collide Mode|
-|CollideWithHitboxes|string|True|Hitboxes Collide Mode|
-|CollideWithMapEditor|string|True|MapEditor Collide Mode|
-
-
 ### Static Methods
 <pre class="language-typescript"><code class="lang-typescript">function LineCast(start: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, end: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, collideWith: string) -> <a data-footnote-ref href="#user-content-fn-3">LineCastHitResult</a></code></pre>
-> Performs a line cast between two points, returns a LineCastHitResult object
+> Performs a line cast between two points, returns a LineCastHitResult object.
+> 
+> **Parameters**:
+> - `start`: The start position of the line cast.
+> - `end`: The end position of the line cast.
+> - `collideWith`: The collision layer to check against. Refer to [CollideWithEnum](../static/CollideWithEnum.md)
 > 
 <pre class="language-typescript"><code class="lang-typescript">function LineCastAll(start: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, end: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, collideWith: string) -> <a data-footnote-ref href="#user-content-fn-4">List</a><<a data-footnote-ref href="#user-content-fn-3">LineCastHitResult</a>></code></pre>
 > Performs a line cast between two points and returns a LineCastHitResult object for each element hit.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function SphereCast(start: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, end: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, radius: float, collideWith: string) -> <a data-footnote-ref href="#user-content-fn-59">Object</a></code></pre>
+> **Parameters**:
+> - `start`: The start position of the line cast.
+> - `end`: The end position of the line cast.
+> - `collideWith`: The collision layer to check against. Refer to [CollideWithEnum](../static/CollideWithEnum.md)
+> 
+<pre class="language-typescript"><code class="lang-typescript">function SphereCast(start: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, end: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, radius: float, collideWith: string) -> <a data-footnote-ref href="#user-content-fn-82">Object</a></code></pre>
 > Performs a sphere cast between two points, returns the object hit (Human, Titan, etc...).
+> 
+> **Parameters**:
+> - `start`: The start position of the sphere cast.
+> - `end`: The end position of the sphere cast.
+> - `radius`: The radius of the sphere.
+> - `collideWith`: The collision layer to check against. Refer to [CollideWithEnum](../static/CollideWithEnum.md)
 > 
 <pre class="language-typescript"><code class="lang-typescript">function SphereCastAll(start: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, end: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, radius: float, collideWith: string) -> <a data-footnote-ref href="#user-content-fn-4">List</a><<a data-footnote-ref href="#user-content-fn-3">LineCastHitResult</a>></code></pre>
 > Performs a sphere cast between two points and returns a LineCastHitResult object for each element hit.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function BoxCast(start: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, end: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, dimensions: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, orientation: <a data-footnote-ref href="#user-content-fn-5">Quaternion</a>, collideWith: string) -> <a data-footnote-ref href="#user-content-fn-59">Object</a></code></pre>
+> **Parameters**:
+> - `start`: The start position of the sphere cast.
+> - `end`: The end position of the sphere cast.
+> - `radius`: The radius of the sphere.
+> - `collideWith`: The collision layer to check against. Refer to [CollideWithEnum](../static/CollideWithEnum.md)
+> 
+<pre class="language-typescript"><code class="lang-typescript">function BoxCast(start: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, end: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, dimensions: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, orientation: <a data-footnote-ref href="#user-content-fn-5">Quaternion</a>, collideWith: string) -> <a data-footnote-ref href="#user-content-fn-82">Object</a></code></pre>
 > Performs a box cast between two points, returns the object hit (Human, Titan, etc...).
+> 
+> **Parameters**:
+> - `start`: The start position of the box cast.
+> - `end`: The end position of the box cast.
+> - `dimensions`: The dimensions of the box.
+> - `orientation`: The orientation of the box.
+> - `collideWith`: The collision layer to check against. Refer to [CollideWithEnum](../static/CollideWithEnum.md)
 > 
 <pre class="language-typescript"><code class="lang-typescript">function BoxCastAll(start: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, end: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, dimensions: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, orientation: <a data-footnote-ref href="#user-content-fn-5">Quaternion</a>, collideWith: string) -> <a data-footnote-ref href="#user-content-fn-4">List</a><<a data-footnote-ref href="#user-content-fn-3">LineCastHitResult</a>></code></pre>
 > Performs a box cast between two points and returns a LineCastHitResult object for each element hit.
 > 
+> **Parameters**:
+> - `start`: The start position of the box cast.
+> - `end`: The end position of the box cast.
+> - `dimensions`: The dimensions of the box.
+> - `orientation`: The orientation of the box.
+> - `collideWith`: The collision layer to check against. Refer to [CollideWithEnum](../static/CollideWithEnum.md)
+> 
 <pre class="language-typescript"><code class="lang-typescript">function ClosestPoint(point: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, collider: <a data-footnote-ref href="#user-content-fn-13">Collider</a>, position: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, rotation: <a data-footnote-ref href="#user-content-fn-5">Quaternion</a>) -> <a data-footnote-ref href="#user-content-fn-9">Vector3</a></code></pre>
 > Returns a point on the given collider that is closest to the specified location.
 > 
+> **Parameters**:
+> - `point`: The point to find the closest point to.
+> - `collider`: The collider to check.
+> - `position`: The position of the collider.
+> - `rotation`: The rotation of the collider.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function ComputePenetration(colliderA: <a data-footnote-ref href="#user-content-fn-13">Collider</a>, positionA: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, rotationA: <a data-footnote-ref href="#user-content-fn-5">Quaternion</a>, colliderB: <a data-footnote-ref href="#user-content-fn-13">Collider</a>, positionB: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, rotationB: <a data-footnote-ref href="#user-content-fn-5">Quaternion</a>) -> <a data-footnote-ref href="#user-content-fn-9">Vector3</a></code></pre>
-> Compute the minimal translation required to separate the given colliders apart at specified poses.
+> Compute the minimal translation required to separate the given colliders apart at specified poses. Returns Vector3.Zero if the colliders are not intersecting.
+> 
+> **Parameters**:
+> - `colliderA`: The first collider.
+> - `positionA`: The position of the first collider.
+> - `rotationA`: The rotation of the first collider.
+> - `colliderB`: The second collider.
+> - `positionB`: The position of the second collider.
+> - `rotationB`: The rotation of the second collider.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function AreCollidersOverlapping(colliderA: <a data-footnote-ref href="#user-content-fn-13">Collider</a>, positionA: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, rotationA: <a data-footnote-ref href="#user-content-fn-5">Quaternion</a>, colliderB: <a data-footnote-ref href="#user-content-fn-13">Collider</a>, positionB: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, rotationB: <a data-footnote-ref href="#user-content-fn-5">Quaternion</a>) -> bool</code></pre>
 > Check if the the given colliders at specified poses are apart or overlapping.
+> 
+> **Parameters**:
+> - `colliderA`: The first collider.
+> - `positionA`: The position of the first collider.
+> - `rotationA`: The rotation of the first collider.
+> - `colliderB`: The second collider.
+> - `positionB`: The position of the second collider.
+> - `rotationB`: The rotation of the second collider.
 > 
 
 [^0]: [Color](../objects/Color.md)
@@ -90,33 +134,56 @@ Game.Print(result.Collider);
 [^28]: [Titan](../objects/Titan.md)
 [^29]: [Transform](../objects/Transform.md)
 [^30]: [WallColossal](../objects/WallColossal.md)
-[^31]: [Camera](../static/Camera.md)
-[^32]: [Cutscene](../static/Cutscene.md)
-[^33]: [Game](../static/Game.md)
-[^34]: [Input](../static/Input.md)
-[^35]: [Locale](../static/Locale.md)
-[^36]: [Map](../static/Map.md)
-[^37]: [Network](../static/Network.md)
-[^38]: [PersistentData](../static/PersistentData.md)
-[^39]: [Physics](../static/Physics.md)
-[^40]: [RoomData](../static/RoomData.md)
-[^41]: [Time](../static/Time.md)
-[^42]: [Button](../objects/Button.md)
-[^43]: [Dropdown](../objects/Dropdown.md)
-[^44]: [Icon](../objects/Icon.md)
-[^45]: [Image](../objects/Image.md)
-[^46]: [Label](../objects/Label.md)
-[^47]: [ProgressBar](../objects/ProgressBar.md)
-[^48]: [ScrollView](../objects/ScrollView.md)
-[^49]: [Slider](../objects/Slider.md)
-[^50]: [TextField](../objects/TextField.md)
-[^51]: [Toggle](../objects/Toggle.md)
-[^52]: [UI](../static/UI.md)
-[^53]: [VisualElement](../objects/VisualElement.md)
-[^54]: [Convert](../static/Convert.md)
-[^55]: [Json](../static/Json.md)
-[^56]: [Math](../static/Math.md)
-[^57]: [Random](../objects/Random.md)
-[^58]: [String](../static/String.md)
-[^59]: [Object](../objects/Object.md)
-[^60]: [Component](../objects/Component.md)
+[^31]: [CharacterTypeEnum](../static/CharacterTypeEnum.md)
+[^32]: [CollideModeEnum](../static/CollideModeEnum.md)
+[^33]: [CollideWithEnum](../static/CollideWithEnum.md)
+[^34]: [CollisionDetectionModeEnum](../static/CollisionDetectionModeEnum.md)
+[^35]: [EffectNameEnum](../static/EffectNameEnum.md)
+[^36]: [ForceModeEnum](../static/ForceModeEnum.md)
+[^37]: [HandStateEnum](../static/HandStateEnum.md)
+[^38]: [HumanParticleEffectEnum](../static/HumanParticleEffectEnum.md)
+[^39]: [InputCategoryEnum](../static/InputCategoryEnum.md)
+[^40]: [LanguageEnum](../static/LanguageEnum.md)
+[^41]: [LoadoutEnum](../static/LoadoutEnum.md)
+[^42]: [OutlineModeEnum](../static/OutlineModeEnum.md)
+[^43]: [PhysicMaterialCombineEnum](../static/PhysicMaterialCombineEnum.md)
+[^44]: [PlayerStatusEnum](../static/PlayerStatusEnum.md)
+[^45]: [ProjectileNameEnum](../static/ProjectileNameEnum.md)
+[^46]: [ScaleModeEnum](../static/ScaleModeEnum.md)
+[^47]: [ShifterTypeEnum](../static/ShifterTypeEnum.md)
+[^48]: [SliderDirectionEnum](../static/SliderDirectionEnum.md)
+[^49]: [SteamStateEnum](../static/SteamStateEnum.md)
+[^50]: [TeamEnum](../static/TeamEnum.md)
+[^51]: [TitanTypeEnum](../static/TitanTypeEnum.md)
+[^52]: [TSKillSoundEnum](../static/TSKillSoundEnum.md)
+[^53]: [WeaponEnum](../static/WeaponEnum.md)
+[^54]: [Camera](../static/Camera.md)
+[^55]: [Cutscene](../static/Cutscene.md)
+[^56]: [Game](../static/Game.md)
+[^57]: [Input](../static/Input.md)
+[^58]: [Locale](../static/Locale.md)
+[^59]: [Map](../static/Map.md)
+[^60]: [Network](../static/Network.md)
+[^61]: [PersistentData](../static/PersistentData.md)
+[^62]: [Physics](../static/Physics.md)
+[^63]: [RoomData](../static/RoomData.md)
+[^64]: [Time](../static/Time.md)
+[^65]: [Button](../objects/Button.md)
+[^66]: [Dropdown](../objects/Dropdown.md)
+[^67]: [Icon](../objects/Icon.md)
+[^68]: [Image](../objects/Image.md)
+[^69]: [Label](../objects/Label.md)
+[^70]: [ProgressBar](../objects/ProgressBar.md)
+[^71]: [ScrollView](../objects/ScrollView.md)
+[^72]: [Slider](../objects/Slider.md)
+[^73]: [TextField](../objects/TextField.md)
+[^74]: [Toggle](../objects/Toggle.md)
+[^75]: [UI](../static/UI.md)
+[^76]: [VisualElement](../objects/VisualElement.md)
+[^77]: [Convert](../static/Convert.md)
+[^78]: [Json](../static/Json.md)
+[^79]: [Math](../static/Math.md)
+[^80]: [Random](../objects/Random.md)
+[^81]: [String](../static/String.md)
+[^82]: [Object](../objects/Object.md)
+[^83]: [Component](../objects/Component.md)

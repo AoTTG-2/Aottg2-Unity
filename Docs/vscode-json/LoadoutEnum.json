@@ -1,0 +1,59 @@
+{
+  "kind": "extension",
+  "name": "LoadoutEnum",
+  "description": "Enumeration of loadout types for humans.",
+  "extends": [
+    "Object"
+  ],
+  "deprecated": "",
+  "instanceFields": [],
+  "instanceMethods": [],
+  "staticFields": [
+    {
+      "label": "Blades",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Blades loadout.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "AHSS",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "AHSS loadout.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "APG",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "APG loadout.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Thunderspears",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Thunderspears loadout.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    }
+  ],
+  "staticMethods": [],
+  "constructors": []
+}

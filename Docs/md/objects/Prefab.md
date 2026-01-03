@@ -1,35 +1,36 @@
 # Prefab
 Inherits from [Object](../objects/Object.md)
 
-Will expand this further later, currently only handles single elements, not children.
-Should be able to take in a serialized CSV describing the object and populate a child array/parent object when done.
+Represents a prefab object that can be instantiated in the map. Currently handles single elements, not children.
 
 ### Initialization
 ```csharp
-Prefab()
-Prefab(prefabCSV: string, clearComponents: bool)
+Prefab() // Creates a new empty Prefab instance.
+Prefab(prefabCSV: string, clearComponents: bool = False) // Creates a new Prefab instance from a serialized CSV string.
 ```
 
 ### Properties
 |Name|Type|Readonly|Description|
 |---|---|---|---|
-|Type|string|False||
-|Asset|string|False||
-|Active|bool|False||
-|Static|bool|False||
-|Visible|bool|False||
-|Name|string|False||
-|Position|[Vector3](../objects/Vector3.md)|False||
-|Rotation|[Vector3](../objects/Vector3.md)|False||
-|Scale|[Vector3](../objects/Vector3.md)|False||
-|CollideMode|string|False||
-|CollideWith|string|False||
-|PhysicsMaterial|string|False||
-|PersistsOwnership|bool|False||
+|AssetType|string|False|The type of the prefab asset.|
+|Asset|string|False|The asset path/name of the prefab.|
+|Active|bool|False|Whether the prefab is active.|
+|Static|bool|False|Whether the prefab is marked as static.|
+|Visible|bool|False|Whether the prefab is visible.|
+|Name|string|False|The name of the prefab.|
+|Position|[Vector3](../objects/Vector3.md)|False|The position of the prefab in world space.|
+|Rotation|[Vector3](../objects/Vector3.md)|False|The rotation of the prefab in euler angles.|
+|Scale|[Vector3](../objects/Vector3.md)|False|The scale of the prefab.|
+|CollideMode|string|False|The collision mode of the prefab.|
+|CollideWith|string|False|The layers that this prefab can collide with.|
+|PhysicsMaterial|string|False|The name of the physics material applied to the prefab.|
+|PersistsOwnership|bool|False|If true and this prefab is spawned at runtime with networking, the ownership will transfer to host if the player who spawned it leaves.|
 
 
 ### Methods
 <pre class="language-typescript"><code class="lang-typescript">function ClearComponents()</code></pre>
+> Clears all components from the prefab.
+> 
 
 [^0]: [Color](../objects/Color.md)
 [^1]: [Dict](../objects/Dict.md)
@@ -62,33 +63,56 @@ Prefab(prefabCSV: string, clearComponents: bool)
 [^28]: [Titan](../objects/Titan.md)
 [^29]: [Transform](../objects/Transform.md)
 [^30]: [WallColossal](../objects/WallColossal.md)
-[^31]: [Camera](../static/Camera.md)
-[^32]: [Cutscene](../static/Cutscene.md)
-[^33]: [Game](../static/Game.md)
-[^34]: [Input](../static/Input.md)
-[^35]: [Locale](../static/Locale.md)
-[^36]: [Map](../static/Map.md)
-[^37]: [Network](../static/Network.md)
-[^38]: [PersistentData](../static/PersistentData.md)
-[^39]: [Physics](../static/Physics.md)
-[^40]: [RoomData](../static/RoomData.md)
-[^41]: [Time](../static/Time.md)
-[^42]: [Button](../objects/Button.md)
-[^43]: [Dropdown](../objects/Dropdown.md)
-[^44]: [Icon](../objects/Icon.md)
-[^45]: [Image](../objects/Image.md)
-[^46]: [Label](../objects/Label.md)
-[^47]: [ProgressBar](../objects/ProgressBar.md)
-[^48]: [ScrollView](../objects/ScrollView.md)
-[^49]: [Slider](../objects/Slider.md)
-[^50]: [TextField](../objects/TextField.md)
-[^51]: [Toggle](../objects/Toggle.md)
-[^52]: [UI](../static/UI.md)
-[^53]: [VisualElement](../objects/VisualElement.md)
-[^54]: [Convert](../static/Convert.md)
-[^55]: [Json](../static/Json.md)
-[^56]: [Math](../static/Math.md)
-[^57]: [Random](../objects/Random.md)
-[^58]: [String](../static/String.md)
-[^59]: [Object](../objects/Object.md)
-[^60]: [Component](../objects/Component.md)
+[^31]: [CharacterTypeEnum](../static/CharacterTypeEnum.md)
+[^32]: [CollideModeEnum](../static/CollideModeEnum.md)
+[^33]: [CollideWithEnum](../static/CollideWithEnum.md)
+[^34]: [CollisionDetectionModeEnum](../static/CollisionDetectionModeEnum.md)
+[^35]: [EffectNameEnum](../static/EffectNameEnum.md)
+[^36]: [ForceModeEnum](../static/ForceModeEnum.md)
+[^37]: [HandStateEnum](../static/HandStateEnum.md)
+[^38]: [HumanParticleEffectEnum](../static/HumanParticleEffectEnum.md)
+[^39]: [InputCategoryEnum](../static/InputCategoryEnum.md)
+[^40]: [LanguageEnum](../static/LanguageEnum.md)
+[^41]: [LoadoutEnum](../static/LoadoutEnum.md)
+[^42]: [OutlineModeEnum](../static/OutlineModeEnum.md)
+[^43]: [PhysicMaterialCombineEnum](../static/PhysicMaterialCombineEnum.md)
+[^44]: [PlayerStatusEnum](../static/PlayerStatusEnum.md)
+[^45]: [ProjectileNameEnum](../static/ProjectileNameEnum.md)
+[^46]: [ScaleModeEnum](../static/ScaleModeEnum.md)
+[^47]: [ShifterTypeEnum](../static/ShifterTypeEnum.md)
+[^48]: [SliderDirectionEnum](../static/SliderDirectionEnum.md)
+[^49]: [SteamStateEnum](../static/SteamStateEnum.md)
+[^50]: [TeamEnum](../static/TeamEnum.md)
+[^51]: [TitanTypeEnum](../static/TitanTypeEnum.md)
+[^52]: [TSKillSoundEnum](../static/TSKillSoundEnum.md)
+[^53]: [WeaponEnum](../static/WeaponEnum.md)
+[^54]: [Camera](../static/Camera.md)
+[^55]: [Cutscene](../static/Cutscene.md)
+[^56]: [Game](../static/Game.md)
+[^57]: [Input](../static/Input.md)
+[^58]: [Locale](../static/Locale.md)
+[^59]: [Map](../static/Map.md)
+[^60]: [Network](../static/Network.md)
+[^61]: [PersistentData](../static/PersistentData.md)
+[^62]: [Physics](../static/Physics.md)
+[^63]: [RoomData](../static/RoomData.md)
+[^64]: [Time](../static/Time.md)
+[^65]: [Button](../objects/Button.md)
+[^66]: [Dropdown](../objects/Dropdown.md)
+[^67]: [Icon](../objects/Icon.md)
+[^68]: [Image](../objects/Image.md)
+[^69]: [Label](../objects/Label.md)
+[^70]: [ProgressBar](../objects/ProgressBar.md)
+[^71]: [ScrollView](../objects/ScrollView.md)
+[^72]: [Slider](../objects/Slider.md)
+[^73]: [TextField](../objects/TextField.md)
+[^74]: [Toggle](../objects/Toggle.md)
+[^75]: [UI](../static/UI.md)
+[^76]: [VisualElement](../objects/VisualElement.md)
+[^77]: [Convert](../static/Convert.md)
+[^78]: [Json](../static/Json.md)
+[^79]: [Math](../static/Math.md)
+[^80]: [Random](../objects/Random.md)
+[^81]: [String](../static/String.md)
+[^82]: [Object](../objects/Object.md)
+[^83]: [Component](../objects/Component.md)

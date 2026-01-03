@@ -5,6 +5,7 @@
   "extends": [
     "Object"
   ],
+  "deprecated": "",
   "instanceFields": [
     {
       "label": "IsCharacter",
@@ -14,7 +15,8 @@
       },
       "description": "true if the linecast hit a character",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "IsMapObject",
@@ -24,7 +26,8 @@
       },
       "description": "true if the linecast hit a map object",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Distance",
@@ -34,7 +37,8 @@
       },
       "description": "The distance to the hit point",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Point",
@@ -44,7 +48,8 @@
       },
       "description": "The point in world space where the linecast hit",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Normal",
@@ -54,7 +59,8 @@
       },
       "description": "The normal of the surface the linecast hit",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Collider",
@@ -64,7 +70,8 @@
       },
       "description": "The collider that was hit",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "ColliderInfo",
@@ -74,7 +81,8 @@
       },
       "description": "The collider that was hit",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     }
   ],
   "instanceMethods": [],

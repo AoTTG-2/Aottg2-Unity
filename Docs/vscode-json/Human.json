@@ -5,6 +5,7 @@
   "extends": [
     "Character"
   ],
+  "deprecated": "",
   "instanceFields": [
     {
       "label": "Weapon",
@@ -12,9 +13,10 @@
         "name": "string",
         "typeArguments": []
       },
-      "description": "The weapon the human is using",
+      "description": "The weapon the human is using. Refer to WeaponEnum",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "CurrentSpecial",
@@ -22,9 +24,10 @@
         "name": "string",
         "typeArguments": []
       },
-      "description": "The current special the human is using",
+      "description": "The current special the human is using.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "SpecialCooldownTime",
@@ -34,7 +37,8 @@
       },
       "description": "The normalized cooldown time of the special. Has a range of 0 to 1.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "SpecialCooldown",
@@ -42,9 +46,10 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "The cooldown of the special",
+      "description": "The cooldown of the special.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "ShifterLiveTime",
@@ -52,9 +57,10 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "The live time of the shifter special",
+      "description": "The live time of the shifter special.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "SpecialCooldownRatio",
@@ -62,9 +68,10 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "The ratio of the special cooldown",
+      "description": "The ratio of the special cooldown.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "CurrentGas",
@@ -72,9 +79,10 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "The current gas of the human",
+      "description": "The current gas of the human.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "MaxGas",
@@ -82,9 +90,10 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "The max gas of the human",
+      "description": "The max gas of the human.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Acceleration",
@@ -92,9 +101,10 @@
         "name": "int",
         "typeArguments": []
       },
-      "description": "The acceleration of the human",
+      "description": "The acceleration of the human.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Speed",
@@ -102,9 +112,21 @@
         "name": "int",
         "typeArguments": []
       },
-      "description": "The speed of the human",
+      "description": "The speed of the human.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "HorseTransform",
+      "type": {
+        "name": "Transform",
+        "typeArguments": []
+      },
+      "description": "The transform of the horse belonging to this human. Returns null if horses are disabled.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "HorseSpeed",
@@ -112,9 +134,10 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "The speed of the horse",
+      "description": "The speed of the horse.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "CurrentBladeDurability",
@@ -122,9 +145,10 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "The current blade durability",
+      "description": "The current blade durability.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "MaxBladeDurability",
@@ -132,9 +156,10 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "The max blade durability",
+      "description": "The max blade durability.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "CurrentBlade",
@@ -142,9 +167,10 @@
         "name": "int",
         "typeArguments": []
       },
-      "description": "The current blade",
+      "description": "The current blade.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "MaxBlade",
@@ -152,9 +178,10 @@
         "name": "int",
         "typeArguments": []
       },
-      "description": "The max number of blades held",
+      "description": "The max number of blades held.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "CurrentAmmoRound",
@@ -162,9 +189,10 @@
         "name": "int",
         "typeArguments": []
       },
-      "description": "The current ammo round",
+      "description": "The current ammo round.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "MaxAmmoRound",
@@ -172,9 +200,10 @@
         "name": "int",
         "typeArguments": []
       },
-      "description": "The max ammo round",
+      "description": "The max ammo round.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "CurrentAmmoLeft",
@@ -182,9 +211,10 @@
         "name": "int",
         "typeArguments": []
       },
-      "description": "The current ammo left",
+      "description": "The current ammo left.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "MaxAmmoTotal",
@@ -192,9 +222,10 @@
         "name": "int",
         "typeArguments": []
       },
-      "description": "The max total ammo",
+      "description": "The max total ammo.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "LeftHookEnabled",
@@ -202,9 +233,10 @@
         "name": "bool",
         "typeArguments": []
       },
-      "description": "Whether the left hook is enabled",
+      "description": "Whether the left hook is enabled.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "RightHookEnabled",
@@ -212,9 +244,10 @@
         "name": "bool",
         "typeArguments": []
       },
-      "description": "Whether the right hook is enabled",
+      "description": "Whether the right hook is enabled.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "IsMounted",
@@ -222,9 +255,10 @@
         "name": "bool",
         "typeArguments": []
       },
-      "description": "Whether the human is mounted",
+      "description": "Whether the human is mounted.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "MountedMapObject",
@@ -232,9 +266,10 @@
         "name": "MapObject",
         "typeArguments": []
       },
-      "description": "The map object the human is mounted on",
+      "description": "The map object the human is mounted on.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "MountedTransform",
@@ -242,9 +277,10 @@
         "name": "Transform",
         "typeArguments": []
       },
-      "description": "The transform the human is mounted on",
+      "description": "The transform the human is mounted on.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "AutoRefillGas",
@@ -252,9 +288,10 @@
         "name": "bool",
         "typeArguments": []
       },
-      "description": "Whether the human auto refills gas",
+      "description": "Whether the human auto refills gas.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "State",
@@ -262,9 +299,10 @@
         "name": "string",
         "typeArguments": []
       },
-      "description": "The state of the human",
+      "description": "The state of the human.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "CanDodge",
@@ -272,9 +310,10 @@
         "name": "bool",
         "typeArguments": []
       },
-      "description": "Whether the human can dodge",
+      "description": "Whether the human can dodge.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "IsInvincible",
@@ -282,9 +321,10 @@
         "name": "bool",
         "typeArguments": []
       },
-      "description": "Whether the human is invincible",
+      "description": "Whether the human is invincible.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "InvincibleTimeLeft",
@@ -292,9 +332,10 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "The time left for invincibility",
+      "description": "The time left for invincibility.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "IsCarried",
@@ -304,7 +345,8 @@
       },
       "description": "If the human is carried.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     }
   ],
   "instanceMethods": [
@@ -314,9 +356,10 @@
         "name": "bool",
         "typeArguments": []
       },
-      "description": "Refills the gas of the human",
+      "description": "Refills the gas of the human.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "RefillImmediate",
@@ -324,9 +367,10 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Refills the gas of the human immediately",
+      "description": "Refills the gas of the human immediately.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "ClearHooks",
@@ -334,9 +378,10 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Clears all hooks",
+      "description": "Clears all hooks.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "ClearLeftHook",
@@ -344,9 +389,10 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Clears the left hook",
+      "description": "Clears the left hook.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "ClearRightHook",
@@ -354,9 +400,10 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Clears the right hook",
+      "description": "Clears the right hook.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "LeftHookPosition",
@@ -366,7 +413,8 @@
       },
       "description": "Position of the left hook, null if there is no hook.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "RightHookPosition",
@@ -376,7 +424,8 @@
       },
       "description": "Position of the right hook, null if there is no hook.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "MountMapObject",
@@ -384,7 +433,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Mounts the human on a map object",
+      "description": "Mounts the human on a map object.",
       "parameters": [
         {
           "name": "mapObject",
@@ -392,7 +441,7 @@
             "name": "MapObject",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The map object to mount on.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -402,7 +451,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The position offset from the mount point.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -412,7 +461,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The rotation offset from the mount point.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -422,12 +471,13 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "If true, allows the human to attack while mounted (default: false).",
           "isOptional": true,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "MountTransform",
@@ -435,7 +485,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Mounts the human on a transform",
+      "description": "Mounts the human on a transform.",
       "parameters": [
         {
           "name": "transform",
@@ -443,7 +493,7 @@
             "name": "Transform",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The transform to mount on.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -453,7 +503,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The position offset from the mount point.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -463,7 +513,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The rotation offset from the mount point.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -473,12 +523,13 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "If true, allows the human to attack while mounted (default: false).",
           "isOptional": true,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Unmount",
@@ -486,7 +537,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Unmounts the human",
+      "description": "Unmounts the human.",
       "parameters": [
         {
           "name": "immediate",
@@ -494,12 +545,13 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "If true, unmounts immediately without animation (default: true).",
           "isOptional": true,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SetSpecial",
@@ -507,7 +559,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Sets the special of the human",
+      "description": "Sets the special of the human.",
       "parameters": [
         {
           "name": "special",
@@ -515,12 +567,13 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the special to set.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "ActivateSpecial",
@@ -528,9 +581,10 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Activates the special of the human",
+      "description": "Activates the special of the human.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SetWeapon",
@@ -538,7 +592,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Sets the weapon of the human",
+      "description": "Sets the weapon for the human.",
       "parameters": [
         {
           "name": "weapon",
@@ -546,12 +600,13 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "Name of the weapon. Available weapons: \"Blade\", \"AHSS\", \"APG\", \"Thunderspear\"",
+          "description": "Name of the weapon. Refer to WeaponEnum",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "DisablePerks",
@@ -559,9 +614,42 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Disables all perks of the human",
+      "description": "Disables all perks of the human.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "SetParticleEffect",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Enables or disables a particle effect.",
+      "parameters": [
+        {
+          "name": "effectName",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "Name of the effect. Refer to HumanParticleEffectEnum",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "enabled",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "True to enable, false to disable",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
     }
   ],
   "staticFields": [],

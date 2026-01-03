@@ -14,6 +14,12 @@ namespace CustomLogic
         /// </summary>
         public string[] TypeArguments { get; set; }
 
+        /// <summary>
+        /// Type of the enum class to reference (e.g., typeof(CustomLogicEffectNameEnum)).
+        /// The enum name will be retrieved from the CLType attribute of the specified type.
+        /// </summary>
+        public Type Enum { get; set; }
+
         public CLPropertyAttribute(string description = "", bool readOnly = false)
         {
             ReadOnly = readOnly;

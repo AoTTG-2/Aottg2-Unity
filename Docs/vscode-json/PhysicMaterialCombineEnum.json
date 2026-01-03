@@ -1,0 +1,59 @@
+{
+  "kind": "extension",
+  "name": "PhysicMaterialCombineEnum",
+  "description": "Enumeration of physics material combine modes for friction and bounce.",
+  "extends": [
+    "Object"
+  ],
+  "deprecated": "",
+  "instanceFields": [],
+  "instanceMethods": [],
+  "staticFields": [
+    {
+      "label": "Minimum",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "Minimum combine mode.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Multiply",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "Multiply combine mode.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Maximum",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "Maximum combine mode.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Average",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "Average combine mode.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    }
+  ],
+  "staticMethods": [],
+  "constructors": []
+}

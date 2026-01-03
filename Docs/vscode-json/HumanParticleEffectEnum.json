@@ -1,0 +1,48 @@
+{
+  "kind": "extension",
+  "name": "HumanParticleEffectEnum",
+  "description": "Enumeration of available particle effect names for humans.",
+  "extends": [
+    "Object"
+  ],
+  "deprecated": "",
+  "instanceFields": [],
+  "instanceMethods": [],
+  "staticFields": [
+    {
+      "label": "Buff1",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Buff1 particle effect.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Buff2",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Buff2 particle effect.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Fire1",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Fire1 particle effect.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    }
+  ],
+  "staticMethods": [],
+  "constructors": []
+}

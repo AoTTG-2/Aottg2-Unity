@@ -5,6 +5,7 @@
   "extends": [
     "Object"
   ],
+  "deprecated": "",
   "instanceFields": [],
   "instanceMethods": [],
   "staticFields": [
@@ -16,7 +17,8 @@
       },
       "description": "Time between each tick (0.02 seconds)",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "FrameTime",
@@ -26,7 +28,8 @@
       },
       "description": "Time between each frame.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "GameTime",
@@ -36,7 +39,8 @@
       },
       "description": "Time since start of the round.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "EngineTime",
@@ -46,7 +50,8 @@
       },
       "description": "Unity's Time.time",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "TimeScale",
@@ -56,7 +61,8 @@
       },
       "description": "Changes the timescale of the game.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     }
   ],
   "staticMethods": [],

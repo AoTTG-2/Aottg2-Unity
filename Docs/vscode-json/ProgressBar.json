@@ -1,10 +1,11 @@
 {
   "kind": "class",
   "name": "ProgressBar",
-  "description": "A UI element that represents a progress bar for displaying progress from 0% to 100%",
+  "description": "A UI element that represents a progress bar for displaying progress from 0% to 100%.",
   "extends": [
     "VisualElement"
   ],
+  "deprecated": "",
   "instanceFields": [
     {
       "label": "Title",
@@ -12,9 +13,10 @@
         "name": "string",
         "typeArguments": []
       },
-      "description": "The title text displayed on the progress bar",
+      "description": "The title text displayed on the progress bar.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Value",
@@ -22,9 +24,10 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "The current value of the progress bar (0-100)",
+      "description": "The current value of the progress bar (0-100).",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "LowValue",
@@ -32,9 +35,10 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "The minimum value of the progress bar (default: 0)",
+      "description": "The minimum value of the progress bar (default: 0).",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "HighValue",
@@ -42,9 +46,10 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "The maximum value of the progress bar (default: 100)",
+      "description": "The maximum value of the progress bar (default: 100).",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     }
   ],
   "instanceMethods": [
@@ -54,7 +59,7 @@
         "name": "ProgressBar",
         "typeArguments": []
       },
-      "description": "Sets the method to be called when the progress bar value changes",
+      "description": "Sets the method to be called when the progress bar value changes.",
       "parameters": [
         {
           "name": "valueChangedEvent",
@@ -67,7 +72,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SetValueWithoutNotify",
@@ -75,7 +81,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Sets the value of the progress bar without triggering any change events",
+      "description": "Sets the value of the progress bar without triggering any change events.",
       "parameters": [
         {
           "name": "value",
@@ -83,12 +89,13 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The value to set.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "GetPercentage",
@@ -96,9 +103,10 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "Gets the current progress as a percentage (0-100)",
+      "description": "Gets the current progress as a percentage (0-100).",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SetPercentage",
@@ -106,7 +114,7 @@
         "name": "ProgressBar",
         "typeArguments": []
       },
-      "description": "Sets the progress by percentage (0-100)",
+      "description": "Sets the progress by percentage (0-100).",
       "parameters": [
         {
           "name": "percentage",
@@ -114,12 +122,13 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The percentage value (0-100).",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     }
   ],
   "staticFields": [],

@@ -1,0 +1,59 @@
+{
+  "kind": "extension",
+  "name": "InputCategoryEnum",
+  "description": "Enumeration of input categories for keybind settings.",
+  "extends": [
+    "Object"
+  ],
+  "deprecated": "",
+  "instanceFields": [],
+  "instanceMethods": [],
+  "staticFields": [
+    {
+      "label": "General",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "General input category.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Human",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Human input category.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Titan",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Titan input category.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Interaction",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Interaction input category.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    }
+  ],
+  "staticMethods": [],
+  "constructors": []
+}

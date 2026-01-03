@@ -3,27 +3,21 @@ using System.IO;
 using Utility;
 using SimpleJSONFixed;
 using System.Linq;
-using static UnityEngine.UIElements.UxmlAttributeDescription;
-using System.Runtime.CompilerServices;
-using System.Xml;
 
 namespace CustomLogic
 {
-    /// <summary>
-    /// Store and retrieve persistent data. Persistent data can be saved and loaded from file. Supports float, int, string, and bool types.
-    /// Note that any game mode may use the same file names, so it is recommended that you choose unique file names when saving and loading.
-    /// Saved files are located in Documents/Aottg2/PersistentData.
-    /// </summary>
-    [CLType(Name = "PersistentData", Static = true, Abstract = true)]
+    [CLType(Name = "PersistentData", Static = true, Abstract = true, Description = "Store and retrieve persistent data. Persistent data can be saved and loaded from file. Supports float, int, string, and bool types. Note that any game mode may use the same file names, so it is recommended that you choose unique file names when saving and loading. Saved files are located in Documents/Aottg2/PersistentData.")]
     partial class CustomLogicPersistentDataBuiltin : BuiltinClassInstance
     {
         [CLConstructor]
-        public CustomLogicPersistentDataBuiltin()
-        {
-        }
+        public CustomLogicPersistentDataBuiltin(){}
 
-        [CLMethod(Description = "Sets the property with given name to the object value. Valid value types are float, string, bool, and int.")]
-        public static void SetProperty(string property, object value)
+        [CLMethod("Sets the property with given name to the object value. Valid value types are float, string, bool, and int.")]
+        public static void SetProperty(
+            [CLParam("The name of the property.")]
+            string property,
+            [CLParam("The value to set (must be float, string, bool, int, or null).", Type = "float|int|string|bool|null")]
+            object value)
         {
             if (value is not (null or float or int or string or bool))
                 throw new System.Exception("PersistentData.SetProperty only supports null, float, int, string, or bool values.");
@@ -31,14 +25,22 @@ namespace CustomLogic
             CustomLogicManager.PersistentData[property] = value;
         }
 
-        [CLMethod(Description = "Gets the property with given name. If property does not exist, returns defaultValue.")]
-        public static object GetProperty(string property, object defaultValue)
+        [CLMethod("Gets the property with given name. If property does not exist, returns defaultValue.")]
+        public static object GetProperty(
+            [CLParam("The name of the property.")]
+            string property,
+            [CLParam("The default value to return if the property does not exist.")]
+            object defaultValue)
         {
             return CustomLogicManager.PersistentData.GetValueOrDefault(property, defaultValue);
         }
 
-        [CLMethod(Description = "Loads persistent data from given file name. If encrypted is true, will treat the file as having been saved as encrypted.")]
-        public static void LoadFromFile(string fileName, bool encrypted)
+        [CLMethod("Loads persistent data from given file name. If encrypted is true, will treat the file as having been saved as encrypted.")]
+        public static void LoadFromFile(
+            [CLParam("The name of the file to load from.")]
+            string fileName,
+            [CLParam("Whether the file is encrypted.")]
+            bool encrypted)
         {
             Directory.CreateDirectory(FolderPaths.PersistentData);
             CustomLogicManager.PersistentData.Clear();
@@ -69,13 +71,17 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod(Description = "Saves current persistent data to given file name. If encrypted is true, will also encrypt the file instead of using plaintext.")]
-        public static void SaveToFile(string fileName, bool encrypted)
+        [CLMethod("Saves current persistent data to given file name. If encrypted is true, will also encrypt the file instead of using plaintext.")]
+        public static void SaveToFile(
+            [CLParam("The name of the file to save to.")]
+            string fileName,
+            [CLParam("Whether to encrypt the file.")]
+            bool encrypted)
         {
             Directory.CreateDirectory(FolderPaths.PersistentData);
 
             if (!Util.IsValidFileName(fileName))
-                throw new System.Exception("PersistentData.LoadFromFile only supports legal fileName characters.");
+                throw new System.Exception("PersistentData.SaveToFile only supports legal fileName characters.");
 
             var path = Path.Combine(FolderPaths.PersistentData, fileName + ".txt");
             JSONNode node = new JSONObject();
@@ -103,20 +109,24 @@ namespace CustomLogic
             File.WriteAllText(path, text);
         }
 
-        [CLMethod(Description = "Clears current persistent data.")]
+        [CLMethod("Clears current persistent data.")]
         public static void Clear()
         {
             CustomLogicManager.PersistentData.Clear();
         }
 
-        [CLMethod(Description = "Determines whether or not the given fileName will be allowed for use when saving/loading a file.")]
-        public static bool IsValidFileName(string fileName)
+        [CLMethod("Determines whether or not the given fileName will be allowed for use when saving/loading a file.")]
+        public static bool IsValidFileName(
+            [CLParam("The file name to validate.")]
+            string fileName)
         {
             return Util.IsValidFileName(fileName);
         }
 
-        [CLMethod(Description = "Determines whether the file given already exists. Throws an error if given an invalid file name.")]
-        public static bool FileExists(string fileName)
+        [CLMethod("Determines whether the file given already exists. Throws an error if given an invalid file name.")]
+        public static bool FileExists(
+            [CLParam("The file name to check.")]
+            string fileName)
         {
             if (!Util.IsValidFileName(fileName))
                 throw new System.Exception("PersistentData.FileExists only supports legal fileName characters.");

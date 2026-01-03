@@ -7,13 +7,13 @@ Overloads operators:
 |Name|Type|Readonly|Description|
 |---|---|---|---|
 |AttachedArticulationBody|[Transform](../objects/Transform.md)|True|The transform of the rigidbody this collider is attached to.|
-|ContactOffset|float|False||
-|Enabled|bool|False||
-|ExludeLayers|int|False||
+|ContactOffset|float|False|The contact offset used by the collider to avoid tunneling.|
+|Enabled|bool|False|Whether the collider is enabled.|
+|ExcludeLayers|int|False|The layers that this Collider should exclude when deciding if the Collider can contact another Collider.|
 |IncludeLayers|int|False|The additional layers that this Collider should include when deciding if the Collider can contact another Collider.|
-|IsTrigger|bool|False||
-|Center|[Vector3](../objects/Vector3.md)|True||
-|ProvidesContacts|bool|False||
+|IsTrigger|bool|False|Whether the collider is a trigger. Triggers don't cause physical collisions.|
+|Center|[Vector3](../objects/Vector3.md)|True|The center of the collider's bounding box in world space.|
+|ProvidesContacts|bool|False|Whether the collider provides contact information.|
 |MaterialName|string|True|The name of the physics material on the collider.|
 |SharedMaterialName|string|True|The name of the shared physics material on this collider.|
 |Transform|[Transform](../objects/Transform.md)|True|The collider's transform.|
@@ -22,10 +22,24 @@ Overloads operators:
 
 ### Methods
 <pre class="language-typescript"><code class="lang-typescript">function ClosestPoint(position: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>) -> <a data-footnote-ref href="#user-content-fn-9">Vector3</a></code></pre>
+> Gets the closest point on the collider to the given position. Returns: The closest point on the collider.
+> 
+> **Parameters**:
+> - `position`: The position to find the closest point to.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function ClosestPointOnBounds(position: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>) -> <a data-footnote-ref href="#user-content-fn-9">Vector3</a></code></pre>
+> Gets the closest point on the collider's bounding box to the given position. Returns: The closest point on the bounding box.
+> 
+> **Parameters**:
+> - `position`: The position to find the closest point on bounds to.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function Raycast(start: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, end: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, collideWith: string) -> <a data-footnote-ref href="#user-content-fn-3">LineCastHitResult</a></code></pre>
-> Runs a raycast physics check between start to end and checks if it hits any collider with the given collideWith layer.
-Returns a Collider object if it hit something otherwise returns null.
+> Runs a raycast physics check between start to end and checks if it hits any collider with the given collideWith layer. Returns: A LineCastHitResult if it hit something, otherwise returns null.
+> 
+> **Parameters**:
+> - `start`: The start position of the raycast.
+> - `end`: The end position of the raycast.
+> - `collideWith`: The layer name to check collisions with. Refer to [CollideWithEnum](../static/CollideWithEnum.md)
 > 
 
 [^0]: [Color](../objects/Color.md)
@@ -59,33 +73,56 @@ Returns a Collider object if it hit something otherwise returns null.
 [^28]: [Titan](../objects/Titan.md)
 [^29]: [Transform](../objects/Transform.md)
 [^30]: [WallColossal](../objects/WallColossal.md)
-[^31]: [Camera](../static/Camera.md)
-[^32]: [Cutscene](../static/Cutscene.md)
-[^33]: [Game](../static/Game.md)
-[^34]: [Input](../static/Input.md)
-[^35]: [Locale](../static/Locale.md)
-[^36]: [Map](../static/Map.md)
-[^37]: [Network](../static/Network.md)
-[^38]: [PersistentData](../static/PersistentData.md)
-[^39]: [Physics](../static/Physics.md)
-[^40]: [RoomData](../static/RoomData.md)
-[^41]: [Time](../static/Time.md)
-[^42]: [Button](../objects/Button.md)
-[^43]: [Dropdown](../objects/Dropdown.md)
-[^44]: [Icon](../objects/Icon.md)
-[^45]: [Image](../objects/Image.md)
-[^46]: [Label](../objects/Label.md)
-[^47]: [ProgressBar](../objects/ProgressBar.md)
-[^48]: [ScrollView](../objects/ScrollView.md)
-[^49]: [Slider](../objects/Slider.md)
-[^50]: [TextField](../objects/TextField.md)
-[^51]: [Toggle](../objects/Toggle.md)
-[^52]: [UI](../static/UI.md)
-[^53]: [VisualElement](../objects/VisualElement.md)
-[^54]: [Convert](../static/Convert.md)
-[^55]: [Json](../static/Json.md)
-[^56]: [Math](../static/Math.md)
-[^57]: [Random](../objects/Random.md)
-[^58]: [String](../static/String.md)
-[^59]: [Object](../objects/Object.md)
-[^60]: [Component](../objects/Component.md)
+[^31]: [CharacterTypeEnum](../static/CharacterTypeEnum.md)
+[^32]: [CollideModeEnum](../static/CollideModeEnum.md)
+[^33]: [CollideWithEnum](../static/CollideWithEnum.md)
+[^34]: [CollisionDetectionModeEnum](../static/CollisionDetectionModeEnum.md)
+[^35]: [EffectNameEnum](../static/EffectNameEnum.md)
+[^36]: [ForceModeEnum](../static/ForceModeEnum.md)
+[^37]: [HandStateEnum](../static/HandStateEnum.md)
+[^38]: [HumanParticleEffectEnum](../static/HumanParticleEffectEnum.md)
+[^39]: [InputCategoryEnum](../static/InputCategoryEnum.md)
+[^40]: [LanguageEnum](../static/LanguageEnum.md)
+[^41]: [LoadoutEnum](../static/LoadoutEnum.md)
+[^42]: [OutlineModeEnum](../static/OutlineModeEnum.md)
+[^43]: [PhysicMaterialCombineEnum](../static/PhysicMaterialCombineEnum.md)
+[^44]: [PlayerStatusEnum](../static/PlayerStatusEnum.md)
+[^45]: [ProjectileNameEnum](../static/ProjectileNameEnum.md)
+[^46]: [ScaleModeEnum](../static/ScaleModeEnum.md)
+[^47]: [ShifterTypeEnum](../static/ShifterTypeEnum.md)
+[^48]: [SliderDirectionEnum](../static/SliderDirectionEnum.md)
+[^49]: [SteamStateEnum](../static/SteamStateEnum.md)
+[^50]: [TeamEnum](../static/TeamEnum.md)
+[^51]: [TitanTypeEnum](../static/TitanTypeEnum.md)
+[^52]: [TSKillSoundEnum](../static/TSKillSoundEnum.md)
+[^53]: [WeaponEnum](../static/WeaponEnum.md)
+[^54]: [Camera](../static/Camera.md)
+[^55]: [Cutscene](../static/Cutscene.md)
+[^56]: [Game](../static/Game.md)
+[^57]: [Input](../static/Input.md)
+[^58]: [Locale](../static/Locale.md)
+[^59]: [Map](../static/Map.md)
+[^60]: [Network](../static/Network.md)
+[^61]: [PersistentData](../static/PersistentData.md)
+[^62]: [Physics](../static/Physics.md)
+[^63]: [RoomData](../static/RoomData.md)
+[^64]: [Time](../static/Time.md)
+[^65]: [Button](../objects/Button.md)
+[^66]: [Dropdown](../objects/Dropdown.md)
+[^67]: [Icon](../objects/Icon.md)
+[^68]: [Image](../objects/Image.md)
+[^69]: [Label](../objects/Label.md)
+[^70]: [ProgressBar](../objects/ProgressBar.md)
+[^71]: [ScrollView](../objects/ScrollView.md)
+[^72]: [Slider](../objects/Slider.md)
+[^73]: [TextField](../objects/TextField.md)
+[^74]: [Toggle](../objects/Toggle.md)
+[^75]: [UI](../static/UI.md)
+[^76]: [VisualElement](../objects/VisualElement.md)
+[^77]: [Convert](../static/Convert.md)
+[^78]: [Json](../static/Json.md)
+[^79]: [Math](../static/Math.md)
+[^80]: [Random](../objects/Random.md)
+[^81]: [String](../static/String.md)
+[^82]: [Object](../objects/Object.md)
+[^83]: [Component](../objects/Component.md)

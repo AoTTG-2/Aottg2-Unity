@@ -1,10 +1,11 @@
 {
   "kind": "class",
   "name": "Dropdown",
-  "description": "A UI element that represents a dropdown selection field",
+  "description": "A UI element that represents a dropdown selection field.",
   "extends": [
     "VisualElement"
   ],
+  "deprecated": "",
   "instanceFields": [
     {
       "label": "Label",
@@ -12,9 +13,10 @@
         "name": "string",
         "typeArguments": []
       },
-      "description": "The label text displayed next to the Dropdown",
+      "description": "The label text displayed next to the Dropdown.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Value",
@@ -22,9 +24,10 @@
         "name": "string",
         "typeArguments": []
       },
-      "description": "The currently selected value (option text)",
+      "description": "The currently selected value (option text).",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Index",
@@ -32,9 +35,10 @@
         "name": "int",
         "typeArguments": []
       },
-      "description": "The index of the currently selected option (0-based)",
+      "description": "The index of the currently selected option (0-based).",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Choices",
@@ -47,9 +51,10 @@
           }
         ]
       },
-      "description": "Gets the list of available choices",
+      "description": "Gets the list of available choices.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     }
   ],
   "instanceMethods": [
@@ -59,7 +64,7 @@
         "name": "Dropdown",
         "typeArguments": []
       },
-      "description": "Sets the method to be called when the Dropdown value changes",
+      "description": "Sets the method to be called when the Dropdown value changes.",
       "parameters": [
         {
           "name": "valueChangedEvent",
@@ -72,7 +77,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SetValueWithoutNotify",
@@ -80,7 +86,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Sets the value of the Dropdown without triggering any change events",
+      "description": "Sets the value of the Dropdown without triggering any change events.",
       "parameters": [
         {
           "name": "value",
@@ -88,12 +94,13 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The value to set.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SetIndexWithoutNotify",
@@ -101,7 +108,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Sets the index of the selected option without triggering any change events",
+      "description": "Sets the index of the selected option without triggering any change events.",
       "parameters": [
         {
           "name": "index",
@@ -109,12 +116,13 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The index of the option to select (0-based).",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "AddChoice",
@@ -122,7 +130,7 @@
         "name": "Dropdown",
         "typeArguments": []
       },
-      "description": "Adds a choice to the dropdown options",
+      "description": "Adds a choice to the dropdown options.",
       "parameters": [
         {
           "name": "choice",
@@ -130,12 +138,13 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The choice text to add.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "RemoveChoice",
@@ -143,7 +152,7 @@
         "name": "Dropdown",
         "typeArguments": []
       },
-      "description": "Removes a choice from the dropdown options",
+      "description": "Removes a choice from the dropdown options.",
       "parameters": [
         {
           "name": "choice",
@@ -151,12 +160,13 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The choice text to remove.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "ClearChoices",
@@ -164,9 +174,10 @@
         "name": "Dropdown",
         "typeArguments": []
       },
-      "description": "Clears all choices from the dropdown",
+      "description": "Clears all choices from the dropdown.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     }
   ],
   "staticFields": [],
