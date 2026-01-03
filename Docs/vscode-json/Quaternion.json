@@ -5,6 +5,7 @@
   "extends": [
     "Object"
   ],
+  "deprecated": "",
   "instanceFields": [
     {
       "label": "X",
@@ -14,7 +15,8 @@
       },
       "description": "The X component of the quaternion.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Y",
@@ -24,7 +26,8 @@
       },
       "description": "The Y component of the quaternion.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Z",
@@ -34,7 +37,8 @@
       },
       "description": "The Z component of the quaternion.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "W",
@@ -44,7 +48,8 @@
       },
       "description": "The W component of the quaternion.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Euler",
@@ -54,7 +59,8 @@
       },
       "description": "Returns or sets the euler angle representation of the rotation.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     }
   ],
   "instanceMethods": [],
@@ -67,7 +73,8 @@
       },
       "description": "The identity rotation (no rotation).",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     }
   ],
   "staticMethods": [
@@ -110,7 +117,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "LerpUnclamped",
@@ -151,7 +159,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Slerp",
@@ -192,7 +201,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SlerpUnclamped",
@@ -233,7 +243,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "FromEuler",
@@ -254,7 +265,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "LookRotation",
@@ -285,7 +297,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "FromToRotation",
@@ -316,7 +329,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Inverse",
@@ -337,7 +351,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "RotateTowards",
@@ -378,7 +393,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "AngleAxis",
@@ -409,7 +425,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Angle",
@@ -440,13 +457,15 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     }
   ],
   "constructors": [
     {
       "parameters": [],
-      "description": "Default constructor, creates an identity quaternion (no rotation)."
+      "description": "Default constructor, creates an identity quaternion (no rotation).",
+      "deprecated": ""
     },
     {
       "parameters": [
@@ -491,7 +510,8 @@
           "isVariadic": false
         }
       ],
-      "description": "Creates a new Quaternion from the given values."
+      "description": "Creates a new Quaternion from the given values.",
+      "deprecated": ""
     }
   ]
 }

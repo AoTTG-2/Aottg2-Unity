@@ -8,6 +8,7 @@
   "extends": [
     "Object"
   ],
+  "deprecated": "",
   "instanceFields": [
     {
       "label": "Count",
@@ -17,7 +18,8 @@
       },
       "description": "The number of elements in the set.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     }
   ],
   "instanceMethods": [
@@ -29,7 +31,8 @@
       },
       "description": "Clear all set elements.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Contains",
@@ -50,7 +53,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Add",
@@ -71,7 +75,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Remove",
@@ -92,7 +97,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Union",
@@ -118,7 +124,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Intersect",
@@ -144,7 +151,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Difference",
@@ -170,7 +178,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "IsSubsetOf",
@@ -196,7 +205,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "IsSupersetOf",
@@ -222,7 +232,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "IsProperSubsetOf",
@@ -248,7 +259,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "IsProperSupersetOf",
@@ -274,7 +286,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Overlaps",
@@ -300,7 +313,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SetEquals",
@@ -326,7 +340,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "ToList",
@@ -341,7 +356,8 @@
       },
       "description": "Convert the set to a list.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     }
   ],
   "staticFields": [],
@@ -349,7 +365,8 @@
   "constructors": [
     {
       "parameters": [],
-      "description": "Creates an empty set."
+      "description": "Creates an empty set.",
+      "deprecated": ""
     },
     {
       "parameters": [
@@ -364,7 +381,8 @@
           "isVariadic": true
         }
       ],
-      "description": "Creates a set with the specified values."
+      "description": "Creates a set with the specified values.",
+      "deprecated": ""
     }
   ]
 }

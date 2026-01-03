@@ -8,6 +8,7 @@
   "extends": [
     "Object"
   ],
+  "deprecated": "",
   "instanceFields": [
     {
       "label": "Count",
@@ -17,7 +18,8 @@
       },
       "description": "The number of elements in the list.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     }
   ],
   "instanceMethods": [
@@ -29,7 +31,8 @@
       },
       "description": "Clear all list elements.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Get",
@@ -50,7 +53,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Set",
@@ -81,7 +85,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Add",
@@ -102,7 +107,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "InsertAt",
@@ -133,7 +139,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "RemoveAt",
@@ -154,7 +161,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Remove",
@@ -175,7 +183,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Contains",
@@ -196,7 +205,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Sort",
@@ -206,7 +216,8 @@
       },
       "description": "Sort the list.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SortCustom",
@@ -227,7 +238,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Filter",
@@ -253,7 +265,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Map",
@@ -279,7 +292,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Reduce",
@@ -310,7 +324,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Randomize",
@@ -325,7 +340,8 @@
       },
       "description": "Returns a randomized version of the list.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "ToSet",
@@ -340,7 +356,8 @@
       },
       "description": "Convert the list to a set.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     }
   ],
   "staticFields": [],
@@ -348,7 +365,8 @@
   "constructors": [
     {
       "parameters": [],
-      "description": "Creates an empty list."
+      "description": "Creates an empty list.",
+      "deprecated": ""
     },
     {
       "parameters": [
@@ -363,7 +381,8 @@
           "isVariadic": true
         }
       ],
-      "description": "Creates a list with the specified values."
+      "description": "Creates a list with the specified values.",
+      "deprecated": ""
     }
   ]
 }

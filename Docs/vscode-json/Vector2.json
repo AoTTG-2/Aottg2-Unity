@@ -5,6 +5,7 @@
   "extends": [
     "Object"
   ],
+  "deprecated": "",
   "instanceFields": [
     {
       "label": "X",
@@ -14,7 +15,8 @@
       },
       "description": "The X component of the vector.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Y",
@@ -24,7 +26,8 @@
       },
       "description": "The Y component of the vector.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Normalized",
@@ -34,7 +37,8 @@
       },
       "description": "Returns a normalized copy of this vector (magnitude of 1).",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Magnitude",
@@ -44,7 +48,8 @@
       },
       "description": "Returns the length of this vector.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "SqrMagnitude",
@@ -54,7 +59,8 @@
       },
       "description": "Returns the squared length of this vector (faster than Magnitude).",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     }
   ],
   "instanceMethods": [
@@ -87,7 +93,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Normalize",
@@ -97,7 +104,8 @@
       },
       "description": "Normalizes the vector in place.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     }
   ],
   "staticFields": [
@@ -109,7 +117,8 @@
       },
       "description": "Shorthand for writing Vector2(0, 0).",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "One",
@@ -119,7 +128,8 @@
       },
       "description": "Shorthand for writing Vector2(1, 1).",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Up",
@@ -129,7 +139,8 @@
       },
       "description": "Shorthand for writing Vector2(0, 1).",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Down",
@@ -139,7 +150,8 @@
       },
       "description": "Shorthand for writing Vector2(0, -1).",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Left",
@@ -149,7 +161,8 @@
       },
       "description": "Shorthand for writing Vector2(-1, 0).",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Right",
@@ -159,7 +172,8 @@
       },
       "description": "Shorthand for writing Vector2(1, 0).",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "NegativeInfinity",
@@ -169,7 +183,8 @@
       },
       "description": "Shorthand for writing Vector2(float.NegativeInfinity, float.NegativeInfinity).",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "PositiveInfinity",
@@ -179,7 +194,8 @@
       },
       "description": "Shorthand for writing Vector2(float.PositiveInfinity, float.PositiveInfinity).",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     }
   ],
   "staticMethods": [
@@ -212,7 +228,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "ClampMagnitude",
@@ -243,7 +260,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Distance",
@@ -274,7 +292,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Dot",
@@ -305,7 +324,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Lerp",
@@ -346,7 +366,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "LerpUnclamped",
@@ -387,7 +408,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Max",
@@ -418,7 +440,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Min",
@@ -449,7 +472,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "MoveTowards",
@@ -490,7 +514,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Reflect",
@@ -521,7 +546,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SignedAngle",
@@ -552,7 +578,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SmoothDamp",
@@ -613,13 +640,15 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     }
   ],
   "constructors": [
     {
       "parameters": [],
-      "description": "Default constructor, initializes the Vector2 to (0, 0)."
+      "description": "Default constructor, initializes the Vector2 to (0, 0).",
+      "deprecated": ""
     },
     {
       "parameters": [
@@ -634,7 +663,8 @@
           "isVariadic": false
         }
       ],
-      "description": "Initializes the Vector2 to (xy, xy)."
+      "description": "Initializes the Vector2 to (xy, xy).",
+      "deprecated": ""
     },
     {
       "parameters": [
@@ -659,7 +689,8 @@
           "isVariadic": false
         }
       ],
-      "description": "Initializes the Vector2 to (x, y)."
+      "description": "Initializes the Vector2 to (x, y).",
+      "deprecated": ""
     }
   ]
 }

@@ -5,6 +5,7 @@
   "extends": [
     "Shifter"
   ],
+  "deprecated": "",
   "instanceFields": [
     {
       "label": "HandHealth",
@@ -14,7 +15,8 @@
       },
       "description": "Colossal's current hand health (applies to both hands for backward compatibility).",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "MaxHandHealth",
@@ -24,7 +26,8 @@
       },
       "description": "Colossal's maximum hand health (applies to both hands for backward compatibility).",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "LeftHandHealth",
@@ -34,7 +37,8 @@
       },
       "description": "Colossal's current left hand health.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "MaxLeftHandHealth",
@@ -44,7 +48,8 @@
       },
       "description": "Colossal's maximum left hand health.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "RightHandHealth",
@@ -54,7 +59,8 @@
       },
       "description": "Colossal's current right hand health.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "MaxRightHandHealth",
@@ -64,7 +70,8 @@
       },
       "description": "Colossal's maximum right hand health.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "LeftHandState",
@@ -74,7 +81,8 @@
       },
       "description": "Colossal's left hand state (Healthy or Broken).",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "RightHandState",
@@ -84,7 +92,8 @@
       },
       "description": "Colossal's right hand state (Healthy or Broken).",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "HandRecoveryTime",
@@ -94,7 +103,8 @@
       },
       "description": "Time in seconds for a hand to fully recover from broken state.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "LeftHandRecoveryTimeLeft",
@@ -104,7 +114,8 @@
       },
       "description": "Time remaining in seconds for left hand to recover (0 if not recovering).",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "RightHandRecoveryTimeLeft",
@@ -114,7 +125,8 @@
       },
       "description": "Time remaining in seconds for right hand to recover (0 if not recovering).",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "WallAttackCooldown",
@@ -124,7 +136,8 @@
       },
       "description": "Colossal's (AI) wall attack cooldown per attack.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "WallAttackCooldownLeft",
@@ -134,7 +147,8 @@
       },
       "description": "Colossal's (AI) wall attack cooldown remaining.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "SteamState",
@@ -144,7 +158,8 @@
       },
       "description": "Colossal's current steam state (Off, Warning, or Damage).",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     }
   ],
   "instanceMethods": [
@@ -156,7 +171,8 @@
       },
       "description": "Causes the colossal to perform steam attack.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "StopSteam",
@@ -166,7 +182,8 @@
       },
       "description": "Causes the colossal to stop steam attack.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "WallAttack",
@@ -176,7 +193,8 @@
       },
       "description": "Causes the (AI) colossal to perform a random wall attack.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     }
   ],
   "staticFields": [],

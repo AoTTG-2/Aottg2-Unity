@@ -5,6 +5,7 @@
   "extends": [
     "Object"
   ],
+  "deprecated": "",
   "instanceFields": [
     {
       "label": "Position",
@@ -14,7 +15,8 @@
       },
       "description": "Gets or sets the position of the transform.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "LocalPosition",
@@ -24,7 +26,8 @@
       },
       "description": "Gets or sets the local position of the transform.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Rotation",
@@ -34,7 +37,8 @@
       },
       "description": "Gets or sets the rotation of the transform.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "LocalRotation",
@@ -44,7 +48,8 @@
       },
       "description": "Gets or sets the local rotation of the transform.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "QuaternionRotation",
@@ -54,7 +59,8 @@
       },
       "description": "Gets or sets the quaternion rotation of the transform.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "QuaternionLocalRotation",
@@ -64,7 +70,8 @@
       },
       "description": "Gets or sets the quaternion local rotation of the transform.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Scale",
@@ -74,7 +81,8 @@
       },
       "description": "Gets or sets the scale of the transform.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Forward",
@@ -84,7 +92,8 @@
       },
       "description": "Gets the forward vector of the transform.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Up",
@@ -94,7 +103,8 @@
       },
       "description": "Gets the up vector of the transform.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Right",
@@ -104,7 +114,8 @@
       },
       "description": "Gets the right vector of the transform.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Parent",
@@ -114,7 +125,8 @@
       },
       "description": "Sets the parent of the transform",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Name",
@@ -124,7 +136,8 @@
       },
       "description": "Gets the name of the transform.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Layer",
@@ -134,7 +147,8 @@
       },
       "description": "Gets the Physics Layer of the transform.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Animation",
@@ -144,7 +158,8 @@
       },
       "description": "The Animation attached to this transform, returns null if there is none.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Animator",
@@ -154,7 +169,8 @@
       },
       "description": "The Animator attached to this transform, returns null if there is none.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "AudioSource",
@@ -164,7 +180,8 @@
       },
       "description": "The AudioSource attached to this transform, returns null if there is none.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     }
   ],
   "instanceMethods": [
@@ -187,7 +204,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "GetTransforms",
@@ -202,7 +220,8 @@
       },
       "description": "Gets all child transforms.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "IsPlayingAnimation",
@@ -223,7 +242,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "PlayAnimation",
@@ -254,7 +274,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "GetAnimationLength",
@@ -275,7 +296,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "PlaySound",
@@ -285,7 +307,8 @@
       },
       "description": "Plays the sound.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "StopSound",
@@ -295,7 +318,8 @@
       },
       "description": "Stops the sound.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "ToggleParticle",
@@ -316,7 +340,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "InverseTransformDirection",
@@ -337,7 +362,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "InverseTransformPoint",
@@ -358,7 +384,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "TransformDirection",
@@ -379,7 +406,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "TransformPoint",
@@ -400,7 +428,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Rotate",
@@ -421,7 +450,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "RotateAround",
@@ -462,7 +492,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "LookAt",
@@ -483,7 +514,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SetRenderersEnabled",
@@ -504,7 +536,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "GetColliders",
@@ -530,7 +563,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     }
   ],
   "staticFields": [],

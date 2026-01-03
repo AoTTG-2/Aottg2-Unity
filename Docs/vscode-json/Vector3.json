@@ -5,6 +5,7 @@
   "extends": [
     "Object"
   ],
+  "deprecated": "",
   "instanceFields": [
     {
       "label": "X",
@@ -14,7 +15,8 @@
       },
       "description": "The X component of the vector.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Y",
@@ -24,7 +26,8 @@
       },
       "description": "The Y component of the vector.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Z",
@@ -34,7 +37,8 @@
       },
       "description": "The Z component of the vector.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Normalized",
@@ -44,7 +48,8 @@
       },
       "description": "Returns a normalized copy of this vector (magnitude of 1).",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Magnitude",
@@ -54,7 +59,8 @@
       },
       "description": "Returns the length of this vector.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "SqrMagnitude",
@@ -64,7 +70,8 @@
       },
       "description": "Returns the squared length of this vector (faster than Magnitude).",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     }
   ],
   "instanceMethods": [
@@ -107,7 +114,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Scale",
@@ -128,7 +136,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": "Use multiply operator instead"
     }
   ],
   "staticFields": [
@@ -140,7 +149,8 @@
       },
       "description": "Shorthand for writing Vector3(0, 0, 0).",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "One",
@@ -150,7 +160,8 @@
       },
       "description": "Shorthand for writing Vector3(1, 1, 1).",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Up",
@@ -160,7 +171,8 @@
       },
       "description": "Shorthand for writing Vector3(0, 1, 0).",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Down",
@@ -170,7 +182,8 @@
       },
       "description": "Shorthand for writing Vector3(0, -1, 0).",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Left",
@@ -180,7 +193,8 @@
       },
       "description": "Shorthand for writing Vector3(-1, 0, 0).",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Right",
@@ -190,7 +204,8 @@
       },
       "description": "Shorthand for writing Vector3(1, 0, 0).",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Forward",
@@ -200,7 +215,8 @@
       },
       "description": "Shorthand for writing Vector3(0, 0, 1).",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Back",
@@ -210,7 +226,8 @@
       },
       "description": "Shorthand for writing Vector3(0, 0, -1).",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "NegativeInfinity",
@@ -220,7 +237,8 @@
       },
       "description": "Shorthand for writing Vector3(float.NegativeInfinity, float.NegativeInfinity, float.NegativeInfinity).",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "PositiveInfinity",
@@ -230,7 +248,8 @@
       },
       "description": "Shorthand for writing Vector3(float.PositiveInfinity, float.PositiveInfinity, float.PositiveInfinity).",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     }
   ],
   "staticMethods": [
@@ -263,7 +282,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "ClampMagnitude",
@@ -294,7 +314,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Cross",
@@ -325,7 +346,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Distance",
@@ -356,7 +378,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Dot",
@@ -387,7 +410,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Lerp",
@@ -428,7 +452,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "LerpUnclamped",
@@ -469,7 +494,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Max",
@@ -500,7 +526,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Min",
@@ -531,7 +558,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "MoveTowards",
@@ -572,7 +600,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Normalize",
@@ -593,7 +622,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "OrthoNormalize",
@@ -624,7 +654,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Project",
@@ -655,7 +686,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "ProjectOnPlane",
@@ -686,7 +718,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Reflect",
@@ -717,7 +750,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "RotateTowards",
@@ -768,7 +802,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SignedAngle",
@@ -809,7 +844,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Slerp",
@@ -850,7 +886,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SlerpUnclamped",
@@ -891,7 +928,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SmoothDamp",
@@ -952,7 +990,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "GetRotationDirection",
@@ -983,7 +1022,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Multiply",
@@ -1014,7 +1054,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": "Use multiply operator instead"
     },
     {
       "label": "Divide",
@@ -1045,13 +1086,15 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": "Use divide operator instead"
     }
   ],
   "constructors": [
     {
       "parameters": [],
-      "description": "Default constructor, Initializes the Vector3 to (0, 0, 0)."
+      "description": "Default constructor, Initializes the Vector3 to (0, 0, 0).",
+      "deprecated": ""
     },
     {
       "parameters": [
@@ -1066,7 +1109,8 @@
           "isVariadic": false
         }
       ],
-      "description": "Initializes the Vector3 to (xyz, xyz, xyz)."
+      "description": "Initializes the Vector3 to (xyz, xyz, xyz).",
+      "deprecated": ""
     },
     {
       "parameters": [
@@ -1091,7 +1135,8 @@
           "isVariadic": false
         }
       ],
-      "description": "Initializes the Vector3 to (x, y, 0)."
+      "description": "Initializes the Vector3 to (x, y, 0).",
+      "deprecated": ""
     },
     {
       "parameters": [
@@ -1126,7 +1171,8 @@
           "isVariadic": false
         }
       ],
-      "description": "Initializes the Vector3 to (x, y, z)."
+      "description": "Initializes the Vector3 to (x, y, z).",
+      "deprecated": ""
     }
   ]
 }

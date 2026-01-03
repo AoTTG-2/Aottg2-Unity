@@ -5,6 +5,7 @@
   "extends": [
     "Character"
   ],
+  "deprecated": "",
   "instanceFields": [
     {
       "label": "Weapon",
@@ -14,7 +15,8 @@
       },
       "description": "The weapon the human is using.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "CurrentSpecial",
@@ -24,7 +26,8 @@
       },
       "description": "The current special the human is using.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "SpecialCooldownTime",
@@ -34,7 +37,8 @@
       },
       "description": "The normalized cooldown time of the special. Has a range of 0 to 1.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "SpecialCooldown",
@@ -44,7 +48,8 @@
       },
       "description": "The cooldown of the special.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "ShifterLiveTime",
@@ -54,7 +59,8 @@
       },
       "description": "The live time of the shifter special.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "SpecialCooldownRatio",
@@ -64,7 +70,8 @@
       },
       "description": "The ratio of the special cooldown.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "CurrentGas",
@@ -74,7 +81,8 @@
       },
       "description": "The current gas of the human.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "MaxGas",
@@ -84,7 +92,8 @@
       },
       "description": "The max gas of the human.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Acceleration",
@@ -94,7 +103,8 @@
       },
       "description": "The acceleration of the human.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Speed",
@@ -104,7 +114,8 @@
       },
       "description": "The speed of the human.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "HorseTransform",
@@ -114,7 +125,8 @@
       },
       "description": "The transform of the horse belonging to this human. Returns null if horses are disabled.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "HorseSpeed",
@@ -124,7 +136,8 @@
       },
       "description": "The speed of the horse.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "CurrentBladeDurability",
@@ -134,7 +147,8 @@
       },
       "description": "The current blade durability.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "MaxBladeDurability",
@@ -144,7 +158,8 @@
       },
       "description": "The max blade durability.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "CurrentBlade",
@@ -154,7 +169,8 @@
       },
       "description": "The current blade.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "MaxBlade",
@@ -164,7 +180,8 @@
       },
       "description": "The max number of blades held.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "CurrentAmmoRound",
@@ -174,7 +191,8 @@
       },
       "description": "The current ammo round.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "MaxAmmoRound",
@@ -184,7 +202,8 @@
       },
       "description": "The max ammo round.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "CurrentAmmoLeft",
@@ -194,7 +213,8 @@
       },
       "description": "The current ammo left.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "MaxAmmoTotal",
@@ -204,7 +224,8 @@
       },
       "description": "The max total ammo.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "LeftHookEnabled",
@@ -214,7 +235,8 @@
       },
       "description": "Whether the left hook is enabled.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "RightHookEnabled",
@@ -224,7 +246,8 @@
       },
       "description": "Whether the right hook is enabled.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "IsMounted",
@@ -234,7 +257,8 @@
       },
       "description": "Whether the human is mounted.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "MountedMapObject",
@@ -244,7 +268,8 @@
       },
       "description": "The map object the human is mounted on.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "MountedTransform",
@@ -254,7 +279,8 @@
       },
       "description": "The transform the human is mounted on.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "AutoRefillGas",
@@ -264,7 +290,8 @@
       },
       "description": "Whether the human auto refills gas.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "State",
@@ -274,7 +301,8 @@
       },
       "description": "The state of the human.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "CanDodge",
@@ -284,7 +312,8 @@
       },
       "description": "Whether the human can dodge.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "IsInvincible",
@@ -294,7 +323,8 @@
       },
       "description": "Whether the human is invincible.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "InvincibleTimeLeft",
@@ -304,7 +334,8 @@
       },
       "description": "The time left for invincibility.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "IsCarried",
@@ -314,7 +345,8 @@
       },
       "description": "If the human is carried.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     }
   ],
   "instanceMethods": [
@@ -326,7 +358,8 @@
       },
       "description": "Refills the gas of the human.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "RefillImmediate",
@@ -336,7 +369,8 @@
       },
       "description": "Refills the gas of the human immediately.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "ClearHooks",
@@ -346,7 +380,8 @@
       },
       "description": "Clears all hooks.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "ClearLeftHook",
@@ -356,7 +391,8 @@
       },
       "description": "Clears the left hook.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "ClearRightHook",
@@ -366,7 +402,8 @@
       },
       "description": "Clears the right hook.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "LeftHookPosition",
@@ -376,7 +413,8 @@
       },
       "description": "Position of the left hook, null if there is no hook.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "RightHookPosition",
@@ -386,7 +424,8 @@
       },
       "description": "Position of the right hook, null if there is no hook.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "MountMapObject",
@@ -437,7 +476,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "MountTransform",
@@ -488,7 +528,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Unmount",
@@ -509,7 +550,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SetSpecial",
@@ -530,7 +572,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "ActivateSpecial",
@@ -540,7 +583,8 @@
       },
       "description": "Activates the special of the human.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SetWeapon",
@@ -561,7 +605,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "DisablePerks",
@@ -571,7 +616,8 @@
       },
       "description": "Disables all perks of the human.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SetParticleEffect",
@@ -602,7 +648,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     }
   ],
   "staticFields": [],

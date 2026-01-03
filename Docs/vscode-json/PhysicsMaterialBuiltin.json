@@ -2,6 +2,7 @@
   "kind": "component",
   "name": "PhysicsMaterialBuiltin",
   "description": "Represents a physics material that defines friction and bounciness properties for colliders.",
+  "deprecated": "",
   "instanceFields": [
     {
       "label": "StaticFriction",
@@ -11,7 +12,8 @@
       },
       "description": "The static friction of the material.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "DynamicFriction",
@@ -21,7 +23,8 @@
       },
       "description": "The dynamic friction of the material.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Bounciness",
@@ -31,7 +34,8 @@
       },
       "description": "The bounciness of the material.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "FrictionCombine",
@@ -41,7 +45,8 @@
       },
       "description": "The friction combine mode of the material.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "BounceCombine",
@@ -51,7 +56,8 @@
       },
       "description": "The bounce combine mode of the material.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     }
   ],
   "instanceMethods": [
@@ -74,7 +80,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     }
   ],
   "staticFields": [
@@ -86,7 +93,8 @@
       },
       "description": "PhysicMaterialCombine.Minimum.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "FrictionCombineMultiply",
@@ -96,7 +104,8 @@
       },
       "description": "PhysicMaterialCombine.Multiply.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "FrictionCombineMaximum",
@@ -106,7 +115,8 @@
       },
       "description": "PhysicMaterialCombine.Maximum.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "FrictionCombineAverage",
@@ -116,7 +126,8 @@
       },
       "description": "PhysicMaterialCombine.Average.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     }
   ],
   "staticMethods": [],

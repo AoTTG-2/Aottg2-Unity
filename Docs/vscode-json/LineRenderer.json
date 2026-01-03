@@ -5,6 +5,7 @@
   "extends": [
     "Object"
   ],
+  "deprecated": "",
   "instanceFields": [
     {
       "label": "StartWidth",
@@ -14,7 +15,8 @@
       },
       "description": "The width of the line at the start.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "EndWidth",
@@ -24,7 +26,8 @@
       },
       "description": "The width of the line at the end.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "LineColor",
@@ -34,7 +37,8 @@
       },
       "description": "The color of the line.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "PositionCount",
@@ -44,7 +48,8 @@
       },
       "description": "The number of points in the line.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Enabled",
@@ -54,7 +59,8 @@
       },
       "description": "Is the line renderer enabled.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Loop",
@@ -64,7 +70,8 @@
       },
       "description": "Is the line renderer a loop.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "NumCornerVertices",
@@ -74,7 +81,8 @@
       },
       "description": "The number of corner vertices.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "NumCapVertices",
@@ -84,7 +92,8 @@
       },
       "description": "The number of end cap vertices.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Alignment",
@@ -94,7 +103,8 @@
       },
       "description": "The alignment of the line renderer.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "TextureMode",
@@ -104,7 +114,8 @@
       },
       "description": "The texture mode of the line renderer.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "UseWorldSpace",
@@ -114,7 +125,8 @@
       },
       "description": "Is the line renderer in world space.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "ShadowCastingMode",
@@ -124,7 +136,8 @@
       },
       "description": "Does the line renderer cast shadows.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "ReceiveShadows",
@@ -134,7 +147,8 @@
       },
       "description": "Does the line renderer receive shadows.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "ColorGradient",
@@ -149,7 +163,8 @@
       },
       "description": "The gradient of the line renderer.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "AlphaGradient",
@@ -164,7 +179,8 @@
       },
       "description": "The alpha gradient of the line renderer.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "WidthCurve",
@@ -179,7 +195,8 @@
       },
       "description": "The width curve of the line renderer.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "WidthMultiplier",
@@ -189,7 +206,8 @@
       },
       "description": "The width multiplier of the line renderer.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "ColorGradientMode",
@@ -199,7 +217,8 @@
       },
       "description": "The color gradient mode of the line renderer.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     }
   ],
   "instanceMethods": [
@@ -211,7 +230,8 @@
       },
       "description": "Remove the line renderer (can also be done by removing all references to this object).",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "GetPosition",
@@ -232,7 +252,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SetPosition",
@@ -263,7 +284,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     }
   ],
   "staticFields": [],
@@ -276,13 +298,15 @@
       },
       "description": "Create a new LineRenderer.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": "Create a new instance with LineRenderer() instead."
     }
   ],
   "constructors": [
     {
       "parameters": [],
-      "description": "Default constructor, creates a black line with a width of 1."
+      "description": "Default constructor, creates a black line with a width of 1.",
+      "deprecated": ""
     },
     {
       "parameters": [
@@ -307,7 +331,8 @@
           "isVariadic": false
         }
       ],
-      "description": "Creates a line with the given color and width."
+      "description": "Creates a line with the given color and width.",
+      "deprecated": ""
     }
   ]
 }

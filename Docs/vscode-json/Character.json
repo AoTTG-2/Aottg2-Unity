@@ -5,6 +5,7 @@
   "extends": [
     "Object"
   ],
+  "deprecated": "",
   "instanceFields": [
     {
       "label": "Name",
@@ -14,7 +15,8 @@
       },
       "description": "Character's name.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Guild",
@@ -24,7 +26,8 @@
       },
       "description": "Character's guild.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Player",
@@ -34,7 +37,8 @@
       },
       "description": "Player who owns this character.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "IsAI",
@@ -44,7 +48,8 @@
       },
       "description": "Is this character AI?",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "ViewID",
@@ -54,7 +59,8 @@
       },
       "description": "Network view ID of the character.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "IsMine",
@@ -64,7 +70,8 @@
       },
       "description": "Is this character mine?",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "IsMainCharacter",
@@ -74,7 +81,8 @@
       },
       "description": "Character belongs to my player and is the main character (the camera-followed player).",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Transform",
@@ -84,7 +92,8 @@
       },
       "description": "Unity transform of the character.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Position",
@@ -94,7 +103,8 @@
       },
       "description": "Position of the character.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Rotation",
@@ -104,7 +114,8 @@
       },
       "description": "Rotation of the character.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "QuaternionRotation",
@@ -114,7 +125,8 @@
       },
       "description": "Quaternion rotation of the character.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Velocity",
@@ -124,7 +136,8 @@
       },
       "description": "Velocity of the character.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Forward",
@@ -134,7 +147,8 @@
       },
       "description": "Forward direction of the character.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Right",
@@ -144,7 +158,8 @@
       },
       "description": "Right direction of the character.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Up",
@@ -154,7 +169,8 @@
       },
       "description": "Up direction of the character.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "HasTargetDirection",
@@ -164,7 +180,8 @@
       },
       "description": "If the character has a target direction it is turning towards.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "TargetDirection",
@@ -174,7 +191,8 @@
       },
       "description": "The character's target direction.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Team",
@@ -184,7 +202,8 @@
       },
       "description": "Team character belongs to.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Health",
@@ -194,7 +213,8 @@
       },
       "description": "Character's current health.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "MaxHealth",
@@ -204,7 +224,8 @@
       },
       "description": "Character's maximum health.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "CustomDamageEnabled",
@@ -214,7 +235,8 @@
       },
       "description": "Is custom damage dealing enabled.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "CustomDamage",
@@ -224,7 +246,8 @@
       },
       "description": "Amount of custom damage to deal per attack.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "CurrentAnimation",
@@ -234,7 +257,8 @@
       },
       "description": "Character's current playing animation.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Grounded",
@@ -244,7 +268,8 @@
       },
       "description": "Character's grounded status.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Rigidbody",
@@ -254,7 +279,8 @@
       },
       "description": "Character's rigidbody component (if available).",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     }
   ],
   "instanceMethods": [
@@ -277,7 +303,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "GetDamaged",
@@ -308,7 +335,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Emote",
@@ -329,7 +357,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "PlayAnimation",
@@ -360,7 +389,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "PlayAnimationAt",
@@ -411,7 +441,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "GetAnimationSpeed",
@@ -432,7 +463,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SetAnimationSpeed",
@@ -473,7 +505,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "IsPlayingAnimation",
@@ -494,7 +527,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "GetAnimationNormalizedTime",
@@ -515,7 +549,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "ForceAnimation",
@@ -546,7 +581,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "GetAnimationLength",
@@ -567,7 +603,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "IsPlayingSound",
@@ -588,7 +625,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "PlaySound",
@@ -609,7 +647,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "StopSound",
@@ -630,7 +669,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "FadeSound",
@@ -671,7 +711,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "LookAt",
@@ -692,7 +733,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "AddForce",
@@ -723,7 +765,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Reveal",
@@ -744,7 +787,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "AddOutline",
@@ -775,7 +819,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "RemoveOutline",
@@ -785,7 +830,8 @@
       },
       "description": "Removes the outline effect from the character.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     }
   ],
   "staticFields": [],

@@ -5,6 +5,7 @@
   "extends": [
     "VisualElement"
   ],
+  "deprecated": "",
   "instanceFields": [
     {
       "label": "Label",
@@ -14,7 +15,8 @@
       },
       "description": "The label text displayed next to the Dropdown.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Value",
@@ -24,7 +26,8 @@
       },
       "description": "The currently selected value (option text).",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Index",
@@ -34,7 +37,8 @@
       },
       "description": "The index of the currently selected option (0-based).",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Choices",
@@ -49,7 +53,8 @@
       },
       "description": "Gets the list of available choices.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     }
   ],
   "instanceMethods": [
@@ -72,7 +77,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SetValueWithoutNotify",
@@ -93,7 +99,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SetIndexWithoutNotify",
@@ -114,7 +121,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "AddChoice",
@@ -135,7 +143,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "RemoveChoice",
@@ -156,7 +165,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "ClearChoices",
@@ -166,7 +176,8 @@
       },
       "description": "Clears all choices from the dropdown.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     }
   ],
   "staticFields": [],

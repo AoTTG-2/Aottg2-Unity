@@ -5,6 +5,7 @@
   "extends": [
     "Object"
   ],
+  "deprecated": "",
   "instanceFields": [],
   "instanceMethods": [
     {
@@ -36,7 +37,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "RandomFloat",
@@ -67,7 +69,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "RandomBool",
@@ -77,7 +80,8 @@
       },
       "description": "Returns random boolean.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "RandomVector3",
@@ -108,7 +112,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "RandomDirection",
@@ -129,7 +134,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "RandomSign",
@@ -139,7 +145,8 @@
       },
       "description": "Generates a random sign, either 1 or -1.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "PerlinNoise",
@@ -170,7 +177,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     }
   ],
   "staticFields": [],
@@ -204,7 +212,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "RandomFloat",
@@ -235,7 +244,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "RandomBool",
@@ -245,7 +255,8 @@
       },
       "description": "Returns random boolean.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "RandomVector3",
@@ -276,7 +287,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "RandomDirection",
@@ -297,7 +309,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "RandomSign",
@@ -307,7 +320,8 @@
       },
       "description": "Generates a random sign, either 1 or -1.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "PerlinNoise",
@@ -338,13 +352,15 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     }
   ],
   "constructors": [
     {
       "parameters": [],
-      "description": "Creates a new Random instance with default seed."
+      "description": "Creates a new Random instance with default seed.",
+      "deprecated": ""
     },
     {
       "parameters": [
@@ -359,7 +375,8 @@
           "isVariadic": false
         }
       ],
-      "description": "Creates a new Random instance with the specified seed."
+      "description": "Creates a new Random instance with the specified seed.",
+      "deprecated": ""
     }
   ]
 }

@@ -5,6 +5,7 @@
   "extends": [
     "Object"
   ],
+  "deprecated": "",
   "instanceFields": [],
   "instanceMethods": [],
   "staticFields": [
@@ -16,7 +17,8 @@
       },
       "description": "All Collide Mode",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "CollideWithMapObjects",
@@ -26,7 +28,8 @@
       },
       "description": "MapObject Collide Mode",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "CollideWithCharacters",
@@ -36,7 +39,8 @@
       },
       "description": "Characters Collide Mode",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "CollideWithTitans",
@@ -46,7 +50,8 @@
       },
       "description": "Titans Collide Mode",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "CollideWithHumans",
@@ -56,7 +61,8 @@
       },
       "description": "Humans Collide Mode",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "CollideWithProjectiles",
@@ -66,7 +72,8 @@
       },
       "description": "Projectiles Collide Mode",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "CollideWithEntities",
@@ -76,7 +83,8 @@
       },
       "description": "Entities Collide Mode",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "CollideWithHitboxes",
@@ -86,7 +94,8 @@
       },
       "description": "Hitboxes Collide Mode",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "CollideWithMapEditor",
@@ -96,7 +105,8 @@
       },
       "description": "MapEditor Collide Mode",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     }
   ],
   "staticMethods": [
@@ -139,7 +149,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "LineCastAll",
@@ -185,7 +196,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SphereCast",
@@ -236,7 +248,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SphereCastAll",
@@ -292,7 +305,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "BoxCast",
@@ -353,7 +367,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "BoxCastAll",
@@ -419,7 +434,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "ClosestPoint",
@@ -470,7 +486,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "ComputePenetration",
@@ -541,7 +558,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "AreCollidersOverlapping",
@@ -612,7 +630,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     }
   ],
   "constructors": []

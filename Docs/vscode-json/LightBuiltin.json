@@ -2,6 +2,7 @@
   "kind": "extension",
   "name": "LightBuiltin",
   "description": "Represents a Light component that can be directional, point, or spot light with configurable properties.",
+  "deprecated": "",
   "instanceFields": [
     {
       "label": "TypeOfLight",
@@ -11,7 +12,8 @@
       },
       "description": "The type of the light.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Range",
@@ -21,7 +23,8 @@
       },
       "description": "The range of the light.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "SpotAngle",
@@ -31,7 +34,8 @@
       },
       "description": "The spot angle of the light, works on spot lights only.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Color",
@@ -41,7 +45,8 @@
       },
       "description": "The color of the light.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Intensity",
@@ -51,7 +56,8 @@
       },
       "description": "The intensity of the light.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "BounceIntensity",
@@ -61,7 +67,8 @@
       },
       "description": "The bounce intensity of the light.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "ShadowType",
@@ -71,7 +78,8 @@
       },
       "description": "The shadow type of the light (Soft, None, Hard).",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "ShadowStrength",
@@ -81,7 +89,8 @@
       },
       "description": "The shadow strength of the light.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "WeatherControlled",
@@ -91,7 +100,8 @@
       },
       "description": "The light is controlled by the weather system.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     }
   ],
   "instanceMethods": [],
@@ -104,7 +114,8 @@
       },
       "description": "LightType.Directional",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "LightTypePoint",
@@ -114,7 +125,8 @@
       },
       "description": "LightType.Point",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "LightTypeSpot",
@@ -124,7 +136,8 @@
       },
       "description": "LightType.Point",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "ShadowTypeNone",
@@ -134,7 +147,8 @@
       },
       "description": "LightShadows.None",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "ShadowTypeHard",
@@ -144,7 +158,8 @@
       },
       "description": "LightShadows.Hard",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "ShadowTypeSoft",
@@ -154,7 +169,8 @@
       },
       "description": "LightShadows.Soft",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     }
   ],
   "staticMethods": [],

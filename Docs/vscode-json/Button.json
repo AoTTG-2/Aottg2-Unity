@@ -5,6 +5,7 @@
   "extends": [
     "VisualElement"
   ],
+  "deprecated": "",
   "instanceFields": [
     {
       "label": "Text",
@@ -14,7 +15,8 @@
       },
       "description": "The text displayed by the Button.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "EnableRichText",
@@ -24,7 +26,8 @@
       },
       "description": "When false, rich text tags will not be parsed.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     }
   ],
   "instanceMethods": [
@@ -47,7 +50,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     }
   ],
   "staticFields": [],

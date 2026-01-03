@@ -5,6 +5,7 @@
   "extends": [
     "Object"
   ],
+  "deprecated": "",
   "instanceFields": [
     {
       "label": "Static",
@@ -14,7 +15,8 @@
       },
       "description": "Object does not move",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Position",
@@ -24,7 +26,8 @@
       },
       "description": "The position of the object",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "LocalPosition",
@@ -34,7 +37,8 @@
       },
       "description": "The local position of the object",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Rotation",
@@ -44,7 +48,8 @@
       },
       "description": "The rotation of the object",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "LocalRotation",
@@ -54,7 +59,8 @@
       },
       "description": "The local rotation of the object",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "QuaternionRotation",
@@ -64,7 +70,8 @@
       },
       "description": "The rotation of the object as a quaternion",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "QuaternionLocalRotation",
@@ -74,7 +81,8 @@
       },
       "description": "The local rotation of the object as a quaternion",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Forward",
@@ -84,7 +92,8 @@
       },
       "description": "The forward direction of the object",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Up",
@@ -94,7 +103,8 @@
       },
       "description": "The up direction of the object",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Right",
@@ -104,7 +114,8 @@
       },
       "description": "The right direction of the object",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Scale",
@@ -114,7 +125,8 @@
       },
       "description": "The scale of the object",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Name",
@@ -124,7 +136,8 @@
       },
       "description": "The name of the object",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Parent",
@@ -134,7 +147,8 @@
       },
       "description": "The parent of the object",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Active",
@@ -144,7 +158,8 @@
       },
       "description": "Whether the object is active",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Transform",
@@ -154,7 +169,8 @@
       },
       "description": "The transform of the object",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "HasRenderer",
@@ -164,7 +180,8 @@
       },
       "description": "Whether the object has a renderer",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Color",
@@ -174,7 +191,8 @@
       },
       "description": "The color of the object",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "TextureTilingX",
@@ -184,7 +202,8 @@
       },
       "description": "The x tiling of the object's texture",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "TextureTilingY",
@@ -194,7 +213,8 @@
       },
       "description": "The y tiling of the object's texture",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "TextureOffsetX",
@@ -204,7 +224,8 @@
       },
       "description": "The x offset of the object's texture",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "TextureOffsetY",
@@ -214,7 +235,8 @@
       },
       "description": "The y offset of the object's texture",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "ID",
@@ -224,7 +246,8 @@
       },
       "description": "The ID of the object",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Tag",
@@ -234,7 +257,8 @@
       },
       "description": "The tag of the object",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Layer",
@@ -244,7 +268,8 @@
       },
       "description": "The layer of the object",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Rigidbody",
@@ -254,7 +279,8 @@
       },
       "description": "The Rigidbody component of the MapObject, is null if not added.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "NetworkView",
@@ -264,7 +290,8 @@
       },
       "description": "The NetworkView attached to the MapObject, is null if not initialized yet.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     }
   ],
   "instanceMethods": [
@@ -287,7 +314,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "RemoveComponent",
@@ -308,7 +336,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "GetComponent",
@@ -329,7 +358,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SetComponentEnabled",
@@ -360,7 +390,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SetComponentsEnabled",
@@ -381,7 +412,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "AddSphereCollider",
@@ -432,7 +464,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "AddBoxCollider",
@@ -483,7 +516,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "AddSphereTarget",
@@ -524,7 +558,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "AddBoxTarget",
@@ -565,7 +600,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "GetChild",
@@ -586,7 +622,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "GetChildren",
@@ -601,7 +638,8 @@
       },
       "description": "Get all child objects.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "GetTransform",
@@ -622,7 +660,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SetColorAll",
@@ -643,7 +682,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "InBounds",
@@ -664,7 +704,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "GetBoundsAverageCenter",
@@ -674,7 +715,8 @@
       },
       "description": "Get the bounds average center.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "GetBoundsCenter",
@@ -684,7 +726,8 @@
       },
       "description": "Get the bounds center.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "GetBoundsSize",
@@ -694,7 +737,8 @@
       },
       "description": "Get the bounds size.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "GetBoundsMin",
@@ -704,7 +748,8 @@
       },
       "description": "Get the bounds min.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "GetBoundsMax",
@@ -714,7 +759,8 @@
       },
       "description": "Get the bounds max.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "GetBoundsExtents",
@@ -724,7 +770,8 @@
       },
       "description": "Get the bounds extents.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "GetCorners",
@@ -739,7 +786,8 @@
       },
       "description": "Get the corners of the bounds.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "HasTag",
@@ -760,7 +808,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "AddBuiltinComponent",
@@ -781,7 +830,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "GetBuiltinComponent",
@@ -802,7 +852,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "RemoveBuiltinComponent",
@@ -823,7 +874,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "ConvertToCSV",
@@ -833,7 +885,8 @@
       },
       "description": "Serialize the current object to a csv.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     }
   ],
   "staticFields": [],

@@ -5,6 +5,7 @@
   "extends": [
     "Object"
   ],
+  "deprecated": "",
   "instanceFields": [
     {
       "label": "R",
@@ -14,7 +15,8 @@
       },
       "description": "Red component of the color.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "G",
@@ -24,7 +26,8 @@
       },
       "description": "Green component of the color.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "B",
@@ -34,7 +37,8 @@
       },
       "description": "Blue component of the color.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "A",
@@ -44,7 +48,8 @@
       },
       "description": "Alpha component of the color.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     }
   ],
   "instanceMethods": [
@@ -56,7 +61,8 @@
       },
       "description": "Converts the color to a hex string.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     }
   ],
   "staticFields": [],
@@ -100,7 +106,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Gradient",
@@ -141,13 +148,15 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     }
   ],
   "constructors": [
     {
       "parameters": [],
-      "description": "Default constructor, creates a white color."
+      "description": "Default constructor, creates a white color.",
+      "deprecated": ""
     },
     {
       "parameters": [
@@ -162,7 +171,8 @@
           "isVariadic": false
         }
       ],
-      "description": "Creates a color from a hex string."
+      "description": "Creates a color from a hex string.",
+      "deprecated": ""
     },
     {
       "parameters": [
@@ -197,7 +207,8 @@
           "isVariadic": false
         }
       ],
-      "description": "Creates a color from RGB."
+      "description": "Creates a color from RGB.",
+      "deprecated": ""
     },
     {
       "parameters": [
@@ -242,7 +253,8 @@
           "isVariadic": false
         }
       ],
-      "description": "Creates a color from RGBA."
+      "description": "Creates a color from RGBA.",
+      "deprecated": ""
     }
   ]
 }

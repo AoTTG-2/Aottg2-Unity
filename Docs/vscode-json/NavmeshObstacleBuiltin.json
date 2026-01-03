@@ -2,6 +2,7 @@
   "kind": "component",
   "name": "NavmeshObstacleBuiltin",
   "description": "Represents a NavMesh obstacle component that can carve or block navigation mesh paths.",
+  "deprecated": "",
   "instanceFields": [
     {
       "label": "Radius",
@@ -11,7 +12,8 @@
       },
       "description": "The radius of the obstacle.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Height",
@@ -21,7 +23,8 @@
       },
       "description": "The height of the obstacle.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Scale",
@@ -31,7 +34,8 @@
       },
       "description": "The scale of the obstacle",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Center",
@@ -41,7 +45,8 @@
       },
       "description": "The center of the obstacle.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Carving",
@@ -51,7 +56,8 @@
       },
       "description": "Whether the obstacle carves the NavMesh.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "CarveOnlyStationary",
@@ -61,7 +67,8 @@
       },
       "description": "Whether the obstacle only carves when stationary.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Shape",
@@ -71,7 +78,8 @@
       },
       "description": "The shape of the obstacle.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     }
   ],
   "instanceMethods": [
@@ -83,7 +91,8 @@
       },
       "description": "Auto scales the obstacle to fit the colliders.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     }
   ],
   "staticFields": [
@@ -95,7 +104,8 @@
       },
       "description": "The NavMeshObstacleShape Box.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "ShapeCapsule",
@@ -105,7 +115,8 @@
       },
       "description": "The NavMeshObstacleShape Capsule.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     }
   ],
   "staticMethods": [],

@@ -2,6 +2,7 @@
   "kind": "component",
   "name": "AudioSource",
   "description": "Represents an AudioSource component for playing audio clips.",
+  "deprecated": "",
   "instanceFields": [
     {
       "label": "Volume",
@@ -11,7 +12,8 @@
       },
       "description": "Volume of the sound.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Time",
@@ -21,7 +23,8 @@
       },
       "description": "Sound playback position.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Pitch",
@@ -31,7 +34,8 @@
       },
       "description": "Pitch of the sound.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "IsPlaying",
@@ -41,7 +45,8 @@
       },
       "description": "Is the sound currently playing.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     }
   ],
   "instanceMethods": [
@@ -53,7 +58,8 @@
       },
       "description": "Plays the sound.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "PlayDelayed",
@@ -74,7 +80,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Stop",
@@ -84,7 +91,8 @@
       },
       "description": "Stops the sound.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Pause",
@@ -94,7 +102,8 @@
       },
       "description": "Pauses the sound.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Unpause",
@@ -104,7 +113,8 @@
       },
       "description": "Unpauses the sound.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     }
   ],
   "staticFields": [],

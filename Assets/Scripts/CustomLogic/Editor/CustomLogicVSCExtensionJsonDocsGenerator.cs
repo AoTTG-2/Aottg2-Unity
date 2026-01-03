@@ -94,6 +94,7 @@ namespace CustomLogic.Editor
                 Name = clType.Name,
                 Description = NormalizeDescription(clType.Info?.Summary),
                 TypeParameters = typeParameters.Count > 0 ? typeParameters : null,
+                Deprecated = clType.ObsoleteMessage,
                 StaticFields = ConvertFields(clType.StaticProperties),
                 StaticMethods = ConvertMethods(clType.StaticMethods),
                 InstanceFields = ConvertFields(clType.InstanceProperties),
@@ -115,7 +116,8 @@ namespace CustomLogic.Editor
                 Type = ConvertTypeReference(p.Type),
                 Description = NormalizeDescription(p.Info?.Summary),
                 Readonly = p.IsReadonly,
-                Private = false
+                Private = false,
+                Deprecated = p.ObsoleteMessage
             }).ToList();
         }
 
@@ -133,7 +135,8 @@ namespace CustomLogic.Editor
                     ReturnType = ConvertTypeReference(m.ReturnType),
                     Description = NormalizeDescription(m.Info?.Summary),
                     Parameters = ConvertParameters(m.Parameters),
-                    Kind = "function"
+                    Kind = "function",
+                    Deprecated = m.ObsoleteMessage
                 }).ToList();
         }
 
@@ -145,7 +148,8 @@ namespace CustomLogic.Editor
             return constructors.Select(c => new Constructor
             {
                 Parameters = ConvertParameters(c.Parameters),
-                Description = NormalizeDescription(c.Info?.Summary)
+                Description = NormalizeDescription(c.Info?.Summary),
+                Deprecated = c.ObsoleteMessage
             }).ToList();
         }
 
@@ -213,6 +217,7 @@ namespace CustomLogic.Editor
             public string Description { get; set; }
             public List<string> TypeParameters { get; set; }
             public List<string> Extends { get; set; }
+            public string Deprecated { get; set; }
             public List<Field> InstanceFields { get; set; }
             public List<Method> InstanceMethods { get; set; }
             public List<Field> StaticFields { get; set; }
@@ -228,6 +233,7 @@ namespace CustomLogic.Editor
             public string Description { get; set; }
             public bool Readonly { get; set; }
             public bool Private { get; set; }
+            public string Deprecated { get; set; }
         }
 
         private class Method
@@ -237,12 +243,14 @@ namespace CustomLogic.Editor
             public string Description { get; set; }
             public List<Parameter> Parameters { get; set; }
             public string Kind { get; set; }
+            public string Deprecated { get; set; }
         }
 
         private class Constructor
         {
             public List<Parameter> Parameters { get; set; }
             public string Description { get; set; }
+            public string Deprecated { get; set; }
         }
 
         private class Parameter

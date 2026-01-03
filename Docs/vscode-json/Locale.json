@@ -5,6 +5,7 @@
   "extends": [
     "Object"
   ],
+  "deprecated": "",
   "instanceFields": [],
   "instanceMethods": [],
   "staticFields": [
@@ -16,7 +17,8 @@
       },
       "description": "Arabic language code.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "BrazilianPortugueseLanguage",
@@ -26,7 +28,8 @@
       },
       "description": "Brazilian Portuguese language code",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "ChineseLanguage",
@@ -36,7 +39,8 @@
       },
       "description": "Chinese language code",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "CzechLanguage",
@@ -46,7 +50,8 @@
       },
       "description": "Czech language code",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "DutchLanguage",
@@ -56,7 +61,8 @@
       },
       "description": "Dutch language code",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "EnglishLanguage",
@@ -66,7 +72,8 @@
       },
       "description": "English language code",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "FrenchLanguage",
@@ -76,7 +83,8 @@
       },
       "description": "French language code",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "GermanLanguage",
@@ -86,7 +94,8 @@
       },
       "description": "German language code",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "GreekLanguage",
@@ -96,7 +105,8 @@
       },
       "description": "Greek language code",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "IndonesianLanguage",
@@ -106,7 +116,8 @@
       },
       "description": "Indonesian language code",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "ItalianLanguage",
@@ -116,7 +127,8 @@
       },
       "description": "Italian language code",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "JapaneseLanguage",
@@ -126,7 +138,8 @@
       },
       "description": "Japanese language code",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "KoreanLanguage",
@@ -136,7 +149,8 @@
       },
       "description": "Korean language code",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "PolishLanguage",
@@ -146,7 +160,8 @@
       },
       "description": "Polish language code",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "RussianLanguage",
@@ -156,7 +171,8 @@
       },
       "description": "Russian language code",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "SpanishLanguage",
@@ -166,7 +182,8 @@
       },
       "description": "Spanish language code",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "TraditionalChineseLanguage",
@@ -176,7 +193,8 @@
       },
       "description": "Traditional Chinese language code",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "TurkishLanguage",
@@ -186,7 +204,8 @@
       },
       "description": "Turkish language code",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "UkrainianLanguage",
@@ -196,7 +215,8 @@
       },
       "description": "Ukrainian language code",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "CurrentLanguage",
@@ -206,7 +226,8 @@
       },
       "description": "Returns the current language (e.g. \"English\" or \"简体中文\").",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "DefaultLanguage",
@@ -216,7 +237,8 @@
       },
       "description": "The default language to use when a string is not found in the current language pack. English by default.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     }
   ],
   "staticMethods": [
@@ -239,7 +261,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Set",
@@ -280,7 +303,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "RegisterLanguage",
@@ -320,7 +344,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "RegisterLanguages",
@@ -341,7 +366,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "RegisterFallback",
@@ -372,7 +398,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "RemoveFallback",
@@ -393,7 +420,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     }
   ],
   "constructors": []

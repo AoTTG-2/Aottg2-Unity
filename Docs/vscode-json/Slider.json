@@ -5,6 +5,7 @@
   "extends": [
     "VisualElement"
   ],
+  "deprecated": "",
   "instanceFields": [
     {
       "label": "Label",
@@ -14,7 +15,8 @@
       },
       "description": "The label text displayed next to the Slider.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Value",
@@ -24,7 +26,8 @@
       },
       "description": "The current value of the Slider (returns int for integer sliders, float for float sliders).",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "LowValue",
@@ -34,7 +37,8 @@
       },
       "description": "The minimum value of the Slider (returns int for integer sliders, float for float sliders).",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "HighValue",
@@ -44,7 +48,8 @@
       },
       "description": "The maximum value of the Slider (returns int for integer sliders, float for float sliders).",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "PageSize",
@@ -54,7 +59,8 @@
       },
       "description": "The page size for the slider. This is the amount by which the slider value changes when clicking in the slider track area. For integer sliders, this also controls the snapping/tick interval.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Direction",
@@ -64,7 +70,8 @@
       },
       "description": "The direction of the slider (Horizontal or Vertical).",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "ShowInputField",
@@ -74,7 +81,8 @@
       },
       "description": "If true, the slider will show a text field for direct input.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "IsIntSlider",
@@ -84,7 +92,8 @@
       },
       "description": "Returns true if this is an integer slider, false if it's a float slider.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     }
   ],
   "instanceMethods": [
@@ -107,7 +116,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SetValueWithoutNotify",
@@ -128,7 +138,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     }
   ],
   "staticFields": [],

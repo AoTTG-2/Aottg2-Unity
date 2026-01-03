@@ -2,6 +2,7 @@
   "kind": "class",
   "name": "Range",
   "description": "Range allows you to create lists of integers for convenient iteration, particularly in for loops.",
+  "deprecated": "",
   "instanceFields": [],
   "instanceMethods": [],
   "staticFields": [],
@@ -20,7 +21,8 @@
           "isVariadic": false
         }
       ],
-      "description": "Creates a range from 0 to end-1."
+      "description": "Creates a range from 0 to end-1.",
+      "deprecated": ""
     },
     {
       "parameters": [
@@ -45,7 +47,8 @@
           "isVariadic": false
         }
       ],
-      "description": "Creates a range from start to end-1."
+      "description": "Creates a range from start to end-1.",
+      "deprecated": ""
     },
     {
       "parameters": [
@@ -80,7 +83,8 @@
           "isVariadic": false
         }
       ],
-      "description": "Creates a range from start to end-1 with the specified step."
+      "description": "Creates a range from start to end-1 with the specified step.",
+      "deprecated": ""
     }
   ]
 }

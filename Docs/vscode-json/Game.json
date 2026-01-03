@@ -5,6 +5,7 @@
   "extends": [
     "Object"
   ],
+  "deprecated": "",
   "instanceFields": [],
   "instanceMethods": [],
   "staticFields": [
@@ -16,7 +17,8 @@
       },
       "description": "Is the game ending?",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "EndTimeLeft",
@@ -26,7 +28,8 @@
       },
       "description": "Time left until the game ends",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Titans",
@@ -41,7 +44,8 @@
       },
       "description": "List of all titans",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "AITitans",
@@ -56,7 +60,8 @@
       },
       "description": "List of all AI titans",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "PlayerTitans",
@@ -71,7 +76,8 @@
       },
       "description": "List of all player titans",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Shifters",
@@ -86,7 +92,8 @@
       },
       "description": "List of all shifters",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "AIShifters",
@@ -101,7 +108,8 @@
       },
       "description": "List of all AI shifters",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "PlayerShifters",
@@ -116,7 +124,8 @@
       },
       "description": "List of all player shifters",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Humans",
@@ -131,7 +140,8 @@
       },
       "description": "List of all humans",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "AIHumans",
@@ -146,7 +156,8 @@
       },
       "description": "List of all AI humans",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "PlayerHumans",
@@ -161,7 +172,8 @@
       },
       "description": "List of all player humans",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Loadouts",
@@ -176,7 +188,8 @@
       },
       "description": "List of all loadouts",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "DefaultShowKillScore",
@@ -186,7 +199,8 @@
       },
       "description": "Is the kill score shown by default?",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "DefaultHideKillScore",
@@ -196,7 +210,8 @@
       },
       "description": "Is the kill feed shown by default?",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "DefaultAddKillScore",
@@ -206,7 +221,8 @@
       },
       "description": "Is the kill score added by default?",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "ShowScoreboardLoadout",
@@ -216,7 +232,8 @@
       },
       "description": "Is the loadout shown in the scoreboard?",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "ShowScoreboardStatus",
@@ -226,7 +243,8 @@
       },
       "description": "Is the status shown in the scoreboard?",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "ForcedCharacterType",
@@ -236,7 +254,8 @@
       },
       "description": "Forced character type",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "ForcedLoadout",
@@ -246,7 +265,8 @@
       },
       "description": "Forced loadout",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     }
   ],
   "staticMethods": [
@@ -269,7 +289,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Print",
@@ -290,7 +311,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "PrintAll",
@@ -311,7 +333,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "GetGeneralSetting",
@@ -332,7 +355,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "GetTitanSetting",
@@ -353,7 +377,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "GetMiscSetting",
@@ -374,7 +399,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "End",
@@ -395,7 +421,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "FindCharacterByViewID",
@@ -416,7 +443,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SpawnTitan",
@@ -437,7 +465,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SpawnTitanAt",
@@ -478,7 +507,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SpawnTitans",
@@ -514,7 +544,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SpawnTitansAsync",
@@ -545,7 +576,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SpawnTitansAt",
@@ -601,7 +633,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SpawnTitansAtAsync",
@@ -652,7 +685,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SpawnShifter",
@@ -673,7 +707,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SpawnShifterAt",
@@ -714,7 +749,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SpawnProjectile",
@@ -815,7 +851,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SpawnProjectileWithOwner",
@@ -916,7 +953,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SpawnEffect",
@@ -987,7 +1025,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SpawnUnscaledEffect",
@@ -1048,7 +1087,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SpawnPlayer",
@@ -1079,7 +1119,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SpawnPlayerAll",
@@ -1100,7 +1141,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SpawnPlayerAt",
@@ -1151,7 +1193,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SpawnPlayerAtAll",
@@ -1192,7 +1235,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SetPlaylist",
@@ -1213,7 +1257,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SetSong",
@@ -1234,7 +1279,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "DrawRay",
@@ -1285,7 +1331,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "ShowKillScore",
@@ -1306,7 +1353,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "ShowKillFeed",
@@ -1357,7 +1405,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "ShowKillFeedAll",
@@ -1408,7 +1457,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     }
   ],
   "constructors": []

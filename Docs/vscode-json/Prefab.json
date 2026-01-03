@@ -5,6 +5,7 @@
   "extends": [
     "Object"
   ],
+  "deprecated": "",
   "instanceFields": [
     {
       "label": "AssetType",
@@ -14,7 +15,8 @@
       },
       "description": "The type of the prefab asset.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Asset",
@@ -24,7 +26,8 @@
       },
       "description": "The asset path/name of the prefab.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Active",
@@ -34,7 +37,8 @@
       },
       "description": "Whether the prefab is active.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Static",
@@ -44,7 +48,8 @@
       },
       "description": "Whether the prefab is marked as static.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Visible",
@@ -54,7 +59,8 @@
       },
       "description": "Whether the prefab is visible.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Name",
@@ -64,7 +70,8 @@
       },
       "description": "The name of the prefab.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Position",
@@ -74,7 +81,8 @@
       },
       "description": "The position of the prefab in world space.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Rotation",
@@ -84,7 +92,8 @@
       },
       "description": "The rotation of the prefab in euler angles.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Scale",
@@ -94,7 +103,8 @@
       },
       "description": "The scale of the prefab.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "CollideMode",
@@ -104,7 +114,8 @@
       },
       "description": "The collision mode of the prefab.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "CollideWith",
@@ -114,7 +125,8 @@
       },
       "description": "The layers that this prefab can collide with.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "PhysicsMaterial",
@@ -124,7 +136,8 @@
       },
       "description": "The name of the physics material applied to the prefab.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "PersistsOwnership",
@@ -134,7 +147,8 @@
       },
       "description": "If true and this prefab is spawned at runtime with networking, the ownership will transfer to host if the player who spawned it leaves.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     }
   ],
   "instanceMethods": [
@@ -146,7 +160,8 @@
       },
       "description": "Clears all components from the prefab.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     }
   ],
   "staticFields": [],
@@ -154,7 +169,8 @@
   "constructors": [
     {
       "parameters": [],
-      "description": "Creates a new empty Prefab instance."
+      "description": "Creates a new empty Prefab instance.",
+      "deprecated": ""
     },
     {
       "parameters": [
@@ -179,7 +195,8 @@
           "isVariadic": false
         }
       ],
-      "description": "Creates a new Prefab instance from a serialized CSV string."
+      "description": "Creates a new Prefab instance from a serialized CSV string.",
+      "deprecated": ""
     }
   ]
 }
