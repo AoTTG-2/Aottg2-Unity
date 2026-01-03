@@ -1,62 +1,98 @@
 # Set
 Inherits from [Object](../objects/Object.md)
 
-Collection of unique elements
+Collection of unique elements.
 
 ### Initialization
 ```csharp
-Set()
-Set(parameterValues: Object)
+Set() // Creates an empty set.
+Set(parameterValues: Object) // Creates a set with the specified values.
 ```
 
 ### Properties
 |Name|Type|Readonly|Description|
 |---|---|---|---|
-|Count|int|True|The number of elements in the set|
+|Count|int|True|The number of elements in the set.|
 
 
 ### Methods
 <pre class="language-typescript"><code class="lang-typescript">function Clear()</code></pre>
-> Clear all set elements
+> Clear all set elements.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function Contains(value: <a data-footnote-ref href="#user-content-fn-59">Object</a>) -> bool</code></pre>
-> Check if the set contains the specified element
+<pre class="language-typescript"><code class="lang-typescript">function Contains(value: T) -> bool</code></pre>
+> Check if the set contains the specified element.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function Add(value: <a data-footnote-ref href="#user-content-fn-59">Object</a>)</code></pre>
-> Add an element to the set
+> **Parameters**:
+> - `value`: The element to check for.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function Remove(value: <a data-footnote-ref href="#user-content-fn-59">Object</a>)</code></pre>
-> Remove the element from the set
+<pre class="language-typescript"><code class="lang-typescript">function Add(value: T)</code></pre>
+> Add an element to the set.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function Union(set: <a data-footnote-ref href="#user-content-fn-7">Set</a>)</code></pre>
-> Union with another set
+> **Parameters**:
+> - `value`: The element to add.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function Intersect(set: <a data-footnote-ref href="#user-content-fn-7">Set</a>)</code></pre>
-> Intersect with another set
+<pre class="language-typescript"><code class="lang-typescript">function Remove(value: T)</code></pre>
+> Remove the element from the set.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function Difference(set: <a data-footnote-ref href="#user-content-fn-7">Set</a>)</code></pre>
-> Difference with another set
+> **Parameters**:
+> - `value`: The element to remove.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function IsSubsetOf(set: <a data-footnote-ref href="#user-content-fn-7">Set</a>) -> bool</code></pre>
-> Check if the set is a subset of another set
+<pre class="language-typescript"><code class="lang-typescript">function Union(set: <a data-footnote-ref href="#user-content-fn-7">Set</a><T>)</code></pre>
+> Union with another set (adds all elements from the other set to this set).
 > 
-<pre class="language-typescript"><code class="lang-typescript">function IsSupersetOf(set: <a data-footnote-ref href="#user-content-fn-7">Set</a>) -> bool</code></pre>
-> Check if the set is a superset of another set
+> **Parameters**:
+> - `set`: The set to union with.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function IsProperSubsetOf(set: <a data-footnote-ref href="#user-content-fn-7">Set</a>) -> bool</code></pre>
-> Check if the set is a proper subset of another set
+<pre class="language-typescript"><code class="lang-typescript">function Intersect(set: <a data-footnote-ref href="#user-content-fn-7">Set</a><T>)</code></pre>
+> Intersect with another set (keeps only elements that are in both sets).
 > 
-<pre class="language-typescript"><code class="lang-typescript">function IsProperSupersetOf(set: <a data-footnote-ref href="#user-content-fn-7">Set</a>) -> bool</code></pre>
-> Check if the set is a proper superset of another set
+> **Parameters**:
+> - `set`: The set to intersect with.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function Overlaps(set: <a data-footnote-ref href="#user-content-fn-7">Set</a>) -> bool</code></pre>
-> Check if the set overlaps with another set
+<pre class="language-typescript"><code class="lang-typescript">function Difference(set: <a data-footnote-ref href="#user-content-fn-7">Set</a><T>)</code></pre>
+> Difference with another set (removes all elements that are in the other set).
 > 
-<pre class="language-typescript"><code class="lang-typescript">function SetEquals(set: <a data-footnote-ref href="#user-content-fn-7">Set</a>) -> bool</code></pre>
-> Check if the set has the same elements as another set
+> **Parameters**:
+> - `set`: The set to compute the difference with.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function IsSubsetOf(set: <a data-footnote-ref href="#user-content-fn-7">Set</a><T>) -> bool</code></pre>
+> Check if the set is a subset of another set.
+> 
+> **Parameters**:
+> - `set`: The set to check against.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function IsSupersetOf(set: <a data-footnote-ref href="#user-content-fn-7">Set</a><T>) -> bool</code></pre>
+> Check if the set is a superset of another set.
+> 
+> **Parameters**:
+> - `set`: The set to check against.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function IsProperSubsetOf(set: <a data-footnote-ref href="#user-content-fn-7">Set</a><T>) -> bool</code></pre>
+> Check if the set is a proper subset of another set (subset but not equal).
+> 
+> **Parameters**:
+> - `set`: The set to check against.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function IsProperSupersetOf(set: <a data-footnote-ref href="#user-content-fn-7">Set</a><T>) -> bool</code></pre>
+> Check if the set is a proper superset of another set (superset but not equal).
+> 
+> **Parameters**:
+> - `set`: The set to check against.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function Overlaps(set: <a data-footnote-ref href="#user-content-fn-7">Set</a><T>) -> bool</code></pre>
+> Check if the set overlaps with another set (has at least one element in common).
+> 
+> **Parameters**:
+> - `set`: The set to check against.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function SetEquals(set: <a data-footnote-ref href="#user-content-fn-7">Set</a><T>) -> bool</code></pre>
+> Check if the set has the same elements as another set.
+> 
+> **Parameters**:
+> - `set`: The set to compare with.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function ToList() -> <a data-footnote-ref href="#user-content-fn-4">List</a><T></code></pre>
-> Convert the set to a list
+> Convert the set to a list.
 > 
 
 [^0]: [Color](../objects/Color.md)

@@ -5,6 +5,7 @@
   "extends": [
     "Object"
   ],
+  "deprecated": "",
   "instanceFields": [],
   "instanceMethods": [],
   "staticFields": [],
@@ -23,7 +24,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the cutscene class to start.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -33,12 +34,13 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "If true, enables full cutscene mode.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "ShowDialogue",
@@ -54,7 +56,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The icon name to display.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -64,7 +66,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The title of the dialogue.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -74,12 +76,13 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The content text of the dialogue.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "ShowDialogueForTime",
@@ -95,7 +98,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The icon name to display.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -105,7 +108,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The title of the dialogue.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -115,7 +118,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The content text of the dialogue.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -125,12 +128,13 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The duration in seconds to show the dialogue.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "HideDialogue",
@@ -140,7 +144,8 @@
       },
       "description": "Hide the dialogue box",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     }
   ],
   "constructors": []

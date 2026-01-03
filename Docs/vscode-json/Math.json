@@ -1,10 +1,11 @@
 {
   "kind": "extension",
   "name": "Math",
-  "description": "Math functions. Note that parameter types can be either int or float unless otherwise specified. Functions may return int or float depending on the parameter types given.",
+  "description": "",
   "extends": [
     "Object"
   ],
+  "deprecated": "",
   "instanceFields": [],
   "instanceMethods": [],
   "staticFields": [
@@ -14,9 +15,10 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "The value of PI",
+      "description": "The value of PI.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Infinity",
@@ -24,9 +26,10 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "The value of Infinity",
+      "description": "The value of Infinity.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "NegativeInfinity",
@@ -34,9 +37,10 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "The value of Negative Infinity",
+      "description": "The value of Negative Infinity.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Rad2DegConstant",
@@ -44,9 +48,10 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "The value of Rad2Deg constant",
+      "description": "The value of Rad2Deg constant.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Deg2RadConstant",
@@ -54,9 +59,10 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "The value of Deg2Rad constant",
+      "description": "The value of Deg2Rad constant.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Epsilon",
@@ -64,9 +70,10 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "The value of Epsilon",
+      "description": "The value of Epsilon.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     }
   ],
   "staticMethods": [
@@ -76,7 +83,7 @@
         "name": "Object",
         "typeArguments": []
       },
-      "description": "Clamp a value between a minimum and maximum value",
+      "description": "Clamp a value between a minimum and maximum value. Returns: The clamped value. Will be the same type as the inputs",
       "parameters": [
         {
           "name": "value",
@@ -109,7 +116,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Max",
@@ -117,7 +125,7 @@
         "name": "Object",
         "typeArguments": []
       },
-      "description": "Get the maximum of two values",
+      "description": "Get the maximum of two values. Returns: The maximum of the two values. Will be the same type as the inputs",
       "parameters": [
         {
           "name": "a",
@@ -140,7 +148,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Min",
@@ -148,7 +157,7 @@
         "name": "Object",
         "typeArguments": []
       },
-      "description": "Get the minimum of two values",
+      "description": "Get the minimum of two values. Returns: The minimum of the two values. Will be the same type as the inputs",
       "parameters": [
         {
           "name": "a",
@@ -171,7 +180,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Pow",
@@ -187,7 +197,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The base value.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -197,12 +207,13 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The exponent value.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Abs",
@@ -210,7 +221,7 @@
         "name": "Object",
         "typeArguments": []
       },
-      "description": "Get the absolute value of a number",
+      "description": "Get the absolute value of a number. Returns: The absolute value. Will be the same type as the input",
       "parameters": [
         {
           "name": "value",
@@ -223,7 +234,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Sqrt",
@@ -239,12 +251,13 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The value to get the square root of.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Repeat",
@@ -260,7 +273,7 @@
             "name": "Object",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The value to repeat.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -270,12 +283,13 @@
             "name": "Object",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The maximum value to repeat to.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Mod",
@@ -291,7 +305,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The dividend.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -301,12 +315,13 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The divisor.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Sin",
@@ -314,7 +329,7 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "Get the sine of an angle",
+      "description": "Get the sine of an angle. Returns: Value between -1 and 1",
       "parameters": [
         {
           "name": "angle",
@@ -327,7 +342,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Cos",
@@ -335,7 +351,7 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "Get the cosine of an angle",
+      "description": "Get the cosine of an angle. Returns: Value between -1 and 1",
       "parameters": [
         {
           "name": "angle",
@@ -348,7 +364,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Tan",
@@ -369,7 +386,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Asin",
@@ -385,12 +403,13 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The value (must be between -1 and 1).",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Acos",
@@ -406,12 +425,13 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The value (must be between -1 and 1).",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Atan",
@@ -427,12 +447,13 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The value to get the arctangent of.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Atan2",
@@ -448,7 +469,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The Y component.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -458,12 +479,13 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The X component.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Ceil",
@@ -479,12 +501,13 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The value to round up.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Floor",
@@ -500,12 +523,13 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The value to round down.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Round",
@@ -521,12 +545,13 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The value to round.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Deg2Rad",
@@ -542,12 +567,13 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The angle in degrees.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Rad2Deg",
@@ -563,12 +589,13 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The angle in radians.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Lerp",
@@ -584,7 +611,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The start value.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -594,7 +621,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The end value.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -604,12 +631,13 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The interpolation factor (clamped between 0 and 1).",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "LerpUnclamped",
@@ -625,7 +653,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The start value.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -635,7 +663,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The end value.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -645,12 +673,13 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The interpolation factor (not clamped).",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Sign",
@@ -666,12 +695,13 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The value to get the sign of.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "InverseLerp",
@@ -687,7 +717,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The start value.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -697,7 +727,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The end value.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -707,12 +737,13 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The value to find the interpolation factor for.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "LerpAngle",
@@ -728,7 +759,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The start angle in degrees.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -738,7 +769,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The end angle in degrees.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -748,12 +779,13 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The interpolation factor (clamped between 0 and 1).",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Log",
@@ -769,12 +801,13 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The value to get the logarithm of.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "MoveTowards",
@@ -790,7 +823,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The current value.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -800,7 +833,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The target value.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -810,12 +843,13 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The maximum change allowed.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "MoveTowardsAngle",
@@ -831,7 +865,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The current angle in degrees.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -841,7 +875,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The target angle in degrees.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -851,12 +885,13 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The maximum change in degrees allowed.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "PingPong",
@@ -872,7 +907,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The time value.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -882,12 +917,13 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The length of the ping pong cycle.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Exp",
@@ -903,12 +939,13 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The value to exponentiate.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SmoothStep",
@@ -924,7 +961,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The start value.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -934,7 +971,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The end value.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -944,12 +981,13 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The interpolation factor (clamped between 0 and 1).",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "BitwiseAnd",
@@ -965,7 +1003,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The first integer.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -975,12 +1013,13 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The second integer.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "BitwiseOr",
@@ -996,7 +1035,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The first integer.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -1006,12 +1045,13 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The second integer.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "BitwiseXor",
@@ -1027,7 +1067,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The first integer.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -1037,12 +1077,13 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The second integer.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "BitwiseNot",
@@ -1058,12 +1099,13 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The integer to negate.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "BitwiseLeftShift",
@@ -1079,7 +1121,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The integer to shift.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -1089,12 +1131,13 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The number of bits to shift left.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "BitwiseRightShift",
@@ -1110,7 +1153,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The integer to shift.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -1120,12 +1163,13 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The number of bits to shift right.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     }
   ],
   "constructors": []

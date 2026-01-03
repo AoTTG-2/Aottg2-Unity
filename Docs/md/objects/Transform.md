@@ -31,17 +31,30 @@ Overloads operators:
 <pre class="language-typescript"><code class="lang-typescript">function GetTransform(name: string) -> <a data-footnote-ref href="#user-content-fn-29">Transform</a></code></pre>
 > Gets the transform of the specified child.
 > 
+> **Parameters**:
+> - `name`: The name of the child transform to find.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function GetTransforms() -> <a data-footnote-ref href="#user-content-fn-4">List</a><<a data-footnote-ref href="#user-content-fn-29">Transform</a>></code></pre>
 > Gets all child transforms.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function IsPlayingAnimation(anim: string) -> bool</code></pre>
 > Checks if the given animation is playing.
 > 
+> **Parameters**:
+> - `anim`: The name of the animation to check.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function PlayAnimation(anim: string, fade: float = 0.1)</code></pre>
 > Plays the specified animation.
 > 
+> **Parameters**:
+> - `anim`: The name of the animation to play.
+> - `fade`: The fade time in seconds for cross-fading (default: 0.1).
+> 
 <pre class="language-typescript"><code class="lang-typescript">function GetAnimationLength(anim: string) -> float</code></pre>
 > Gets the length of the specified animation.
+> 
+> **Parameters**:
+> - `anim`: The name of the animation.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function PlaySound()</code></pre>
 > Plays the sound.
@@ -52,18 +65,64 @@ Overloads operators:
 <pre class="language-typescript"><code class="lang-typescript">function ToggleParticle(enabled: bool)</code></pre>
 > Toggles the particle system.
 > 
+> **Parameters**:
+> - `enabled`: Whether to enable or disable the particle emission.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function InverseTransformDirection(direction: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>) -> <a data-footnote-ref href="#user-content-fn-9">Vector3</a></code></pre>
+> Transforms a direction from world space to local space. Returns: The direction in local space.
+> 
+> **Parameters**:
+> - `direction`: The direction vector in world space.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function InverseTransformPoint(point: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>) -> <a data-footnote-ref href="#user-content-fn-9">Vector3</a></code></pre>
+> Transforms a position from world space to local space. Returns: The position in local space.
+> 
+> **Parameters**:
+> - `point`: The point in world space.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function TransformDirection(direction: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>) -> <a data-footnote-ref href="#user-content-fn-9">Vector3</a></code></pre>
+> Transforms a direction from local space to world space. Returns: The direction in world space.
+> 
+> **Parameters**:
+> - `direction`: The direction vector in local space.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function TransformPoint(point: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>) -> <a data-footnote-ref href="#user-content-fn-9">Vector3</a></code></pre>
+> Transforms a position from local space to world space. Returns: The position in world space.
+> 
+> **Parameters**:
+> - `point`: The point in local space.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function Rotate(rotation: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>)</code></pre>
+> Rotates the transform by the given rotation in euler angles.
+> 
+> **Parameters**:
+> - `rotation`: The rotation in euler angles to apply.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function RotateAround(point: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, axis: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, angle: float)</code></pre>
+> Rotates the transform around a point by the given angle.
+> 
+> **Parameters**:
+> - `point`: The point to rotate around.
+> - `axis`: The axis to rotate around.
+> - `angle`: The angle in degrees to rotate.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function LookAt(target: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>)</code></pre>
+> Rotates the transform to look at the target position.
+> 
+> **Parameters**:
+> - `target`: The world position to look at.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function SetRenderersEnabled(enabled: bool)</code></pre>
 > Sets the enabled state of all child renderers.
 > 
+> **Parameters**:
+> - `enabled`: Whether to enable or disable the renderers.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function GetColliders(recursive: bool = False) -> <a data-footnote-ref href="#user-content-fn-4">List</a><<a data-footnote-ref href="#user-content-fn-13">Collider</a>></code></pre>
 > Gets colliders of the transform.
+> 
+> **Parameters**:
+> - `recursive`: If true, includes colliders from all children recursively (default: false).
 > 
 
 [^0]: [Color](../objects/Color.md)

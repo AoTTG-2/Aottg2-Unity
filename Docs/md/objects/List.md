@@ -39,61 +39,97 @@ function TransformData(a)
 ```
 ### Initialization
 ```csharp
-List()
-List(parameterValues: Object)
+List() // Creates an empty list.
+List(parameterValues: Object) // Creates a list with the specified values.
 ```
 
 ### Properties
 |Name|Type|Readonly|Description|
 |---|---|---|---|
-|Count|int|True|The number of elements in the list|
+|Count|int|True|The number of elements in the list.|
 
 
 ### Methods
 <pre class="language-typescript"><code class="lang-typescript">function Clear()</code></pre>
-> Clear all list elements
+> Clear all list elements.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function Get(index: int) -> <a data-footnote-ref href="#user-content-fn-59">Object</a></code></pre>
-> Get the element at the specified index
+<pre class="language-typescript"><code class="lang-typescript">function Get(index: int) -> <a data-footnote-ref href="#user-content-fn-59">Object</a><T></code></pre>
+> Get the element at the specified index.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function Set(index: int, value: <a data-footnote-ref href="#user-content-fn-59">Object</a>)</code></pre>
-> Set the element at the specified index
+> **Parameters**:
+> - `index`: The index of the element to get (negative indices count from the end).
 > 
-<pre class="language-typescript"><code class="lang-typescript">function Add(value: <a data-footnote-ref href="#user-content-fn-59">Object</a>)</code></pre>
-> Add an element to the end of the list
+<pre class="language-typescript"><code class="lang-typescript">function Set(index: int, value: T)</code></pre>
+> Set the element at the specified index.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function InsertAt(index: int, value: <a data-footnote-ref href="#user-content-fn-59">Object</a>)</code></pre>
-> Insert an element at the specified index
+> **Parameters**:
+> - `index`: The index of the element to set (negative indices count from the end).
+> - `value`: The value to set.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function Add(value: T)</code></pre>
+> Add an element to the end of the list.
+> 
+> **Parameters**:
+> - `value`: The element to add.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function InsertAt(index: int, value: T)</code></pre>
+> Insert an element at the specified index.
+> 
+> **Parameters**:
+> - `index`: The index at which to insert (negative indices count from the end).
+> - `value`: The element to insert.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function RemoveAt(index: int)</code></pre>
-> Remove the element at the specified index
+> Remove the element at the specified index.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function Remove(value: <a data-footnote-ref href="#user-content-fn-59">Object</a>)</code></pre>
-> Remove the first occurrence of the specified element
+> **Parameters**:
+> - `index`: The index of the element to remove (negative indices count from the end).
 > 
-<pre class="language-typescript"><code class="lang-typescript">function Contains(value: <a data-footnote-ref href="#user-content-fn-59">Object</a>) -> bool</code></pre>
-> Check if the list contains the specified element
+<pre class="language-typescript"><code class="lang-typescript">function Remove(value: T)</code></pre>
+> Remove the first occurrence of the specified element.
+> 
+> **Parameters**:
+> - `value`: The element to remove.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function Contains(value: T) -> bool</code></pre>
+> Check if the list contains the specified element.
+> 
+> **Parameters**:
+> - `value`: The element to check for.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function Sort()</code></pre>
-> Sort the list
+> Sort the list.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function SortCustom(method: function)</code></pre>
-> Sort the list using a custom method, expects a method with the signature int method(a,b)
+> Sort the list using a custom method, expects a method with the signature int method(a,b).
+> 
+> **Parameters**:
+> - `method`: The comparison method that returns an int: negative if a < b, 0 if a == b, positive if a > b.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function Filter(method: function) -> <a data-footnote-ref href="#user-content-fn-4">List</a><T></code></pre>
-> Filter the list using a custom method, expects a method with the signature bool method(element)
+> Filter the list using a custom method, expects a method with the signature bool method(element).
+> 
+> **Parameters**:
+> - `method`: The predicate method that returns true for elements to keep.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function Map(method: function) -> <a data-footnote-ref href="#user-content-fn-4">List</a><T></code></pre>
-> Map the list using a custom method, expects a method with the signature object method(element)
+> Map the list using a custom method, expects a method with the signature object method(element).
 > 
-<pre class="language-typescript"><code class="lang-typescript">function Reduce(method: function, initialValue: <a data-footnote-ref href="#user-content-fn-59">Object</a>) -> <a data-footnote-ref href="#user-content-fn-59">Object</a></code></pre>
-> Reduce the list using a custom method, expects a method with the signature object method(acc, element)
+> **Parameters**:
+> - `method`: The transformation method that returns the mapped value for each element.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function Reduce(method: function, initialValue: T) -> <a data-footnote-ref href="#user-content-fn-59">Object</a></code></pre>
+> Reduce the list using a custom method, expects a method with the signature object method(acc, element).
+> 
+> **Parameters**:
+> - `method`: The accumulation method that combines the accumulator with each element.
+> - `initialValue`: The initial accumulator value.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function Randomize() -> <a data-footnote-ref href="#user-content-fn-4">List</a><T></code></pre>
 > Returns a randomized version of the list.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function ToSet() -> <a data-footnote-ref href="#user-content-fn-7">Set</a><T></code></pre>
-> Convert the list to a set
+> Convert the list to a set.
 > 
 
 [^0]: [Color](../objects/Color.md)

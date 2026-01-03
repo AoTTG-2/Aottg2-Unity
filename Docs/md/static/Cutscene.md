@@ -4,11 +4,26 @@ Inherits from [Object](../objects/Object.md)
 <pre class="language-typescript"><code class="lang-typescript">function Start(name: string, full: bool)</code></pre>
 > Start a cutscene
 > 
+> **Parameters**:
+> - `name`: The name of the cutscene class to start.
+> - `full`: If true, enables full cutscene mode.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function ShowDialogue(icon: string, title: string, content: string)</code></pre>
 > Show a dialogue box
 > 
+> **Parameters**:
+> - `icon`: The icon name to display.
+> - `title`: The title of the dialogue.
+> - `content`: The content text of the dialogue.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function ShowDialogueForTime(icon: string, title: string, content: string, time: float)</code></pre>
 > Show a dialogue box for a certain amount of time
+> 
+> **Parameters**:
+> - `icon`: The icon name to display.
+> - `title`: The title of the dialogue.
+> - `content`: The content text of the dialogue.
+> - `time`: The duration in seconds to show the dialogue.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function HideDialogue()</code></pre>
 > Hide the dialogue box

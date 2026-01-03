@@ -5,6 +5,7 @@
   "extends": [
     "Character"
   ],
+  "deprecated": "",
   "instanceFields": [
     {
       "label": "Size",
@@ -14,7 +15,8 @@
       },
       "description": "Titan's size.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "RunSpeedBase",
@@ -24,7 +26,8 @@
       },
       "description": "Titan's base run speed. Final run speed is RunSpeedBase + Size * RunSpeedPerLevel.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "WalkSpeedBase",
@@ -34,7 +37,8 @@
       },
       "description": "Titan's base walk speed. Final walk speed is WalkSpeedBase + Size * WalkSpeedPerLevel.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "WalkSpeedPerLevel",
@@ -44,7 +48,8 @@
       },
       "description": "Titan's walk speed added per size.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "RunSpeedPerLevel",
@@ -54,7 +59,8 @@
       },
       "description": "Titan's run speed added per size.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "TurnSpeed",
@@ -64,7 +70,8 @@
       },
       "description": "Titan's turn animation speed.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "RotateSpeed",
@@ -74,7 +81,8 @@
       },
       "description": "Titan's rotate speed.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "JumpForce",
@@ -84,7 +92,8 @@
       },
       "description": "Titan's jump force.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "ActionPause",
@@ -94,7 +103,8 @@
       },
       "description": "Titan's pause delay after performing an action.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "AttackPause",
@@ -104,7 +114,8 @@
       },
       "description": "Titan's pause delay after performing an attack.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "TurnPause",
@@ -114,7 +125,8 @@
       },
       "description": "Titan's pause delay after performing a turn.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Stamina",
@@ -124,7 +136,8 @@
       },
       "description": "PT stamina.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "MaxStamina",
@@ -134,7 +147,8 @@
       },
       "description": "PT max stamina.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "NapePosition",
@@ -144,7 +158,8 @@
       },
       "description": "The titan's nape position.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "IsCrawler",
@@ -154,7 +169,8 @@
       },
       "description": "Is titan a crawler.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "DetectRange",
@@ -164,7 +180,8 @@
       },
       "description": "(AI) titan's detect range.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "FocusRange",
@@ -174,7 +191,8 @@
       },
       "description": "(AI) titan's focus range.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "FocusTime",
@@ -184,7 +202,8 @@
       },
       "description": "(AI) titan's focus time.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "FarAttackCooldown",
@@ -194,7 +213,8 @@
       },
       "description": "(AI) Titan's cooldown after performing a ranged attack.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "AttackWait",
@@ -204,7 +224,8 @@
       },
       "description": "(AI) Titan's wait time between being in range and performing an attack.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "CanRun",
@@ -214,7 +235,8 @@
       },
       "description": "(AI) Titan can run or only walk.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "AttackSpeedMultiplier",
@@ -224,7 +246,8 @@
       },
       "description": "Titan's attack animation speed.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "UsePathfinding",
@@ -234,7 +257,8 @@
       },
       "description": "Determines whether the (AI) titan uses pathfinding. (Smart Movement in titan settings)",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "HeadMount",
@@ -244,7 +268,8 @@
       },
       "description": "Titan's head transform.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "NeckMount",
@@ -254,7 +279,8 @@
       },
       "description": "Titan's neck transform.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     }
   ],
   "instanceMethods": [
@@ -272,7 +298,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The target position to move to.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -282,7 +308,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The stopping range from the target position.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -292,12 +318,13 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "If true, will not engage enemies along the way.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Target",
@@ -310,10 +337,10 @@
         {
           "name": "enemyObj",
           "type": {
-            "name": "Object",
+            "name": "Character|MapTargetable",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The enemy to target (can be Character or MapTargetable).",
           "isOptional": false,
           "isVariadic": false
         },
@@ -323,12 +350,13 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The focus time in seconds (0 uses default focus time).",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "GetTarget",
@@ -338,7 +366,8 @@
       },
       "description": "Gets the target currently focused by this character. Returns null if no target is set.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Idle",
@@ -354,12 +383,13 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The idle time in seconds.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Wander",
@@ -369,7 +399,8 @@
       },
       "description": "Causes the (AI) titan to cancel any move commands and begin wandering randomly.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Blind",
@@ -379,7 +410,8 @@
       },
       "description": "Causes the titan to enter the blind state.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Cripple",
@@ -395,12 +427,13 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The cripple duration in seconds (0 uses default time).",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     }
   ],
   "staticFields": [],

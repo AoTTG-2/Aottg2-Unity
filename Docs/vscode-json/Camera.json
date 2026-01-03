@@ -5,6 +5,7 @@
   "extends": [
     "Object"
   ],
+  "deprecated": "",
   "instanceFields": [],
   "instanceMethods": [],
   "staticFields": [
@@ -16,7 +17,8 @@
       },
       "description": "Is camera in manual mode.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Position",
@@ -26,7 +28,8 @@
       },
       "description": "Position of the camera.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Rotation",
@@ -36,7 +39,8 @@
       },
       "description": "Rotation of the camera.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Velocity",
@@ -46,7 +50,8 @@
       },
       "description": "Velocity of the camera.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "FOV",
@@ -56,7 +61,8 @@
       },
       "description": "Field of view of the camera.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "CameraMode",
@@ -66,7 +72,8 @@
       },
       "description": "Current camera mode. TPS, Original, FPS.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Forward",
@@ -76,7 +83,8 @@
       },
       "description": "Forward vector of the camera.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Right",
@@ -86,7 +94,8 @@
       },
       "description": "Right vector of the camera.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Up",
@@ -96,7 +105,8 @@
       },
       "description": "Up vector of the camera.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "FollowDistance",
@@ -106,7 +116,8 @@
       },
       "description": "Distance from the camera to the character.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     }
   ],
   "staticMethods": [
@@ -129,7 +140,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SetPosition",
@@ -145,12 +157,13 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The world position to set the camera to.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SetRotation",
@@ -166,12 +179,13 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The euler angles rotation to set the camera to.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SetVelocity",
@@ -187,12 +201,13 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The velocity vector to set for the camera.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "LookAt",
@@ -208,12 +223,13 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "The world position to look at",
+          "description": "The world position to look at.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SetFOV",
@@ -234,7 +250,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SetCameraMode",
@@ -255,7 +272,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "ResetDistance",
@@ -265,7 +283,8 @@
       },
       "description": "Resets the follow distance to player's settings.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "ResetCameraMode",
@@ -275,7 +294,8 @@
       },
       "description": "Resets the camera mode to player's settings.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SetCameraLocked",
@@ -291,12 +311,13 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "If true, locks the camera to prevent movement.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SetCursorVisible",
@@ -312,12 +333,13 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "If true, makes the cursor visible.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     }
   ],
   "constructors": []

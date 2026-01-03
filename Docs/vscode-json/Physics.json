@@ -1,10 +1,11 @@
 {
   "kind": "extension",
   "name": "Physics",
-  "description": "Static Physics class. Contains some common physics functions",
+  "description": "Static Physics class. Contains some common physics functions.",
   "extends": [
     "Object"
   ],
+  "deprecated": "",
   "instanceFields": [],
   "instanceMethods": [],
   "staticFields": [
@@ -16,7 +17,8 @@
       },
       "description": "All Collide Mode",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "CollideWithMapObjects",
@@ -26,7 +28,8 @@
       },
       "description": "MapObject Collide Mode",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "CollideWithCharacters",
@@ -36,7 +39,8 @@
       },
       "description": "Characters Collide Mode",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "CollideWithTitans",
@@ -46,7 +50,8 @@
       },
       "description": "Titans Collide Mode",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "CollideWithHumans",
@@ -56,7 +61,8 @@
       },
       "description": "Humans Collide Mode",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "CollideWithProjectiles",
@@ -66,7 +72,8 @@
       },
       "description": "Projectiles Collide Mode",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "CollideWithEntities",
@@ -76,7 +83,8 @@
       },
       "description": "Entities Collide Mode",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "CollideWithHitboxes",
@@ -86,7 +94,8 @@
       },
       "description": "Hitboxes Collide Mode",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "CollideWithMapEditor",
@@ -96,7 +105,8 @@
       },
       "description": "MapEditor Collide Mode",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     }
   ],
   "staticMethods": [
@@ -106,7 +116,7 @@
         "name": "LineCastHitResult",
         "typeArguments": []
       },
-      "description": "Performs a line cast between two points, returns a LineCastHitResult object",
+      "description": "Performs a line cast between two points, returns a LineCastHitResult object.",
       "parameters": [
         {
           "name": "start",
@@ -114,7 +124,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The start position of the line cast.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -124,7 +134,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The end position of the line cast.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -134,12 +144,13 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The collision layer to check against (e.g., 'Entities', 'MapObjects', etc.).",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "LineCastAll",
@@ -160,7 +171,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The start position of the line cast.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -170,7 +181,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The end position of the line cast.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -180,12 +191,13 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The collision layer to check against (e.g., 'Entities', 'MapObjects', etc.).",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SphereCast",
@@ -201,7 +213,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The start position of the sphere cast.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -211,7 +223,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The end position of the sphere cast.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -221,7 +233,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The radius of the sphere.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -231,12 +243,13 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The collision layer to check against (e.g., 'Entities', 'MapObjects', etc.).",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SphereCastAll",
@@ -257,7 +270,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The start position of the sphere cast.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -267,7 +280,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The end position of the sphere cast.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -277,7 +290,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The radius of the sphere.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -287,12 +300,13 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The collision layer to check against (e.g., 'Entities', 'MapObjects', etc.).",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "BoxCast",
@@ -308,7 +322,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The start position of the box cast.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -318,7 +332,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The end position of the box cast.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -328,7 +342,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The dimensions of the box.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -338,7 +352,7 @@
             "name": "Quaternion",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The orientation of the box.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -348,12 +362,13 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The collision layer to check against (e.g., 'Entities', 'MapObjects', etc.).",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "BoxCastAll",
@@ -374,7 +389,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The start position of the box cast.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -384,7 +399,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The end position of the box cast.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -394,7 +409,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The dimensions of the box.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -404,7 +419,7 @@
             "name": "Quaternion",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The orientation of the box.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -414,12 +429,13 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The collision layer to check against (e.g., 'Entities', 'MapObjects', etc.).",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "ClosestPoint",
@@ -435,7 +451,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The point to find the closest point to.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -445,7 +461,7 @@
             "name": "Collider",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The collider to check.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -455,7 +471,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The position of the collider.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -465,12 +481,13 @@
             "name": "Quaternion",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The rotation of the collider.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "ComputePenetration",
@@ -478,7 +495,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "Compute the minimal translation required to separate the given colliders apart at specified poses.",
+      "description": "Compute the minimal translation required to separate the given colliders apart at specified poses. Returns Vector3.Zero if the colliders are not intersecting.",
       "parameters": [
         {
           "name": "colliderA",
@@ -486,7 +503,7 @@
             "name": "Collider",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The first collider.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -496,7 +513,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The position of the first collider.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -506,7 +523,7 @@
             "name": "Quaternion",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The rotation of the first collider.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -516,7 +533,7 @@
             "name": "Collider",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The second collider.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -526,7 +543,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The position of the second collider.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -536,12 +553,13 @@
             "name": "Quaternion",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The rotation of the second collider.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "AreCollidersOverlapping",
@@ -557,7 +575,7 @@
             "name": "Collider",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The first collider.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -567,7 +585,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The position of the first collider.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -577,7 +595,7 @@
             "name": "Quaternion",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The rotation of the first collider.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -587,7 +605,7 @@
             "name": "Collider",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The second collider.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -597,7 +615,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The position of the second collider.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -607,12 +625,13 @@
             "name": "Quaternion",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The rotation of the second collider.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     }
   ],
   "constructors": []

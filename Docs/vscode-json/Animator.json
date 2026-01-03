@@ -1,7 +1,8 @@
 {
   "kind": "component",
   "name": "Animator",
-  "description": "",
+  "description": "Represents an Animator component for controlling animations using Animator Controller.",
+  "deprecated": "",
   "instanceFields": [],
   "instanceMethods": [
     {
@@ -18,7 +19,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the animation to check.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -28,12 +29,13 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The animation layer to check (default: 0).",
           "isOptional": true,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "PlayAnimation",
@@ -49,7 +51,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the animation to play.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -59,7 +61,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The fade time in seconds for cross-fading (default: 0.1).",
           "isOptional": true,
           "isVariadic": false
         },
@@ -69,12 +71,13 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The animation layer to play on (default: 0).",
           "isOptional": true,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "PlayAnimationAt",
@@ -90,7 +93,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the animation to play.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -100,7 +103,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The normalized time (0-1) to start the animation from.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -110,7 +113,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The fade time in seconds for cross-fading (default: 0.1).",
           "isOptional": true,
           "isVariadic": false
         },
@@ -120,12 +123,13 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The animation layer to play on (default: 0).",
           "isOptional": true,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SetAnimationSpeed",
@@ -141,12 +145,13 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The playback speed multiplier (1.0 = normal speed).",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "GetAnimationLength",
@@ -162,12 +167,13 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the animation.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "GetAnimatorFloat",
@@ -183,12 +189,13 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the float parameter.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "GetAnimatorInt",
@@ -204,12 +211,13 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the int parameter.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "GetAnimatorBool",
@@ -225,12 +233,13 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the bool parameter.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SetAnimatorFloat",
@@ -246,7 +255,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the float parameter.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -256,12 +265,13 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The value to set.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SetAnimatorInt",
@@ -277,7 +287,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the int parameter.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -287,12 +297,13 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The value to set.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SetAnimatorBool",
@@ -308,7 +319,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the bool parameter.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -318,12 +329,13 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The value to set.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SetAnimatorTrigger",
@@ -339,12 +351,13 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the trigger parameter.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "ResetAnimatorTrigger",
@@ -360,12 +373,13 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the trigger parameter to reset.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SetLayerWeight",
@@ -381,7 +395,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The layer index.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -391,17 +405,18 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The weight value (0-1) to set.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "GetLayerWeight",
       "returnType": {
-        "name": "void",
+        "name": "float",
         "typeArguments": []
       },
       "description": "Gets the weight of the specified layer.",
@@ -412,12 +427,13 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The layer index.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "GetAnimationNormalizedTime",
@@ -433,12 +449,13 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The animation layer to check (default: 0).",
           "isOptional": true,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     }
   ],
   "staticFields": [],
