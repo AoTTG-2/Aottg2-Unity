@@ -1,5 +1,5 @@
 /// Options
-EditorVersion:1.0|Description:A colossal titan appears at the wall.|HasWeather:0
+EditorVersion:1.0|Description:A colossal titan appears at the wall.|HasWeather:1
 /// CustomAssets
 
 /// Objects
@@ -1129,6 +1129,7 @@ class Main
 	_hasFinalDialogue = false;
 	_bossHealthBar = null;
 	_difficulty = 1;
+	_civilians = null;
 
 	function OnGameStart()
 	{
@@ -1157,29 +1158,23 @@ class Main
 		self._bossHealthBar = BossHealthBar("Colossal Titan", 1000.0, "Top", true);
 		self._wallGateStart = Map.FindMapObjectByName("WallGateStart");
 		self._wallGateDestroyed = Map.FindMapObjectByName("WallGateDestroyed");
+		self._civilians = Map.FindMapObjectByName("Civilians").GetComponent("Civilians");
+
 		if (Network.IsMasterClient)
 		{
 			self.ColossalCutscene();
 			Network.SendMessageAll("StartCutscene");
 		}
-		elif (!self._hasKicked)
-		{
-			Cutscene.Start("MainCutscene", true);
-		}
 	}
 
 	function OnPlayerJoin(player)
 	{
-		if (self._hasKicked)
+		if (self._colossal != null)
 		{
-			if (self._colossal != null)
-			{
-				Network.SendMessage(player, "SetColossal " + self._colossal.ViewID);
-			}
+			Network.SendMessage(player, "SetColossal " + self._colossal.ViewID);
 			if (self._hasKicked)
 			{
 				Network.SendMessage(player, "DestroyGate");
-				Network.SendMessage(player, "SetHealthBar");
 			}
 		}
 	}
@@ -1200,14 +1195,11 @@ class Main
 			{
 				self.FinalDialogue();
 			}
-			elif (message == "SetHealthBar")
-			{
-				self.SetHealthBar();
-			}
-			elif (message == "SetColossal")
+			elif (String.StartsWith(message, "SetColossal "))
 			{
 				viewID = Convert.ToInt(String.Substring(message, 12));
 				self._colossal = Game.FindCharacterByViewID(viewID);
+				self.SetHealthBar();
 			}
 		}
 	}
@@ -1236,7 +1228,6 @@ class Main
 		Game.SpawnUnscaledEffect("ColossalKick", position, Vector3(0,180,0));
 		Game.SpawnProjectile("Rock2", position, Vector3.Zero, velocity, gravity, 10000, "Titan", 15.0);
 		wait 3.5;
-		Network.SendMessageAll("SetHealthBar");
 		colossal.WallAttackCooldownLeft = 5.0;
 		Main._titanSpawnTimeLeft = 5.0;
 	}
@@ -1325,22 +1316,18 @@ class Main
 						}
 					}
 				}
-				elif (titans > 0)
-				{
-					Game.Debug(titans);
-					UI.SetLabelAll("TopCenter", "Titans Left: " + titans);
-				}
 				if (self._difficulty > 0 && self._titanSpawnTimeLeft <= 0 && titans < self.MaxTitans && self._colossal != null)
 				{
 					self._titanSpawnTimeLeft = self.TitanSpawnTime;
 					self.SpawnTitan();
 				}
+
+				self.UpdateTopLabel();
 			}
 		}
 
 		if (self._colossal != null && self._bossHealthBar != null)
 		{
-			# Game.Print(self._colossal.Health);
 			self._bossHealthBar.SetCurrentHealth(self._colossal.Health);
 			self._bossHealthBar.SetLeftHandHealth(self._colossal.LeftHandHealth);
 			self._bossHealthBar.SetRightHandHealth(self._colossal.RightHandHealth);
@@ -1380,6 +1367,13 @@ class Main
 		self._hasKicked = true;
 	}
 
+	function UpdateTopLabel()
+	{
+		if (!Game.IsEnding)
+		{
+			UI.SetLabelAll("TopCenter", "Titans: " + Convert.ToString(Game.Titans.Count) + "    Civilians health: " + Convert.ToString(self._civilians.GetHealthPercentage()) + "%");
+		}
+	}
 }
 
 cutscene MainCutscene
@@ -1435,6 +1429,7 @@ component MoveTo
 component Civilians
 {
 	_health = 1000;
+	_maxHealth = 1000;
 
 	function Init()
 	{
@@ -1443,27 +1438,33 @@ component Civilians
 
 	function OnGameStart()
 	{
-		self._health = Main.CiviliansHealth;
+		self.SetHealth(Main.CiviliansHealth);
 	}
 
 	function OnGetHit(character, name, damage, type, position)
 	{
 		if (character.Type == "Titan" && Network.IsMasterClient)
 		{
+			Game.ShowKillFeedAll(name, "Civilians", damage, type);
 			Game.SpawnEffect("Blood2", position, Vector3(), 5.0);
 
 			if (!Game.IsEnding)
 			{
-				self._health -= damage;
-
-				if (self._health <= 0)
-				{
-					UI.SetLabelAll("MiddleCenter", "<size=30><b>The civilians have been killed.</b></size>" + String.Newline + "Humanity failed.");
-					UI.SetLabelAll("TopCenter", "");
-					UI.SetLabelAll("BottomCenter", "");
-					Game.End(10.0);
-				}
+				self.NetworkView.SendMessageAll("SetHealth " + Convert.ToString(damage));
 			}
+		}
+	}
+
+	function OnNetworkMessage(sender, message)
+	{
+		if (sender == Network.MasterClient)
+		{
+			if (String.StartsWith(message, "SetHealth "))
+			{
+				damage = Convert.ToInt(String.Substring(message, 10));
+				self.TakeDamage(damage);
+			}
+
 		}
 	}
 
@@ -1473,6 +1474,32 @@ component Civilians
 		{
 			UI.SetLabelForTime("MiddleCenter", "<size=30><color=red><b>The civilians are under attack!</b></color></size>", 0.5);
 		}
+	}
+
+	function TakeDamage(damage)
+	{
+		self._health -= damage;
+
+		if (self._health <= 0)
+		{
+			self._health = 0;
+
+			UI.SetLabelAll("MiddleCenter", "<size=30><b>The civilians have been killed.</b></size>" + String.Newline + "Humanity failed.");
+			UI.SetLabelAll("TopCenter", "");
+			UI.SetLabelAll("BottomCenter", "");
+			Game.End(10.0);
+		}
+	}
+
+	function GetHealthPercentage()
+	{
+		return Math.Ceil(Convert.ToFloat(self._health) / self._maxHealth * 100'	);
+	}
+
+	function SetHealth(health)
+	{
+		self._maxHealth = health;
+		self._health    = health;
 	}
 }
 
@@ -1487,6 +1514,7 @@ component TitanWarning
 		}
 	}
 }
+
 class BossHealthBar
 {
     # Configuration (set via Init)
@@ -1565,11 +1593,12 @@ class BossHealthBar
         self._rootContainer = UI.VisualElement()
             .Absolute(true)
             .Width(40, true)
-            .Height(10, true)
-            .Top(1, true)
+            .Height(8, true)
+            .Top(5, true)
             .Left(30, true)
             .Right(30, true)
             .Padding(10, false)
+            .BorderRadius(3)
             .BackgroundColor(Color(20, 20, 20, 200));
 
         # Create layout based on label position
@@ -1619,16 +1648,28 @@ class BossHealthBar
         # Create custom health bar
         self.CreateHealthBar();
 
-        # Health text label below bar
+        healthContainer = UI.VisualElement()
+            .Width(100, true)
+            .Height(100, true)
+            .Absolute(true)
+            .AlignItems("Center")
+            .JustifyContent("SpaceBetween");
+
+        # Health text label
         self._healthLabel = UI.Label(self.GetHealthText())
+            .Absolute(true)
+            .Height(100,true)
             .FontSize(14, false)
             .FontStyle("Bold")
-            .Color(Color(255, 255, 255))
-            .AlignSelf("Center");
+            .Padding(0,true)
+            .Margin(0,true)
+            .Color(Color(255, 255, 255));
+
+        healthContainer.Add(self._healthLabel);
+        self._healthBarContainer.Add(healthContainer);
 
         centerContainer.Add(self._nameLabel);
         centerContainer.Add(self._healthBarContainer);
-        centerContainer.Add(self._healthLabel);
 
         mainRow.Add(centerContainer);
 
@@ -1687,19 +1728,19 @@ class BossHealthBar
         container = UI.VisualElement()
             .FlexDirection("Column")
             .AlignItems("Center")
-            .Width(50, false)
+            .Width(70, false)
             .FlexShrink(0);
 
         # Stack container for bar and icon overlay (icon size only)
         stackContainer = UI.VisualElement()
-            .Width(50, false)
-            .Height(50, false)
+            .Width(60, false)
+            .Height(60, false)
             .FlexShrink(0);
 
         # Background container for the vertical bar (icon size)
         barBackground = UI.VisualElement()
-            .Width(50, false)
-            .Height(50, false)
+            .Width(60, false)
+            .Height(60, false)
             .BackgroundColor(Color(40, 40, 40, 200))
             .BorderRadius(4, false)
             .BorderWidth(2, false)
@@ -1719,10 +1760,20 @@ class BossHealthBar
 
         barBackground.Add(fill);
 
+        handLabelText = "Right Hand";
+        handIconScale = -1;
+
+        if (isLeftHand)
+        {
+            handLabelText = "Left Hand";
+            handIconScale = 1;
+        }
+
         # Icon overlay on top (same size as container)
         icon = UI.Icon("Icons/Specials/EscapeSpecialIcon")
-            .Width(50, false)
-            .Height(50, false)
+            .Width(100, true)
+            .Height(100, true)
+            .TransformScale(handIconScale, 1)
             .Absolute(true)
             .Top(0, false)
             .Left(0, false);
@@ -1730,19 +1781,14 @@ class BossHealthBar
         stackContainer.Add(barBackground);
         stackContainer.Add(icon);
 
-        # Label for hand name
-        handLabelText = "Right Hand";
-        if (isLeftHand)
-        {
-            handLabelText = "Left Hand";
-        }
 
         handLabel = UI.Label(handLabelText)
             .FontSize(12, false)
             .FontStyle("Bold")
             .Color(Color(255, 255, 255))
             .AlignSelf("Center")
-            .MarginTop(5, false);
+            .Padding(0, false)
+            .Margin(0, false);
 
         container.Add(stackContainer);
         container.Add(handLabel);
@@ -1834,7 +1880,7 @@ class BossHealthBar
         # Update left hand
         if (self._leftHandFill != null)
         {
-            leftPercentage = (self._leftHandHealth / self._leftHandMaxHealth) * 100.0;
+            leftPercentage = (Convert.ToFloat(self._leftHandHealth) / self._leftHandMaxHealth) * 100.0;
             self._leftHandFill.Height(leftPercentage, true);
             self.UpdateHandBarColor(self._leftHandFill, leftPercentage);
         }
@@ -1842,7 +1888,7 @@ class BossHealthBar
         # Update right hand
         if (self._rightHandFill != null)
         {
-            rightPercentage = (self._rightHandHealth / self._rightHandMaxHealth) * 100.0;
+            rightPercentage = (Convert.ToFloat(self._rightHandHealth) / self._rightHandMaxHealth) * 100.0;
             self._rightHandFill.Height(rightPercentage, true);
             self.UpdateHandBarColor(self._rightHandFill, rightPercentage);
         }
@@ -2137,31 +2183,32 @@ class BossHealthBar
     }
 }
 
+
 /// Weather
 {
-    "Skybox" : "Day1",
+    "Skybox" : "Dawn1",
     "SkyboxColor" : [
-        128,
-        128,
-        128,
+        0,
+        164,
+        255,
         255
     ],
     "Daylight" : [
         255,
-        255,
-        255,
+        250,
+        250,
         255
     ],
-    "DaylightIntensity" : 1,
+    "DaylightIntensity" : 1.68259847164154,
     "DaylightDirection" : [
         45,
         45,
         0
     ],
     "AmbientLight" : [
-        126,
-        122,
-        114,
+        115,
+        123,
+        157,
         255
     ],
     "Flashlight" : [
@@ -2170,11 +2217,11 @@ class BossHealthBar
         255,
         0
     ],
-    "FogDensity" : 0,
+    "FogDensity" : 0.00800000037997961,
     "FogColor" : [
-        128,
-        128,
-        128,
+        157,
+        178,
+        200,
         255
     ],
     "Rain" : 0,
