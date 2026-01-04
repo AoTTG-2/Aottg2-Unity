@@ -26,20 +26,26 @@
     partial class CustomLogicRangeBuiltin : CustomLogicListBuiltin
     {
         /// <summary>
-        /// Creates a range from 0 to end-1
+        /// Creates a range from 0 to end-1.
         /// </summary>
+        /// <param name="end">The end value (exclusive).</param>
         [CLConstructor]
         public CustomLogicRangeBuiltin(int end) : this(0, end, 1) { }
 
         /// <summary>
-        /// Creates a range from start to end-1
+        /// Creates a range from start to end-1.
         /// </summary>
+        /// <param name="start">The start value.</param>
+        /// <param name="end">The end value (exclusive).</param>
         [CLConstructor]
         public CustomLogicRangeBuiltin(int start, int end) : this(start, end, 1) { }
 
         /// <summary>
-        /// Creates a range from start to end-1 with the specified step
+        /// Creates a range from start to end-1 with the specified step.
         /// </summary>
+        /// <param name="start">The start value.</param>
+        /// <param name="end">The end value (exclusive).</param>
+        /// <param name="step">The step value.</param>
         [CLConstructor]
         public CustomLogicRangeBuiltin(int start, int end, int step)
         {

@@ -1,10 +1,11 @@
 {
   "kind": "class",
   "name": "Image",
-  "description": "UI element for setting background images on visual elements",
+  "description": "UI element for setting background images on visual elements.",
   "extends": [
     "Object"
   ],
+  "deprecated": "",
   "instanceFields": [
     {
       "label": "ImagePath",
@@ -12,9 +13,10 @@
         "name": "string",
         "typeArguments": []
       },
-      "description": "Get the current image path",
+      "description": "The current image path. Setting this will load the image from the resource path.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     }
   ],
   "instanceMethods": [
@@ -24,7 +26,7 @@
         "name": "Image",
         "typeArguments": []
       },
-      "description": "Set the image from a resource path",
+      "description": "Set the image from a resource path.",
       "parameters": [
         {
           "name": "imagePath",
@@ -37,7 +39,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     }
   ],
   "staticFields": [],

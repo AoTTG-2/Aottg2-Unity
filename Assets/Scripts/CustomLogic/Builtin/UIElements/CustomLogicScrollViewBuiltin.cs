@@ -5,9 +5,7 @@ using UnityEngine.UIElements;
 namespace CustomLogic
 {
     /// <summary>
-    /// ScrollView UI element that provides scrollable content.
-    /// 
-    /// Note: Most methods return self to allow method chaining
+    /// ScrollView UI element that provides scrollable content. Note: Most methods return self to allow method chaining.
     /// </summary>
     [CLType(Name = "ScrollView")]
     partial class CustomLogicScrollViewBuiltin : CustomLogicVisualElementBuiltin
@@ -20,7 +18,7 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// The current scroll offset
+        /// The current scroll offset.
         /// </summary>
         [CLProperty]
         public CustomLogicVector2Builtin ScrollOffset
@@ -30,7 +28,7 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// Controls the scrolling speed when using the scroll wheel
+        /// Controls the scrolling speed when using the scroll wheel.
         /// </summary>
         [CLProperty]
         public float ScrollDecelerationRate
@@ -40,7 +38,7 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// Controls the sensitivity/speed of mouse wheel scrolling
+        /// Controls the sensitivity/speed of mouse wheel scrolling.
         /// </summary>
         [CLProperty]
         public float MouseWheelScrollSize
@@ -50,7 +48,7 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// Enable or disable horizontal scrolling
+        /// Enable or disable horizontal scrolling.
         /// </summary>
         [CLProperty]
         public bool HorizontalScrollEnabled
@@ -81,7 +79,7 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// Enable or disable vertical scrolling
+        /// Enable or disable vertical scrolling.
         /// </summary>
         [CLProperty]
         public bool VerticalScrollEnabled
@@ -112,9 +110,9 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// The behavior to use when scrolling reaches limits of the content
+        /// The behavior to use when scrolling reaches limits of the content.
         /// </summary>
-        /// <param name="value">Acceptable values are: `Clamped`, `Elastic`, and `Unrestricted`</param>
+        /// <param name="value">Acceptable values are: `Clamped`, `Elastic`, and `Unrestricted`.</param>
         [CLMethod]
         public CustomLogicScrollViewBuiltin Elasticity(string value)
         {
@@ -129,8 +127,9 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// Controls the rate at which scrolling movement slows after a user scrolling action
+        /// Controls the rate at which scrolling movement slows after a user scrolling action.
         /// </summary>
+        /// <param name="rate">The deceleration rate (0-1, where 1 is fastest deceleration).</param>
         [CLMethod]
         public CustomLogicScrollViewBuiltin SetScrollDecelerationRate(float rate)
         {
@@ -139,8 +138,9 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// Set the scroll offset
+        /// Set the scroll offset.
         /// </summary>
+        /// <param name="offset">The scroll offset vector (x, y).</param>
         [CLMethod]
         public CustomLogicScrollViewBuiltin SetScrollOffset(CustomLogicVector2Builtin offset)
         {
@@ -149,7 +149,7 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// Scroll to the top of the content
+        /// Scroll to the top of the content.
         /// </summary>
         [CLMethod]
         public void ScrollToTop()
@@ -158,7 +158,7 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// Scroll to the bottom of the content
+        /// Scroll to the bottom of the content.
         /// </summary>
         [CLMethod]
         public void ScrollToBottom()

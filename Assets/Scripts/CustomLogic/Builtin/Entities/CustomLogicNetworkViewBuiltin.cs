@@ -7,12 +7,14 @@ using Utility;
 namespace CustomLogic
 {
     /// <summary>
-    /// Represents a network view on a map object that has the "networked" flag.
-    /// Note1: messages sent from a mapobjects network view are not component scoped, all components will receive the same message.
-    /// If you intend for a mapobject to have multiple message sending components, preface the message with the component name to determine scope.
-    /// Note2: Rooms and Players have bandwidth limits, exceeding the limits via CL will result in either the player being kicked or the room being shut down.
-    /// When possible, use basic message passing for state sync and then run logic locally instead of repeatedly sending state over the network. Also
-    /// avoid cases where message sending increases heavily with the number of players in the room.
+    /// Represents a network view on a map object that has the "networked" flag. 
+    /// 
+    /// Note1: messages sent from a mapobjects network view are not component scoped, all components will receive the same message. 
+    /// If you intend for a mapobject to have multiple message sending components, preface the message with the component name to determine scope. 
+    /// 
+    /// Note2: Rooms and Players have bandwidth limits, exceeding the limits via CL will result in either the player being kicked or the room being shut down. 
+    /// When possible, use basic message passing for state sync and then run logic locally instead of repeatedly sending state over the network. 
+    /// Also avoid cases where message sending increases heavily with the number of players in the room.
     /// </summary>
     /// <code>
     /// # The following is for a component scoped object, in general this is bad practice if the component is widely used.
@@ -52,13 +54,20 @@ namespace CustomLogic
         private bool _isTransformSynced = true;
 
 
+        /// <summary>
+        /// Creates a new NetworkView instance.
+        /// </summary>
+        /// <param name="obj">The map object to create a network view for.</param>
         [CLConstructor]
         public CustomLogicNetworkViewBuiltin(MapObject obj)
         {
             MapObject = obj;
         }
 
-        [CLProperty("Whether or not the object's Transform is synced. If PhotonSync is not initialized yet, it will defer until it is set.")]
+        /// <summary>
+        /// Whether or not the object's Transform is synced. If PhotonSync is not initialized yet, it will defer until it is set.
+        /// </summary>
+        [CLProperty]
         public bool SyncTransforms
         {
             get => _isTransformSynced;
@@ -70,7 +79,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("The network view's owner.")]
+        /// <summary>
+        /// The network view's owner.
+        /// </summary>
+        [CLProperty]
         public CustomLogicPlayerBuiltin Owner
         {
             get
@@ -189,7 +201,11 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod("Owner only. Transfer ownership of this NetworkView to another player.")]
+        /// <summary>
+        /// Owner only. Transfer ownership of this NetworkView to another player.
+        /// </summary>
+        /// <param name="player">The player to transfer ownership to.</param>
+        [CLMethod]
         public void Transfer(CustomLogicPlayerBuiltin player)
         {
             if (Sync.photonView.IsMine)
@@ -198,30 +214,41 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod("Send a message to a target player. This will be received in any of the MapObject attached components through the OnNetworkMessage callback.")]
+        /// <summary>
+        /// Send a message to a target player. This will be received in any of the MapObject attached components through the OnNetworkMessage callback.
+        /// </summary>
+        /// <param name="target">The target player to send the message to.</param>
+        /// <param name="msg">The message to send.</param>
+        [CLMethod]
         public void SendMessage(CustomLogicPlayerBuiltin target, string msg)
         {
             Sync.SendMessage(target.Player, msg);
         }
 
-        [CLMethod("Send a message to all players including myself.")]
+        /// <summary>
+        /// Send a message to all players including myself.
+        /// </summary>
+        /// <param name="msg">The message to send.</param>
+        [CLMethod]
         public void SendMessageAll(string msg)
         {
             Sync.SendMessageAll(msg);
         }
 
-        [CLMethod("Send a message to players excluding myself.")]
+        /// <summary>
+        /// Send a message to players excluding myself.
+        /// </summary>
+        /// <param name="msg">The message to send.</param>
+        [CLMethod]
         public void SendMessageOthers(string msg)
         {
             Sync.SendMessageOthers(msg);
         }
 
         /// <summary>
-        /// Send an object to the network sync stream.
-        /// This represents sending data from the object owner to all non-owner observers,
-        /// and should only be called in the SendNetworkStream callback in the attached component.
-        /// It only works with some object types: primitives and Vector3.
+        /// Send an object to the network sync stream. This represents sending data from the object owner to all non-owner observers, and should only be called in the SendNetworkStream callback in the attached component. It only works with some object types: primitives and Vector3.
         /// </summary>
+        /// <param name="obj">The object to send.</param>
         [CLMethod]
         public void SendStream(object obj)
         {
@@ -230,9 +257,7 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// Receive an object through the network sync stream.
-        /// This represents receiving data from the object owner as a non-owner observer,
-        /// and should only be called in the OnNetworkStream callback.
+        /// Receive an object through the network sync stream. This represents receiving data from the object owner as a non-owner observer, and should only be called in the OnNetworkStream callback.
         /// </summary>
         [CLMethod]
         public object ReceiveStream()

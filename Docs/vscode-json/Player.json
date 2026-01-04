@@ -5,6 +5,7 @@
   "extends": [
     "Object"
   ],
+  "deprecated": "",
   "instanceFields": [
     {
       "label": "Character",
@@ -14,7 +15,8 @@
       },
       "description": "Player's current character, if alive.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Connected",
@@ -24,7 +26,8 @@
       },
       "description": "Player is still connected to the room.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "ID",
@@ -34,7 +37,8 @@
       },
       "description": "Player unique ID.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Name",
@@ -44,7 +48,8 @@
       },
       "description": "Player name.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Guild",
@@ -54,7 +59,8 @@
       },
       "description": "Player guild.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Team",
@@ -62,9 +68,10 @@
         "name": "string",
         "typeArguments": []
       },
-      "description": "Player's chosen team (\"None\", \"Blue\", \"Red\", \"Titan\", \"Human\"). Note that this may be different from the character's final team (Character.Team field) if the character's team field is modified.",
+      "description": "Player's chosen team. Note that this may be different from the character's final team (Character.Team field) if the character's team field is modified. Refer to TeamEnum",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Status",
@@ -72,9 +79,10 @@
         "name": "string",
         "typeArguments": []
       },
-      "description": "Player's spawn status (\"Alive\", \"Dead\", \"Spectating\").",
+      "description": "Player's spawn status. Refer to PlayerStatusEnum",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "CharacterType",
@@ -82,9 +90,10 @@
         "name": "string",
         "typeArguments": []
       },
-      "description": "Player's chosen character (\"Human\", \"Titan\", \"Shifter\")",
+      "description": "Player's chosen character. Refer to CharacterTypeEnum",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Loadout",
@@ -92,9 +101,10 @@
         "name": "string",
         "typeArguments": []
       },
-      "description": "Player's chosen loadout (\"Blades\", \"AHSS\", \"APG\", \"Thunderspears\").",
+      "description": "Player's chosen loadout. Refer to LoadoutEnum",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Kills",
@@ -104,7 +114,8 @@
       },
       "description": "Player's kills.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Deaths",
@@ -114,7 +125,8 @@
       },
       "description": "Player's deaths.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "HighestDamage",
@@ -124,7 +136,8 @@
       },
       "description": "Player's highest damage.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "TotalDamage",
@@ -134,7 +147,8 @@
       },
       "description": "Player's total damage.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Ping",
@@ -144,7 +158,8 @@
       },
       "description": "The player's connection ping.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "SpectateID",
@@ -154,7 +169,8 @@
       },
       "description": "The player's spectating ID. If not spectating anyone, returns -1.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "SpawnPoint",
@@ -164,7 +180,8 @@
       },
       "description": "Player's respawn point. Is initially null and can be set back to null, at which point map spawn points are used.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     }
   ],
   "instanceMethods": [
@@ -182,12 +199,13 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The property key to get.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SetCustomProperty",
@@ -203,7 +221,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The property key to set.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -213,12 +231,13 @@
             "name": "Object",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The value to set (must be a primitive type).",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "ClearKDR",
@@ -228,7 +247,8 @@
       },
       "description": "Clears kills, deaths, highestdamage, and totaldamage properties.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     }
   ],
   "staticFields": [],

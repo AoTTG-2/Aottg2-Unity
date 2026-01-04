@@ -1,10 +1,11 @@
 {
   "kind": "class",
   "name": "ScrollView",
-  "description": "ScrollView UI element that provides scrollable content. Note: Most methods return self to allow method chaining",
+  "description": "ScrollView UI element that provides scrollable content. Note: Most methods return self to allow method chaining.",
   "extends": [
     "VisualElement"
   ],
+  "deprecated": "",
   "instanceFields": [
     {
       "label": "ScrollOffset",
@@ -12,9 +13,10 @@
         "name": "Vector2",
         "typeArguments": []
       },
-      "description": "The current scroll offset",
+      "description": "The current scroll offset.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "ScrollDecelerationRate",
@@ -22,9 +24,10 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "Controls the scrolling speed when using the scroll wheel",
+      "description": "Controls the scrolling speed when using the scroll wheel.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "MouseWheelScrollSize",
@@ -32,9 +35,10 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "Controls the sensitivity/speed of mouse wheel scrolling",
+      "description": "Controls the sensitivity/speed of mouse wheel scrolling.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "HorizontalScrollEnabled",
@@ -42,9 +46,10 @@
         "name": "bool",
         "typeArguments": []
       },
-      "description": "Enable or disable horizontal scrolling",
+      "description": "Enable or disable horizontal scrolling.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "VerticalScrollEnabled",
@@ -52,9 +57,10 @@
         "name": "bool",
         "typeArguments": []
       },
-      "description": "Enable or disable vertical scrolling",
+      "description": "Enable or disable vertical scrolling.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     }
   ],
   "instanceMethods": [
@@ -64,7 +70,7 @@
         "name": "ScrollView",
         "typeArguments": []
       },
-      "description": "The behavior to use when scrolling reaches limits of the content",
+      "description": "The behavior to use when scrolling reaches limits of the content.",
       "parameters": [
         {
           "name": "value",
@@ -77,7 +83,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SetScrollDecelerationRate",
@@ -85,7 +92,7 @@
         "name": "ScrollView",
         "typeArguments": []
       },
-      "description": "Controls the rate at which scrolling movement slows after a user scrolling action",
+      "description": "Controls the rate at which scrolling movement slows after a user scrolling action.",
       "parameters": [
         {
           "name": "rate",
@@ -93,12 +100,13 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The deceleration rate (0-1, where 1 is fastest deceleration).",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SetScrollOffset",
@@ -106,7 +114,7 @@
         "name": "ScrollView",
         "typeArguments": []
       },
-      "description": "Set the scroll offset",
+      "description": "Set the scroll offset.",
       "parameters": [
         {
           "name": "offset",
@@ -114,12 +122,13 @@
             "name": "Vector2",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The scroll offset vector (x, y).",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "ScrollToTop",
@@ -127,9 +136,10 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Scroll to the top of the content",
+      "description": "Scroll to the top of the content.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "ScrollToBottom",
@@ -137,9 +147,10 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Scroll to the bottom of the content",
+      "description": "Scroll to the bottom of the content.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     }
   ],
   "staticFields": [],

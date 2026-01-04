@@ -2,7 +2,10 @@ using UnityEngine;
 
 namespace CustomLogic
 {
-    [CLType(Name = "AudioSource", Abstract = true, Description = "", IsComponent = true)]
+    /// <summary>
+    /// Represents an AudioSource component for playing audio clips.
+    /// </summary>
+    [CLType(Name = "AudioSource", Abstract = true, IsComponent = true)]
     partial class CustomLogicAudioSourceBuiltin : BuiltinComponentInstance
     {
         public AudioSource Value;
@@ -17,43 +20,72 @@ namespace CustomLogic
             Value = (AudioSource)Component;
         }
 
-        [CLProperty(description: "Volume of the sound.")]
+        /// <summary>
+        /// Volume of the sound.
+        /// </summary>
+        [CLProperty]
         public float Volume
         {
             get => Value.volume;
             set => Value.volume = value;
         }
 
-        [CLProperty(description: "Sound playback position.")]
+        /// <summary>
+        /// Sound playback position.
+        /// </summary>
+        [CLProperty]
         public float Time
         {
             get => Value.time;
             set => Value.time = value;
         }
 
-        [CLProperty(description: "Pitch of the sound.")]
+        /// <summary>
+        /// Pitch of the sound.
+        /// </summary>
+        [CLProperty]
         public float Pitch
         {
             get => Value.pitch;
             set => Value.pitch = value;
         }
 
-        [CLProperty(description: "Is the sound currently playing.")]
+        /// <summary>
+        /// Is the sound currently playing.
+        /// </summary>
+        [CLProperty]
         public bool IsPlaying => Value.isPlaying;
 
-        [CLMethod("Plays the sound.")]
+        /// <summary>
+        /// Plays the sound.
+        /// </summary>
+        [CLMethod]
         public void Play() => Value.Play();
 
-        [CLMethod("Plays the sound after n seconds.")]
-        public void PlayDelayed(float seconds) => Value.PlayDelayed(seconds);
+        /// <summary>
+        /// Plays the sound after n seconds.
+        /// </summary>
+        /// <param name="seconds">The delay in seconds before playing the sound.</param>
+        [CLMethod]
+        public void PlayDelayed(float seconds)
+            => Value.PlayDelayed(seconds);
 
-        [CLMethod("Stops the sound.")]
+        /// <summary>
+        /// Stops the sound.
+        /// </summary>
+        [CLMethod]
         public void Stop() => Value.Stop();
 
-        [CLMethod("Pauses the sound.")]
+        /// <summary>
+        /// Pauses the sound.
+        /// </summary>
+        [CLMethod]
         public void Pause() => Value.Pause();
 
-        [CLMethod("Unpauses the sound.")]
+        /// <summary>
+        /// Unpauses the sound.
+        /// </summary>
+        [CLMethod]
         public void Unpause() => Value.UnPause();
     }
 }

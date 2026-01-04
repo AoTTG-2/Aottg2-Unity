@@ -1,0 +1,367 @@
+{
+  "kind": "extension",
+  "name": "EffectNameEnum",
+  "description": "Enumeration of available effect names that can be spawned. Uses left-hand variable names from EffectPrefabs class.",
+  "extends": [
+    "Object"
+  ],
+  "deprecated": "",
+  "instanceFields": [],
+  "instanceMethods": [],
+  "staticFields": [
+    {
+      "label": "ThunderspearExplode",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "ThunderspearExplode effect.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "GasBurst",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "GasBurst effect.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "GroundShatter",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "GroundShatter effect.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Blood1",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Blood1 effect.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Blood2",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Blood2 effect.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "PunchHit",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "PunchHit effect.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "GunExplode",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "GunExplode effect.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "CriticalHit",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "CriticalHit effect.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "TitanSpawn",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "TitanSpawn effect.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "TitanDie1",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "TitanDie1 effect.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "TitanDie2",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "TitanDie2 effect.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Boom1",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Boom1 effect.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Boom2",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Boom2 effect.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Boom3",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Boom3 effect.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Boom4",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Boom4 effect.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Boom5",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Boom5 effect.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Boom6",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Boom6 effect.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Boom7",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Boom7 effect.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Boom8",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Boom8 effect.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Splash",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Splash effect.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "TitanBite",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "TitanBite effect.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "ShifterThunder",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "ShifterThunder effect.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "BladeThrowHit",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "BladeThrowHit effect.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "APGTrail",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "APGTrail effect.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "SingleSplash",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "SingleSplash effect.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Splash1",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Splash1 effect.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Splash2",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Splash2 effect.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Splash3",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Splash3 effect.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "WaterWake",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "WaterWake effect.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "ColossalSpawn",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "ColossalSpawn effect.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "ColossalRockSpawn",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "ColossalRockSpawn effect.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "ColossalKick",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "ColossalKick effect.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    }
+  ],
+  "staticMethods": [],
+  "constructors": []
+}

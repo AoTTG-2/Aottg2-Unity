@@ -3,7 +3,10 @@ using UnityEngine;
 
 namespace CustomLogic
 {
-    [CLType(Name = "RigidbodyBuiltin", Static = true, Abstract = true, Description = "", IsComponent = true)]
+    /// <summary>
+    /// Represents a Rigidbody component that enables physics simulation for game objects.
+    /// </summary>
+    [CLType(Name = "RigidbodyBuiltin", Static = true, Abstract = true, IsComponent = true)]
     partial class CustomLogicRigidbodyBuiltin : BuiltinComponentInstance
     {
         public Rigidbody Value;
@@ -16,9 +19,6 @@ namespace CustomLogic
         [CLConstructor]
         public CustomLogicRigidbodyBuiltin() : base(null) { }
 
-        /// <summary>
-        /// MapObject rigidbody constructor.
-        /// </summary>
         public CustomLogicRigidbodyBuiltin(CustomLogicMapObjectBuiltin owner, float mass = 1, Vector3? gravity = null, bool freezeRotation = false, bool interpolate = false) : base(GetOrAddComponent<Rigidbody>(owner.Value.GameObject))
         {
             OwnerBuiltin = owner;
@@ -31,10 +31,6 @@ namespace CustomLogic
             Interpolate = interpolate;
         }
 
-        /// <summary>
-        /// Simpler case for any of our objects that have a rigidbody by default, could be cached but this should really be good enough.
-        /// GC Alloc here will be in the new CustomLogicRigidbodyBuiltin call itself.
-        /// </summary>
         public CustomLogicRigidbodyBuiltin(BuiltinClassInstance owner, Rigidbody rb) : base(rb)
         {
             OwnerBuiltin = owner;
@@ -43,22 +39,40 @@ namespace CustomLogic
         }
 
         // Add Static Getters for ForceMode
-        [CLProperty(Name = "ForceModeAcceleration", Description = "ForceMode.Acceleration")]
+        /// <summary>
+        /// ForceMode.Acceleration.
+        /// </summary>
+        [CLProperty(Name = "ForceModeAcceleration")]
         public static int ForceModeAcceleration => (int)ForceMode.Acceleration;
 
-        [CLProperty(Name = "ForceModeForce", Description = "ForceMode.Force")]
+        /// <summary>
+        /// ForceMode.Force.
+        /// </summary>
+        [CLProperty(Name = "ForceModeForce")]
         public static int ForceModeForce => (int)ForceMode.Force;
 
-        [CLProperty(Name = "ForceModeImpulse", Description = "ForceMode.Impulse")]
+        /// <summary>
+        /// ForceMode.Impulse.
+        /// </summary>
+        [CLProperty(Name = "ForceModeImpulse")]
         public static int ForceModeImpulse => (int)ForceMode.Impulse;
 
-        [CLProperty(Name = "ForceModeVelocityChange", Description = "ForceMode.VelocityChange")]
+        /// <summary>
+        /// ForceMode.VelocityChange.
+        /// </summary>
+        [CLProperty(Name = "ForceModeVelocityChange")]
         public static int ForceModeVelocityChange => (int)ForceMode.VelocityChange;
 
-        [CLProperty(Description = "The MapObject this rigidbody is attached to.")]
+        /// <summary>
+        /// The MapObject this rigidbody is attached to.
+        /// </summary>
+        [CLProperty]
         public BuiltinClassInstance Owner => OwnerBuiltin;
         // Position
-        [CLProperty(Description = "The position of the Rigidbody in world space. This is the same as the position of the GameObject it is attached to.")]
+        /// <summary>
+        /// The position of the Rigidbody in world space. This is the same as the position of the GameObject it is attached to.
+        /// </summary>
+        [CLProperty]
         public CustomLogicVector3Builtin Position
         {
             get => new CustomLogicVector3Builtin(Value.position);
@@ -66,7 +80,10 @@ namespace CustomLogic
         }
 
         // Rotation
-        [CLProperty(Description = "The rotation of the Rigidbody in world space. This is the same as the rotation of the GameObject it is attached to.")]
+        /// <summary>
+        /// The rotation of the Rigidbody in world space. This is the same as the rotation of the GameObject it is attached to.
+        /// </summary>
+        [CLProperty]
         public CustomLogicQuaternionBuiltin Rotation
         {
             get => new CustomLogicQuaternionBuiltin(Value.rotation);
@@ -74,7 +91,10 @@ namespace CustomLogic
         }
 
         // Velocity
-        [CLProperty(Description = "The velocity of the Rigidbody in world space.")]
+        /// <summary>
+        /// The velocity of the Rigidbody in world space.
+        /// </summary>
+        [CLProperty]
         public CustomLogicVector3Builtin Velocity
         {
             get => new CustomLogicVector3Builtin(Value.velocity);
@@ -82,7 +102,10 @@ namespace CustomLogic
         }
 
         // Angular Velocity
-        [CLProperty(Description = "The angular velocity of the Rigidbody in world space.")]
+        /// <summary>
+        /// The angular velocity of the Rigidbody in world space.
+        /// </summary>
+        [CLProperty]
         public CustomLogicVector3Builtin AngularVelocity
         {
             get => new CustomLogicVector3Builtin(Value.angularVelocity);
@@ -90,21 +113,31 @@ namespace CustomLogic
         }
 
         // Angular damping
-        [CLProperty(Description = "The angular damping of the Rigidbody. This is a multiplier applied to the angular velocity every frame, reducing it over time.")]
+        /// <summary>
+        /// The angular damping of the Rigidbody. This is a multiplier applied to the angular velocity every frame,
+        /// reducing it over time.
+        /// </summary>
+        [CLProperty]
         public float AngularDrag
         {
             get => Value.angularDrag;
             set => Value.angularDrag = value;
         }
 
-        [CLProperty(Description = "The Mass of the Rigidbody")]
+        /// <summary>
+        /// The Mass of the Rigidbody.
+        /// </summary>
+        [CLProperty]
         public float Mass
         {
             get => Value.mass;
             set => Value.mass = value;
         }
 
-        [CLProperty(Description = "Whether or not the Rigidbody use gravity.")]
+        /// <summary>
+        /// Whether or not the Rigidbody use gravity.
+        /// </summary>
+        [CLProperty]
         public bool UseGravity
         {
             get => _isGravityEnabled;
@@ -124,11 +157,11 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// The force of gravity applied to the Rigidbody.
-        /// If null, the Rigidbody will use Unity's default gravity settings and will enable gravity.
-        /// If Vector3 is provided, it will apply that as a custom gravity force using ConstantForce and disable gravity.
+        /// The force of gravity applied to the Rigidbody. If null, the Rigidbody will use Unity's default gravity settings
+        /// and will enable gravity. If Vector3 is provided, it will apply that as a custom gravity force using ConstantForce
+        /// and disable gravity.
         /// </summary>
-        [CLProperty(Description = "The force of gravity.")]
+        [CLProperty]
         public CustomLogicVector3Builtin? Gravity
         {
             get => _gravity;
@@ -159,7 +192,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(Description = "If the x movement axis is frozen")]
+        /// <summary>
+        /// If the x movement axis is frozen.
+        /// </summary>
+        [CLProperty]
         public bool FreezeXPosition
         {
             get => Value.constraints.HasFlag(RigidbodyConstraints.FreezePositionX);
@@ -172,7 +208,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(Description = "If the y movement axis is frozen")]
+        /// <summary>
+        /// If the y movement axis is frozen.
+        /// </summary>
+        [CLProperty]
         public bool FreezeYPosition
         {
             get => Value.constraints.HasFlag(RigidbodyConstraints.FreezePositionY);
@@ -185,7 +224,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(Description = "If the z movement axis is frozen")]
+        /// <summary>
+        /// If the z movement axis is frozen.
+        /// </summary>
+        [CLProperty]
         public bool FreezeZPosition
         {
             get => Value.constraints.HasFlag(RigidbodyConstraints.FreezePositionZ);
@@ -198,7 +240,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(Description = "If the x rotation axis is frozen")]
+        /// <summary>
+        /// If the x rotation axis is frozen.
+        /// </summary>
+        [CLProperty]
         public bool FreezeXRotation
         {
             get => Value.constraints.HasFlag(RigidbodyConstraints.FreezeRotationX);
@@ -211,7 +256,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(Description = "If the y rotation axis is frozen")]
+        /// <summary>
+        /// If the y rotation axis is frozen.
+        /// </summary>
+        [CLProperty]
         public bool FreezeYRotation
         {
             get => Value.constraints.HasFlag(RigidbodyConstraints.FreezeRotationY);
@@ -224,7 +272,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(Description = "If the z rotation axis is frozen")]
+        /// <summary>
+        /// If the z rotation axis is frozen.
+        /// </summary>
+        [CLProperty]
         public bool FreezeZRotation
         {
             get => Value.constraints.HasFlag(RigidbodyConstraints.FreezeRotationZ);
@@ -237,7 +288,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(Description = "Freeze all rotations")]
+        /// <summary>
+        /// Freeze all rotations.
+        /// </summary>
+        [CLProperty]
         public bool FreezeAllRotations
         {
             get => Value.constraints.HasFlag(RigidbodyConstraints.FreezeRotation);
@@ -250,7 +304,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(Description = "Freeze all positions. This will also freeze all rotations.")]
+        /// <summary>
+        /// Freeze all positions. This will also freeze all rotations.
+        /// </summary>
+        [CLProperty]
         public bool FreezeAllPositions
         {
             get => Value.constraints.HasFlag(RigidbodyConstraints.FreezePosition);
@@ -264,7 +321,10 @@ namespace CustomLogic
         }
 
 
-        [CLProperty(Description = "If the Rigidbody is kinematic. Kinematic bodies are not affected by forces and can only be moved manually.")]
+        /// <summary>
+        /// If the Rigidbody is kinematic. Kinematic bodies are not affected by forces and can only be moved manually.
+        /// </summary>
+        [CLProperty]
         public bool IsKinematic
         {
             get => Value.isKinematic;
@@ -272,7 +332,10 @@ namespace CustomLogic
         }
 
         // Interpolation
-        [CLProperty(Description = "Interpolation mode of the Rigidbody. If true, it will interpolate between frames.")]
+        /// <summary>
+        /// Interpolation mode of the Rigidbody. If true, it will interpolate between frames.
+        /// </summary>
+        [CLProperty]
         public bool Interpolate
         {
             get => Value.interpolation != RigidbodyInterpolation.None;
@@ -280,7 +343,10 @@ namespace CustomLogic
         }
 
         // Center of mass
-        [CLProperty(Description = "The center of mass of the Rigidbody in local space.")]
+        /// <summary>
+        /// The center of mass of the Rigidbody in local space.
+        /// </summary>
+        [CLProperty]
         public CustomLogicVector3Builtin CenterOfMass
         {
             get => Value.centerOfMass;
@@ -288,7 +354,10 @@ namespace CustomLogic
         }
 
         // Collision detection mode
-        [CLProperty(Description = "The collision detection mode of the Rigidbody. This determines how collisions are detected and resolved.")]
+        /// <summary>
+        /// The collision detection mode of the Rigidbody. This determines how collisions are detected and resolved.
+        /// </summary>
+        [CLProperty(Enum = typeof(CustomLogicCollisionDetectionModeEnum))]
         public string CollisionDetectionMode
         {
             get => Value.collisionDetectionMode.ToString();
@@ -315,15 +384,27 @@ namespace CustomLogic
         }
 
         // Detect Collisions
-        [CLProperty(Description = "If the Rigidbody detects collisions. If false, it will not collide with other colliders.")]
+        /// <summary>
+        /// If the Rigidbody detects collisions. If false, it will not collide with other colliders.
+        /// </summary>
+        [CLProperty]
         public bool DetectCollisions
         {
             get => Value.detectCollisions;
             set => Value.detectCollisions = value;
         }
 
-        [CLMethod(Description = "Apply a force to the Rigidbody - legacy version, please use optimized if possible.")]
-        public void AddForce(CustomLogicVector3Builtin force, string forceMode = "Acceleration", CustomLogicVector3Builtin? atPoint = null)
+        /// <summary>
+        /// Apply a force to the Rigidbody - legacy version, please use optimized if possible.
+        /// </summary>
+        /// <param name="force">The force vector to apply.</param>
+        /// <param name="forceMode">The force mode.</param>
+        /// <param name="atPoint">Optional. If provided, applies force at this world position instead of center of mass.</param>
+        [CLMethod]
+        public void AddForce(
+            CustomLogicVector3Builtin force,
+            [CLParam(Enum = typeof(CustomLogicForceModeEnum))] string forceMode = "Acceleration",
+            CustomLogicVector3Builtin? atPoint = null)
         {
             ForceMode mode = ForceMode.Acceleration;
             switch (forceMode)
@@ -346,8 +427,17 @@ namespace CustomLogic
             AddForceOptimized(force, (int)mode, atPoint);
         }
 
-        [CLMethod(Description = "Apply a force to the Rigidbody.")]
-        public void AddForceOptimized(CustomLogicVector3Builtin force, int forceMode = 5, CustomLogicVector3Builtin? atPoint = null)
+        /// <summary>
+        /// Apply a force to the Rigidbody.
+        /// </summary>
+        /// <param name="force">The force vector to apply.</param>
+        /// <param name="forceMode">The force mode as integer (use ForceModeAcceleration, ForceModeForce, ForceModeImpulse, or ForceModeVelocityChange constants, default: 5).</param>
+        /// <param name="atPoint">Optional. If provided, applies force at this world position instead of center of mass.</param>
+        [CLMethod]
+        public void AddForceOptimized(
+            CustomLogicVector3Builtin force,
+            int forceMode = 5,
+            CustomLogicVector3Builtin? atPoint = null)
         {
             ForceMode mode = (ForceMode)forceMode;
             if (atPoint != null)
@@ -360,8 +450,15 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod(Description = "Apply a torque to the Rigidbody - legacy version, please use optimized if possible.")]
-        public void AddTorque(CustomLogicVector3Builtin torque, string forceMode)
+        /// <summary>
+        /// Apply a torque to the Rigidbody - legacy version, please use optimized if possible.
+        /// </summary>
+        /// <param name="torque">The torque vector to apply.</param>
+        /// <param name="forceMode">The force mode.</param>
+        [CLMethod]
+        public void AddTorque(
+            CustomLogicVector3Builtin torque,
+            [CLParam(Enum = typeof(CustomLogicForceModeEnum))] string forceMode)
         {
             ForceMode mode = ForceMode.Acceleration;
             switch (forceMode)
@@ -384,57 +481,98 @@ namespace CustomLogic
             AddTorqueOptimized(torque, (int)mode);
         }
 
-        [CLMethod(Description = "Apply a torque to the Rigidbody.")]
+        /// <summary>
+        /// Apply a torque to the Rigidbody.
+        /// </summary>
+        /// <param name="torque">The torque vector to apply.</param>
+        /// <param name="forceMode">The force mode as integer (use ForceModeAcceleration, ForceModeForce, ForceModeImpulse, or ForceModeVelocityChange constants, default: 5).</param>
+        [CLMethod]
         public void AddTorqueOptimized(CustomLogicVector3Builtin torque, int forceMode = 5)
         {
             ForceMode mode = (ForceMode)forceMode;
             Value.AddTorque(torque.Value, mode);
         }
 
-        // AddExplosionForce
-        [CLMethod(Description = "Apply an explosion force to the Rigidbody.")]
-        public void AddExplosionForce(float explosionForce, CustomLogicVector3Builtin explosionPosition, float explosionRadius, float upwardsModifier = 0.0f, int forceMode = 5)
+        /// <summary>
+        /// Apply an explosion force to the Rigidbody.
+        /// </summary>
+        /// <param name="explosionForce">The force of the explosion.</param>
+        /// <param name="explosionPosition">The center position of the explosion.</param>
+        /// <param name="explosionRadius">The radius of the explosion.</param>
+        /// <param name="upwardsModifier">Adjustment to the apparent position of the explosion to make it seem to lift objects (default: 0.0).</param>
+        /// <param name="forceMode">The force mode as integer (use ForceModeAcceleration, ForceModeForce, ForceModeImpulse, or ForceModeVelocityChange constants, default: 5).</param>
+        [CLMethod]
+        public void AddExplosionForce(
+            float explosionForce,
+            CustomLogicVector3Builtin explosionPosition,
+            float explosionRadius,
+            float upwardsModifier = 0.0f,
+            int forceMode = 5)
         {
             ForceMode mode = (ForceMode)forceMode;
             Value.AddExplosionForce(explosionForce, explosionPosition.Value, explosionRadius, upwardsModifier, mode);
         }
 
-        // Move
-        [CLMethod(Description = "Move the Rigidbody to a new position. This will not apply any forces, it will just set the position directly.")]
+        /// <summary>
+        /// Move the Rigidbody to a new position. This will not apply any forces, it will just set the position directly.
+        /// </summary>
+        /// <param name="position">The new position.</param>
+        /// <param name="rotation">The new rotation.</param>
+        [CLMethod]
         public void Move(CustomLogicVector3Builtin position, CustomLogicQuaternionBuiltin rotation)
         {
             Value.Move(position, rotation);
         }
 
-        // MovePosition
-        [CLMethod(Description = "Move the Rigidbody to a new position. This will apply forces to move the Rigidbody to the new position.")]
+        /// <summary>
+        /// Move the Rigidbody to a new position. This will apply forces to move the Rigidbody to the new position.
+        /// </summary>
+        /// <param name="position">The target position.</param>
+        [CLMethod]
         public void MovePosition(CustomLogicVector3Builtin position)
         {
             Value.MovePosition(position);
         }
 
-        // MoveRotation
-        [CLMethod(Description = "Move the Rigidbody to a new rotation. This will apply forces to rotate the Rigidbody to the new rotation.")]
+        /// <summary>
+        /// Move the Rigidbody to a new rotation. This will apply forces to rotate the Rigidbody to the new rotation.
+        /// </summary>
+        /// <param name="rotation">The target rotation.</param>
+        [CLMethod]
         public void MoveRotation(CustomLogicQuaternionBuiltin rotation)
         {
             Value.MoveRotation(rotation);
         }
 
         // ResetCenterOfMass
-        [CLMethod(Description = "Reset the center of mass of the Rigidbody to the default value (0, 0, 0). This will also reset the inertia tensor.")]
+        /// <summary>
+        /// Reset the center of mass of the Rigidbody to the default value (0, 0, 0).
+        /// This will also reset the inertia tensor.
+        /// </summary>
+        [CLMethod]
         public void ResetCenterOfMass()
         {
             Value.ResetCenterOfMass();
         }
 
         // PublishTransform
-        [CLMethod(Description = "Publish the current position and rotation of the Rigidbody to the MapObject. This will update the MapObject's transform to match the Rigidbody's transform.")]
+        /// <summary>
+        /// Publish the current position and rotation of the Rigidbody to the MapObject.
+        /// This will update the MapObject's transform to match the Rigidbody's transform.
+        /// </summary>
+        [CLMethod]
         public void PublishTransform()
         {
             Value.PublishTransform();
         }
 
-        [CLMethod("Checks if the rigidbody would collide with anything, returns a LineCastHitResult object.")]
+        /// <summary>
+        /// Checks if the rigidbody would collide with anything, returns a LineCastHitResult object.
+        /// </summary>
+        /// <param name="direction">The direction to sweep in.</param>
+        /// <param name="distance">The distance to sweep.</param>
+        /// <returns>A LineCastHitResult if collision detected, null otherwise.</returns>
+        [CLMethod]
         public object SweepTest(CustomLogicVector3Builtin direction, float distance)
         {
             if (Value.SweepTest(direction, out RaycastHit hit, distance))

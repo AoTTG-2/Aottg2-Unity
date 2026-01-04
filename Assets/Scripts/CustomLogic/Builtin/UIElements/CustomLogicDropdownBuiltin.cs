@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 namespace CustomLogic
 {
     /// <summary>
-    /// A UI element that represents a dropdown selection field
+    /// A UI element that represents a dropdown selection field.
     /// </summary>
     [CLType(Name = "Dropdown", Abstract = true)]
     partial class CustomLogicDropdownBuiltin : CustomLogicVisualElementBuiltin
@@ -29,7 +29,7 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// The label text displayed next to the Dropdown
+        /// The label text displayed next to the Dropdown.
         /// </summary>
         [CLProperty]
         public string Label
@@ -39,7 +39,7 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// The currently selected value (option text)
+        /// The currently selected value (option text).
         /// </summary>
         [CLProperty]
         public string Value
@@ -49,7 +49,7 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// The index of the currently selected option (0-based)
+        /// The index of the currently selected option (0-based).
         /// </summary>
         [CLProperty]
         public int Index
@@ -59,7 +59,7 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// Gets the list of available choices
+        /// Gets the list of available choices.
         /// </summary>
         [CLProperty(TypeArguments = new[] { "string" })]
         public CustomLogicListBuiltin Choices
@@ -84,9 +84,9 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// Sets the method to be called when the Dropdown value changes
+        /// Sets the method to be called when the Dropdown value changes.
         /// </summary>
-        /// <param name="valueChangedEvent">Method that will be called with the new selected value as parameter</param>
+        /// <param name="valueChangedEvent">Method that will be called with the new selected value as parameter.</param>
         [CLMethod]
         public CustomLogicDropdownBuiltin OnValueChanged(UserMethod valueChangedEvent)
         {
@@ -95,8 +95,9 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// Sets the value of the Dropdown without triggering any change events
+        /// Sets the value of the Dropdown without triggering any change events.
         /// </summary>
+        /// <param name="value">The value to set.</param>
         [CLMethod]
         public void SetValueWithoutNotify(string value)
         {
@@ -104,8 +105,9 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// Sets the index of the selected option without triggering any change events
+        /// Sets the index of the selected option without triggering any change events.
         /// </summary>
+        /// <param name="index">The index of the option to select (0-based).</param>
         [CLMethod]
         public void SetIndexWithoutNotify(int index)
         {
@@ -114,8 +116,9 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// Adds a choice to the dropdown options
+        /// Adds a choice to the dropdown options.
         /// </summary>
+        /// <param name="choice">The choice text to add.</param>
         [CLMethod]
         public CustomLogicDropdownBuiltin AddChoice(string choice)
         {
@@ -126,8 +129,9 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// Removes a choice from the dropdown options
+        /// Removes a choice from the dropdown options.
         /// </summary>
+        /// <param name="choice">The choice text to remove.</param>
         [CLMethod]
         public CustomLogicDropdownBuiltin RemoveChoice(string choice)
         {
@@ -138,7 +142,7 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// Clears all choices from the dropdown
+        /// Clears all choices from the dropdown.
         /// </summary>
         [CLMethod]
         public CustomLogicDropdownBuiltin ClearChoices()

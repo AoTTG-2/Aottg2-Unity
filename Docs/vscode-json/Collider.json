@@ -5,6 +5,7 @@
   "extends": [
     "Object"
   ],
+  "deprecated": "",
   "instanceFields": [
     {
       "label": "AttachedArticulationBody",
@@ -14,7 +15,8 @@
       },
       "description": "The transform of the rigidbody this collider is attached to.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "ContactOffset",
@@ -22,9 +24,10 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "",
+      "description": "The contact offset used by the collider to avoid tunneling.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Enabled",
@@ -32,19 +35,21 @@
         "name": "bool",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Whether the collider is enabled.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
-      "label": "ExludeLayers",
+      "label": "ExcludeLayers",
       "type": {
         "name": "int",
         "typeArguments": []
       },
-      "description": "",
+      "description": "The layers that this Collider should exclude when deciding if the Collider can contact another Collider.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "IncludeLayers",
@@ -54,7 +59,8 @@
       },
       "description": "The additional layers that this Collider should include when deciding if the Collider can contact another Collider.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "IsTrigger",
@@ -62,9 +68,10 @@
         "name": "bool",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Whether the collider is a trigger. Triggers don't cause physical collisions.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Center",
@@ -72,9 +79,10 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "",
+      "description": "The center of the collider's bounding box in world space.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "ProvidesContacts",
@@ -82,9 +90,10 @@
         "name": "bool",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Whether the collider provides contact information.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "MaterialName",
@@ -94,7 +103,8 @@
       },
       "description": "The name of the physics material on the collider.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "SharedMaterialName",
@@ -104,7 +114,8 @@
       },
       "description": "The name of the shared physics material on this collider.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Transform",
@@ -114,7 +125,8 @@
       },
       "description": "The collider's transform.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "GameObjectTransform",
@@ -124,7 +136,8 @@
       },
       "description": "The transform of the gameobject this collider is attached to.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     }
   ],
   "instanceMethods": [
@@ -134,7 +147,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Gets the closest point on the collider to the given position. Returns: The closest point on the collider.",
       "parameters": [
         {
           "name": "position",
@@ -142,12 +155,13 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The position to find the closest point to.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "ClosestPointOnBounds",
@@ -155,7 +169,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Gets the closest point on the collider's bounding box to the given position. Returns: The closest point on the bounding box.",
       "parameters": [
         {
           "name": "position",
@@ -163,12 +177,13 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The position to find the closest point on bounds to.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Raycast",
@@ -176,7 +191,7 @@
         "name": "LineCastHitResult",
         "typeArguments": []
       },
-      "description": "Runs a raycast physics check between start to end and checks if it hits any collider with the given collideWith layer. Returns a Collider object if it hit something otherwise returns null.",
+      "description": "Runs a raycast physics check between start to end and checks if it hits any collider with the given collideWith layer. Returns: A LineCastHitResult if it hit something, otherwise returns null.",
       "parameters": [
         {
           "name": "start",
@@ -184,7 +199,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The start position of the raycast.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -194,7 +209,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The end position of the raycast.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -204,12 +219,13 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The layer name to check collisions with. Refer to CollideWithEnum",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     }
   ],
   "staticFields": [],

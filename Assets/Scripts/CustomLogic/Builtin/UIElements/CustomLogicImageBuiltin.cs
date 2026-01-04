@@ -5,7 +5,7 @@ using Utility;
 namespace CustomLogic
 {
     /// <summary>
-    /// UI element for setting background images on visual elements
+    /// UI element for setting background images on visual elements.
     /// </summary>
     /// <code>
     /// # Example: Create a background image
@@ -20,6 +20,9 @@ namespace CustomLogic
         private string _currentImagePath;
         private Texture2D _currentTexture;
 
+        /// <summary>
+        /// Creates a new Image instance.
+        /// </summary>
         [CLConstructor]
         public CustomLogicImageBuiltin()
         {
@@ -27,14 +30,14 @@ namespace CustomLogic
             _currentTexture = null;
         }
 
-        /// <summary>
-        /// Set the image from a resource path
-        /// </summary>
-        /// <param name="imagePath">Path to the image resource (e.g., "Icons/Game/BladeIcon")</param>
         /// <example>
         /// image.SetImage("Icons/Game/BladeIcon");
         /// image.SetImage("Icons/Specials/NoneSpecialIcon");
         /// </example>
+        /// <summary>
+        /// Set the image from a resource path.
+        /// </summary>
+        /// <param name="imagePath">Path to the image resource (e.g., "Icons/Game/BladeIcon").</param>
         [CLMethod]
         public CustomLogicImageBuiltin SetImage(string imagePath)
         {
@@ -73,7 +76,7 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// Get the current image path
+        /// The current image path. Setting this will load the image from the resource path.
         /// </summary>
         [CLProperty]
         public string ImagePath

@@ -3,7 +3,7 @@ using UnityEngine.UIElements;
 namespace CustomLogic
 {
     /// <summary>
-    /// A UI element that represents a horizontal slider for selecting numeric values (both int and float)
+    /// A UI element that represents a horizontal slider for selecting numeric values (both int and float).
     /// </summary>
     [CLType(Name = "Slider", Abstract = true)]
     partial class CustomLogicSliderBuiltin : CustomLogicVisualElementBuiltin
@@ -45,7 +45,7 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// The label text displayed next to the Slider
+        /// The label text displayed next to the Slider.
         /// </summary>
         [CLProperty]
         public string Label
@@ -61,7 +61,7 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// The current value of the Slider (returns int for integer sliders, float for float sliders)
+        /// The current value of the Slider (returns int for integer sliders, float for float sliders).
         /// </summary>
         [CLProperty]
         public object Value
@@ -92,7 +92,7 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// The minimum value of the Slider (returns int for integer sliders, float for float sliders)
+        /// The minimum value of the Slider (returns int for integer sliders, float for float sliders).
         /// </summary>
         [CLProperty]
         public object LowValue
@@ -123,7 +123,7 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// The maximum value of the Slider (returns int for integer sliders, float for float sliders)
+        /// The maximum value of the Slider (returns int for integer sliders, float for float sliders).
         /// </summary>
         [CLProperty]
         public object HighValue
@@ -154,8 +154,7 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// The page size for the slider. This is the amount by which the slider value changes when clicking in the slider track area.
-        /// For integer sliders, this also controls the snapping/tick interval.
+        /// The page size for the slider. This is the amount by which the slider value changes when clicking in the slider track area. For integer sliders, this also controls the snapping/tick interval.
         /// </summary>
         [CLProperty]
         public float PageSize
@@ -171,9 +170,9 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// The direction of the slider (Horizontal or Vertical)
+        /// The direction of the slider.
         /// </summary>
-        [CLProperty]
+        [CLProperty(Enum = typeof(CustomLogicSliderDirectionEnum))]
         public string Direction
         {
             get => _isIntSlider ? _intSlider.direction.ToString() : _floatSlider.direction.ToString();
@@ -197,7 +196,7 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// If true, the slider will show a text field for direct input
+        /// If true, the slider will show a text field for direct input.
         /// </summary>
         [CLProperty]
         public bool ShowInputField
@@ -213,15 +212,15 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// Returns true if this is an integer slider, false if it's a float slider
+        /// Returns true if this is an integer slider, false if it's a float slider.
         /// </summary>
         [CLProperty]
         public bool IsIntSlider => _isIntSlider;
 
         /// <summary>
-        /// Sets the method to be called when the Slider value changes
+        /// Sets the method to be called when the Slider value changes.
         /// </summary>
-        /// <param name="valueChangedEvent">Method that will be called with the new value as parameter (int for integer sliders, float for float sliders)</param>
+        /// <param name="valueChangedEvent">Method that will be called with the new value as parameter (int for integer sliders, float for float sliders).</param>
         [CLMethod]
         public CustomLogicSliderBuiltin OnValueChanged(UserMethod valueChangedEvent)
         {
@@ -230,8 +229,9 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// Sets the value of the Slider without triggering any change events
+        /// Sets the value of the Slider without triggering any change events.
         /// </summary>
+        /// <param name="value">The value to set (int for integer sliders, float for float sliders).</param>
         [CLMethod]
         public void SetValueWithoutNotify(object value)
         {

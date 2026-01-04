@@ -3,7 +3,10 @@ using UnityEngine;
 
 namespace CustomLogic
 {
-    [CLType(Name = "PhysicsMaterialBuiltin", Static = true, Abstract = true, Description = "", IsComponent = true)]
+    /// <summary>
+    /// Represents a physics material that defines friction and bounciness properties for colliders.
+    /// </summary>
+    [CLType(Name = "PhysicsMaterialBuiltin", Static = true, Abstract = true, IsComponent = true)]
     partial class CustomLogicPhysicsMaterialBuiltin : BuiltinComponentInstance
     {
         public CustomPhysicsMaterial Value;
@@ -20,20 +23,35 @@ namespace CustomLogic
             Value = (CustomPhysicsMaterial)Component;
         }
 
-        [CLProperty(Description = "PhysicMaterialCombine.Minimum")]
+        /// <summary>
+        /// PhysicMaterialCombine.Minimum.
+        /// </summary>
+        [CLProperty]
         public static int FrictionCombineMinimum => (int)PhysicMaterialCombine.Minimum;
 
-        [CLProperty(Description = "PhysicMaterialCombine.Multiply")]
+        /// <summary>
+        /// PhysicMaterialCombine.Multiply.
+        /// </summary>
+        [CLProperty]
         public static int FrictionCombineMultiply => (int)PhysicMaterialCombine.Multiply;
 
-        [CLProperty(Description = "PhysicMaterialCombine.Maximum")]
+        /// <summary>
+        /// PhysicMaterialCombine.Maximum.
+        /// </summary>
+        [CLProperty]
         public static int FrictionCombineMaximum => (int)PhysicMaterialCombine.Maximum;
 
-        [CLProperty(Description = "PhysicMaterialCombine.Average")]
+        /// <summary>
+        /// PhysicMaterialCombine.Average.
+        /// </summary>
+        [CLProperty]
         public static int FrictionCombineAverage => (int)PhysicMaterialCombine.Average;
 
         // Static Friction
-        [CLProperty(Description = "The static friction of the material.")]
+        /// <summary>
+        /// The static friction of the material.
+        /// </summary>
+        [CLProperty]
         public float StaticFriction
         {
             get => Value.StaticFriction;
@@ -41,7 +59,10 @@ namespace CustomLogic
         }
 
         // Dynamic Friction
-        [CLProperty(Description = "The dynamic friction of the material.")]
+        /// <summary>
+        /// The dynamic friction of the material.
+        /// </summary>
+        [CLProperty]
         public float DynamicFriction
         {
             get => Value.DynamicFriction;
@@ -49,7 +70,10 @@ namespace CustomLogic
         }
 
         // Bounciness
-        [CLProperty(Description = "The bounciness of the material.")]
+        /// <summary>
+        /// The bounciness of the material.
+        /// </summary>
+        [CLProperty]
         public float Bounciness
         {
             get => Value.Bounciness;
@@ -57,7 +81,10 @@ namespace CustomLogic
         }
 
         // Combine Mode
-        [CLProperty(Description = "The friction combine mode of the material.")]
+        /// <summary>
+        /// The friction combine mode of the material.
+        /// </summary>
+        [CLProperty(Enum = typeof(CustomLogicPhysicMaterialCombineEnum))]
         public int FrictionCombine
         {
             get => (int)Value.FrictionCombine;
@@ -65,7 +92,10 @@ namespace CustomLogic
         }
 
         // Bounce Combine Mode
-        [CLProperty(Description = "The bounce combine mode of the material.")]
+        /// <summary>
+        /// The bounce combine mode of the material.
+        /// </summary>
+        [CLProperty(Enum = typeof(CustomLogicPhysicMaterialCombineEnum))]
         public int BounceCombine
         {
             get => (int)Value.BounceCombine;
@@ -73,7 +103,11 @@ namespace CustomLogic
         }
 
 
-        [CLMethod(description: "Setup the material.")]
+        /// <summary>
+        /// Setup the material.
+        /// </summary>
+        /// <param name="allChildColliders">If true, applies the material to all child colliders as well.</param>
+        [CLMethod]
         public void Setup(bool allChildColliders)
         {
             Value.Setup(allChildColliders);

@@ -8,15 +8,14 @@ using UnityEngine;
 namespace CustomLogic
 {
     /// <summary>
-    /// Reading player key inputs. Note that inputs are best handled in OnFrame rather than OnTick, due to being updated every frame and not every physics tick.
+    /// Reading player key inputs. Note that inputs are best handled in OnFrame rather than OnTick,
+    /// due to being updated every frame and not every physics tick.
     /// </summary>
     [CLType(Name = "Input", Abstract = true, Static = true)]
     partial class CustomLogicInputBuiltin : BuiltinClassInstance
     {
         [CLConstructor]
-        public CustomLogicInputBuiltin()
-        {
-        }
+        public CustomLogicInputBuiltin(){}
 
         private static KeybindSetting GetKeybind(string key)
         {
@@ -46,7 +45,12 @@ namespace CustomLogic
             return !inMenu;
         }
 
-        [CLMethod(description: "Gets the key name the player assigned to the key setting")]
+        /// <summary>
+        /// Gets the key name the player assigned to the key setting.
+        /// </summary>
+        /// <param name="key">The key setting path (e.g., "General/Attack" or "CustomKey/Space").</param>
+        /// <returns>The key name.</returns>
+        [CLMethod]
         public static string GetKeyName(string key)
         {
             KeyCode? customKey = GetCustomKeyCode(key);
@@ -57,7 +61,12 @@ namespace CustomLogic
             return keybind.ToString();
         }
 
-        [CLMethod(description: "Returns true if the key is being held down")]
+        /// <summary>
+        /// Returns true if the key is being held down.
+        /// </summary>
+        /// <param name="key">The key setting path (e.g., "General/Attack" or "CustomKey/Space").</param>
+        /// <returns>True if the key is being held down, false otherwise.</returns>
+        [CLMethod]
         public static bool GetKeyHold(string key)
         {
             KeyCode? customKey = GetCustomKeyCode(key);
@@ -68,7 +77,12 @@ namespace CustomLogic
             return keybind.GetKey(true) && CanKey();
         }
 
-        [CLMethod(description: "Returns true if the key was pressed down this frame")]
+        /// <summary>
+        /// Returns true if the key was pressed down this frame.
+        /// </summary>
+        /// <param name="key">The key setting path (e.g., "General/Attack" or "CustomKey/Space").</param>
+        /// <returns>True if the key was pressed down this frame, false otherwise.</returns>
+        [CLMethod]
         public static bool GetKeyDown(string key)
         {
             KeyCode? customKey = GetCustomKeyCode(key);
@@ -79,7 +93,12 @@ namespace CustomLogic
             return keybind.GetKeyDown(true) && CanKey();
         }
 
-        [CLMethod(description: "Returns true if the key was released this frame")]
+        /// <summary>
+        /// Returns true if the key was released this frame.
+        /// </summary>
+        /// <param name="key">The key setting path (e.g., "General/Attack" or "CustomKey/Space").</param>
+        /// <returns>True if the key was released this frame, false otherwise.</returns>
+        [CLMethod]
         public static bool GetKeyUp(string key)
         {
             KeyCode? customKey = GetCustomKeyCode(key);
@@ -90,7 +109,11 @@ namespace CustomLogic
             return keybind.GetKeyUp(true) && CanKey();
         }
 
-        [CLMethod(description: "Returns the position the player is aiming at")]
+        /// <summary>
+        /// Returns the position the player is aiming at.
+        /// </summary>
+        /// <returns>The aim position.</returns>
+        [CLMethod]
         public static CustomLogicVector3Builtin GetMouseAim()
         {
             RaycastHit hit;
@@ -101,35 +124,56 @@ namespace CustomLogic
             return new CustomLogicVector3Builtin(target);
         }
 
-        [CLMethod(description: "Returns the ray the player is aiming at")]
+        /// <summary>
+        /// Returns the ray the player is aiming at.
+        /// </summary>
+        /// <returns>The aim direction vector.</returns>
+        [CLMethod]
         public static CustomLogicVector3Builtin GetCursorAimDirection()
         {
             Ray ray = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(CursorManager.GetInGameMousePosition());
             return new CustomLogicVector3Builtin(ray.direction);
         }
 
-        [CLMethod(description: "Returns the speed of the mouse")]
+        /// <summary>
+        /// Returns the speed of the mouse.
+        /// </summary>
+        /// <returns>The mouse speed vector.</returns>
+        [CLMethod]
         public static CustomLogicVector3Builtin GetMouseSpeed()
         {
             Vector3 speed = new Vector3(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"), 0f);
             return new CustomLogicVector3Builtin(speed);
         }
 
-        [CLMethod(description: "Returns the position of the mouse")]
+        /// <summary>
+        /// Returns the position of the mouse.
+        /// </summary>
+        /// <returns>The mouse position.</returns>
+        [CLMethod]
         public static CustomLogicVector3Builtin GetMousePosition()
         {
             Vector3 position = Input.mousePosition;
             return new CustomLogicVector3Builtin(position);
         }
 
-        [CLMethod(description: "Returns the dimensions of the screen")]
+        /// <summary>
+        /// Returns the dimensions of the screen.
+        /// </summary>
+        /// <returns>The screen dimensions.</returns>
+        [CLMethod]
         public static CustomLogicVector3Builtin GetScreenDimensions()
         {
             Vector3 dimensions = new Vector3(Screen.width, Screen.height, 0f);
             return new CustomLogicVector3Builtin(dimensions);
         }
 
-        [CLMethod(description: "Sets whether the key is enabled by default")]
+        /// <summary>
+        /// Sets whether the key is enabled by default.
+        /// </summary>
+        /// <param name="key">The key setting path (e.g., "General/Attack" or "CustomKey/Space").</param>
+        /// <param name="enabled">Whether the key should be enabled by default.</param>
+        [CLMethod]
         public static void SetKeyDefaultEnabled(string key, bool enabled)
         {
             KeybindSetting keybind = GetKeybind(key);
@@ -139,7 +183,12 @@ namespace CustomLogic
                 CustomLogicManager.KeybindDefaultDisabled.Add(keybind);
         }
 
-        [CLMethod(description: "Sets whether the key is being held down")]
+        /// <summary>
+        /// Sets whether the key is being held down.
+        /// </summary>
+        /// <param name="key">The key setting path (e.g., "General/Attack" or "CustomKey/Space").</param>
+        /// <param name="enabled">Whether the key should be held down.</param>
+        [CLMethod]
         public static void SetKeyHold(string key, bool enabled)
         {
             KeybindSetting keybind = GetKeybind(key);
@@ -149,8 +198,15 @@ namespace CustomLogic
                 CustomLogicManager.KeybindHold.Add(keybind);
         }
 
-        [CLMethod(description: "Sets whether all keys in the specified category are enabled by default. Valid categories: General, Human, Titan, Interaction")]
-        public static void SetCategoryKeysEnabled(string category, bool enabled)
+        /// <summary>
+        /// Sets whether all keys in the specified category are enabled by default.
+        /// </summary>
+        /// <param name="category">The category name.</param>
+        /// <param name="enabled">Whether the keys should be enabled by default.</param>
+        [CLMethod]
+        public static void SetCategoryKeysEnabled(
+            [CLParam(Enum = typeof(CustomLogicInputCategoryEnum))] string category,
+            bool enabled)
         {
             if (!SettingsManager.InputSettings.Settings.Contains(category))
             {
@@ -171,25 +227,41 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod(description: "Sets whether all General category keys are enabled by default")]
+        /// <summary>
+        /// Sets whether all General category keys are enabled by default.
+        /// </summary>
+        /// <param name="enabled">Whether the keys should be enabled by default.</param>
+        [CLMethod]
         public static void SetGeneralKeysEnabled(bool enabled)
         {
             SetCategoryKeysEnabled("General", enabled);
         }
 
-        [CLMethod(description: "Sets whether all Interaction category keys are enabled by default")]
+        /// <summary>
+        /// Sets whether all Interaction category keys are enabled by default.
+        /// </summary>
+        /// <param name="enabled">Whether the keys should be enabled by default.</param>
+        [CLMethod]
         public static void SetInteractionKeysEnabled(bool enabled)
         {
             SetCategoryKeysEnabled("Interaction", enabled);
         }
 
-        [CLMethod(description: "Sets whether all Titan category keys are enabled by default")]
+        /// <summary>
+        /// Sets whether all Titan category keys are enabled by default.
+        /// </summary>
+        /// <param name="enabled">Whether the keys should be enabled by default.</param>
+        [CLMethod]
         public static void SetTitanKeysEnabled(bool enabled)
         {
             SetCategoryKeysEnabled("Titan", enabled);
         }
 
-        [CLMethod(description: "Sets whether all Human category keys are enabled by default")]
+        /// <summary>
+        /// Sets whether all Human category keys are enabled by default.
+        /// </summary>
+        /// <param name="enabled">Whether the keys should be enabled by default.</param>
+        [CLMethod]
         public static void SetHumanKeysEnabled(bool enabled)
         {
             SetCategoryKeysEnabled("Human", enabled);

@@ -2,6 +2,7 @@
   "kind": "component",
   "name": "LodBuiltin",
   "description": "WIP feature to support LOD (Level of Detail) for map objects, currently only supports a single LOD level with a distance threshold.",
+  "deprecated": "",
   "instanceFields": [
     {
       "label": "DistanceThreshold",
@@ -11,7 +12,8 @@
       },
       "description": "Configures the distance threshold.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "DetailPriority",
@@ -21,7 +23,8 @@
       },
       "description": "Configures the distance threshold.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     }
   ],
   "instanceMethods": [],

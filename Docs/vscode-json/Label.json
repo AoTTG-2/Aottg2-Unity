@@ -1,10 +1,11 @@
 {
   "kind": "class",
   "name": "Label",
-  "description": "UI element for displaying text",
+  "description": "UI element for displaying text.",
   "extends": [
     "VisualElement"
   ],
+  "deprecated": "",
   "instanceFields": [
     {
       "label": "Text",
@@ -12,9 +13,10 @@
         "name": "string",
         "typeArguments": []
       },
-      "description": "The text displayed by the Label",
+      "description": "The text displayed by the Label.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "EnableRichText",
@@ -22,9 +24,10 @@
         "name": "bool",
         "typeArguments": []
       },
-      "description": "When false, rich text tags will not be parsed",
+      "description": "When false, rich text tags will not be parsed.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     }
   ],
   "instanceMethods": [],

@@ -12,31 +12,50 @@ namespace CustomLogic
     partial class CustomLogicCameraBuiltin : BuiltinClassInstance
     {
         [CLConstructor]
-        public CustomLogicCameraBuiltin()
-        {
-        }
+        public CustomLogicCameraBuiltin(){}
 
         public static InGameCamera CurrentCamera => (InGameCamera)SceneLoader.CurrentCamera;
 
-        [CLProperty(Description = "Is camera in manual mode.")]
+        /// <summary>
+        /// Is camera in manual mode.
+        /// </summary>
+        [CLProperty]
         public static bool IsManual => CustomLogicManager.ManualCamera;
 
-        [CLProperty(Description = "Position of the camera.")]
+        /// <summary>
+        /// Position of the camera.
+        /// </summary>
+        [CLProperty]
         public static CustomLogicVector3Builtin Position => new CustomLogicVector3Builtin(CurrentCamera.Cache.Transform.position);
 
-        [CLProperty(Description = "Rotation of the camera.")]
+        /// <summary>
+        /// Rotation of the camera.
+        /// </summary>
+        [CLProperty]
         public static CustomLogicVector3Builtin Rotation => new CustomLogicVector3Builtin(CurrentCamera.Cache.Transform.rotation.eulerAngles);
 
-        [CLProperty(Description = "Velocity of the camera.")]
+        /// <summary>
+        /// Velocity of the camera.
+        /// </summary>
+        [CLProperty]
         public static CustomLogicVector3Builtin Velocity => new CustomLogicVector3Builtin(CustomLogicManager.CameraVelocity);
 
-        [CLProperty(Description = "Field of view of the camera.")]
+        /// <summary>
+        /// Field of view of the camera.
+        /// </summary>
+        [CLProperty]
         public static float FOV => CustomLogicManager.CameraFOV;
 
-        [CLProperty(Description = "Current camera mode. TPS, Original, FPS.")]
+        /// <summary>
+        /// Current camera mode. TPS, Original, FPS.
+        /// </summary>
+        [CLProperty]
         public static string CameraMode => (CustomLogicManager.CameraMode ?? CurrentCamera.CurrentCameraMode).ToString();
 
-        [CLProperty(Description = "Forward vector of the camera.")]
+        /// <summary>
+        /// Forward vector of the camera.
+        /// </summary>
+        [CLProperty]
         public static CustomLogicVector3Builtin Forward
         {
             get => new CustomLogicVector3Builtin(CurrentCamera.Cache.Transform.forward);
@@ -47,7 +66,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(Description = "Right vector of the camera.")]
+        /// <summary>
+        /// Right vector of the camera.
+        /// </summary>
+        [CLProperty]
         public static CustomLogicVector3Builtin Right
         {
             get => new CustomLogicVector3Builtin(CurrentCamera.Cache.Transform.right);
@@ -58,7 +80,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(Description = "Up vector of the camera.")]
+        /// <summary>
+        /// Up vector of the camera.
+        /// </summary>
+        [CLProperty]
         public static CustomLogicVector3Builtin Up
         {
             get => new CustomLogicVector3Builtin(CurrentCamera.Cache.Transform.up);
@@ -69,7 +94,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(Description = "Distance from the camera to the character.")]
+        /// <summary>
+        /// Distance from the camera to the character.
+        /// </summary>
+        [CLProperty]
         public static float FollowDistance
         {
             get => CurrentCamera.GetCameraDistance();
@@ -77,8 +105,7 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// Sets the camera manual mode. 
-        /// If true, camera will only be controlled by custom logic. 
+        /// Sets the camera manual mode. If true, camera will only be controlled by custom logic.
         /// If false, camera will follow the spawned or spectated player and read input.
         /// </summary>
         /// <param name="manual">True to enable manual mode, false to disable.</param>
@@ -88,21 +115,33 @@ namespace CustomLogic
             CustomLogicManager.ManualCamera = manual;
         }
 
-        [CLMethod(Description = "Sets camera position.")]
+        /// <summary>
+        /// Sets camera position.
+        /// </summary>
+        /// <param name="position">The world position to set the camera to.</param>
+        [CLMethod]
         public static void SetPosition(CustomLogicVector3Builtin position)
         {
             CustomLogicManager.CameraPosition = position.Value;
             ((InGameCamera)SceneLoader.CurrentCamera).SyncCustomPosition();
         }
 
-        [CLMethod(Description = "Sets camera rotation.")]
+        /// <summary>
+        /// Sets camera rotation.
+        /// </summary>
+        /// <param name="rotation">The euler angles rotation to set the camera to.</param>
+        [CLMethod]
         public static void SetRotation(CustomLogicVector3Builtin rotation)
         {
             CustomLogicManager.CameraRotation = rotation.Value;
             ((InGameCamera)SceneLoader.CurrentCamera).SyncCustomPosition();
         }
 
-        [CLMethod(Description = "Sets camera velocity.")]
+        /// <summary>
+        /// Sets camera velocity.
+        /// </summary>
+        /// <param name="velocity">The velocity vector to set for the camera.</param>
+        [CLMethod]
         public static void SetVelocity(CustomLogicVector3Builtin velocity)
         {
             CustomLogicManager.CameraVelocity = velocity.Value;
@@ -111,7 +150,7 @@ namespace CustomLogic
         /// <summary>
         /// Sets the camera forward direction such that it is looking at a world position.
         /// </summary>
-        /// <param name="position">The world position to look at</param>
+        /// <param name="position">The world position to look at.</param>
         [CLMethod]
         public static void LookAt(CustomLogicVector3Builtin position)
         {
@@ -130,8 +169,7 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// Forces the player to use a certain camera mode, 
-        /// taking priority over their camera setting.
+        /// Forces the player to use a certain camera mode, taking priority over their camera setting.
         /// </summary>
         /// <param name="mode">The camera mode. Accepted values are TPS, Original, FPS.</param>
         [CLMethod]
@@ -143,10 +181,16 @@ namespace CustomLogic
                 CustomLogicManager.CameraMode = Enum.Parse<CameraInputMode>(mode);
         }
 
-        [CLMethod(Description = "Resets the follow distance to player's settings.")]
+        /// <summary>
+        /// Resets the follow distance to player's settings.
+        /// </summary>
+        [CLMethod]
         public static void ResetDistance() => CurrentCamera.ResetDistance();
 
-        [CLMethod(Description = "Resets the camera mode to player's settings.")]
+        /// <summary>
+        /// Resets the camera mode to player's settings.
+        /// </summary>
+        [CLMethod]
         public static void ResetCameraMode()
         {
             CustomLogicManager.CameraMode = null;
@@ -156,6 +200,7 @@ namespace CustomLogic
         /// <summary>
         /// Locks or unlocks the camera to prevent or allow camera movement.
         /// </summary>
+        /// <param name="locked">If true, locks the camera to prevent movement.</param>
         [CLMethod]
         public static void SetCameraLocked(bool locked)
         {
@@ -165,6 +210,7 @@ namespace CustomLogic
         /// <summary>
         /// Sets the visibility of the cursor.
         /// </summary>
+        /// <param name="visible">If true, makes the cursor visible.</param>
         [CLMethod]
         public static void SetCursorVisible(bool visible)
         {

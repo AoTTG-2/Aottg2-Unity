@@ -5,6 +5,7 @@
   "extends": [
     "Object"
   ],
+  "deprecated": "",
   "instanceFields": [],
   "instanceMethods": [],
   "staticFields": [],
@@ -23,22 +24,23 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the property.",
           "isOptional": false,
           "isVariadic": false
         },
         {
           "name": "value",
           "type": {
-            "name": "Object",
+            "name": "float|int|string|bool|null",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The value to set (must be float, string, bool, int, or null).",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "GetProperty",
@@ -54,7 +56,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the property.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -64,12 +66,13 @@
             "name": "Object",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The default value to return if the property does not exist.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "LoadFromFile",
@@ -85,7 +88,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the file to load from.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -95,12 +98,13 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "Whether the file is encrypted.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SaveToFile",
@@ -116,7 +120,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the file to save to.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -126,12 +130,13 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "Whether to encrypt the file.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Clear",
@@ -141,7 +146,8 @@
       },
       "description": "Clears current persistent data.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "IsValidFileName",
@@ -157,12 +163,13 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The file name to validate.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "FileExists",
@@ -178,12 +185,13 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The file name to check.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     }
   ],
   "constructors": []
