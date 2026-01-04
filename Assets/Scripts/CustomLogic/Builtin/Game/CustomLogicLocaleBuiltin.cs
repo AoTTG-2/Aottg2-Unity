@@ -5,6 +5,10 @@ using UI;
 
 namespace CustomLogic
 {
+    /// <summary>
+    /// Internationalization (Locale) utility for managing localized strings.
+    /// Supports single-level (non-recursive) language fallbacks and automatic UI language detection.
+    /// </summary>
     /// <code>
     /// # Register individual strings for different languages
     /// Locale.Set(LanguageEnum.English, "welcome", "Welcome to the game!");
@@ -89,7 +93,7 @@ namespace CustomLogic
     /// # Missing key throws an exception
     /// Game.Print("missing_key: " + Locale.Get("missing_key"));
     /// </code>
-    [CLType(Name = "Locale", Abstract = true, Static = true, Description = "Internationalization (Locale) utility for managing localized strings. Supports single-level (non-recursive) language fallbacks and automatic UI language detection.")]
+    [CLType(Name = "Locale", Abstract = true, Static = true)]
     partial class CustomLogicLocaleBuiltin : BuiltinClassInstance
     {
         private static readonly Dictionary<string, Dictionary<string, string>> _languages = new Dictionary<string, Dictionary<string, string>>();
@@ -103,16 +107,26 @@ namespace CustomLogic
             RegisterFallback(CustomLogicLanguageEnum.Chinese, CustomLogicLanguageEnum.TraditionalChinese);
         }
 
-        [CLProperty("Returns the current language (e.g. \"English\" or \"简体中文\").")]
+        /// <summary>
+        /// Returns the current language (e.g. "English" or "简体中文").
+        /// </summary>
+        [CLProperty]
         public static string CurrentLanguage => SettingsManager.GeneralSettings.Language.Value;
 
-        [CLProperty("The default language to use when a string is not found in the current language pack. English by default.", Enum = typeof(CustomLogicLanguageEnum))]
+        /// <summary>
+        /// The default language to use when a string is not found in the current language pack. English by default.
+        /// </summary>
+        [CLProperty(Enum = typeof(CustomLogicLanguageEnum))]
         public static string DefaultLanguage { get; set; }
 
-        [CLMethod("Get the localized string for the given key. Searches the current UI language, then any registered fallbacks, and finally the default language. Throws an exception if the key is not found in any language pack.")]
-        public static string Get(
-            [CLParam("The key of the localized string to get.")]
-            string key)
+        /// <summary>
+        /// Get the localized string for the given key. Searches the current UI language, then any registered fallbacks,
+        /// and finally the default language. Throws an exception if the key is not found in any language pack.
+        /// </summary>
+        /// <param name="key">The key of the localized string to get.</param>
+        /// <returns>The localized string.</returns>
+        [CLMethod]
+        public static string Get(string key)
         {
             var currentLang = SettingsManager.GeneralSettings.Language.Value;
 
@@ -123,13 +137,16 @@ namespace CustomLogic
             throw new Exception("Localized string not found: " + key);
         }
 
-        [CLMethod("Set or override a localized string for the specified language and key.")]
+        /// <summary>
+        /// Set or override a localized string for the specified language and key.
+        /// </summary>
+        /// <param name="language">The language code.</param>
+        /// <param name="key">The key of the localized string.</param>
+        /// <param name="value">The localized string value.</param>
+        [CLMethod]
         public static void Set(
-            [CLParam("The language code.", Enum = typeof(CustomLogicLanguageEnum))]
-            string language,
-            [CLParam("The key of the localized string.")]
+            [CLParam(Enum = typeof(CustomLogicLanguageEnum))] string language,
             string key,
-            [CLParam("The localized string value.")]
             string value)
         {
             if (!_languages.TryGetValue(language, out var languagePack))
@@ -141,12 +158,16 @@ namespace CustomLogic
             languagePack[key] = value;
         }
 
-        [CLMethod("Register a single-level (non-recursive) fallback: if a string is not found in 'fromLanguage', the system will search only in 'toLanguage', without chaining further.")]
+        /// <summary>
+        /// Register a single-level (non-recursive) fallback: if a string is not found in 'fromLanguage',
+        /// the system will search only in 'toLanguage', without chaining further.
+        /// </summary>
+        /// <param name="language">The language code to register.</param>
+        /// <param name="strings">The dictionary containing key-value pairs of localized strings.</param>
+        [CLMethod]
         public static void RegisterLanguage(
-            [CLParam("The language code to register.", Enum = typeof(CustomLogicLanguageEnum))]
-            string language,
-            [CLParam("The dictionary containing key-value pairs of localized strings.", Type = "Dict<string, string>")]
-            CustomLogicDictBuiltin strings)
+            [CLParam(Enum = typeof(CustomLogicLanguageEnum))] string language,
+            [CLParam(Type = "Dict<string, string>")] CustomLogicDictBuiltin strings)
         {
             var dictionary = new Dictionary<string, string>(strings.Count);
             foreach (var key in strings.Keys.List)
@@ -154,29 +175,37 @@ namespace CustomLogic
             _languages[language] = dictionary;
         }
 
-        [CLMethod("Register all localized strings from JSON files for a specific category across all available languages. Use 'internal://' prefix for internal files (e.g., 'internal://BasicTutorialMap') or no prefix for external files (e.g., 'MyCustomMod').")]
-        public static void RegisterLanguages(
-            [CLParam("The category pattern. Use 'internal://' prefix for internal files or no prefix for external files.")]
-            string pattern)
+        /// <summary>
+        /// Register all localized strings from JSON files for a specific category across all available languages.
+        /// Use 'internal://' prefix for internal files (e.g., 'internal://BasicTutorialMap') or no prefix for external files (e.g., 'MyCustomMod').
+        /// </summary>
+        /// <param name="pattern">The category pattern. Use 'internal://' prefix for internal files or no prefix for external files.</param>
+        [CLMethod]
+        public static void RegisterLanguages(string pattern)
         {
             foreach (var languagePair in UIManager.GetLocaleCategoryStrings(pattern))
                 _languages[languagePair.Key] = languagePair.Value;
         }
 
-        [CLMethod("Register a fallback language. When a string is not found in 'fromLanguage', it will try 'toLanguage'.")]
+        /// <summary>
+        /// Register a fallback language. When a string is not found in 'fromLanguage', it will try 'toLanguage'.
+        /// </summary>
+        /// <param name="fromLanguage">The language code that will fallback to another language.</param>
+        /// <param name="toLanguage">The language code to fallback to.</param>
+        [CLMethod]
         public static void RegisterFallback(
-            [CLParam("The language code that will fallback to another language.", Enum = typeof(CustomLogicLanguageEnum))]
-            string fromLanguage,
-            [CLParam("The language code to fallback to.", Enum = typeof(CustomLogicLanguageEnum))]
-            string toLanguage)
+            [CLParam(Enum = typeof(CustomLogicLanguageEnum))] string fromLanguage,
+            [CLParam(Enum = typeof(CustomLogicLanguageEnum))] string toLanguage)
         {
             _languageFallbacks[fromLanguage] = toLanguage;
         }
 
-        [CLMethod("Remove a language fallback.")]
-        public static void RemoveFallback(
-            [CLParam("The language code to remove the fallback for.", Enum = typeof(CustomLogicLanguageEnum))]
-            string fromLanguage)
+        /// <summary>
+        /// Remove a language fallback.
+        /// </summary>
+        /// <param name="fromLanguage">The language code to remove the fallback for.</param>
+        [CLMethod]
+        public static void RemoveFallback([CLParam(Enum = typeof(CustomLogicLanguageEnum))] string fromLanguage)
         {
             _languageFallbacks.Remove(fromLanguage);
         }

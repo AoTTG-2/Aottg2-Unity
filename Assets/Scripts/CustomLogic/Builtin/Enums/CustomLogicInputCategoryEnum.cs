@@ -1,21 +1,36 @@
 namespace CustomLogic
 {
-    [CLType(Name = "InputCategoryEnum", Static = true, Abstract = true, Description = "Enumeration of input categories for keybind settings.")]
+    /// <summary>
+    /// Enumeration of input categories for keybind settings.
+    /// </summary>
+    [CLType(Name = "InputCategoryEnum", Static = true, Abstract = true)]
     partial class CustomLogicInputCategoryEnum : BuiltinClassInstance
     {
         [CLConstructor]
         public CustomLogicInputCategoryEnum() { }
 
-        [CLProperty("General input category.")]
+        /// <summary>
+        /// General input category.
+        /// </summary>
+        [CLProperty]
         public static string General => "General";
 
-        [CLProperty("Human input category.")]
+        /// <summary>
+        /// Human input category.
+        /// </summary>
+        [CLProperty]
         public static string Human => "Human";
 
-        [CLProperty("Titan input category.")]
+        /// <summary>
+        /// Titan input category.
+        /// </summary>
+        [CLProperty]
         public static string Titan => "Titan";
 
-        [CLProperty("Interaction input category.")]
+        /// <summary>
+        /// Interaction input category.
+        /// </summary>
+        [CLProperty]
         public static string Interaction => "Interaction";
     }
 }

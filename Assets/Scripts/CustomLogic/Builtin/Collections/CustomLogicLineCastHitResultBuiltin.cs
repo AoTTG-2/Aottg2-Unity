@@ -1,9 +1,15 @@
 namespace CustomLogic
 {
-    [CLType(Name = "LineCastHitResult", Abstract = true, Description = "The result of a Physics.LineCast")]
+    /// <summary>
+    /// The result of a Physics.LineCast.
+    /// </summary>
+    [CLType(Name = "LineCastHitResult", Abstract = true)]
     partial class CustomLogicLineCastHitResultBuiltin : BuiltinClassInstance, ICustomLogicCopyable, ICustomLogicEquals
     {
-        [CLProperty("true if the linecast hit a character", ReadOnly = true)]
+        /// <summary>
+        /// true if the linecast hit a character.
+        /// </summary>
+        [CLProperty(ReadOnly = true)]
         public bool IsCharacter
         {
             get
@@ -20,22 +26,40 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("true if the linecast hit a map object", ReadOnly = true)]
+        /// <summary>
+        /// true if the linecast hit a map object.
+        /// </summary>
+        [CLProperty(ReadOnly = true)]
         public bool IsMapObject { get; set; }
 
-        [CLProperty("The distance to the hit point", ReadOnly = true)]
+        /// <summary>
+        /// The distance to the hit point.
+        /// </summary>
+        [CLProperty(ReadOnly = true)]
         public float Distance { get; set; }
 
-        [CLProperty("The point in world space where the linecast hit", ReadOnly = true)]
+        /// <summary>
+        /// The point in world space where the linecast hit.
+        /// </summary>
+        [CLProperty(ReadOnly = true)]
         public CustomLogicVector3Builtin Point { get; set; }
 
-        [CLProperty("The normal of the surface the linecast hit", ReadOnly = true)]
+        /// <summary>
+        /// The normal of the surface the linecast hit.
+        /// </summary>
+        [CLProperty(ReadOnly = true)]
         public CustomLogicVector3Builtin Normal { get; set; }
 
-        [CLProperty("The collider that was hit", ReadOnly = true)]
+        /// <summary>
+        /// The collider that was hit.
+        /// </summary>
+        [CLProperty(ReadOnly = true)]
         public BuiltinClassInstance Collider { get; set; }
 
-        [CLProperty("The collider that was hit", ReadOnly = true)]
+        /// <summary>
+        /// The collider that was hit.
+        /// </summary>
+        [CLProperty(ReadOnly = true)]
         public CustomLogicColliderBuiltin ColliderInfo { get; set; }
 
         public BuiltinClassInstance Copy()
@@ -52,13 +76,21 @@ namespace CustomLogic
             };
         }
 
-        [CLMethod("Creates a copy of this linecast hit result. Returns: A new LineCastHitResult with the same values.")]
+        /// <summary>
+        /// Creates a copy of this linecast hit result.
+        /// </summary>
+        /// <returns>A new LineCastHitResult with the same values.</returns>
+        [CLMethod]
         public object __Copy__()
         {
             return Copy();
         }
 
-        [CLMethod("Checks if two linecast hit results are equal. Returns: True if the hit results are equal, false otherwise.")]
+        /// <summary>
+        /// Checks if two linecast hit results are equal.
+        /// </summary>
+        /// <returns>True if the hit results are equal, false otherwise.</returns>
+        [CLMethod]
         public bool __Eq__(object self, object other)
         {
             return (self, other) switch
@@ -70,7 +102,11 @@ namespace CustomLogic
             };
         }
 
-        [CLMethod("Gets the hash code of the linecast hit result. Returns: The hash code.")]
+        /// <summary>
+        /// Gets the hash code of the linecast hit result.
+        /// </summary>
+        /// <returns>The hash code.</returns>
+        [CLMethod]
         public int __Hash__()
         {
             return Point.__Hash__() ^

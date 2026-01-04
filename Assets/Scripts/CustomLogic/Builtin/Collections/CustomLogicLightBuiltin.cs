@@ -3,14 +3,20 @@ using UnityEngine;
 
 namespace CustomLogic
 {
-    [CLType(Name = "LightBuiltin", Static = true, Abstract = true, Description = "Represents a Light component that can be directional, point, or spot light with configurable properties.")]
+    /// <summary>
+    /// Represents a Light component that can be directional, point, or spot light with configurable properties.
+    /// </summary>
+    [CLType(Name = "LightBuiltin", Static = true, Abstract = true)]
     partial class CustomLogicLightBuiltin : BuiltinComponentInstance
     {
         public Light Value;
         public CustomLogicMapObjectBuiltin OwnerMapObject;
         public GameObject Owner;
 
-        [CLConstructor("Creates an empty light instance.")]
+        /// <summary>
+        /// Creates an empty light instance.
+        /// </summary>
+        [CLConstructor]
         public CustomLogicLightBuiltin() : base(null) { }
 
         public CustomLogicLightBuiltin(CustomLogicMapObjectBuiltin owner, LightType type) : base(GetOrAddComponent<Light>(owner.Value.GameObject))
@@ -26,84 +32,128 @@ namespace CustomLogic
             MapLoader.RegisterMapLight(Value, type == LightType.Directional);
         }
 
-        [CLProperty(Description = "LightType.Directional")]
+        /// <summary>
+        /// LightType.Directional.
+        /// </summary>
+        [CLProperty]
         public static int LightTypeDirectional => (int)LightType.Directional;
 
-        [CLProperty(Description = "LightType.Point")]
+        /// <summary>
+        /// LightType.Point.
+        /// </summary>
+        [CLProperty]
         public static int LightTypePoint => (int)LightType.Point;
 
-        [CLProperty(Description = "LightType.Point")]
+        /// <summary>
+        /// LightType.Spot.
+        /// </summary>
+        [CLProperty]
         public static int LightTypeSpot => (int)LightType.Spot;
 
-        [CLProperty(Description = "LightShadows.None")]
+        /// <summary>
+        /// LightShadows.None.
+        /// </summary>
+        [CLProperty]
         public static int ShadowTypeNone => (int)LightShadows.None;
 
-        [CLProperty(Description = "LightShadows.Hard")]
+        /// <summary>
+        /// LightShadows.Hard.
+        /// </summary>
+        [CLProperty]
         public static int ShadowTypeHard => (int)LightShadows.Hard;
 
-        [CLProperty(Description = "LightShadows.Soft")]
+        /// <summary>
+        /// LightShadows.Soft.
+        /// </summary>
+        [CLProperty]
         public static int ShadowTypeSoft => (int)LightShadows.Soft;
 
-        [CLProperty(Description = "The type of the light.")]
+        /// <summary>
+        /// The type of the light.
+        /// </summary>
+        [CLProperty]
         public int TypeOfLight
         {
             get => (int)Value.type;
             set => Value.type = (LightType)value;
         }
 
-        [CLProperty(Description = "The range of the light.")]
+        /// <summary>
+        /// The range of the light.
+        /// </summary>
+        [CLProperty]
         public float Range
         {
             get => Value.range;
             set => Value.range = value;
         }
 
-        [CLProperty(Description = "The spot angle of the light, works on spot lights only.")]
+        /// <summary>
+        /// The spot angle of the light, works on spot lights only.
+        /// </summary>
+        [CLProperty]
         public float SpotAngle
         {
             get => Value.spotAngle;
             set => Value.spotAngle = value;
         }
 
-        [CLProperty(Description = "The color of the light.")]
+        /// <summary>
+        /// The color of the light.
+        /// </summary>
+        [CLProperty]
         public CustomLogicColorBuiltin Color
         {
             get => new CustomLogicColorBuiltin(Value.color);
             set => Value.color = value.Value.ToColor();
         }
 
-        [CLProperty(Description = "The intensity of the light.")]
+        /// <summary>
+        /// The intensity of the light.
+        /// </summary>
+        [CLProperty]
         public float Intensity
         {
             get => Value.intensity;
             set => Value.intensity = value;
         }
 
-        // Bounce Intensity
-        [CLProperty(Description = "The bounce intensity of the light.")]
+        /// <summary>
+        /// The bounce intensity of the light.
+        /// </summary>
+        [CLProperty]
         public float BounceIntensity
         {
             get => Value.bounceIntensity;
             set => Value.bounceIntensity = value;
         }
 
-        [CLProperty(Description = "The shadow type of the light (Soft, None, Hard).")]
+        /// <summary>
+        /// The shadow type of the light (Soft, None, Hard).
+        /// </summary>
+        [CLProperty]
         public int ShadowType
         {
             get => (int)Value.shadows;
             set => Value.shadows = (LightShadows)value;
         }
 
-        [CLProperty(Description = "The shadow strength of the light.")]
+        /// <summary>
+        /// The shadow strength of the light.
+        /// </summary>
+        [CLProperty]
         public float ShadowStrength
         {
             get => Value.shadowStrength;
             set => Value.shadowStrength = value;
         }
 
-        // Weather controlled prop
         private bool _weatherControlled = false;
-        [CLProperty(Description = "The light is controlled by the weather system.")]
+
+        /// <summary>
+        /// The light is controlled by the weather system.
+        /// </summary>
+        [CLProperty]
         public bool WeatherControlled
         {
             get => _weatherControlled;

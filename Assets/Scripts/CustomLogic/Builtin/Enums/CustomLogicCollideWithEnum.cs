@@ -2,37 +2,67 @@ using Map;
 
 namespace CustomLogic
 {
-    [CLType(Name = "CollideWithEnum", Static = true, Abstract = true, Description = "Enumeration of collision layers for physics queries and colliders.")]
+    /// <summary>
+    /// Enumeration of collision layers for physics queries and colliders.
+    /// </summary>
+    [CLType(Name = "CollideWithEnum", Static = true, Abstract = true)]
     partial class CustomLogicCollideWithEnum : BuiltinClassInstance
     {
         [CLConstructor]
         public CustomLogicCollideWithEnum() { }
 
-        [CLProperty("Collide with all layers.")]
+        /// <summary>
+        /// Collide with all layers.
+        /// </summary>
+        [CLProperty]
         public static string All => MapObjectCollideWith.All;
 
-        [CLProperty("Collide with map objects.")]
+        /// <summary>
+        /// Collide with map objects.
+        /// </summary>
+        [CLProperty]
         public static string MapObjects => MapObjectCollideWith.MapObjects;
 
-        [CLProperty("Collide with characters.")]
+        /// <summary>
+        /// Collide with characters.
+        /// </summary>
+        [CLProperty]
         public static string Characters => MapObjectCollideWith.Characters;
 
-        [CLProperty("Collide with titans.")]
+        /// <summary>
+        /// Collide with titans.
+        /// </summary>
+        [CLProperty]
         public static string Titans => MapObjectCollideWith.Titans;
 
-        [CLProperty("Collide with humans.")]
+        /// <summary>
+        /// Collide with humans.
+        /// </summary>
+        [CLProperty]
         public static string Humans => MapObjectCollideWith.Humans;
 
-        [CLProperty("Collide with projectiles.")]
+        /// <summary>
+        /// Collide with projectiles.
+        /// </summary>
+        [CLProperty]
         public static string Projectiles => MapObjectCollideWith.Projectiles;
 
-        [CLProperty("Collide with entities.")]
+        /// <summary>
+        /// Collide with entities.
+        /// </summary>
+        [CLProperty]
         public static string Entities => MapObjectCollideWith.Entities;
 
-        [CLProperty("Collide with hitboxes.")]
+        /// <summary>
+        /// Collide with hitboxes.
+        /// </summary>
+        [CLProperty]
         public static string Hitboxes => MapObjectCollideWith.Hitboxes;
 
-        [CLProperty("Collide with map editor objects.")]
+        /// <summary>
+        /// Collide with map editor objects.
+        /// </summary>
+        [CLProperty]
         public static string MapEditor => MapObjectCollideWith.MapEditor;
     }
 }

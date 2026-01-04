@@ -1,18 +1,30 @@
 namespace CustomLogic
 {
-    [CLType(Name = "SteamStateEnum", Static = true, Abstract = true, Description = "Enumeration of steam states for WallColossal shifter.")]
+    /// <summary>
+    /// Enumeration of steam states for WallColossal shifter.
+    /// </summary>
+    [CLType(Name = "SteamStateEnum", Static = true, Abstract = true)]
     partial class CustomLogicSteamStateEnum : BuiltinClassInstance
     {
         [CLConstructor]
         public CustomLogicSteamStateEnum() { }
 
-        [CLProperty("Steam is off.")]
+        /// <summary>
+        /// Steam is off.
+        /// </summary>
+        [CLProperty]
         public static string Off => "Off";
 
-        [CLProperty("Steam warning state.")]
+        /// <summary>
+        /// Steam warning state.
+        /// </summary>
+        [CLProperty]
         public static string Warning => "Warning";
 
-        [CLProperty("Steam damage state.")]
+        /// <summary>
+        /// Steam damage state.
+        /// </summary>
+        [CLProperty]
         public static string Damage => "Damage";
     }
 }

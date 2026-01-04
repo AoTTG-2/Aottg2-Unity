@@ -171,7 +171,7 @@ namespace CustomLogic.Editor
 
             return parameters.Select(p =>
             {
-                var description = NormalizeDescription(p.Info?.Summary);
+                var description = NormalizeDescription(p.Description);
                 if (!string.IsNullOrEmpty(p.EnumName))
                 {
                     if (!string.IsNullOrEmpty(description))

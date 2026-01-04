@@ -13,43 +13,55 @@ namespace CustomLogic
         }
 
         // Convert the above to CLMethod
-        [CLMethod(Static = true, Description = "Start a cutscene")]
+        /// <summary>
+        /// Start a cutscene.
+        /// </summary>
+        /// <param name="name">The name of the cutscene class to start.</param>
+        /// <param name="full">If true, enables full cutscene mode.</param>
+        [CLMethod(Static = true)]
         public void Start(
-            [CLParam("The name of the cutscene class to start.")]
             string name,
-            [CLParam("If true, enables full cutscene mode.")]
             bool full)
         {
             CustomLogicManager._instance.StartCoroutine(StartCutscene(name, full));
         }
 
-        [CLMethod(Static = true, Description = "Show a dialogue box")]
+        /// <summary>
+        /// Show a dialogue box.
+        /// </summary>
+        /// <param name="icon">The icon name to display.</param>
+        /// <param name="title">The title of the dialogue.</param>
+        /// <param name="content">The content text of the dialogue.</param>
+        [CLMethod(Static = true)]
         public void ShowDialogue(
-            [CLParam("The icon name to display.")]
             string icon,
-            [CLParam("The title of the dialogue.")]
             string title,
-            [CLParam("The content text of the dialogue.")]
             string content)
         {
             ((InGameMenu)UIManager.CurrentMenu).ShowCutsceneMenu(icon, title, content, CustomLogicManager.Cutscene);
         }
 
-        [CLMethod(Static = true, Description = "Show a dialogue box for a certain amount of time")]
+        /// <summary>
+        /// Show a dialogue box for a certain amount of time.
+        /// </summary>
+        /// <param name="icon">The icon name to display.</param>
+        /// <param name="title">The title of the dialogue.</param>
+        /// <param name="content">The content text of the dialogue.</param>
+        /// <param name="time">The duration in seconds to show the dialogue.</param>
+        [CLMethod(Static = true)]
         public void ShowDialogueForTime(
-            [CLParam("The icon name to display.")]
             string icon,
-            [CLParam("The title of the dialogue.")]
             string title,
-            [CLParam("The content text of the dialogue.")]
             string content,
-            [CLParam("The duration in seconds to show the dialogue.")]
             float time)
         {
             CustomLogicManager._instance.StartCoroutine(routine_ShowDialogueForTime(icon, title, content, time));
         }
 
-        [CLMethod(Static = true, Description = "Hide the dialogue box")]
+        /// <summary>
+        /// Hide the dialogue box.
+        /// </summary>
+        [CLMethod(Static = true)]
         public void HideDialogue()
         {
             ((InGameMenu)UIManager.CurrentMenu).HideCutsceneMenu();

@@ -20,10 +20,9 @@ namespace CustomLogic
         /// </summary>
         public Type Enum { get; set; }
 
-        public CLPropertyAttribute(string description = "", bool readOnly = false)
+        public CLPropertyAttribute(bool readOnly = false)
         {
             ReadOnly = readOnly;
-            Description = description;
         }
     }
 }

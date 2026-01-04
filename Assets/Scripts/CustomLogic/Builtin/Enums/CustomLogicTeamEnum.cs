@@ -1,24 +1,42 @@
 namespace CustomLogic
 {
-    [CLType(Name = "TeamEnum", Static = true, Abstract = true, Description = "Enumeration of team types for characters and players.")]
+    /// <summary>
+    /// Enumeration of team types for characters and players.
+    /// </summary>
+    [CLType(Name = "TeamEnum", Static = true, Abstract = true)]
     partial class CustomLogicTeamEnum : BuiltinClassInstance
     {
         [CLConstructor]
         public CustomLogicTeamEnum() { }
 
-        [CLProperty("No team assigned.")]
+        /// <summary>
+        /// No team assigned.
+        /// </summary>
+        [CLProperty]
         public static string None => "None";
 
-        [CLProperty("Blue team.")]
+        /// <summary>
+        /// Blue team.
+        /// </summary>
+        [CLProperty]
         public static string Blue => "Blue";
 
-        [CLProperty("Red team.")]
+        /// <summary>
+        /// Red team.
+        /// </summary>
+        [CLProperty]
         public static string Red => "Red";
 
-        [CLProperty("Titan team.")]
+        /// <summary>
+        /// Titan team.
+        /// </summary>
+        [CLProperty]
         public static string Titan => "Titan";
 
-        [CLProperty("Human team.")]
+        /// <summary>
+        /// Human team.
+        /// </summary>
+        [CLProperty]
         public static string Human => "Human";
     }
 }

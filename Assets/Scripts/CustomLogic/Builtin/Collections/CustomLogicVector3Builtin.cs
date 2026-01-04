@@ -4,43 +4,52 @@ using Utility;
 
 namespace CustomLogic
 {
+    /// <summary>
+    /// Represents a 3D vector with X, Y, and Z components. Supports mathematical operations and implements copy semantics.
+    /// </summary>
     [CLType(Name = "Vector3", Static = true)]
     partial class CustomLogicVector3Builtin : BuiltinClassInstance, ICustomLogicMathOperators, ICustomLogicEquals, ICustomLogicCopyable
     {
         public Vector3 Value;
 
-        [CLConstructor("Default constructor, Initializes the Vector3 to (0, 0, 0).")]
+        /// <summary>
+        /// Default constructor, Initializes the Vector3 to (0, 0, 0).
+        /// </summary>
+        [CLConstructor]
         public CustomLogicVector3Builtin()
         {
             Value = new Vector3();
         }
 
-        [CLConstructor("Initializes the Vector3 to (xyz, xyz, xyz).")]
-        public CustomLogicVector3Builtin(
-            [CLParam("The value for X, Y, and Z components.")]
-            float xyz)
+        /// <summary>
+        /// Initializes the Vector3 to (xyz, xyz, xyz).
+        /// </summary>
+        /// <param name="xyz">The value for X, Y, and Z components.</param>
+        [CLConstructor]
+        public CustomLogicVector3Builtin(float xyz)
         {
             Value = new Vector3(xyz, xyz, xyz);
         }
 
-        [CLConstructor("Initializes the Vector3 to (x, y, 0).")]
-        public CustomLogicVector3Builtin(
-            [CLParam("The X component.")]
-            float x,
-            [CLParam("The Y component.")]
-            float y)
+        /// <summary>
+        /// Initializes the Vector3 to (x, y, 0).
+        /// </summary>
+        /// <param name="x">The X component.</param>
+        /// <param name="y">The Y component.</param>
+        [CLConstructor]
+        public CustomLogicVector3Builtin(float x, float y)
         {
             Value = new Vector3(x, y, 0);
         }
 
-        [CLConstructor("Initializes the Vector3 to (x, y, z).")]
-        public CustomLogicVector3Builtin(
-            [CLParam("The X component.")]
-            float x,
-            [CLParam("The Y component.")]
-            float y,
-            [CLParam("The Z component.")]
-            float z)
+        /// <summary>
+        /// Initializes the Vector3 to (x, y, z).
+        /// </summary>
+        /// <param name="x">The X component.</param>
+        /// <param name="y">The Y component.</param>
+        /// <param name="z">The Z component.</param>
+        [CLConstructor]
+        public CustomLogicVector3Builtin(float x, float y, float z)
         {
             Value = new Vector3(x, y, z);
         }
@@ -50,260 +59,321 @@ namespace CustomLogic
             Value = value;
         }
 
-        [CLProperty("The X component of the vector.")]
+        /// <summary>
+        /// The X component of the vector.
+        /// </summary>
+        [CLProperty]
         public float X
         {
             get => Value.x;
             set => Value.x = value;
         }
 
-        [CLProperty("The Y component of the vector.")]
+        /// <summary>
+        /// The Y component of the vector.
+        /// </summary>
+        [CLProperty]
         public float Y
         {
             get => Value.y;
             set => Value.y = value;
         }
 
-        [CLProperty("The Z component of the vector.")]
+        /// <summary>
+        /// The Z component of the vector.
+        /// </summary>
+        [CLProperty]
         public float Z
         {
             get => Value.z;
             set => Value.z = value;
         }
 
-        [CLProperty("Returns a normalized copy of this vector (magnitude of 1).")]
+        /// <summary>
+        /// Returns a normalized copy of this vector (magnitude of 1).
+        /// </summary>
+        [CLProperty]
         public CustomLogicVector3Builtin Normalized => Value.normalized;
 
-        [CLProperty("Returns the length of this vector.")]
+        /// <summary>
+        /// Returns the length of this vector.
+        /// </summary>
+        [CLProperty]
         public float Magnitude => Value.magnitude;
 
-        [CLProperty("Returns the squared length of this vector (faster than Magnitude).")]
+        /// <summary>
+        /// Returns the squared length of this vector (faster than Magnitude).
+        /// </summary>
+        [CLProperty]
         public float SqrMagnitude => Value.sqrMagnitude;
 
-        [CLProperty("Shorthand for writing Vector3(0, 0, 0).")]
+        /// <summary>
+        /// Shorthand for writing Vector3(0, 0, 0).
+        /// </summary>
+        [CLProperty]
         public static CustomLogicVector3Builtin Zero => Vector3.zero;
 
-        [CLProperty("Shorthand for writing Vector3(1, 1, 1).")]
+        /// <summary>
+        /// Shorthand for writing Vector3(1, 1, 1).
+        /// </summary>
+        [CLProperty]
         public static CustomLogicVector3Builtin One => Vector3.one;
 
-        [CLProperty("Shorthand for writing Vector3(0, 1, 0).")]
+        /// <summary>
+        /// Shorthand for writing Vector3(0, 1, 0).
+        /// </summary>
+        [CLProperty]
         public static CustomLogicVector3Builtin Up => Vector3.up;
 
-        [CLProperty("Shorthand for writing Vector3(0, -1, 0).")]
+        /// <summary>
+        /// Shorthand for writing Vector3(0, -1, 0).
+        /// </summary>
+        [CLProperty]
         public static CustomLogicVector3Builtin Down => Vector3.down;
 
-        [CLProperty("Shorthand for writing Vector3(-1, 0, 0).")]
+        /// <summary>
+        /// Shorthand for writing Vector3(-1, 0, 0).
+        /// </summary>
+        [CLProperty]
         public static CustomLogicVector3Builtin Left => Vector3.left;
 
-        [CLProperty("Shorthand for writing Vector3(1, 0, 0).")]
+        /// <summary>
+        /// Shorthand for writing Vector3(1, 0, 0).
+        /// </summary>
+        [CLProperty]
         public static CustomLogicVector3Builtin Right => Vector3.right;
 
-        [CLProperty("Shorthand for writing Vector3(0, 0, 1).")]
+        /// <summary>
+        /// Shorthand for writing Vector3(0, 0, 1).
+        /// </summary>
+        [CLProperty]
         public static CustomLogicVector3Builtin Forward => Vector3.forward;
 
-        [CLProperty("Shorthand for writing Vector3(0, 0, -1).")]
+        /// <summary>
+        /// Shorthand for writing Vector3(0, 0, -1).
+        /// </summary>
+        [CLProperty]
         public static CustomLogicVector3Builtin Back => Vector3.back;
 
-        [CLProperty("Shorthand for writing Vector3(float.NegativeInfinity, float.NegativeInfinity, float.NegativeInfinity).")]
+        /// <summary>
+        /// Shorthand for writing Vector3(float.NegativeInfinity, float.NegativeInfinity, float.NegativeInfinity).
+        /// </summary>
+        [CLProperty]
         public static CustomLogicVector3Builtin NegativeInfinity => Vector3.negativeInfinity;
 
-        [CLProperty("Shorthand for writing Vector3(float.PositiveInfinity, float.PositiveInfinity, float.PositiveInfinity).")]
+        /// <summary>
+        /// Shorthand for writing Vector3(float.PositiveInfinity, float.PositiveInfinity, float.PositiveInfinity).
+        /// </summary>
+        [CLProperty]
         public static CustomLogicVector3Builtin PositiveInfinity => Vector3.positiveInfinity;
 
-        [CLMethod("Calculates the angle between two vectors.")]
-        public static float Angle(
-            [CLParam("The vector from which the angular difference is measured.")]
-            CustomLogicVector3Builtin from,
-            [CLParam("The vector to which the angular difference is measured.")]
-            CustomLogicVector3Builtin to)
+        /// <summary>
+        /// Calculates the angle between two vectors.
+        /// </summary>
+        /// <param name="from">The vector from which the angular difference is measured.</param>
+        /// <param name="to">The vector to which the angular difference is measured.</param>
+        [CLMethod]
+        public static float Angle(CustomLogicVector3Builtin from, CustomLogicVector3Builtin to)
             => Vector3.Angle(from.Value, to.Value);
 
-        [CLMethod("Clamps the magnitude of a vector to a maximum value.")]
-        public static CustomLogicVector3Builtin ClampMagnitude(
-            [CLParam("The vector to clamp.")]
-            CustomLogicVector3Builtin vector,
-            [CLParam("The maximum length of the vector.")]
-            float maxLength)
+        /// <summary>
+        /// Clamps the magnitude of a vector to a maximum value.
+        /// </summary>
+        /// <param name="vector">The vector to clamp.</param>
+        /// <param name="maxLength">The maximum length of the vector.</param>
+        [CLMethod]
+        public static CustomLogicVector3Builtin ClampMagnitude(CustomLogicVector3Builtin vector, float maxLength)
             => Vector3.ClampMagnitude(vector, maxLength);
 
-        [CLMethod("Calculates the cross product of two vectors.")]
-        public static CustomLogicVector3Builtin Cross(
-            [CLParam("The first vector.")]
-            CustomLogicVector3Builtin a,
-            [CLParam("The second vector.")]
-            CustomLogicVector3Builtin b)
+        /// <summary>
+        /// Calculates the cross product of two vectors.
+        /// </summary>
+        /// <param name="a">The first vector.</param>
+        /// <param name="b">The second vector.</param>
+        [CLMethod]
+        public static CustomLogicVector3Builtin Cross(CustomLogicVector3Builtin a, CustomLogicVector3Builtin b)
             => Vector3.Cross(a, b);
 
-        [CLMethod("Calculates the distance between two points.")]
-        public static float Distance(
-            [CLParam("The first point.")]
-            CustomLogicVector3Builtin a,
-            [CLParam("The second point.")]
-            CustomLogicVector3Builtin b)
+        /// <summary>
+        /// Calculates the distance between two points.
+        /// </summary>
+        /// <param name="a">The first point.</param>
+        /// <param name="b">The second point.</param>
+        [CLMethod]
+        public static float Distance(CustomLogicVector3Builtin a, CustomLogicVector3Builtin b)
             => Vector3.Distance(a, b);
 
-        [CLMethod("Calculates the dot product of two vectors.")]
-        public static float Dot(
-            [CLParam("The first vector.")]
-            CustomLogicVector3Builtin a,
-            [CLParam("The second vector.")]
-            CustomLogicVector3Builtin b)
+        /// <summary>
+        /// Calculates the dot product of two vectors.
+        /// </summary>
+        /// <param name="a">The first vector.</param>
+        /// <param name="b">The second vector.</param>
+        [CLMethod]
+        public static float Dot(CustomLogicVector3Builtin a, CustomLogicVector3Builtin b)
             => Vector3.Dot(a, b);
 
-        [CLMethod("Linearly interpolates between two vectors.")]
-        public static CustomLogicVector3Builtin Lerp(
-            [CLParam("The start value.")]
-            CustomLogicVector3Builtin a,
-            [CLParam("The end value.")]
-            CustomLogicVector3Builtin b,
-            [CLParam("The interpolation factor (clamped between 0 and 1).")]
-            float t)
+        /// <summary>
+        /// Linearly interpolates between two vectors.
+        /// </summary>
+        /// <param name="a">The start value.</param>
+        /// <param name="b">The end value.</param>
+        /// <param name="t">The interpolation factor (clamped between 0 and 1).</param>
+        [CLMethod]
+        public static CustomLogicVector3Builtin Lerp(CustomLogicVector3Builtin a, CustomLogicVector3Builtin b, float t)
             => Vector3.Lerp(a, b, t);
 
-        [CLMethod("Linearly interpolates between two vectors without clamping.")]
-        public static CustomLogicVector3Builtin LerpUnclamped(
-            [CLParam("The start value.")]
-            CustomLogicVector3Builtin a,
-            [CLParam("The end value.")]
-            CustomLogicVector3Builtin b,
-            [CLParam("The interpolation factor (not clamped).")]
-            float t)
+        /// <summary>
+        /// Linearly interpolates between two vectors without clamping.
+        /// </summary>
+        /// <param name="a">The start value.</param>
+        /// <param name="b">The end value.</param>
+        /// <param name="t">The interpolation factor (not clamped).</param>
+        [CLMethod]
+        public static CustomLogicVector3Builtin LerpUnclamped(CustomLogicVector3Builtin a, CustomLogicVector3Builtin b, float t)
             => Vector3.LerpUnclamped(a, b, t);
 
-        [CLMethod("Returns a vector that is made from the largest components of two vectors.")]
-        public static CustomLogicVector3Builtin Max(
-            [CLParam("The first vector.")]
-            CustomLogicVector3Builtin a,
-            [CLParam("The second vector.")]
-            CustomLogicVector3Builtin b)
+        /// <summary>
+        /// Returns a vector that is made from the largest components of two vectors.
+        /// </summary>
+        /// <param name="a">The first vector.</param>
+        /// <param name="b">The second vector.</param>
+        [CLMethod]
+        public static CustomLogicVector3Builtin Max(CustomLogicVector3Builtin a, CustomLogicVector3Builtin b)
             => Vector3.Max(a, b);
 
-        [CLMethod("Returns a vector that is made from the smallest components of two vectors.")]
-        public static CustomLogicVector3Builtin Min(
-            [CLParam("The first vector.")]
-            CustomLogicVector3Builtin a,
-            [CLParam("The second vector.")]
-            CustomLogicVector3Builtin b)
+        /// <summary>
+        /// Returns a vector that is made from the smallest components of two vectors.
+        /// </summary>
+        /// <param name="a">The first vector.</param>
+        /// <param name="b">The second vector.</param>
+        [CLMethod]
+        public static CustomLogicVector3Builtin Min(CustomLogicVector3Builtin a, CustomLogicVector3Builtin b)
             => Vector3.Min(a, b);
 
-        [CLMethod("Moves a point towards a target position.")]
-        public static CustomLogicVector3Builtin MoveTowards(
-            [CLParam("The current position.")]
-            CustomLogicVector3Builtin current,
-            [CLParam("The target position.")]
-            CustomLogicVector3Builtin target,
-            [CLParam("The maximum distance to move.")]
-            float maxDistanceDelta)
+        /// <summary>
+        /// Moves a point towards a target position.
+        /// </summary>
+        /// <param name="current">The current position.</param>
+        /// <param name="target">The target position.</param>
+        /// <param name="maxDistanceDelta">The maximum distance to move.</param>
+        [CLMethod]
+        public static CustomLogicVector3Builtin MoveTowards(CustomLogicVector3Builtin current, CustomLogicVector3Builtin target, float maxDistanceDelta)
             => Vector3.MoveTowards(current, target, maxDistanceDelta);
 
-        [CLMethod("Returns a normalized copy of the vector.")]
-        public static CustomLogicVector3Builtin Normalize(
-            [CLParam("The vector to normalize.")]
-            CustomLogicVector3Builtin value)
+        /// <summary>
+        /// Returns a normalized copy of the vector.
+        /// </summary>
+        /// <param name="value">The vector to normalize.</param>
+        [CLMethod]
+        public static CustomLogicVector3Builtin Normalize(CustomLogicVector3Builtin value)
             => Vector3.Normalize(value);
 
-        [CLMethod("Orthonormalizes two vectors (normalizes the normal vector and makes the tangent vector orthogonal to it).")]
-        public static void OrthoNormalize(
-            [CLParam("The normal vector (will be normalized).")]
-            CustomLogicVector3Builtin normal,
-            [CLParam("The tangent vector (will be normalized and made orthogonal to normal).")]
-            CustomLogicVector3Builtin tangent)
+        /// <summary>
+        /// Orthonormalizes two vectors (normalizes the normal vector and makes the tangent vector orthogonal to it).
+        /// </summary>
+        /// <param name="normal">The normal vector (will be normalized).</param>
+        /// <param name="tangent">The tangent vector (will be normalized and made orthogonal to normal).</param>
+        [CLMethod]
+        public static void OrthoNormalize(CustomLogicVector3Builtin normal, CustomLogicVector3Builtin tangent)
             => Vector3.OrthoNormalize(ref normal.Value, ref tangent.Value);
 
-        [CLMethod("Projects a vector onto another vector.")]
-        public static CustomLogicVector3Builtin Project(
-            [CLParam("The vector to project.")]
-            CustomLogicVector3Builtin a,
-            [CLParam("The vector to project onto.")]
-            CustomLogicVector3Builtin b)
+        /// <summary>
+        /// Projects a vector onto another vector.
+        /// </summary>
+        /// <param name="a">The vector to project.</param>
+        /// <param name="b">The vector to project onto.</param>
+        [CLMethod]
+        public static CustomLogicVector3Builtin Project(CustomLogicVector3Builtin a, CustomLogicVector3Builtin b)
             => Vector3.Project(a, b);
 
-        [CLMethod("Projects a vector onto a plane defined by a normal vector.")]
-        public static CustomLogicVector3Builtin ProjectOnPlane(
-            [CLParam("The vector to project.")]
-            CustomLogicVector3Builtin vector,
-            [CLParam("The plane normal vector.")]
-            CustomLogicVector3Builtin plane)
+        /// <summary>
+        /// Projects a vector onto a plane defined by a normal vector.
+        /// </summary>
+        /// <param name="vector">The vector to project.</param>
+        /// <param name="plane">The plane normal vector.</param>
+        [CLMethod]
+        public static CustomLogicVector3Builtin ProjectOnPlane(CustomLogicVector3Builtin vector, CustomLogicVector3Builtin plane)
             => Vector3.ProjectOnPlane(vector, plane);
 
-        [CLMethod("Reflects a vector off a plane defined by a normal vector.")]
-        public static CustomLogicVector3Builtin Reflect(
-            [CLParam("The incoming direction vector.")]
-            CustomLogicVector3Builtin inDirection,
-            [CLParam("The normal vector of the surface.")]
-            CustomLogicVector3Builtin inNormal)
+        /// <summary>
+        /// Reflects a vector off a plane defined by a normal vector.
+        /// </summary>
+        /// <param name="inDirection">The incoming direction vector.</param>
+        /// <param name="inNormal">The normal vector of the surface.</param>
+        [CLMethod]
+        public static CustomLogicVector3Builtin Reflect(CustomLogicVector3Builtin inDirection, CustomLogicVector3Builtin inNormal)
             => Vector3.Reflect(inDirection, inNormal);
 
-        [CLMethod("Rotates a vector towards a target vector.")]
-        public static CustomLogicVector3Builtin RotateTowards(
-            [CLParam("The current direction vector.")]
-            CustomLogicVector3Builtin current,
-            [CLParam("The target direction vector.")]
-            CustomLogicVector3Builtin target,
-            [CLParam("The maximum change in radians.")]
-            float maxRadiansDelta,
-            [CLParam("The maximum change in magnitude.")]
-            float maxMagnitudeDelta)
+        /// <summary>
+        /// Rotates a vector towards a target vector.
+        /// </summary>
+        /// <param name="current">The current direction vector.</param>
+        /// <param name="target">The target direction vector.</param>
+        /// <param name="maxRadiansDelta">The maximum change in radians.</param>
+        /// <param name="maxMagnitudeDelta">The maximum change in magnitude.</param>
+        [CLMethod]
+        public static CustomLogicVector3Builtin RotateTowards(CustomLogicVector3Builtin current, CustomLogicVector3Builtin target, float maxRadiansDelta, float maxMagnitudeDelta)
             => Vector3.RotateTowards(current, target, maxRadiansDelta, maxMagnitudeDelta);
 
-        [CLMethod("Calculates the signed angle between two vectors.")]
-        public static float SignedAngle(
-            [CLParam("The vector from which the angular difference is measured.")]
-            CustomLogicVector3Builtin from,
-            [CLParam("The vector to which the angular difference is measured.")]
-            CustomLogicVector3Builtin to,
-            [CLParam("The axis around which the rotation is measured.")]
-            CustomLogicVector3Builtin axis)
+        /// <summary>
+        /// Calculates the signed angle between two vectors.
+        /// </summary>
+        /// <param name="from">The vector from which the angular difference is measured.</param>
+        /// <param name="to">The vector to which the angular difference is measured.</param>
+        /// <param name="axis">The axis around which the rotation is measured.</param>
+        [CLMethod]
+        public static float SignedAngle(CustomLogicVector3Builtin from, CustomLogicVector3Builtin to, CustomLogicVector3Builtin axis)
             => Vector3.SignedAngle(from, to, axis);
 
-        [CLMethod("Spherically interpolates between two vectors.")]
-        public static CustomLogicVector3Builtin Slerp(
-            [CLParam("The start value.")]
-            CustomLogicVector3Builtin a,
-            [CLParam("The end value.")]
-            CustomLogicVector3Builtin b,
-            [CLParam("The interpolation factor (clamped between 0 and 1).")]
-            float t)
+        /// <summary>
+        /// Spherically interpolates between two vectors.
+        /// </summary>
+        /// <param name="a">The start value.</param>
+        /// <param name="b">The end value.</param>
+        /// <param name="t">The interpolation factor (clamped between 0 and 1).</param>
+        [CLMethod]
+        public static CustomLogicVector3Builtin Slerp(CustomLogicVector3Builtin a, CustomLogicVector3Builtin b, float t)
             => Vector3.Slerp(a, b, t);
 
-        [CLMethod("Spherically interpolates between two vectors without clamping.")]
-        public static CustomLogicVector3Builtin SlerpUnclamped(
-            [CLParam("The start value.")]
-            CustomLogicVector3Builtin a,
-            [CLParam("The end value.")]
-            CustomLogicVector3Builtin b,
-            [CLParam("The interpolation factor (not clamped).")]
-            float t)
+        /// <summary>
+        /// Spherically interpolates between two vectors without clamping.
+        /// </summary>
+        /// <param name="a">The start value.</param>
+        /// <param name="b">The end value.</param>
+        /// <param name="t">The interpolation factor (not clamped).</param>
+        [CLMethod]
+        public static CustomLogicVector3Builtin SlerpUnclamped(CustomLogicVector3Builtin a, CustomLogicVector3Builtin b, float t)
             => Vector3.SlerpUnclamped(a, b, t);
 
-        [CLMethod("Smoothly dampens a vector towards a target over time.")]
-        public static CustomLogicVector3Builtin SmoothDamp(
-            [CLParam("The current position.")]
-            CustomLogicVector3Builtin current,
-            [CLParam("The target position.")]
-            CustomLogicVector3Builtin target,
-            [CLParam("The current velocity (modified by the function).")]
-            CustomLogicVector3Builtin currentVelocity,
-            [CLParam("The time it takes to reach the target (approximately).")]
-            float smoothTime,
-            [CLParam("The maximum speed.")]
-            float maxSpeed)
+        /// <summary>
+        /// Smoothly dampens a vector towards a target over time.
+        /// </summary>
+        /// <param name="current">The current position.</param>
+        /// <param name="target">The target position.</param>
+        /// <param name="currentVelocity">The current velocity (modified by the function).</param>
+        /// <param name="smoothTime">The time it takes to reach the target (approximately).</param>
+        /// <param name="maxSpeed">The maximum speed.</param>
+        [CLMethod]
+        public static CustomLogicVector3Builtin SmoothDamp(CustomLogicVector3Builtin current, CustomLogicVector3Builtin target, CustomLogicVector3Builtin currentVelocity, float smoothTime, float maxSpeed)
             => Vector3.SmoothDamp(current, target, ref currentVelocity.Value, smoothTime, maxSpeed);
 
-        [CLMethod("Sets the X, Y, and Z components of the vector.")]
-        public void Set(
-            [CLParam("The X component.")]
-            float x,
-            [CLParam("The Y component.")]
-            float y,
-            [CLParam("The Z component.")]
-            float z)
+        /// <summary>
+        /// Sets the X, Y, and Z components of the vector.
+        /// </summary>
+        /// <param name="x">The X component.</param>
+        /// <param name="y">The Y component.</param>
+        /// <param name="z">The Z component.</param>
+        [CLMethod]
+        public void Set(float x, float y, float z)
             => Value = new Vector3(x, y, z);
 
-        [CLMethod("Scales the vector by a float or Vector3. Returns: A new scaled vector."), Obsolete("Use multiply operator instead")]
-        public CustomLogicVector3Builtin Scale(
-            [CLParam("The scale value (float or Vector3).")]
-            object scale)
+        /// <summary>
+        /// Scales the vector by a float or Vector3.
+        /// </summary>
+        /// <param name="scale">The scale value (float or Vector3).</param>
+        /// <returns>A new scaled vector.</returns>
+        [CLMethod, Obsolete("Use multiply operator instead")]
+        public CustomLogicVector3Builtin Scale(object scale)
         {
             if (scale is int iScale)
                 return new CustomLogicVector3Builtin(Value * iScale);
@@ -318,32 +388,38 @@ namespace CustomLogic
             throw new Exception("Parameter must be a float or a Vector3.");
         }
 
-        [CLMethod("Multiplies two vectors component-wise. Returns: A new vector with multiplied components."), Obsolete("Use multiply operator instead")]
-        public static CustomLogicVector3Builtin Multiply(
-            [CLParam("The first vector.")]
-            CustomLogicVector3Builtin a,
-            [CLParam("The second vector.")]
-            CustomLogicVector3Builtin b)
+        /// <summary>
+        /// Multiplies two vectors component-wise.
+        /// </summary>
+        /// <param name="a">The first vector.</param>
+        /// <param name="b">The second vector.</param>
+        /// <returns>A new vector with multiplied components.</returns>
+        [CLMethod, Obsolete("Use multiply operator instead")]
+        public static CustomLogicVector3Builtin Multiply(CustomLogicVector3Builtin a, CustomLogicVector3Builtin b)
         {
             return new CustomLogicVector3Builtin(Util.MultiplyVectors(a, b));
         }
 
-        [CLMethod("Divides two vectors component-wise. Returns: A new vector with divided components."), Obsolete("Use divide operator instead")]
-        public static CustomLogicVector3Builtin Divide(
-            [CLParam("The first vector.")]
-            CustomLogicVector3Builtin a,
-            [CLParam("The second vector.")]
-            CustomLogicVector3Builtin b)
+        /// <summary>
+        /// Divides two vectors component-wise.
+        /// </summary>
+        /// <param name="a">The first vector.</param>
+        /// <param name="b">The second vector.</param>
+        /// <returns>A new vector with divided components.</returns>
+        [CLMethod, Obsolete("Use divide operator instead")]
+        public static CustomLogicVector3Builtin Divide(CustomLogicVector3Builtin a, CustomLogicVector3Builtin b)
         {
             return new CustomLogicVector3Builtin(Util.DivideVectors(a, b));
         }
 
-        [CLMethod("Gets the direction vector transformed by a rotation. Returns: A new direction vector.")]
-        public static CustomLogicVector3Builtin GetRotationDirection(
-            [CLParam("The reference rotation vector (e.g., forward direction).")]
-            CustomLogicVector3Builtin a,
-            [CLParam("The vector to transform relative to the reference.")]
-            CustomLogicVector3Builtin b)
+        /// <summary>
+        /// Gets the direction vector transformed by a rotation.
+        /// </summary>
+        /// <param name="a">The reference rotation vector (e.g., forward direction).</param>
+        /// <param name="b">The vector to transform relative to the reference.</param>
+        /// <returns>A new direction vector.</returns>
+        [CLMethod]
+        public static CustomLogicVector3Builtin GetRotationDirection(CustomLogicVector3Builtin a, CustomLogicVector3Builtin b)
         {
             var direction = Quaternion.Euler(a) * b;
             return new CustomLogicVector3Builtin(direction);
@@ -354,14 +430,22 @@ namespace CustomLogic
             return Value.ToString();
         }
 
-        [CLMethod("Creates a copy of this vector. Returns: A new Vector3 with the same values.")]
+        /// <summary>
+        /// Creates a copy of this vector.
+        /// </summary>
+        /// <returns>A new Vector3 with the same values.</returns>
+        [CLMethod]
         public object __Copy__()
         {
             var value = new Vector3(Value.x, Value.y, Value.z);
             return new CustomLogicVector3Builtin(value);
         }
 
-        [CLMethod("Adds two vectors. Returns: A new vector that is the sum of the two vectors.")]
+        /// <summary>
+        /// Adds two vectors.
+        /// </summary>
+        /// <returns>A new vector that is the sum of the two vectors.</returns>
+        [CLMethod]
         public object __Add__(object self, object other)
         {
             return (self, other) switch
@@ -371,7 +455,11 @@ namespace CustomLogic
             };
         }
 
-        [CLMethod("Subtracts two vectors. Returns: A new vector that is the difference of the two vectors.")]
+        /// <summary>
+        /// Subtracts two vectors.
+        /// </summary>
+        /// <returns>A new vector that is the difference of the two vectors.</returns>
+        [CLMethod]
         public object __Sub__(object self, object other)
         {
             return (self, other) switch
@@ -381,7 +469,11 @@ namespace CustomLogic
             };
         }
 
-        [CLMethod("Multiplies a vector by a scalar or another vector. Returns: A new vector with the multiplied result.")]
+        /// <summary>
+        /// Multiplies a vector by a scalar or another vector.
+        /// </summary>
+        /// <returns>A new vector with the multiplied result.</returns>
+        [CLMethod]
         public object __Mul__(object self, object other)
         {
             return (self, other) switch
@@ -395,7 +487,11 @@ namespace CustomLogic
             };
         }
 
-        [CLMethod("Divides a vector by a scalar or another vector. Returns: A new vector with the divided result.")]
+        /// <summary>
+        /// Divides a vector by a scalar or another vector.
+        /// </summary>
+        /// <returns>A new vector with the divided result.</returns>
+        [CLMethod]
         public object __Div__(object self, object other)
         {
             return (self, other) switch
@@ -407,7 +503,11 @@ namespace CustomLogic
             };
         }
 
-        [CLMethod("Checks if two vectors are equal. Returns: True if the vectors are equal, false otherwise.")]
+        /// <summary>
+        /// Checks if two vectors are equal.
+        /// </summary>
+        /// <returns>True if the vectors are equal, false otherwise.</returns>
+        [CLMethod]
         public bool __Eq__(object self, object other)
         {
             if (other is not CustomLogicVector3Builtin v3)
@@ -416,7 +516,10 @@ namespace CustomLogic
             return Value == v3.Value;
         }
 
-        [CLMethod("Gets the hash code of the vector.")]
+        /// <summary>
+        /// Gets the hash code of the vector.
+        /// </summary>
+        [CLMethod]
         public int __Hash__() => Value.GetHashCode();
 
         public object __Mod__(object self, object other)

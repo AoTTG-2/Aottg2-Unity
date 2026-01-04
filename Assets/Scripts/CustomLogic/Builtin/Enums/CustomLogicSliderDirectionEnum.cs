@@ -1,15 +1,24 @@
 namespace CustomLogic
 {
-    [CLType(Name = "SliderDirectionEnum", Static = true, Abstract = true, Description = "Enumeration of slider directions for UI sliders.")]
+    /// <summary>
+    /// Enumeration of slider directions for UI sliders.
+    /// </summary>
+    [CLType(Name = "SliderDirectionEnum", Static = true, Abstract = true)]
     partial class CustomLogicSliderDirectionEnum : BuiltinClassInstance
     {
         [CLConstructor]
         public CustomLogicSliderDirectionEnum() { }
 
-        [CLProperty("Horizontal slider direction.")]
+        /// <summary>
+        /// Horizontal slider direction.
+        /// </summary>
+        [CLProperty]
         public static string Horizontal => "Horizontal";
 
-        [CLProperty("Vertical slider direction.")]
+        /// <summary>
+        /// Vertical slider direction.
+        /// </summary>
+        [CLProperty]
         public static string Vertical => "Vertical";
     }
 }

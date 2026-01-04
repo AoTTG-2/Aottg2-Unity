@@ -1,21 +1,36 @@
 namespace CustomLogic
 {
-    [CLType(Name = "LoadoutEnum", Static = true, Abstract = true, Description = "Enumeration of loadout types for humans.")]
+    /// <summary>
+    /// Enumeration of loadout types for humans.
+    /// </summary>
+    [CLType(Name = "LoadoutEnum", Static = true, Abstract = true)]
     partial class CustomLogicLoadoutEnum : BuiltinClassInstance
     {
         [CLConstructor]
         public CustomLogicLoadoutEnum() { }
 
-        [CLProperty("Blades loadout.")]
+        /// <summary>
+        /// Blades loadout.
+        /// </summary>
+        [CLProperty]
         public static string Blades => "Blades";
 
-        [CLProperty("AHSS loadout.")]
+        /// <summary>
+        /// AHSS loadout.
+        /// </summary>
+        [CLProperty]
         public static string AHSS => "AHSS";
 
-        [CLProperty("APG loadout.")]
+        /// <summary>
+        /// APG loadout.
+        /// </summary>
+        [CLProperty]
         public static string APG => "APG";
 
-        [CLProperty("Thunderspears loadout.")]
+        /// <summary>
+        /// Thunderspears loadout.
+        /// </summary>
+        [CLProperty]
         public static string Thunderspears => "Thunderspears";
     }
 }

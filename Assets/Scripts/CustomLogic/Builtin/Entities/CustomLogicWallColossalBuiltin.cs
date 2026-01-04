@@ -3,6 +3,9 @@ using Controllers;
 
 namespace CustomLogic
 {
+    /// <summary>
+    /// Represents a WallColossal character. Only character owner can modify fields and call functions unless otherwise specified.
+    /// </summary>
     /// <code>
     /// function OnCharacterSpawn(character) {
     ///     if (character.IsMine &amp;&amp; character.Type == "WallColossal") {
@@ -13,7 +16,7 @@ namespace CustomLogic
     ///     }
     /// }
     /// </code>
-    [CLType(Name = "WallColossal", Abstract = true, Description = "Represents a WallColossal character. Only character owner can modify fields and call functions unless otherwise specified.")]
+    [CLType(Name = "WallColossal", Abstract = true)]
     partial class CustomLogicWallColossalBuiltin : CustomLogicShifterBuiltin
     {
         public readonly WallColossalShifter Shifter;
@@ -25,7 +28,10 @@ namespace CustomLogic
             Controller = shifter.GetComponent<WallColossalAIController>();
         }
 
-        [CLProperty("Colossal's current hand health (applies to both hands for backward compatibility).")]
+        /// <summary>
+        /// Colossal's current hand health (applies to both hands for backward compatibility).
+        /// </summary>
+        [CLProperty]
         public int HandHealth
         {
             get => (Shifter.CurrentLeftHandHealth + Shifter.CurrentRightHandHealth) / 2;
@@ -39,7 +45,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("Colossal's maximum hand health (applies to both hands for backward compatibility).")]
+        /// <summary>
+        /// Colossal's maximum hand health (applies to both hands for backward compatibility).
+        /// </summary>
+        [CLProperty]
         public int MaxHandHealth
         {
             get => (Shifter.MaxLeftHandHealth + Shifter.MaxRightHandHealth) / 2;
@@ -53,7 +62,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("Colossal's current left hand health.")]
+        /// <summary>
+        /// Colossal's current left hand health.
+        /// </summary>
+        [CLProperty]
         public int LeftHandHealth
         {
             get => Shifter.CurrentLeftHandHealth;
@@ -64,7 +76,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("Colossal's maximum left hand health.")]
+        /// <summary>
+        /// Colossal's maximum left hand health.
+        /// </summary>
+        [CLProperty]
         public int MaxLeftHandHealth
         {
             get => Shifter.MaxLeftHandHealth;
@@ -75,7 +90,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("Colossal's current right hand health.")]
+        /// <summary>
+        /// Colossal's current right hand health.
+        /// </summary>
+        [CLProperty]
         public int RightHandHealth
         {
             get => Shifter.CurrentRightHandHealth;
@@ -86,7 +104,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("Colossal's maximum right hand health.")]
+        /// <summary>
+        /// Colossal's maximum right hand health.
+        /// </summary>
+        [CLProperty]
         public int MaxRightHandHealth
         {
             get => Shifter.MaxRightHandHealth;
@@ -97,13 +118,22 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("Colossal's left hand state.", Enum = typeof(CustomLogicHandStateEnum))]
+        /// <summary>
+        /// Colossal's left hand state.
+        /// </summary>
+        [CLProperty(Enum = typeof(CustomLogicHandStateEnum))]
         public string LeftHandState => Shifter.LeftHandState.ToString();
 
-        [CLProperty("Colossal's right hand state.", Enum = typeof(CustomLogicHandStateEnum))]
+        /// <summary>
+        /// Colossal's right hand state.
+        /// </summary>
+        [CLProperty(Enum = typeof(CustomLogicHandStateEnum))]
         public string RightHandState => Shifter.RightHandState.ToString();
 
-        [CLProperty("Time in seconds for a hand to fully recover from broken state.")]
+        /// <summary>
+        /// Time in seconds for a hand to fully recover from broken state.
+        /// </summary>
+        [CLProperty]
         public float HandRecoveryTime
         {
             get => Shifter.HandRecoveryTime;
@@ -114,7 +144,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("Time remaining in seconds for left hand to recover (0 if not recovering).")]
+        /// <summary>
+        /// Time remaining in seconds for left hand to recover (0 if not recovering).
+        /// </summary>
+        [CLProperty]
         public float LeftHandRecoveryTimeLeft
         {
             get => Shifter.LeftHandRecoveryTimeLeft;
@@ -125,7 +158,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("Time remaining in seconds for right hand to recover (0 if not recovering).")]
+        /// <summary>
+        /// Time remaining in seconds for right hand to recover (0 if not recovering).
+        /// </summary>
+        [CLProperty]
         public float RightHandRecoveryTimeLeft
         {
             get => Shifter.RightHandRecoveryTimeLeft;
@@ -136,7 +172,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("Colossal's (AI) wall attack cooldown per attack.")]
+        /// <summary>
+        /// Colossal's (AI) wall attack cooldown per attack.
+        /// </summary>
+        [CLProperty]
         public float WallAttackCooldown
         {
             get => Controller.WallAttackCooldown;
@@ -146,7 +185,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("Colossal's (AI) wall attack cooldown remaining.")]
+        /// <summary>
+        /// Colossal's (AI) wall attack cooldown remaining.
+        /// </summary>
+        [CLProperty]
         public float WallAttackCooldownLeft
         {
             get => Controller.WallAttackCooldownLeft;
@@ -156,25 +198,37 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("Colossal's current steam state.", Enum = typeof(CustomLogicSteamStateEnum))]
+        /// <summary>
+        /// Colossal's current steam state.
+        /// </summary>
+        [CLProperty(Enum = typeof(CustomLogicSteamStateEnum))]
         public string SteamState => Shifter.SteamState.ToString();
 
 
-        [CLMethod("Causes the colossal to perform steam attack.")]
+        /// <summary>
+        /// Causes the colossal to perform steam attack.
+        /// </summary>
+        [CLMethod]
         public void AttackSteam()
         {
             if (Shifter.IsMine() && !Shifter.Dead)
                 Shifter.SteamAttack();
         }
 
-        [CLMethod("Causes the colossal to stop steam attack.")]
+        /// <summary>
+        /// Causes the colossal to stop steam attack.
+        /// </summary>
+        [CLMethod]
         public void StopSteam()
         {
             if (Shifter.IsMine() && !Shifter.Dead)
                 Shifter.StopSteam();
         }
 
-        [CLMethod("Causes the (AI) colossal to perform a random wall attack.")]
+        /// <summary>
+        /// Causes the (AI) colossal to perform a random wall attack.
+        /// </summary>
+        [CLMethod]
         public void WallAttack()
         {
             if (Shifter.IsMine() && !Shifter.Dead && Shifter.AI)

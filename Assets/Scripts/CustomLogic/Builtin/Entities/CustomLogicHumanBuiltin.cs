@@ -7,6 +7,9 @@ using UnityEngine;
 
 namespace CustomLogic
 {
+    /// <summary>
+    /// Represents a human character. Only character owner can modify fields and call functions unless otherwise specified.
+    /// </summary>
     /// <code>
     /// function OnCharacterSpawn(character)
     /// {
@@ -18,7 +21,7 @@ namespace CustomLogic
     ///     }
     /// }
     /// </code>
-    [CLType(Name = "Human", Abstract = true, Description = "Represents a human character. Only character owner can modify fields and call functions unless otherwise specified.")]
+    [CLType(Name = "Human", Abstract = true)]
     partial class CustomLogicHumanBuiltin : CustomLogicCharacterBuiltin
     {
         public Human Human;
@@ -28,21 +31,30 @@ namespace CustomLogic
             Human = human;
         }
 
-        [CLProperty("The weapon the human is using.", Enum = typeof(CustomLogicWeaponEnum))]
+        /// <summary>
+        /// The weapon the human is using.
+        /// </summary>
+        [CLProperty(Enum = typeof(CustomLogicWeaponEnum))]
         public string Weapon
         {
             get => Human.Setup.Weapon.ToString();
             set => SetWeapon(value);
         }
 
-        [CLProperty("The current special the human is using.")]
+        /// <summary>
+        /// The current special the human is using.
+        /// </summary>
+        [CLProperty]
         public string CurrentSpecial
         {
             get => Human.CurrentSpecial;
             set => SetSpecial(value);
         }
 
-        [CLProperty("The normalized cooldown time of the special. Has a range of 0 to 1.")]
+        /// <summary>
+        /// The normalized cooldown time of the special. Has a range of 0 to 1.
+        /// </summary>
+        [CLProperty]
         public float SpecialCooldownTime
         {
             get => Human.Special == null ? 0f : Human.Special.GetCooldownRatio();
@@ -54,7 +66,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("The cooldown of the special.")]
+        /// <summary>
+        /// The cooldown of the special.
+        /// </summary>
+        [CLProperty]
         public float SpecialCooldown
         {
             get => Human.Special == null ? 0f : Human.Special.Cooldown;
@@ -66,7 +81,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("The live time of the shifter special.")]
+        /// <summary>
+        /// The live time of the shifter special.
+        /// </summary>
+        [CLProperty]
         public float ShifterLiveTime
         {
             get
@@ -82,38 +100,56 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("The ratio of the special cooldown.")]
+        /// <summary>
+        /// The ratio of the special cooldown.
+        /// </summary>
+        [CLProperty]
         public float SpecialCooldownRatio => Human.Special == null ? 0f : Human.Special.GetCooldownRatio();
 
-        [CLProperty("The current gas of the human.")]
+        /// <summary>
+        /// The current gas of the human.
+        /// </summary>
+        [CLProperty]
         public float CurrentGas
         {
             get => Human.Stats.CurrentGas;
             set => Human.Stats.CurrentGas = Mathf.Min(Human.Stats.MaxGas, value);
         }
 
-        [CLProperty("The max gas of the human.")]
+        /// <summary>
+        /// The max gas of the human.
+        /// </summary>
+        [CLProperty]
         public float MaxGas
         {
             get => Human.Stats.MaxGas;
             set => Human.Stats.MaxGas = value;
         }
 
-        [CLProperty("The acceleration of the human.")]
+        /// <summary>
+        /// The acceleration of the human.
+        /// </summary>
+        [CLProperty]
         public int Acceleration
         {
             get => Human.Stats.Acceleration;
             set => Human.Stats.Acceleration = value;
         }
 
-        [CLProperty("The speed of the human.")]
+        /// <summary>
+        /// The speed of the human.
+        /// </summary>
+        [CLProperty]
         public int Speed
         {
             get => Human.Stats.Speed;
             set => Human.Stats.Speed = value;
         }
 
-        [CLProperty("The transform of the horse belonging to this human. Returns null if horses are disabled.")]
+        /// <summary>
+        /// The transform of the horse belonging to this human. Returns null if horses are disabled.
+        /// </summary>
+        [CLProperty]
         public CustomLogicTransformBuiltin HorseTransform
         {
             get
@@ -125,14 +161,20 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("The speed of the horse.")]
+        /// <summary>
+        /// The speed of the horse.
+        /// </summary>
+        [CLProperty]
         public float HorseSpeed
         {
             get => Human.Stats.HorseSpeed;
             set => Human.Stats.HorseSpeed = value;
         }
 
-        [CLProperty("The current blade durability.")]
+        /// <summary>
+        /// The current blade durability.
+        /// </summary>
+        [CLProperty]
         public float CurrentBladeDurability
         {
             get
@@ -157,7 +199,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("The max blade durability.")]
+        /// <summary>
+        /// The max blade durability.
+        /// </summary>
+        [CLProperty]
         public float MaxBladeDurability
         {
             get
@@ -173,7 +218,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("The current blade.")]
+        /// <summary>
+        /// The current blade.
+        /// </summary>
+        [CLProperty]
         public int CurrentBlade
         {
             get
@@ -189,7 +237,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("The max number of blades held.")]
+        /// <summary>
+        /// The max number of blades held.
+        /// </summary>
+        [CLProperty]
         public int MaxBlade
         {
             get
@@ -205,7 +256,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("The current ammo round.")]
+        /// <summary>
+        /// The current ammo round.
+        /// </summary>
+        [CLProperty]
         public int CurrentAmmoRound
         {
             get
@@ -221,7 +275,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("The max ammo round.")]
+        /// <summary>
+        /// The max ammo round.
+        /// </summary>
+        [CLProperty]
         public int MaxAmmoRound
         {
             get
@@ -237,7 +294,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("The current ammo left.")]
+        /// <summary>
+        /// The current ammo left.
+        /// </summary>
+        [CLProperty]
         public int CurrentAmmoLeft
         {
             get
@@ -253,7 +313,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("The max total ammo.")]
+        /// <summary>
+        /// The max total ammo.
+        /// </summary>
+        [CLProperty]
         public int MaxAmmoTotal
         {
             get
@@ -269,24 +332,36 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("Whether the left hook is enabled.")]
+        /// <summary>
+        /// Whether the left hook is enabled.
+        /// </summary>
+        [CLProperty]
         public bool LeftHookEnabled
         {
             get => Human.HookLeft.Enabled;
             set => Human.HookLeft.Enabled = value;
         }
 
-        [CLProperty("Whether the right hook is enabled.")]
+        /// <summary>
+        /// Whether the right hook is enabled.
+        /// </summary>
+        [CLProperty]
         public bool RightHookEnabled
         {
             get => Human.HookRight.Enabled;
             set => Human.HookRight.Enabled = value;
         }
 
-        [CLProperty("Whether the human is mounted.")]
+        /// <summary>
+        /// Whether the human is mounted.
+        /// </summary>
+        [CLProperty]
         public bool IsMounted => Human.MountState == HumanMountState.MapObject;
 
-        [CLProperty("The map object the human is mounted on.")]
+        /// <summary>
+        /// The map object the human is mounted on.
+        /// </summary>
+        [CLProperty]
         public CustomLogicMapObjectBuiltin MountedMapObject
         {
             get
@@ -297,7 +372,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("The transform the human is mounted on.")]
+        /// <summary>
+        /// The transform the human is mounted on.
+        /// </summary>
+        [CLProperty]
         public CustomLogicTransformBuiltin MountedTransform
         {
             get
@@ -308,7 +386,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("Whether the human auto refills gas.")]
+        /// <summary>
+        /// Whether the human auto refills gas.
+        /// </summary>
+        [CLProperty]
         public bool AutoRefillGas
         {
             get => Human != null && Human.IsMine() && SettingsManager.InputSettings.Human.AutoRefillGas.Value;
@@ -319,34 +400,53 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("The state of the human.")]
+        /// <summary>
+        /// The state of the human.
+        /// </summary>
+        [CLProperty]
         public string State => Human.State.ToString();
 
-        [CLProperty("Whether the human can dodge.")]
+        /// <summary>
+        /// Whether the human can dodge.
+        /// </summary>
+        [CLProperty]
         public bool CanDodge
         {
             get => Human.CanDodge;
             set => Human.CanDodge = value;
         }
 
-        [CLProperty("Whether the human is invincible.")]
+        /// <summary>
+        /// Whether the human is invincible.
+        /// </summary>
+        [CLProperty]
         public bool IsInvincible
         {
             get => Human.IsInvincible;
             set => Human.IsInvincible = value;
         }
 
-        [CLProperty("The time left for invincibility.")]
+        /// <summary>
+        /// The time left for invincibility.
+        /// </summary>
+        [CLProperty]
         public float InvincibleTimeLeft
         {
             get => Human.InvincibleTimeLeft;
             set => Human.InvincibleTimeLeft = value;
         }
 
-        [CLProperty("If the human is carried.")]
+        /// <summary>
+        /// If the human is carried.
+        /// </summary>
+        [CLProperty]
         public bool IsCarried => Human.CarryState == HumanCarryState.Carry;
 
-        [CLMethod("Refills the gas of the human.")]
+        /// <summary>
+        /// Refills the gas of the human.
+        /// </summary>
+        /// <returns>True if refill was successful, false otherwise.</returns>
+        [CLMethod]
         public bool Refill()
         {
             if (Human.IsMine() && Human.NeedRefill(true))
@@ -354,14 +454,20 @@ namespace CustomLogic
             return false;
         }
 
-        [CLMethod("Refills the gas of the human immediately.")]
+        /// <summary>
+        /// Refills the gas of the human immediately.
+        /// </summary>
+        [CLMethod]
         public void RefillImmediate()
         {
             if (Human.IsMine())
                 Human.FinishRefill();
         }
 
-        [CLMethod("Clears all hooks.")]
+        /// <summary>
+        /// Clears all hooks.
+        /// </summary>
+        [CLMethod]
         public void ClearHooks()
         {
             if (Human.IsMine())
@@ -371,21 +477,31 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod("Clears the left hook.")]
+        /// <summary>
+        /// Clears the left hook.
+        /// </summary>
+        [CLMethod]
         public void ClearLeftHook()
         {
             if (Human.IsMine())
                 Human.HookLeft.DisableAnyHook();
         }
 
-        [CLMethod("Clears the right hook.")]
+        /// <summary>
+        /// Clears the right hook.
+        /// </summary>
+        [CLMethod]
         public void ClearRightHook()
         {
             if (Human.IsMine())
                 Human.HookRight.DisableAnyHook();
         }
 
-        [CLMethod("Position of the left hook, null if there is no hook.")]
+        /// <summary>
+        /// Position of the left hook, null if there is no hook.
+        /// </summary>
+        /// <returns>The position of the left hook, or null if there is no hook.</returns>
+        [CLMethod]
         public CustomLogicVector3Builtin LeftHookPosition()
         {
             if (Human.IsMine())
@@ -399,7 +515,11 @@ namespace CustomLogic
             return null;
         }
 
-        [CLMethod("Position of the right hook, null if there is no hook.")]
+        /// <summary>
+        /// Position of the right hook, null if there is no hook.
+        /// </summary>
+        /// <returns>The position of the right hook, or null if there is no hook.</returns>
+        [CLMethod]
         public CustomLogicVector3Builtin RightHookPosition()
         {
             if (Human.IsMine())
@@ -413,55 +533,68 @@ namespace CustomLogic
             return null;
         }
 
-        [CLMethod("Mounts the human on a map object.")]
+        /// <summary>
+        /// Mounts the human on a map object.
+        /// </summary>
+        /// <param name="mapObject">The map object to mount on.</param>
+        /// <param name="positionOffset">The position offset from the mount point.</param>
+        /// <param name="rotationOffset">The rotation offset from the mount point.</param>
+        /// <param name="canMountedAttack">If true, allows the human to attack while mounted (default: false).</param>
+        [CLMethod]
         public void MountMapObject(
-            [CLParam("The map object to mount on.")]
             CustomLogicMapObjectBuiltin mapObject,
-            [CLParam("The position offset from the mount point.")]
             CustomLogicVector3Builtin positionOffset,
-            [CLParam("The rotation offset from the mount point.")]
             CustomLogicVector3Builtin rotationOffset,
-            [CLParam("If true, allows the human to attack while mounted (default: false).")]
             bool canMountedAttack = false)
         {
             if (Human.IsMine())
                 Human.Mount(mapObject.Value, positionOffset.Value, rotationOffset.Value, canMountedAttack);
         }
 
-        [CLMethod("Mounts the human on a transform.")]
+        /// <summary>
+        /// Mounts the human on a transform.
+        /// </summary>
+        /// <param name="transform">The transform to mount on.</param>
+        /// <param name="positionOffset">The position offset from the mount point.</param>
+        /// <param name="rotationOffset">The rotation offset from the mount point.</param>
+        /// <param name="canMountedAttack">If true, allows the human to attack while mounted (default: false).</param>
+        [CLMethod]
         public void MountTransform(
-            [CLParam("The transform to mount on.")]
             CustomLogicTransformBuiltin transform,
-            [CLParam("The position offset from the mount point.")]
             CustomLogicVector3Builtin positionOffset,
-            [CLParam("The rotation offset from the mount point.")]
             CustomLogicVector3Builtin rotationOffset,
-            [CLParam("If true, allows the human to attack while mounted (default: false).")]
             bool canMountedAttack = false)
         {
             if (Human.IsMine())
                 Human.Mount(transform.Value, positionOffset.Value, rotationOffset.Value, canMountedAttack);
         }
 
-        [CLMethod("Unmounts the human.")]
-        public void Unmount(
-            [CLParam("If true, unmounts immediately without animation (default: true).")]
-            bool immediate = true)
+        /// <summary>
+        /// Unmounts the human.
+        /// </summary>
+        /// <param name="immediate">If true, unmounts immediately without animation (default: true).</param>
+        [CLMethod]
+        public void Unmount(bool immediate = true)
         {
             if (Human.IsMine())
                 Human.Unmount(immediate);
         }
 
-        [CLMethod("Sets the special of the human.")]
-        public void SetSpecial(
-            [CLParam("The name of the special to set.")]
-            string special)
+        /// <summary>
+        /// Sets the special of the human.
+        /// </summary>
+        /// <param name="special">The name of the special to set.</param>
+        [CLMethod]
+        public void SetSpecial(string special)
         {
             if (Human.IsMine())
                 Human.SetSpecial(special);
         }
 
-        [CLMethod("Activates the special of the human.")]
+        /// <summary>
+        /// Activates the special of the human.
+        /// </summary>
+        [CLMethod]
         public void ActivateSpecial()
         {
             if (Human.IsMine() && Human.Special != null)
@@ -471,10 +604,12 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod("Sets the weapon for the human.")]
-        public void SetWeapon(
-            [CLParam("Name of the weapon.", Enum = typeof(CustomLogicWeaponEnum))]
-            string weapon)
+        /// <summary>
+        /// Sets the weapon for the human.
+        /// </summary>
+        /// <param name="weapon">Name of the weapon.</param>
+        [CLMethod]
+        public void SetWeapon([CLParam(Enum = typeof(CustomLogicWeaponEnum))] string weapon)
         {
             if (!Human.IsMine())
                 return;
@@ -512,18 +647,24 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod("Disables all perks of the human.")]
+        /// <summary>
+        /// Disables all perks of the human.
+        /// </summary>
+        [CLMethod]
         public void DisablePerks()
         {
             if (Human.IsMine())
                 Human.Stats.DisablePerks();
         }
 
-        [CLMethod("Enables or disables a particle effect.")]
+        /// <summary>
+        /// Enables or disables a particle effect.
+        /// </summary>
+        /// <param name="effectName">Name of the effect.</param>
+        /// <param name="enabled">True to enable, false to disable.</param>
+        [CLMethod]
         public void SetParticleEffect(
-            [CLParam("Name of the effect.", Enum = typeof(CustomLogicHumanParticleEffectEnum))]
-            string effectName,
-            [CLParam("True to enable, false to disable")]
+            [CLParam(Enum = typeof(CustomLogicHumanParticleEffectEnum))] string effectName,
             bool enabled)
         {
             if (!Human.IsMine())

@@ -2,67 +2,127 @@ using UI;
 
 namespace CustomLogic
 {
-    [CLType(Name = "LanguageEnum", Static = true, Abstract = true, Description = "Enumeration of available language codes. Duplicates Locale language constants for consistency.")]
+    /// <summary>
+    /// Enumeration of available language codes. Duplicates Locale language constants for consistency.
+    /// </summary>
+    [CLType(Name = "LanguageEnum", Static = true, Abstract = true)]
     partial class CustomLogicLanguageEnum : BuiltinClassInstance
     {
         [CLConstructor]
         public CustomLogicLanguageEnum() { }
 
-        [CLProperty("Arabic language code.")]
+        /// <summary>
+        /// Arabic language code.
+        /// </summary>
+        [CLProperty]
         public static string Arabic => UILanguages.Arabic;
 
-        [CLProperty("Brazilian Portuguese language code.")]
+        /// <summary>
+        /// Brazilian Portuguese language code.
+        /// </summary>
+        [CLProperty]
         public static string BrazilianPortuguese => UILanguages.BrazilianPortuguese;
 
-        [CLProperty("Chinese language code.")]
+        /// <summary>
+        /// Chinese language code.
+        /// </summary>
+        [CLProperty]
         public static string Chinese => UILanguages.Chinese;
 
-        [CLProperty("Czech language code.")]
+        /// <summary>
+        /// Czech language code.
+        /// </summary>
+        [CLProperty]
         public static string Czech => UILanguages.Czech;
 
-        [CLProperty("Dutch language code.")]
+        /// <summary>
+        /// Dutch language code.
+        /// </summary>
+        [CLProperty]
         public static string Dutch => UILanguages.Dutch;
 
-        [CLProperty("English language code.")]
+        /// <summary>
+        /// English language code.
+        /// </summary>
+        [CLProperty]
         public static string English => UILanguages.English;
 
-        [CLProperty("French language code.")]
+        /// <summary>
+        /// French language code.
+        /// </summary>
+        [CLProperty]
         public static string French => UILanguages.French;
 
-        [CLProperty("German language code.")]
+        /// <summary>
+        /// German language code.
+        /// </summary>
+        [CLProperty]
         public static string German => UILanguages.German;
 
-        [CLProperty("Greek language code.")]
+        /// <summary>
+        /// Greek language code.
+        /// </summary>
+        [CLProperty]
         public static string Greek => UILanguages.Greek;
 
-        [CLProperty("Indonesian language code.")]
+        /// <summary>
+        /// Indonesian language code.
+        /// </summary>
+        [CLProperty]
         public static string Indonesian => UILanguages.Indonesian;
 
-        [CLProperty("Italian language code.")]
+        /// <summary>
+        /// Italian language code.
+        /// </summary>
+        [CLProperty]
         public static string Italian => UILanguages.Italian;
 
-        [CLProperty("Japanese language code.")]
+        /// <summary>
+        /// Japanese language code.
+        /// </summary>
+        [CLProperty]
         public static string Japanese => UILanguages.Japanese;
 
-        [CLProperty("Korean language code.")]
+        /// <summary>
+        /// Korean language code.
+        /// </summary>
+        [CLProperty]
         public static string Korean => UILanguages.Korean;
 
-        [CLProperty("Polish language code.")]
+        /// <summary>
+        /// Polish language code.
+        /// </summary>
+        [CLProperty]
         public static string Polish => UILanguages.Polish;
 
-        [CLProperty("Russian language code.")]
+        /// <summary>
+        /// Russian language code.
+        /// </summary>
+        [CLProperty]
         public static string Russian => UILanguages.Russian;
 
-        [CLProperty("Spanish language code.")]
+        /// <summary>
+        /// Spanish language code.
+        /// </summary>
+        [CLProperty]
         public static string Spanish => UILanguages.Spanish;
 
-        [CLProperty("Traditional Chinese language code.")]
+        /// <summary>
+        /// Traditional Chinese language code.
+        /// </summary>
+        [CLProperty]
         public static string TraditionalChinese => UILanguages.TraditionalChinese;
 
-        [CLProperty("Turkish language code.")]
+        /// <summary>
+        /// Turkish language code.
+        /// </summary>
+        [CLProperty]
         public static string Turkish => UILanguages.Turkish;
 
-        [CLProperty("Ukrainian language code.")]
+        /// <summary>
+        /// Ukrainian language code.
+        /// </summary>
+        [CLProperty]
         public static string Ukrainian => UILanguages.Ukrainian;
     }
 }

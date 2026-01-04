@@ -1,33 +1,60 @@
 namespace CustomLogic
 {
-    [CLType(Name = "TitanTypeEnum", Static = true, Abstract = true, Description = "Enumeration of titan types that can be spawned.")]
+    /// <summary>
+    /// Enumeration of titan types that can be spawned.
+    /// </summary>
+    [CLType(Name = "TitanTypeEnum", Static = true, Abstract = true)]
     partial class CustomLogicTitanTypeEnum : BuiltinClassInstance
     {
         [CLConstructor]
         public CustomLogicTitanTypeEnum() { }
 
-        [CLProperty("Normal titan type.")]
+        /// <summary>
+        /// Normal titan type.
+        /// </summary>
+        [CLProperty]
         public static string Normal => "Normal";
 
-        [CLProperty("Abnormal titan type.")]
+        /// <summary>
+        /// Abnormal titan type.
+        /// </summary>
+        [CLProperty]
         public static string Abnormal => "Abnormal";
 
-        [CLProperty("Jumper titan type.")]
+        /// <summary>
+        /// Jumper titan type.
+        /// </summary>
+        [CLProperty]
         public static string Jumper => "Jumper";
 
-        [CLProperty("Crawler titan type.")]
+        /// <summary>
+        /// Crawler titan type.
+        /// </summary>
+        [CLProperty]
         public static string Crawler => "Crawler";
 
-        [CLProperty("Thrower titan type.")]
+        /// <summary>
+        /// Thrower titan type.
+        /// </summary>
+        [CLProperty]
         public static string Thrower => "Thrower";
 
-        [CLProperty("Punk titan type.")]
+        /// <summary>
+        /// Punk titan type.
+        /// </summary>
+        [CLProperty]
         public static string Punk => "Punk";
 
-        [CLProperty("Default titan type (uses spawn rate settings).")]
+        /// <summary>
+        /// Default titan type (uses spawn rate settings).
+        /// </summary>
+        [CLProperty]
         public static string Default => "Default";
 
-        [CLProperty("Random titan type (randomly selects from available types).")]
+        /// <summary>
+        /// Random titan type (randomly selects from available types).
+        /// </summary>
+        [CLProperty]
         public static string Random => "Random";
     }
 }

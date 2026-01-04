@@ -2,28 +2,37 @@
 
 namespace CustomLogic
 {
+    /// <summary>
+    /// Represents a 2D vector with X and Y components. Supports mathematical operations and implements copy semantics.
+    /// </summary>
     [CLType(Name = "Vector2", Static = true)]
     partial class CustomLogicVector2Builtin : BuiltinClassInstance, ICustomLogicMathOperators, ICustomLogicEquals, ICustomLogicCopyable
     {
         private Vector2 _value;
 
-        [CLConstructor("Default constructor, initializes the Vector2 to (0, 0).")]
+        /// <summary>
+        /// Default constructor, initializes the Vector2 to (0, 0).
+        /// </summary>
+        [CLConstructor]
         public CustomLogicVector2Builtin() { }
 
-        [CLConstructor("Initializes the Vector2 to (xy, xy).")]
-        public CustomLogicVector2Builtin(
-            [CLParam("The value for X and Y components.")]
-            float xy)
+        /// <summary>
+        /// Initializes the Vector2 to (xy, xy).
+        /// </summary>
+        /// <param name="xy">The value for X and Y components.</param>
+        [CLConstructor]
+        public CustomLogicVector2Builtin(float xy)
         {
             _value = new Vector2(xy, xy);
         }
 
-        [CLConstructor("Initializes the Vector2 to (x, y).")]
-        public CustomLogicVector2Builtin(
-            [CLParam("The X component.")]
-            float x,
-            [CLParam("The Y component.")]
-            float y)
+        /// <summary>
+        /// Initializes the Vector2 to (x, y).
+        /// </summary>
+        /// <param name="x">The X component.</param>
+        /// <param name="y">The Y component.</param>
+        [CLConstructor]
+        public CustomLogicVector2Builtin(float x, float y)
         {
             _value = new Vector2(x, y);
         }
@@ -33,170 +42,219 @@ namespace CustomLogic
             _value = value;
         }
 
-        [CLProperty("The X component of the vector.")]
+        /// <summary>
+        /// The X component of the vector.
+        /// </summary>
+        [CLProperty]
         public float X
         {
             get => _value.x;
             set => _value.x = value;
         }
 
-        [CLProperty("The Y component of the vector.")]
+        /// <summary>
+        /// The Y component of the vector.
+        /// </summary>
+        [CLProperty]
         public float Y
         {
             get => _value.y;
             set => _value.y = value;
         }
 
-        [CLProperty("Returns a normalized copy of this vector (magnitude of 1).")]
+        /// <summary>
+        /// Returns a normalized copy of this vector (magnitude of 1).
+        /// </summary>
+        [CLProperty]
         public CustomLogicVector2Builtin Normalized => _value.normalized;
 
-        [CLProperty("Returns the length of this vector.")]
+        /// <summary>
+        /// Returns the length of this vector.
+        /// </summary>
+        [CLProperty]
         public float Magnitude => _value.magnitude;
 
-        [CLProperty("Returns the squared length of this vector (faster than Magnitude).")]
+        /// <summary>
+        /// Returns the squared length of this vector (faster than Magnitude).
+        /// </summary>
+        [CLProperty]
         public float SqrMagnitude => _value.sqrMagnitude;
 
-        [CLProperty("Shorthand for writing Vector2(0, 0).")]
+        /// <summary>
+        /// Shorthand for writing Vector2(0, 0).
+        /// </summary>
+        [CLProperty]
         public static CustomLogicVector2Builtin Zero => Vector2.zero;
 
-        [CLProperty("Shorthand for writing Vector2(1, 1).")]
+        /// <summary>
+        /// Shorthand for writing Vector2(1, 1).
+        /// </summary>
+        [CLProperty]
         public static CustomLogicVector2Builtin One => Vector2.one;
 
-        [CLProperty("Shorthand for writing Vector2(0, 1).")]
+        /// <summary>
+        /// Shorthand for writing Vector2(0, 1).
+        /// </summary>
+        [CLProperty]
         public static CustomLogicVector2Builtin Up => Vector2.up;
 
-        [CLProperty("Shorthand for writing Vector2(0, -1).")]
+        /// <summary>
+        /// Shorthand for writing Vector2(0, -1).
+        /// </summary>
+        [CLProperty]
         public static CustomLogicVector2Builtin Down => Vector2.down;
 
-        [CLProperty("Shorthand for writing Vector2(-1, 0).")]
+        /// <summary>
+        /// Shorthand for writing Vector2(-1, 0).
+        /// </summary>
+        [CLProperty]
         public static CustomLogicVector2Builtin Left => Vector2.left;
 
-        [CLProperty("Shorthand for writing Vector2(1, 0).")]
+        /// <summary>
+        /// Shorthand for writing Vector2(1, 0).
+        /// </summary>
+        [CLProperty]
         public static CustomLogicVector2Builtin Right => Vector2.right;
 
-        [CLProperty("Shorthand for writing Vector2(float.NegativeInfinity, float.NegativeInfinity).")]
+        /// <summary>
+        /// Shorthand for writing Vector2(float.NegativeInfinity, float.NegativeInfinity).
+        /// </summary>
+        [CLProperty]
         public static CustomLogicVector2Builtin NegativeInfinity => Vector2.negativeInfinity;
 
-        [CLProperty("Shorthand for writing Vector2(float.PositiveInfinity, float.PositiveInfinity).")]
+        /// <summary>
+        /// Shorthand for writing Vector2(float.PositiveInfinity, float.PositiveInfinity).
+        /// </summary>
+        [CLProperty]
         public static CustomLogicVector2Builtin PositiveInfinity => Vector2.positiveInfinity;
 
-        [CLMethod("Calculates the angle between two vectors.")]
-        public static float Angle(
-            [CLParam("The vector from which the angular difference is measured.")]
-            CustomLogicVector2Builtin from,
-            [CLParam("The vector to which the angular difference is measured.")]
-            CustomLogicVector2Builtin to)
+        /// <summary>
+        /// Calculates the angle between two vectors.
+        /// </summary>
+        /// <param name="from">The vector from which the angular difference is measured.</param>
+        /// <param name="to">The vector to which the angular difference is measured.</param>
+        [CLMethod]
+        public static float Angle(CustomLogicVector2Builtin from, CustomLogicVector2Builtin to)
             => Vector2.Angle(from, to);
 
-        [CLMethod("Clamps the magnitude of a vector to a maximum value.")]
-        public static CustomLogicVector2Builtin ClampMagnitude(
-            [CLParam("The vector to clamp.")]
-            CustomLogicVector2Builtin vector,
-            [CLParam("The maximum length of the vector.")]
-            float maxLength)
+        /// <summary>
+        /// Clamps the magnitude of a vector to a maximum value.
+        /// </summary>
+        /// <param name="vector">The vector to clamp.</param>
+        /// <param name="maxLength">The maximum length of the vector.</param>
+        [CLMethod]
+        public static CustomLogicVector2Builtin ClampMagnitude(CustomLogicVector2Builtin vector, float maxLength)
             => Vector2.ClampMagnitude(vector, maxLength);
 
-        [CLMethod("Calculates the distance between two points.")]
-        public static float Distance(
-            [CLParam("The first point.")]
-            CustomLogicVector2Builtin a,
-            [CLParam("The second point.")]
-            CustomLogicVector2Builtin b)
+        /// <summary>
+        /// Calculates the distance between two points.
+        /// </summary>
+        /// <param name="a">The first point.</param>
+        /// <param name="b">The second point.</param>
+        [CLMethod]
+        public static float Distance(CustomLogicVector2Builtin a, CustomLogicVector2Builtin b)
             => Vector2.Distance(a, b);
 
-        [CLMethod("Calculates the dot product of two vectors.")]
-        public static float Dot(
-            [CLParam("The first vector.")]
-            CustomLogicVector2Builtin a,
-            [CLParam("The second vector.")]
-            CustomLogicVector2Builtin b)
+        /// <summary>
+        /// Calculates the dot product of two vectors.
+        /// </summary>
+        /// <param name="a">The first vector.</param>
+        /// <param name="b">The second vector.</param>
+        [CLMethod]
+        public static float Dot(CustomLogicVector2Builtin a, CustomLogicVector2Builtin b)
             => Vector2.Dot(a, b);
 
-        [CLMethod("Linearly interpolates between two vectors.")]
-        public static CustomLogicVector2Builtin Lerp(
-            [CLParam("The start value.")]
-            CustomLogicVector2Builtin a,
-            [CLParam("The end value.")]
-            CustomLogicVector2Builtin b,
-            [CLParam("The interpolation factor (clamped between 0 and 1).")]
-            float t)
+        /// <summary>
+        /// Linearly interpolates between two vectors.
+        /// </summary>
+        /// <param name="a">The start value.</param>
+        /// <param name="b">The end value.</param>
+        /// <param name="t">The interpolation factor (clamped between 0 and 1).</param>
+        [CLMethod]
+        public static CustomLogicVector2Builtin Lerp(CustomLogicVector2Builtin a, CustomLogicVector2Builtin b, float t)
             => Vector2.Lerp(a, b, t);
 
-        [CLMethod("Linearly interpolates between two vectors without clamping.")]
-        public static CustomLogicVector2Builtin LerpUnclamped(
-            [CLParam("The start value.")]
-            CustomLogicVector2Builtin a,
-            [CLParam("The end value.")]
-            CustomLogicVector2Builtin b,
-            [CLParam("The interpolation factor (not clamped).")]
-            float t)
+        /// <summary>
+        /// Linearly interpolates between two vectors without clamping.
+        /// </summary>
+        /// <param name="a">The start value.</param>
+        /// <param name="b">The end value.</param>
+        /// <param name="t">The interpolation factor (not clamped).</param>
+        [CLMethod]
+        public static CustomLogicVector2Builtin LerpUnclamped(CustomLogicVector2Builtin a, CustomLogicVector2Builtin b, float t)
             => Vector2.LerpUnclamped(a, b, t);
 
-        [CLMethod("Returns a vector that is made from the largest components of two vectors.")]
-        public static CustomLogicVector2Builtin Max(
-            [CLParam("The first vector.")]
-            CustomLogicVector2Builtin a,
-            [CLParam("The second vector.")]
-            CustomLogicVector2Builtin b)
+        /// <summary>
+        /// Returns a vector that is made from the largest components of two vectors.
+        /// </summary>
+        /// <param name="a">The first vector.</param>
+        /// <param name="b">The second vector.</param>
+        [CLMethod]
+        public static CustomLogicVector2Builtin Max(CustomLogicVector2Builtin a, CustomLogicVector2Builtin b)
             => Vector2.Max(a, b);
 
-        [CLMethod("Returns a vector that is made from the smallest components of two vectors.")]
-        public static CustomLogicVector2Builtin Min(
-            [CLParam("The first vector.")]
-            CustomLogicVector2Builtin a,
-            [CLParam("The second vector.")]
-            CustomLogicVector2Builtin b)
+        /// <summary>
+        /// Returns a vector that is made from the smallest components of two vectors.
+        /// </summary>
+        /// <param name="a">The first vector.</param>
+        /// <param name="b">The second vector.</param>
+        [CLMethod]
+        public static CustomLogicVector2Builtin Min(CustomLogicVector2Builtin a, CustomLogicVector2Builtin b)
             => Vector2.Min(a, b);
 
-        [CLMethod("Moves a point towards a target position.")]
-        public static CustomLogicVector2Builtin MoveTowards(
-            [CLParam("The current position.")]
-            CustomLogicVector2Builtin current,
-            [CLParam("The target position.")]
-            CustomLogicVector2Builtin target,
-            [CLParam("The maximum distance to move.")]
-            float maxDistanceDelta)
+        /// <summary>
+        /// Moves a point towards a target position.
+        /// </summary>
+        /// <param name="current">The current position.</param>
+        /// <param name="target">The target position.</param>
+        /// <param name="maxDistanceDelta">The maximum distance to move.</param>
+        [CLMethod]
+        public static CustomLogicVector2Builtin MoveTowards(CustomLogicVector2Builtin current, CustomLogicVector2Builtin target, float maxDistanceDelta)
             => Vector2.MoveTowards(current, target, maxDistanceDelta);
 
-        [CLMethod("Reflects a vector off a plane defined by a normal vector.")]
-        public static CustomLogicVector2Builtin Reflect(
-            [CLParam("The incoming direction vector.")]
-            CustomLogicVector2Builtin inDirection,
-            [CLParam("The normal vector of the surface.")]
-            CustomLogicVector2Builtin inNormal)
+        /// <summary>
+        /// Reflects a vector off a plane defined by a normal vector.
+        /// </summary>
+        /// <param name="inDirection">The incoming direction vector.</param>
+        /// <param name="inNormal">The normal vector of the surface.</param>
+        [CLMethod]
+        public static CustomLogicVector2Builtin Reflect(CustomLogicVector2Builtin inDirection, CustomLogicVector2Builtin inNormal)
             => Vector2.Reflect(inDirection, inNormal);
 
-        [CLMethod("Calculates the signed angle between two vectors.")]
-        public static float SignedAngle(
-            [CLParam("The vector from which the angular difference is measured.")]
-            CustomLogicVector2Builtin from,
-            [CLParam("The vector to which the angular difference is measured.")]
-            CustomLogicVector2Builtin to)
+        /// <summary>
+        /// Calculates the signed angle between two vectors.
+        /// </summary>
+        /// <param name="from">The vector from which the angular difference is measured.</param>
+        /// <param name="to">The vector to which the angular difference is measured.</param>
+        [CLMethod]
+        public static float SignedAngle(CustomLogicVector2Builtin from, CustomLogicVector2Builtin to)
             => Vector2.SignedAngle(from, to);
 
-        [CLMethod("Smoothly dampens a vector towards a target over time.")]
-        public static CustomLogicVector2Builtin SmoothDamp(
-            [CLParam("The current position.")]
-            CustomLogicVector2Builtin current,
-            [CLParam("The target position.")]
-            CustomLogicVector2Builtin target,
-            [CLParam("The current velocity (modified by the function).")]
-            CustomLogicVector2Builtin currentVelocity,
-            [CLParam("The time it takes to reach the target (approximately).")]
-            float smoothTime,
-            [CLParam("The maximum speed.")]
-            float maxSpeed)
+        /// <summary>
+        /// Smoothly dampens a vector towards a target over time.
+        /// </summary>
+        /// <param name="current">The current position.</param>
+        /// <param name="target">The target position.</param>
+        /// <param name="currentVelocity">The current velocity (modified by the function).</param>
+        /// <param name="smoothTime">The time it takes to reach the target (approximately).</param>
+        /// <param name="maxSpeed">The maximum speed.</param>
+        [CLMethod]
+        public static CustomLogicVector2Builtin SmoothDamp(CustomLogicVector2Builtin current, CustomLogicVector2Builtin target, CustomLogicVector2Builtin currentVelocity, float smoothTime, float maxSpeed)
             => Vector2.SmoothDamp(current, target, ref currentVelocity._value, smoothTime, maxSpeed);
 
-        [CLMethod("Sets the X and Y components of the vector.")]
-        public void Set(
-            [CLParam("The X component.")]
-            float x,
-            [CLParam("The Y component.")]
-            float y)
+        /// <summary>
+        /// Sets the X and Y components of the vector.
+        /// </summary>
+        /// <param name="x">The X component.</param>
+        /// <param name="y">The Y component.</param>
+        [CLMethod]
+        public void Set(float x, float y)
             => _value.Set(x, y);
 
-        [CLMethod("Normalizes the vector in place.")]
+        /// <summary>
+        /// Normalizes the vector in place.
+        /// </summary>
+        [CLMethod]
         public void Normalize() => _value.Normalize();
 
         public override string ToString()
@@ -204,14 +262,22 @@ namespace CustomLogic
             return _value.ToString();
         }
 
-        [CLMethod("Creates a copy of this vector. Returns: A new Vector2 with the same values.")]
+        /// <summary>
+        /// Creates a copy of this vector.
+        /// </summary>
+        /// <returns>A new Vector2 with the same values.</returns>
+        [CLMethod]
         public virtual object __Copy__()
         {
             var value = new Vector2(_value.x, _value.y);
             return new CustomLogicVector2Builtin(value);
         }
 
-        [CLMethod("Adds two vectors. Returns: A new vector that is the sum of the two vectors.")]
+        /// <summary>
+        /// Adds two vectors.
+        /// </summary>
+        /// <returns>A new vector that is the sum of the two vectors.</returns>
+        [CLMethod]
         public object __Add__(object self, object other)
         {
             return (self, other) switch
@@ -221,7 +287,11 @@ namespace CustomLogic
             };
         }
 
-        [CLMethod("Subtracts two vectors. Returns: A new vector that is the difference of the two vectors.")]
+        /// <summary>
+        /// Subtracts two vectors.
+        /// </summary>
+        /// <returns>A new vector that is the difference of the two vectors.</returns>
+        [CLMethod]
         public object __Sub__(object self, object other)
         {
             return (self, other) switch
@@ -231,7 +301,11 @@ namespace CustomLogic
             };
         }
 
-        [CLMethod("Multiplies a vector by a scalar or another vector. Returns: A new vector with the multiplied result.")]
+        /// <summary>
+        /// Multiplies a vector by a scalar or another vector.
+        /// </summary>
+        /// <returns>A new vector with the multiplied result.</returns>
+        [CLMethod]
         public object __Mul__(object self, object other)
         {
             return (self, other) switch
@@ -243,7 +317,11 @@ namespace CustomLogic
             };
         }
 
-        [CLMethod("Divides a vector by a scalar or another vector. Returns: A new vector with the divided result.")]
+        /// <summary>
+        /// Divides a vector by a scalar or another vector.
+        /// </summary>
+        /// <returns>A new vector with the divided result.</returns>
+        [CLMethod]
         public object __Div__(object self, object other)
         {
             return (self, other) switch
@@ -254,7 +332,11 @@ namespace CustomLogic
             };
         }
 
-        [CLMethod("Checks if two vectors are equal. Returns: True if the vectors are equal, false otherwise.")]
+        /// <summary>
+        /// Checks if two vectors are equal.
+        /// </summary>
+        /// <returns>True if the vectors are equal, false otherwise.</returns>
+        [CLMethod]
         public bool __Eq__(object self, object other)
         {
             return (self, other) switch
@@ -264,7 +346,11 @@ namespace CustomLogic
             };
         }
 
-        [CLMethod("Gets the hash code of the vector. Returns: The hash code.")]
+        /// <summary>
+        /// Gets the hash code of the vector.
+        /// </summary>
+        /// <returns>The hash code.</returns>
+        [CLMethod]
         public int __Hash__() => _value.GetHashCode();
 
         public object __Mod__(object self, object other)

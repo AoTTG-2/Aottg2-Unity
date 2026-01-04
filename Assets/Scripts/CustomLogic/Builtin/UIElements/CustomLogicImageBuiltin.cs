@@ -4,6 +4,9 @@ using Utility;
 
 namespace CustomLogic
 {
+    /// <summary>
+    /// UI element for setting background images on visual elements.
+    /// </summary>
     /// <code>
     /// # Example: Create a background image
     /// container = UI.CreateContainer();
@@ -11,13 +14,16 @@ namespace CustomLogic
     /// image.SetImage("Icons/Game/BladeIcon");
     /// container.SetBackgroundImage(image);
     /// </code>
-    [CLType(Name = "Image", Abstract = true, Description = "UI element for setting background images on visual elements.")]
+    [CLType(Name = "Image", Abstract = true)]
     partial class CustomLogicImageBuiltin : BuiltinClassInstance
     {
         private string _currentImagePath;
         private Texture2D _currentTexture;
 
-        [CLConstructor("Creates a new Image instance.")]
+        /// <summary>
+        /// Creates a new Image instance.
+        /// </summary>
+        [CLConstructor]
         public CustomLogicImageBuiltin()
         {
             _currentImagePath = string.Empty;
@@ -28,10 +34,12 @@ namespace CustomLogic
         /// image.SetImage("Icons/Game/BladeIcon");
         /// image.SetImage("Icons/Specials/NoneSpecialIcon");
         /// </example>
-        [CLMethod("Set the image from a resource path.")]
-        public CustomLogicImageBuiltin SetImage(
-            [CLParam("Path to the image resource (e.g., \"Icons/Game/BladeIcon\")")]
-            string imagePath)
+        /// <summary>
+        /// Set the image from a resource path.
+        /// </summary>
+        /// <param name="imagePath">Path to the image resource (e.g., "Icons/Game/BladeIcon").</param>
+        [CLMethod]
+        public CustomLogicImageBuiltin SetImage(string imagePath)
         {
             if (string.IsNullOrEmpty(imagePath))
             {
@@ -67,7 +75,10 @@ namespace CustomLogic
             return this;
         }
 
-        [CLProperty("The current image path. Setting this will load the image from the resource path.")]
+        /// <summary>
+        /// The current image path. Setting this will load the image from the resource path.
+        /// </summary>
+        [CLProperty]
         public string ImagePath
         {
             get => _currentImagePath;

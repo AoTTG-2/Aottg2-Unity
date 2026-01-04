@@ -4,16 +4,24 @@ using SimpleJSONFixed;
 
 namespace CustomLogic
 {
-    [CLType(Name = "Json", Static = true, Abstract = true, Description = "Serializes and deserializes primitive and struct values from and to json strings. Supports float, int, string, bool, Vector3, Quaternion, Color, Dict, and List. Dict and List must contain only the supported types, and can be nested.")]
+    /// <summary>
+    /// Serializes and deserializes primitive and struct values from and to json strings.
+    /// Supports float, int, string, bool, Vector3, Quaternion, Color, Dict, and List.
+    /// Dict and List must contain only the supported types, and can be nested.
+    /// </summary>
+    [CLType(Name = "Json", Static = true, Abstract = true)]
     partial class CustomLogicJsonBuiltin : BuiltinClassInstance
     {
         [CLConstructor]
         public CustomLogicJsonBuiltin(){}
 
-        [CLMethod("Loads a json string into a custom logic object.")]
-        public static object LoadFromString(
-            [CLParam("The json string to load.")]
-            string json)
+        /// <summary>
+        /// Loads a json string into a custom logic object.
+        /// </summary>
+        /// <param name="json">The json string to load.</param>
+        /// <returns>The loaded object, or null if loading failed.</returns>
+        [CLMethod]
+        public static object LoadFromString(string json)
         {
             string jsonTrim = json.Trim();
             JSONNode jsonNode;
@@ -36,10 +44,13 @@ namespace CustomLogic
 
         }
 
-        [CLMethod("Saves a custom logic object into a json string.")]
-        public static string SaveToString(
-            [CLParam("The object to save to json.")]
-            object obj)
+        /// <summary>
+        /// Saves a custom logic object into a json string.
+        /// </summary>
+        /// <param name="obj">The object to save to json.</param>
+        /// <returns>The json string representation of the object.</returns>
+        [CLMethod]
+        public static string SaveToString(object obj)
         {
             JSONNode json = SaveJSON(obj);
             return json.ToString(aIndent: 4);

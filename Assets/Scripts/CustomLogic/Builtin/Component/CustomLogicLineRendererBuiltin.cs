@@ -6,21 +6,28 @@ using Utility;
 
 namespace CustomLogic
 {
-    [CLType(Name = "LineRenderer", Static = true, IsComponent = true, Description = "Represents a LineRenderer.")]
+    /// <summary>
+    /// Represents a LineRenderer.
+    /// </summary>
+    [CLType(Name = "LineRenderer", Static = true, IsComponent = true)]
     partial class CustomLogicLineRendererBuiltin : BuiltinClassInstance
     {
         public LineRenderer Value = null;
 
-        [CLConstructor("Default constructor, creates a black line with a width of 1.")]
+        /// <summary>
+        /// Default constructor, creates a black line with a width of 1.
+        /// </summary>
+        [CLConstructor]
         public CustomLogicLineRendererBuiltin()
             : this(Color.black, 1f) { }
 
-        [CLConstructor("Creates a line with the given color and width.")]
-        public CustomLogicLineRendererBuiltin(
-            [CLParam("The color of the line.")]
-            CustomLogicColorBuiltin color,
-            [CLParam("The width of the line.")]
-            float width = 1f)
+        /// <summary>
+        /// Creates a line with the given color and width.
+        /// </summary>
+        /// <param name="color">The color of the line.</param>
+        /// <param name="width">The width of the line.</param>
+        [CLConstructor]
+        public CustomLogicLineRendererBuiltin(CustomLogicColorBuiltin color, float width = 1f)
             : this(color.Value.ToColor(), width) { }
 
         private CustomLogicLineRendererBuiltin(Color color, float width)
@@ -34,7 +41,10 @@ namespace CustomLogic
             Value.enabled = false;
         }
 
-        [CLMethod("Remove the line renderer (can also be done by removing all references to this object).")]
+        /// <summary>
+        /// Remove the line renderer (can also be done by removing all references to this object).
+        /// </summary>
+        [CLMethod]
         public void Destroy()
         {
             GameObject.Destroy(Value.gameObject);
@@ -49,98 +59,140 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("The width of the line at the start.")]
+        /// <summary>
+        /// The width of the line at the start.
+        /// </summary>
+        [CLProperty]
         public float StartWidth
         {
             get => Value.startWidth;
             set => Value.startWidth = value;
         }
 
-        [CLProperty("The width of the line at the end.")]
+        /// <summary>
+        /// The width of the line at the end.
+        /// </summary>
+        [CLProperty]
         public float EndWidth
         {
             get => Value.endWidth;
             set => Value.endWidth = value;
         }
 
-        [CLProperty("The color of the line.")]
+        /// <summary>
+        /// The color of the line.
+        /// </summary>
+        [CLProperty]
         public CustomLogicColorBuiltin LineColor
         {
             get => new CustomLogicColorBuiltin(new Color255(Value.material.color));
             set => Value.material.color = value.Value.ToColor();
         }
 
-        [CLProperty("The number of points in the line.")]
+        /// <summary>
+        /// The number of points in the line.
+        /// </summary>
+        [CLProperty]
         public int PositionCount
         {
             get => Value.positionCount;
             set => Value.positionCount = value;
         }
 
-        [CLProperty("Is the line renderer enabled.")]
+        /// <summary>
+        /// Is the line renderer enabled.
+        /// </summary>
+        [CLProperty]
         public new bool Enabled
         {
             get => Value.enabled;
             set => Value.enabled = value;
         }
 
-        [CLProperty("Is the line renderer a loop.")]
+        /// <summary>
+        /// Is the line renderer a loop.
+        /// </summary>
+        [CLProperty]
         public bool Loop
         {
             get => Value.loop;
             set => Value.loop = value;
         }
 
-        [CLProperty("The number of corner vertices.")]
+        /// <summary>
+        /// The number of corner vertices.
+        /// </summary>
+        [CLProperty]
         public int NumCornerVertices
         {
             get => Value.numCornerVertices;
             set => Value.numCornerVertices = value;
         }
 
-        [CLProperty("The number of end cap vertices.")]
+        /// <summary>
+        /// The number of end cap vertices.
+        /// </summary>
+        [CLProperty]
         public int NumCapVertices
         {
             get => Value.numCapVertices;
             set => Value.numCapVertices = value;
         }
 
-        [CLProperty("The alignment of the line renderer.")]
+        /// <summary>
+        /// The alignment of the line renderer.
+        /// </summary>
+        [CLProperty]
         public string Alignment
         {
             get => Value.alignment.ToString();
             set => Value.alignment = (LineAlignment)System.Enum.Parse(typeof(LineAlignment), value);
         }
 
-        [CLProperty("The texture mode of the line renderer.")]
+        /// <summary>
+        /// The texture mode of the line renderer.
+        /// </summary>
+        [CLProperty]
         public string TextureMode
         {
             get => Value.textureMode.ToString();
             set => Value.textureMode = (LineTextureMode)System.Enum.Parse(typeof(LineTextureMode), value);
         }
 
-        [CLProperty("Is the line renderer in world space.")]
+        /// <summary>
+        /// Is the line renderer in world space.
+        /// </summary>
+        [CLProperty]
         public bool UseWorldSpace
         {
             get => Value.useWorldSpace;
             set => Value.useWorldSpace = value;
         }
 
-        [CLProperty("Does the line renderer cast shadows.")]
+        /// <summary>
+        /// Does the line renderer cast shadows.
+        /// </summary>
+        [CLProperty]
         public string ShadowCastingMode
         {
             get => Value.shadowCastingMode.ToString();
             set => Value.shadowCastingMode = (UnityEngine.Rendering.ShadowCastingMode)System.Enum.Parse(typeof(UnityEngine.Rendering.ShadowCastingMode), value);
         }
 
-        [CLProperty("Does the line renderer receive shadows.")]
+        /// <summary>
+        /// Does the line renderer receive shadows.
+        /// </summary>
+        [CLProperty]
         public bool ReceiveShadows
         {
             get => Value.receiveShadows;
             set => Value.receiveShadows = value;
         }
 
-        [CLProperty(TypeArguments = new[] { "Color" }, Description = "The gradient of the line renderer.")]
+        /// <summary>
+        /// The gradient of the line renderer.
+        /// </summary>
+        [CLProperty(TypeArguments = new[] { "Color" })]
         public CustomLogicListBuiltin ColorGradient
         {
             get
@@ -172,7 +224,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(TypeArguments = new[] { "float" }, Description = "The alpha gradient of the line renderer.")]
+        /// <summary>
+        /// The alpha gradient of the line renderer.
+        /// </summary>
+        [CLProperty(TypeArguments = new[] { "float" })]
         public CustomLogicListBuiltin AlphaGradient
         {
             get
@@ -201,7 +256,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(TypeArguments = new[] { "Vector2" }, Description = "The width curve of the line renderer.")]
+        /// <summary>
+        /// The width curve of the line renderer.
+        /// </summary>
+        [CLProperty(TypeArguments = new[] { "Vector2" })]
         public CustomLogicListBuiltin WidthCurve
         {
             get
@@ -231,40 +289,54 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("The width multiplier of the line renderer.")]
+        /// <summary>
+        /// The width multiplier of the line renderer.
+        /// </summary>
+        [CLProperty]
         public float WidthMultiplier
         {
             get => Value.widthMultiplier;
             set => Value.widthMultiplier = value;
         }
 
-        [CLProperty("The color gradient mode of the line renderer.")]
+        /// <summary>
+        /// The color gradient mode of the line renderer.
+        /// </summary>
+        [CLProperty]
         public string ColorGradientMode
         {
             get => Value.colorGradient.mode.ToString();
             set => Value.colorGradient.mode = (GradientMode)System.Enum.Parse(typeof(GradientMode), value);
         }
 
-        [CLMethod("Create a new LineRenderer."), Obsolete("Create a new instance with LineRenderer() instead.")]
+        /// <summary>
+        /// Create a new LineRenderer.
+        /// </summary>
+        /// <returns>A new LineRenderer instance.</returns>
+        [CLMethod, Obsolete("Create a new instance with LineRenderer() instead.")]
         public static CustomLogicLineRendererBuiltin CreateLineRenderer()
         {
             return new CustomLogicLineRendererBuiltin();
         }
 
-        [CLMethod("Get the position of a point in the line renderer.")]
-        public CustomLogicVector3Builtin GetPosition(
-            [CLParam("The index of the point (0 to PositionCount-1).")]
-            int index)
+        /// <summary>
+        /// Get the position of a point in the line renderer.
+        /// </summary>
+        /// <param name="index">The index of the point (0 to PositionCount-1).</param>
+        /// <returns>The position of the point.</returns>
+        [CLMethod]
+        public CustomLogicVector3Builtin GetPosition(int index)
         {
             return new CustomLogicVector3Builtin(Value.GetPosition(index));
         }
 
-        [CLMethod("Set the position of a point in the line renderer.")]
-        public void SetPosition(
-            [CLParam("The index of the point to set (0 to PositionCount-1).")]
-            int index,
-            [CLParam("The position to set.")]
-            CustomLogicVector3Builtin position)
+        /// <summary>
+        /// Set the position of a point in the line renderer.
+        /// </summary>
+        /// <param name="index">The index of the point to set (0 to PositionCount-1).</param>
+        /// <param name="position">The position to set.</param>
+        [CLMethod]
+        public void SetPosition(int index, CustomLogicVector3Builtin position)
         {
             Value.SetPosition(index, position.Value);
         }

@@ -2,23 +2,30 @@
 
 namespace CustomLogic
 {
-    [CLType(Name = "Prefab", Static = false, Description = "Represents a prefab object that can be instantiated in the map. Currently handles single elements, not children.")]
+    /// <summary>
+    /// Represents a prefab object that can be instantiated in the map. Currently handles single elements, not children.
+    /// </summary>
+    [CLType(Name = "Prefab", Static = false)]
     partial class CustomLogicPrefabBuiltin : BuiltinClassInstance, ICustomLogicToString
     {
         public MapScriptSceneObject Value;
 
-        [CLConstructor("Creates a new empty Prefab instance.")]
+        /// <summary>
+        /// Creates a new empty Prefab instance.
+        /// </summary>
+        [CLConstructor]
         public CustomLogicPrefabBuiltin()
         {
             Value = new MapScriptSceneObject();
         }
 
-        [CLConstructor("Creates a new Prefab instance from a serialized CSV string.")]
-        public CustomLogicPrefabBuiltin(
-            [CLParam("The serialized CSV string describing the prefab.")]
-            string prefabCSV,
-            [CLParam("If true, clears all components from the prefab.")]
-            bool clearComponents = false)
+        /// <summary>
+        /// Creates a new Prefab instance from a serialized CSV string.
+        /// </summary>
+        /// <param name="prefabCSV">The serialized CSV string describing the prefab.</param>
+        /// <param name="clearComponents">If true, clears all components from the prefab.</param>
+        [CLConstructor]
+        public CustomLogicPrefabBuiltin(string prefabCSV, bool clearComponents = false)
         {
 
             prefabCSV = string.Join("", prefabCSV.Split('\n'));
@@ -30,7 +37,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("The type of the prefab asset.")]
+        /// <summary>
+        /// The type of the prefab asset.
+        /// </summary>
+        [CLProperty]
         public string AssetType
         {
             get => Value.Type;
@@ -41,7 +51,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("The asset path/name of the prefab.")]
+        /// <summary>
+        /// The asset path/name of the prefab.
+        /// </summary>
+        [CLProperty]
         public string Asset
         {
             get => Value.Asset; set
@@ -51,7 +64,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("Whether the prefab is active.")]
+        /// <summary>
+        /// Whether the prefab is active.
+        /// </summary>
+        [CLProperty]
         public bool Active
         {
             get => Value.Active; set
@@ -61,7 +77,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("Whether the prefab is marked as static.")]
+        /// <summary>
+        /// Whether the prefab is marked as static.
+        /// </summary>
+        [CLProperty]
         public bool Static
         {
             get => Value.Static; set
@@ -71,7 +90,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("Whether the prefab is visible.")]
+        /// <summary>
+        /// Whether the prefab is visible.
+        /// </summary>
+        [CLProperty]
         public bool Visible
         {
             get => Value.Visible; set
@@ -81,7 +103,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("The name of the prefab.")]
+        /// <summary>
+        /// The name of the prefab.
+        /// </summary>
+        [CLProperty]
         public string Name
         {
             get => Value.Name; set
@@ -91,7 +116,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("The position of the prefab in world space.")]
+        /// <summary>
+        /// The position of the prefab in world space.
+        /// </summary>
+        [CLProperty]
         public CustomLogicVector3Builtin Position
         {
             get => new CustomLogicVector3Builtin(Value.GetPosition());
@@ -102,7 +130,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("The rotation of the prefab in euler angles.")]
+        /// <summary>
+        /// The rotation of the prefab in euler angles.
+        /// </summary>
+        [CLProperty]
         public CustomLogicVector3Builtin Rotation
         {
             get => new CustomLogicVector3Builtin(Value.GetRotation());
@@ -113,7 +144,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("The scale of the prefab.")]
+        /// <summary>
+        /// The scale of the prefab.
+        /// </summary>
+        [CLProperty]
         public CustomLogicVector3Builtin Scale
         {
             get => new CustomLogicVector3Builtin(Value.GetScale());
@@ -124,7 +158,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("The collision mode of the prefab.")]
+        /// <summary>
+        /// The collision mode of the prefab.
+        /// </summary>
+        [CLProperty]
         public string CollideMode
         {
             get => Value.CollideMode; set
@@ -134,7 +171,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("The layers that this prefab can collide with.")]
+        /// <summary>
+        /// The layers that this prefab can collide with.
+        /// </summary>
+        [CLProperty]
         public string CollideWith
         {
             get => Value.CollideWith; set
@@ -144,7 +184,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("The name of the physics material applied to the prefab.")]
+        /// <summary>
+        /// The name of the physics material applied to the prefab.
+        /// </summary>
+        [CLProperty]
         public string PhysicsMaterial
         {
             get => Value.PhysicsMaterial; set
@@ -154,10 +197,17 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("If true and this prefab is spawned at runtime with networking, the ownership will transfer to host if the player who spawned it leaves.")]
+        /// <summary>
+        /// If true and this prefab is spawned at runtime with networking, the ownership will transfer to host
+        /// if the player who spawned it leaves.
+        /// </summary>
+        [CLProperty]
         public bool PersistsOwnership = false;
 
-        [CLMethod("Clears all components from the prefab.")]
+        /// <summary>
+        /// Clears all components from the prefab.
+        /// </summary>
+        [CLMethod]
         public void ClearComponents()
         {
             Value.Components.Clear();

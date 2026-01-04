@@ -2,107 +2,205 @@ using Effects;
 
 namespace CustomLogic
 {
-    // Refer to Assets/Scripts/Effects/EffectPrefabs.cs for the complete list of effects.
-    [CLType(Name = "EffectNameEnum", Static = true, Abstract = true, Description = "Enumeration of available effect names that can be spawned. Uses left-hand variable names from EffectPrefabs class.")]
+    /// <summary>
+    /// Enumeration of available effect names that can be spawned. Uses left-hand variable names from EffectPrefabs class.
+    /// </summary>
+    [CLType(Name = "EffectNameEnum", Static = true, Abstract = true)]
     partial class CustomLogicEffectNameEnum : BuiltinClassInstance
     {
         [CLConstructor]
         public CustomLogicEffectNameEnum() { }
 
-        [CLProperty("ThunderspearExplode effect.")]
+        /// <summary>
+        /// ThunderspearExplode effect.
+        /// </summary>
+        [CLProperty]
         public static string ThunderspearExplode => EffectPrefabs.ThunderspearExplode;
 
-        [CLProperty("GasBurst effect.")]
+        /// <summary>
+        /// GasBurst effect.
+        /// </summary>
+        [CLProperty]
         public static string GasBurst => EffectPrefabs.GasBurst;
 
-        [CLProperty("GroundShatter effect.")]
+        /// <summary>
+        /// GroundShatter effect.
+        /// </summary>
+        [CLProperty]
         public static string GroundShatter => EffectPrefabs.GroundShatter;
 
-        [CLProperty("Blood1 effect.")]
+        /// <summary>
+        /// Blood1 effect.
+        /// </summary>
+        [CLProperty]
         public static string Blood1 => EffectPrefabs.Blood1;
 
-        [CLProperty("Blood2 effect.")]
+        /// <summary>
+        /// Blood2 effect.
+        /// </summary>
+        [CLProperty]
         public static string Blood2 => EffectPrefabs.Blood2;
 
-        [CLProperty("PunchHit effect.")]
+        /// <summary>
+        /// PunchHit effect.
+        /// </summary>
+        [CLProperty]
         public static string PunchHit => EffectPrefabs.PunchHit;
 
-        [CLProperty("GunExplode effect.")]
+        /// <summary>
+        /// GunExplode effect.
+        /// </summary>
+        [CLProperty]
         public static string GunExplode => EffectPrefabs.GunExplode;
 
-        [CLProperty("CriticalHit effect.")]
+        /// <summary>
+        /// CriticalHit effect.
+        /// </summary>
+        [CLProperty]
         public static string CriticalHit => EffectPrefabs.CriticalHit;
 
-        [CLProperty("TitanSpawn effect.")]
+        /// <summary>
+        /// TitanSpawn effect.
+        /// </summary>
+        [CLProperty]
         public static string TitanSpawn => EffectPrefabs.TitanSpawn;
 
-        [CLProperty("TitanDie1 effect.")]
+        /// <summary>
+        /// TitanDie1 effect.
+        /// </summary>
+        [CLProperty]
         public static string TitanDie1 => EffectPrefabs.TitanDie1;
 
-        [CLProperty("TitanDie2 effect.")]
+        /// <summary>
+        /// TitanDie2 effect.
+        /// </summary>
+        [CLProperty]
         public static string TitanDie2 => EffectPrefabs.TitanDie2;
 
-        [CLProperty("Boom1 effect.")]
+        /// <summary>
+        /// Boom1 effect.
+        /// </summary>
+        [CLProperty]
         public static string Boom1 => EffectPrefabs.Boom1;
 
-        [CLProperty("Boom2 effect.")]
+        /// <summary>
+        /// Boom2 effect.
+        /// </summary>
+        [CLProperty]
         public static string Boom2 => EffectPrefabs.Boom2;
 
-        [CLProperty("Boom3 effect.")]
+        /// <summary>
+        /// Boom3 effect.
+        /// </summary>
+        [CLProperty]
         public static string Boom3 => EffectPrefabs.Boom3;
 
-        [CLProperty("Boom4 effect.")]
+        /// <summary>
+        /// Boom4 effect.
+        /// </summary>
+        [CLProperty]
         public static string Boom4 => EffectPrefabs.Boom4;
 
-        [CLProperty("Boom5 effect.")]
+        /// <summary>
+        /// Boom5 effect.
+        /// </summary>
+        [CLProperty]
         public static string Boom5 => EffectPrefabs.Boom5;
 
-        [CLProperty("Boom6 effect.")]
+        /// <summary>
+        /// Boom6 effect.
+        /// </summary>
+        [CLProperty]
         public static string Boom6 => EffectPrefabs.Boom6;
 
-        [CLProperty("Boom7 effect.")]
+        /// <summary>
+        /// Boom7 effect.
+        /// </summary>
+        [CLProperty]
         public static string Boom7 => EffectPrefabs.Boom7;
 
-        [CLProperty("Boom8 effect.")]
+        /// <summary>
+        /// Boom8 effect.
+        /// </summary>
+        [CLProperty]
         public static string Boom8 => EffectPrefabs.Boom8;
 
-        [CLProperty("Splash effect.")]
+        /// <summary>
+        /// Splash effect.
+        /// </summary>
+        [CLProperty]
         public static string Splash => EffectPrefabs.Splash;
 
-        [CLProperty("TitanBite effect.")]
+        /// <summary>
+        /// TitanBite effect.
+        /// </summary>
+        [CLProperty]
         public static string TitanBite => EffectPrefabs.TitanBite;
 
-        [CLProperty("ShifterThunder effect.")]
+        /// <summary>
+        /// ShifterThunder effect.
+        /// </summary>
+        [CLProperty]
         public static string ShifterThunder => EffectPrefabs.ShifterThunder;
 
-        [CLProperty("BladeThrowHit effect.")]
+        /// <summary>
+        /// BladeThrowHit effect.
+        /// </summary>
+        [CLProperty]
         public static string BladeThrowHit => EffectPrefabs.BladeThrowHit;
 
-        [CLProperty("APGTrail effect.")]
+        /// <summary>
+        /// APGTrail effect.
+        /// </summary>
+        [CLProperty]
         public static string APGTrail => EffectPrefabs.APGTrail;
 
-        [CLProperty("SingleSplash effect.")]
+        /// <summary>
+        /// SingleSplash effect.
+        /// </summary>
+        [CLProperty]
         public static string SingleSplash => EffectPrefabs.SingleSplash;
 
-        [CLProperty("Splash1 effect.")]
+        /// <summary>
+        /// Splash1 effect.
+        /// </summary>
+        [CLProperty]
         public static string Splash1 => EffectPrefabs.Splash1;
 
-        [CLProperty("Splash2 effect.")]
+        /// <summary>
+        /// Splash2 effect.
+        /// </summary>
+        [CLProperty]
         public static string Splash2 => EffectPrefabs.Splash2;
 
-        [CLProperty("Splash3 effect.")]
+        /// <summary>
+        /// Splash3 effect.
+        /// </summary>
+        [CLProperty]
         public static string Splash3 => EffectPrefabs.Splash3;
 
-        [CLProperty("WaterWake effect.")]
+        /// <summary>
+        /// WaterWake effect.
+        /// </summary>
+        [CLProperty]
         public static string WaterWake => EffectPrefabs.WaterWake;
 
-        [CLProperty("ColossalSpawn effect.")]
+        /// <summary>
+        /// ColossalSpawn effect.
+        /// </summary>
+        [CLProperty]
         public static string ColossalSpawn => EffectPrefabs.ColossalSpawn;
 
-        [CLProperty("ColossalRockSpawn effect.")]
+        /// <summary>
+        /// ColossalRockSpawn effect.
+        /// </summary>
+        [CLProperty]
         public static string ColossalRockSpawn => EffectPrefabs.ColossalRockSpawn;
 
-        [CLProperty("ColossalKick effect.")]
+        /// <summary>
+        /// ColossalKick effect.
+        /// </summary>
+        [CLProperty]
         public static string ColossalKick => EffectPrefabs.ColossalKick;
     }
 }

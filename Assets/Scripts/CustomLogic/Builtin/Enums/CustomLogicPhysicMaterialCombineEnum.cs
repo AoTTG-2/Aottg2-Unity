@@ -1,21 +1,36 @@
 namespace CustomLogic
 {
-    [CLType(Name = "PhysicMaterialCombineEnum", Static = true, Abstract = true, Description = "Enumeration of physics material combine modes for friction and bounce.")]
+    /// <summary>
+    /// Enumeration of physics material combine modes for friction and bounce.
+    /// </summary>
+    [CLType(Name = "PhysicMaterialCombineEnum", Static = true, Abstract = true)]
     partial class CustomLogicPhysicMaterialCombineEnum : BuiltinClassInstance
     {
         [CLConstructor]
         public CustomLogicPhysicMaterialCombineEnum() { }
 
-        [CLProperty("Minimum combine mode.")]
+        /// <summary>
+        /// Minimum combine mode.
+        /// </summary>
+        [CLProperty]
         public static int Minimum => 0;
 
-        [CLProperty("Multiply combine mode.")]
+        /// <summary>
+        /// Multiply combine mode.
+        /// </summary>
+        [CLProperty]
         public static int Multiply => 1;
 
-        [CLProperty("Maximum combine mode.")]
+        /// <summary>
+        /// Maximum combine mode.
+        /// </summary>
+        [CLProperty]
         public static int Maximum => 2;
 
-        [CLProperty("Average combine mode.")]
+        /// <summary>
+        /// Average combine mode.
+        /// </summary>
+        [CLProperty]
         public static int Average => 3;
     }
 }

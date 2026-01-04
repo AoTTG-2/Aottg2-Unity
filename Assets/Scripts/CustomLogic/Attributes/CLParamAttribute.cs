@@ -7,8 +7,6 @@ namespace CustomLogic
     [AttributeUsage(AttributeTargets.Parameter)]
     internal class CLParamAttribute : Attribute
     {
-        public string Description { get; set; }
-
         /// <summary>
         /// Generic type parameter name for this parameter.
         /// Use null or empty string for parameters that should use their default resolved type.
@@ -24,10 +22,7 @@ namespace CustomLogic
         /// </summary>
         public Type Enum { get; set; }
 
-        public CLParamAttribute(string description = "")
-        {
-            Description = description;
-        }
+        public CLParamAttribute() { }
     }
 }
 

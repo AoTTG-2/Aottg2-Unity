@@ -1,15 +1,24 @@
 namespace CustomLogic
 {
-    [CLType(Name = "CollideModeEnum", Static = true, Abstract = true, Description = "Enumeration of collision modes for colliders.")]
+    /// <summary>
+    /// Enumeration of collision modes for colliders.
+    /// </summary>
+    [CLType(Name = "CollideModeEnum", Static = true, Abstract = true)]
     partial class CustomLogicCollideModeEnum : BuiltinClassInstance
     {
         [CLConstructor]
         public CustomLogicCollideModeEnum() { }
 
-        [CLProperty("Region collision mode.")]
+        /// <summary>
+        /// Region collision mode.
+        /// </summary>
+        [CLProperty]
         public static string Region => "Region";
 
-        [CLProperty("Hitboxes collision mode.")]
+        /// <summary>
+        /// Hitboxes collision mode.
+        /// </summary>
+        [CLProperty]
         public static string Hitboxes => "Hitboxes";
     }
 }

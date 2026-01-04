@@ -1,27 +1,48 @@
 namespace CustomLogic
 {
-    [CLType(Name = "OutlineModeEnum", Static = true, Abstract = true, Description = "Enumeration of outline rendering modes for characters.")]
+    /// <summary>
+    /// Enumeration of outline rendering modes for characters.
+    /// </summary>
+    [CLType(Name = "OutlineModeEnum", Static = true, Abstract = true)]
     partial class CustomLogicOutlineModeEnum : BuiltinClassInstance
     {
         [CLConstructor]
         public CustomLogicOutlineModeEnum() { }
 
-        [CLProperty("OutlineAll: outlines all parts of the object.")]
+        /// <summary>
+        /// OutlineAll: outlines all parts of the object.
+        /// </summary>
+        [CLProperty]
         public static string OutlineAll => "OutlineAll";
 
-        [CLProperty("OutlineVisible: outlines only visible parts.")]
+        /// <summary>
+        /// OutlineVisible: outlines only visible parts.
+        /// </summary>
+        [CLProperty]
         public static string OutlineVisible => "OutlineVisible";
 
-        [CLProperty("OutlineHidden: outlines only hidden parts.")]
+        /// <summary>
+        /// OutlineHidden: outlines only hidden parts.
+        /// </summary>
+        [CLProperty]
         public static string OutlineHidden => "OutlineHidden";
 
-        [CLProperty("OutlineAndSilhouette: combines outline and silhouette.")]
+        /// <summary>
+        /// OutlineAndSilhouette: combines outline and silhouette.
+        /// </summary>
+        [CLProperty]
         public static string OutlineAndSilhouette => "OutlineAndSilhouette";
 
-        [CLProperty("SilhouetteOnly: shows only the silhouette.")]
+        /// <summary>
+        /// SilhouetteOnly: shows only the silhouette.
+        /// </summary>
+        [CLProperty]
         public static string SilhouetteOnly => "SilhouetteOnly";
 
-        [CLProperty("OutlineAndLightenColor: combines outline with lightened color.")]
+        /// <summary>
+        /// OutlineAndLightenColor: combines outline with lightened color.
+        /// </summary>
+        [CLProperty]
         public static string OutlineAndLightenColor => "OutlineAndLightenColor";
     }
 }

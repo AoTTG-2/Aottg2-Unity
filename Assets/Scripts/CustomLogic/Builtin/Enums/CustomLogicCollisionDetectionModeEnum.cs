@@ -1,21 +1,36 @@
 namespace CustomLogic
 {
-    [CLType(Name = "CollisionDetectionModeEnum", Static = true, Abstract = true, Description = "Enumeration of collision detection modes for rigidbodies.")]
+    /// <summary>
+    /// Enumeration of collision detection modes for rigidbodies.
+    /// </summary>
+    [CLType(Name = "CollisionDetectionModeEnum", Static = true, Abstract = true)]
     partial class CustomLogicCollisionDetectionModeEnum : BuiltinClassInstance
     {
         [CLConstructor]
         public CustomLogicCollisionDetectionModeEnum() { }
 
-        [CLProperty("Discrete collision detection mode.")]
+        /// <summary>
+        /// Discrete collision detection mode.
+        /// </summary>
+        [CLProperty]
         public static string Discrete => "Discrete";
 
-        [CLProperty("Continuous collision detection mode.")]
+        /// <summary>
+        /// Continuous collision detection mode.
+        /// </summary>
+        [CLProperty]
         public static string Continuous => "Continuous";
 
-        [CLProperty("ContinuousDynamic collision detection mode.")]
+        /// <summary>
+        /// ContinuousDynamic collision detection mode.
+        /// </summary>
+        [CLProperty]
         public static string ContinuousDynamic => "ContinuousDynamic";
 
-        [CLProperty("ContinuousSpeculative collision detection mode.")]
+        /// <summary>
+        /// ContinuousSpeculative collision detection mode.
+        /// </summary>
+        [CLProperty]
         public static string ContinuousSpeculative => "ContinuousSpeculative";
     }
 }

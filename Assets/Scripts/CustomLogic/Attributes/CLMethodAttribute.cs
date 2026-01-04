@@ -12,9 +12,6 @@ namespace CustomLogic
         /// </summary>
         public string[] ReturnTypeArguments { get; set; }
 
-        public CLMethodAttribute(string description = "")
-        {
-            Description = description;
-        }
+        public CLMethodAttribute() { }
     }
 }

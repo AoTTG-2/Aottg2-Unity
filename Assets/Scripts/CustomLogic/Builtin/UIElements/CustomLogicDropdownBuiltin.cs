@@ -4,7 +4,10 @@ using UnityEngine.UIElements;
 
 namespace CustomLogic
 {
-    [CLType(Name = "Dropdown", Abstract = true, Description = "A UI element that represents a dropdown selection field.")]
+    /// <summary>
+    /// A UI element that represents a dropdown selection field.
+    /// </summary>
+    [CLType(Name = "Dropdown", Abstract = true)]
     partial class CustomLogicDropdownBuiltin : CustomLogicVisualElementBuiltin
     {
         private readonly DropdownField _dropdown;
@@ -25,28 +28,40 @@ namespace CustomLogic
             CustomLogicManager.Evaluator.EvaluateMethod(_valueChangedEvent, new object[] { value });
         }
 
-        [CLProperty("The label text displayed next to the Dropdown.")]
+        /// <summary>
+        /// The label text displayed next to the Dropdown.
+        /// </summary>
+        [CLProperty]
         public string Label
         {
             get => _dropdown.label;
             set => _dropdown.label = value;
         }
 
-        [CLProperty("The currently selected value (option text).")]
+        /// <summary>
+        /// The currently selected value (option text).
+        /// </summary>
+        [CLProperty]
         public string Value
         {
             get => _dropdown.value;
             set => _dropdown.value = value;
         }
 
-        [CLProperty("The index of the currently selected option (0-based).")]
+        /// <summary>
+        /// The index of the currently selected option (0-based).
+        /// </summary>
+        [CLProperty]
         public int Index
         {
             get => _dropdown.index;
             set => _dropdown.index = value;
         }
 
-        [CLProperty(TypeArguments = new[] { "string" }, Description = "Gets the list of available choices.")]
+        /// <summary>
+        /// Gets the list of available choices.
+        /// </summary>
+        [CLProperty(TypeArguments = new[] { "string" })]
         public CustomLogicListBuiltin Choices
         {
             get
@@ -68,36 +83,44 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod("Sets the method to be called when the Dropdown value changes.")]
-        public CustomLogicDropdownBuiltin OnValueChanged(
-            [CLParam("Method that will be called with the new selected value as parameter")]
-            UserMethod valueChangedEvent)
+        /// <summary>
+        /// Sets the method to be called when the Dropdown value changes.
+        /// </summary>
+        /// <param name="valueChangedEvent">Method that will be called with the new selected value as parameter.</param>
+        [CLMethod]
+        public CustomLogicDropdownBuiltin OnValueChanged(UserMethod valueChangedEvent)
         {
             _valueChangedEvent = valueChangedEvent;
             return this;
         }
 
-        [CLMethod("Sets the value of the Dropdown without triggering any change events.")]
-        public void SetValueWithoutNotify(
-            [CLParam("The value to set.")]
-            string value)
+        /// <summary>
+        /// Sets the value of the Dropdown without triggering any change events.
+        /// </summary>
+        /// <param name="value">The value to set.</param>
+        [CLMethod]
+        public void SetValueWithoutNotify(string value)
         {
             _dropdown.SetValueWithoutNotify(value);
         }
 
-        [CLMethod("Sets the index of the selected option without triggering any change events.")]
-        public void SetIndexWithoutNotify(
-            [CLParam("The index of the option to select (0-based).")]
-            int index)
+        /// <summary>
+        /// Sets the index of the selected option without triggering any change events.
+        /// </summary>
+        /// <param name="index">The index of the option to select (0-based).</param>
+        [CLMethod]
+        public void SetIndexWithoutNotify(int index)
         {
             if (index >= 0 && index < _dropdown.choices.Count)
                 _dropdown.SetValueWithoutNotify(_dropdown.choices[index]);
         }
 
-        [CLMethod("Adds a choice to the dropdown options.")]
-        public CustomLogicDropdownBuiltin AddChoice(
-            [CLParam("The choice text to add.")]
-            string choice)
+        /// <summary>
+        /// Adds a choice to the dropdown options.
+        /// </summary>
+        /// <param name="choice">The choice text to add.</param>
+        [CLMethod]
+        public CustomLogicDropdownBuiltin AddChoice(string choice)
         {
             var choices = new List<string>(_dropdown.choices);
             choices.Add(choice);
@@ -105,10 +128,12 @@ namespace CustomLogic
             return this;
         }
 
-        [CLMethod("Removes a choice from the dropdown options.")]
-        public CustomLogicDropdownBuiltin RemoveChoice(
-            [CLParam("The choice text to remove.")]
-            string choice)
+        /// <summary>
+        /// Removes a choice from the dropdown options.
+        /// </summary>
+        /// <param name="choice">The choice text to remove.</param>
+        [CLMethod]
+        public CustomLogicDropdownBuiltin RemoveChoice(string choice)
         {
             var choices = new List<string>(_dropdown.choices);
             choices.Remove(choice);
@@ -116,7 +141,10 @@ namespace CustomLogic
             return this;
         }
 
-        [CLMethod("Clears all choices from the dropdown.")]
+        /// <summary>
+        /// Clears all choices from the dropdown.
+        /// </summary>
+        [CLMethod]
         public CustomLogicDropdownBuiltin ClearChoices()
         {
             _dropdown.choices = new List<string>();

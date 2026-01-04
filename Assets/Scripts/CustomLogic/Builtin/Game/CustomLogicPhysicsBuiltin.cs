@@ -4,6 +4,9 @@ using Utility;
 
 namespace CustomLogic
 {
+    /// <summary>
+    /// Static Physics class. Contains some common physics functions.
+    /// </summary>
     /// <code>
     /// start = Vector3(0);
     /// end = Vector3(10);
@@ -16,19 +19,24 @@ namespace CustomLogic
     /// Game.Print(result.Distance);
     /// Game.Print(result.Collider);
     /// </code>
-    [CLType(Name = "Physics", Static = true, Abstract = true, Description = "Static Physics class. Contains some common physics functions.")]
+    [CLType(Name = "Physics", Static = true, Abstract = true)]
     partial class CustomLogicPhysicsBuiltin : BuiltinClassInstance
     {
         [CLConstructor]
         public CustomLogicPhysicsBuiltin(){}
 
-        [CLMethod("Performs a line cast between two points, returns a LineCastHitResult object.")]
+        /// <summary>
+        /// Performs a line cast between two points.
+        /// </summary>
+        /// <param name="start">The start position of the line cast.</param>
+        /// <param name="end">The end position of the line cast.</param>
+        /// <param name="collideWith">The collision layer to check against.</param>
+        /// <returns>A LineCastHitResult object.</returns>
+        [CLMethod]
         public static CustomLogicLineCastHitResultBuiltin LineCast(
-            [CLParam("The start position of the line cast.")]
             CustomLogicVector3Builtin start,
-            [CLParam("The end position of the line cast.")]
             CustomLogicVector3Builtin end,
-            [CLParam("The collision layer to check against.", Enum = typeof(CustomLogicCollideWithEnum))]
+            [CLParam(Enum = typeof(CustomLogicCollideWithEnum))]
             string collideWith)
         {
             RaycastHit hit;
@@ -55,13 +63,18 @@ namespace CustomLogic
             return null;
         }
 
-        [CLMethod(ReturnTypeArguments = new[] { "LineCastHitResult" }, Description = "Performs a line cast between two points and returns a LineCastHitResult object for each element hit.")]
+        /// <summary>
+        /// Performs a line cast between two points and returns a LineCastHitResult object for each element hit.
+        /// </summary>
+        /// <param name="start">The start position of the line cast.</param>
+        /// <param name="end">The end position of the line cast.</param>
+        /// <param name="collideWith">The collision layer to check against.</param>
+        /// <returns>A list of LineCastHitResult objects.</returns>
+        [CLMethod(ReturnTypeArguments = new[] { "LineCastHitResult" })]
         public static CustomLogicListBuiltin LineCastAll(
-            [CLParam("The start position of the line cast.")]
             CustomLogicVector3Builtin start,
-            [CLParam("The end position of the line cast.")]
             CustomLogicVector3Builtin end,
-            [CLParam("The collision layer to check against.", Enum = typeof(CustomLogicCollideWithEnum))]
+            [CLParam(Enum = typeof(CustomLogicCollideWithEnum))]
             string collideWith)
         {
             var startPosition = start.Value;
@@ -92,15 +105,20 @@ namespace CustomLogic
             return results;
         }
 
-        [CLMethod("Performs a sphere cast between two points, returns the object hit (Human, Titan, etc...).")]
+        /// <summary>
+        /// Performs a sphere cast between two points.
+        /// </summary>
+        /// <param name="start">The start position of the sphere cast.</param>
+        /// <param name="end">The end position of the sphere cast.</param>
+        /// <param name="radius">The radius of the sphere.</param>
+        /// <param name="collideWith">The collision layer to check against.</param>
+        /// <returns>The object hit (Human, Titan, etc...), or null if nothing was hit.</returns>
+        [CLMethod]
         public static object SphereCast(
-            [CLParam("The start position of the sphere cast.")]
             CustomLogicVector3Builtin start,
-            [CLParam("The end position of the sphere cast.")]
             CustomLogicVector3Builtin end,
-            [CLParam("The radius of the sphere.")]
             float radius,
-            [CLParam("The collision layer to check against.", Enum = typeof(CustomLogicCollideWithEnum))]
+            [CLParam(Enum = typeof(CustomLogicCollideWithEnum))]
             string collideWith)
         {
             RaycastHit hit;
@@ -115,15 +133,20 @@ namespace CustomLogic
             return null;
         }
 
-        [CLMethod(ReturnTypeArguments = new[] { "LineCastHitResult" }, Description = "Performs a sphere cast between two points and returns a LineCastHitResult object for each element hit.")]
+        /// <summary>
+        /// Performs a sphere cast between two points and returns a LineCastHitResult object for each element hit.
+        /// </summary>
+        /// <param name="start">The start position of the sphere cast.</param>
+        /// <param name="end">The end position of the sphere cast.</param>
+        /// <param name="radius">The radius of the sphere.</param>
+        /// <param name="collideWith">The collision layer to check against.</param>
+        /// <returns>A list of LineCastHitResult objects.</returns>
+        [CLMethod(ReturnTypeArguments = new[] { "LineCastHitResult" })]
         public static CustomLogicListBuiltin SphereCastAll(
-            [CLParam("The start position of the sphere cast.")]
             CustomLogicVector3Builtin start,
-            [CLParam("The end position of the sphere cast.")]
             CustomLogicVector3Builtin end,
-            [CLParam("The radius of the sphere.")]
             float radius,
-            [CLParam("The collision layer to check against.", Enum = typeof(CustomLogicCollideWithEnum))]
+            [CLParam(Enum = typeof(CustomLogicCollideWithEnum))]
             string collideWith)
         {
             var startPosition = start.Value;
@@ -154,17 +177,22 @@ namespace CustomLogic
             return results;
         }
 
-        [CLMethod("Performs a box cast between two points, returns the object hit (Human, Titan, etc...).")]
+        /// <summary>
+        /// Performs a box cast between two points.
+        /// </summary>
+        /// <param name="start">The start position of the box cast.</param>
+        /// <param name="end">The end position of the box cast.</param>
+        /// <param name="dimensions">The dimensions of the box.</param>
+        /// <param name="orientation">The orientation of the box.</param>
+        /// <param name="collideWith">The collision layer to check against.</param>
+        /// <returns>The object hit (Human, Titan, etc...), or null if nothing was hit.</returns>
+        [CLMethod]
         public static object BoxCast(
-            [CLParam("The start position of the box cast.")]
             CustomLogicVector3Builtin start,
-            [CLParam("The end position of the box cast.")]
             CustomLogicVector3Builtin end,
-            [CLParam("The dimensions of the box.")]
             CustomLogicVector3Builtin dimensions,
-            [CLParam("The orientation of the box.")]
             CustomLogicQuaternionBuiltin orientation,
-            [CLParam("The collision layer to check against.", Enum = typeof(CustomLogicCollideWithEnum))]
+            [CLParam(Enum = typeof(CustomLogicCollideWithEnum))]
             string collideWith)
         {
             var startPosition = start.Value;
@@ -179,17 +207,22 @@ namespace CustomLogic
             return null;
         }
 
-        [CLMethod(ReturnTypeArguments = new[] { "LineCastHitResult" }, Description = "Performs a box cast between two points and returns a LineCastHitResult object for each element hit.")]
+        /// <summary>
+        /// Performs a box cast between two points and returns a LineCastHitResult object for each element hit.
+        /// </summary>
+        /// <param name="start">The start position of the box cast.</param>
+        /// <param name="end">The end position of the box cast.</param>
+        /// <param name="dimensions">The dimensions of the box.</param>
+        /// <param name="orientation">The orientation of the box.</param>
+        /// <param name="collideWith">The collision layer to check against.</param>
+        /// <returns>A list of LineCastHitResult objects.</returns>
+        [CLMethod(ReturnTypeArguments = new[] { "LineCastHitResult" })]
         public static CustomLogicListBuiltin BoxCastAll(
-            [CLParam("The start position of the box cast.")]
             CustomLogicVector3Builtin start,
-            [CLParam("The end position of the box cast.")]
             CustomLogicVector3Builtin end,
-            [CLParam("The dimensions of the box.")]
             CustomLogicVector3Builtin dimensions,
-            [CLParam("The orientation of the box.")]
             CustomLogicQuaternionBuiltin orientation,
-            [CLParam("The collision layer to check against.", Enum = typeof(CustomLogicCollideWithEnum))]
+            [CLParam(Enum = typeof(CustomLogicCollideWithEnum))]
             string collideWith)
         {
             var startPosition = start.Value;
@@ -220,33 +253,41 @@ namespace CustomLogic
             return results;
         }
 
-        [CLMethod("Returns a point on the given collider that is closest to the specified location.")]
+        /// <summary>
+        /// Returns a point on the given collider that is closest to the specified location.
+        /// </summary>
+        /// <param name="point">The point to find the closest point to.</param>
+        /// <param name="collider">The collider to check.</param>
+        /// <param name="position">The position of the collider.</param>
+        /// <param name="rotation">The rotation of the collider.</param>
+        /// <returns>The closest point on the collider.</returns>
+        [CLMethod]
         public static CustomLogicVector3Builtin ClosestPoint(
-            [CLParam("The point to find the closest point to.")]
             CustomLogicVector3Builtin point,
-            [CLParam("The collider to check.")]
             CustomLogicColliderBuiltin collider,
-            [CLParam("The position of the collider.")]
             CustomLogicVector3Builtin position,
-            [CLParam("The rotation of the collider.")]
             CustomLogicQuaternionBuiltin rotation)
         {
             return new CustomLogicVector3Builtin(Physics.ClosestPoint(point.Value, collider.collider, position.Value, rotation.Value));
         }
 
-        [CLMethod("Compute the minimal translation required to separate the given colliders apart at specified poses. Returns Vector3.Zero if the colliders are not intersecting.")]
+        /// <summary>
+        /// Compute the minimal translation required to separate the given colliders apart at specified poses.
+        /// </summary>
+        /// <param name="colliderA">The first collider.</param>
+        /// <param name="positionA">The position of the first collider.</param>
+        /// <param name="rotationA">The rotation of the first collider.</param>
+        /// <param name="colliderB">The second collider.</param>
+        /// <param name="positionB">The position of the second collider.</param>
+        /// <param name="rotationB">The rotation of the second collider.</param>
+        /// <returns>Vector3.Zero if the colliders are not intersecting, otherwise the minimal translation vector.</returns>
+        [CLMethod]
         public static CustomLogicVector3Builtin ComputePenetration(
-            [CLParam("The first collider.")]
             CustomLogicColliderBuiltin colliderA,
-            [CLParam("The position of the first collider.")]
             CustomLogicVector3Builtin positionA,
-            [CLParam("The rotation of the first collider.")]
             CustomLogicQuaternionBuiltin rotationA,
-            [CLParam("The second collider.")]
             CustomLogicColliderBuiltin colliderB,
-            [CLParam("The position of the second collider.")]
             CustomLogicVector3Builtin positionB,
-            [CLParam("The rotation of the second collider.")]
             CustomLogicQuaternionBuiltin rotationB)
         {
             bool intersected = Physics.ComputePenetration(colliderA.collider, positionA.Value, rotationA.Value, colliderB.collider, positionB, rotationB, out Vector3 direction, out float distance);
@@ -255,19 +296,23 @@ namespace CustomLogic
             return new CustomLogicVector3Builtin(direction * distance);
         }
 
-        [CLMethod("Check if the the given colliders at specified poses are apart or overlapping.")]
+        /// <summary>
+        /// Check if the the given colliders at specified poses are apart or overlapping.
+        /// </summary>
+        /// <param name="colliderA">The first collider.</param>
+        /// <param name="positionA">The position of the first collider.</param>
+        /// <param name="rotationA">The rotation of the first collider.</param>
+        /// <param name="colliderB">The second collider.</param>
+        /// <param name="positionB">The position of the second collider.</param>
+        /// <param name="rotationB">The rotation of the second collider.</param>
+        /// <returns>True if the colliders are overlapping, false otherwise.</returns>
+        [CLMethod]
         public static bool AreCollidersOverlapping(
-            [CLParam("The first collider.")]
             CustomLogicColliderBuiltin colliderA,
-            [CLParam("The position of the first collider.")]
             CustomLogicVector3Builtin positionA,
-            [CLParam("The rotation of the first collider.")]
             CustomLogicQuaternionBuiltin rotationA,
-            [CLParam("The second collider.")]
             CustomLogicColliderBuiltin colliderB,
-            [CLParam("The position of the second collider.")]
             CustomLogicVector3Builtin positionB,
-            [CLParam("The rotation of the second collider.")]
             CustomLogicQuaternionBuiltin rotationB)
         {
             return Physics.ComputePenetration(colliderA.collider, positionA.Value, rotationA.Value, colliderB.collider, positionB, rotationB, out Vector3 direction, out float distance);

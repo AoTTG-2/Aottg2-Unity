@@ -1,27 +1,48 @@
 namespace CustomLogic
 {
-    [CLType(Name = "TSKillSoundEnum", Static = true, Abstract = true, Description = "Enumeration of Thunderspear kill sound types for effect spawning.")]
+    /// <summary>
+    /// Enumeration of Thunderspear kill sound types for effect spawning.
+    /// </summary>
+    [CLType(Name = "TSKillSoundEnum", Static = true, Abstract = true)]
     partial class CustomLogicTSKillSoundEnum : BuiltinClassInstance
     {
         [CLConstructor]
         public CustomLogicTSKillSoundEnum() { }
 
-        [CLProperty("Kill sound type.")]
+        /// <summary>
+        /// Kill sound type.
+        /// </summary>
+        [CLProperty]
         public static string Kill => "Kill";
 
-        [CLProperty("Air sound type.")]
+        /// <summary>
+        /// Air sound type.
+        /// </summary>
+        [CLProperty]
         public static string Air => "Air";
 
-        [CLProperty("Ground sound type.")]
+        /// <summary>
+        /// Ground sound type.
+        /// </summary>
+        [CLProperty]
         public static string Ground => "Ground";
 
-        [CLProperty("ArmorHit sound type.")]
+        /// <summary>
+        /// ArmorHit sound type.
+        /// </summary>
+        [CLProperty]
         public static string ArmorHit => "ArmorHit";
 
-        [CLProperty("CloseShot sound type.")]
+        /// <summary>
+        /// CloseShot sound type.
+        /// </summary>
+        [CLProperty]
         public static string CloseShot => "CloseShot";
 
-        [CLProperty("MaxRangeShot sound type.")]
+        /// <summary>
+        /// MaxRangeShot sound type.
+        /// </summary>
+        [CLProperty]
         public static string MaxRangeShot => "MaxRangeShot";
     }
 }

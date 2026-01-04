@@ -4,6 +4,9 @@ using System.Text;
 
 namespace CustomLogic
 {
+    /// <summary>
+    /// Ordered collection of objects.
+    /// </summary>
     /// <code>
     /// values = List(1,2,1,4,115);
     /// 
@@ -37,21 +40,26 @@ namespace CustomLogic
     ///     return a * 2;
     /// }
     /// </code>
-    [CLType(Name = "List", TypeParameters = new[] { "T" }, Description = "Ordered collection of objects.")]
+    [CLType(Name = "List", TypeParameters = new[] { "T" })]
     partial class CustomLogicListBuiltin : BuiltinClassInstance
     {
         public List<object> List = new List<object>();
         private readonly bool _isReadOnly;
 
-        [CLConstructor("Creates an empty list.")]
+        /// <summary>
+        /// Creates an empty list.
+        /// </summary>
+        [CLConstructor]
         public CustomLogicListBuiltin()
         {
         }
 
-        [CLConstructor("Creates a list with the specified values.")]
-        public CustomLogicListBuiltin(
-            [CLParam("The values to add to the list.")]
-            params object[] parameterValues)
+        /// <summary>
+        /// Creates a list with the specified values.
+        /// </summary>
+        /// <param name="parameterValues">The values to add to the list.</param>
+        [CLConstructor]
+        public CustomLogicListBuiltin(params object[] parameterValues)
         {
             foreach (var item in parameterValues) List.Add(item);
         }
@@ -62,10 +70,16 @@ namespace CustomLogic
             _isReadOnly = isReadOnly;
         }
 
-        [CLProperty("The number of elements in the list.")]
+        /// <summary>
+        /// The number of elements in the list.
+        /// </summary>
+        [CLProperty]
         public int Count => List.Count;
 
-        [CLMethod("Clear all list elements.")]
+        /// <summary>
+        /// Clear all list elements.
+        /// </summary>
+        [CLMethod]
         public void Clear()
         {
             if (_isReadOnly)
@@ -73,21 +87,24 @@ namespace CustomLogic
             List.Clear();
         }
 
-        [CLMethod(ReturnTypeArguments = new[] { "T" }, Description = "Get the element at the specified index.")]
-        public object Get(
-            [CLParam("The index of the element to get (negative indices count from the end).")]
-            int index)
+        /// <summary>
+        /// Get the element at the specified index.
+        /// </summary>
+        /// <param name="index">The index of the element to get (negative indices count from the end).</param>
+        [CLMethod(ReturnTypeArguments = new[] { "T" })]
+        public object Get(int index)
         {
             if (index < 0) index += List.Count;
             return List[index];
         }
 
-        [CLMethod("Set the element at the specified index.")]
-        public void Set(
-            [CLParam("The index of the element to set (negative indices count from the end).")]
-            int index,
-            [CLParam("The value to set.", Type = "T")]
-            object value)
+        /// <summary>
+        /// Set the element at the specified index.
+        /// </summary>
+        /// <param name="index">The index of the element to set (negative indices count from the end).</param>
+        /// <param name="value">The value to set.</param>
+        [CLMethod]
+        public void Set(int index, object value)
         {
             if (_isReadOnly)
                 throw new System.Exception("Cannot modify a read-only list.");
@@ -95,22 +112,25 @@ namespace CustomLogic
             List[index] = value;
         }
 
-        [CLMethod("Add an element to the end of the list.")]
-        public void Add(
-            [CLParam("The element to add.", Type = "T")]
-            object value)
+        /// <summary>
+        /// Add an element to the end of the list.
+        /// </summary>
+        /// <param name="value">The element to add.</param>
+        [CLMethod]
+        public void Add(object value)
         {
             if (_isReadOnly)
                 throw new System.Exception("Cannot modify a read-only list.");
             List.Add(value);
         }
 
-        [CLMethod("Insert an element at the specified index.")]
-        public void InsertAt(
-            [CLParam("The index at which to insert (negative indices count from the end).")]
-            int index,
-            [CLParam("The element to insert.", Type = "T")]
-            object value)
+        /// <summary>
+        /// Insert an element at the specified index.
+        /// </summary>
+        /// <param name="index">The index at which to insert (negative indices count from the end).</param>
+        /// <param name="value">The element to insert.</param>
+        [CLMethod]
+        public void InsertAt(int index, object value)
         {
             if (_isReadOnly)
                 throw new System.Exception("Cannot modify a read-only list.");
@@ -118,10 +138,12 @@ namespace CustomLogic
             List.Insert(index, value);
         }
 
-        [CLMethod("Remove the element at the specified index.")]
-        public void RemoveAt(
-            [CLParam("The index of the element to remove (negative indices count from the end).")]
-            int index)
+        /// <summary>
+        /// Remove the element at the specified index.
+        /// </summary>
+        /// <param name="index">The index of the element to remove (negative indices count from the end).</param>
+        [CLMethod]
+        public void RemoveAt(int index)
         {
             if (_isReadOnly)
                 throw new System.Exception("Cannot modify a read-only list.");
@@ -129,25 +151,32 @@ namespace CustomLogic
             List.RemoveAt(index);
         }
 
-        [CLMethod("Remove the first occurrence of the specified element.")]
-        public void Remove(
-            [CLParam("The element to remove.", Type = "T")]
-            object value)
+        /// <summary>
+        /// Remove the first occurrence of the specified element.
+        /// </summary>
+        /// <param name="value">The element to remove.</param>
+        [CLMethod]
+        public void Remove(object value)
         {
             if (_isReadOnly)
                 throw new System.Exception("Cannot modify a read-only list.");
             List.Remove(value);
         }
 
-        [CLMethod("Check if the list contains the specified element.")]
-        public bool Contains(
-            [CLParam("The element to check for.", Type = "T")]
-            object value)
+        /// <summary>
+        /// Check if the list contains the specified element.
+        /// </summary>
+        /// <param name="value">The element to check for.</param>
+        [CLMethod]
+        public bool Contains(object value)
         {
             return List.Any(e => CustomLogicManager.Evaluator.CheckEquals(e, value));
         }
 
-        [CLMethod("Sort the list.")]
+        /// <summary>
+        /// Sort the list.
+        /// </summary>
+        [CLMethod]
         public void Sort()
         {
             if (_isReadOnly)
@@ -155,10 +184,12 @@ namespace CustomLogic
             List.Sort();
         }
 
-        [CLMethod("Sort the list using a custom method, expects a method with the signature int method(a,b).")]
-        public void SortCustom(
-            [CLParam("The comparison method that returns an int: negative if a < b, 0 if a == b, positive if a > b.")]
-            UserMethod method)
+        /// <summary>
+        /// Sort the list using a custom method, expects a method with the signature int method(a,b).
+        /// </summary>
+        /// <param name="method">The comparison method that returns an int: negative if a &lt; b, 0 if a == b, positive if a &gt; b.</param>
+        [CLMethod]
+        public void SortCustom(UserMethod method)
         {
             if (_isReadOnly)
                 throw new System.Exception("Cannot modify a read-only list.");
@@ -167,37 +198,45 @@ namespace CustomLogic
 
         // Add linq operations using UserMethod as the function
 
-        [CLMethod(ReturnTypeArguments = new[] { "T" }, Description = "Filter the list using a custom method, expects a method with the signature bool method(element).")]
-        public CustomLogicListBuiltin Filter(
-            [CLParam("The predicate method that returns true for elements to keep.")]
-            UserMethod method)
+        /// <summary>
+        /// Filter the list using a custom method, expects a method with the signature bool method(element).
+        /// </summary>
+        /// <param name="method">The predicate method that returns true for elements to keep.</param>
+        [CLMethod(ReturnTypeArguments = new[] { "T" })]
+        public CustomLogicListBuiltin Filter(UserMethod method)
         {
             CustomLogicListBuiltin newList = new CustomLogicListBuiltin();
             newList.List = List.Where(e => (bool)CustomLogicManager.Evaluator.EvaluateMethod(method, new object[] { e })).ToList();
             return newList;
         }
 
-        [CLMethod(ReturnTypeArguments = new[] { "T" }, Description = "Map the list using a custom method, expects a method with the signature object method(element).")]
-        public CustomLogicListBuiltin Map(
-            [CLParam("The transformation method that returns the mapped value for each element.")]
-            UserMethod method)
+        /// <summary>
+        /// Map the list using a custom method, expects a method with the signature object method(element).
+        /// </summary>
+        /// <param name="method">The transformation method that returns the mapped value for each element.</param>
+        [CLMethod(ReturnTypeArguments = new[] { "T" })]
+        public CustomLogicListBuiltin Map(UserMethod method)
         {
             CustomLogicListBuiltin newList = new CustomLogicListBuiltin();
             newList.List = List.Select(e => CustomLogicManager.Evaluator.EvaluateMethod(method, new object[] { e })).ToList();
             return newList;
         }
 
-        [CLMethod(Description = "Reduce the list using a custom method, expects a method with the signature object method(acc, element).")]
-        public object Reduce(
-            [CLParam("The accumulation method that combines the accumulator with each element.")]
-            UserMethod method,
-            [CLParam("The initial accumulator value.", Type = "T")]
-            object initialValue)
+        /// <summary>
+        /// Reduce the list using a custom method, expects a method with the signature object method(acc, element).
+        /// </summary>
+        /// <param name="method">The accumulation method that combines the accumulator with each element.</param>
+        /// <param name="initialValue">The initial accumulator value.</param>
+        [CLMethod]
+        public object Reduce(UserMethod method, object initialValue)
         {
             return List.Aggregate(initialValue, (acc, e) => CustomLogicManager.Evaluator.EvaluateMethod(method, new object[] { acc, e }));
         }
 
-        [CLMethod(ReturnTypeArguments = new[] { "T" }, Description = "Returns a randomized version of the list.")]
+        /// <summary>
+        /// Returns a randomized version of the list.
+        /// </summary>
+        [CLMethod(ReturnTypeArguments = new[] { "T" })]
         public CustomLogicListBuiltin Randomize()
         {
             CustomLogicListBuiltin newList = new CustomLogicListBuiltin();
@@ -206,7 +245,10 @@ namespace CustomLogic
             return newList;
         }
 
-        [CLMethod(ReturnTypeArguments = new[] { "T" }, Description = "Convert the list to a set.")]
+        /// <summary>
+        /// Convert the list to a set.
+        /// </summary>
+        [CLMethod(ReturnTypeArguments = new[] { "T" })]
         public CustomLogicSetBuiltin ToSet()
         {
             CustomLogicSetBuiltin newSet = new CustomLogicSetBuiltin();

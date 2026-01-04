@@ -1,18 +1,30 @@
 namespace CustomLogic
 {
-    [CLType(Name = "PlayerStatusEnum", Static = true, Abstract = true, Description = "Enumeration of player status types.")]
+    /// <summary>
+    /// Enumeration of player status types.
+    /// </summary>
+    [CLType(Name = "PlayerStatusEnum", Static = true, Abstract = true)]
     partial class CustomLogicPlayerStatusEnum : BuiltinClassInstance
     {
         [CLConstructor]
         public CustomLogicPlayerStatusEnum() { }
 
-        [CLProperty("Player is alive.")]
+        /// <summary>
+        /// Player is alive.
+        /// </summary>
+        [CLProperty]
         public static string Alive => "Alive";
 
-        [CLProperty("Player is dead.")]
+        /// <summary>
+        /// Player is dead.
+        /// </summary>
+        [CLProperty]
         public static string Dead => "Dead";
 
-        [CLProperty("Player is spectating.")]
+        /// <summary>
+        /// Player is spectating.
+        /// </summary>
+        [CLProperty]
         public static string Spectating => "Spectating";
     }
 }

@@ -1,27 +1,48 @@
 namespace CustomLogic
 {
-    [CLType(Name = "ProjectileNameEnum", Static = true, Abstract = true, Description = "Enumeration of projectile names that can be spawned.")]
+    /// <summary>
+    /// Enumeration of projectile names that can be spawned.
+    /// </summary>
+    [CLType(Name = "ProjectileNameEnum", Static = true, Abstract = true)]
     partial class CustomLogicProjectileNameEnum : BuiltinClassInstance
     {
         [CLConstructor]
         public CustomLogicProjectileNameEnum() { }
 
-        [CLProperty("Thunderspear projectile.")]
+        /// <summary>
+        /// Thunderspear projectile.
+        /// </summary>
+        [CLProperty]
         public static string Thunderspear => "Thunderspear";
 
-        [CLProperty("CannonBall projectile.")]
+        /// <summary>
+        /// CannonBall projectile.
+        /// </summary>
+        [CLProperty]
         public static string CannonBall => "CannonBall";
 
-        [CLProperty("Flare projectile.")]
+        /// <summary>
+        /// Flare projectile.
+        /// </summary>
+        [CLProperty]
         public static string Flare => "Flare";
 
-        [CLProperty("BladeThrow projectile.")]
+        /// <summary>
+        /// BladeThrow projectile.
+        /// </summary>
+        [CLProperty]
         public static string BladeThrow => "BladeThrow";
 
-        [CLProperty("SmokeBomb projectile.")]
+        /// <summary>
+        /// SmokeBomb projectile.
+        /// </summary>
+        [CLProperty]
         public static string SmokeBomb => "SmokeBomb";
 
-        [CLProperty("Rock1 projectile.")]
+        /// <summary>
+        /// Rock1 projectile.
+        /// </summary>
+        [CLProperty]
         public static string Rock1 => "Rock1";
     }
 }

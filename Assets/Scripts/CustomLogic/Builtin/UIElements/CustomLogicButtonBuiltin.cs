@@ -2,7 +2,10 @@ using UnityEngine.UIElements;
 
 namespace CustomLogic
 {
-    [CLType(Name = "Button", Abstract = true, Description = "A UI element that represents a clickable button.")]
+    /// <summary>
+    /// A UI element that represents a clickable button.
+    /// </summary>
+    [CLType(Name = "Button", Abstract = true)]
     partial class CustomLogicButtonBuiltin : CustomLogicVisualElementBuiltin
     {
         private readonly Button _button;
@@ -23,24 +26,32 @@ namespace CustomLogic
             CustomLogicManager.Evaluator.EvaluateMethod(_clickEvent);
         }
 
-        [CLProperty("The text displayed by the Button.")]
+        /// <summary>
+        /// The text displayed by the Button.
+        /// </summary>
+        [CLProperty]
         public string Text
         {
             get => _button.text;
             set => _button.text = value;
         }
 
-        [CLProperty("When false, rich text tags will not be parsed.")]
+        /// <summary>
+        /// When false, rich text tags will not be parsed.
+        /// </summary>
+        [CLProperty]
         public bool EnableRichText
         {
             get => _button.enableRichText;
             set => _button.enableRichText = value;
         }
 
-        [CLMethod("Sets the method to be called when the Button is clicked.")]
-        public CustomLogicButtonBuiltin OnClick(
-            [CLParam("The method to call when the button is clicked.")]
-            UserMethod clickEvent)
+        /// <summary>
+        /// Sets the method to be called when the Button is clicked.
+        /// </summary>
+        /// <param name="clickEvent">The method to call when the button is clicked.</param>
+        [CLMethod]
+        public CustomLogicButtonBuiltin OnClick(UserMethod clickEvent)
         {
             _clickEvent = clickEvent;
             return this;

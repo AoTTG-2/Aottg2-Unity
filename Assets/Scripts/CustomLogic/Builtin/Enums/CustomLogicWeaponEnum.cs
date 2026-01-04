@@ -1,21 +1,36 @@
 namespace CustomLogic
 {
-    [CLType(Name = "WeaponEnum", Static = true, Abstract = true, Description = "Enumeration of available weapon types for humans.")]
+    /// <summary>
+    /// Enumeration of available weapon types for humans.
+    /// </summary>
+    [CLType(Name = "WeaponEnum", Static = true, Abstract = true)]
     partial class CustomLogicWeaponEnum : BuiltinClassInstance
     {
         [CLConstructor]
         public CustomLogicWeaponEnum() { }
 
-        [CLProperty("Blade weapon type.")]
+        /// <summary>
+        /// Blade weapon type.
+        /// </summary>
+        [CLProperty]
         public static string Blade => "Blade";
 
-        [CLProperty("AHSS weapon type.")]
+        /// <summary>
+        /// AHSS weapon type.
+        /// </summary>
+        [CLProperty]
         public static string AHSS => "AHSS";
 
-        [CLProperty("APG weapon type.")]
+        /// <summary>
+        /// APG weapon type.
+        /// </summary>
+        [CLProperty]
         public static string APG => "APG";
 
-        [CLProperty("Thunderspear weapon type.")]
+        /// <summary>
+        /// Thunderspear weapon type.
+        /// </summary>
+        [CLProperty]
         public static string Thunderspear => "Thunderspear";
     }
 }

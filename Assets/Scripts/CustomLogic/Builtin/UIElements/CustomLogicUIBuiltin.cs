@@ -10,7 +10,10 @@ using Utility;
 
 namespace CustomLogic
 {
-    [CLType(Name = "UI", Static = true, Abstract = true, Description = "UI label functions.")]
+    /// <summary>
+    /// UI label functions.
+    /// </summary>
+    [CLType(Name = "UI", Static = true, Abstract = true)]
     partial class CustomLogicUIBuiltin : BuiltinClassInstance
     {
         private static readonly Dictionary<string, string> LastSetLabels = new();
@@ -42,57 +45,87 @@ namespace CustomLogic
             LastSetLabels.Clear();
         }
 
-        [CLProperty(Description = "\"TopCenter\" constant")]
+        /// <summary>
+        /// "TopCenter" constant.
+        /// </summary>
+        [CLProperty]
         public static string TopCenter => "TopCenter";
 
-        [CLProperty(Description = "\"TopLeft\" constant")]
+        /// <summary>
+        /// "TopLeft" constant.
+        /// </summary>
+        [CLProperty]
         public static string TopLeft => "TopLeft";
 
-        [CLProperty(Description = "\"TopRight\" constant")]
+        /// <summary>
+        /// "TopRight" constant.
+        /// </summary>
+        [CLProperty]
         public static string TopRight => "TopRight";
 
-        [CLProperty(Description = "\"MiddleCenter\" constant")]
+        /// <summary>
+        /// "MiddleCenter" constant.
+        /// </summary>
+        [CLProperty]
         public static string MiddleCenter => "MiddleCenter";
 
-        [CLProperty(Description = "\"MiddleLeft\" constant")]
+        /// <summary>
+        /// "MiddleLeft" constant.
+        /// </summary>
+        [CLProperty]
         public static string MiddleLeft => "MiddleLeft";
 
-        [CLProperty(Description = "\"MiddleRight\" constant")]
+        /// <summary>
+        /// "MiddleRight" constant.
+        /// </summary>
+        [CLProperty]
         public static string MiddleRight => "MiddleRight";
 
-        [CLProperty(Description = "\"BottomCenter\" constant")]
+        /// <summary>
+        /// "BottomCenter" constant.
+        /// </summary>
+        [CLProperty]
         public static string BottomCenter => "BottomCenter";
 
-        [CLProperty(Description = "\"BottomLeft\" constant")]
+        /// <summary>
+        /// "BottomLeft" constant.
+        /// </summary>
+        [CLProperty]
         public static string BottomLeft => "BottomLeft";
 
-        [CLProperty(Description = "\"BottomRight\" constant")]
+        /// <summary>
+        /// "BottomRight" constant.
+        /// </summary>
+        [CLProperty]
         public static string BottomRight => "BottomRight";
 
-        [CLMethod(Description = "Sets the label at a certain location. Valid types: \"TopCenter\", \"TopLeft\", \"TopRight\", \"MiddleCenter\", \"MiddleLeft\", \"MiddleRight\", \"BottomLeft\", \"BottomRight\", \"BottomCenter\".")]
-        public static void SetLabel(
-            [CLParam("The label location.")]
-            string label,
-            [CLParam("The message to display.")]
-            string message)
+        /// <summary>
+        /// Sets the label at a certain location. Valid types: "TopCenter", "TopLeft", "TopRight",
+        /// "MiddleCenter", "MiddleLeft", "MiddleRight", "BottomLeft", "BottomRight", "BottomCenter".
+        /// </summary>
+        /// <param name="label">The label location.</param>
+        /// <param name="message">The message to display.</param>
+        [CLMethod]
+        public static void SetLabel(string label, string message)
             => InGameManager.SetLabel(label, message);
 
-        [CLMethod(Description = "Sets the label for a certain time, after which it will be cleared.")]
-        public static void SetLabelForTime(
-            [CLParam("The label location.")]
-            string label,
-            [CLParam("The message to display.")]
-            string message,
-            [CLParam("The time in seconds before the label is cleared.")]
-            float time)
+        /// <summary>
+        /// Sets the label for a certain time, after which it will be cleared.
+        /// </summary>
+        /// <param name="label">The label location.</param>
+        /// <param name="message">The message to display.</param>
+        /// <param name="time">The time in seconds before the label is cleared.</param>
+        [CLMethod]
+        public static void SetLabelForTime(string label, string message, float time)
             => InGameManager.SetLabel(label, message, time);
 
-        [CLMethod(Description = "Sets the label for all players. Master client only. Be careful not to call this often.")]
-        public static void SetLabelAll(
-            [CLParam("The label location.")]
-            string label,
-            [CLParam("The message to display.")]
-            string message)
+        /// <summary>
+        /// Sets the label for all players. Master client only. Be careful not to call this often.
+        /// </summary>
+        /// <param name="label">The label location.</param>
+        /// <param name="message">The message to display.</param>
+        [CLMethod]
+        public static void SetLabelAll(string label, string message)
         {
             if (PhotonNetwork.IsMasterClient)
             {
@@ -107,14 +140,14 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod(Description = "Sets the label for all players for a certain time. Master client only.")]
-        public static void SetLabelForTimeAll(
-            [CLParam("The label location.")]
-            string label,
-            [CLParam("The message to display.")]
-            string message,
-            [CLParam("The time in seconds before the label is cleared.")]
-            float time)
+        /// <summary>
+        /// Sets the label for all players for a certain time. Master client only.
+        /// </summary>
+        /// <param name="label">The label location.</param>
+        /// <param name="message">The message to display.</param>
+        /// <param name="time">The time in seconds before the label is cleared.</param>
+        [CLMethod]
+        public static void SetLabelForTimeAll(string label, string message, float time)
         {
             if (PhotonNetwork.IsMasterClient)
             {
@@ -125,92 +158,107 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod(Description = "Creates a new popup. This popup is hidden until shown.")]
-        public static string CreatePopup(
-            [CLParam("The name of the popup.")]
-            string popupName,
-            [CLParam("The title of the popup.")]
-            string title,
-            [CLParam("The width of the popup.")]
-            int width,
-            [CLParam("The height of the popup.")]
-            int height)
+        /// <summary>
+        /// Creates a new popup. This popup is hidden until shown.
+        /// </summary>
+        /// <param name="popupName">The name of the popup.</param>
+        /// <param name="title">The title of the popup.</param>
+        /// <param name="width">The width of the popup.</param>
+        /// <param name="height">The height of the popup.</param>
+        /// <returns>The popup name.</returns>
+        [CLMethod]
+        public static string CreatePopup(string popupName, string title, int width, int height)
         {
             Menu.CreateCustomPopup(popupName, title, width, height);
             return popupName;
         }
 
-        [CLMethod(Description = "Shows the popup with given name.")]
-        public static void ShowPopup(
-            [CLParam("The name of the popup to show.")]
-            string popupName)
+        /// <summary>
+        /// Shows the popup with given name.
+        /// </summary>
+        /// <param name="popupName">The name of the popup to show.</param>
+        [CLMethod]
+        public static void ShowPopup(string popupName)
             => Menu.GetCustomPopup(popupName).Show();
 
-        [CLMethod(Description = "Hides the popup with given name.")]
-        public static void HidePopup(
-            [CLParam("The name of the popup to hide.")]
-            string popupName)
+        /// <summary>
+        /// Hides the popup with given name.
+        /// </summary>
+        /// <param name="popupName">The name of the popup to hide.</param>
+        [CLMethod]
+        public static void HidePopup(string popupName)
             => Menu.GetCustomPopup(popupName).Hide();
 
-        [CLMethod(Description = "Clears all elements in popup with given name.")]
-        public static void ClearPopup(
-            [CLParam("The name of the popup to clear.")]
-            string popupName)
+        /// <summary>
+        /// Clears all elements in popup with given name.
+        /// </summary>
+        /// <param name="popupName">The name of the popup to clear.</param>
+        [CLMethod]
+        public static void ClearPopup(string popupName)
             => Menu.GetCustomPopup(popupName).Clear();
 
-        [CLMethod(Description = "Adds a text row to the popup with label as content.")]
-        public static void AddPopupLabel(
-            [CLParam("The name of the popup.")]
-            string popupName,
-            [CLParam("The label text to add.")]
-            string label)
+        /// <summary>
+        /// Adds a text row to the popup with label as content.
+        /// </summary>
+        /// <param name="popupName">The name of the popup.</param>
+        /// <param name="label">The label text to add.</param>
+        [CLMethod]
+        public static void AddPopupLabel(string popupName, string label)
             => Menu.GetCustomPopup(popupName).AddLabel(label);
 
-        [CLMethod(Description = "Adds a button row to the popup with given button name and display text. When button is pressed, OnButtonClick is called in Main with buttonName parameter.")]
-        public static void AddPopupButton(
-            [CLParam("The name of the popup.")]
-            string popupName,
-            [CLParam("The button display text.")]
-            string label,
-            [CLParam("The callback name that will be passed to OnButtonClick in Main.")]
-            string callback)
+        /// <summary>
+        /// Adds a button row to the popup with given button name and display text.
+        /// When button is pressed, OnButtonClick is called in Main with buttonName parameter.
+        /// </summary>
+        /// <param name="popupName">The name of the popup.</param>
+        /// <param name="label">The button display text.</param>
+        /// <param name="callback">The callback name that will be passed to OnButtonClick in Main.</param>
+        [CLMethod]
+        public static void AddPopupButton(string popupName, string label, string callback)
             => Menu.GetCustomPopup(popupName).AddButton(label, callback);
 
-        [CLMethod(Description = "Adds a button to the bottom bar of the popup.")]
-        public static void AddPopupBottomButton(
-            [CLParam("The name of the popup.")]
-            string popupName,
-            [CLParam("The button display text.")]
-            string label,
-            [CLParam("The callback name that will be passed to OnButtonClick in Main.")]
-            string callback)
+        /// <summary>
+        /// Adds a button to the bottom bar of the popup.
+        /// </summary>
+        /// <param name="popupName">The name of the popup.</param>
+        /// <param name="label">The button display text.</param>
+        /// <param name="callback">The callback name that will be passed to OnButtonClick in Main.</param>
+        [CLMethod]
+        public static void AddPopupBottomButton(string popupName, string label, string callback)
             => Menu.GetCustomPopup(popupName).AddBottomButton(label, callback);
 
-        [CLMethod(Description = "Adds a list of buttons in a row to the popup.")]
+        /// <summary>
+        /// Adds a list of buttons in a row to the popup.
+        /// </summary>
+        /// <param name="popupName">The name of the popup.</param>
+        /// <param name="labels">List of button display texts.</param>
+        /// <param name="callbacks">List of callback names that will be passed to OnButtonClick in Main.</param>
+        [CLMethod]
         public static void AddPopupButtons(
-            [CLParam("The name of the popup.")]
             string popupName,
-            [CLParam("List of button display texts.", Type = "List<string>")]
-            CustomLogicListBuiltin labels,
-            [CLParam("List of callback names that will be passed to OnButtonClick in Main.", Type = "List<void>")]
-            CustomLogicListBuiltin callbacks)
+            [CLParam(Type = "List<string>")] CustomLogicListBuiltin labels,
+            [CLParam(Type = "List<void>")] CustomLogicListBuiltin callbacks)
             => Menu.GetCustomPopup(popupName).AddButtons(labels.List, callbacks.List);
 
-        [CLMethod(Description = "Returns a wrapped string given style and args.")]
-        public static string WrapStyleTag(
-            [CLParam("The text to wrap.")]
-            string text,
-            [CLParam("The style tag name.")]
-            string style,
-            [CLParam("Optional style argument.")]
-            string arg = null)
+        /// <summary>
+        /// Returns a wrapped string given style and args.
+        /// </summary>
+        /// <param name="text">The text to wrap.</param>
+        /// <param name="style">The style tag name.</param>
+        /// <param name="arg">Optional style argument.</param>
+        /// <returns>The wrapped string.</returns>
+        [CLMethod]
+        public static string WrapStyleTag(string text, string style, string arg = null)
         {
             if (arg == null)
                 return $"<{style}>{text}</{style}>";
             return $"<{style}={arg}>{text}</{style}>";
         }
 
-        [CLMethod(Description = "Shows the change character menu if main character is Human.")]
+        /// <summary>
+        /// Shows the change character menu if main character is Human.
+        /// </summary>
+        [CLMethod]
         public static void ShowChangeCharacterMenu()
         {
             var inGameManager = (InGameManager)SceneLoader.CurrentGameManager;
@@ -220,38 +268,50 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod(Description = "Sets the display of the scoreboard header (default \"Kills / Deaths...\")")]
-        public static void SetScoreboardHeader(
-            [CLParam("The header text to display.")]
-            string header)
+        /// <summary>
+        /// Sets the display of the scoreboard header (default "Kills / Deaths...").
+        /// </summary>
+        /// <param name="header">The header text to display.</param>
+        [CLMethod]
+        public static void SetScoreboardHeader(string header)
             => CustomLogicManager.Evaluator.ScoreboardHeader = header;
 
-        [CLMethod(Description = "Sets which Player custom property to read from to display on the scoreboard. If set to empty string, will use the default \"Kills / Deaths...\" display.")]
-        public static void SetScoreboardProperty(
-            [CLParam("The property name to read from Player custom properties.")]
-            string property)
+        /// <summary>
+        /// Sets which Player custom property to read from to display on the scoreboard.
+        /// If set to empty string, will use the default "Kills / Deaths..." display.
+        /// </summary>
+        /// <param name="property">The property name to read from Player custom properties.</param>
+        [CLMethod]
+        public static void SetScoreboardProperty(string property)
             => CustomLogicManager.Evaluator.ScoreboardProperty = $"CL:{property}";
 
-        [CLMethod(Description = "Gets the color of the specified item. See theme json for reference.")]
-        public static CustomLogicColorBuiltin GetThemeColor(
-            [CLParam("The panel name.")]
-            string panel,
-            [CLParam("The category name.")]
-            string category,
-            [CLParam("The item name.")]
-            string item)
+        /// <summary>
+        /// Gets the color of the specified item. See theme json for reference.
+        /// </summary>
+        /// <param name="panel">The panel name.</param>
+        /// <param name="category">The category name.</param>
+        /// <param name="item">The item name.</param>
+        /// <returns>The theme color.</returns>
+        [CLMethod]
+        public static CustomLogicColorBuiltin GetThemeColor(string panel, string category, string item)
         {
             var color = new Color255(UIManager.GetThemeColor(panel, category, item));
             return new CustomLogicColorBuiltin(color);
         }
 
-        [CLMethod(Description = "Returns if the given popup is active")]
-        public static bool IsPopupActive(
-            [CLParam("The name of the popup to check.")]
-            string popupName)
+        /// <summary>
+        /// Returns if the given popup is active.
+        /// </summary>
+        /// <param name="popupName">The name of the popup to check.</param>
+        /// <returns>True if the popup is active, false otherwise.</returns>
+        [CLMethod]
+        public static bool IsPopupActive(string popupName)
             => Menu.GetCustomPopup(popupName).IsActive;
 
-        [CLProperty(Description = "Returns a list of all popups", TypeArguments = new[] { "string" })]
+        /// <summary>
+        /// Returns a list of all popups.
+        /// </summary>
+        [CLProperty(TypeArguments = new[] { "string" })]
         public static CustomLogicListBuiltin GetPopups
         {
             get
@@ -263,115 +323,149 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod(Description = "Sets whether a label is active or not.")]
-        public static void SetLabelActive(
-            [CLParam("The label name.")]
-            string label,
-            [CLParam("Whether the label should be active.")]
-            bool active)
+        /// <summary>
+        /// Sets whether a label is active or not.
+        /// </summary>
+        /// <param name="label">The label name.</param>
+        /// <param name="active">Whether the label should be active.</param>
+        [CLMethod]
+        public static void SetLabelActive(string label, bool active)
         {
             Menu.SetLabelActive(label, active);
         }
 
-        [CLMethod(Description = "Sets whether the KDR panel (top-left) is active or not.")]
-        public static void SetKDRPanelActive(
-            [CLParam("Whether the KDR panel should be active.")]
-            bool active)
+        /// <summary>
+        /// Sets whether the KDR panel (top-left) is active or not.
+        /// </summary>
+        /// <param name="active">Whether the KDR panel should be active.</param>
+        [CLMethod]
+        public static void SetKDRPanelActive(bool active)
         {
             Menu.SetKDRPanelActive(active);
         }
 
-        [CLMethod(Description = "Sets whether the minimap is active or not.")]
-        public static void SetMinimapActive(
-            [CLParam("Whether the minimap should be active.")]
-            bool active)
+        /// <summary>
+        /// Sets whether the minimap is active or not.
+        /// </summary>
+        /// <param name="active">Whether the minimap should be active.</param>
+        [CLMethod]
+        public static void SetMinimapActive(bool active)
         {
             Menu.SetMinimapActive(active);
         }
 
-        [CLMethod(Description = "Sets whether the chat panel is active or not.")]
-        public static void SetChatPanelActive(
-            [CLParam("Whether the chat panel should be active.")]
-            bool active)
+        /// <summary>
+        /// Sets whether the chat panel is active or not.
+        /// </summary>
+        /// <param name="active">Whether the chat panel should be active.</param>
+        [CLMethod]
+        public static void SetChatPanelActive(bool active)
         {
             Menu.SetChatPanelActive(active);
         }
 
-        [CLMethod(Description = "Sets whether the feed panel is active or not.")]
-        public static void SetFeedPanelActive(
-            [CLParam("Whether the feed panel should be active.")]
-            bool active)
+        /// <summary>
+        /// Sets whether the feed panel is active or not.
+        /// </summary>
+        /// <param name="active">Whether the feed panel should be active.</param>
+        [CLMethod]
+        public static void SetFeedPanelActive(bool active)
         {
             Menu.SetFeedPanelActive(active);
         }
 
-        [CLMethod(Description = "Sets whether the bottom HUD is active or not. This can only be used when the character is alive.")]
-        public static void SetBottomHUDActive(
-            [CLParam("Whether the bottom HUD should be active.")]
-            bool active)
+        /// <summary>
+        /// Sets whether the bottom HUD is active or not. This can only be used when the character is alive.
+        /// </summary>
+        /// <param name="active">Whether the bottom HUD should be active.</param>
+        [CLMethod]
+        public static void SetBottomHUDActive(bool active)
         {
             Menu.SetBottomHUDActive(active);
         }
 
-        [CLMethod(Description = "Returns the root `VisualElement` which you can add other elements to. Returns: The root `VisualElement`")]
+        /// <summary>
+        /// Returns the root `VisualElement` which you can add other elements to.
+        /// </summary>
+        /// <returns>The root `VisualElement`.</returns>
+        [CLMethod]
         public static CustomLogicVisualElementBuiltin GetRootVisualElement()
         {
             return new CustomLogicVisualElementBuiltin(Menu.RootVisualElement);
         }
 
-        [CLMethod(Description = "Creates a new `VisualElement`.")]
+        /// <summary>
+        /// Creates a new `VisualElement`.
+        /// </summary>
+        /// <returns>A new VisualElement.</returns>
+        [CLMethod]
         public static CustomLogicVisualElementBuiltin VisualElement()
         {
             return new CustomLogicVisualElementBuiltin(new VisualElement());
         }
 
-        [CLMethod(Description = "Creates a new `Button` with optional text and click event.")]
-        public static CustomLogicButtonBuiltin Button(
-            [CLParam("The text that the button displays")]
-            string text = "",
-            [CLParam("The function that will be called when button is clicked")]
-            UserMethod clickEvent = null)
+        /// <summary>
+        /// Creates a new `Button` with optional text and click event.
+        /// </summary>
+        /// <param name="text">The text that the button displays.</param>
+        /// <param name="clickEvent">The function that will be called when button is clicked.</param>
+        /// <returns>A new Button.</returns>
+        [CLMethod]
+        public static CustomLogicButtonBuiltin Button(string text = "", UserMethod clickEvent = null)
         {
             return new CustomLogicButtonBuiltin(new Button { text = text }).OnClick(clickEvent);
         }
 
-        [CLMethod(Description = "Creates a new `Label` with optional text.")]
-        public static CustomLogicLabelBuiltin Label(
-            [CLParam("The text to be displayed")]
-            string text = "")
+        /// <summary>
+        /// Creates a new `Label` with optional text.
+        /// </summary>
+        /// <param name="text">The text to be displayed.</param>
+        /// <returns>A new Label.</returns>
+        [CLMethod]
+        public static CustomLogicLabelBuiltin Label(string text = "")
         {
             return new CustomLogicLabelBuiltin(new Label { text = text });
         }
 
-        [CLMethod(Description = "Creates a new `TextField` with optional label.")]
-        public static CustomLogicTextFieldBuiltin TextField(
-            [CLParam("The label text displayed next to the TextField (default: empty).")]
-            string label = "")
+        /// <summary>
+        /// Creates a new `TextField` with optional label.
+        /// </summary>
+        /// <param name="label">The label text displayed next to the TextField (default: empty).</param>
+        /// <returns>A new TextField.</returns>
+        [CLMethod]
+        public static CustomLogicTextFieldBuiltin TextField(string label = "")
         {
             return new CustomLogicTextFieldBuiltin(new TextField(label));
         }
 
-        [CLMethod(Description = "Creates a new `Toggle` with optional label and value changed event.")]
-        public static CustomLogicToggleBuiltin Toggle(
-            [CLParam("The label text displayed next to the toggle")]
-            string label = "",
-            [CLParam("The function that will be called when toggle value changes")]
-            UserMethod valueChangedEvent = null)
+        /// <summary>
+        /// Creates a new `Toggle` with optional label and value changed event.
+        /// </summary>
+        /// <param name="label">The label text displayed next to the toggle.</param>
+        /// <param name="valueChangedEvent">The function that will be called when toggle value changes.</param>
+        /// <returns>A new Toggle.</returns>
+        [CLMethod]
+        public static CustomLogicToggleBuiltin Toggle(string label = "", UserMethod valueChangedEvent = null)
         {
             return new CustomLogicToggleBuiltin(new Toggle(label)).OnValueChanged(valueChangedEvent);
         }
 
-        [CLMethod(Description = "Creates a new `Slider` for floating-point values with optional range, tick interval, and value changed event. The slider will snap to values at multiples of the tick interval.")]
+        /// <summary>
+        /// Creates a new `Slider` for floating-point values with optional range, tick interval, and value changed event.
+        /// The slider will snap to values at multiples of the tick interval.
+        /// </summary>
+        /// <param name="lowValue">The minimum value of the slider.</param>
+        /// <param name="highValue">The maximum value of the slider.</param>
+        /// <param name="tickInterval">The interval between allowed values. If 0, no snapping occurs. For example, 0.1 will snap to 0.0, 0.1, 0.2, etc.</param>
+        /// <param name="label">The label text displayed next to the slider.</param>
+        /// <param name="valueChangedEvent">The function that will be called when slider value changes.</param>
+        /// <returns>A new Slider.</returns>
+        [CLMethod]
         public static CustomLogicSliderBuiltin Slider(
-            [CLParam("The minimum value of the slider")]
             float lowValue = 0f,
-            [CLParam("The maximum value of the slider")]
             float highValue = 100f,
-            [CLParam("The interval between allowed values. If 0, no snapping occurs. For example, 0.1 will snap to 0.0, 0.1, 0.2, etc.")]
             float tickInterval = 0f,
-            [CLParam("The label text displayed next to the slider")]
             string label = "",
-            [CLParam("The function that will be called when slider value changes")]
             UserMethod valueChangedEvent = null)
         {
             var slider = new Slider(label, lowValue, highValue);
@@ -380,17 +474,22 @@ namespace CustomLogic
             return new CustomLogicSliderBuiltin(slider).OnValueChanged(valueChangedEvent);
         }
 
-        [CLMethod(Description = "Creates a new `Slider` for integer values with optional range, tick interval, and value changed event. The slider will snap to values at multiples of the tick interval.")]
+        /// <summary>
+        /// Creates a new `Slider` for integer values with optional range, tick interval, and value changed event.
+        /// The slider will snap to values at multiples of the tick interval.
+        /// </summary>
+        /// <param name="lowValue">The minimum value of the slider.</param>
+        /// <param name="highValue">The maximum value of the slider.</param>
+        /// <param name="tickInterval">The interval between allowed values. For example, 5 will snap to 0, 5, 10, 15, etc.</param>
+        /// <param name="label">The label text displayed next to the slider.</param>
+        /// <param name="valueChangedEvent">The function that will be called when slider value changes.</param>
+        /// <returns>A new SliderInt.</returns>
+        [CLMethod]
         public static CustomLogicSliderBuiltin SliderInt(
-            [CLParam("The minimum value of the slider")]
             int lowValue = 0,
-            [CLParam("The maximum value of the slider")]
             int highValue = 100,
-            [CLParam("The interval between allowed values. For example, 5 will snap to 0, 5, 10, 15, etc.")]
             int tickInterval = 1,
-            [CLParam("The label text displayed next to the slider")]
             string label = "",
-            [CLParam("The function that will be called when slider value changes")]
             UserMethod valueChangedEvent = null)
         {
             var sliderInt = new SliderInt(label, lowValue, highValue);
@@ -399,15 +498,19 @@ namespace CustomLogic
             return new CustomLogicSliderBuiltin(sliderInt).OnValueChanged(valueChangedEvent);
         }
 
-        [CLMethod(Description = "Creates a new `Dropdown` with a list of choices and optional label and value changed event.")]
+        /// <summary>
+        /// Creates a new `Dropdown` with a list of choices and optional label and value changed event.
+        /// </summary>
+        /// <param name="choices">List of string options to display in the dropdown.</param>
+        /// <param name="defaultIndex">The index of the initially selected option (default: 0).</param>
+        /// <param name="label">The label text displayed next to the dropdown.</param>
+        /// <param name="valueChangedEvent">The function that will be called when dropdown value changes.</param>
+        /// <returns>A new Dropdown.</returns>
+        [CLMethod]
         public static CustomLogicDropdownBuiltin Dropdown(
-            [CLParam("List of string options to display in the dropdown", Type = "List<string>")]
-            CustomLogicListBuiltin choices,
-            [CLParam("The index of the initially selected option (default: 0)")]
+            [CLParam(Type = "List<string>")] CustomLogicListBuiltin choices,
             int defaultIndex = 0,
-            [CLParam("The label text displayed next to the dropdown")]
             string label = "",
-            [CLParam("The function that will be called when dropdown value changes")]
             UserMethod valueChangedEvent = null)
         {
             var choicesList = new System.Collections.Generic.List<string>();
@@ -424,15 +527,19 @@ namespace CustomLogic
             return new CustomLogicDropdownBuiltin(dropdown).OnValueChanged(valueChangedEvent);
         }
 
-        [CLMethod(Description = "Creates a new `ProgressBar` with optional range, title, and value changed event.")]
+        /// <summary>
+        /// Creates a new `ProgressBar` with optional range, title, and value changed event.
+        /// </summary>
+        /// <param name="lowValue">The minimum value of the progress bar (default: 0).</param>
+        /// <param name="highValue">The maximum value of the progress bar (default: 100).</param>
+        /// <param name="title">The title text displayed on the progress bar.</param>
+        /// <param name="valueChangedEvent">The function that will be called when progress bar value changes.</param>
+        /// <returns>A new ProgressBar.</returns>
+        [CLMethod]
         public static CustomLogicProgressBarBuiltin ProgressBar(
-            [CLParam("The minimum value of the progress bar (default: 0)")]
             float lowValue = 0f,
-            [CLParam("The maximum value of the progress bar (default: 100)")]
             float highValue = 100f,
-            [CLParam("The title text displayed on the progress bar")]
             string title = "",
-            [CLParam("The function that will be called when progress bar value changes")]
             UserMethod valueChangedEvent = null)
         {
             var progressBar = new ProgressBar
@@ -444,16 +551,23 @@ namespace CustomLogic
             return new CustomLogicProgressBarBuiltin(progressBar).OnValueChanged(valueChangedEvent);
         }
 
-        [CLMethod(Description = "Creates a new `ScrollView` for scrollable content.")]
+        /// <summary>
+        /// Creates a new `ScrollView` for scrollable content.
+        /// </summary>
+        /// <returns>A new ScrollView.</returns>
+        [CLMethod]
         public static CustomLogicScrollViewBuiltin ScrollView()
         {
             return new CustomLogicScrollViewBuiltin(new ScrollView());
         }
 
-        [CLMethod(Description = "Creates a new `Icon` element for displaying images/icons.")]
-        public static CustomLogicIconBuiltin Icon(
-            [CLParam("Path to the icon resource (e.g., \"Icons/Game/BladeIcon\")")]
-            string iconPath = "")
+        /// <summary>
+        /// Creates a new `Icon` element for displaying images/icons.
+        /// </summary>
+        /// <param name="iconPath">Path to the icon resource (e.g., "Icons/Game/BladeIcon").</param>
+        /// <returns>A new Icon.</returns>
+        [CLMethod]
+        public static CustomLogicIconBuiltin Icon(string iconPath = "")
         {
             var icon = new CustomLogicIconBuiltin(new Image());
             if (!string.IsNullOrEmpty(iconPath))
@@ -461,10 +575,13 @@ namespace CustomLogic
             return icon;
         }
 
-        [CLMethod(Description = "Creates a new `Image` element for displaying images/icons.")]
-        public static CustomLogicImageBuiltin Image(
-            [CLParam("Path to the icon resource (e.g., \"Icons/Game/BladeIcon\")")]
-            string iconPath = "")
+        /// <summary>
+        /// Creates a new `Image` element for displaying images/icons.
+        /// </summary>
+        /// <param name="iconPath">Path to the icon resource (e.g., "Icons/Game/BladeIcon").</param>
+        /// <returns>A new Image.</returns>
+        [CLMethod]
+        public static CustomLogicImageBuiltin Image(string iconPath = "")
         {
             var image = new CustomLogicImageBuiltin();
             if (!string.IsNullOrEmpty(iconPath))

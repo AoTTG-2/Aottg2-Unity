@@ -1,18 +1,30 @@
 namespace CustomLogic
 {
-    [CLType(Name = "ScaleModeEnum", Static = true, Abstract = true, Description = "Enumeration of scale modes for UI icons.")]
+    /// <summary>
+    /// Enumeration of scale modes for UI icons.
+    /// </summary>
+    [CLType(Name = "ScaleModeEnum", Static = true, Abstract = true)]
     partial class CustomLogicScaleModeEnum : BuiltinClassInstance
     {
         [CLConstructor]
         public CustomLogicScaleModeEnum() { }
 
-        [CLProperty("ScaleAndCrop scale mode.")]
+        /// <summary>
+        /// ScaleAndCrop scale mode.
+        /// </summary>
+        [CLProperty]
         public static string ScaleAndCrop => "ScaleAndCrop";
 
-        [CLProperty("ScaleToFit scale mode.")]
+        /// <summary>
+        /// ScaleToFit scale mode.
+        /// </summary>
+        [CLProperty]
         public static string ScaleToFit => "ScaleToFit";
 
-        [CLProperty("StretchToFill scale mode.")]
+        /// <summary>
+        /// StretchToFill scale mode.
+        /// </summary>
+        [CLProperty]
         public static string StretchToFill => "StretchToFill";
     }
 }

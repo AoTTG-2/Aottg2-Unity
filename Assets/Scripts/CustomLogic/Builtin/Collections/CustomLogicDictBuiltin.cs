@@ -3,7 +3,10 @@ using System.Text;
 
 namespace CustomLogic
 {
-    [CLType(Name = "Dict", TypeParameters = new[] { "K", "V" }, Description = "Collection of key-value pairs. Keys must be unique.")]
+    /// <summary>
+    /// Collection of key-value pairs. Keys must be unique.
+    /// </summary>
+    [CLType(Name = "Dict", TypeParameters = new[] { "K", "V" })]
     partial class CustomLogicDictBuiltin : BuiltinClassInstance
     {
         private readonly Dictionary<object, object> _dict;
@@ -14,24 +17,40 @@ namespace CustomLogic
         private int _version;
         private int _listsVersion;
 
-        [CLConstructor("Creates an empty dictionary.")]
+        /// <summary>
+        /// Creates an empty dictionary.
+        /// </summary>
+        [CLConstructor]
         public CustomLogicDictBuiltin()
         {
             _dict = new Dictionary<object, object>();
         }
 
-        [CLConstructor("Creates a dictionary with the specified capacity.")]
-        public CustomLogicDictBuiltin(
-            [CLParam("The initial capacity of the dictionary.")]
-            int capacity)
+        /// <summary>
+        /// Creates a dictionary with the specified capacity.
+        /// </summary>
+        /// <param name="capacity">The initial capacity of the dictionary.</param>
+        [CLConstructor]
+        public CustomLogicDictBuiltin(int capacity)
         {
             _dict = new Dictionary<object, object>(capacity);
         }
 
-        [CLProperty("Number of elements in the dictionary.")]
+        /// <summary>
+        /// Number of elements in the dictionary.
+        /// </summary>
+        [CLProperty]
         public int Count => _dict.Count;
 
-        [CLProperty(TypeArguments = new[] { "K" }, Description = "Keys snapshot. Returns a stable snapshot list of all keys. The returned list is read-only - any attempt to modify it will throw an exception. The snapshot remains unchanged even if the dictionary is mutated later. After dictionary mutations, accessing Keys again creates a new snapshot object. Access is O(1) when the dictionary has not changed. Rebuild after mutations is O(n) and allocates new snapshot objects. Calling Keys/Values after frequent mutations will allocate.")]
+        /// <summary>
+        /// Keys snapshot. Returns a stable snapshot list of all keys. 
+        /// The returned list is read-only - any attempt to modify it will throw an exception. 
+        /// The snapshot remains unchanged even if the dictionary is mutated later. 
+        /// After dictionary mutations, accessing Keys again creates a new snapshot object. 
+        /// Access is O(1) when the dictionary has not changed. 
+        /// Rebuild after mutations is O(n) and allocates new snapshot objects.
+        /// </summary>
+        [CLProperty(TypeArguments = new[] { "K" })]
         public CustomLogicListBuiltin Keys
         {
             get
@@ -41,7 +60,15 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(TypeArguments = new[] { "V" }, Description = "Values snapshot. Returns a stable snapshot list of all values. The returned list is read-only - any attempt to modify it will throw an exception. The snapshot remains unchanged even if the dictionary is mutated later. After dictionary mutations (Set/Remove/Clear), accessing Values again creates a new snapshot object. Access is O(1) when the dictionary has not changed. Rebuild after mutations is O(n) and allocates new snapshot objects. Calling Keys/Values after frequent mutations will allocate.")]
+        /// <summary>
+        /// Values snapshot. Returns a stable snapshot list of all values. 
+        /// The returned list is read-only - any attempt to modify it will throw an exception. 
+        /// The snapshot remains unchanged even if the dictionary is mutated later. 
+        /// After dictionary mutations (Set/Remove/Clear), accessing Values again creates a new snapshot object. 
+        /// Access is O(1) when the dictionary has not changed. 
+        /// Rebuild after mutations is O(n) and allocates new snapshot objects.
+        /// </summary>
+        [CLProperty(TypeArguments = new[] { "V" })]
         public CustomLogicListBuiltin Values
         {
             get
@@ -51,7 +78,10 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod("Clears the dictionary.")]
+        /// <summary>
+        /// Clears the dictionary.
+        /// </summary>
+        [CLMethod]
         public void Clear()
         {
             if (_dict.Count == 0) return;
@@ -59,40 +89,48 @@ namespace CustomLogic
             InvalidateCache();
         }
 
-        [CLMethod(ReturnTypeArguments = new[] { "V" }, Description = "Gets a value from the dictionary. Returns the value associated with the key, or defaultValue if the key is not found. If the stored value is null, Get returns null (even if defaultValue is provided).")]
-        public object Get(
-            [CLParam("The key of the value to get", Type = "K")]
-            object key,
-            [CLParam("The value to return if the key is not found", Type = "V")]
-            object defaultValue = null)
+        /// <summary>
+        /// Gets a value from the dictionary.
+        /// </summary>
+        /// <param name="key">The key of the value to get.</param>
+        /// <param name="defaultValue">The value to return if the key is not found.</param>
+        /// <returns>The value associated with the key, or defaultValue if the key is not found. If the stored value is null, Get returns null (even if defaultValue is provided).</returns>
+        [CLMethod(ReturnTypeArguments = new[] { "V" })]
+        public object Get(object key, object defaultValue = null)
         {
             return _dict.TryGetValue(key, out var value) ? value : defaultValue;
         }
 
-        [CLMethod(Description = "Sets the value for the key. Overwrites the existing value if the key is already present. Do not mutate key objects after inserting.")]
-        public void Set(
-            [CLParam("The key of the value to set", Type = "K")]
-            object key,
-            [CLParam("The value to set", Type = "V")]
-            object value)
+        /// <summary>
+        /// Sets the value for the key. Overwrites the existing value if the key is already present. Do not mutate key objects after inserting.
+        /// </summary>
+        /// <param name="key">The key of the value to set.</param>
+        /// <param name="value">The value to set.</param>
+        [CLMethod]
+        public void Set(object key, object value)
         {
             _dict[key] = value;
             InvalidateCache();
         }
 
-        [CLMethod("Removes a value from the dictionary.")]
-        public void Remove(
-            [CLParam("The key of the value to remove", Type = "K")]
-            object key)
+        /// <summary>
+        /// Removes a value from the dictionary.
+        /// </summary>
+        /// <param name="key">The key of the value to remove.</param>
+        [CLMethod]
+        public void Remove(object key)
         {
             if (_dict.Remove(key))
                 InvalidateCache();
         }
 
-        [CLMethod(Description = "Checks if the dictionary contains a key. Returns: True if the dictionary contains the key, false otherwise.")]
-        public bool Contains(
-            [CLParam("The key to check", Type = "K")]
-            object key)
+        /// <summary>
+        /// Checks if the dictionary contains a key.
+        /// </summary>
+        /// <param name="key">The key to check.</param>
+        /// <returns>True if the dictionary contains the key, false otherwise.</returns>
+        [CLMethod]
+        public bool Contains(object key)
         {
             return _dict.ContainsKey(key);
         }
