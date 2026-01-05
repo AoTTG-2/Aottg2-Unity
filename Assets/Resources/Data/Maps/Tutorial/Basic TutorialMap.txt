@@ -88,7 +88,6 @@ class Main
             StageController.OnStart();
         }
 
-        # CharacterState.Restore();
         self._initialized = true;
     }
 }
@@ -98,21 +97,7 @@ extension CharacterState
     BladeDurability = 0;
     LeftHookEnabled = false;
     RightHookEnabled = false;
-    Special = "None";
-
-    function Restore()
-    {
-        if (Main.Character == null)
-        {
-            return;
-        }
-
-        Main.Character.CurrentGas = self.Gas;
-        Main.Character.CurrentBladeDurability = self.BladeDurability;
-        Main.Character.LeftHookEnabled = self.LeftHookEnabled;
-        Main.Character.RightHookEnabled = self.RightHookEnabled;
-        Main.Character.SetSpecial(self.Special);
-    }
+    Special = SpecialEnum.None;
 
     function SetGas(value)
     {
@@ -208,7 +193,7 @@ class MovementStage
         CharacterState.SetBladeDurability(0);
         CharacterState.SetLeftHookEnabled(false);
         CharacterState.SetRightHookEnabled(false);
-        CharacterState.SetSpecial("None");
+        CharacterState.SetSpecial(SpecialEnum.None);
 
         str = TextStyle.Line(Locale.Get("Movement.Text"));
         str += TextStyle.ContinueNextStage("Stage.Camera");
@@ -729,7 +714,7 @@ class AttackStage
 
         CharacterState.SetLeftHookEnabled(true);
         CharacterState.SetRightHookEnabled(true);
-        CharacterState.SetSpecial("Spin2");
+        CharacterState.SetSpecial(SpecialEnum.Spin2);
     }
 
     function OnTick() { }
@@ -756,7 +741,7 @@ class NapeAttackStage
         Tween.PlayerPosition(self.SpawnPoint).Start();
         Tween.Scale(MapUtils.DummyTitan, Vector3.Zero).SetDuration(1.4).SetEasing("InOutElastic").Start();
 
-        self._titan = Game.SpawnTitanAt("Normal", Vector3(0, 5, 20));
+        self._titan = Game.SpawnTitanAt(TitanTypeEnum.Normal, Vector3(0, 5, 20));
         self._titan.Size = 1;
         self._titan.DetectRange = 0;
         self._titan.FocusRange = 0;
@@ -831,7 +816,7 @@ class CrippleStage
         Dialogue.Show("Stage.Attack", str);
 
         wait 0.9;
-        self._titan = Game.SpawnTitanAt("Normal", Vector3(0, 5, 20));
+        self._titan = Game.SpawnTitanAt(TitanTypeEnum.Normal, Vector3(0, 5, 20));
         self._titan.Size = 1;
         self._titan.DetectRange = 0;
         self._titan.FocusRange = 0;
@@ -928,7 +913,7 @@ class BlindStage
         Dialogue.Show("Stage.Attack", str);
 
         wait 0.9;
-        self._titan = Game.SpawnTitanAt("Normal", Vector3(0, 5, 20));
+        self._titan = Game.SpawnTitanAt(TitanTypeEnum.Normal, Vector3(0, 5, 20));
         self._titan.Size = 1;
         self._titan.DetectRange = 0;
         self._titan.FocusRange = 0;
@@ -1017,7 +1002,7 @@ class ArmCutStage
         Dialogue.Show("Stage.Attack", str);
 
         wait 0.9;
-        self._titan = Game.SpawnTitanAt("Normal", Vector3(0, 5, 20));
+        self._titan = Game.SpawnTitanAt(TitanTypeEnum.Normal, Vector3(0, 5, 20));
         self._titan.Size = 1;
         self._titan.DetectRange = 0;
         self._titan.FocusRange = 0;
@@ -1115,7 +1100,7 @@ class FightStage
         MapUtils.ObstacleB.TextureTilingX = 2;
         MapUtils.ObstacleB.TextureTilingY = 20;
         
-        self._titan = Game.SpawnTitanAt("Normal", Vector3(0, 5, 20));
+        self._titan = Game.SpawnTitanAt(TitanTypeEnum.Normal, Vector3(0, 5, 20));
         self._titan.Size = Random.RandomFloat(1, 2);
 
         str = TextStyle.Instruction(Locale.Get("Attack.Instruction5"));

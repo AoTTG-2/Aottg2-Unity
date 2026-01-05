@@ -2618,11 +2618,11 @@ class Main
         amount = self.AddTitansPerWave * (self._currentWave - 1) + self.StartTitans;
         if (self.GradualSpawn)
         {
-            Game.SpawnTitansAsync("Default", amount);
+            Game.SpawnTitansAsync(TitanTypeEnum.Default, amount);
         }
         else
         {
-            Game.SpawnTitans("Default", amount);
+            Game.SpawnTitans(TitanTypeEnum.Default, amount);
         }
         if (self.RespawnOnWave)
         {

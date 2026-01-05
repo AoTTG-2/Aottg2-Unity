@@ -1,3 +1,4 @@
+using System;
 using ApplicationManagers;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -98,26 +99,18 @@ namespace CustomLogic
             return this;
         }
 
-        /// <remarks>
-        /// Valid values: "ScaleAndCrop", "ScaleToFit", "StretchToFill"
-        /// </remarks>
         /// <summary>
         /// The scale mode for the icon.
         /// </summary>
-        [CLProperty(Enum = typeof(CustomLogicScaleModeEnum))]
-        public string ScaleMode
+        [CLProperty(Enum = new Type[] { typeof(CustomLogicScaleModeEnum) })]
+        public int ScaleMode
         {
-            get => _image.scaleMode.ToString();
+            get => (int)_image.scaleMode;
             set
             {
-                if (value == CustomLogicScaleModeEnum.ScaleAndCrop)
-                    _image.scaleMode = UnityEngine.ScaleMode.ScaleAndCrop;
-                else if (value == CustomLogicScaleModeEnum.ScaleToFit)
-                    _image.scaleMode = UnityEngine.ScaleMode.ScaleToFit;
-                else if (value == CustomLogicScaleModeEnum.StretchToFill)
-                    _image.scaleMode = UnityEngine.ScaleMode.StretchToFill;
-                else
-                    throw new System.Exception($"Unknown scale mode: {value}. Valid values are 'ScaleAndCrop', 'ScaleToFit', and 'StretchToFill'");
+                if (!Enum.IsDefined(typeof(ScaleMode), value))
+                    throw new ArgumentException($"Invalid scale mode: {value}.");
+                _image.scaleMode = (ScaleMode)value;
             }
         }
     }

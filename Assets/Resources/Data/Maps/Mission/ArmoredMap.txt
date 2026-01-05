@@ -208,7 +208,7 @@ cutscene MainCutscene
 		wait 1.0;
 		if (Network.IsMasterClient)
 		{
-			annie = Game.SpawnShifterAt("Armored", spawn.Position);
+			annie = Game.SpawnShifterAt(ShifterTypeEnum.Armored, spawn.Position);
 			annie.Rotation = Vector3(0, 180, 0);
 		}
 		wait 4.0;

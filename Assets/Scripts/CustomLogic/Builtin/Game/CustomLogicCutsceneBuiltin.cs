@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace CustomLogic
 {
+    /// <summary>
+    /// Provides methods to control in-game cutscenes and dialogues from custom logic scripts.
+    /// </summary>
     [CLType(Name = "Cutscene", Abstract = true, Static = true)]
     partial class CustomLogicCutsceneBuiltin : BuiltinClassInstance
     {

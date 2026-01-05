@@ -69,25 +69,25 @@ class Main
             return;
         }
         amount = self.AddTitansPerWave * (self._currentWave - 1) + self.StartTitans;
-        type = "Default";
+        type = TitanTypeEnum.Default;
         if (self.ChallengeWaves != "Disabled" && self.ChallengeWavesEveryX > 0 && Math.Mod(self._currentWave, self.ChallengeWavesEveryX) == 0)
         {
             amount = self._currentWave / self.ChallengeWavesEveryX;
             if (self.ChallengeWaves == "Punks")
             {
-                type = "Punk";
+                type = TitanTypeEnum.Punk;
             }
             elif (self.ChallengeWaves == "Throwers")
             {
-                type = "Thrower";
+                type = TitanTypeEnum.Thrower;
             }
             elif (self.ChallengeWaves == "Crawlers")
             {
-                type = "Crawler";
+                type = TitanTypeEnum.Crawler;
             }
             elif (self.ChallengeWaves == "Random")
             {
-                type = "Random";
+                type = TitanTypeEnum.Random;
             }
         }
         if (self.GradualSpawn)

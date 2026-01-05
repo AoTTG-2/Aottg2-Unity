@@ -42,7 +42,7 @@ class Main
 	function UpdatePointMode()
 	{
 		self._dieTimeLeft = self._dieTimeLeft - Time.TickTime;
-		if (Network.MyPlayer.Status == "Dead" && self._dieTimeLeft <= 0.0)
+		if (Network.MyPlayer.Status == PlayerStatusEnum.Dead && self._dieTimeLeft <= 0.0)
 		{
 			Game.SpawnPlayer(Network.MyPlayer, false);
 		}
@@ -52,11 +52,11 @@ class Main
 			blueKills = 0;
 			for (player in Network.Players)
 			{
-				if (player.Team == "Red")
+				if (player.Team == TeamEnum.Red)
 				{
 					redKills = redKills + player.Kills;
 				}
-				elif (player.Team == "Blue")
+				elif (player.Team == TeamEnum.Blue)
 				{
 					blueKills = blueKills + player.Kills;
 				}

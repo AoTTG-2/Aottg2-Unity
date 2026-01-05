@@ -812,7 +812,7 @@ character.FocusRange = 500;
 }
 if (character.Type == "Human")
 {
-character.SetSpecial("Potato");
+character.SetSpecial(SpecialEnum.Potato);
 character.MaxGas = 60;
 character.CurrentGas = 60;
 character.CustomDamageEnabled = true;
@@ -889,7 +889,7 @@ return;
 character = Network.MyPlayer.Character;
 if (character != null && character.Type == "Human")
 {
-Camera.SetCameraMode("FPS");
+Camera.SetCameraMode(CameraModeEnum.FPS);
 }
 elif (character == null)
 {
@@ -902,7 +902,7 @@ function SpawnTitans()
 titans = Game.Titans.Count;
 if (titans < self._maxTitans)
 {
-Game.SpawnTitans("Normal", self._spawnTitans);
+Game.SpawnTitans(TitanTypeEnum.Normal, self._spawnTitans);
 }
 }
 

@@ -6121,9 +6121,9 @@ class Main
             {
                 wait 0.3;
                 s = character.CurrentSpecial;
-                if (s == "Supply" || s == "Eren" || s == "Annie" || s == "Armored")
+                if (s == SpecialEnum.Supply || s == SpecialEnum.Eren || s == SpecialEnum.Annie || s == SpecialEnum.Armored)
                 {
-                    character.SetSpecial("Potato");
+                    character.SetSpecial(SpecialEnum.Potato);
                     NetworkMessage()
                         .Set("Type", "InfoMessage")
                         .Set("MsgType", "SpecialNotAllowed")
@@ -6640,7 +6640,7 @@ extension Titans
         spawnPoints = Map.FindMapObjectsByTag("TitanSpawnPointHeadquarter");
         for(sp in spawnPoints)
         {
-            titan = Game.SpawnTitanAt("Normal", sp.Position);
+            titan = Game.SpawnTitanAt(TitanTypeEnum.Normal, sp.Position);
             titan.Size = Random.RandomFloat(0.5, 1);
             titan.UsePathfinding = false;
             titan.Position = sp.Position;
@@ -6677,7 +6677,7 @@ extension Titans
             target = CaptureZones.GetTitanTarget(pos);
             if (target != null)
             {
-                titan = Game.SpawnTitanAt("Default", pos);
+                titan = Game.SpawnTitanAt(TitanTypeEnum.Default, pos);
                 titan.MoveTo(target, 1, false);
                 titan.DetectRange = 70;
                 titan.FocusRange = 70;

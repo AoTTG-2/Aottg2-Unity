@@ -808,7 +808,7 @@ class Main
 		titans = List();
 		while (i < count)
 		{
-			titan = Game.SpawnTitan("Default");
+			titan = Game.SpawnTitan(TitanTypeEnum.Default);
 			titan.DetectRange = 0;
 			titan.FocusRange = 0;
 			titans.Add(titan);
@@ -851,7 +851,7 @@ cutscene MainCutscene
 		wait 1.0;
 		if (Network.IsMasterClient)
 		{
-			annie = Game.SpawnShifterAt("Annie", spawn.Position);
+			annie = Game.SpawnShifterAt(ShifterTypeEnum.Annie, spawn.Position);
 			annie.Rotation = Vector3(0, 180, 0);
 			annie.DeathAnimLength = 10;
 		}

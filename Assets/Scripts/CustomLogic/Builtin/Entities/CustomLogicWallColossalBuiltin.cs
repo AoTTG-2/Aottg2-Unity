@@ -1,4 +1,5 @@
-﻿using Characters;
+﻿using System;
+using Characters;
 using Controllers;
 
 namespace CustomLogic
@@ -121,14 +122,14 @@ namespace CustomLogic
         /// <summary>
         /// Colossal's left hand state.
         /// </summary>
-        [CLProperty(Enum = typeof(CustomLogicHandStateEnum))]
-        public string LeftHandState => Shifter.LeftHandState.ToString();
+        [CLProperty(Enum = new Type[] { typeof(CustomLogicHandStateEnum) })]
+        public int LeftHandState => (int)Shifter.LeftHandState;
 
         /// <summary>
         /// Colossal's right hand state.
         /// </summary>
-        [CLProperty(Enum = typeof(CustomLogicHandStateEnum))]
-        public string RightHandState => Shifter.RightHandState.ToString();
+        [CLProperty(Enum = new Type[] { typeof(CustomLogicHandStateEnum) })]
+        public int RightHandState => (int)Shifter.RightHandState;
 
         /// <summary>
         /// Time in seconds for a hand to fully recover from broken state.
@@ -201,8 +202,8 @@ namespace CustomLogic
         /// <summary>
         /// Colossal's current steam state.
         /// </summary>
-        [CLProperty(Enum = typeof(CustomLogicSteamStateEnum))]
-        public string SteamState => Shifter.SteamState.ToString();
+        [CLProperty(Enum = new Type[] { typeof(CustomLogicSteamStateEnum) })]
+        public int SteamState => (int)Shifter.SteamState;
 
 
         /// <summary>

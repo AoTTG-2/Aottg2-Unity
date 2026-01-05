@@ -8,6 +8,6 @@ namespace CustomLogic.Editor.Models
         public string DefaultValue { get; set; }
         public bool IsOptional { get; set; }
         public bool IsVariadic { get; set; }
-        public string EnumName { get; set; }
+        public string[] EnumNames { get; set; }
     }
 }

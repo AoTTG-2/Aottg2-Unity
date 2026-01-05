@@ -1237,7 +1237,7 @@ self._startBarriers = Map.FindMapObjectsByTag("RacingStartBarrier");
 Network.MyPlayer.SetCustomProperty("Finished", false);
 if (Network.IsMasterClient)
 {
-Game.SpawnTitans("Crawler", self.Titans);
+Game.SpawnTitans(TitanTypeEnum.Crawler, self.Titans);
 }
 }
 
@@ -1248,7 +1248,7 @@ if (character.IsMine && character.Type == "Human")
 character.CurrentGas = 0;
 character.MaxGas = 0;
 character.Speed = 80;
-character.SetSpecial("SmokeBomb");
+character.SetSpecial(SpecialEnum.SmokeBomb);
 }
 }
 
@@ -1312,7 +1312,7 @@ for (barrier in self._startBarriers)
 {
 barrier.Active = false;
 }
-if (Network.MyPlayer.Status == "Alive")
+if (Network.MyPlayer.Status == PlayerStatusEnum.Alive)
 {
 self._hasSpawned = true;
 }
@@ -1321,12 +1321,12 @@ self._hasSpawned = true;
 else
 {
 UI.SetLabel("TopCenter", "Racing Time: " + String.FormatFloat(Time.GameTime - self.StartDelay, 2));
-if (!self._hasSpawned && Network.MyPlayer.Status == "Dead")
+if (!self._hasSpawned && Network.MyPlayer.Status == PlayerStatusEnum.Dead)
 {
 Game.SpawnPlayer(Network.MyPlayer, false);
 self._hasSpawned = true;
 }
-elif (Network.MyPlayer.Status == "Dead")
+elif (Network.MyPlayer.Status == PlayerStatusEnum.Dead)
 {
 Network.MyPlayer.SetCustomProperty("Finished", true);
 }
@@ -1336,11 +1336,11 @@ anyPlayerAlive = false;
 anyPlayerSpawned = false;
 for (player in Network.Players)
 {
-if (player.Status != "Spectating")
+if (player.Status != PlayerStatusEnum.Spectating)
 {
 anyPlayerSpawned = true;
 finished = player.GetCustomProperty("Finished");
-if (player.Status == "Alive" && (finished == null || !finished))
+if (player.Status == PlayerStatusEnum.Alive && (finished == null || !finished))
 {
 anyPlayerAlive = true;
 }

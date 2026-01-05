@@ -1,4 +1,5 @@
-﻿using Map;
+﻿using System;
+using Map;
 using UnityEngine;
 using Utility;
 
@@ -149,7 +150,7 @@ namespace CustomLogic
         public CustomLogicLineCastHitResultBuiltin Raycast(
             CustomLogicVector3Builtin start,
             CustomLogicVector3Builtin end,
-            [CLParam(Enum = typeof(CustomLogicCollideWithEnum))] string collideWith)
+            [CLParam(Enum = new Type[] { typeof(CustomLogicCollideWithEnum) })] string collideWith)
         {
             RaycastHit hit;
             var startPosition = start.Value;

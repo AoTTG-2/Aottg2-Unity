@@ -1446,7 +1446,7 @@ for (barrier in self._startBarriers)
 {
 barrier.Active = false;
 }
-if (Network.MyPlayer.Status == "Alive")
+if (Network.MyPlayer.Status == PlayerStatusEnum.Alive)
 {
 self._hasSpawned = true;
 }
@@ -1477,12 +1477,12 @@ UI.SetLabel("TopCenter", "Time: " + String.FormatFloat(Time.GameTime - self.Star
 "Candies: " + Convert.ToString(self._CollectiblesCurrent) + " / " + Convert.ToString(self._CollectiblesTotal));
 }
 self._dieTimeLeft = self._dieTimeLeft - Time.TickTime;
-if (!self._hasSpawned && Network.MyPlayer.Status == "Dead")
+if (!self._hasSpawned && Network.MyPlayer.Status == PlayerStatusEnum.Dead)
 {
 Game.SpawnPlayer(Network.MyPlayer, false);
 self._hasSpawned = true;
 }
-elif (Network.MyPlayer.Status == "Dead" && self._dieTimeLeft <= 0.0)
+elif (Network.MyPlayer.Status == PlayerStatusEnum.Dead && self._dieTimeLeft <= 0.0)
 {
 if (self._livesLeft > 0 || self.InfiniteLives)
 {
@@ -1500,11 +1500,11 @@ anyPlayerAlive = false;
 anyPlayerSpawned = false;
 for (player in Network.Players)
 {
-if (player.Status != "Spectating")
+if (player.Status != PlayerStatusEnum.Spectating)
 {
 anyPlayerSpawned = true;
 noLivesLeft = player.GetCustomProperty("NoLivesLeft");
-if (player.Status == "Alive" || (noLivesLeft != null && !noLivesLeft))
+if (player.Status == PlayerStatusEnum.Alive || (noLivesLeft != null && !noLivesLeft))
 {
 anyPlayerAlive = true;
 }
@@ -1535,7 +1535,7 @@ self._Collected = true;
 Main._CollectiblesCurrent += 1;
 self.MapObject.Scale = Vector3(0,0,0);
 other.CurrentGas = other.CurrentGas + 5.0;
-Game.SpawnEffect("CriticalHit", self.MapObject.Position, self.MapObject.Rotation, 3.0);
+Game.SpawnEffect(EffectNameEnum.CriticalHit, self.MapObject.Position, self.MapObject.Rotation, 3.0);
 other.PlaySound("Checkpoint");
 }
 if (Main._CollectiblesCurrent == Main._CollectiblesTotal)
