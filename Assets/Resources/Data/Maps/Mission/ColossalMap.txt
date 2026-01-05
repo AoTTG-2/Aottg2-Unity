@@ -1130,6 +1130,7 @@ class Main
 	_bossHealthBar = null;
 	_difficulty = 1;
 	_civilians = null;
+	_startAttackCooldown = 5.0;
 
 	function OnGameStart()
 	{
@@ -1228,7 +1229,10 @@ class Main
 		Game.SpawnUnscaledEffect("ColossalKick", position, Vector3(0,180,0));
 		Game.SpawnProjectile("Rock2", position, Vector3.Zero, velocity, gravity, 10000, "Titan", 15.0);
 		wait 3.5;
-		colossal.WallAttackCooldownLeft = 5.0;
+		if (self._hasSpawned)
+		{
+			colossal.WallAttackCooldownLeft = self._startAttackCooldown;
+		}
 		Main._titanSpawnTimeLeft = 5.0;
 	}
 
@@ -1251,6 +1255,10 @@ class Main
 				if (humans > 0 || playerShifters > 0)
 				{
 					self._hasSpawned = true;
+					if (self._colossal != null)
+					{
+						self._colossal.WallAttackCooldownLeft = self._startAttackCooldown;
+					}
 				}
 				if (aiShifters > 0)
 				{
@@ -1493,7 +1501,7 @@ component Civilians
 
 	function GetHealthPercentage()
 	{
-		return Math.Ceil(Convert.ToFloat(self._health) / self._maxHealth * 100'	);
+		return Math.Ceil(Convert.ToFloat(self._health) / self._maxHealth * 100);
 	}
 
 	function SetHealth(health)
