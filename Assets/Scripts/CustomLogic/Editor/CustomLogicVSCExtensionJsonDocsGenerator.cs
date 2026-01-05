@@ -113,11 +113,18 @@ namespace CustomLogic.Editor
             return properties.Select(p =>
             {
                 var description = NormalizeDescription(p.Info?.Summary);
-                if (!string.IsNullOrEmpty(p.EnumName))
+                if (p.EnumNames != null && p.EnumNames.Length > 0)
                 {
                     if (!string.IsNullOrEmpty(description))
                         description += " ";
-                    description += $"Refer to {p.EnumName}";
+                    if (p.EnumNames.Length == 1)
+                    {
+                        description += $"Refer to {p.EnumNames[0]}";
+                    }
+                    else
+                    {
+                        description += $"Refer to {string.Join(", ", p.EnumNames)}";
+                    }
                 }
                 
                 return new Field
@@ -172,11 +179,18 @@ namespace CustomLogic.Editor
             return parameters.Select(p =>
             {
                 var description = NormalizeDescription(p.Description);
-                if (!string.IsNullOrEmpty(p.EnumName))
+                if (p.EnumNames != null && p.EnumNames.Length > 0)
                 {
                     if (!string.IsNullOrEmpty(description))
                         description += " ";
-                    description += $"Refer to {p.EnumName}";
+                    if (p.EnumNames.Length == 1)
+                    {
+                        description += $"Refer to {p.EnumNames[0]}";
+                    }
+                    else
+                    {
+                        description += $"Refer to {string.Join(", ", p.EnumNames)}";
+                    }
                 }
                 
                 return new Parameter

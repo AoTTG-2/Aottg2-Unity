@@ -142,21 +142,31 @@ namespace CustomLogic
         /// <summary>
         /// The alignment of the line renderer.
         /// </summary>
-        [CLProperty]
-        public string Alignment
+        [CLProperty(Enum = new Type[] { typeof(CustomLogicLineAlignmentEnum) })]
+        public int Alignment
         {
-            get => Value.alignment.ToString();
-            set => Value.alignment = (LineAlignment)System.Enum.Parse(typeof(LineAlignment), value);
+            get => (int)Value.alignment;
+            set
+            {
+                if (!Enum.IsDefined(typeof(LineAlignment), value))
+                    throw new ArgumentException($"Unknown line alignment value: {value}");
+                Value.alignment = (LineAlignment)value;
+            }
         }
 
         /// <summary>
         /// The texture mode of the line renderer.
         /// </summary>
-        [CLProperty]
-        public string TextureMode
+        [CLProperty(Enum = new Type[] { typeof(CustomLogicLineTextureModeEnum) })]
+        public int TextureMode
         {
-            get => Value.textureMode.ToString();
-            set => Value.textureMode = (LineTextureMode)System.Enum.Parse(typeof(LineTextureMode), value);
+            get => (int)Value.textureMode;
+            set
+            {
+                if (!Enum.IsDefined(typeof(LineTextureMode), value))
+                    throw new ArgumentException($"Unknown line texture mode value: {value}");
+                Value.textureMode = (LineTextureMode)value;
+            }
         }
 
         /// <summary>
@@ -172,11 +182,16 @@ namespace CustomLogic
         /// <summary>
         /// Does the line renderer cast shadows.
         /// </summary>
-        [CLProperty]
-        public string ShadowCastingMode
+        [CLProperty(Enum = new Type[] { typeof(CustomLogicShadowCastingModeEnum) })]
+        public int ShadowCastingMode
         {
-            get => Value.shadowCastingMode.ToString();
-            set => Value.shadowCastingMode = (UnityEngine.Rendering.ShadowCastingMode)System.Enum.Parse(typeof(UnityEngine.Rendering.ShadowCastingMode), value);
+            get => (int)Value.shadowCastingMode;
+            set
+            {
+                if (!Enum.IsDefined(typeof(UnityEngine.Rendering.ShadowCastingMode), value))
+                    throw new ArgumentException($"Unknown shadow casting mode value: {value}");
+                Value.shadowCastingMode = (UnityEngine.Rendering.ShadowCastingMode)value;
+            }
         }
 
         /// <summary>
@@ -302,11 +317,18 @@ namespace CustomLogic
         /// <summary>
         /// The color gradient mode of the line renderer.
         /// </summary>
-        [CLProperty]
-        public string ColorGradientMode
+        [CLProperty(Enum = new Type[] { typeof(CustomLogicGradientModeEnum) })]
+        public int ColorGradientMode
         {
-            get => Value.colorGradient.mode.ToString();
-            set => Value.colorGradient.mode = (GradientMode)System.Enum.Parse(typeof(GradientMode), value);
+            get => (int)Value.colorGradient.mode;
+            set
+            {
+                if (!Enum.IsDefined(typeof(GradientMode), value))
+                    throw new ArgumentException($"Unknown gradient mode value: {value}");
+                var gradient = Value.colorGradient;
+                gradient.mode = (GradientMode)value;
+                Value.colorGradient = gradient;
+            }
         }
 
         /// <summary>

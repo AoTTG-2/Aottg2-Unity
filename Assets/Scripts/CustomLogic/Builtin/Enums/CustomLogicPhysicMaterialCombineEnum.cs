@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace CustomLogic
 {
     /// <summary>
@@ -13,24 +15,24 @@ namespace CustomLogic
         /// Minimum combine mode.
         /// </summary>
         [CLProperty]
-        public static int Minimum => 0;
+        public static int Minimum => (int)PhysicMaterialCombine.Minimum;
 
         /// <summary>
         /// Multiply combine mode.
         /// </summary>
         [CLProperty]
-        public static int Multiply => 1;
+        public static int Multiply => (int)PhysicMaterialCombine.Multiply;
 
         /// <summary>
         /// Maximum combine mode.
         /// </summary>
         [CLProperty]
-        public static int Maximum => 2;
+        public static int Maximum => (int)PhysicMaterialCombine.Maximum;
 
         /// <summary>
         /// Average combine mode.
         /// </summary>
         [CLProperty]
-        public static int Average => 3;
+        public static int Average => (int)PhysicMaterialCombine.Average;
     }
 }

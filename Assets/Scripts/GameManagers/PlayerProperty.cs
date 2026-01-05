@@ -49,6 +49,73 @@ namespace GameManagers
         public static string APG = "APG";
     }
 
+    class ShifterLoadout
+    {
+        public const string Annie = "Annie";
+        public const string Eren = "Eren";
+        public const string Armored = "Armored";
+        public const string WallColossal = "WallColossal";
+    }
+
+    class TitanLoadout
+    {
+        public const string Small = "Small";
+        public const string Medium = "Medium";
+        public const string Large = "Large";
+    }
+
+    class TitanType
+    {
+        public const string Normal = "Normal";
+        public const string Abnormal = "Abnormal";
+        public const string Jumper = "Jumper";
+        public const string Crawler = "Crawler";
+        public const string Thrower = "Thrower";
+        public const string Punk = "Punk";
+        public const string Default = "Default";
+        public const string Random = "Random";
+    }
+
+    class ShifterType
+    {
+        public const string Titan = "Titan";
+        public const string Annie = "Annie";
+        public const string Eren = "Eren";
+        public const string Armored = "Armored";
+        public const string WallColossal = "WallColossal";
+    }
+
+    class HumanSpecial
+    {
+        public const string Potato = "Potato";
+        public const string Escape = "Escape";
+        public const string Dance = "Dance";
+        public const string Distract = "Distract";
+        public const string Smell = "Smell";
+        public const string Supply = "Supply";
+        public const string SmokeBomb = "SmokeBomb";
+        public const string Carry = "Carry";
+        public const string Switchback = "Switchback";
+        public const string Confuse = "Confuse";
+
+        public const string DownStrike = "DownStrike";
+        public const string Spin1 = "Spin1";
+        public const string Spin2 = "Spin2";
+        public const string Spin3 = "Spin3";
+        public const string BladeThrow = "BladeThrow";
+
+        public const string AHSSTwinShot = "AHSSTwinShot";
+
+        public const string Stock = "Stock";
+
+        public const string None = "None";
+
+        public const string Eren = "Eren";
+        public const string Annie = "Annie";
+
+        public const string Armored = "Armored";
+    }
+
     class TeamInfo
     {
         public static string Blue = "Blue";

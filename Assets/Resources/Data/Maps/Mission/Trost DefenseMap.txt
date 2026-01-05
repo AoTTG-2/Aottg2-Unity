@@ -6010,7 +6010,7 @@ class Main
             endlessRespawnEnabled = Game.GetMiscSetting("EndlessRespawnEnabled");
             if (!endlessRespawnEnabled)
             {
-                key = Input.GetKeyName("General/Pause");
+                key = Input.GetKeyName(InputGeneralEnum.Pause);
                 help = "(Press <b>" + key + "</b> → Game → Misc → Endless respawn)";
                 error = "<b><color=#faedcd>[Info]: </color></b>";
                 str = "Enabling endless respawn is recommended while playing this mode. ";
@@ -6121,9 +6121,9 @@ class Main
             {
                 wait 0.3;
                 s = character.CurrentSpecial;
-                if (s == "Supply" || s == "Eren" || s == "Annie" || s == "Armored")
+                if (s == SpecialEnum.Supply || s == SpecialEnum.Eren || s == SpecialEnum.Annie || s == SpecialEnum.Armored)
                 {
-                    character.SetSpecial("Potato");
+                    character.SetSpecial(SpecialEnum.Potato);
                     NetworkMessage()
                         .Set("Type", "InfoMessage")
                         .Set("MsgType", "SpecialNotAllowed")
@@ -6295,11 +6295,11 @@ extension GameState
 
         if (win)
         {
-            UI.SetLabelAll("MiddleCenter", "Humanity wins!");
+            UI.SetLabelAll(UILabelEnum.MiddleCenter, "Humanity wins!");
         }
         else
         {
-            UI.SetLabelAll("MiddleCenter", "Humanity failed!");
+            UI.SetLabelAll(UILabelEnum.MiddleCenter, "Humanity failed!");
         }
 
         Game.End(10);
@@ -6340,9 +6340,9 @@ extension Dialogues
         self._locale.Set("English", englishTexts);
         self._locale.Set("简体中文", chineseTexts);
 
-        self._profiles.Add(Profile("Armin", "Armin1"));
-        self._profiles.Add(Profile("Jean", "Jean1"));
-        self._profiles.Add(Profile("Pixis", "Pixis1"));
+        self._profiles.Add(Profile("Armin", ProfileIconEnum.Armin1));
+        self._profiles.Add(Profile("Jean", ProfileIconEnum.Jean1));
+        self._profiles.Add(Profile("Pixis", ProfileIconEnum.Pixis1));
     }
 
     function ShowDialogue(key, profileIndex, delay)
@@ -6415,7 +6415,7 @@ extension InGameUI
 
         formattedTime = formattedMinutes + ":" + formattedSeconds;
 
-        UI.SetLabelAll("TopLeft", formattedTime);
+        UI.SetLabelAll(UILabelEnum.TopLeft, formattedTime);
     }
 }
 extension CaptureZones
@@ -6640,7 +6640,7 @@ extension Titans
         spawnPoints = Map.FindMapObjectsByTag("TitanSpawnPointHeadquarter");
         for(sp in spawnPoints)
         {
-            titan = Game.SpawnTitanAt("Normal", sp.Position);
+            titan = Game.SpawnTitanAt(TitanTypeEnum.Normal, sp.Position);
             titan.Size = Random.RandomFloat(0.5, 1);
             titan.UsePathfinding = false;
             titan.Position = sp.Position;
@@ -6677,7 +6677,7 @@ extension Titans
             target = CaptureZones.GetTitanTarget(pos);
             if (target != null)
             {
-                titan = Game.SpawnTitanAt("Default", pos);
+                titan = Game.SpawnTitanAt(TitanTypeEnum.Default, pos);
                 titan.MoveTo(target, 1, false);
                 titan.DetectRange = 70;
                 titan.FocusRange = 70;

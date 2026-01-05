@@ -178,17 +178,17 @@ class Main
 			}
 			if (aiShifters == 0 && titans == 0 && self._hasSpawnedEnemy)
 			{
-				UI.SetLabelAll("MiddleCenter", "Humanity wins!");
+				UI.SetLabelAll(UILabelEnum.MiddleCenter, "Humanity wins!");
 				Game.End(10.0);
 				return;
 			}
 			if (humans == 0 && playerShifters == 0 && self._hasSpawned)
 			{
-				UI.SetLabelAll("MiddleCenter", "Humanity failed!");
+				UI.SetLabelAll(UILabelEnum.MiddleCenter, "Humanity failed!");
 				Game.End(10.0);
 				return;
 			}
-			UI.SetLabelAll("TopCenter", "Titans Left: " + Convert.ToString(titans + aiShifters));
+			UI.SetLabelAll(UILabelEnum.TopCenter, "Titans Left: " + Convert.ToString(titans + aiShifters));
 		}
 	}
 }
@@ -204,11 +204,11 @@ cutscene MainCutscene
 		Camera.SetPosition(startPosition);
 		Camera.SetRotation(startRotation);
 		Camera.SetVelocity(velocity);
-		Cutscene.ShowDialogue("Levi1", "Levi", "Defeat the armored titan before he escapes the forest!");
+		Cutscene.ShowDialogue(ProfileIconEnum.Levi1, "Levi", "Defeat the armored titan before he escapes the forest!");
 		wait 1.0;
 		if (Network.IsMasterClient)
 		{
-			annie = Game.SpawnShifterAt("Armored", spawn.Position);
+			annie = Game.SpawnShifterAt(ShifterTypeEnum.Armored, spawn.Position);
 			annie.Rotation = Vector3(0, 180, 0);
 		}
 		wait 4.0;

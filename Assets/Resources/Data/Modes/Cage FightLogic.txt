@@ -17,7 +17,7 @@ class Main
         {
             if (Game.GetMiscSetting("PVP") != 2)
             {
-                key = Input.GetKeyName("General/Pause");
+                key = Input.GetKeyName(InputGeneralEnum.Pause);
                 help = "(<b>" + key + "</b> → Game → Misc → PVP)";
                 error = "<b><color=#f75348>[Error]: </color></b>";
                 str = "CageFight game mode requires Team PVP. ";
@@ -40,7 +40,7 @@ class Main
             self.SpawnTitans(self._redTitans, self._titanSpawnPointsA);
             self.SpawnTitans(self._blueTitans, self._titanSpawnPointsB);
 
-            UI.SetLabelAll("TopCenter", self.GetRemainingTitansLabel());
+            UI.SetLabelAll(UILabelEnum.TopCenter, self.GetRemainingTitansLabel());
         }
     }
 
@@ -50,20 +50,20 @@ class Main
         {
             if (victim.Type == "Titan")
             {
-                if (killer.Team == "Red")
+                if (killer.Team == TeamEnum.Red)
                 {
                     self._redTitans.Remove(victim);
                     self.SpawnTitan(self._blueTitans, self._titanSpawnPointsB);
                     self.CheckIfTitansAreDead();
                 }
-                elif (killer.Team == "Blue")
+                elif (killer.Team == TeamEnum.Blue)
                 {
                     self._blueTitans.Remove(victim);
                     self.SpawnTitan(self._redTitans, self._titanSpawnPointsA);
                     self.CheckIfTitansAreDead();
                 }
 
-                UI.SetLabelAll("TopCenter", self.GetRemainingTitansLabel());
+                UI.SetLabelAll(UILabelEnum.TopCenter, self.GetRemainingTitansLabel());
             }
             elif (victim.Type == "Human")
             {
@@ -87,8 +87,8 @@ class Main
             return;
         }
 
-        redPlayers = self.GetPlayersOfTeam("Red");
-        bluePlayers = self.GetPlayersOfTeam("Blue");
+        redPlayers = self.GetPlayersOfTeam(TeamEnum.Red);
+        bluePlayers = self.GetPlayersOfTeam(TeamEnum.Blue);
 
         for(bt in self._blueTitans)
         {
@@ -119,11 +119,11 @@ class Main
     {
         if (self._redTitans.Count <= 0)
         {
-            self.AnnounceWinner("Red");
+            self.AnnounceWinner(TeamEnum.Red);
         }
         elif (self._blueTitans.Count <= 0)
         {
-            self.AnnounceWinner("Blue");
+            self.AnnounceWinner(TeamEnum.Blue);
         }
     }
 
@@ -136,13 +136,13 @@ class Main
 
         for (p in Network.Players)
         {
-            if (p.Status == "Alive")
+            if (p.Status == PlayerStatusEnum.Alive)
             {
-                if (p.Team == "Red")
+                if (p.Team == TeamEnum.Red)
                 {
                     redAlive = true;
                 }
-                elif (p.Team == "Blue")
+                elif (p.Team == TeamEnum.Blue)
                 {
                     blueAlive = true;
                 }
@@ -151,11 +151,11 @@ class Main
 
         if (!redAlive)
         {
-            self.AnnounceWinner("Blue");
+            self.AnnounceWinner(TeamEnum.Blue);
         }
         elif (!blueAlive)
         {
-            self.AnnounceWinner("Red");
+            self.AnnounceWinner(TeamEnum.Red);
         }
     }
 
@@ -166,14 +166,14 @@ class Main
             return;
         }
 
-        if (team == "Red")
+        if (team == TeamEnum.Red)
         {
-            UI.SetLabelAll("MiddleCenter", "<color=#f06464>Red</color> team won!");
+            UI.SetLabelAll(UILabelEnum.MiddleCenter, "<color=#f06464>Red</color> team won!");
             Game.End(15);
         }
         else
         {
-            UI.SetLabelAll("MiddleCenter", "<color=#62b7f0>Blue</color> team won!");
+            UI.SetLabelAll(UILabelEnum.MiddleCenter, "<color=#62b7f0>Blue</color> team won!");
             Game.End(15);
         }
 
@@ -218,7 +218,7 @@ class Main
 
     function SpawnTitanAt(position)
     {
-        titan = Game.SpawnTitanAt("Default", position);
+        titan = Game.SpawnTitanAt(TitanTypeEnum.Default, position);
         titan.DetectRange = 10;
         return titan;
     }
@@ -228,7 +228,7 @@ class Main
         players = List();
         for(p in Network.Players)
         {
-            if (p.Status == "Alive" && p.Team == team)
+            if (p.Status == PlayerStatusEnum.Alive && p.Team == team)
             {
                 players.Add(p.Character);
             }
