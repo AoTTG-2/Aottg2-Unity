@@ -1,3 +1,4 @@
+using System;
 using ApplicationManagers;
 using Characters;
 using GameManagers;
@@ -205,7 +206,7 @@ namespace CustomLogic
         /// <param name="enabled">Whether the keys should be enabled by default.</param>
         [CLMethod]
         public static void SetCategoryKeysEnabled(
-            [CLParam(Enum = typeof(CustomLogicInputCategoryEnum))] string category,
+            [CLParam(Enum = new Type[] { typeof(CustomLogicInputCategoryEnum) })] string category,
             bool enabled)
         {
             if (!SettingsManager.InputSettings.Settings.Contains(category))

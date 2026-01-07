@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -29,7 +30,7 @@ namespace CustomLogic
         /// </summary>
         /// <param name="anim">The name of the animation to check.</param>
         [CLMethod]
-        public bool IsPlaying(string anim)
+        public bool IsPlaying([CLParam(Enum = new Type[] { typeof(CustomLogicHumanAnimationEnum), typeof(CustomLogicTitanAnimationEnum), typeof(CustomLogicAnnieAnimationEnum), typeof(CustomLogicErenAnimationEnum), typeof(CustomLogicWallColossalAnimationEnum), typeof(CustomLogicDummyAnimationEnum), typeof(CustomLogicHorseAnimationEnum) })] string anim)
             => Value.IsPlaying(anim);
 
         /// <summary>
@@ -39,7 +40,7 @@ namespace CustomLogic
         /// <param name="fade">The fade time in seconds for cross-fading (default: 0.1).</param>
         /// <param name="layer">The animation layer to play on (default: 0).</param>
         [CLMethod]
-        public void PlayAnimation(string anim, float fade = 0.1f, int layer = 0)
+        public void PlayAnimation([CLParam(Enum = new Type[] { typeof(CustomLogicHumanAnimationEnum), typeof(CustomLogicTitanAnimationEnum), typeof(CustomLogicAnnieAnimationEnum), typeof(CustomLogicErenAnimationEnum), typeof(CustomLogicWallColossalAnimationEnum), typeof(CustomLogicDummyAnimationEnum), typeof(CustomLogicHorseAnimationEnum) })] string anim, float fade = 0.1f, int layer = 0)
         {
             Value.CrossFade(anim, fade);
             Value[anim].layer = layer;
@@ -53,7 +54,7 @@ namespace CustomLogic
         /// <param name="fade">The fade time in seconds for cross-fading (default: 0.1).</param>
         /// <param name="layer">The animation layer to play on (default: 0).</param>
         [CLMethod]
-        public void PlayAnimationAt(string anim, float normalizedTime, float fade = 0.1f, int layer = 0)
+        public void PlayAnimationAt([CLParam(Enum = new Type[] { typeof(CustomLogicHumanAnimationEnum), typeof(CustomLogicTitanAnimationEnum), typeof(CustomLogicAnnieAnimationEnum), typeof(CustomLogicErenAnimationEnum), typeof(CustomLogicWallColossalAnimationEnum), typeof(CustomLogicDummyAnimationEnum), typeof(CustomLogicHorseAnimationEnum) })] string anim, float normalizedTime, float fade = 0.1f, int layer = 0)
         {
             Value.CrossFade(anim, fade);
             Value[anim].layer = layer;
@@ -65,7 +66,7 @@ namespace CustomLogic
         /// </summary>
         /// <param name="anim">The name of the animation to queue.</param>
         [CLMethod]
-        public void PlayAnimationQueued(string anim)
+        public void PlayAnimationQueued([CLParam(Enum = new Type[] { typeof(CustomLogicHumanAnimationEnum), typeof(CustomLogicTitanAnimationEnum), typeof(CustomLogicAnnieAnimationEnum), typeof(CustomLogicErenAnimationEnum), typeof(CustomLogicWallColossalAnimationEnum), typeof(CustomLogicDummyAnimationEnum), typeof(CustomLogicHorseAnimationEnum) })] string anim)
             => Value.PlayQueued(anim);
 
         /// <summary>
@@ -73,7 +74,7 @@ namespace CustomLogic
         /// </summary>
         /// <param name="anim">The name of the animation to stop. If null, stops all animations.</param>
         [CLMethod]
-        public void StopAnimation(string anim = null)
+        public void StopAnimation([CLParam(Enum = new Type[] { typeof(CustomLogicHumanAnimationEnum), typeof(CustomLogicTitanAnimationEnum), typeof(CustomLogicAnnieAnimationEnum), typeof(CustomLogicErenAnimationEnum), typeof(CustomLogicWallColossalAnimationEnum), typeof(CustomLogicDummyAnimationEnum), typeof(CustomLogicHorseAnimationEnum) })] string anim = null)
         {
             if (anim == null)
                 Value.Stop();
@@ -87,7 +88,7 @@ namespace CustomLogic
         /// <param name="name">The name of the animation.</param>
         /// <param name="speed">The playback speed multiplier (1.0 = normal speed).</param>
         [CLMethod]
-        public void SetAnimationSpeed(string name, float speed)
+        public void SetAnimationSpeed([CLParam(Enum = new Type[] { typeof(CustomLogicHumanAnimationEnum), typeof(CustomLogicTitanAnimationEnum), typeof(CustomLogicAnnieAnimationEnum), typeof(CustomLogicErenAnimationEnum), typeof(CustomLogicWallColossalAnimationEnum), typeof(CustomLogicDummyAnimationEnum), typeof(CustomLogicHorseAnimationEnum) })] string name, float speed)
             => Value[name].speed = speed;
 
         /// <summary>
@@ -95,7 +96,7 @@ namespace CustomLogic
         /// </summary>
         /// <param name="name">The name of the animation.</param>
         [CLMethod]
-        public float GetAnimationSpeed(string name)
+        public float GetAnimationSpeed([CLParam(Enum = new Type[] { typeof(CustomLogicHumanAnimationEnum), typeof(CustomLogicTitanAnimationEnum), typeof(CustomLogicAnnieAnimationEnum), typeof(CustomLogicErenAnimationEnum), typeof(CustomLogicWallColossalAnimationEnum), typeof(CustomLogicDummyAnimationEnum), typeof(CustomLogicHorseAnimationEnum) })] string name)
             => Value[name].speed;
 
         /// <summary>
@@ -103,7 +104,7 @@ namespace CustomLogic
         /// </summary>
         /// <param name="anim">The name of the animation.</param>
         [CLMethod]
-        public float GetAnimationLength(string anim)
+        public float GetAnimationLength([CLParam(Enum = new Type[] { typeof(CustomLogicHumanAnimationEnum), typeof(CustomLogicTitanAnimationEnum), typeof(CustomLogicAnnieAnimationEnum), typeof(CustomLogicErenAnimationEnum), typeof(CustomLogicWallColossalAnimationEnum), typeof(CustomLogicDummyAnimationEnum), typeof(CustomLogicHorseAnimationEnum) })] string anim)
             => Value[anim].length;
 
         /// <summary>
@@ -111,7 +112,7 @@ namespace CustomLogic
         /// </summary>
         /// <param name="anim">The name of the animation.</param>
         [CLMethod]
-        public float GetAnimationNormalizedTime(string anim)
+        public float GetAnimationNormalizedTime([CLParam(Enum = new Type[] { typeof(CustomLogicHumanAnimationEnum), typeof(CustomLogicTitanAnimationEnum), typeof(CustomLogicAnnieAnimationEnum), typeof(CustomLogicErenAnimationEnum), typeof(CustomLogicWallColossalAnimationEnum), typeof(CustomLogicDummyAnimationEnum), typeof(CustomLogicHorseAnimationEnum) })] string anim)
             => Value[anim].normalizedTime;
 
         /// <summary>
@@ -120,7 +121,7 @@ namespace CustomLogic
         /// <param name="anim">The name of the animation.</param>
         /// <param name="normalizedTime">The normalized time (0-1) to set.</param>
         [CLMethod]
-        public void SetAnimationNormalizedTime(string anim, float normalizedTime)
+        public void SetAnimationNormalizedTime([CLParam(Enum = new Type[] { typeof(CustomLogicHumanAnimationEnum), typeof(CustomLogicTitanAnimationEnum), typeof(CustomLogicAnnieAnimationEnum), typeof(CustomLogicErenAnimationEnum), typeof(CustomLogicWallColossalAnimationEnum), typeof(CustomLogicDummyAnimationEnum), typeof(CustomLogicHorseAnimationEnum) })] string anim, float normalizedTime)
             => Value[anim].normalizedTime = normalizedTime;
 
         /// <summary>
@@ -129,7 +130,7 @@ namespace CustomLogic
         /// <param name="anim">The name of the animation.</param>
         /// <param name="weight">The weight value (0-1) to set.</param>
         [CLMethod]
-        public void SetAnimationWeight(string anim, float weight)
+        public void SetAnimationWeight([CLParam(Enum = new Type[] { typeof(CustomLogicHumanAnimationEnum), typeof(CustomLogicTitanAnimationEnum), typeof(CustomLogicAnnieAnimationEnum), typeof(CustomLogicErenAnimationEnum), typeof(CustomLogicWallColossalAnimationEnum), typeof(CustomLogicDummyAnimationEnum), typeof(CustomLogicHorseAnimationEnum) })] string anim, float weight)
             => Value[anim].weight = weight;
 
         /// <summary>
@@ -137,7 +138,7 @@ namespace CustomLogic
         /// </summary>
         /// <param name="anim">The name of the animation.</param>
         [CLMethod]
-        public float GetAnimationWeight(string anim)
+        public float GetAnimationWeight([CLParam(Enum = new Type[] { typeof(CustomLogicHumanAnimationEnum), typeof(CustomLogicTitanAnimationEnum), typeof(CustomLogicAnnieAnimationEnum), typeof(CustomLogicErenAnimationEnum), typeof(CustomLogicWallColossalAnimationEnum), typeof(CustomLogicDummyAnimationEnum), typeof(CustomLogicHorseAnimationEnum) })] string anim)
             => Value[anim].weight;
     }
 }

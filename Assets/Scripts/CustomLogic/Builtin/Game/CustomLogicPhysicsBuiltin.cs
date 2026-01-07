@@ -1,3 +1,4 @@
+using System;
 using Map;
 using UnityEngine;
 using Utility;
@@ -36,7 +37,7 @@ namespace CustomLogic
         public static CustomLogicLineCastHitResultBuiltin LineCast(
             CustomLogicVector3Builtin start,
             CustomLogicVector3Builtin end,
-            [CLParam(Enum = typeof(CustomLogicCollideWithEnum))]
+            [CLParam(Enum = new Type[] { typeof(CustomLogicCollideWithEnum) })]
             string collideWith)
         {
             RaycastHit hit;
@@ -74,7 +75,7 @@ namespace CustomLogic
         public static CustomLogicListBuiltin LineCastAll(
             CustomLogicVector3Builtin start,
             CustomLogicVector3Builtin end,
-            [CLParam(Enum = typeof(CustomLogicCollideWithEnum))]
+            [CLParam(Enum = new Type[] { typeof(CustomLogicCollideWithEnum) })]
             string collideWith)
         {
             var startPosition = start.Value;
@@ -118,7 +119,7 @@ namespace CustomLogic
             CustomLogicVector3Builtin start,
             CustomLogicVector3Builtin end,
             float radius,
-            [CLParam(Enum = typeof(CustomLogicCollideWithEnum))]
+            [CLParam(Enum = new Type[] { typeof(CustomLogicCollideWithEnum) })]
             string collideWith)
         {
             RaycastHit hit;
@@ -146,7 +147,7 @@ namespace CustomLogic
             CustomLogicVector3Builtin start,
             CustomLogicVector3Builtin end,
             float radius,
-            [CLParam(Enum = typeof(CustomLogicCollideWithEnum))]
+            [CLParam(Enum = new Type[] { typeof(CustomLogicCollideWithEnum) })]
             string collideWith)
         {
             var startPosition = start.Value;
@@ -192,7 +193,7 @@ namespace CustomLogic
             CustomLogicVector3Builtin end,
             CustomLogicVector3Builtin dimensions,
             CustomLogicQuaternionBuiltin orientation,
-            [CLParam(Enum = typeof(CustomLogicCollideWithEnum))]
+            [CLParam(Enum = new Type[] { typeof(CustomLogicCollideWithEnum) })]
             string collideWith)
         {
             var startPosition = start.Value;
@@ -222,7 +223,7 @@ namespace CustomLogic
             CustomLogicVector3Builtin end,
             CustomLogicVector3Builtin dimensions,
             CustomLogicQuaternionBuiltin orientation,
-            [CLParam(Enum = typeof(CustomLogicCollideWithEnum))]
+            [CLParam(Enum = new Type[] { typeof(CustomLogicCollideWithEnum) })]
             string collideWith)
         {
             var startPosition = start.Value;

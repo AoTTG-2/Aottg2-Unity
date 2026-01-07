@@ -8,7 +8,7 @@ class Main
     {
         if (Network.IsMasterClient)
         {
-            Game.SpawnTitans("Default", self.Titans);
+            Game.SpawnTitans(TitanTypeEnum.Default, self.Titans);
         }
     }
 

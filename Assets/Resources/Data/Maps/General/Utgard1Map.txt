@@ -1237,7 +1237,7 @@ class Main
 {
 function OnGameStart()
 {
-titan = Game.SpawnTitanAt("Default", pos);
+titan = Game.SpawnTitanAt(TitanTypeEnum.Default, pos);
 titan.MoveTo(Vector3(0, -50, 0), 250, false);
 }
 }

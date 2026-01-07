@@ -78,7 +78,7 @@ class Main
             UI.SetLabelForTime("MiddleCenter", "You are AFK" + String.Newline + "Press '<color=#ff0000>" + Input.GetKeyName("General/Forward") + "</color>' to respawn.", 1.1);
         }
 
-        if (Network.MyPlayer.Status == "Alive")
+        if (Network.MyPlayer.Status == PlayerStatusEnum.Alive)
         {
             if (Vector3.Distance(Network.MyPlayer.Character.Position, self._lastPosition) < 0.1)
             {
@@ -232,7 +232,7 @@ class Main
     function PointModeFFA()
     {
         self._dieTimeLeft = self._dieTimeLeft - Time.TickTime;
-        if (Network.MyPlayer.Status == "Dead" && self._dieTimeLeft <= 0.0 && !self._isAFK)
+        if (Network.MyPlayer.Status == PlayerStatusEnum.Dead && self._dieTimeLeft <= 0.0 && !self._isAFK)
         {
             Game.SpawnPlayer(Network.MyPlayer, false);
         }
@@ -254,7 +254,7 @@ class Main
     function PointModeTeams()
     {
         self._dieTimeLeft = self._dieTimeLeft - Time.TickTime;
-        if (Network.MyPlayer.Status == "Dead" && self._dieTimeLeft <= 0.0 && !self._isAFK)
+        if (Network.MyPlayer.Status == PlayerStatusEnum.Dead && self._dieTimeLeft <= 0.0 && !self._isAFK)
         {
             Game.SpawnPlayer(Network.MyPlayer, false);
         }
@@ -263,11 +263,11 @@ class Main
         blueKills = 0;
         for (player in Network.Players)
         {
-            if (player.Team == "Red")
+            if (player.Team == TeamEnum.Red)
             {
                 redKills = redKills + player.Kills;
             }
-            elif (player.Team == "Blue")
+            elif (player.Team == TeamEnum.Blue)
             {
                 blueKills = blueKills + player.Kills;
             }
@@ -353,11 +353,11 @@ class Main
         humans = humanPlayers.Count;
         for (character in humanPlayers)
         {
-            if (character.Team == "Red")
+            if (character.Team == TeamEnum.Red)
             {
                 red = red + 1;
             }
-            elif (character.Team == "Blue")
+            elif (character.Team == TeamEnum.Blue)
             {
                 blue = blue + 1;
             }

@@ -104,7 +104,7 @@ class Main
                 {
                     barrier.Active = false;
                 }
-                if (Network.MyPlayer.Status == "Alive")
+                if (Network.MyPlayer.Status == PlayerStatusEnum.Alive)
                 {
                     self._hasSpawned = true;
                 }
@@ -122,12 +122,12 @@ class Main
                 UI.SetLabel("TopCenter", "Racing Time: " + String.FormatFloat(Time.GameTime - self.StartDelay, 2) + String.Newline + self._lapText);
             }
             self._dieTimeLeft = self._dieTimeLeft - Time.TickTime;
-            if (!self._hasSpawned && Network.MyPlayer.Status == "Dead")
+            if (!self._hasSpawned && Network.MyPlayer.Status == PlayerStatusEnum.Dead)
             {
                 Game.SpawnPlayer(Network.MyPlayer, false);
                 self._hasSpawned = true;
             }
-            elif (Network.MyPlayer.Status == "Dead" && self._dieTimeLeft <= 0.0)
+            elif (Network.MyPlayer.Status == PlayerStatusEnum.Dead && self._dieTimeLeft <= 0.0)
             {
                 if (self._livesLeft > 0 || self.InfiniteLives)
                 {
@@ -145,11 +145,11 @@ class Main
                 anyPlayerSpawned = false;
                 for (player in Network.Players)
                 {
-                    if (player.Status != "Spectating")
+                    if (player.Status != PlayerStatusEnum.Spectating)
                     {
                         anyPlayerSpawned = true;
                         noLivesLeft = player.GetCustomProperty("NoLivesLeft");
-                        if (player.Status == "Alive" || (noLivesLeft != null && !noLivesLeft))
+                        if (player.Status == PlayerStatusEnum.Alive || (noLivesLeft != null && !noLivesLeft))
                         {
                             anyPlayerAlive = true;
                         }

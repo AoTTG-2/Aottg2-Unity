@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 
 namespace CustomLogic
@@ -271,7 +271,7 @@ namespace CustomLogic
         /// <param name="anim">The name of the animation to check.</param>
         /// <returns>True if the animation is playing, false otherwise.</returns>
         [CLMethod]
-        public bool IsPlayingAnimation(string anim)
+        public bool IsPlayingAnimation([CLParam(Enum = new Type[] { typeof(CustomLogicHumanAnimationEnum), typeof(CustomLogicTitanAnimationEnum), typeof(CustomLogicAnnieAnimationEnum), typeof(CustomLogicErenAnimationEnum), typeof(CustomLogicWallColossalAnimationEnum), typeof(CustomLogicDummyAnimationEnum), typeof(CustomLogicHorseAnimationEnum) })] string anim)
         {
             if (_animation != null)
                 return _animation.IsPlaying(anim);
@@ -290,7 +290,7 @@ namespace CustomLogic
         /// <param name="anim">The name of the animation to play.</param>
         /// <param name="fade">The fade time in seconds for cross-fading (default: 0.1).</param>
         [CLMethod]
-        public void PlayAnimation(string anim, float fade = 0.1f)
+        public void PlayAnimation([CLParam(Enum = new Type[] { typeof(CustomLogicHumanAnimationEnum), typeof(CustomLogicTitanAnimationEnum), typeof(CustomLogicAnnieAnimationEnum), typeof(CustomLogicErenAnimationEnum), typeof(CustomLogicWallColossalAnimationEnum), typeof(CustomLogicDummyAnimationEnum), typeof(CustomLogicHorseAnimationEnum) })] string anim, float fade = 0.1f)
         {
             if (_animation != null)
             {
@@ -314,7 +314,7 @@ namespace CustomLogic
         /// <param name="anim">The name of the animation.</param>
         /// <returns>The length of the animation in seconds, or -1 if not found.</returns>
         [CLMethod]
-        public float GetAnimationLength(string anim)
+        public float GetAnimationLength([CLParam(Enum = new Type[] { typeof(CustomLogicHumanAnimationEnum), typeof(CustomLogicTitanAnimationEnum), typeof(CustomLogicAnnieAnimationEnum), typeof(CustomLogicErenAnimationEnum), typeof(CustomLogicWallColossalAnimationEnum), typeof(CustomLogicDummyAnimationEnum), typeof(CustomLogicHorseAnimationEnum) })] string anim)
         {
             if (_animation != null)
                 return _animation.GetAnimationLength(anim);

@@ -1809,7 +1809,7 @@ class Main
         # Pick a random player and announce it to the other players
         for(p in Network.Players)
         {
-            if (p.Status == "Alive")
+            if (p.Status == PlayerStatusEnum.Alive)
             {
                 self.SeekerFound.Add(p);
             }
@@ -1850,9 +1850,9 @@ class Main
     {
         if (character.IsMine && character.Type == "Human")
         {
-            character.Team = "Blue";
-            character.SetSpecial("SmokeBomb");
-            character.SetWeapon("Blades");
+            character.Team = TeamEnum.Blue;
+            character.SetSpecial(SpecialEnum.SmokeBomb);
+            character.SetWeapon(WeaponEnum.Blade);
             character.CustomDamageEnabled = true;
             character.CustomDamage = 0;
             character.MaxGas = 999999;
@@ -1904,8 +1904,8 @@ class Main
             _Character = Network.MyPlayer.Character;
             self._myPlayerIsSeeker = true;
             #Set Weapons
-            _Character.SetWeapon("AHSS");
-            _Character.Team = "Red";
+            _Character.SetWeapon(WeaponEnum.AHSS);
+            _Character.Team = TeamEnum.Red;
             _Character.MaxHealth = 9999999;
             _Character.Health = 9999999;
             _Character.MaxAmmoTotal = 999;

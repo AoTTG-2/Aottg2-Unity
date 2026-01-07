@@ -301,22 +301,18 @@ namespace CustomLogic
             return this;
         }
 
-        // TODO: Enum
         /// <summary>
         /// Set the flex direction.
         /// </summary>
         /// <param name="value">Acceptable values are: `Row`, `Column`, `RowReverse`, and `ColumnReverse`.</param>
         [CLMethod]
-        public CustomLogicVisualElementBuiltin FlexDirection(string value)
+        public CustomLogicVisualElementBuiltin FlexDirection([CLParam(Enum = new Type[] { typeof(CustomLogicFlexDirectionEnum) })] int value)
         {
-            _visualElement.style.flexDirection = value switch
+            if (!Enum.IsDefined(typeof(FlexDirection), value))
             {
-                "Row" => UnityEngine.UIElements.FlexDirection.Row,
-                "Column" => UnityEngine.UIElements.FlexDirection.Column,
-                "RowReverse" => UnityEngine.UIElements.FlexDirection.RowReverse,
-                "ColumnReverse" => UnityEngine.UIElements.FlexDirection.ColumnReverse,
-                _ => throw new System.Exception("Unknown flex direction value")
-            };
+                throw new ArgumentException($"Unknown flex direction value: {value}");
+            }
+            _visualElement.style.flexDirection = (FlexDirection)value;
             return this;
         }
 
@@ -324,64 +320,48 @@ namespace CustomLogic
 
         #region Align
 
-        // TODO: Enum
         /// <summary>
         /// Set the align items property.
         /// </summary>
         /// <param name="value">Acceptable values are: `Auto`, `FlexStart`, `Center`, `FlexEnd`, and `Stretch`.</param>
         [CLMethod]
-        public CustomLogicVisualElementBuiltin AlignItems(string value)
+        public CustomLogicVisualElementBuiltin AlignItems([CLParam(Enum = new Type[] { typeof(CustomLogicAlignEnum) })] int value)
         {
-            _visualElement.style.alignItems = value switch
+            if (!Enum.IsDefined(typeof(Align), value))
             {
-                "Auto" => Align.Auto,
-                "FlexStart" => Align.FlexStart,
-                "Center" => Align.Center,
-                "FlexEnd" => Align.FlexEnd,
-                "Stretch" => Align.Stretch,
-                _ => throw new System.Exception("Unknown align value")
-            };
+                throw new ArgumentException($"Unknown align value: {value}");
+            }
+            _visualElement.style.alignItems = (Align)value;
             return this;
         }
 
-        // TODO: Enum
         /// <summary>
         /// Set the justify content property.
         /// </summary>
         /// <param name="value">Acceptable values are: `FlexStart`, `Center`, `FlexEnd`, `SpaceBetween`, `SpaceAround`, and `SpaceEvenly`.</param>
         [CLMethod]
-        public CustomLogicVisualElementBuiltin JustifyContent(string value)
+        public CustomLogicVisualElementBuiltin JustifyContent([CLParam(Enum = new Type[] { typeof(CustomLogicJustifyEnum) })] int value)
         {
-            _visualElement.style.justifyContent = value switch
+            if (!Enum.IsDefined(typeof(Justify), value))
             {
-                "FlexStart" => Justify.FlexStart,
-                "Center" => Justify.Center,
-                "FlexEnd" => Justify.FlexEnd,
-                "SpaceBetween" => Justify.SpaceBetween,
-                "SpaceAround" => Justify.SpaceAround,
-                "SpaceEvenly" => Justify.SpaceEvenly,
-                _ => throw new System.Exception("Unknown justify value")
-            };
+                throw new ArgumentException($"Unknown justify value: {value}");
+            }
+            _visualElement.style.justifyContent = (Justify)value;
             return this;
         }
 
-        // TODO: Enum
         /// <summary>
         /// Set the align self property.
         /// </summary>
         /// <param name="value">Acceptable values are: `Auto`, `FlexStart`, `Center`, `FlexEnd`, and `Stretch`.</param>
         [CLMethod]
-        public CustomLogicVisualElementBuiltin AlignSelf(string value)
+        public CustomLogicVisualElementBuiltin AlignSelf([CLParam(Enum = new Type[] { typeof(CustomLogicAlignEnum) })] int value)
         {
-            _visualElement.style.alignSelf = value switch
+            if (!Enum.IsDefined(typeof(Align), value))
             {
-                "Auto" => Align.Auto,
-                "FlexStart" => Align.FlexStart,
-                "Center" => Align.Center,
-                "FlexEnd" => Align.FlexEnd,
-                "Stretch" => Align.Stretch,
-                _ => throw new System.Exception("Unknown align value")
-            };
+                throw new ArgumentException($"Unknown align value: {value}");
+            }
+            _visualElement.style.alignSelf = (Align)value;
             return this;
         }
 
@@ -554,16 +534,11 @@ namespace CustomLogic
         /// </summary>
         /// <param name="value">Acceptable values are: `Normal`, `Bold`, `Italic`, and `BoldAndItalic`.</param>
         [CLMethod]
-        public CustomLogicVisualElementBuiltin FontStyle(string value)
+        public CustomLogicVisualElementBuiltin FontStyle([CLParam(Enum = new Type[] { typeof(CustomLogicFontStyleEnum) })] int value)
         {
-            _visualElement.style.unityFontStyleAndWeight = value switch
-            {
-                "Normal" => UnityEngine.FontStyle.Normal,
-                "Bold" => UnityEngine.FontStyle.Bold,
-                "Italic" => UnityEngine.FontStyle.Italic,
-                "BoldAndItalic" => UnityEngine.FontStyle.BoldAndItalic,
-                _ => throw new System.Exception("Unknown font style value")
-            };
+            if (!Enum.IsDefined(typeof(FontStyle), value))
+                throw new ArgumentException($"Unknown font style value: {value}");
+            _visualElement.style.unityFontStyleAndWeight = (FontStyle)value;
             return this;
         }
 
@@ -589,27 +564,16 @@ namespace CustomLogic
             return this;
         }
 
-        // TODO: Enum
         /// <summary>
         /// Set the text alignment of the element.
         /// </summary>
         /// <param name="value">Valid values are: `UpperLeft`, `UpperCenter`, `UpperRight`, `MiddleLeft`, `MiddleCenter`, `MiddleRight`, `LowerLeft`, `LowerCenter`, `LowerRight`.</param>
         [CLMethod]
-        public CustomLogicVisualElementBuiltin TextAlign(string value)
+        public CustomLogicVisualElementBuiltin TextAlign([CLParam(Enum = new Type[] { typeof(CustomLogicTextAlignEnum) })] int value)
         {
-            _visualElement.style.unityTextAlign = value switch
-            {
-                "UpperLeft" => TextAnchor.UpperLeft,
-                "UpperCenter" => TextAnchor.UpperCenter,
-                "UpperRight" => TextAnchor.UpperRight,
-                "MiddleLeft" => TextAnchor.MiddleLeft,
-                "MiddleCenter" => TextAnchor.MiddleCenter,
-                "MiddleRight" => TextAnchor.MiddleRight,
-                "LowerLeft" => TextAnchor.LowerLeft,
-                "LowerCenter" => TextAnchor.LowerCenter,
-                "LowerRight" => TextAnchor.LowerRight,
-                _ => throw new System.Exception("Unknown text align value")
-            };
+            if (!Enum.IsDefined(typeof(TextAnchor), value))
+                throw new ArgumentException($"Unknown text align value: {value}");
+            _visualElement.style.unityTextAlign = (TextAnchor)value;
             return this;
         }
 
@@ -632,14 +596,11 @@ namespace CustomLogic
         /// </summary>
         /// <param name="value">Acceptable values are: `Clip`, `Ellipsis`.</param>
         [CLMethod]
-        public CustomLogicVisualElementBuiltin TextOverflow(string value)
+        public CustomLogicVisualElementBuiltin TextOverflow([CLParam(Enum = new Type[] { typeof(CustomLogicTextOverflowEnum) })] int value)
         {
-            _visualElement.style.textOverflow = value switch
-            {
-                "Clip" => UnityEngine.UIElements.TextOverflow.Clip,
-                "Ellipsis" => UnityEngine.UIElements.TextOverflow.Ellipsis,
-                _ => throw new System.Exception("Unknown text overflow value")
-            };
+            if (!Enum.IsDefined(typeof(TextOverflow), value))
+                throw new ArgumentException($"Unknown text overflow value: {value}");
+            _visualElement.style.textOverflow = (TextOverflow)value;
             return this;
         }
 
@@ -959,14 +920,11 @@ namespace CustomLogic
         /// </summary>
         /// <param name="value">Acceptable values are: `Visible` and `Hidden`.</param>
         [CLMethod]
-        public CustomLogicVisualElementBuiltin OverflowX(string value)
+        public CustomLogicVisualElementBuiltin OverflowX([CLParam(Enum = new Type[] { typeof(CustomLogicOverflowEnum) })] int value)
         {
-            _visualElement.style.overflow = value switch
-            {
-                "Visible" => Overflow.Visible,
-                "Hidden" => Overflow.Hidden,
-                _ => throw new System.Exception("Unknown overflow value")
-            };
+            if (!Enum.IsDefined(typeof(Overflow), value))
+                throw new ArgumentException($"Unknown overflow value: {value}");
+            _visualElement.style.overflow = (Overflow)value;
             return this;
         }
 
@@ -975,14 +933,11 @@ namespace CustomLogic
         /// </summary>
         /// <param name="value">Acceptable values are: `Visible` and `Hidden`.</param>
         [CLMethod]
-        public CustomLogicVisualElementBuiltin OverflowY(string value)
+        public CustomLogicVisualElementBuiltin OverflowY([CLParam(Enum = new Type[] { typeof(CustomLogicOverflowEnum) })] int value)
         {
-            _visualElement.style.overflow = value switch
-            {
-                "Visible" => Overflow.Visible,
-                "Hidden" => Overflow.Hidden,
-                _ => throw new System.Exception("Unknown overflow value")
-            };
+            if (!Enum.IsDefined(typeof(Overflow), value))
+                throw new ArgumentException($"Unknown overflow value: {value}");
+            _visualElement.style.overflow = (Overflow)value;
             return this;
         }
 
@@ -1034,24 +989,19 @@ namespace CustomLogic
             return this;
         }
 
-        // TODO: Enum
         /// <summary>
         /// Rotate the element.
         /// </summary>
         /// <param name="angle">The angle of rotation.</param>
         /// <param name="angleUnit">The unit of the angle. Valid values are: `Degree`, `Gradian`, `Radian`, and `Turn`.</param>
         [CLMethod]
-        public CustomLogicVisualElementBuiltin TransformRotate(float angle, string angleUnit = "Degree")
+        public CustomLogicVisualElementBuiltin TransformRotate(float angle, [CLParam(Enum = new Type[] { typeof(CustomLogicAngleUnitEnum) })] int angleUnit)
         {
-            AngleUnit unit = angleUnit switch
+            if (!Enum.IsDefined(typeof(AngleUnit), angleUnit))
             {
-                "Degree" => AngleUnit.Degree,
-                "Gradian" => AngleUnit.Gradian,
-                "Radian" => AngleUnit.Radian,
-                "Turn" => AngleUnit.Turn,
-                _ => throw new Exception("Unknown angle unit")
-            };
-            _visualElement.style.rotate = new Rotate(new Angle(angle, unit));
+                throw new ArgumentException($"Unknown angle unit: {angleUnit}");
+            }
+            _visualElement.style.rotate = new Rotate(new Angle(angle, (AngleUnit)angleUnit));
             return this;
         }
 

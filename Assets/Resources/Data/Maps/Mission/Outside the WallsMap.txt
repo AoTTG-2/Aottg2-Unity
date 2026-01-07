@@ -1421,7 +1421,7 @@ class Main
 		while (i < Network.Players.Count)
 		{
 			p = Network.Players.Get(i);
-			if (p.CharacterType == "Human" && p.Status == "Alive")
+			if (p.CharacterType == CharacterTypeEnum.Human && p.Status == PlayerStatusEnum.Alive)
 			{
 				alive = true;
 				i = Network.Players.Count;
@@ -2249,7 +2249,7 @@ class Event8
 		while (i < self.TitansCount)
 		{
 			position = TitanSpawnPoints.GetSpawnPoint(self.CaptureZone);
-			titan = Game.SpawnTitanAt("Default", position);
+			titan = Game.SpawnTitanAt(TitanTypeEnum.Default, position);
 			titan.DetectRange = 0;
 			titan.FocusRange = 0;
 			titan.MoveTo(shifterPosition, 1, false);
@@ -2299,7 +2299,7 @@ extension CaptureZones
 			captureZoneOrderMap.Set(captureZoneComponent.Order, captureZoneComponent);
 		}
 
-		keys = captureZoneOrderMap.Keys;
+		keys = captureZoneOrderMap.Keys.Copy();
 		keys.Sort();
 		for(key in keys)
 		{
@@ -2625,7 +2625,7 @@ extension PlayerUtils
 		dead = false;
 		for(p in Network.Players)
 		{
-			if (p.Status != "Alive")
+			if (p.Status != PlayerStatusEnum.Alive)
 			{
 				dead = true;
 			}
@@ -2688,7 +2688,7 @@ extension TitanUtils
 			{
 				if (seconds == null)
 				{
-					t.AddOutline();
+					t.AddOutline(null, OutlineModeEnum.OutlineAll);
 				}
 				else
 				{
@@ -2702,7 +2702,7 @@ extension TitanUtils
 	{
 		position = TitanSpawnPoints.GetAnnieSpawnPoint(captureZone);
 
-		shifter = Game.SpawnShifterAt("Annie", position);
+		shifter = Game.SpawnShifterAt(ShifterTypeEnum.Annie, position);
 		shifter.MaxHealth = health;
 		shifter.Health = health;
 
@@ -2716,7 +2716,7 @@ extension TitanUtils
 		while (i < count)
 		{
 			position = TitanSpawnPoints.GetSpawnPoint(captureZone);
-			titan = Game.SpawnTitanAt("Default", position);
+			titan = Game.SpawnTitanAt(TitanTypeEnum.Default, position);
 
 			if (Math.Mod(i, 10) == 0)
 			{
