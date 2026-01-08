@@ -1,79 +1,84 @@
 # Math
 Inherits from [Object](../objects/Object.md)
-
-Math functions. Note that parameter types can be either int or float unless otherwise specified.
-Functions may return int or float depending on the parameter types given.
-
 ### Static Properties
 |Name|Type|Readonly|Description|
 |---|---|---|---|
-|PI|float|True|The value of PI|
-|Infinity|float|True|The value of Infinity|
-|NegativeInfinity|float|True|The value of Negative Infinity|
-|Rad2DegConstant|float|True|The value of Rad2Deg constant|
-|Deg2RadConstant|float|True|The value of Deg2Rad constant|
-|Epsilon|float|True|The value of Epsilon|
+|PI|float|True|The value of PI.|
+|Infinity|float|True|The value of Infinity.|
+|NegativeInfinity|float|True|The value of Negative Infinity.|
+|Rad2DegConstant|float|True|The value of Rad2Deg constant.|
+|Deg2RadConstant|float|True|The value of Deg2Rad constant.|
+|Epsilon|float|True|The value of Epsilon.|
 
 
 ### Static Methods
-<pre class="language-typescript"><code class="lang-typescript">function Clamp(value: <a data-footnote-ref href="#user-content-fn-59">Object</a>, min: <a data-footnote-ref href="#user-content-fn-59">Object</a>, max: <a data-footnote-ref href="#user-content-fn-59">Object</a>) -> <a data-footnote-ref href="#user-content-fn-59">Object</a></code></pre>
-> Clamp a value between a minimum and maximum value
+<pre class="language-typescript"><code class="lang-typescript">function Clamp(value: <a data-footnote-ref href="#user-content-fn-82">Object</a>, min: <a data-footnote-ref href="#user-content-fn-82">Object</a>, max: <a data-footnote-ref href="#user-content-fn-82">Object</a>) -> <a data-footnote-ref href="#user-content-fn-82">Object</a></code></pre>
+> Clamp a value between a minimum and maximum value. Returns: The clamped value. Will be the same type as the inputs
 > 
 > **Parameters**:
 > - `value`: The value to clamp. Can be int or float
 > - `min`: The minimum value. Can be int or float
 > - `max`: The maximum value. Can be int or float
 > 
-> **Returns**: The clamped value. Will be the same type as the inputs
-<pre class="language-typescript"><code class="lang-typescript">function Max(a: <a data-footnote-ref href="#user-content-fn-59">Object</a>, b: <a data-footnote-ref href="#user-content-fn-59">Object</a>) -> <a data-footnote-ref href="#user-content-fn-59">Object</a></code></pre>
-> Get the maximum of two values
+<pre class="language-typescript"><code class="lang-typescript">function Max(a: <a data-footnote-ref href="#user-content-fn-82">Object</a>, b: <a data-footnote-ref href="#user-content-fn-82">Object</a>) -> <a data-footnote-ref href="#user-content-fn-82">Object</a></code></pre>
+> Get the maximum of two values. Returns: The maximum of the two values. Will be the same type as the inputs
 > 
 > **Parameters**:
 > - `a`: The first value. Can be int or float
 > - `b`: The second value. Can be int or float
 > 
-> **Returns**: The maximum of the two values. Will be the same type as the inputs
-<pre class="language-typescript"><code class="lang-typescript">function Min(a: <a data-footnote-ref href="#user-content-fn-59">Object</a>, b: <a data-footnote-ref href="#user-content-fn-59">Object</a>) -> <a data-footnote-ref href="#user-content-fn-59">Object</a></code></pre>
-> Get the minimum of two values
+<pre class="language-typescript"><code class="lang-typescript">function Min(a: <a data-footnote-ref href="#user-content-fn-82">Object</a>, b: <a data-footnote-ref href="#user-content-fn-82">Object</a>) -> <a data-footnote-ref href="#user-content-fn-82">Object</a></code></pre>
+> Get the minimum of two values. Returns: The minimum of the two values. Will be the same type as the inputs
 > 
 > **Parameters**:
 > - `a`: The first value. Can be int or float
 > - `b`: The second value. Can be int or float
 > 
-> **Returns**: The minimum of the two values. Will be the same type as the inputs
 <pre class="language-typescript"><code class="lang-typescript">function Pow(a: float, b: float) -> float</code></pre>
 > Raise a value to the power of another value
 > 
-<pre class="language-typescript"><code class="lang-typescript">function Abs(value: <a data-footnote-ref href="#user-content-fn-59">Object</a>) -> <a data-footnote-ref href="#user-content-fn-59">Object</a></code></pre>
-> Get the absolute value of a number
+> **Parameters**:
+> - `a`: The base value.
+> - `b`: The exponent value.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function Abs(value: <a data-footnote-ref href="#user-content-fn-82">Object</a>) -> <a data-footnote-ref href="#user-content-fn-82">Object</a></code></pre>
+> Get the absolute value of a number. Returns: The absolute value. Will be the same type as the input
 > 
 > **Parameters**:
 > - `value`: The number. Can be int or float
 > 
-> **Returns**: The absolute value. Will be the same type as the input
 <pre class="language-typescript"><code class="lang-typescript">function Sqrt(value: float) -> float</code></pre>
 > Get the square root of a number
 > 
-<pre class="language-typescript"><code class="lang-typescript">function Repeat(value: <a data-footnote-ref href="#user-content-fn-59">Object</a>, max: <a data-footnote-ref href="#user-content-fn-59">Object</a>) -> <a data-footnote-ref href="#user-content-fn-59">Object</a></code></pre>
+> **Parameters**:
+> - `value`: The value to get the square root of.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function Repeat(value: <a data-footnote-ref href="#user-content-fn-82">Object</a>, max: <a data-footnote-ref href="#user-content-fn-82">Object</a>) -> <a data-footnote-ref href="#user-content-fn-82">Object</a></code></pre>
 > Modulo for floats
+> 
+> **Parameters**:
+> - `value`: The value to repeat.
+> - `max`: The maximum value to repeat to.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function Mod(a: int, b: int) -> int</code></pre>
 > Get the remainder of a division operation
 > 
+> **Parameters**:
+> - `a`: The dividend.
+> - `b`: The divisor.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function Sin(angle: float) -> float</code></pre>
-> Get the sine of an angle
+> Get the sine of an angle. Returns: Value between -1 and 1
 > 
 > **Parameters**:
 > - `angle`: The angle in degrees
 > 
-> **Returns**: Value between -1 and 1
 <pre class="language-typescript"><code class="lang-typescript">function Cos(angle: float) -> float</code></pre>
-> Get the cosine of an angle
+> Get the cosine of an angle. Returns: Value between -1 and 1
 > 
 > **Parameters**:
 > - `angle`: The angle in degrees
 > 
-> **Returns**: Value between -1 and 1
 <pre class="language-typescript"><code class="lang-typescript">function Tan(angle: float) -> float</code></pre>
 > Get the tangent of an angle in radians
 > 
@@ -83,80 +88,179 @@ Functions may return int or float depending on the parameter types given.
 <pre class="language-typescript"><code class="lang-typescript">function Asin(value: float) -> float</code></pre>
 > Get the arcsine of a value in degrees
 > 
+> **Parameters**:
+> - `value`: The value (must be between -1 and 1).
+> 
 <pre class="language-typescript"><code class="lang-typescript">function Acos(value: float) -> float</code></pre>
 > Get the arccosine of a value in degrees
+> 
+> **Parameters**:
+> - `value`: The value (must be between -1 and 1).
 > 
 <pre class="language-typescript"><code class="lang-typescript">function Atan(value: float) -> float</code></pre>
 > Get the arctangent of a value in degrees
 > 
+> **Parameters**:
+> - `value`: The value to get the arctangent of.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function Atan2(a: float, b: float) -> float</code></pre>
 > Get the arctangent of a value in degrees
+> 
+> **Parameters**:
+> - `a`: The Y component.
+> - `b`: The X component.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function Ceil(value: float) -> int</code></pre>
 > Get the smallest integer greater than or equal to a value
 > 
+> **Parameters**:
+> - `value`: The value to round up.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function Floor(value: float) -> int</code></pre>
 > Get the largest integer less than or equal to a value
+> 
+> **Parameters**:
+> - `value`: The value to round down.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function Round(value: float) -> int</code></pre>
 > Round a value to the nearest integer
 > 
+> **Parameters**:
+> - `value`: The value to round.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function Deg2Rad(angle: float) -> float</code></pre>
 > Convert an angle from degrees to radians
+> 
+> **Parameters**:
+> - `angle`: The angle in degrees.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function Rad2Deg(angle: float) -> float</code></pre>
 > Convert an angle from radians to degrees
 > 
+> **Parameters**:
+> - `angle`: The angle in radians.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function Lerp(a: float, b: float, t: float) -> float</code></pre>
 > Linearly interpolate between two values
+> 
+> **Parameters**:
+> - `a`: The start value.
+> - `b`: The end value.
+> - `t`: The interpolation factor (clamped between 0 and 1).
 > 
 <pre class="language-typescript"><code class="lang-typescript">function LerpUnclamped(a: float, b: float, t: float) -> float</code></pre>
 > Linearly interpolate between two values without clamping
 > 
+> **Parameters**:
+> - `a`: The start value.
+> - `b`: The end value.
+> - `t`: The interpolation factor (not clamped).
+> 
 <pre class="language-typescript"><code class="lang-typescript">function Sign(value: float) -> float</code></pre>
 > Get the sign of a value
+> 
+> **Parameters**:
+> - `value`: The value to get the sign of.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function InverseLerp(a: float, b: float, value: float) -> float</code></pre>
 > Get the inverse lerp of two values
 > 
+> **Parameters**:
+> - `a`: The start value.
+> - `b`: The end value.
+> - `value`: The value to find the interpolation factor for.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function LerpAngle(a: float, b: float, t: float) -> float</code></pre>
 > Linearly interpolate between two angles
+> 
+> **Parameters**:
+> - `a`: The start angle in degrees.
+> - `b`: The end angle in degrees.
+> - `t`: The interpolation factor (clamped between 0 and 1).
 > 
 <pre class="language-typescript"><code class="lang-typescript">function Log(value: float) -> float</code></pre>
 > Get the natural logarithm of a value
 > 
+> **Parameters**:
+> - `value`: The value to get the logarithm of.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function MoveTowards(current: float, target: float, maxDelta: float) -> float</code></pre>
 > Move a value towards a target value
+> 
+> **Parameters**:
+> - `current`: The current value.
+> - `target`: The target value.
+> - `maxDelta`: The maximum change allowed.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function MoveTowardsAngle(current: float, target: float, maxDelta: float) -> float</code></pre>
 > Move an angle towards a target angle
 > 
+> **Parameters**:
+> - `current`: The current angle in degrees.
+> - `target`: The target angle in degrees.
+> - `maxDelta`: The maximum change in degrees allowed.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function PingPong(t: float, length: float) -> float</code></pre>
 > Get the ping pong value of a time value
+> 
+> **Parameters**:
+> - `t`: The time value.
+> - `length`: The length of the ping pong cycle.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function Exp(value: float) -> float</code></pre>
 > Get the exponential value of a number
 > 
+> **Parameters**:
+> - `value`: The value to exponentiate.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function SmoothStep(a: float, b: float, t: float) -> float</code></pre>
 > Smoothly step between two values
+> 
+> **Parameters**:
+> - `a`: The start value.
+> - `b`: The end value.
+> - `t`: The interpolation factor (clamped between 0 and 1).
 > 
 <pre class="language-typescript"><code class="lang-typescript">function BitwiseAnd(a: int, b: int) -> int</code></pre>
 > Perform a bitwise AND operation
 > 
+> **Parameters**:
+> - `a`: The first integer.
+> - `b`: The second integer.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function BitwiseOr(a: int, b: int) -> int</code></pre>
 > Perform a bitwise OR operation
+> 
+> **Parameters**:
+> - `a`: The first integer.
+> - `b`: The second integer.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function BitwiseXor(a: int, b: int) -> int</code></pre>
 > Perform a bitwise XOR operation
 > 
+> **Parameters**:
+> - `a`: The first integer.
+> - `b`: The second integer.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function BitwiseNot(value: int) -> int</code></pre>
 > Perform a bitwise NOT operation
+> 
+> **Parameters**:
+> - `value`: The integer to negate.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function BitwiseLeftShift(value: int, shift: int) -> int</code></pre>
 > Shift bits to the left
 > 
+> **Parameters**:
+> - `value`: The integer to shift.
+> - `shift`: The number of bits to shift left.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function BitwiseRightShift(value: int, shift: int) -> int</code></pre>
 > Shift bits to the right
+> 
+> **Parameters**:
+> - `value`: The integer to shift.
+> - `shift`: The number of bits to shift right.
 > 
 
 [^0]: [Color](../objects/Color.md)
@@ -190,33 +294,56 @@ Functions may return int or float depending on the parameter types given.
 [^28]: [Titan](../objects/Titan.md)
 [^29]: [Transform](../objects/Transform.md)
 [^30]: [WallColossal](../objects/WallColossal.md)
-[^31]: [Camera](../static/Camera.md)
-[^32]: [Cutscene](../static/Cutscene.md)
-[^33]: [Game](../static/Game.md)
-[^34]: [Input](../static/Input.md)
-[^35]: [Locale](../static/Locale.md)
-[^36]: [Map](../static/Map.md)
-[^37]: [Network](../static/Network.md)
-[^38]: [PersistentData](../static/PersistentData.md)
-[^39]: [Physics](../static/Physics.md)
-[^40]: [RoomData](../static/RoomData.md)
-[^41]: [Time](../static/Time.md)
-[^42]: [Button](../objects/Button.md)
-[^43]: [Dropdown](../objects/Dropdown.md)
-[^44]: [Icon](../objects/Icon.md)
-[^45]: [Image](../objects/Image.md)
-[^46]: [Label](../objects/Label.md)
-[^47]: [ProgressBar](../objects/ProgressBar.md)
-[^48]: [ScrollView](../objects/ScrollView.md)
-[^49]: [Slider](../objects/Slider.md)
-[^50]: [TextField](../objects/TextField.md)
-[^51]: [Toggle](../objects/Toggle.md)
-[^52]: [UI](../static/UI.md)
-[^53]: [VisualElement](../objects/VisualElement.md)
-[^54]: [Convert](../static/Convert.md)
-[^55]: [Json](../static/Json.md)
-[^56]: [Math](../static/Math.md)
-[^57]: [Random](../objects/Random.md)
-[^58]: [String](../static/String.md)
-[^59]: [Object](../objects/Object.md)
-[^60]: [Component](../objects/Component.md)
+[^31]: [CharacterTypeEnum](../static/CharacterTypeEnum.md)
+[^32]: [CollideModeEnum](../static/CollideModeEnum.md)
+[^33]: [CollideWithEnum](../static/CollideWithEnum.md)
+[^34]: [CollisionDetectionModeEnum](../static/CollisionDetectionModeEnum.md)
+[^35]: [EffectNameEnum](../static/EffectNameEnum.md)
+[^36]: [ForceModeEnum](../static/ForceModeEnum.md)
+[^37]: [HandStateEnum](../static/HandStateEnum.md)
+[^38]: [HumanParticleEffectEnum](../static/HumanParticleEffectEnum.md)
+[^39]: [InputCategoryEnum](../static/InputCategoryEnum.md)
+[^40]: [LanguageEnum](../static/LanguageEnum.md)
+[^41]: [LoadoutEnum](../static/LoadoutEnum.md)
+[^42]: [OutlineModeEnum](../static/OutlineModeEnum.md)
+[^43]: [PhysicMaterialCombineEnum](../static/PhysicMaterialCombineEnum.md)
+[^44]: [PlayerStatusEnum](../static/PlayerStatusEnum.md)
+[^45]: [ProjectileNameEnum](../static/ProjectileNameEnum.md)
+[^46]: [ScaleModeEnum](../static/ScaleModeEnum.md)
+[^47]: [ShifterTypeEnum](../static/ShifterTypeEnum.md)
+[^48]: [SliderDirectionEnum](../static/SliderDirectionEnum.md)
+[^49]: [SteamStateEnum](../static/SteamStateEnum.md)
+[^50]: [TeamEnum](../static/TeamEnum.md)
+[^51]: [TitanTypeEnum](../static/TitanTypeEnum.md)
+[^52]: [TSKillSoundEnum](../static/TSKillSoundEnum.md)
+[^53]: [WeaponEnum](../static/WeaponEnum.md)
+[^54]: [Camera](../static/Camera.md)
+[^55]: [Cutscene](../static/Cutscene.md)
+[^56]: [Game](../static/Game.md)
+[^57]: [Input](../static/Input.md)
+[^58]: [Locale](../static/Locale.md)
+[^59]: [Map](../static/Map.md)
+[^60]: [Network](../static/Network.md)
+[^61]: [PersistentData](../static/PersistentData.md)
+[^62]: [Physics](../static/Physics.md)
+[^63]: [RoomData](../static/RoomData.md)
+[^64]: [Time](../static/Time.md)
+[^65]: [Button](../objects/Button.md)
+[^66]: [Dropdown](../objects/Dropdown.md)
+[^67]: [Icon](../objects/Icon.md)
+[^68]: [Image](../objects/Image.md)
+[^69]: [Label](../objects/Label.md)
+[^70]: [ProgressBar](../objects/ProgressBar.md)
+[^71]: [ScrollView](../objects/ScrollView.md)
+[^72]: [Slider](../objects/Slider.md)
+[^73]: [TextField](../objects/TextField.md)
+[^74]: [Toggle](../objects/Toggle.md)
+[^75]: [UI](../static/UI.md)
+[^76]: [VisualElement](../objects/VisualElement.md)
+[^77]: [Convert](../static/Convert.md)
+[^78]: [Json](../static/Json.md)
+[^79]: [Math](../static/Math.md)
+[^80]: [Random](../objects/Random.md)
+[^81]: [String](../static/String.md)
+[^82]: [Object](../objects/Object.md)
+[^83]: [Component](../objects/Component.md)

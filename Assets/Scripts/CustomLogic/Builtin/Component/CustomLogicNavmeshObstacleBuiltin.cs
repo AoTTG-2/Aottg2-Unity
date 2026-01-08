@@ -3,7 +3,10 @@ using UnityEngine.AI;
 
 namespace CustomLogic
 {
-    [CLType(Name = "NavmeshObstacleBuiltin", Static = true, Abstract = true, Description = "", IsComponent = true)]
+    /// <summary>
+    /// Represents a NavMesh obstacle component that can carve or block navigation mesh paths.
+    /// </summary>
+    [CLType(Name = "NavmeshObstacleBuiltin", Static = true, Abstract = true, IsComponent = true)]
     partial class CustomLogicNavmeshObstacleBuiltin : BuiltinComponentInstance
     {
         public NavMeshObstacle Value;
@@ -19,34 +22,52 @@ namespace CustomLogic
         }
 
         // Expose static properties for each NavMeshObstacleShape
-        [CLProperty(Description = "The NavMeshObstacleShape Box.")]
+        /// <summary>
+        /// The NavMeshObstacleShape Box.
+        /// </summary>
+        [CLProperty]
         public static int ShapeBox => (int)NavMeshObstacleShape.Box;
 
-        [CLProperty(Description = "The NavMeshObstacleShape Capsule.")]
+        /// <summary>
+        /// The NavMeshObstacleShape Capsule.
+        /// </summary>
+        [CLProperty]
         public static int ShapeCapsule => (int)NavMeshObstacleShape.Capsule;
 
-        [CLProperty(Description = "The radius of the obstacle.")]
+        /// <summary>
+        /// The radius of the obstacle.
+        /// </summary>
+        [CLProperty]
         public float Radius
         {
             get => Value.radius;
             set => Value.radius = value;
         }
 
-        [CLProperty(Description = "The height of the obstacle.")]
+        /// <summary>
+        /// The height of the obstacle.
+        /// </summary>
+        [CLProperty]
         public float Height
         {
             get => Value.height;
             set => Value.height = value;
         }
 
-        [CLProperty(Description = "The scale of the obstacle")]
+        /// <summary>
+        /// The scale of the obstacle.
+        /// </summary>
+        [CLProperty]
         public CustomLogicVector3Builtin Scale
         {
             get => new CustomLogicVector3Builtin(Value.size);
             set => Value.size = value.Value;
         }
 
-        [CLProperty(Description = "The center of the obstacle.")]
+        /// <summary>
+        /// The center of the obstacle.
+        /// </summary>
+        [CLProperty]
         public Vector3 Center
         {
             get => Value.center;
@@ -54,14 +75,20 @@ namespace CustomLogic
         }
 
         // carving
-        [CLProperty(Description = "Whether the obstacle carves the NavMesh.")]
+        /// <summary>
+        /// Whether the obstacle carves the NavMesh.
+        /// </summary>
+        [CLProperty]
         public bool Carving
         {
             get => Value.carving;
             set => Value.carving = value;
         }
 
-        [CLProperty(Description = "Whether the obstacle only carves when stationary.")]
+        /// <summary>
+        /// Whether the obstacle only carves when stationary.
+        /// </summary>
+        [CLProperty]
         public bool CarveOnlyStationary
         {
             get => Value.carveOnlyStationary;
@@ -69,14 +96,20 @@ namespace CustomLogic
         }
 
         // Shape
-        [CLProperty(Description = "The shape of the obstacle.")]
+        /// <summary>
+        /// The shape of the obstacle.
+        /// </summary>
+        [CLProperty]
         public int Shape
         {
             get => (int)Value.shape;
             set => Value.shape = (NavMeshObstacleShape)value;
         }
 
-        [CLMethod(Description = "Auto scales the obstacle to fit the colliders.")]
+        /// <summary>
+        /// Auto scales the obstacle to fit the colliders.
+        /// </summary>
+        [CLMethod]
         public void AutoScale()
         {
             Bounds bounds = OwnerMapObject.Value.colliderCache[0].bounds;

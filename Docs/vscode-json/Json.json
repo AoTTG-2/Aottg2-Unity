@@ -5,6 +5,7 @@
   "extends": [
     "Object"
   ],
+  "deprecated": "",
   "instanceFields": [],
   "instanceMethods": [],
   "staticFields": [],
@@ -15,7 +16,7 @@
         "name": "Object",
         "typeArguments": []
       },
-      "description": "Loads a json string into a custom logic object",
+      "description": "Loads a json string into a custom logic object.",
       "parameters": [
         {
           "name": "json",
@@ -23,12 +24,13 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The json string to load.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SaveToString",
@@ -36,7 +38,7 @@
         "name": "string",
         "typeArguments": []
       },
-      "description": "Saves a custom logic object into a json string",
+      "description": "Saves a custom logic object into a json string.",
       "parameters": [
         {
           "name": "obj",
@@ -44,12 +46,13 @@
             "name": "Object",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The object to save to json.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     }
   ],
   "constructors": []

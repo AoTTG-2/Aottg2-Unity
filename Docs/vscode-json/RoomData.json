@@ -1,10 +1,11 @@
 {
   "kind": "extension",
   "name": "RoomData",
-  "description": "Store and retrieve room variables. Room data is cleared upon joining or creating a new lobby and does not reset between game rounds. Supports float, string, bool, and int types. Note that RoomData is local only and does not sync.You must use network messages to sync room variables.",
+  "description": "Store and retrieve room variables. Room data is cleared upon joining or creating a new lobby and does not reset between game rounds. Supports float, string, bool, and int types. Note that RoomData is local only and does not sync. You must use network messages to sync room variables.",
   "extends": [
     "Object"
   ],
+  "deprecated": "",
   "instanceFields": [],
   "instanceMethods": [],
   "staticFields": [],
@@ -23,22 +24,23 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the property.",
           "isOptional": false,
           "isVariadic": false
         },
         {
           "name": "value",
           "type": {
-            "name": "Object",
+            "name": "float|int|string|bool|null",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The value to set (must be float, string, bool, int, or null).",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "GetProperty",
@@ -54,7 +56,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the property.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -64,12 +66,13 @@
             "name": "Object",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The default value to return if the property does not exist.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Clear",
@@ -79,7 +82,8 @@
       },
       "description": "Clears all room data.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     }
   ],
   "constructors": []

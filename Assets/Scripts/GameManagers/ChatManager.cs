@@ -344,7 +344,14 @@ namespace GameManagers
 
         public static void AddException(string line)
         {
-            if (line == LastException)
+            bool canReplace = false;
+            if (RawMessages.Count > 0)
+            {
+                int lastIndex = RawMessages.Count - 1;
+                canReplace = RawMessages[lastIndex].Contains(LastException) && LastException == line;
+            }
+
+            if (canReplace)
             {
                 LastExceptionCount++;
                 MessageBuilder.Clear();

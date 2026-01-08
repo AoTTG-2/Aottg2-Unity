@@ -5,6 +5,7 @@
   "extends": [
     "Object"
   ],
+  "deprecated": "",
   "instanceFields": [
     {
       "label": "X",
@@ -12,9 +13,10 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "",
+      "description": "The X component of the quaternion.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Y",
@@ -22,9 +24,10 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "",
+      "description": "The Y component of the quaternion.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Z",
@@ -32,9 +35,10 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "",
+      "description": "The Z component of the quaternion.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "W",
@@ -42,9 +46,10 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "",
+      "description": "The W component of the quaternion.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Euler",
@@ -52,9 +57,10 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Returns or sets the euler angle representation of the rotation.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     }
   ],
   "instanceMethods": [],
@@ -65,9 +71,10 @@
         "name": "Quaternion",
         "typeArguments": []
       },
-      "description": "",
+      "description": "The identity rotation (no rotation).",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     }
   ],
   "staticMethods": [
@@ -77,7 +84,7 @@
         "name": "Quaternion",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Linearly interpolates between two rotations.",
       "parameters": [
         {
           "name": "a",
@@ -85,7 +92,7 @@
             "name": "Quaternion",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The start rotation.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -95,7 +102,7 @@
             "name": "Quaternion",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The end rotation.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -105,12 +112,13 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The interpolation factor (clamped between 0 and 1).",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "LerpUnclamped",
@@ -118,7 +126,7 @@
         "name": "Quaternion",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Linearly interpolates between two rotations without clamping.",
       "parameters": [
         {
           "name": "a",
@@ -126,7 +134,7 @@
             "name": "Quaternion",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The start rotation.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -136,7 +144,7 @@
             "name": "Quaternion",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The end rotation.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -146,12 +154,13 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The interpolation factor (not clamped).",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Slerp",
@@ -159,7 +168,7 @@
         "name": "Quaternion",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Spherically interpolates between two rotations.",
       "parameters": [
         {
           "name": "a",
@@ -167,7 +176,7 @@
             "name": "Quaternion",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The start rotation.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -177,7 +186,7 @@
             "name": "Quaternion",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The end rotation.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -187,12 +196,13 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The interpolation factor (clamped between 0 and 1).",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SlerpUnclamped",
@@ -200,7 +210,7 @@
         "name": "Quaternion",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Spherically interpolates between two rotations without clamping.",
       "parameters": [
         {
           "name": "a",
@@ -208,7 +218,7 @@
             "name": "Quaternion",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The start rotation.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -218,7 +228,7 @@
             "name": "Quaternion",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The end rotation.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -228,12 +238,13 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The interpolation factor (not clamped).",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "FromEuler",
@@ -241,7 +252,7 @@
         "name": "Quaternion",
         "typeArguments": []
       },
-      "description": "Returns the Quaternion rotation from the given euler angles.",
+      "description": "Creates a rotation from euler angles.",
       "parameters": [
         {
           "name": "euler",
@@ -249,12 +260,13 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The euler angles in degrees (x, y, z).",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "LookRotation",
@@ -262,7 +274,7 @@
         "name": "Quaternion",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Creates a rotation that looks in the specified direction.",
       "parameters": [
         {
           "name": "forward",
@@ -270,7 +282,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The forward direction vector.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -280,12 +292,13 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "Optional. The upwards direction vector (default: Vector3.up).",
           "isOptional": true,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "FromToRotation",
@@ -293,7 +306,7 @@
         "name": "Quaternion",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Creates a rotation from one direction to another.",
       "parameters": [
         {
           "name": "a",
@@ -301,7 +314,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The source direction vector.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -311,12 +324,13 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The target direction vector.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Inverse",
@@ -324,7 +338,7 @@
         "name": "Quaternion",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Returns the inverse of a quaternion.",
       "parameters": [
         {
           "name": "q",
@@ -332,12 +346,13 @@
             "name": "Quaternion",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The quaternion to invert.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "RotateTowards",
@@ -345,7 +360,7 @@
         "name": "Quaternion",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Rotates a rotation towards a target rotation.",
       "parameters": [
         {
           "name": "from",
@@ -353,7 +368,7 @@
             "name": "Quaternion",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The current rotation.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -363,7 +378,7 @@
             "name": "Quaternion",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The target rotation.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -373,12 +388,13 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The maximum change in degrees.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "AngleAxis",
@@ -386,7 +402,7 @@
         "name": "Quaternion",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Creates a rotation that rotates around a specified axis by a specified angle.",
       "parameters": [
         {
           "name": "angle",
@@ -394,7 +410,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The angle in degrees.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -404,12 +420,13 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The axis to rotate around.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Angle",
@@ -417,7 +434,7 @@
         "name": "float",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Calculates the angle between two rotations.",
       "parameters": [
         {
           "name": "a",
@@ -425,7 +442,7 @@
             "name": "Quaternion",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The first rotation.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -435,18 +452,20 @@
             "name": "Quaternion",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The second rotation.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     }
   ],
   "constructors": [
     {
       "parameters": [],
-      "description": ""
+      "description": "Default constructor, creates an identity quaternion (no rotation).",
+      "deprecated": ""
     },
     {
       "parameters": [
@@ -456,7 +475,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The X component.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -466,7 +485,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The Y component.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -476,7 +495,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The Z component.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -486,12 +505,13 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The W component.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "description": "Creates a new Quaternion from the given values."
+      "description": "Creates a new Quaternion from the given values.",
+      "deprecated": ""
     }
   ]
 }

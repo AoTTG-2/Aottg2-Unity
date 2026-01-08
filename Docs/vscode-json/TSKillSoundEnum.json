@@ -1,0 +1,81 @@
+{
+  "kind": "extension",
+  "name": "TSKillSoundEnum",
+  "description": "Enumeration of Thunderspear kill sound types for effect spawning.",
+  "extends": [
+    "Object"
+  ],
+  "deprecated": "",
+  "instanceFields": [],
+  "instanceMethods": [],
+  "staticFields": [
+    {
+      "label": "Kill",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Kill sound type.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Air",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Air sound type.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Ground",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Ground sound type.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "ArmorHit",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "ArmorHit sound type.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "CloseShot",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "CloseShot sound type.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "MaxRangeShot",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "MaxRangeShot sound type.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    }
+  ],
+  "staticMethods": [],
+  "constructors": []
+}

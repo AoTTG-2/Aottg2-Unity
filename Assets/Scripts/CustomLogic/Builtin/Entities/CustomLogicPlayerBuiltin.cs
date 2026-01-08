@@ -15,13 +15,20 @@ namespace CustomLogic
     {
         public readonly Player Player;
 
+        /// <summary>
+        /// Creates a new Player instance.
+        /// </summary>
+        /// <param name="player">The Photon player to wrap.</param>
         [CLConstructor]
         public CustomLogicPlayerBuiltin(Player player)
         {
             Player = player;
         }
 
-        [CLProperty("Player's current character, if alive.")]
+        /// <summary>
+        /// Player's current character, if alive.
+        /// </summary>
+        [CLProperty]
         public CustomLogicCharacterBuiltin Character
         {
             get
@@ -42,34 +49,59 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("Player is still connected to the room.")]
+        /// <summary>
+        /// Player is still connected to the room.
+        /// </summary>
+        [CLProperty]
         public bool Connected => Player != null;
 
-        [CLProperty("Player unique ID.")]
+        /// <summary>
+        /// Player unique ID.
+        /// </summary>
+        [CLProperty]
         public int ID => Player.ActorNumber;
 
-        [CLProperty("Player name.")]
+        /// <summary>
+        /// Player name.
+        /// </summary>
+        [CLProperty]
         public string Name => Player.GetStringProperty(PlayerProperty.Name);
 
-        [CLProperty("Player guild.")]
+        /// <summary>
+        /// Player guild.
+        /// </summary>
+        [CLProperty]
         public string Guild => Player.GetStringProperty(PlayerProperty.Guild);
 
         /// <summary>
-        /// Player's chosen team ("None", "Blue", "Red", "Titan", "Human").
-        /// Note that this may be different from the character's final team (Character.Team field) if the character's team field is modified.
+        /// Player's chosen team. Note that this may be different from the character's final team
+        /// (Character.Team field) if the character's team field is modified.
         /// </summary>
-        [CLProperty] public string Team => Player.GetStringProperty(PlayerProperty.Team);
+        [CLProperty(Enum = typeof(CustomLogicTeamEnum))]
+        public string Team => Player.GetStringProperty(PlayerProperty.Team);
 
-        [CLProperty("Player's spawn status (\"Alive\", \"Dead\", \"Spectating\").")]
+        /// <summary>
+        /// Player's spawn status.
+        /// </summary>
+        [CLProperty(Enum = typeof(CustomLogicPlayerStatusEnum))]
         public string Status => Player.GetStringProperty(PlayerProperty.Status);
 
-        [CLProperty("Player's chosen character (\"Human\", \"Titan\", \"Shifter\")")]
+        /// <summary>
+        /// Player's chosen character.
+        /// </summary>
+        [CLProperty(Enum = typeof(CustomLogicCharacterTypeEnum))]
         public string CharacterType => Player.GetStringProperty(PlayerProperty.Character);
 
-        [CLProperty("Player's chosen loadout (\"Blades\", \"AHSS\", \"APG\", \"Thunderspears\").")]
+        /// <summary>
+        /// Player's chosen loadout.
+        /// </summary>
+        [CLProperty(Enum = typeof(CustomLogicLoadoutEnum))]
         public string Loadout => Player.GetStringProperty(PlayerProperty.Loadout);
 
-        [CLProperty("Player's kills.")]
+        /// <summary>
+        /// Player's kills.
+        /// </summary>
+        [CLProperty]
         public int Kills
         {
             get => Player.GetIntProperty(PlayerProperty.Kills);
@@ -80,7 +112,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("Player's deaths.")]
+        /// <summary>
+        /// Player's deaths.
+        /// </summary>
+        [CLProperty]
         public int Deaths
         {
             get => Player.GetIntProperty(PlayerProperty.Deaths);
@@ -91,7 +126,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("Player's highest damage.")]
+        /// <summary>
+        /// Player's highest damage.
+        /// </summary>
+        [CLProperty]
         public int HighestDamage
         {
             get => Player.GetIntProperty(PlayerProperty.HighestDamage);
@@ -102,7 +140,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("Player's total damage.")]
+        /// <summary>
+        /// Player's total damage.
+        /// </summary>
+        [CLProperty]
         public int TotalDamage
         {
             get => Player.GetIntProperty(PlayerProperty.TotalDamage);
@@ -113,13 +154,23 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("The player's connection ping.")]
+        /// <summary>
+        /// The player's connection ping.
+        /// </summary>
+        [CLProperty]
         public int Ping => Player.GetIntProperty(PlayerProperty.Ping);
 
-        [CLProperty("The player's spectating ID. If not spectating anyone, returns -1.")]
+        /// <summary>
+        /// The player's spectating ID. If not spectating anyone, returns -1.
+        /// </summary>
+        [CLProperty]
         public int SpectateID => Player.GetIntProperty(PlayerProperty.SpectateID);
 
-        [CLProperty("Player's respawn point. Is initially null and can be set back to null, at which point map spawn points are used.")]
+        /// <summary>
+        /// Player's respawn point. Is initially null and can be set back to null,
+        /// at which point map spawn points are used.
+        /// </summary>
+        [CLProperty]
         public CustomLogicVector3Builtin SpawnPoint
         {
             get
@@ -144,13 +195,23 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod("Get a custom property at given key. Must be a primitive type. This is synced to all clients.")]
+        /// <summary>
+        /// Get a custom property at given key. Must be a primitive type. This is synced to all clients.
+        /// </summary>
+        /// <param name="property">The property key to get.</param>
+        /// <returns>The property value.</returns>
+        [CLMethod]
         public object GetCustomProperty(string property)
         {
             return Player.GetCustomProperty("CL:" + property);
         }
 
-        [CLMethod("Sets a custom property at given key. Must be a primitive type. This is synced to all clients.")]
+        /// <summary>
+        /// Sets a custom property at given key. Must be a primitive type. This is synced to all clients.
+        /// </summary>
+        /// <param name="property">The property key to set.</param>
+        /// <param name="value">The value to set (must be a primitive type).</param>
+        [CLMethod]
         public void SetCustomProperty(string property, object value)
         {
             if (!PhotonNetwork.IsMasterClient && Player != PhotonNetwork.LocalPlayer)
@@ -161,7 +222,10 @@ namespace CustomLogic
             Player.SetCustomProperty("CL:" + property, value);
         }
 
-        [CLMethod("Clears kills, deaths, highestdamage, and totaldamage properties.")]
+        /// <summary>
+        /// Clears kills, deaths, highestdamage, and totaldamage properties.
+        /// </summary>
+        [CLMethod]
         public void ClearKDR()
         {
             if (!PhotonNetwork.IsMasterClient && Player != PhotonNetwork.LocalPlayer)

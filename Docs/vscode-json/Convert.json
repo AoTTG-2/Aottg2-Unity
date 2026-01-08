@@ -5,6 +5,7 @@
   "extends": [
     "Object"
   ],
+  "deprecated": "",
   "instanceFields": [],
   "instanceMethods": [],
   "staticFields": [],
@@ -23,12 +24,13 @@
             "name": "Object",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The value to convert (can be string, float, int, or bool).",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "ToInt",
@@ -44,12 +46,13 @@
             "name": "Object",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The value to convert (can be string, float, int, or bool).",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "ToBool",
@@ -65,12 +68,13 @@
             "name": "Object",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The value to convert (can be string, float, int, or bool).",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "ToString",
@@ -86,12 +90,13 @@
             "name": "Object",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The value to convert.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "IsFloat",
@@ -107,12 +112,13 @@
             "name": "Object",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The value to check.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "IsInt",
@@ -128,12 +134,13 @@
             "name": "Object",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The value to check.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "IsBool",
@@ -149,12 +156,13 @@
             "name": "Object",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The value to check.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "IsString",
@@ -170,12 +178,13 @@
             "name": "Object",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The value to check.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "IsObject",
@@ -191,12 +200,13 @@
             "name": "Object",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The value to check.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "IsList",
@@ -212,12 +222,13 @@
             "name": "Object",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The value to check.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "IsDict",
@@ -233,12 +244,13 @@
             "name": "Object",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The value to check.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "HasVariable",
@@ -254,7 +266,7 @@
             "name": "class",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The class instance to check.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -264,12 +276,13 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the variable to check for.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "DefineVariable",
@@ -285,7 +298,7 @@
             "name": "class",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The class instance to define the variable on.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -295,7 +308,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the variable to define.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -305,12 +318,13 @@
             "name": "Object",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The value to assign to the variable.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "RemoveVariable",
@@ -326,7 +340,7 @@
             "name": "class",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The class instance to remove the variable from.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -336,12 +350,45 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the variable to remove.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "HasMethod",
+      "returnType": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Checks if the class instance has a method",
+      "parameters": [
+        {
+          "name": "cInstance",
+          "type": {
+            "name": "class",
+            "typeArguments": []
+          },
+          "description": "The class instance to check.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "methodName",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "The name of the method to check for.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "GetType",
@@ -357,12 +404,13 @@
             "name": "class",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The class instance to get the type of.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     }
   ],
   "constructors": []

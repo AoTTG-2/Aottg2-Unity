@@ -2,6 +2,9 @@
 
 namespace CustomLogic
 {
+    /// <summary>
+    /// Represents a collision event.
+    /// </summary>
     [CLType(Name = "Collision", Abstract = true, IsComponent = true)]
     partial class CustomLogicCollisionBuiltin : BuiltinClassInstance, ICustomLogicCopyable, ICustomLogicEquals
     {
@@ -14,7 +17,10 @@ namespace CustomLogic
             collision = (Collision)parameters[0];
         }
 
-        [CLProperty(Description = "The collider involved in the collision.")]
+        /// <summary>
+        /// The collider involved in the collision.
+        /// </summary>
+        [CLProperty]
         public CustomLogicColliderBuiltin Collider
         {
             get
@@ -23,34 +29,59 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(Description = "The impulse response of the collision.")]
+        /// <summary>
+        /// The impulse response of the collision.
+        /// </summary>
+        [CLProperty]
         public CustomLogicVector3Builtin Impulse => collision.impulse;
 
-        [CLProperty(Description = "The relative velocity of the collision. (sum of velocities)")]
+        /// <summary>
+        /// The relative velocity of the collision. (sum of velocities)
+        /// </summary>
+        [CLProperty]
         public CustomLogicVector3Builtin RelativeVelocity => collision.relativeVelocity;
 
-        [CLProperty(Description = "The number of contacts in the collision, iterate over this in conjunction with the GetContact Point, Norm, Impulse, and Separation.")]
+        /// <summary>
+        /// The number of contacts in the collision, iterate over this in conjunction with the GetContact Point, Norm, Impulse, and Separation.
+        /// </summary>
+        [CLProperty]
         public int ContactCount => collision.contactCount;
 
-        [CLMethod(Description = "The contact point of the collision.")]
+        /// <summary>
+        /// The contact point of the collision.
+        /// </summary>
+        /// <param name="index">The contact index (0 to ContactCount-1).</param>
+        [CLMethod]
         public CustomLogicVector3Builtin GetContactPoint(int index)
         {
             return new CustomLogicVector3Builtin(collision.GetContact(index).point);
         }
 
-        [CLMethod(Description = "The contact norm of the collision.")]
+        /// <summary>
+        /// The contact norm of the collision.
+        /// </summary>
+        /// <param name="index">The contact index (0 to ContactCount-1).</param>
+        [CLMethod]
         public CustomLogicVector3Builtin GetContactNorms(int index)
         {
             return new CustomLogicVector3Builtin(collision.GetContact(index).normal);
         }
 
-        [CLMethod(Description = "The contact impulse of the collision.")]
+        /// <summary>
+        /// The contact impulse of the collision.
+        /// </summary>
+        /// <param name="index">The contact index (0 to ContactCount-1).</param>
+        [CLMethod]
         public CustomLogicVector3Builtin GetContactImpulses(int index)
         {
             return new CustomLogicVector3Builtin(collision.GetContact(index).impulse);
         }
 
-        [CLMethod(Description = "The separation between colliders at the given contact point.")]
+        /// <summary>
+        /// The separation between colliders at the given contact point.
+        /// </summary>
+        /// <param name="index">The contact index (0 to ContactCount-1).</param>
+        [CLMethod]
         public CustomLogicVector3Builtin GetContactSeparations(int index)
         {
             return new CustomLogicVector3Builtin(collision.GetContact(index).separation);

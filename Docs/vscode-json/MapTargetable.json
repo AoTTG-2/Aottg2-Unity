@@ -5,6 +5,7 @@
   "extends": [
     "Object"
   ],
+  "deprecated": "",
   "instanceFields": [
     {
       "label": "Team",
@@ -12,9 +13,10 @@
         "name": "string",
         "typeArguments": []
       },
-      "description": "The team of the targetable",
+      "description": "The team of the targetable.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Position",
@@ -22,9 +24,10 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "The position of the targetable",
+      "description": "The position of the targetable.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Enabled",
@@ -32,9 +35,10 @@
         "name": "bool",
         "typeArguments": []
       },
-      "description": "Is the targetable enabled",
+      "description": "Is the targetable enabled.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     }
   ],
   "instanceMethods": [],

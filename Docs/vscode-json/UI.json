@@ -5,6 +5,7 @@
   "extends": [
     "Object"
   ],
+  "deprecated": "",
   "instanceFields": [],
   "instanceMethods": [],
   "staticFields": [
@@ -16,7 +17,8 @@
       },
       "description": "\"TopCenter\" constant",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "TopLeft",
@@ -26,7 +28,8 @@
       },
       "description": "\"TopLeft\" constant",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "TopRight",
@@ -36,7 +39,8 @@
       },
       "description": "\"TopRight\" constant",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "MiddleCenter",
@@ -46,7 +50,8 @@
       },
       "description": "\"MiddleCenter\" constant",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "MiddleLeft",
@@ -56,7 +61,8 @@
       },
       "description": "\"MiddleLeft\" constant",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "MiddleRight",
@@ -66,7 +72,8 @@
       },
       "description": "\"MiddleRight\" constant",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "BottomCenter",
@@ -76,7 +83,8 @@
       },
       "description": "\"BottomCenter\" constant",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "BottomLeft",
@@ -86,7 +94,8 @@
       },
       "description": "\"BottomLeft\" constant",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "BottomRight",
@@ -96,7 +105,8 @@
       },
       "description": "\"BottomRight\" constant",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "GetPopups",
@@ -111,7 +121,8 @@
       },
       "description": "Returns a list of all popups",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     }
   ],
   "staticMethods": [
@@ -129,7 +140,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The label location.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -139,12 +150,13 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The message to display.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SetLabelForTime",
@@ -160,7 +172,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The label location.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -170,7 +182,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The message to display.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -180,12 +192,13 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The time in seconds before the label is cleared.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SetLabelAll",
@@ -201,7 +214,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The label location.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -211,12 +224,13 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The message to display.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SetLabelForTimeAll",
@@ -232,7 +246,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The label location.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -242,7 +256,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The message to display.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -252,12 +266,13 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The time in seconds before the label is cleared.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "CreatePopup",
@@ -273,7 +288,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the popup.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -283,7 +298,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The title of the popup.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -293,7 +308,7 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The width of the popup.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -303,12 +318,13 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The height of the popup.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "ShowPopup",
@@ -324,12 +340,13 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the popup to show.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "HidePopup",
@@ -345,12 +362,13 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the popup to hide.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "ClearPopup",
@@ -366,12 +384,13 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the popup to clear.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "AddPopupLabel",
@@ -387,7 +406,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the popup.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -397,12 +416,13 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The label text to add.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "AddPopupButton",
@@ -418,7 +438,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the popup.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -428,7 +448,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The button display text.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -438,12 +458,13 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The callback name that will be passed to OnButtonClick in Main.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "AddPopupBottomButton",
@@ -459,7 +480,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the popup.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -469,7 +490,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The button display text.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -479,12 +500,13 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The callback name that will be passed to OnButtonClick in Main.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "AddPopupButtons",
@@ -500,7 +522,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the popup.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -515,7 +537,7 @@
               }
             ]
           },
-          "description": "",
+          "description": "List of button display texts.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -530,12 +552,13 @@
               }
             ]
           },
-          "description": "",
+          "description": "List of callback names that will be passed to OnButtonClick in Main.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "WrapStyleTag",
@@ -551,7 +574,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The text to wrap.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -561,7 +584,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The style tag name.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -571,12 +594,13 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "Optional style argument.",
           "isOptional": true,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "ShowChangeCharacterMenu",
@@ -586,7 +610,8 @@
       },
       "description": "Shows the change character menu if main character is Human.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SetScoreboardHeader",
@@ -602,12 +627,13 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The header text to display.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SetScoreboardProperty",
@@ -623,12 +649,13 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The property name to read from Player custom properties.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "GetThemeColor",
@@ -644,7 +671,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The panel name.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -654,7 +681,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The category name.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -664,12 +691,13 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The item name.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "IsPopupActive",
@@ -685,12 +713,13 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the popup to check.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SetLabelActive",
@@ -706,7 +735,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The label name.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -716,12 +745,13 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "Whether the label should be active.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SetKDRPanelActive",
@@ -737,12 +767,13 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "Whether the KDR panel should be active.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SetMinimapActive",
@@ -758,12 +789,13 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "Whether the minimap should be active.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SetChatPanelActive",
@@ -779,12 +811,13 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "Whether the chat panel should be active.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SetFeedPanelActive",
@@ -800,12 +833,13 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "Whether the feed panel should be active.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SetBottomHUDActive",
@@ -821,12 +855,13 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "Whether the bottom HUD should be active.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "GetRootVisualElement",
@@ -834,9 +869,10 @@
         "name": "VisualElement",
         "typeArguments": []
       },
-      "description": "Returns the root `VisualElement` which you can add other elements to.",
+      "description": "Returns the root `VisualElement` which you can add other elements to. Returns: The root `VisualElement`",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "VisualElement",
@@ -846,7 +882,8 @@
       },
       "description": "Creates a new `VisualElement`.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Button",
@@ -877,7 +914,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Label",
@@ -898,7 +936,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "TextField",
@@ -914,12 +953,13 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The label text displayed next to the TextField (default: empty).",
           "isOptional": true,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Toggle",
@@ -950,7 +990,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Slider",
@@ -1011,7 +1052,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SliderInt",
@@ -1072,7 +1114,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Dropdown",
@@ -1128,7 +1171,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "ProgressBar",
@@ -1179,7 +1223,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "ScrollView",
@@ -1189,7 +1234,8 @@
       },
       "description": "Creates a new `ScrollView` for scrollable content.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Icon",
@@ -1210,7 +1256,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Image",
@@ -1218,7 +1265,7 @@
         "name": "Image",
         "typeArguments": []
       },
-      "description": "Creates a new `Icon` element for displaying images/icons.",
+      "description": "Creates a new `Image` element for displaying images/icons.",
       "parameters": [
         {
           "name": "iconPath",
@@ -1231,7 +1278,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     }
   ],
   "constructors": []

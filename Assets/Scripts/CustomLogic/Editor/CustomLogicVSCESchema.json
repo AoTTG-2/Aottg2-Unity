@@ -31,6 +31,10 @@
       },
       "description": "Names of base classes to extend"
     },
+    "deprecated": {
+      "type": "string",
+      "description": "Deprecation message if the class is obsolete"
+    },
     "hidden": {
       "type": "boolean",
       "description": "Whether the class should be hidden from autocomplete"
@@ -112,6 +116,10 @@
           "type": "boolean",
           "default": false,
           "description": "Whether the field is private (optional, defaults to false)"
+        },
+        "deprecated": {
+          "type": "string",
+          "description": "Deprecation message if the field is obsolete"
         }
       },
       "required": ["label", "type", "description"]
@@ -165,6 +173,10 @@
           "type": "string",
           "enum": ["function", "coroutine"],
           "description": "Method kind (required in IMethod interface)"
+        },
+        "deprecated": {
+          "type": "string",
+          "description": "Deprecation message if the method is obsolete"
         }
       },
       "required": ["label", "returnType", "description", "kind"]
@@ -181,6 +193,10 @@
         },
         "description": {
           "type": "string"
+        },
+        "deprecated": {
+          "type": "string",
+          "description": "Deprecation message if the constructor is obsolete"
         }
       },
       "required": ["description"]

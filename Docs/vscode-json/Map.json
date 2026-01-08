@@ -5,6 +5,7 @@
   "extends": [
     "Object"
   ],
+  "deprecated": "",
   "instanceFields": [],
   "instanceMethods": [],
   "staticFields": [],
@@ -20,9 +21,10 @@
           }
         ]
       },
-      "description": "Find all map objects",
+      "description": "Find all map objects.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "FindMapObjectByName",
@@ -30,7 +32,7 @@
         "name": "MapObject",
         "typeArguments": []
       },
-      "description": "Find a map object by name",
+      "description": "Find a map object by name.",
       "parameters": [
         {
           "name": "objectName",
@@ -38,12 +40,13 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the map object to find.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "FindMapObjectsByName",
@@ -56,7 +59,7 @@
           }
         ]
       },
-      "description": "Find all map objects by name",
+      "description": "Find all map objects by name.",
       "parameters": [
         {
           "name": "objectName",
@@ -64,12 +67,13 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the map objects to find.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "FindMapObjectsByRegex",
@@ -82,7 +86,7 @@
           }
         ]
       },
-      "description": "Find all map objects by regex pattern",
+      "description": "Find all map objects by regex pattern.",
       "parameters": [
         {
           "name": "pattern",
@@ -90,7 +94,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The regex pattern to match against map object names.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -100,12 +104,13 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "If true, sorts the results by name (default: false).",
           "isOptional": true,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "FindMapObjectByComponent",
@@ -113,7 +118,7 @@
         "name": "MapObject",
         "typeArguments": []
       },
-      "description": "Find all map objects by component",
+      "description": "Find all map objects by component.",
       "parameters": [
         {
           "name": "className",
@@ -121,12 +126,13 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The class name of the component to search for.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "FindMapObjectsByComponent",
@@ -139,7 +145,7 @@
           }
         ]
       },
-      "description": "Find all map objects by component",
+      "description": "Find all map objects by component.",
       "parameters": [
         {
           "name": "className",
@@ -147,12 +153,13 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The class name of the component to search for.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "FindMapObjectByID",
@@ -160,7 +167,7 @@
         "name": "MapObject",
         "typeArguments": []
       },
-      "description": "Find a map object by ID",
+      "description": "Find a map object by ID.",
       "parameters": [
         {
           "name": "id",
@@ -168,12 +175,13 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The ID of the map object to find.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "FindMapObjectByTag",
@@ -181,7 +189,7 @@
         "name": "MapObject",
         "typeArguments": []
       },
-      "description": "Find a map object by tag",
+      "description": "Find a map object by tag.",
       "parameters": [
         {
           "name": "tag",
@@ -189,12 +197,13 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The tag to search for.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "FindMapObjectsByTag",
@@ -207,7 +216,7 @@
           }
         ]
       },
-      "description": "Find all map objects by tag",
+      "description": "Find all map objects by tag.",
       "parameters": [
         {
           "name": "tag",
@@ -215,12 +224,13 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The tag to search for.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "FindMapObjectsByPlayer",
@@ -233,7 +243,7 @@
           }
         ]
       },
-      "description": "Find a map objects of Player",
+      "description": "Find a map objects of Player.",
       "parameters": [
         {
           "name": "player",
@@ -241,12 +251,13 @@
             "name": "Player",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The player to find map objects for.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "CreateMapObject",
@@ -254,7 +265,7 @@
         "name": "MapObject",
         "typeArguments": []
       },
-      "description": "Create a new map object",
+      "description": "Create a new map object.",
       "parameters": [
         {
           "name": "prefab",
@@ -262,7 +273,7 @@
             "name": "Prefab",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The prefab to instantiate.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -272,7 +283,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The position to spawn at (default: null, uses prefab position).",
           "isOptional": true,
           "isVariadic": false
         },
@@ -282,7 +293,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The rotation to spawn with (default: null, uses prefab rotation).",
           "isOptional": true,
           "isVariadic": false
         },
@@ -292,12 +303,13 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The scale to spawn with (default: null, uses prefab scale).",
           "isOptional": true,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "CreateMapObjectRaw",
@@ -305,7 +317,7 @@
         "name": "MapObject",
         "typeArguments": []
       },
-      "description": "Create a new map object",
+      "description": "Create a new map object.",
       "parameters": [
         {
           "name": "prefab",
@@ -313,12 +325,13 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The serialized prefab string to instantiate.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "PrefabFromMapObject",
@@ -326,7 +339,7 @@
         "name": "Prefab",
         "typeArguments": []
       },
-      "description": "Create a new prefab object from the current object",
+      "description": "Create a new prefab object from the current object.",
       "parameters": [
         {
           "name": "mapObject",
@@ -334,7 +347,7 @@
             "name": "MapObject",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The map object to create a prefab from.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -344,12 +357,13 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "If true, clears all components from the prefab (default: false).",
           "isOptional": true,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "DestroyMapObject",
@@ -357,7 +371,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Destroy a map object",
+      "description": "Destroy a map object.",
       "parameters": [
         {
           "name": "mapObject",
@@ -365,7 +379,7 @@
             "name": "MapObject",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The map object to destroy.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -375,12 +389,13 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "If true, also destroys all child objects.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "CopyMapObject",
@@ -388,7 +403,7 @@
         "name": "MapObject",
         "typeArguments": []
       },
-      "description": "Copy a map object",
+      "description": "Copy a map object.",
       "parameters": [
         {
           "name": "mapObject",
@@ -396,7 +411,7 @@
             "name": "MapObject",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The map object to copy.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -406,12 +421,13 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "If true, also copies all child objects (default: true).",
           "isOptional": true,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "DestroyMapTargetable",
@@ -419,7 +435,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Destroy a map targetable",
+      "description": "Destroy a map targetable.",
       "parameters": [
         {
           "name": "targetable",
@@ -427,12 +443,13 @@
             "name": "MapTargetable",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The map targetable to destroy.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "UpdateNavMesh",
@@ -440,9 +457,10 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Update the nav mesh",
+      "description": "Update the nav mesh.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "UpdateNavMeshAsync",
@@ -450,9 +468,10 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Update the nav mesh asynchronously",
+      "description": "Update the nav mesh asynchronously.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     }
   ],
   "constructors": []

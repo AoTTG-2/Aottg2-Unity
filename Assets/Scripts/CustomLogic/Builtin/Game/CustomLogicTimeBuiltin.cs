@@ -9,21 +9,36 @@ namespace CustomLogic
     partial class CustomLogicTimeBuiltin : BuiltinClassInstance
     {
         [CLConstructor]
-        public CustomLogicTimeBuiltin() { }
+        public CustomLogicTimeBuiltin(){}
 
-        [CLProperty("Time between each tick (0.02 seconds)")]
+        /// <summary>
+        /// Time between each tick (0.02 seconds).
+        /// </summary>
+        [CLProperty]
         public static float TickTime => Time.fixedDeltaTime;
 
-        [CLProperty("Time between each frame.")]
+        /// <summary>
+        /// Time between each frame.
+        /// </summary>
+        [CLProperty]
         public static float FrameTime => Time.deltaTime;
 
-        [CLProperty("Time since start of the round.")]
+        /// <summary>
+        /// Time since start of the round.
+        /// </summary>
+        [CLProperty]
         public static float GameTime => CustomLogicManager.Evaluator.CurrentTime;
 
-        [CLProperty("Unity's Time.time")]
+        /// <summary>
+        /// Unity's Time.time.
+        /// </summary>
+        [CLProperty]
         public static float EngineTime => Time.time;
 
-        [CLProperty("Changes the timescale of the game.")]
+        /// <summary>
+        /// Changes the timescale of the game.
+        /// </summary>
+        [CLProperty]
         public static float TimeScale
         {
             get => Time.timeScale;

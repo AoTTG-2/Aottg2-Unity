@@ -13,11 +13,14 @@ namespace CustomLogic
     partial class CustomLogicJsonBuiltin : BuiltinClassInstance
     {
         [CLConstructor]
-        public CustomLogicJsonBuiltin()
-        {
-        }
+        public CustomLogicJsonBuiltin(){}
 
-        [CLMethod(description: "Loads a json string into a custom logic object")]
+        /// <summary>
+        /// Loads a json string into a custom logic object.
+        /// </summary>
+        /// <param name="json">The json string to load.</param>
+        /// <returns>The loaded object, or null if loading failed.</returns>
+        [CLMethod]
         public static object LoadFromString(string json)
         {
             string jsonTrim = json.Trim();
@@ -41,7 +44,12 @@ namespace CustomLogic
 
         }
 
-        [CLMethod(description: "Saves a custom logic object into a json string")]
+        /// <summary>
+        /// Saves a custom logic object into a json string.
+        /// </summary>
+        /// <param name="obj">The object to save to json.</param>
+        /// <returns>The json string representation of the object.</returns>
+        [CLMethod]
         public static string SaveToString(object obj)
         {
             JSONNode json = SaveJSON(obj);
@@ -63,7 +71,7 @@ namespace CustomLogic
                 foreach (string key in json.Keys)
                 {
                     var node = json[key];
-                    dict.Dict.Add(key, LoadJSON(node));
+                    dict.Set(key, LoadJSON(node));
                 }
                 return dict;
             }
@@ -108,11 +116,11 @@ namespace CustomLogic
             {
                 var node = new JSONObject();
                 var dict = (CustomLogicDictBuiltin)obj;
-                foreach (object key in dict.Dict.Keys)
+                foreach (object key in dict.Keys.List)
                 {
                     if (!(key is string))
                         throw new System.Exception("Saving invalid json type: dict must have string keys.");
-                    node.Add((string)key, SaveJSON(dict.Dict[key]));
+                    node.Add((string)key, SaveJSON(dict.Get(key)));
                 }
                 return node;
             }

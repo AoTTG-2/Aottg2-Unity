@@ -6,7 +6,7 @@ using Utility;
 namespace CustomLogic
 {
     /// <summary>
-    /// UI element for displaying icons/images
+    /// UI element for displaying icons/images.
     /// </summary>
     /// <code>
     /// # Example: Create an icon element
@@ -31,15 +31,15 @@ namespace CustomLogic
             _currentIconPath = string.Empty;
         }
 
-        /// <summary>
-        /// Set the icon to display from a resource path
-        /// </summary>
-        /// <param name="iconPath">Path to the icon resource (e.g., "Icons/Game/BladeIcon")</param>
         /// <example>
         /// icon.SetIcon("Icons/Game/BladeIcon");
         /// icon.SetIcon("Icons/Specials/NoneSpecialIcon");
         /// icon.SetIcon("Icons/Profile/Eren1Icon");
         /// </example>
+        /// <summary>
+        /// Set the icon to display from a resource path.
+        /// </summary>
+        /// <param name="iconPath">Path to the icon resource (e.g., "Icons/Game/BladeIcon").</param>
         [CLMethod]
         public CustomLogicIconBuiltin SetIcon(string iconPath)
         {
@@ -78,7 +78,7 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// Get the current icon path
+        /// The current icon path. Setting this will load the icon from the resource path.
         /// </summary>
         [CLProperty]
         public string IconPath
@@ -88,8 +88,9 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// Set the tint color of the icon
+        /// Set the tint color of the icon.
         /// </summary>
+        /// <param name="color">The color to tint the icon with.</param>
         [CLMethod]
         public CustomLogicIconBuiltin SetTintColor(CustomLogicColorBuiltin color)
         {
@@ -97,23 +98,23 @@ namespace CustomLogic
             return this;
         }
 
-        /// <summary>
-        /// Get or set the scale mode for the icon
-        /// </summary>
         /// <remarks>
         /// Valid values: "ScaleAndCrop", "ScaleToFit", "StretchToFill"
         /// </remarks>
-        [CLProperty]
+        /// <summary>
+        /// The scale mode for the icon.
+        /// </summary>
+        [CLProperty(Enum = typeof(CustomLogicScaleModeEnum))]
         public string ScaleMode
         {
             get => _image.scaleMode.ToString();
             set
             {
-                if (value == "ScaleAndCrop")
+                if (value == CustomLogicScaleModeEnum.ScaleAndCrop)
                     _image.scaleMode = UnityEngine.ScaleMode.ScaleAndCrop;
-                else if (value == "ScaleToFit")
+                else if (value == CustomLogicScaleModeEnum.ScaleToFit)
                     _image.scaleMode = UnityEngine.ScaleMode.ScaleToFit;
-                else if (value == "StretchToFill")
+                else if (value == CustomLogicScaleModeEnum.StretchToFill)
                     _image.scaleMode = UnityEngine.ScaleMode.StretchToFill;
                 else
                     throw new System.Exception($"Unknown scale mode: {value}. Valid values are 'ScaleAndCrop', 'ScaleToFit', and 'StretchToFill'");

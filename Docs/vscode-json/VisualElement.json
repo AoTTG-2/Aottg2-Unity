@@ -1,10 +1,11 @@
 {
   "kind": "class",
   "name": "VisualElement",
-  "description": "Base class for all UI elements Note: Most methods return self to allow method chaining",
+  "description": "Base class for all UI elements. Note: Most methods return self to allow method chaining.",
   "extends": [
     "Object"
   ],
+  "deprecated": "",
   "instanceFields": [
     {
       "label": "ChildCount",
@@ -12,9 +13,10 @@
         "name": "int",
         "typeArguments": []
       },
-      "description": "Number of child elements",
+      "description": "The number of child elements in this visual element.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     }
   ],
   "instanceMethods": [
@@ -24,7 +26,7 @@
         "name": "VisualElement",
         "typeArguments": []
       },
-      "description": "Add a child element",
+      "description": "Add a child element.",
       "parameters": [
         {
           "name": "visualElement",
@@ -32,12 +34,13 @@
             "name": "VisualElement",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The visual element to add as a child.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Remove",
@@ -45,7 +48,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Remove a child elemend",
+      "description": "Remove a child element.",
       "parameters": [
         {
           "name": "visualElement",
@@ -53,12 +56,13 @@
             "name": "VisualElement",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The visual element to remove.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "RemoveFromHierarchy",
@@ -66,9 +70,21 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Removes this element from its parent hierarchy",
+      "description": "Removes this element from its parent hierarchy.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Clear",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Remove all child elements.",
+      "parameters": [],
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "GetElementAt",
@@ -76,7 +92,7 @@
         "name": "VisualElement",
         "typeArguments": []
       },
-      "description": "Get child element at index",
+      "description": "Get child element at index.",
       "parameters": [
         {
           "name": "index",
@@ -84,12 +100,13 @@
             "name": "int",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The index of the child element to get.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "QueryByName",
@@ -97,7 +114,7 @@
         "name": "VisualElement",
         "typeArguments": []
       },
-      "description": "Query child element by name",
+      "description": "Query child element by name. Returns: The first child element with the matching name.",
       "parameters": [
         {
           "name": "name",
@@ -105,12 +122,13 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the element to find.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "QueryByClassName",
@@ -118,7 +136,7 @@
         "name": "VisualElement",
         "typeArguments": []
       },
-      "description": "Query child element by class name",
+      "description": "Query child element by class name. Returns: The first child element with the matching class name.",
       "parameters": [
         {
           "name": "className",
@@ -126,12 +144,13 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The class name of the element to find.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "RegisterMouseEnterEventCallback",
@@ -139,7 +158,7 @@
         "name": "VisualElement",
         "typeArguments": []
       },
-      "description": "Register a callback for mouse enter event Mouse enter event is fired when the mouse pointer enters an element or one of its children",
+      "description": "Register a callback for mouse enter event. Mouse enter event is fired when the mouse pointer enters an element or one of its children",
       "parameters": [
         {
           "name": "method",
@@ -147,12 +166,13 @@
             "name": "function",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The method to call when the mouse enters the element.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "RegisterMouseLeaveEventCallback",
@@ -160,7 +180,7 @@
         "name": "VisualElement",
         "typeArguments": []
       },
-      "description": "Register a callback for mouse leave event Mouse leave event is fired when the mouse pointer exits an element and all its children",
+      "description": "Register a callback for mouse leave event. Mouse leave event is fired when the mouse pointer exits an element and all its children",
       "parameters": [
         {
           "name": "method",
@@ -168,12 +188,13 @@
             "name": "function",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The method to call when the mouse leaves the element.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "RegisterClickEventCallback",
@@ -189,12 +210,13 @@
             "name": "function",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The method to call when the element is clicked.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "RegisterFocusInEventCallback",
@@ -202,7 +224,7 @@
         "name": "VisualElement",
         "typeArguments": []
       },
-      "description": "Register a callback for focus in event Focus in event is fired immediately before an element gains focus",
+      "description": "Register a callback for focus in event. Focus in event is fired immediately before an element gains focus",
       "parameters": [
         {
           "name": "method",
@@ -210,12 +232,13 @@
             "name": "function",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The method to call when the element gains focus.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "RegisterFocusOutEventCallback",
@@ -231,12 +254,13 @@
             "name": "function",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The method to call when the element loses focus.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Opacity",
@@ -257,7 +281,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Active",
@@ -274,11 +299,12 @@
             "typeArguments": []
           },
           "description": "",
-          "isOptional": false,
+          "isOptional": true,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Visible",
@@ -295,11 +321,12 @@
             "typeArguments": []
           },
           "description": "",
-          "isOptional": false,
+          "isOptional": true,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "TransitionDuration",
@@ -307,7 +334,7 @@
         "name": "VisualElement",
         "typeArguments": []
       },
-      "description": "Set the element to be visible or hidden",
+      "description": "Set the transition duration of the element",
       "parameters": [
         {
           "name": "value",
@@ -320,7 +347,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Absolute",
@@ -337,11 +365,12 @@
             "typeArguments": []
           },
           "description": "",
-          "isOptional": false,
+          "isOptional": true,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Left",
@@ -372,7 +401,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Top",
@@ -403,7 +433,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Right",
@@ -434,7 +465,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Bottom",
@@ -465,7 +497,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "FlexShrink",
@@ -486,7 +519,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "FlexGrow",
@@ -507,7 +541,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "FlexDirection",
@@ -528,7 +563,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "AlignItems",
@@ -549,7 +585,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "JustifyContent",
@@ -570,7 +607,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "AlignSelf",
@@ -591,7 +629,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Width",
@@ -622,7 +661,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Height",
@@ -653,7 +693,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Margin",
@@ -684,7 +725,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "MarginLeft",
@@ -715,7 +757,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "MarginTop",
@@ -746,7 +789,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "MarginRight",
@@ -777,7 +821,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "MarginBottom",
@@ -808,7 +853,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Padding",
@@ -839,7 +885,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "PaddingLeft",
@@ -870,7 +917,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "PaddingTop",
@@ -901,7 +949,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "PaddingRight",
@@ -932,7 +981,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "PaddingBottom",
@@ -963,7 +1013,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "FontStyle",
@@ -984,7 +1035,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "FontSize",
@@ -1015,7 +1067,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Color",
@@ -1036,7 +1089,304 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "TextAlign",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the text alignment of the element",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "Valid values are: `UpperLeft`, `UpperCenter`, `UpperRight`, `MiddleLeft`, `MiddleCenter`, `MiddleRight`, `LowerLeft`, `LowerCenter`, `LowerRight`",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "TextWrap",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set whether the text should wrap or not",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "TextOverflow",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the text overflow behavior",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "Acceptable values are: `Clip`, `Ellipsis`",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "TextOutlineWidth",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the text outline width",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "TextOutlineColor",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the text outline color",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "Color",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "TextShadowColor",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the text shadow color",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "Color",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "TextShadowOffset",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the text shadow offset",
+      "parameters": [
+        {
+          "name": "horizontal",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "horizontal offset",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "vertical",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "vertical offset",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "TextShadowHorizontalOffset",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the text shadow horizontal offset",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "TextShadowVerticalOffset",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the text shadow vertical offset",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "TextShadowBlurRadius",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the text shadow blur radius",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "TextLetterSpacing",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the text letter spacing",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "TextWordSpacing",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the text word spacing",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "TextParagraphSpacing",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the text paragraph spacing",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "BackgroundColor",
@@ -1057,7 +1407,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SetBackgroundImage",
@@ -1078,7 +1429,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "BorderColor",
@@ -1099,7 +1451,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "BorderColorLeft",
@@ -1120,7 +1473,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "BorderColorTop",
@@ -1141,7 +1495,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "BorderColorRight",
@@ -1162,7 +1517,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "BorderColorBottom",
@@ -1183,7 +1539,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "BorderWidth",
@@ -1204,7 +1561,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "BorderWidthLeft",
@@ -1225,7 +1583,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "BorderWidthTop",
@@ -1246,7 +1605,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "BorderWidthRight",
@@ -1267,7 +1627,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "BorderWidthBottom",
@@ -1288,7 +1649,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "BorderRadius",
@@ -1309,7 +1671,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "BorderRadiusTopLeft",
@@ -1330,7 +1693,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "BorderRadiusTopRight",
@@ -1351,7 +1715,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "BorderRadiusBottomLeft",
@@ -1372,7 +1737,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "BorderRadiusBottomRight",
@@ -1393,7 +1759,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "OverflowX",
@@ -1414,7 +1781,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "OverflowY",
@@ -1435,7 +1803,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SetTransformOrigin",
@@ -1476,7 +1845,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "TransformTranslate",
@@ -1517,7 +1887,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "TransformScale",
@@ -1548,7 +1919,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "TransformRotate",
@@ -1579,7 +1951,8 @@
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     }
   ],
   "staticFields": [],

@@ -3,7 +3,7 @@ using UnityEngine.UIElements;
 namespace CustomLogic
 {
     /// <summary>
-    /// A UI element that represents a toggle button with on/off states
+    /// A UI element that represents a toggle button with on/off states.
     /// </summary>
     [CLType(Name = "Toggle", Abstract = true)]
     partial class CustomLogicToggleBuiltin : CustomLogicVisualElementBuiltin
@@ -27,7 +27,7 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// The label text displayed next to the Toggle
+        /// The label text displayed next to the Toggle.
         /// </summary>
         [CLProperty]
         public string Label
@@ -37,7 +37,7 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// The text displayed by the Toggle
+        /// The text displayed by the Toggle.
         /// </summary>
         [CLProperty]
         public string Text
@@ -47,7 +47,7 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// The current value of the Toggle (true = checked, false = unchecked)
+        /// The current value of the Toggle (true = checked, false = unchecked).
         /// </summary>
         [CLProperty]
         public bool Value
@@ -57,9 +57,9 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// Sets the method to be called when the Toggle value changes
+        /// Sets the method to be called when the Toggle value changes.
         /// </summary>
-        /// <param name="valueChangedEvent">Method that will be called with the new boolean value as parameter</param>
+        /// <param name="valueChangedEvent">Method that will be called with the new boolean value as parameter.</param>
         [CLMethod]
         public CustomLogicToggleBuiltin OnValueChanged(UserMethod valueChangedEvent)
         {
@@ -68,8 +68,9 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// Sets the value of the Toggle without triggering any change events
+        /// Sets the value of the Toggle without triggering any change events.
         /// </summary>
+        /// <param name="value">The value to set.</param>
         [CLMethod]
         public void SetValueWithoutNotify(bool value)
         {

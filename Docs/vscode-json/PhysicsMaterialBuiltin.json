@@ -1,7 +1,8 @@
 {
   "kind": "component",
   "name": "PhysicsMaterialBuiltin",
-  "description": "",
+  "description": "Represents a physics material that defines friction and bounciness properties for colliders.",
+  "deprecated": "",
   "instanceFields": [
     {
       "label": "StaticFriction",
@@ -11,7 +12,8 @@
       },
       "description": "The static friction of the material.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "DynamicFriction",
@@ -21,7 +23,8 @@
       },
       "description": "The dynamic friction of the material.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Bounciness",
@@ -31,7 +34,8 @@
       },
       "description": "The bounciness of the material.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "FrictionCombine",
@@ -39,9 +43,10 @@
         "name": "int",
         "typeArguments": []
       },
-      "description": "The friction combine mode of the material.",
+      "description": "The friction combine mode of the material. Refer to PhysicMaterialCombineEnum",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "BounceCombine",
@@ -49,9 +54,10 @@
         "name": "int",
         "typeArguments": []
       },
-      "description": "The bounce combine mode of the material.",
+      "description": "The bounce combine mode of the material. Refer to PhysicMaterialCombineEnum",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     }
   ],
   "instanceMethods": [
@@ -69,12 +75,13 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "If true, applies the material to all child colliders as well.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     }
   ],
   "staticFields": [
@@ -84,9 +91,10 @@
         "name": "int",
         "typeArguments": []
       },
-      "description": "PhysicMaterialCombine.Minimum",
+      "description": "PhysicMaterialCombine.Minimum.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "FrictionCombineMultiply",
@@ -94,9 +102,10 @@
         "name": "int",
         "typeArguments": []
       },
-      "description": "PhysicMaterialCombine.Multiply",
+      "description": "PhysicMaterialCombine.Multiply.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "FrictionCombineMaximum",
@@ -104,9 +113,10 @@
         "name": "int",
         "typeArguments": []
       },
-      "description": "PhysicMaterialCombine.Maximum",
+      "description": "PhysicMaterialCombine.Maximum.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "FrictionCombineAverage",
@@ -114,9 +124,10 @@
         "name": "int",
         "typeArguments": []
       },
-      "description": "PhysicMaterialCombine.Average",
+      "description": "PhysicMaterialCombine.Average.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     }
   ],
   "staticMethods": [],

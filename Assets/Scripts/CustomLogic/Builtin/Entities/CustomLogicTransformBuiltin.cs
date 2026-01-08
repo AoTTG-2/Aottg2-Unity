@@ -37,21 +37,30 @@ namespace CustomLogic
                 _animator = new CustomLogicAnimatorBuiltin(this, animator);
         }
 
-        [CLProperty("Gets or sets the position of the transform.")]
+        /// <summary>
+        /// Gets or sets the position of the transform.
+        /// </summary>
+        [CLProperty]
         public CustomLogicVector3Builtin Position
         {
             get => Value.position;
             set => Value.position = value.Value;
         }
 
-        [CLProperty("Gets or sets the local position of the transform.")]
+        /// <summary>
+        /// Gets or sets the local position of the transform.
+        /// </summary>
+        [CLProperty]
         public CustomLogicVector3Builtin LocalPosition
         {
             get => Value.localPosition;
             set => Value.localPosition = value.Value;
         }
 
-        [CLProperty("Gets or sets the rotation of the transform.")]
+        /// <summary>
+        /// Gets or sets the rotation of the transform.
+        /// </summary>
+        [CLProperty]
         public CustomLogicVector3Builtin Rotation
         {
             get
@@ -71,7 +80,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("Gets or sets the local rotation of the transform.")]
+        /// <summary>
+        /// Gets or sets the local rotation of the transform.
+        /// </summary>
+        [CLProperty]
         public CustomLogicVector3Builtin LocalRotation
         {
             get
@@ -91,7 +103,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("Gets or sets the quaternion rotation of the transform.")]
+        /// <summary>
+        /// Gets or sets the quaternion rotation of the transform.
+        /// </summary>
+        [CLProperty]
         public CustomLogicQuaternionBuiltin QuaternionRotation
         {
             get => Value.rotation;
@@ -103,7 +118,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("Gets or sets the quaternion local rotation of the transform.")]
+        /// <summary>
+        /// Gets or sets the quaternion local rotation of the transform.
+        /// </summary>
+        [CLProperty]
         public CustomLogicQuaternionBuiltin QuaternionLocalRotation
         {
             get => Value.localRotation;
@@ -115,35 +133,50 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("Gets or sets the scale of the transform.")]
+        /// <summary>
+        /// Gets or sets the scale of the transform.
+        /// </summary>
+        [CLProperty]
         public CustomLogicVector3Builtin Scale
         {
             get => Value.localScale;
             set => Value.localScale = value.Value;
         }
 
-        [CLProperty("Gets the forward vector of the transform.")]
+        /// <summary>
+        /// Gets the forward vector of the transform.
+        /// </summary>
+        [CLProperty]
         public CustomLogicVector3Builtin Forward
         {
             get => Value.forward;
             set => Value.forward = value.Value;
         }
 
-        [CLProperty("Gets the up vector of the transform.")]
+        /// <summary>
+        /// Gets the up vector of the transform.
+        /// </summary>
+        [CLProperty]
         public CustomLogicVector3Builtin Up
         {
             get => Value.up;
             set => Value.up = value.Value;
         }
 
-        [CLProperty("Gets the right vector of the transform.")]
+        /// <summary>
+        /// Gets the right vector of the transform.
+        /// </summary>
+        [CLProperty]
         public CustomLogicVector3Builtin Right
         {
             get => Value.right;
             set => Value.right = value.Value;
         }
 
-        [CLProperty("Sets the parent of the transform")]
+        /// <summary>
+        /// Sets the parent of the transform.
+        /// </summary>
+        [CLProperty]
         public CustomLogicTransformBuiltin Parent
         {
             get => Value.parent != null ? new CustomLogicTransformBuiltin(Value.parent) : null;
@@ -159,45 +192,69 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("Gets the name of the transform.")]
+        /// <summary>
+        /// Gets the name of the transform.
+        /// </summary>
+        [CLProperty]
         public string Name
         {
             get => Value.name;
         }
 
-        [CLProperty("Gets the Physics Layer of the transform.")]
+        /// <summary>
+        /// Gets the Physics Layer of the transform.
+        /// </summary>
+        [CLProperty]
         public int Layer
         {
             get => Value.gameObject.layer;
             set => Value.gameObject.layer = value;
         }
 
-        [CLProperty("The Animation attached to this transform, returns null if there is none.")]
+        /// <summary>
+        /// The Animation attached to this transform, returns null if there is none.
+        /// </summary>
+        [CLProperty]
         public CustomLogicAnimationBuiltin Animation
         {
             get => _animation;
         }
 
-        [CLProperty("The Animator attached to this transform, returns null if there is none.")]
+        /// <summary>
+        /// The Animator attached to this transform, returns null if there is none.
+        /// </summary>
+        [CLProperty]
         public CustomLogicAnimatorBuiltin Animator
         {
             get => _animator;
         }
 
-        [CLProperty("The AudioSource attached to this transform, returns null if there is none.")]
+        /// <summary>
+        /// The AudioSource attached to this transform, returns null if there is none.
+        /// </summary>
+        [CLProperty]
         public CustomLogicAudioSourceBuiltin AudioSource
         {
             get => _audioSource;
         }
 
-        [CLMethod("Gets the transform of the specified child.")]
+        /// <summary>
+        /// Gets the transform of the specified child.
+        /// </summary>
+        /// <param name="name">The name of the child transform to find.</param>
+        /// <returns>The child transform if found, null otherwise.</returns>
+        [CLMethod]
         public CustomLogicTransformBuiltin GetTransform(string name)
         {
             var transform = Value.Find(name);
             return transform != null ? new CustomLogicTransformBuiltin(transform) : null;
         }
 
-        [CLMethod("Gets all child transforms.", ReturnTypeArguments = new[] { "Transform" })]
+        /// <summary>
+        /// Gets all child transforms.
+        /// </summary>
+        /// <returns>A list of all child transforms.</returns>
+        [CLMethod(ReturnTypeArguments = new[] { "Transform" })]
         public CustomLogicListBuiltin GetTransforms()
         {
             var listBuiltin = new CustomLogicListBuiltin();
@@ -208,7 +265,12 @@ namespace CustomLogic
             return listBuiltin;
         }
 
-        [CLMethod("Checks if the given animation is playing.")]
+        /// <summary>
+        /// Checks if the given animation is playing.
+        /// </summary>
+        /// <param name="anim">The name of the animation to check.</param>
+        /// <returns>True if the animation is playing, false otherwise.</returns>
+        [CLMethod]
         public bool IsPlayingAnimation(string anim)
         {
             if (_animation != null)
@@ -222,7 +284,12 @@ namespace CustomLogic
             return false;
         }
 
-        [CLMethod("Plays the specified animation.")]
+        /// <summary>
+        /// Plays the specified animation.
+        /// </summary>
+        /// <param name="anim">The name of the animation to play.</param>
+        /// <param name="fade">The fade time in seconds for cross-fading (default: 0.1).</param>
+        [CLMethod]
         public void PlayAnimation(string anim, float fade = 0.1f)
         {
             if (_animation != null)
@@ -241,7 +308,12 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod("Gets the length of the specified animation.")]
+        /// <summary>
+        /// Gets the length of the specified animation.
+        /// </summary>
+        /// <param name="anim">The name of the animation.</param>
+        /// <returns>The length of the animation in seconds, or -1 if not found.</returns>
+        [CLMethod]
         public float GetAnimationLength(string anim)
         {
             if (_animation != null)
@@ -251,21 +323,31 @@ namespace CustomLogic
             return -1;
         }
 
-        [CLMethod("Plays the sound.")]
+        /// <summary>
+        /// Plays the sound.
+        /// </summary>
+        [CLMethod]
         public void PlaySound()
         {
             if (!_audioSource.IsPlaying)
                 _audioSource.Play();
         }
 
-        [CLMethod("Stops the sound.")]
+        /// <summary>
+        /// Stops the sound.
+        /// </summary>
+        [CLMethod]
         public void StopSound()
         {
             if (_audioSource.IsPlaying)
                 _audioSource.Stop();
         }
 
-        [CLMethod("Toggles the particle system.")]
+        /// <summary>
+        /// Toggles the particle system.
+        /// </summary>
+        /// <param name="enabled">Whether to enable or disable the particle emission.</param>
+        [CLMethod]
         public void ToggleParticle(bool enabled)
         {
             if (!_particleSystem.isPlaying)
@@ -274,19 +356,46 @@ namespace CustomLogic
             emission.enabled = enabled;
         }
 
-        /// <inheritdoc cref="Transform.InverseTransformDirection(Vector3)"/>
-        [CLMethod] public CustomLogicVector3Builtin InverseTransformDirection(CustomLogicVector3Builtin direction) => Value.InverseTransformDirection(direction);
+        /// <summary>
+        /// Transforms a direction from world space to local space.
+        /// </summary>
+        /// <param name="direction">The direction vector in world space.</param>
+        /// <returns>The direction in local space.</returns>
+        [CLMethod]
+        public CustomLogicVector3Builtin InverseTransformDirection(CustomLogicVector3Builtin direction)
+            => Value.InverseTransformDirection(direction);
 
-        /// <inheritdoc cref="Transform.InverseTransformPoint(Vector3)"/>
-        [CLMethod] public CustomLogicVector3Builtin InverseTransformPoint(CustomLogicVector3Builtin point) => Value.InverseTransformPoint(point);
+        /// <summary>
+        /// Transforms a position from world space to local space.
+        /// </summary>
+        /// <param name="point">The point in world space.</param>
+        /// <returns>The position in local space.</returns>
+        [CLMethod]
+        public CustomLogicVector3Builtin InverseTransformPoint(CustomLogicVector3Builtin point)
+            => Value.InverseTransformPoint(point);
 
-        /// <inheritdoc cref="Transform.TransformDirection(Vector3)"/>
-        [CLMethod] public CustomLogicVector3Builtin TransformDirection(CustomLogicVector3Builtin direction) => Value.TransformDirection(direction);
+        /// <summary>
+        /// Transforms a direction from local space to world space.
+        /// </summary>
+        /// <param name="direction">The direction vector in local space.</param>
+        /// <returns>The direction in world space.</returns>
+        [CLMethod]
+        public CustomLogicVector3Builtin TransformDirection(CustomLogicVector3Builtin direction)
+            => Value.TransformDirection(direction);
 
-        /// <inheritdoc cref="Transform.TransformPoint(Vector3)"/>
-        [CLMethod] public CustomLogicVector3Builtin TransformPoint(CustomLogicVector3Builtin point) => Value.TransformPoint(point);
+        /// <summary>
+        /// Transforms a position from local space to world space.
+        /// </summary>
+        /// <param name="point">The point in local space.</param>
+        /// <returns>The position in world space.</returns>
+        [CLMethod]
+        public CustomLogicVector3Builtin TransformPoint(CustomLogicVector3Builtin point)
+            => Value.TransformPoint(point);
 
-        /// <inheritdoc cref="Transform.Rotate(Vector3)"/>
+        /// <summary>
+        /// Rotates the transform by the given rotation in euler angles.
+        /// </summary>
+        /// <param name="rotation">The rotation in euler angles to apply.</param>
         [CLMethod]
         public void Rotate(CustomLogicVector3Builtin rotation)
         {
@@ -295,7 +404,12 @@ namespace CustomLogic
             _needSetRotation = true;
         }
 
-        /// <inheritdoc cref="Transform.RotateAround(Vector3, Vector3, float)"/>
+        /// <summary>
+        /// Rotates the transform around a point by the given angle.
+        /// </summary>
+        /// <param name="point">The point to rotate around.</param>
+        /// <param name="axis">The axis to rotate around.</param>
+        /// <param name="angle">The angle in degrees to rotate.</param>
         [CLMethod]
         public void RotateAround(CustomLogicVector3Builtin point, CustomLogicVector3Builtin axis, float angle)
         {
@@ -304,7 +418,10 @@ namespace CustomLogic
             Value.RotateAround(point.Value, axis.Value, angle);
         }
 
-        /// <inheritdoc cref="Transform.LookAt(Vector3)"/>
+        /// <summary>
+        /// Rotates the transform to look at the target position.
+        /// </summary>
+        /// <param name="target">The world position to look at.</param>
         [CLMethod]
         public void LookAt(CustomLogicVector3Builtin target)
         {
@@ -313,14 +430,23 @@ namespace CustomLogic
             Value.LookAt(target);
         }
 
-        [CLMethod("Sets the enabled state of all child renderers.")]
+        /// <summary>
+        /// Sets the enabled state of all child renderers.
+        /// </summary>
+        /// <param name="enabled">Whether to enable or disable the renderers.</param>
+        [CLMethod]
         public void SetRenderersEnabled(bool enabled)
         {
             foreach (var renderer in Value.GetComponentsInChildren<Renderer>())
                 renderer.enabled = enabled;
         }
 
-        [CLMethod("Gets colliders of the transform.", ReturnTypeArguments = new[] { "Collider" })]
+        /// <summary>
+        /// Gets colliders of the transform.
+        /// </summary>
+        /// <param name="recursive">If true, includes colliders from all children recursively (default: false).</param>
+        /// <returns>A list of colliders.</returns>
+        [CLMethod(ReturnTypeArguments = new[] { "Collider" })]
         public CustomLogicListBuiltin GetColliders(bool recursive = false)
         {
             var listBuiltin = new CustomLogicListBuiltin();
@@ -344,6 +470,12 @@ namespace CustomLogic
         public static implicit operator CustomLogicTransformBuiltin(Transform value) => new CustomLogicTransformBuiltin(value);
         public static implicit operator Transform(CustomLogicTransformBuiltin value) => value.Value;
 
+        /// <summary>
+        /// Checks if two transforms are equal.
+        /// </summary>
+        /// <param name="self">The first transform.</param>
+        /// <param name="other">The second transform.</param>
+        /// <returns>True if the transforms are equal, false otherwise.</returns>
         [CLMethod]
         public bool __Eq__(object self, object other)
         {
@@ -355,6 +487,10 @@ namespace CustomLogic
             };
         }
 
+        /// <summary>
+        /// Gets the hash code of the transform.
+        /// </summary>
+        /// <returns>The hash code.</returns>
         [CLMethod]
         public int __Hash__() => Value == null ? 0 : Value.GetHashCode();
     }

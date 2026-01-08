@@ -5,6 +5,7 @@
   "extends": [
     "Character"
   ],
+  "deprecated": "",
   "instanceFields": [
     {
       "label": "Size",
@@ -14,7 +15,8 @@
       },
       "description": "Shifter's size.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "RunSpeedBase",
@@ -24,7 +26,8 @@
       },
       "description": "Shifter's base run speed. Final run speed is RunSpeedBase + Size * RunSpeedPerLevel.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "WalkSpeedBase",
@@ -34,7 +37,8 @@
       },
       "description": "Shifter's base walk speed. Final walk speed is WalkSpeedBase + Size * WalkSpeedPerLevel.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "WalkSpeedPerLevel",
@@ -44,7 +48,8 @@
       },
       "description": "Shifter's walk speed added per level.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "RunSpeedPerLevel",
@@ -54,7 +59,8 @@
       },
       "description": "Shifter's run speed added per level.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "TurnSpeed",
@@ -64,7 +70,8 @@
       },
       "description": "Shifter's turn speed when running turn animation.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "RotateSpeed",
@@ -74,7 +81,8 @@
       },
       "description": "Shifter's rotate speed when rotating body.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "JumpForce",
@@ -84,7 +92,8 @@
       },
       "description": "Shifter's jump force when jumping.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "ActionPause",
@@ -94,7 +103,8 @@
       },
       "description": "Shifter's pause delay after performing an action.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "AttackPause",
@@ -104,7 +114,8 @@
       },
       "description": "Shifter's pause delay after performing an attack.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "TurnPause",
@@ -114,7 +125,8 @@
       },
       "description": "Shifter's pause delay after performing a turn.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "DetectRange",
@@ -124,7 +136,8 @@
       },
       "description": "(AI) shifter's detect range.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "FocusRange",
@@ -134,7 +147,8 @@
       },
       "description": "(AI) shifter's focus range.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "FocusTime",
@@ -144,7 +158,8 @@
       },
       "description": "(AI) shifter's focus time before switching targets.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "FarAttackCooldown",
@@ -154,7 +169,8 @@
       },
       "description": "(AI) Shifter's cooldown after performing a ranged attack.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "AttackWait",
@@ -164,7 +180,8 @@
       },
       "description": "(AI) Shifter's wait time between being in range to attack and performing the attack.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "AttackSpeedMultiplier",
@@ -174,7 +191,8 @@
       },
       "description": "Shifter's attack animation speed.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "UsePathfinding",
@@ -184,7 +202,8 @@
       },
       "description": "(AI) Shifter uses pathfinding.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "AIEnabled",
@@ -194,7 +213,8 @@
       },
       "description": "Enable/Disable AI Behavior (Shifter will not attack/target but pathfinding/move methods will still work).",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "NapePosition",
@@ -204,7 +224,8 @@
       },
       "description": "The shifter's nape position.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "DeathAnimLength",
@@ -214,7 +235,8 @@
       },
       "description": "The length of the death animation.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     }
   ],
   "instanceMethods": [
@@ -232,7 +254,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The target position to move to.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -242,7 +264,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The stopping range from the target position.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -252,12 +274,13 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "If true, will not engage enemies along the way.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "MoveToExact",
@@ -273,7 +296,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The exact target position to move to.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -283,12 +306,13 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The timeout padding in seconds (default: 1).",
           "isOptional": true,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "MoveToExactCallback",
@@ -296,7 +320,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "Sort the list using a custom method, expects a method with the signature int method(a,b)",
+      "description": "Causes the (AI) shifter to move towards a position with a callback. The callback method will be called during movement and will receive this shifter as a parameter.",
       "parameters": [
         {
           "name": "method",
@@ -304,7 +328,7 @@
             "name": "function",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The callback method to call during movement (receives this shifter as parameter).",
           "isOptional": false,
           "isVariadic": false
         },
@@ -314,7 +338,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The exact target position to move to.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -324,7 +348,7 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The stopping range from the target position (default: 10).",
           "isOptional": true,
           "isVariadic": false
         },
@@ -334,12 +358,13 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The timeout padding in seconds (default: 1).",
           "isOptional": true,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Target",
@@ -352,10 +377,10 @@
         {
           "name": "enemyObj",
           "type": {
-            "name": "Object",
+            "name": "Character|MapTargetable",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The enemy to target (can be Character or MapTargetable).",
           "isOptional": false,
           "isVariadic": false
         },
@@ -365,12 +390,13 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The focus time in seconds (0 uses default focus time).",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Idle",
@@ -386,12 +412,13 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The idle time in seconds.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Wander",
@@ -401,7 +428,8 @@
       },
       "description": "Causes the (AI) shifter to cancel any move commands and begin wandering randomly.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Blind",
@@ -411,7 +439,8 @@
       },
       "description": "Causes the shifter to enter the blind state.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Cripple",
@@ -427,12 +456,13 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The cripple duration in seconds.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Attack",
@@ -448,12 +478,13 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the attack to perform.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     }
   ],
   "staticFields": [],

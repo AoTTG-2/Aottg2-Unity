@@ -5,6 +5,7 @@
   "extends": [
     "Object"
   ],
+  "deprecated": "",
   "instanceFields": [
     {
       "label": "Position",
@@ -14,7 +15,8 @@
       },
       "description": "Gets or sets the position of the transform.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "LocalPosition",
@@ -24,7 +26,8 @@
       },
       "description": "Gets or sets the local position of the transform.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Rotation",
@@ -34,7 +37,8 @@
       },
       "description": "Gets or sets the rotation of the transform.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "LocalRotation",
@@ -44,7 +48,8 @@
       },
       "description": "Gets or sets the local rotation of the transform.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "QuaternionRotation",
@@ -54,7 +59,8 @@
       },
       "description": "Gets or sets the quaternion rotation of the transform.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "QuaternionLocalRotation",
@@ -64,7 +70,8 @@
       },
       "description": "Gets or sets the quaternion local rotation of the transform.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Scale",
@@ -74,7 +81,8 @@
       },
       "description": "Gets or sets the scale of the transform.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Forward",
@@ -84,7 +92,8 @@
       },
       "description": "Gets the forward vector of the transform.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Up",
@@ -94,7 +103,8 @@
       },
       "description": "Gets the up vector of the transform.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Right",
@@ -104,7 +114,8 @@
       },
       "description": "Gets the right vector of the transform.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Parent",
@@ -114,7 +125,8 @@
       },
       "description": "Sets the parent of the transform",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Name",
@@ -124,7 +136,8 @@
       },
       "description": "Gets the name of the transform.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Layer",
@@ -134,7 +147,8 @@
       },
       "description": "Gets the Physics Layer of the transform.",
       "readonly": false,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Animation",
@@ -144,7 +158,8 @@
       },
       "description": "The Animation attached to this transform, returns null if there is none.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "Animator",
@@ -154,7 +169,8 @@
       },
       "description": "The Animator attached to this transform, returns null if there is none.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     },
     {
       "label": "AudioSource",
@@ -164,7 +180,8 @@
       },
       "description": "The AudioSource attached to this transform, returns null if there is none.",
       "readonly": true,
-      "private": false
+      "private": false,
+      "deprecated": ""
     }
   ],
   "instanceMethods": [
@@ -182,12 +199,13 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the child transform to find.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "GetTransforms",
@@ -202,7 +220,8 @@
       },
       "description": "Gets all child transforms.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "IsPlayingAnimation",
@@ -218,12 +237,13 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the animation to check.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "PlayAnimation",
@@ -239,7 +259,7 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the animation to play.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -249,12 +269,13 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The fade time in seconds for cross-fading (default: 0.1).",
           "isOptional": true,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "GetAnimationLength",
@@ -270,12 +291,13 @@
             "name": "string",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The name of the animation.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "PlaySound",
@@ -285,7 +307,8 @@
       },
       "description": "Plays the sound.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "StopSound",
@@ -295,7 +318,8 @@
       },
       "description": "Stops the sound.",
       "parameters": [],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "ToggleParticle",
@@ -311,12 +335,13 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "Whether to enable or disable the particle emission.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "InverseTransformDirection",
@@ -324,7 +349,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Transforms a direction from world space to local space. Returns: The direction in local space.",
       "parameters": [
         {
           "name": "direction",
@@ -332,12 +357,13 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The direction vector in world space.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "InverseTransformPoint",
@@ -345,7 +371,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Transforms a position from world space to local space. Returns: The position in local space.",
       "parameters": [
         {
           "name": "point",
@@ -353,12 +379,13 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The point in world space.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "TransformDirection",
@@ -366,7 +393,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Transforms a direction from local space to world space. Returns: The direction in world space.",
       "parameters": [
         {
           "name": "direction",
@@ -374,12 +401,13 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The direction vector in local space.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "TransformPoint",
@@ -387,7 +415,7 @@
         "name": "Vector3",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Transforms a position from local space to world space. Returns: The position in world space.",
       "parameters": [
         {
           "name": "point",
@@ -395,12 +423,13 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The point in local space.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "Rotate",
@@ -408,7 +437,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Rotates the transform by the given rotation in euler angles.",
       "parameters": [
         {
           "name": "rotation",
@@ -416,12 +445,13 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The rotation in euler angles to apply.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "RotateAround",
@@ -429,7 +459,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Rotates the transform around a point by the given angle.",
       "parameters": [
         {
           "name": "point",
@@ -437,7 +467,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The point to rotate around.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -447,7 +477,7 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The axis to rotate around.",
           "isOptional": false,
           "isVariadic": false
         },
@@ -457,12 +487,13 @@
             "name": "float",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The angle in degrees to rotate.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "LookAt",
@@ -470,7 +501,7 @@
         "name": "void",
         "typeArguments": []
       },
-      "description": "",
+      "description": "Rotates the transform to look at the target position.",
       "parameters": [
         {
           "name": "target",
@@ -478,12 +509,13 @@
             "name": "Vector3",
             "typeArguments": []
           },
-          "description": "",
+          "description": "The world position to look at.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "SetRenderersEnabled",
@@ -499,12 +531,13 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "Whether to enable or disable the renderers.",
           "isOptional": false,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     },
     {
       "label": "GetColliders",
@@ -525,12 +558,13 @@
             "name": "bool",
             "typeArguments": []
           },
-          "description": "",
+          "description": "If true, includes colliders from all children recursively (default: false).",
           "isOptional": true,
           "isVariadic": false
         }
       ],
-      "kind": "function"
+      "kind": "function",
+      "deprecated": ""
     }
   ],
   "staticFields": [],
