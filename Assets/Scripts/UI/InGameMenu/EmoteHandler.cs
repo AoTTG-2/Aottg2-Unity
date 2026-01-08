@@ -50,7 +50,7 @@ namespace UI
                 return;
             EmoteHandler handler = UIManager.CurrentMenu.GetComponent<EmoteHandler>();
             BaseCharacter c = Util.FindCharacterByViewId(viewId);
-            if (c != null && handler != null)
+            if (c != null && handler != null && info.Sender == c.Cache.PhotonView.Owner)
                 handler.ShowEmoteText(SanitizeText(text), c);
         }
 
@@ -60,7 +60,7 @@ namespace UI
                 return;
             EmoteHandler handler = UIManager.CurrentMenu.GetComponent<EmoteHandler>();
             BaseCharacter c = Util.FindCharacterByViewId(viewId);
-            if (c != null && handler != null)
+            if (c != null && handler != null && info.Sender == c.Cache.PhotonView.Owner)
                 handler.ShowEmoteEmoji(emoji, c);
         }
 
@@ -70,16 +70,18 @@ namespace UI
                 return;
             EmoteHandler handler = UIManager.CurrentMenu.GetComponent<EmoteHandler>();
             BaseCharacter c = Util.FindCharacterByViewId(viewId);
-            if (c != null && handler != null)
+            if (c != null && handler != null && info.Sender == c.Cache.PhotonView.Owner)
                 handler.ShowVoiceEmoji(emoji, c);
         }
 
-        public static void OnStopVoiceRPC(PhotonMessageInfo info)
+        public static void OnStopVoiceRPC(int viewId, PhotonMessageInfo info)
         {
             if (UIManager.CurrentMenu == null || !SettingsManager.UISettings.ShowEmotes.Value || InGameManager.MuteEmote.Contains(info.Sender.ActorNumber))
                 return;
             EmoteHandler handler = UIManager.CurrentMenu.GetComponent<EmoteHandler>();
-            handler.StopInfinitePopup();
+            BaseCharacter c = Util.FindCharacterByViewId(viewId);
+            if (c != null && handler != null && info.Sender == c.Cache.PhotonView.Owner)
+                handler.StopVoiceEmoji(c);
         }
 
         private void ShowEmoteText(string text, BaseCharacter character)
@@ -102,11 +104,15 @@ namespace UI
         }
 
 
-        private void StopInfinitePopup()
+        private void StopVoiceEmoji(BaseCharacter character)
         {
             foreach (var _popup in _emoteEmojiPopups) 
-            { 
-                _popup.infinitePopup = false;
+            {
+                if (_popup.Character == character)
+                {
+                    _popup.infinitePopup = false;
+                    break;
+                }
             }
         }
 

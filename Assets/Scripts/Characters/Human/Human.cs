@@ -3035,7 +3035,7 @@ namespace Characters
         [PunRPC]
         public void SetHookStateRPC(bool left, int hookId, int state, PhotonMessageInfo info)
         {
-            if (!FinishSetup)
+            if (info.Sender != photonView.Owner || !FinishSetup)
                 return;
             if (left)
                 HookLeft.Hooks[hookId].OnSetHookState(state, info);
@@ -3046,7 +3046,7 @@ namespace Characters
         [PunRPC]
         public void SetHookingRPC(bool left, int hookId, Vector3 baseVelocity, Vector3 relativeVelocity, PhotonMessageInfo info)
         {
-            if (!FinishSetup)
+            if (info.Sender != photonView.Owner || !FinishSetup)
                 return;
             if (left)
                 HookLeft.Hooks[hookId].OnSetHooking(baseVelocity, relativeVelocity, info);
@@ -3057,7 +3057,7 @@ namespace Characters
         [PunRPC]
         public void SetHookedRPC(bool left, int hookId, Vector3 position, int viewId, int objectId, PhotonMessageInfo info)
         {
-            if (!FinishSetup)
+            if (info.Sender != photonView.Owner || !FinishSetup)
                 return;
             if (left)
                 HookLeft.Hooks[hookId].OnSetHooked(position, viewId, objectId, info);
