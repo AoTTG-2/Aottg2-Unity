@@ -147,7 +147,7 @@ namespace Utility
         {
             if (input == string.Empty)
                 return string.Empty;
-            int iterations = 600000;
+            int iterations = 200000;
             int hashSize = 16;
             byte[] saltBytes = Convert.FromBase64String(salt);
             Rfc2898DeriveBytes pbkdf2 = new Rfc2898DeriveBytes(input, saltBytes, iterations, HashAlgorithmName.SHA256);
