@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -118,7 +119,7 @@ namespace Utility
         {
             if (input == string.Empty)
                 return string.Empty;
-            using (System.Security.Cryptography.MD5 md5 = System.Security.Cryptography.MD5.Create())
+            using (MD5 md5 = MD5.Create())
             {
                 byte[] inputBytes = System.Text.Encoding.UTF8.GetBytes(input);
                 byte[] hashBytes = md5.ComputeHash(inputBytes);
@@ -129,6 +130,29 @@ namespace Utility
                 }
                 return sb.ToString();
             }
+        }
+
+        public static string CreateSalt()
+        {
+            // 128 bits recommended by NIST (PBKDF2 wikipedia)
+            int saltSize = 16;
+            byte[] saltBytes = new byte[saltSize];
+            using (RandomNumberGenerator rng = RandomNumberGenerator.Create()) {
+                rng.GetBytes(saltBytes);
+            }
+            return Convert.ToBase64String(saltBytes);
+        }
+
+        public static string CreatePBKDF2(string input, string salt)
+        {
+            if (input == string.Empty)
+                return string.Empty;
+            int iterations = 600000;
+            int hashSize = 16;
+            byte[] saltBytes = Convert.FromBase64String(salt);
+            Rfc2898DeriveBytes pbkdf2 = new Rfc2898DeriveBytes(input, saltBytes, iterations, HashAlgorithmName.SHA256);
+            byte[] hashBytes = pbkdf2.GetBytes(hashSize);
+            return BitConverter.ToString(hashBytes).Replace("-", string.Empty);
         }
 
         public static IEnumerator WaitForFrames(int frames)
