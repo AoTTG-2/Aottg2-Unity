@@ -31,7 +31,7 @@ namespace Utility
 
                 return stream.ToArray();
             }
-            catch // On failure, return empty array.
+            catch // On error, return empty array.
             {
                 return Array.Empty<byte>();
             }
@@ -74,13 +74,12 @@ namespace Utility
 
                 return Encoding.UTF8.GetString(output.ToArray());
             }
-            catch // On failure, return empty string.
+            catch // On error, return empty string.
             {
                 return string.Empty;
             }
             finally
             {
-                // "stream" gets disposed automatically when "brotli" is disposed.
                 brotli?.Dispose();
                 output?.Dispose();
             }
