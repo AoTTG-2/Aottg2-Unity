@@ -36,6 +36,7 @@
         public FloatSetting ProximityMaxDistance = new FloatSetting(80f, minValue: 1f);
         public IntSetting HumanHealth = new IntSetting(1, minValue: 1);
         public IntSetting ShifterHealth = new IntSetting(1000, minValue: 1);
+        public BoolSetting ServicesEnabled = new BoolSetting(false);
     }
 
     public enum PVPMode
