@@ -91,10 +91,10 @@ namespace Projectiles
                 _rigidbody.velocity = Vector3.zero;
                 foreach (Collider c in _colliders)
                     c.enabled = false;
+
                 if (SettingsManager.InGameCurrent.Misc.ThunderspearPVP.Value || !_usesEmbed)
                 {
                     Explode();
-                }
                 else
                 {
                     _isEmbed = true;
@@ -114,9 +114,9 @@ namespace Projectiles
                     float embed2Time = Mathf.Max(GetStat("Embed2TimeTotal") - travelDistance * GetStat("Embed2TimeMultiplier"), 0f);
                     _timeLeft = embed1Time + embed2Time;
                     if (Vector3.Distance(_transform.position, _startPosition) < GetStat("AATriggerRange"))
-                    {
                         _isAA = true;
-                    }
+                    if (human.CurrentSpecial == "Thunderspears")
+                        Explode();
                 }
             }
         }

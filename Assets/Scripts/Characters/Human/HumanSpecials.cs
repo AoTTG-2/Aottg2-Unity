@@ -7,7 +7,7 @@ namespace Characters
 {
     class HumanSpecials
     {
-        public static string[] AnySpecials = new string[] {"Potato", "Escape", "Dance", "Distract", "Smell", "Supply", "SmokeBomb", "Carry", "Switchback", "Confuse"};
+        public static string[] AnySpecials = new string[] {"Potato", "Escape", "Dance", "Distract", "Smell", "Supply", "SmokeBomb", "Carry", "Switchback", "Confuse", "Thunderspears"};
         public static string[] AHSSSpecials = new string[] { "AHSSTwinShot" };
         public static string[] BladeSpecials = new string[] { "DownStrike", "Spin1", "Spin2", "Spin3", "BladeThrow" };
         public static string[] ShifterSpecials = new string[] { "Eren", "Annie" };
@@ -68,7 +68,6 @@ namespace Characters
             }
             */
         }
-
         public static BaseUseable GetSpecialUseable(BaseCharacter owner, string special) => special switch
         {
             "Distract" => new DistractSpecial(owner),
@@ -92,6 +91,7 @@ namespace Characters
             "Armored" => new ShifterTransformSpecial(owner, "Armored"),
             "Switchback" => new SwitchbackSpecial(owner),
             "Confuse" => new ConfuseSpecial(owner),
+            "Thunderspears" => new ThunderspearWeapon(owner, 2, 2, CharacterData.HumanWeaponInfo["Thunderspear"]["CD"].AsFloat, 1.5f, CharacterData.HumanWeaponInfo["Thunderspear"]["Speed"].AsFloat, (CharacterData.HumanWeaponInfo["Thunderspear"]["Range"].AsFloat / CharacterData.HumanWeaponInfo["Thunderspear"]["Speed"].AsFloat), CharacterData.HumanWeaponInfo["Thunderspear"]["Delay"].AsFloat, CharacterData.HumanWeaponInfo["Thunderspear"]),
             _ => null
         };
 

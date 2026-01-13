@@ -855,6 +855,10 @@ namespace Characters
             {
                 ((SupplySpecial)Special).Reset();
             }
+            if (Special is ThunderspearWeapon)
+            {
+                ((ThunderspearWeapon)Special).Reset();
+            }
             ToggleSparks(false);
             CrossFade(HumanAnimations.Refill, 0.1f);
             PlaySound(HumanSounds.Refill);
@@ -3104,10 +3108,20 @@ namespace Characters
         {
             if (info.Sender != photonView.Owner || !FinishSetup)
                 return;
-            if (Setup._part_blade_l != null)
-                Setup._part_blade_l.SetActive(hasLeft);
-            if (Setup._part_blade_r != null)
-                Setup._part_blade_r.SetActive(hasRight);
+            if(CurrentSpecial == "Thunderspears")
+            {
+                if (Setup._part_ts_l != null)
+                    Setup._part_ts_l.SetActive(hasLeft);
+                if (Setup._part_ts_r != null)
+                    Setup._part_ts_r.SetActive(hasRight);
+            }
+            else
+            {
+                if (Setup._part_blade_l != null)
+                    Setup._part_blade_l.SetActive(hasLeft);
+                if (Setup._part_blade_r != null)
+                    Setup._part_blade_r.SetActive(hasRight);
+            }
         }
 
         public void OnHooked(bool left, Vector3 position)
