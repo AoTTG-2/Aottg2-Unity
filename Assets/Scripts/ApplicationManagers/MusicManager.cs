@@ -266,7 +266,7 @@ namespace ApplicationManagers
                 JSONNode playlist = _musicInfo[_instance._currentPlaylist];
                 JSONNode songInfo;
                 songInfo = playlist[Random.Range(0, playlist.Count)];
-                SetSong(songInfo);
+                SetSong(songInfo["Name"]);
             }
         }
 
