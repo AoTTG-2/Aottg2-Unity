@@ -1,0 +1,70 @@
+{
+  "kind": "extension",
+  "name": "Time",
+  "description": "Time functions.",
+  "extends": [
+    "Object"
+  ],
+  "deprecated": "",
+  "instanceFields": [],
+  "instanceMethods": [],
+  "staticFields": [
+    {
+      "label": "TickTime",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Time between each tick (0.02 seconds)",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "FrameTime",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Time between each frame.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "GameTime",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Time since start of the round.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "EngineTime",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Unity's Time.time",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "TimeScale",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Changes the timescale of the game.",
+      "readonly": false,
+      "private": false,
+      "deprecated": ""
+    }
+  ],
+  "staticMethods": [],
+  "constructors": []
+}

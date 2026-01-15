@@ -1,0 +1,59 @@
+{
+  "kind": "extension",
+  "name": "Json",
+  "description": "Serializes and deserializes primitive and struct values from and to json strings. Supports float, int, string, bool, Vector3, Quaternion, Color, Dict, and List. Dict and List must contain only the supported types, and can be nested.",
+  "extends": [
+    "Object"
+  ],
+  "deprecated": "",
+  "instanceFields": [],
+  "instanceMethods": [],
+  "staticFields": [],
+  "staticMethods": [
+    {
+      "label": "LoadFromString",
+      "returnType": {
+        "name": "Object",
+        "typeArguments": []
+      },
+      "description": "Loads a json string into a custom logic object.",
+      "parameters": [
+        {
+          "name": "json",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "The json string to load.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "SaveToString",
+      "returnType": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Saves a custom logic object into a json string.",
+      "parameters": [
+        {
+          "name": "obj",
+          "type": {
+            "name": "Object",
+            "typeArguments": []
+          },
+          "description": "The object to save to json.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    }
+  ],
+  "constructors": []
+}

@@ -1,0 +1,60 @@
+{
+  "kind": "class",
+  "name": "Button",
+  "description": "A UI element that represents a clickable button.",
+  "extends": [
+    "VisualElement"
+  ],
+  "deprecated": "",
+  "instanceFields": [
+    {
+      "label": "Text",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "The text displayed by the Button.",
+      "readonly": false,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "EnableRichText",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "When false, rich text tags will not be parsed.",
+      "readonly": false,
+      "private": false,
+      "deprecated": ""
+    }
+  ],
+  "instanceMethods": [
+    {
+      "label": "OnClick",
+      "returnType": {
+        "name": "Button",
+        "typeArguments": []
+      },
+      "description": "Sets the method to be called when the Button is clicked.",
+      "parameters": [
+        {
+          "name": "clickEvent",
+          "type": {
+            "name": "function",
+            "typeArguments": []
+          },
+          "description": "The method to call when the button is clicked.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    }
+  ],
+  "staticFields": [],
+  "staticMethods": [],
+  "constructors": []
+}

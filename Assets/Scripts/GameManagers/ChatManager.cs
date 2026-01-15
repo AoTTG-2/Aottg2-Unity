@@ -36,6 +36,8 @@ namespace GameManagers
             public string[] Parameters { get; private set; }
             public AutofillType AutofillType { get; set; } = AutofillType.None;
 
+            public bool ExcludeFromHelp { get; set; } = false;
+
             public CommandAttribute(CommandAttribute commandAttribute)
             {
                 Name = commandAttribute.Name;
@@ -43,9 +45,10 @@ namespace GameManagers
                 Alias = commandAttribute.Alias;
                 Command = commandAttribute.Command;
                 AutofillType = commandAttribute.AutofillType;
+                ExcludeFromHelp = commandAttribute.ExcludeFromHelp;
             }
 
-            public CommandAttribute(string name, string description, AutofillType autofillType = AutofillType.None)
+            public CommandAttribute(string name, string description, AutofillType autofillType = AutofillType.None, bool excludeFromHelp = false)
             {
                 Name = name;
                 Description = description;
@@ -54,6 +57,7 @@ namespace GameManagers
                                      .Cast<Match>()
                                      .Select(m => m.Groups[1].Value)
                                      .ToArray();
+                ExcludeFromHelp = excludeFromHelp;
             }
         }
 
@@ -279,13 +283,13 @@ namespace GameManagers
         public static void SendChatAll(string message, ChatTextColor color = ChatTextColor.Default)
         {
             string formattedMessage = GetColorString(message, color);
-            RPCManager.PhotonView.RPC("ChatRPC", RpcTarget.All, new object[] { formattedMessage });
+            RPCManager.PhotonView.RPC(nameof(RPCManager.ChatRPC), RpcTarget.All, new object[] { formattedMessage });
         }
 
         public static void SendChat(string message, Player player, ChatTextColor color = ChatTextColor.Default)
         {
             string formattedMessage = GetColorString(message, color);
-            RPCManager.PhotonView.RPC("ChatRPC", player, new object[] { formattedMessage });
+            RPCManager.PhotonView.RPC(nameof(RPCManager.ChatRPC), player, new object[] { formattedMessage });
         }
 
         public static void OnChatRPC(string message, PhotonMessageInfo info)
@@ -340,7 +344,14 @@ namespace GameManagers
 
         public static void AddException(string line)
         {
-            if (line == LastException)
+            bool canReplace = false;
+            if (RawMessages.Count > 0)
+            {
+                int lastIndex = RawMessages.Count - 1;
+                canReplace = RawMessages[lastIndex].Contains(LastException) && LastException == line;
+            }
+
+            if (canReplace)
             {
                 LastExceptionCount++;
                 MessageBuilder.Clear();
@@ -580,7 +591,7 @@ namespace GameManagers
         {
             if (CheckMC())
             {
-                RPCManager.PhotonView.RPC("SpawnPlayerRPC", RpcTarget.All, new object[] { false });
+                RPCManager.PhotonView.RPC(nameof(RPCManager.SpawnPlayerRPC), RpcTarget.All, new object[] { false });
                 SendChatAll("All players have been revived by master client.", ChatTextColor.System);
             }
         }
@@ -593,7 +604,7 @@ namespace GameManagers
                 var player = GetPlayer(args);
                 if (player != null)
                 {
-                    RPCManager.PhotonView.RPC("SpawnPlayerRPC", player, new object[] { false });
+                    RPCManager.PhotonView.RPC(nameof(RPCManager.SpawnPlayerRPC), player, new object[] { false });
                     SendChat("You have been revived by master client.", player, ChatTextColor.System);
                     AddLine(player.GetStringProperty(PlayerProperty.Name) + " has been revived.", ChatTextColor.System);
                 }
@@ -620,7 +631,7 @@ namespace GameManagers
                 KickPlayer(player, ban: true);
         }
 
-        [CommandAttribute("ipban", "/ipban [ID]: IP ban the player with ID (mod only)", AutofillType.PlayerID)]
+        [CommandAttribute("ipban", "/ipban [ID]: IP ban the player with ID (mod only)", AutofillType.PlayerID, excludeFromHelp: true)]
         private static void IPBan(string[] args)
         {
             var player = GetPlayer(args);
@@ -628,7 +639,7 @@ namespace GameManagers
             AnticheatManager.IPBan(player);
         }
 
-        [CommandAttribute("ipunban", "/ipunban [IP]: Unban the given IP address (mod only)", AutofillType.None)]
+        [CommandAttribute("ipunban", "/ipunban [IP]: Unban the given IP address (mod only)", AutofillType.None, excludeFromHelp: true)]
         private static void IPUnban(string[] args)
         {
             if (args.Length > 0)
@@ -637,7 +648,7 @@ namespace GameManagers
             }
         }
 
-        [CommandAttribute("superban", "/superban [ID]: IP and hardware ban the player with ID (mod only). Cannot be undone!", AutofillType.PlayerID)]
+        [CommandAttribute("superban", "/superban [ID]: IP and hardware ban the player with ID (mod only). Cannot be undone!", AutofillType.PlayerID, excludeFromHelp: true)]
         private static void Superban(string[] args)
         {
             var player = GetPlayer(args);
@@ -645,7 +656,7 @@ namespace GameManagers
             AnticheatManager.Superban(player);
         }
 
-        [CommandAttribute("removesuperbans", "/removesuperbans: Clear all superbans on the region.", AutofillType.None)]
+        [CommandAttribute("removesuperbans", "/removesuperbans: Clear all superbans on the region.", AutofillType.None, excludeFromHelp: true)]
         private static void Removesuperbans(string[] args)
         {
             AnticheatManager.ClearSuperbans();
@@ -740,7 +751,7 @@ namespace GameManagers
         [CommandAttribute("resetkdall", "/resetkdall: Reset all player stats.")]
         private static void Resetkdall(string[] args)
         {
-            RPCManager.PhotonView.RPC("ResetKDRPC", RpcTarget.All);
+            RPCManager.PhotonView.RPC(nameof(RPCManager.ResetKDRPC), RpcTarget.All);
         }
 
 
@@ -757,13 +768,18 @@ namespace GameManagers
                     displayPage = 1;
                 }
             }
-            int totalPages = (int)Math.Ceiling((double)CommandsCache.Count / elementsPerPage);
+
+            Dictionary<string, CommandAttribute> filteredCommands = CommandsCache
+                .Where(kv => !kv.Value.ExcludeFromHelp)
+                .ToDictionary(kv => kv.Key, kv => kv.Value);
+
+            int totalPages = (int)Math.Ceiling((double)filteredCommands.Count / elementsPerPage);
             if (displayPage < 1 || displayPage > totalPages)
             {
                 AddLine($"Page {displayPage} does not exist.", ChatTextColor.Error);
                 return;
             }
-            List<CommandAttribute> pageElements = Util.PaginateDictionary(CommandsCache, displayPage, elementsPerPage);
+            List<CommandAttribute> pageElements = Util.PaginateDictionary(filteredCommands, displayPage, elementsPerPage);
             string help = "----Command list----" + "\n";
             foreach (CommandAttribute element in pageElements)
             {
@@ -1223,12 +1239,29 @@ namespace GameManagers
                         SuggestionState.IsTabCompleting = false;
                         SuggestionState.SetOriginalContext(partial, spaceIndex + 1, input.Length);
                         var players = new List<Player>();
+                        string partialLower = partial.ToLower();
+                        bool isNumeric = partial.All(char.IsDigit);
                         foreach (var p in PhotonNetwork.PlayerList)
                         {
-                            if (string.IsNullOrEmpty(partial) ||
-                                p.ActorNumber.ToString().StartsWith(partial))
+                            if (isNumeric)
                             {
-                                players.Add(p);
+                                if (string.IsNullOrEmpty(partial) ||
+                                    p.ActorNumber.ToString().StartsWith(partial))
+                                {
+                                    players.Add(p);
+                                }
+                            }
+                            else
+                            {
+                                string name = p.GetStringProperty(PlayerProperty.Name)
+                                             .FilterSizeTag()
+                                             .StripRichText()
+                                             .ToLower();
+                                if (string.IsNullOrEmpty(partial) ||
+                                    name.StartsWith(partialLower))
+                                {
+                                    players.Add(p);
+                                }
                             }
                         }
                         players.Sort((a, b) => a.ActorNumber.CompareTo(b.ActorNumber));
@@ -1604,8 +1637,8 @@ namespace GameManagers
                 AddLine("Invalid private message target.", ChatTextColor.Error);
                 return;
             }
-            RPCManager.PhotonView.RPC("PrivateChatRPC", PhotonNetwork.LocalPlayer, new object[] { message, target.ActorNumber });
-            RPCManager.PhotonView.RPC("PrivateChatRPC", target, new object[] { message, target.ActorNumber });
+            RPCManager.PhotonView.RPC(nameof(RPCManager.PrivateChatRPC), PhotonNetwork.LocalPlayer, new object[] { message, target.ActorNumber });
+            RPCManager.PhotonView.RPC(nameof(RPCManager.PrivateChatRPC), target, new object[] { message, target.ActorNumber });
         }
 
         public static void OnPrivateChatRPC(string message, int targetID, PhotonMessageInfo info)

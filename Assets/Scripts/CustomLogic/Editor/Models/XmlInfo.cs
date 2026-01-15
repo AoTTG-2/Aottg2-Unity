@@ -11,14 +11,13 @@ namespace CustomLogic.Editor.Models
         public string Summary { get; set; }
         public string Remarks { get; set; }
         public string Code { get; set; }
-        public Dictionary<string, string> Parameters { get; set; }
         public string Returns { get; set; }
 
-        public static XmlInfo FromTypeXml(XmlDocument xmlDocument, Type type, CLTypeAttribute attr)
+        public static XmlInfo FromTypeXml(XmlDocument xmlDocument, Type type)
         {
             return new XmlInfo
             {
-                Summary = XmlDocumentUtils.GetTypeNodeText(xmlDocument, type, "summary", attr.Description),
+                Summary = XmlDocumentUtils.GetTypeNodeText(xmlDocument, type, "summary"),
                 Remarks = XmlDocumentUtils.GetTypeNodeText(xmlDocument, type, "remarks"),
                 Code = XmlDocumentUtils.GetTypeNodeText(xmlDocument, type, "code")
             };
@@ -28,41 +27,40 @@ namespace CustomLogic.Editor.Models
         {
             return new XmlInfo
             {
-                Summary = XmlDocumentUtils.GetConstructorNodeText(xmlDocument, type, ctorInfo, "summary", string.Empty),
-                Remarks = XmlDocumentUtils.GetConstructorNodeText(xmlDocument, type, ctorInfo, "remarks", string.Empty),
-                Code = XmlDocumentUtils.GetConstructorNodeText(xmlDocument, type, ctorInfo, "code", string.Empty)
+                Summary = XmlDocumentUtils.GetConstructorNodeText(xmlDocument, type, ctorInfo, "summary"),
+                Remarks = XmlDocumentUtils.GetConstructorNodeText(xmlDocument, type, ctorInfo, "remarks"),
+                Code = XmlDocumentUtils.GetConstructorNodeText(xmlDocument, type, ctorInfo, "code")
             };
         }
 
-        public static XmlInfo FromPropertyXml(XmlDocument xmlDocument, Type type, PropertyInfo propertyInfo, CLPropertyAttribute attr)
+        public static XmlInfo FromPropertyXml(XmlDocument xmlDocument, Type type, PropertyInfo propertyInfo)
         {
             return new XmlInfo
             {
-                Summary = XmlDocumentUtils.GetPropertyNodeText(xmlDocument, type, propertyInfo, "summary", attr.Description),
-                Remarks = XmlDocumentUtils.GetPropertyNodeText(xmlDocument, type, propertyInfo, "remarks", string.Empty),
-                Code = XmlDocumentUtils.GetPropertyNodeText(xmlDocument, type, propertyInfo, "code", string.Empty)
+                Summary = XmlDocumentUtils.GetPropertyNodeText(xmlDocument, type, propertyInfo, "summary"),
+                Remarks = XmlDocumentUtils.GetPropertyNodeText(xmlDocument, type, propertyInfo, "remarks"),
+                Code = XmlDocumentUtils.GetPropertyNodeText(xmlDocument, type, propertyInfo, "code")
             };
         }
 
-        public static XmlInfo FromFieldXml(XmlDocument xmlDocument, Type type, FieldInfo fieldInfo, CLPropertyAttribute attr)
+        public static XmlInfo FromFieldXml(XmlDocument xmlDocument, Type type, FieldInfo fieldInfo)
         {
             return new XmlInfo
             {
-                Summary = XmlDocumentUtils.GetFieldNodeText(xmlDocument, type, fieldInfo, "summary", attr.Description),
-                Remarks = XmlDocumentUtils.GetFieldNodeText(xmlDocument, type, fieldInfo, "remarks", string.Empty),
-                Code = XmlDocumentUtils.GetFieldNodeText(xmlDocument, type, fieldInfo, "code", string.Empty)
+                Summary = XmlDocumentUtils.GetFieldNodeText(xmlDocument, type, fieldInfo, "summary"),
+                Remarks = XmlDocumentUtils.GetFieldNodeText(xmlDocument, type, fieldInfo, "remarks"),
+                Code = XmlDocumentUtils.GetFieldNodeText(xmlDocument, type, fieldInfo, "code")
             };
         }
 
-        public static XmlInfo FromMethodXml(XmlDocument xmlDocument, Type type, MethodInfo methodInfo, CLMethodAttribute attr)
+        public static XmlInfo FromMethodXml(XmlDocument xmlDocument, Type type, MethodInfo methodInfo)
         {
             return new XmlInfo
             {
-                Summary = XmlDocumentUtils.GetMethodNodeText(xmlDocument, type, methodInfo, "summary", attr.Description),
-                Remarks = XmlDocumentUtils.GetMethodNodeText(xmlDocument, type, methodInfo, "remarks", string.Empty),
-                Code = XmlDocumentUtils.GetMethodNodeText(xmlDocument, type, methodInfo, "code", string.Empty),
-                Parameters = XmlDocumentUtils.GetMethodParamTexts(xmlDocument, type, methodInfo).ToDictionary(x => x.Key, x => x.Value),
-                Returns = XmlDocumentUtils.GetMethodNodeText(xmlDocument, type, methodInfo, "returns", string.Empty)
+                Summary = XmlDocumentUtils.GetMethodNodeText(xmlDocument, type, methodInfo, "summary"),
+                Remarks = XmlDocumentUtils.GetMethodNodeText(xmlDocument, type, methodInfo, "remarks"),
+                Code = XmlDocumentUtils.GetMethodNodeText(xmlDocument, type, methodInfo, "code"),
+                Returns = XmlDocumentUtils.GetMethodNodeText(xmlDocument, type, methodInfo, "returns")
             };
         }
     }

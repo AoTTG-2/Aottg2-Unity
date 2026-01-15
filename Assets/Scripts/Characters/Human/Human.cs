@@ -74,6 +74,9 @@ namespace Characters
         private float _grabIFrames = 0f;
         private bool _bladeTrailActive;
         private int _bladeFireState;
+        private bool _buff1Active;
+        private bool _buff2Active;
+        private bool _fire1Active;
 
         // physics
         public float ReelInAxis = 0f;
@@ -142,7 +145,7 @@ namespace Characters
 
         public void DieChangeCharacter()
         {
-            Cache.PhotonView.RPC("MarkDeadRPC", RpcTarget.AllBuffered, new object[0]);
+            Cache.PhotonView.RPC(nameof(MarkDeadRPC), RpcTarget.AllBuffered, new object[0]);
             PhotonNetwork.Destroy(gameObject);
         }
 
@@ -295,7 +298,7 @@ namespace Characters
             if (mapObject != null)
                 scriptId = mapObject.ScriptObject.Id;
             _lastMountMessage = new object[] { scriptId, transformName, positionOffset, rotationOffset, canMountedAttack };
-            Cache.PhotonView.RPC("MountRPC", RpcTarget.All, _lastMountMessage);
+            Cache.PhotonView.RPC(nameof(MountRPC), RpcTarget.All, _lastMountMessage);
         }
 
         [PunRPC]
@@ -360,7 +363,7 @@ namespace Characters
                 SetTriggerCollider(false);
             MountState = HumanMountState.None;
             _lastMountMessage = null;
-            Cache.PhotonView.RPC("UnmountRPC", RpcTarget.All, new object[0]);
+            Cache.PhotonView.RPC(nameof(UnmountRPC), RpcTarget.All, new object[0]);
         }
 
         [PunRPC]
@@ -482,12 +485,12 @@ namespace Characters
             UnhookHuman(true);
             UnhookHuman(false);
             State = HumanState.Grab;
-            grabber.Cache.PhotonView.RPC("GrabRPC", RpcTarget.All, new object[] { Cache.PhotonView.ViewID, type == "GrabLeft" });
+            grabber.Cache.PhotonView.RPC(nameof(grabber.GrabRPC), RpcTarget.All, new object[] { Cache.PhotonView.ViewID, type == "GrabLeft" });
             SetTriggerCollider(true);
             FalseAttack();
             Grabber = grabber;
             GrabHand = hand;
-            Cache.PhotonView.RPC("SetSmokeRPC", RpcTarget.All, new object[] { false });
+            Cache.PhotonView.RPC(nameof(SetSmokeRPC), RpcTarget.All, new object[] { false });
             PlayAnimation(HumanAnimations.Grabbed);
             ToggleSparks(false);
             var windEmission = HumanCache.Wind.emission;
@@ -501,7 +504,7 @@ namespace Characters
             if (notifyTitan && Grabber != null)
             {
                 if (breakArm) Grabber.DisableArm(Grabber.HoldHumanLeft);
-                else Grabber.Cache.PhotonView.RPC("UngrabRPC", RpcTarget.All, new object[] { Cache.PhotonView.ViewID });
+                else Grabber.Cache.PhotonView.RPC(nameof(Grabber.UngrabRPC), RpcTarget.All, new object[] { Cache.PhotonView.ViewID });
             }
 
             Grabber = null;
@@ -527,7 +530,7 @@ namespace Characters
             Carrier = carrier;
             CarryBack = back;
             SetCarrierTriggerCollider(true);
-            Cache.PhotonView.RPC("SetSmokeRPC", RpcTarget.All, new object[] { false });
+            Cache.PhotonView.RPC(nameof(SetSmokeRPC), RpcTarget.All, new object[] { false });
             ToggleSparks(false);
             State = HumanState.Idle;
             CrossFade(StandAnimation, 0.01f);
@@ -544,7 +547,7 @@ namespace Characters
                 return;
             _lastCarryRPCSender = initiatorViewId;
             if (Cache.PhotonView.IsMine && IsCarryableBy(initiator))
-                Cache.PhotonView.RPC("ConfirmCarryRPC", RpcTarget.All, new object[] { initiatorViewId, Cache.PhotonView.ViewID });
+                Cache.PhotonView.RPC(nameof(ConfirmCarryRPC), RpcTarget.All, new object[] { initiatorViewId, Cache.PhotonView.ViewID });
         }
 
         [PunRPC]
@@ -684,7 +687,7 @@ namespace Characters
         public void StartCarrySpecial(Human target)
         {
             ClearAllActionsForSpecial();
-            target.Cache.PhotonView.RPC("CarryRPC", RpcTarget.All, new object[] { Cache.PhotonView.ViewID });
+            target.Cache.PhotonView.RPC(nameof(target.CarryRPC), RpcTarget.All, new object[] { Cache.PhotonView.ViewID });
         }
 
         public void StopCarrySpecial()
@@ -692,7 +695,7 @@ namespace Characters
             ClearAllActionsForSpecial();
             if (BackHuman != null)
             {
-                BackHuman.Cache.PhotonView.RPC("UncarryRPC", RpcTarget.All, new object[0]);
+                BackHuman.Cache.PhotonView.RPC(nameof(BackHuman.UncarryRPC), RpcTarget.All, new object[0]);
             }
         }
 
@@ -712,12 +715,12 @@ namespace Characters
             Human human = FindNearestHuman();
             if (BackHuman != null)
             {
-                BackHuman.Cache.PhotonView.RPC("UncarryRPC", RpcTarget.All, new object[0]);
+                BackHuman.Cache.PhotonView.RPC(nameof(BackHuman.UncarryRPC), RpcTarget.All, new object[0]);
             }
             else if (human != null && human.CarryState == HumanCarryState.None && human.Carrier == null && human.BackHuman == null
                 && Vector3.Distance(human.Cache.Transform.position, Cache.Transform.position) < distance)
             {
-                human.Cache.PhotonView.RPC("CarryRPC", RpcTarget.All, new object[] { Cache.PhotonView.ViewID });
+                human.Cache.PhotonView.RPC(nameof(human.CarryRPC), RpcTarget.All, new object[] { Cache.PhotonView.ViewID });
             }
         }*/
 
@@ -966,6 +969,8 @@ namespace Characters
 
         protected override IEnumerator WaitAndDie()
         {
+            DisableAllCustomParticleEffects();
+
             if (State == HumanState.Grab)
                 PlaySound(HumanSounds.Death5);
             else
@@ -974,6 +979,7 @@ namespace Characters
                 MusicManager.PlayDeathSong();
             }
             EffectSpawner.Spawn(EffectPrefabs.Blood2, Cache.Transform.position, Cache.Transform.rotation);
+
             yield return new WaitForSeconds(2f);
             PhotonNetwork.Destroy(gameObject);
         }
@@ -1006,7 +1012,7 @@ namespace Characters
             }
             if (IsMine())
             {
-                Cache.PhotonView.RPC("SetupRPC", RpcTarget.All, Setup.CustomSet.SerializeToJsonString(), (int)Setup.Weapon);
+                Cache.PhotonView.RPC(nameof(SetupRPC), RpcTarget.All, Setup.CustomSet.SerializeToJsonString(), (int)Setup.Weapon);
                 LoadSkin();
                 _cameraFPS = false;
             }
@@ -1061,7 +1067,7 @@ namespace Characters
             {
                 InvincibleTimeLeft = SettingsManager.InGameCurrent.Misc.InvincibilityTime.Value;
                 TargetAngle = Cache.Transform.eulerAngles.y;
-                Cache.PhotonView.RPC("SetupRPC", RpcTarget.All, Setup.CustomSet.SerializeToJsonString(), (int)Setup.Weapon);
+                Cache.PhotonView.RPC(nameof(SetupRPC), RpcTarget.All, Setup.CustomSet.SerializeToJsonString(), (int)Setup.Weapon);
                 if (SettingsManager.InGameCurrent.Misc.Horses.Value)
                 {
                     Horse = (Horse)CharacterSpawner.Spawn(CharacterPrefabs.Horse, Cache.Transform.position + Vector3.right * 2f, Quaternion.Euler(0f, TargetAngle, 0f));
@@ -1076,13 +1082,13 @@ namespace Characters
             base.OnPlayerEnteredRoom(player);
             if (IsMine())
             {
-                Cache.PhotonView.RPC("SetTriggerColliderRPC", player, new object[] { _isTrigger });
+                Cache.PhotonView.RPC(nameof(SetTriggerColliderRPC), player, new object[] { _isTrigger });
                 if (MountState == HumanMountState.MapObject && _lastMountMessage != null)
-                    Cache.PhotonView.RPC("MountRPC", player, _lastMountMessage);
+                    Cache.PhotonView.RPC(nameof(MountRPC), player, _lastMountMessage);
                 if (BackHuman != null && BackHuman.CarryState == HumanCarryState.Carry)
-                    BackHuman.Cache.PhotonView.RPC("CarryRPC", player, new object[] { Cache.PhotonView.ViewID });
+                    BackHuman.Cache.PhotonView.RPC(nameof(BackHuman.CarryRPC), player, new object[] { Cache.PhotonView.ViewID });
 
-                Cache.PhotonView.RPC("SetupRPC", player, Setup.CustomSet.SerializeToJsonString(), (int)Setup.Weapon);
+                Cache.PhotonView.RPC(nameof(SetupRPC), player, Setup.CustomSet.SerializeToJsonString(), (int)Setup.Weapon);
                 LoadSkin(player);
             }
         }
@@ -1113,6 +1119,16 @@ namespace Characters
             else
                 base.GetHitRPC(viewId, name, damage, type, collider);
         }
+
+        [PunRPC]
+        public override void GetDamagedRPC(string name, int damage)
+        {
+            if (Dead || IsInvincible)
+                return;
+
+            base.GetDamagedRPC(name, damage);
+        }
+
         public override void OnHit(BaseHitbox hitbox, object victim, Collider collider, string type, bool firstHit)
         {
             if (hitbox != null)
@@ -1462,9 +1478,9 @@ namespace Characters
                 if (CarryState == HumanCarryState.Carry)
                 {
                     if (Carrier == null || Carrier.Dead)
-                        Cache.PhotonView.RPC("UncarryRPC", RpcTarget.All, new object[0]);
+                        Cache.PhotonView.RPC(nameof(UncarryRPC), RpcTarget.All, new object[0]);
                     else if (MountState != HumanMountState.None || State == HumanState.Grab)
-                        Cache.PhotonView.RPC("UncarryRPC", RpcTarget.All, new object[0]);
+                        Cache.PhotonView.RPC(nameof(UncarryRPC), RpcTarget.All, new object[0]);
                     else
                     {
                         Vector3 offset = CarryBack.transform.forward * -0.4f + CarryBack.transform.up * 0.5f;
@@ -1473,7 +1489,7 @@ namespace Characters
                     }
 
                     if (Carrier != null && Vector3.Distance(Carrier.Cache.Transform.position, Cache.Transform.position) > 7f)
-                        Cache.PhotonView.RPC("UncarryRPC", RpcTarget.All, new object[0]);
+                        Cache.PhotonView.RPC(nameof(UncarryRPC), RpcTarget.All, new object[0]);
                 }
             }
             if (GrabHand != null)
@@ -1545,7 +1561,7 @@ namespace Characters
                     if (_hookHumanConstantTimeLeft <= 0f)
                     {
                         _hookHumanConstantTimeLeft = 1f;
-                        _hookHuman.Cache.PhotonView.RPC("OnStillHookedByHuman", _hookHuman.Cache.PhotonView.Owner, new object[] { Cache.PhotonView.ViewID });
+                        _hookHuman.Cache.PhotonView.RPC(nameof(_hookHuman.OnStillHookedByHuman), _hookHuman.Cache.PhotonView.Owner, new object[] { Cache.PhotonView.ViewID });
                     }
                 }
                 _currentVelocity = Cache.Rigidbody.velocity;
@@ -1874,14 +1890,14 @@ namespace Characters
                     {
                         Stats.UseFrameGas();
                         if (!HumanCache.Smoke.emission.enabled)
-                            Cache.PhotonView.RPC("SetSmokeRPC", RpcTarget.All, new object[] { true });
+                            Cache.PhotonView.RPC(nameof(SetSmokeRPC), RpcTarget.All, new object[] { true });
                         if (!IsPlayingSound(HumanSounds.GasLoop) && SettingsManager.SoundSettings.GasEffect.Value)
                             PlaySound(HumanSounds.GasLoop);
                     }
                     else
                     {
                         if (HumanCache.Smoke.emission.enabled)
-                            Cache.PhotonView.RPC("SetSmokeRPC", RpcTarget.All, new object[] { false });
+                            Cache.PhotonView.RPC(nameof(SetSmokeRPC), RpcTarget.All, new object[] { false });
                         if (IsPlayingSound(HumanSounds.GasLoop))
                         {
                             StopSound(HumanSounds.GasLoop);
@@ -2143,6 +2159,11 @@ namespace Characters
             }
         }
 
+
+        private Collider _lastHit = null;
+        private Vector3 _lastDirection = Vector3.zero;
+        private float _collisionTimer = 0;
+        private float _collisionInterval = 0.1f;
         protected void OnCollisionEnter(Collision collision)
         {
             if (!IsMine())
@@ -2167,6 +2188,11 @@ namespace Characters
 
                 if (hitTitan)
                 {
+                    bool intervalFinished = Time.time - _collisionTimer >= _collisionInterval;
+                    bool sameCollider = collision.collider == _lastHit;
+                    bool canResolve = intervalFinished || !sameCollider;
+                    _collisionTimer = Time.time;
+                    _lastHit = collision.collider;
                     float maxAngle = 0;
                     float minAngle = 0;
                     float newAngle = 0;
@@ -2177,24 +2203,32 @@ namespace Characters
 
                         maxAngle = Mathf.Max(maxAngle, newAngle);
                         minAngle = Mathf.Min(minAngle, newAngle);
+                        Vector3 projected = Vector3.ProjectOnPlane(_lastVelocity, contact.normal);
                         if (newAngle < angleThreshold)
                         {
                             // Project velocity along the surface to preserve momentum
-                            Vector3 projected = Vector3.ProjectOnPlane(_lastVelocity, contact.normal);
-                            Cache.Rigidbody.velocity = Vector3.Lerp(_lastVelocity, projected, 0.5f);
+                            bool isAligned = Vector3.Angle(projected, _lastVelocity) < 45f;
+                            if (isAligned || canResolve)
+                            {
+                                Cache.Rigidbody.velocity = Vector3.Lerp(_lastVelocity, projected, 0.5f);
+                            }
                         }
                     }
 
-                    // Map velocity on a scale from 0-500 into 0-1
-                    if (minAngle > frictionThreshold)
-                    {
-                        // Testing optional friction under 1k it should apply the max friction possible and reduce it to nothing towards the upper limit.
-                        float speedFactor = Util.ClampedLinearMap(Cache.Rigidbody.velocity.magnitude, 0, 250, 0, 1);
-                        float speedMultiplier = Mathf.Max(1f - (minAngle * 0.005f), 0f);    // Friction value 1-0.5
-                        float appliedMultiplier = Mathf.Lerp(speedMultiplier, 1f, speedFactor);
-                        float speed = _lastVelocity.magnitude * appliedMultiplier;
-                        Cache.Rigidbody.velocity = velocity.normalized * speed;
-                    }
+                    //// Map velocity on a scale from 0-500 into 0-1
+                    //if (minAngle > frictionThreshold)
+                    //{
+
+                    //}
+
+                    // Testing optional friction under 1k it should apply the max friction possible and reduce it to nothing towards the upper limit.
+                    float angle = Mathf.Abs(Vector3.Angle(velocity, _lastVelocity));
+                    float speedFactor = Util.ClampedLinearMap(Cache.Rigidbody.velocity.magnitude, 0, 250, 0, 1);
+                    float speedMultiplier = Mathf.Max(1f - (angle * 0.005f), 0f);    // Friction value 1-0.5
+                    float speedMultiplierMax = Mathf.Max(1f - (angle * 1.5f * 0.01f), 0f);
+                    float appliedMultiplier = Mathf.Lerp(speedMultiplier, speedMultiplierMax, speedFactor);
+                    float speed = _lastVelocity.magnitude * appliedMultiplier;
+                    Cache.Rigidbody.velocity = velocity.normalized * speed;
                 }
                 else
                 {
@@ -2956,9 +2990,9 @@ namespace Characters
                             viewID = Horse.gameObject.GetPhotonView().ViewID;
                         }
                         if (player == null)
-                            Cache.PhotonView.RPC("LoadSkinRPC", RpcTarget.All, new object[] { viewID, url });
+                            Cache.PhotonView.RPC(nameof(LoadSkinRPC), RpcTarget.All, new object[] { viewID, url });
                         else
-                            Cache.PhotonView.RPC("LoadSkinRPC", player, new object[] { viewID, url });
+                            Cache.PhotonView.RPC(nameof(LoadSkinRPC), player, new object[] { viewID, url });
                     }
                     catch (System.Exception ex)
                     {
@@ -2974,9 +3008,9 @@ namespace Characters
                             viewID = Horse.gameObject.GetPhotonView().ViewID;
                         }
                         if (player == null)
-                            Cache.PhotonView.RPC("LoadSkinRPC", RpcTarget.All, new object[] { viewID, url });
+                            Cache.PhotonView.RPC(nameof(LoadSkinRPC), RpcTarget.All, new object[] { viewID, url });
                         else
-                            Cache.PhotonView.RPC("LoadSkinRPC", player, new object[] { viewID, url });
+                            Cache.PhotonView.RPC(nameof(LoadSkinRPC), player, new object[] { viewID, url });
                     }
                 }
                 else
@@ -3046,7 +3080,7 @@ namespace Characters
                 return;
             ToggleSound(HumanSounds.Slide, toggle);
             if (toggle != HumanCache.Sparks.emission.enabled)
-                Cache.PhotonView.RPC("ToggleSparksRPC", RpcTarget.All, new object[] { toggle });
+                Cache.PhotonView.RPC(nameof(ToggleSparksRPC), RpcTarget.All, new object[] { toggle });
         }
 
         [PunRPC]
@@ -3062,7 +3096,7 @@ namespace Characters
         {
             if (!IsMine())
                 return;
-            photonView.RPC("SetThunderspearsRPC", RpcTarget.All, new object[] { hasLeft, hasRight });
+            photonView.RPC(nameof(SetThunderspearsRPC), RpcTarget.All, new object[] { hasLeft, hasRight });
         }
 
         [PunRPC]
@@ -3097,7 +3131,7 @@ namespace Characters
             if (MountState != HumanMountState.None)
                 Unmount(true);
             if (CarryState == HumanCarryState.Carry)
-                Cache.PhotonView.RPC("UncarryRPC", RpcTarget.All, new object[0]);
+                Cache.PhotonView.RPC(nameof(UncarryRPC), RpcTarget.All, new object[0]);
             if (State != HumanState.Attack && State != HumanState.SpecialAttack)
                 Idle();
             Vector3 v = (position - Cache.Transform.position).normalized * 20f;
@@ -3140,7 +3174,7 @@ namespace Characters
             {
                 _hookHuman = human;
                 _hookHumanLeft = left;
-                human.Cache.PhotonView.RPC("OnHookedByHuman", human.Cache.PhotonView.Owner, new object[] { Cache.PhotonView.ViewID });
+                human.Cache.PhotonView.RPC(nameof(human.OnHookedByHuman), human.Cache.PhotonView.Owner, new object[] { Cache.PhotonView.ViewID });
                 Vector3 launchForce = position - Cache.Transform.position;
                 float num = Mathf.Pow(launchForce.magnitude, 0.1f);
                 if (Grounded)
@@ -3236,7 +3270,7 @@ namespace Characters
             if (IsMine())
             {
                 _isTrigger = trigger;
-                Cache.PhotonView.RPC("SetTriggerColliderRPC", RpcTarget.All, new object[] { trigger });
+                Cache.PhotonView.RPC(nameof(SetTriggerColliderRPC), RpcTarget.All, new object[] { trigger });
             }
         }
 
@@ -3442,7 +3476,7 @@ namespace Characters
             if (!_animationStopped)
                 return;
             _animationStopped = false;
-            Cache.PhotonView.RPC("ContinueAnimationRPC", RpcTarget.All, new object[0]);
+            Cache.PhotonView.RPC(nameof(ContinueAnimationRPC), RpcTarget.All, new object[0]);
         }
 
         [PunRPC]
@@ -3462,7 +3496,7 @@ namespace Characters
             if (_animationStopped)
                 return;
             _animationStopped = true;
-            Cache.PhotonView.RPC("PauseAnimationRPC", RpcTarget.All, new object[0]);
+            Cache.PhotonView.RPC(nameof(PauseAnimationRPC), RpcTarget.All, new object[0]);
         }
 
         [PunRPC]
@@ -3546,7 +3580,7 @@ namespace Characters
             if (IsMine())
             {
                 if (state != _bladeFireState)
-                    Cache.PhotonView.RPC("ToggleBladeFireRPC", RpcTarget.All, new object[] { state });
+                    Cache.PhotonView.RPC(nameof(ToggleBladeFireRPC), RpcTarget.All, new object[] { state });
                 _bladeFireState = state;
             }
         }
@@ -3556,7 +3590,7 @@ namespace Characters
             if (IsMine())
             {
                 if (toggle != _bladeTrailActive)
-                    Cache.PhotonView.RPC("ToggleBladeTrailsRPC", RpcTarget.All, new object[] { toggle });
+                    Cache.PhotonView.RPC(nameof(ToggleBladeTrailsRPC), RpcTarget.All, new object[] { toggle });
                 _bladeTrailActive = toggle;
             }
         }
@@ -3564,7 +3598,7 @@ namespace Characters
         public void ToggleBlades(bool toggle)
         {
             if (IsMine())
-                Cache.PhotonView.RPC("ToggleBladesRPC", RpcTarget.All, new object[] { toggle });
+                Cache.PhotonView.RPC(nameof(ToggleBladesRPC), RpcTarget.All, new object[] { toggle });
         }
 
         [PunRPC]
@@ -3657,6 +3691,128 @@ namespace Characters
                 rightFire1.gameObject.SetActive(false);
                 leftFire2.gameObject.SetActive(true);
                 rightFire2.gameObject.SetActive(true);
+            }
+        }
+
+        /// <summary>
+        /// Toggles the Buff1 particle effect
+        /// </summary>
+        /// <param name="toggle">True to enable, false to disable</param>
+        public void ToggleBuff1(bool toggle)
+        {
+            if (IsMine())
+            {
+                if (toggle != _buff1Active)
+                    Cache.PhotonView.RPC(nameof(ToggleBuff1RPC), RpcTarget.All, new object[] { toggle });
+                _buff1Active = toggle;
+            }
+        }
+
+        [PunRPC]
+        protected void ToggleBuff1RPC(bool toggle, PhotonMessageInfo info)
+        {
+            if (info.Sender != null && info.Sender != Cache.PhotonView.Owner)
+                return;
+            if (!FinishSetup || HumanCache.Buff1 == null)
+                return;
+
+            SetParticleSystemsActive(HumanCache.Buff1, toggle);
+        }
+
+        /// <summary>
+        /// Toggles the Buff2 particle effect
+        /// </summary>
+        /// <param name="toggle">True to enable, false to disable</param>
+        public void ToggleBuff2(bool toggle)
+        {
+            if (IsMine())
+            {
+                if (toggle != _buff2Active)
+                    Cache.PhotonView.RPC(nameof(ToggleBuff2RPC), RpcTarget.All, new object[] { toggle });
+                _buff2Active = toggle;
+            }
+        }
+
+        [PunRPC]
+        protected void ToggleBuff2RPC(bool toggle, PhotonMessageInfo info)
+        {
+            if (info.Sender != null && info.Sender != Cache.PhotonView.Owner)
+                return;
+            if (!FinishSetup || HumanCache.Buff2 == null)
+                return;
+
+            SetParticleSystemsActive(HumanCache.Buff2, toggle);
+        }
+
+        /// <summary>
+        /// Toggles the Fire1 particle effect
+        /// </summary>
+        /// <param name="toggle">True to enable, false to disable</param>
+        public void ToggleFire1(bool toggle)
+        {
+            if (IsMine())
+            {
+                if (toggle != _fire1Active)
+                    Cache.PhotonView.RPC(nameof(ToggleFire1RPC), RpcTarget.All, new object[] { toggle });
+                _fire1Active = toggle;
+            }
+        }
+
+        [PunRPC]
+        protected void ToggleFire1RPC(bool toggle, PhotonMessageInfo info)
+        {
+            if (info.Sender != null && info.Sender != Cache.PhotonView.Owner)
+                return;
+            if (!FinishSetup || HumanCache.Fire1 == null)
+                return;
+            SetParticleSystemsActive(HumanCache.Fire1, toggle);
+        }
+
+        /// <summary>
+        /// Helper method to enable/disable all particle systems in a transform hierarchy
+        /// </summary>
+        /// <param name="parent">Parent transform containing particle systems</param>
+        /// <param name="active">True to enable, false to disable</param>
+        private void SetParticleSystemsActive(Transform parent, bool active)
+        {
+            if (parent == null)
+                return;
+
+            // Get all particle systems including in children
+            ParticleSystem[] particleSystems = parent.GetComponentsInChildren<ParticleSystem>(true);
+
+            foreach (ParticleSystem ps in particleSystems)
+            {
+                if (ps != null)
+                {
+                    var emission = ps.emission;
+                    emission.enabled = active;
+
+                    if (active)
+                    {
+                        if (!ps.isPlaying)
+                            ps.Play();
+                    }
+                    else
+                    {
+                        if (ps.isPlaying)
+                            ps.Stop();
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Disables all custom particle effects (Buff1, Buff2, Fire1)
+        /// Should be called on death
+        /// </summary>
+        private void DisableAllCustomParticleEffects()
+        {
+            if (IsMine())
+            {
+                ToggleBuff1(false);
+                ToggleBuff2(false);
+                ToggleFire1(false);
             }
         }
 

@@ -1,0 +1,59 @@
+{
+  "kind": "extension",
+  "name": "CollisionDetectionModeEnum",
+  "description": "Enumeration of collision detection modes for rigidbodies.",
+  "extends": [
+    "Object"
+  ],
+  "deprecated": "",
+  "instanceFields": [],
+  "instanceMethods": [],
+  "staticFields": [
+    {
+      "label": "Discrete",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Discrete collision detection mode.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Continuous",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Continuous collision detection mode.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "ContinuousDynamic",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "ContinuousDynamic collision detection mode.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "ContinuousSpeculative",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "ContinuousSpeculative collision detection mode.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    }
+  ],
+  "staticMethods": [],
+  "constructors": []
+}

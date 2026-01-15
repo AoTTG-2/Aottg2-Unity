@@ -88,8 +88,8 @@ namespace Characters
         protected IEnumerator WaitAndBecomeHuman(float time)
         {
             yield return new WaitForSeconds(time);
-            Cache.PhotonView.RPC("MarkTransformingRPC", RpcTarget.AllBuffered);
-            Cache.PhotonView.RPC("MarkDeadRPC", RpcTarget.AllBuffered);
+            Cache.PhotonView.RPC(nameof(MarkTransformingRPC), RpcTarget.AllBuffered);
+            Cache.PhotonView.RPC(nameof(MarkDeadRPC), RpcTarget.AllBuffered);
             StartCoroutine(WaitAndDie());
             yield return new WaitForSeconds(2f);
             _inGameManager.SpawnPlayerAt(false, BaseTitanCache.Neck.position, BaseTitanCache.Neck.rotation.eulerAngles.y);
@@ -221,7 +221,7 @@ namespace Characters
                 {
                     BaseCustomSkinSettings<ShifterCustomSkinSet> settings = SettingsManager.CustomSkinSettings.Shifter;
                     string url = GetSkinURL((ShifterCustomSkinSet)settings.GetSelectedSet());
-                    Cache.PhotonView.RPC("LoadSkinRPC", RpcTarget.AllBuffered, new object[] { url });
+                    Cache.PhotonView.RPC(nameof(LoadSkinRPC), RpcTarget.AllBuffered, new object[] { url });
                 }
             }
         }

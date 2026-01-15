@@ -14,12 +14,12 @@ Vector3(x: float, y: float, z: float) // Initializes the Vector3 to (x, y, z).
 ### Properties
 |Name|Type|Readonly|Description|
 |---|---|---|---|
-|X|float|False|X component of the vector.|
-|Y|float|False|Y component of the vector.|
-|Z|float|False|Z component of the vector.|
-|Normalized|[Vector3](../objects/Vector3.md)|True|Returns this vector with a magnitude of 1 (Read Only).|
-|Magnitude|float|True|Returns the length of this vector (Read Only).|
-|SqrMagnitude|float|True|Returns the squared length of this vector (Read Only).|
+|X|float|False|The X component of the vector.|
+|Y|float|False|The Y component of the vector.|
+|Z|float|False|The Z component of the vector.|
+|Normalized|[Vector3](../objects/Vector3.md)|True|Returns a normalized copy of this vector (magnitude of 1).|
+|Magnitude|float|True|Returns the length of this vector.|
+|SqrMagnitude|float|True|Returns the squared length of this vector (faster than Magnitude).|
 
 
 ### Static Properties
@@ -33,170 +33,295 @@ Vector3(x: float, y: float, z: float) // Initializes the Vector3 to (x, y, z).
 |Right|[Vector3](../objects/Vector3.md)|True|Shorthand for writing Vector3(1, 0, 0).|
 |Forward|[Vector3](../objects/Vector3.md)|True|Shorthand for writing Vector3(0, 0, 1).|
 |Back|[Vector3](../objects/Vector3.md)|True|Shorthand for writing Vector3(0, 0, -1).|
-|NegativeInfinity|[Vector3](../objects/Vector3.md)|True|Shorthand for writing Vector3(float.PositiveInfinity, float.PositiveInfinity, float.PositiveInfinity).|
+|NegativeInfinity|[Vector3](../objects/Vector3.md)|True|Shorthand for writing Vector3(float.NegativeInfinity, float.NegativeInfinity, float.NegativeInfinity).|
 |PositiveInfinity|[Vector3](../objects/Vector3.md)|True|Shorthand for writing Vector3(float.PositiveInfinity, float.PositiveInfinity, float.PositiveInfinity).|
 
 
 ### Methods
 <pre class="language-typescript"><code class="lang-typescript">function Set(x: float, y: float, z: float)</code></pre>
-> Set x, y and z components of an existing Vector3.
+> Sets the X, Y, and Z components of the vector.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function GetRotationDirection(a: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, b: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>) -> <a data-footnote-ref href="#user-content-fn-43">Vector3</a></code></pre>
-> Gets the relational Vector3 "b" using "a" as a reference. This is equivalent to setting MapObject.Forward to Vector "a", and finding the relative "b" vector.
+> **Parameters**:
+> - `x`: The X component.
+> - `y`: The Y component.
+> - `z`: The Z component.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function Scale(scale: <a data-footnote-ref href="#user-content-fn-45">Object</a>) -> <a data-footnote-ref href="#user-content-fn-43">Vector3</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function Scale(scale: <a data-footnote-ref href="#user-content-fn-82">Object</a>) -> <a data-footnote-ref href="#user-content-fn-9">Vector3</a></code></pre>
 
 {% hint style="warning" %}
 **Obsolete**: Use multiply operator instead
 {% endhint %}
 
-> Returns the Vector3 multiplied by scale.
+> Scales the vector by a float or Vector3. Returns: A new scaled vector.
 > 
 > **Parameters**:
-> - `scale`: float | Vector3
+> - `scale`: The scale value (float or Vector3).
 > 
-<pre class="language-typescript"><code class="lang-typescript">function Multiply(a: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, b: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>) -> <a data-footnote-ref href="#user-content-fn-43">Vector3</a></code></pre>
+
+### Static Methods
+<pre class="language-typescript"><code class="lang-typescript">function Angle(from: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, to: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>) -> float</code></pre>
+> Calculates the angle between two vectors.
+> 
+> **Parameters**:
+> - `from`: The vector from which the angular difference is measured.
+> - `to`: The vector to which the angular difference is measured.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function ClampMagnitude(vector: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, maxLength: float) -> <a data-footnote-ref href="#user-content-fn-9">Vector3</a></code></pre>
+> Clamps the magnitude of a vector to a maximum value.
+> 
+> **Parameters**:
+> - `vector`: The vector to clamp.
+> - `maxLength`: The maximum length of the vector.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function Cross(a: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, b: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>) -> <a data-footnote-ref href="#user-content-fn-9">Vector3</a></code></pre>
+> Calculates the cross product of two vectors.
+> 
+> **Parameters**:
+> - `a`: The first vector.
+> - `b`: The second vector.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function Distance(a: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, b: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>) -> float</code></pre>
+> Calculates the distance between two points.
+> 
+> **Parameters**:
+> - `a`: The first point.
+> - `b`: The second point.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function Dot(a: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, b: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>) -> float</code></pre>
+> Calculates the dot product of two vectors.
+> 
+> **Parameters**:
+> - `a`: The first vector.
+> - `b`: The second vector.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function Lerp(a: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, b: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, t: float) -> <a data-footnote-ref href="#user-content-fn-9">Vector3</a></code></pre>
+> Linearly interpolates between two vectors.
+> 
+> **Parameters**:
+> - `a`: The start value.
+> - `b`: The end value.
+> - `t`: The interpolation factor (clamped between 0 and 1).
+> 
+<pre class="language-typescript"><code class="lang-typescript">function LerpUnclamped(a: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, b: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, t: float) -> <a data-footnote-ref href="#user-content-fn-9">Vector3</a></code></pre>
+> Linearly interpolates between two vectors without clamping.
+> 
+> **Parameters**:
+> - `a`: The start value.
+> - `b`: The end value.
+> - `t`: The interpolation factor (not clamped).
+> 
+<pre class="language-typescript"><code class="lang-typescript">function Max(a: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, b: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>) -> <a data-footnote-ref href="#user-content-fn-9">Vector3</a></code></pre>
+> Returns a vector that is made from the largest components of two vectors.
+> 
+> **Parameters**:
+> - `a`: The first vector.
+> - `b`: The second vector.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function Min(a: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, b: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>) -> <a data-footnote-ref href="#user-content-fn-9">Vector3</a></code></pre>
+> Returns a vector that is made from the smallest components of two vectors.
+> 
+> **Parameters**:
+> - `a`: The first vector.
+> - `b`: The second vector.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function MoveTowards(current: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, target: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, maxDistanceDelta: float) -> <a data-footnote-ref href="#user-content-fn-9">Vector3</a></code></pre>
+> Moves a point towards a target position.
+> 
+> **Parameters**:
+> - `current`: The current position.
+> - `target`: The target position.
+> - `maxDistanceDelta`: The maximum distance to move.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function Normalize(value: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>) -> <a data-footnote-ref href="#user-content-fn-9">Vector3</a></code></pre>
+> Returns a normalized copy of the vector.
+> 
+> **Parameters**:
+> - `value`: The vector to normalize.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function OrthoNormalize(normal: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, tangent: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>)</code></pre>
+> Orthonormalizes two vectors (normalizes the normal vector and makes the tangent vector orthogonal to it).
+> 
+> **Parameters**:
+> - `normal`: The normal vector (will be normalized).
+> - `tangent`: The tangent vector (will be normalized and made orthogonal to normal).
+> 
+<pre class="language-typescript"><code class="lang-typescript">function Project(a: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, b: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>) -> <a data-footnote-ref href="#user-content-fn-9">Vector3</a></code></pre>
+> Projects a vector onto another vector.
+> 
+> **Parameters**:
+> - `a`: The vector to project.
+> - `b`: The vector to project onto.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function ProjectOnPlane(vector: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, plane: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>) -> <a data-footnote-ref href="#user-content-fn-9">Vector3</a></code></pre>
+> Projects a vector onto a plane defined by a normal vector.
+> 
+> **Parameters**:
+> - `vector`: The vector to project.
+> - `plane`: The plane normal vector.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function Reflect(inDirection: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, inNormal: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>) -> <a data-footnote-ref href="#user-content-fn-9">Vector3</a></code></pre>
+> Reflects a vector off a plane defined by a normal vector.
+> 
+> **Parameters**:
+> - `inDirection`: The incoming direction vector.
+> - `inNormal`: The normal vector of the surface.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function RotateTowards(current: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, target: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, maxRadiansDelta: float, maxMagnitudeDelta: float) -> <a data-footnote-ref href="#user-content-fn-9">Vector3</a></code></pre>
+> Rotates a vector towards a target vector.
+> 
+> **Parameters**:
+> - `current`: The current direction vector.
+> - `target`: The target direction vector.
+> - `maxRadiansDelta`: The maximum change in radians.
+> - `maxMagnitudeDelta`: The maximum change in magnitude.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function SignedAngle(from: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, to: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, axis: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>) -> float</code></pre>
+> Calculates the signed angle between two vectors.
+> 
+> **Parameters**:
+> - `from`: The vector from which the angular difference is measured.
+> - `to`: The vector to which the angular difference is measured.
+> - `axis`: The axis around which the rotation is measured.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function Slerp(a: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, b: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, t: float) -> <a data-footnote-ref href="#user-content-fn-9">Vector3</a></code></pre>
+> Spherically interpolates between two vectors.
+> 
+> **Parameters**:
+> - `a`: The start value.
+> - `b`: The end value.
+> - `t`: The interpolation factor (clamped between 0 and 1).
+> 
+<pre class="language-typescript"><code class="lang-typescript">function SlerpUnclamped(a: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, b: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, t: float) -> <a data-footnote-ref href="#user-content-fn-9">Vector3</a></code></pre>
+> Spherically interpolates between two vectors without clamping.
+> 
+> **Parameters**:
+> - `a`: The start value.
+> - `b`: The end value.
+> - `t`: The interpolation factor (not clamped).
+> 
+<pre class="language-typescript"><code class="lang-typescript">function SmoothDamp(current: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, target: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, currentVelocity: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, smoothTime: float, maxSpeed: float) -> <a data-footnote-ref href="#user-content-fn-9">Vector3</a></code></pre>
+> Smoothly dampens a vector towards a target over time.
+> 
+> **Parameters**:
+> - `current`: The current position.
+> - `target`: The target position.
+> - `currentVelocity`: The current velocity (modified by the function).
+> - `smoothTime`: The time it takes to reach the target (approximately).
+> - `maxSpeed`: The maximum speed.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function GetRotationDirection(a: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, b: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>) -> <a data-footnote-ref href="#user-content-fn-9">Vector3</a></code></pre>
+> Gets the direction vector transformed by a rotation. Returns: A new direction vector.
+> 
+> **Parameters**:
+> - `a`: The reference rotation vector (e.g., forward direction).
+> - `b`: The vector to transform relative to the reference.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function Multiply(a: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, b: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>) -> <a data-footnote-ref href="#user-content-fn-9">Vector3</a></code></pre>
 
 {% hint style="warning" %}
 **Obsolete**: Use multiply operator instead
 {% endhint %}
 
-> Returns the multiplication of two Vector3s.
+> Multiplies two vectors component-wise. Returns: A new vector with multiplied components.
 > 
 > **Parameters**:
-> - `a`: Vector3
-> - `b`: Vector3
+> - `a`: The first vector.
+> - `b`: The second vector.
 > 
-> **Returns**: Vector3
-<pre class="language-typescript"><code class="lang-typescript">function Divide(a: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, b: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>) -> <a data-footnote-ref href="#user-content-fn-43">Vector3</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function Divide(a: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>, b: <a data-footnote-ref href="#user-content-fn-9">Vector3</a>) -> <a data-footnote-ref href="#user-content-fn-9">Vector3</a></code></pre>
 
 {% hint style="warning" %}
 **Obsolete**: Use divide operator instead
 {% endhint %}
 
-> Returns the division of two Vector3s.
+> Divides two vectors component-wise. Returns: A new vector with divided components.
 > 
 > **Parameters**:
-> - `a`: Vector3
-> - `b`: Vector3
-> 
-> **Returns**: Vector3
-
-### Static Methods
-<pre class="language-typescript"><code class="lang-typescript">function Angle(from: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, to: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>) -> float</code></pre>
-> Calculates the angle between vectors from and.
-> 
-> **Returns**: The angle in degrees between the two vectors.
-<pre class="language-typescript"><code class="lang-typescript">function ClampMagnitude(vector: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, maxLength: float) -> <a data-footnote-ref href="#user-content-fn-43">Vector3</a></code></pre>
-> Returns a copy of vector with its magnitude clamped to maxLength.
-> 
-<pre class="language-typescript"><code class="lang-typescript">function Cross(a: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, b: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>) -> <a data-footnote-ref href="#user-content-fn-43">Vector3</a></code></pre>
-> Cross Product of two vectors.
-> 
-<pre class="language-typescript"><code class="lang-typescript">function Distance(a: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, b: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>) -> float</code></pre>
-> Returns the distance between a and b.
-> 
-<pre class="language-typescript"><code class="lang-typescript">function Dot(a: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, b: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>) -> float</code></pre>
-> Dot Product of two vectors.
-> 
-<pre class="language-typescript"><code class="lang-typescript">function Lerp(a: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, b: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, t: float) -> <a data-footnote-ref href="#user-content-fn-43">Vector3</a></code></pre>
-> Linearly interpolates between two points.
-> 
-> **Returns**: Interpolated value, equals to a + (b - a) * t.
-<pre class="language-typescript"><code class="lang-typescript">function LerpUnclamped(a: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, b: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, t: float) -> <a data-footnote-ref href="#user-content-fn-43">Vector3</a></code></pre>
-> Linearly interpolates between two vectors.
-> 
-<pre class="language-typescript"><code class="lang-typescript">function Max(a: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, b: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>) -> <a data-footnote-ref href="#user-content-fn-43">Vector3</a></code></pre>
-> Returns a vector that is made from the largest components of two vectors.
-> 
-<pre class="language-typescript"><code class="lang-typescript">function Min(a: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, b: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>) -> <a data-footnote-ref href="#user-content-fn-43">Vector3</a></code></pre>
-> Returns a vector that is made from the smallest components of two vectors.
-> 
-<pre class="language-typescript"><code class="lang-typescript">function MoveTowards(current: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, target: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, maxDistanceDelta: float) -> <a data-footnote-ref href="#user-content-fn-43">Vector3</a></code></pre>
-> Calculate a position between the points specified by current and target, moving no farther than the distance specified by maxDistanceDelta.
-> 
-> **Returns**: The new position.
-<pre class="language-typescript"><code class="lang-typescript">function Normalize(value: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>) -> <a data-footnote-ref href="#user-content-fn-43">Vector3</a></code></pre>
-> Makes this vector have a magnitude of 1.
-> 
-<pre class="language-typescript"><code class="lang-typescript">function OrthoNormalize(normal: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, tangent: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>)</code></pre>
-> Makes vectors normalized and orthogonal to each other.
-Normalizes normal. Normalizes tangent and makes sure it is orthogonal to normal (that is, angle between them is 90 degrees).
-Honestly just go look up the unity docs for this one idk.
-This one uses references so the Vectors will be modified in place.
-> 
-<pre class="language-typescript"><code class="lang-typescript">function Project(a: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, b: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>) -> <a data-footnote-ref href="#user-content-fn-43">Vector3</a></code></pre>
-> Projects a vector onto another vector.
-> 
-<pre class="language-typescript"><code class="lang-typescript">function ProjectOnPlane(vector: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, plane: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>) -> <a data-footnote-ref href="#user-content-fn-43">Vector3</a></code></pre>
-> Projects a vector onto a plane defined by a normal orthogonal to the plane.
-> 
-> **Returns**: The location of the vector on the plane.
-<pre class="language-typescript"><code class="lang-typescript">function Reflect(inDirection: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, inNormal: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>) -> <a data-footnote-ref href="#user-content-fn-43">Vector3</a></code></pre>
-> Reflects a vector off the plane defined by a normal.
-> 
-<pre class="language-typescript"><code class="lang-typescript">function RotateTowards(current: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, target: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, maxRadiansDelta: float, maxMagnitudeDelta: float) -> <a data-footnote-ref href="#user-content-fn-43">Vector3</a></code></pre>
-> Rotates a vector current towards target.
-> 
-> **Returns**: The location that RotateTowards generates.
-<pre class="language-typescript"><code class="lang-typescript">function SignedAngle(from: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, to: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, axis: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>) -> float</code></pre>
-> Calculates the signed angle between vectors from and to in relation to axis.
-> 
-> **Returns**: Returns the signed angle between from and to in degrees.
-<pre class="language-typescript"><code class="lang-typescript">function Slerp(a: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, b: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, t: float) -> <a data-footnote-ref href="#user-content-fn-43">Vector3</a></code></pre>
-> Spherically interpolates between two vectors.
-> 
-<pre class="language-typescript"><code class="lang-typescript">function SlerpUnclamped(a: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, b: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, t: float) -> <a data-footnote-ref href="#user-content-fn-43">Vector3</a></code></pre>
-> Spherically interpolates between two vectors.
-> 
-<pre class="language-typescript"><code class="lang-typescript">function SmoothDamp(current: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, target: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, currentVelocity: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, smoothTime: float, maxSpeed: float) -> <a data-footnote-ref href="#user-content-fn-43">Vector3</a></code></pre>
-> Smoothly damps current towards target with currentVelocity as state. smoothTime and maxSpeed control how aggressive the transition is.
+> - `a`: The first vector.
+> - `b`: The second vector.
 > 
 
-[^0]: [Camera](../static/Camera.md)
-[^1]: [Character](../objects/Character.md)
-[^2]: [Collider](../objects/Collider.md)
-[^3]: [Collision](../objects/Collision.md)
-[^4]: [Color](../objects/Color.md)
-[^5]: [Convert](../static/Convert.md)
-[^6]: [Cutscene](../static/Cutscene.md)
-[^7]: [Dict](../objects/Dict.md)
-[^8]: [Game](../static/Game.md)
-[^9]: [Human](../objects/Human.md)
-[^10]: [Input](../static/Input.md)
-[^11]: [Json](../static/Json.md)
-[^12]: [LightBuiltin](../static/LightBuiltin.md)
-[^13]: [LineCastHitResult](../objects/LineCastHitResult.md)
-[^14]: [LineRenderer](../objects/LineRenderer.md)
-[^15]: [List](../objects/List.md)
-[^16]: [Locale](../static/Locale.md)
-[^17]: [LodBuiltin](../static/LodBuiltin.md)
-[^18]: [Map](../static/Map.md)
-[^19]: [MapObject](../objects/MapObject.md)
-[^20]: [MapTargetable](../objects/MapTargetable.md)
-[^21]: [Math](../static/Math.md)
-[^22]: [NavmeshObstacleBuiltin](../static/NavmeshObstacleBuiltin.md)
-[^23]: [Network](../static/Network.md)
+[^0]: [Color](../objects/Color.md)
+[^1]: [Dict](../objects/Dict.md)
+[^2]: [LightBuiltin](../static/LightBuiltin.md)
+[^3]: [LineCastHitResult](../objects/LineCastHitResult.md)
+[^4]: [List](../objects/List.md)
+[^5]: [Quaternion](../objects/Quaternion.md)
+[^6]: [Range](../objects/Range.md)
+[^7]: [Set](../objects/Set.md)
+[^8]: [Vector2](../objects/Vector2.md)
+[^9]: [Vector3](../objects/Vector3.md)
+[^10]: [Animation](../objects/Animation.md)
+[^11]: [Animator](../objects/Animator.md)
+[^12]: [AudioSource](../objects/AudioSource.md)
+[^13]: [Collider](../objects/Collider.md)
+[^14]: [Collision](../objects/Collision.md)
+[^15]: [LineRenderer](../objects/LineRenderer.md)
+[^16]: [LodBuiltin](../static/LodBuiltin.md)
+[^17]: [MapTargetable](../objects/MapTargetable.md)
+[^18]: [NavmeshObstacleBuiltin](../static/NavmeshObstacleBuiltin.md)
+[^19]: [PhysicsMaterialBuiltin](../static/PhysicsMaterialBuiltin.md)
+[^20]: [RigidbodyBuiltin](../static/RigidbodyBuiltin.md)
+[^21]: [Character](../objects/Character.md)
+[^22]: [Human](../objects/Human.md)
+[^23]: [MapObject](../objects/MapObject.md)
 [^24]: [NetworkView](../objects/NetworkView.md)
-[^25]: [PersistentData](../static/PersistentData.md)
-[^26]: [Physics](../static/Physics.md)
-[^27]: [PhysicsMaterialBuiltin](../static/PhysicsMaterialBuiltin.md)
-[^28]: [Player](../objects/Player.md)
-[^29]: [Prefab](../objects/Prefab.md)
-[^30]: [Quaternion](../objects/Quaternion.md)
-[^31]: [Random](../objects/Random.md)
-[^32]: [Range](../objects/Range.md)
-[^33]: [RigidbodyBuiltin](../static/RigidbodyBuiltin.md)
-[^34]: [RoomData](../static/RoomData.md)
-[^35]: [Set](../objects/Set.md)
-[^36]: [Shifter](../objects/Shifter.md)
-[^37]: [String](../static/String.md)
-[^38]: [Time](../static/Time.md)
-[^39]: [Titan](../objects/Titan.md)
-[^40]: [Transform](../objects/Transform.md)
-[^41]: [UI](../static/UI.md)
-[^42]: [Vector2](../objects/Vector2.md)
-[^43]: [Vector3](../objects/Vector3.md)
-[^44]: [WallColossal](../objects/WallColossal.md)
-[^45]: [Object](../objects/Object.md)
-[^46]: [Component](../objects/Component.md)
+[^25]: [Player](../objects/Player.md)
+[^26]: [Prefab](../objects/Prefab.md)
+[^27]: [Shifter](../objects/Shifter.md)
+[^28]: [Titan](../objects/Titan.md)
+[^29]: [Transform](../objects/Transform.md)
+[^30]: [WallColossal](../objects/WallColossal.md)
+[^31]: [CharacterTypeEnum](../static/CharacterTypeEnum.md)
+[^32]: [CollideModeEnum](../static/CollideModeEnum.md)
+[^33]: [CollideWithEnum](../static/CollideWithEnum.md)
+[^34]: [CollisionDetectionModeEnum](../static/CollisionDetectionModeEnum.md)
+[^35]: [EffectNameEnum](../static/EffectNameEnum.md)
+[^36]: [ForceModeEnum](../static/ForceModeEnum.md)
+[^37]: [HandStateEnum](../static/HandStateEnum.md)
+[^38]: [HumanParticleEffectEnum](../static/HumanParticleEffectEnum.md)
+[^39]: [InputCategoryEnum](../static/InputCategoryEnum.md)
+[^40]: [LanguageEnum](../static/LanguageEnum.md)
+[^41]: [LoadoutEnum](../static/LoadoutEnum.md)
+[^42]: [OutlineModeEnum](../static/OutlineModeEnum.md)
+[^43]: [PhysicMaterialCombineEnum](../static/PhysicMaterialCombineEnum.md)
+[^44]: [PlayerStatusEnum](../static/PlayerStatusEnum.md)
+[^45]: [ProjectileNameEnum](../static/ProjectileNameEnum.md)
+[^46]: [ScaleModeEnum](../static/ScaleModeEnum.md)
+[^47]: [ShifterTypeEnum](../static/ShifterTypeEnum.md)
+[^48]: [SliderDirectionEnum](../static/SliderDirectionEnum.md)
+[^49]: [SteamStateEnum](../static/SteamStateEnum.md)
+[^50]: [TeamEnum](../static/TeamEnum.md)
+[^51]: [TitanTypeEnum](../static/TitanTypeEnum.md)
+[^52]: [TSKillSoundEnum](../static/TSKillSoundEnum.md)
+[^53]: [WeaponEnum](../static/WeaponEnum.md)
+[^54]: [Camera](../static/Camera.md)
+[^55]: [Cutscene](../static/Cutscene.md)
+[^56]: [Game](../static/Game.md)
+[^57]: [Input](../static/Input.md)
+[^58]: [Locale](../static/Locale.md)
+[^59]: [Map](../static/Map.md)
+[^60]: [Network](../static/Network.md)
+[^61]: [PersistentData](../static/PersistentData.md)
+[^62]: [Physics](../static/Physics.md)
+[^63]: [RoomData](../static/RoomData.md)
+[^64]: [Time](../static/Time.md)
+[^65]: [Button](../objects/Button.md)
+[^66]: [Dropdown](../objects/Dropdown.md)
+[^67]: [Icon](../objects/Icon.md)
+[^68]: [Image](../objects/Image.md)
+[^69]: [Label](../objects/Label.md)
+[^70]: [ProgressBar](../objects/ProgressBar.md)
+[^71]: [ScrollView](../objects/ScrollView.md)
+[^72]: [Slider](../objects/Slider.md)
+[^73]: [TextField](../objects/TextField.md)
+[^74]: [Toggle](../objects/Toggle.md)
+[^75]: [UI](../static/UI.md)
+[^76]: [VisualElement](../objects/VisualElement.md)
+[^77]: [Convert](../static/Convert.md)
+[^78]: [Json](../static/Json.md)
+[^79]: [Math](../static/Math.md)
+[^80]: [Random](../objects/Random.md)
+[^81]: [String](../static/String.md)
+[^82]: [Object](../objects/Object.md)
+[^83]: [Component](../objects/Component.md)

@@ -1,0 +1,186 @@
+{
+  "kind": "class",
+  "name": "Dropdown",
+  "description": "A UI element that represents a dropdown selection field.",
+  "extends": [
+    "VisualElement"
+  ],
+  "deprecated": "",
+  "instanceFields": [
+    {
+      "label": "Label",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "The label text displayed next to the Dropdown.",
+      "readonly": false,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Value",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "The currently selected value (option text).",
+      "readonly": false,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Index",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "The index of the currently selected option (0-based).",
+      "readonly": false,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Choices",
+      "type": {
+        "name": "List",
+        "typeArguments": [
+          {
+            "name": "string",
+            "typeArguments": []
+          }
+        ]
+      },
+      "description": "Gets the list of available choices.",
+      "readonly": false,
+      "private": false,
+      "deprecated": ""
+    }
+  ],
+  "instanceMethods": [
+    {
+      "label": "OnValueChanged",
+      "returnType": {
+        "name": "Dropdown",
+        "typeArguments": []
+      },
+      "description": "Sets the method to be called when the Dropdown value changes.",
+      "parameters": [
+        {
+          "name": "valueChangedEvent",
+          "type": {
+            "name": "function",
+            "typeArguments": []
+          },
+          "description": "Method that will be called with the new selected value as parameter",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "SetValueWithoutNotify",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Sets the value of the Dropdown without triggering any change events.",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "The value to set.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "SetIndexWithoutNotify",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Sets the index of the selected option without triggering any change events.",
+      "parameters": [
+        {
+          "name": "index",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "The index of the option to select (0-based).",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "AddChoice",
+      "returnType": {
+        "name": "Dropdown",
+        "typeArguments": []
+      },
+      "description": "Adds a choice to the dropdown options.",
+      "parameters": [
+        {
+          "name": "choice",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "The choice text to add.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "RemoveChoice",
+      "returnType": {
+        "name": "Dropdown",
+        "typeArguments": []
+      },
+      "description": "Removes a choice from the dropdown options.",
+      "parameters": [
+        {
+          "name": "choice",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "The choice text to remove.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "ClearChoices",
+      "returnType": {
+        "name": "Dropdown",
+        "typeArguments": []
+      },
+      "description": "Clears all choices from the dropdown.",
+      "parameters": [],
+      "kind": "function",
+      "deprecated": ""
+    }
+  ],
+  "staticFields": [],
+  "staticMethods": [],
+  "constructors": []
+}

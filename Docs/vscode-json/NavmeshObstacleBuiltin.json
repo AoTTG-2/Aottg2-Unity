@@ -1,0 +1,124 @@
+{
+  "kind": "component",
+  "name": "NavmeshObstacleBuiltin",
+  "description": "Represents a NavMesh obstacle component that can carve or block navigation mesh paths.",
+  "deprecated": "",
+  "instanceFields": [
+    {
+      "label": "Radius",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "The radius of the obstacle.",
+      "readonly": false,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Height",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "The height of the obstacle.",
+      "readonly": false,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Scale",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "The scale of the obstacle",
+      "readonly": false,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Center",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "The center of the obstacle.",
+      "readonly": false,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Carving",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Whether the obstacle carves the NavMesh.",
+      "readonly": false,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "CarveOnlyStationary",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Whether the obstacle only carves when stationary.",
+      "readonly": false,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Shape",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "The shape of the obstacle.",
+      "readonly": false,
+      "private": false,
+      "deprecated": ""
+    }
+  ],
+  "instanceMethods": [
+    {
+      "label": "AutoScale",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Auto scales the obstacle to fit the colliders.",
+      "parameters": [],
+      "kind": "function",
+      "deprecated": ""
+    }
+  ],
+  "staticFields": [
+    {
+      "label": "ShapeBox",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "The NavMeshObstacleShape Box.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "ShapeCapsule",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "The NavMeshObstacleShape Capsule.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    }
+  ],
+  "staticMethods": [],
+  "constructors": []
+}

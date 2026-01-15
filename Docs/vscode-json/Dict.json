@@ -1,0 +1,204 @@
+{
+  "kind": "class",
+  "name": "Dict",
+  "description": "Collection of key-value pairs. Keys must be unique.",
+  "typeParameters": [
+    "K",
+    "V"
+  ],
+  "extends": [
+    "Object"
+  ],
+  "deprecated": "",
+  "instanceFields": [
+    {
+      "label": "Count",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "Number of elements in the dictionary.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Keys",
+      "type": {
+        "name": "List",
+        "typeArguments": [
+          {
+            "name": "K",
+            "typeArguments": []
+          }
+        ]
+      },
+      "description": "Keys snapshot. Returns a stable snapshot list of all keys. The returned list is read-only - any attempt to modify it will throw an exception. The snapshot remains unchanged even if the dictionary is mutated later. After dictionary mutations, accessing Keys again creates a new snapshot object. Access is O(1) when the dictionary has not changed. Rebuild after mutations is O(n) and allocates new snapshot objects. Calling Keys/Values after frequent mutations will allocate.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Values",
+      "type": {
+        "name": "List",
+        "typeArguments": [
+          {
+            "name": "V",
+            "typeArguments": []
+          }
+        ]
+      },
+      "description": "Values snapshot. Returns a stable snapshot list of all values. The returned list is read-only - any attempt to modify it will throw an exception. The snapshot remains unchanged even if the dictionary is mutated later. After dictionary mutations (Set/Remove/Clear), accessing Values again creates a new snapshot object. Access is O(1) when the dictionary has not changed. Rebuild after mutations is O(n) and allocates new snapshot objects. Calling Keys/Values after frequent mutations will allocate.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    }
+  ],
+  "instanceMethods": [
+    {
+      "label": "Clear",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Clears the dictionary.",
+      "parameters": [],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Get",
+      "returnType": {
+        "name": "V",
+        "typeArguments": []
+      },
+      "description": "Gets a value from the dictionary. Returns the value associated with the key, or defaultValue if the key is not found. If the stored value is null, Get returns null (even if defaultValue is provided).",
+      "parameters": [
+        {
+          "name": "key",
+          "type": {
+            "name": "K",
+            "typeArguments": []
+          },
+          "description": "The key of the value to get",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "defaultValue",
+          "type": {
+            "name": "V",
+            "typeArguments": []
+          },
+          "description": "The value to return if the key is not found",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Set",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Sets the value for the key. Overwrites the existing value if the key is already present. Do not mutate key objects after inserting.",
+      "parameters": [
+        {
+          "name": "key",
+          "type": {
+            "name": "K",
+            "typeArguments": []
+          },
+          "description": "The key of the value to set",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "value",
+          "type": {
+            "name": "V",
+            "typeArguments": []
+          },
+          "description": "The value to set",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Remove",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Removes a value from the dictionary.",
+      "parameters": [
+        {
+          "name": "key",
+          "type": {
+            "name": "K",
+            "typeArguments": []
+          },
+          "description": "The key of the value to remove",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Contains",
+      "returnType": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Checks if the dictionary contains a key. Returns: True if the dictionary contains the key, false otherwise.",
+      "parameters": [
+        {
+          "name": "key",
+          "type": {
+            "name": "K",
+            "typeArguments": []
+          },
+          "description": "The key to check",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    }
+  ],
+  "staticFields": [],
+  "staticMethods": [],
+  "constructors": [
+    {
+      "parameters": [],
+      "description": "Creates an empty dictionary.",
+      "deprecated": ""
+    },
+    {
+      "parameters": [
+        {
+          "name": "capacity",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "The initial capacity of the dictionary.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "description": "Creates a dictionary with the specified capacity.",
+      "deprecated": ""
+    }
+  ]
+}

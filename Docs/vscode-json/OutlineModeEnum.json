@@ -1,0 +1,81 @@
+{
+  "kind": "extension",
+  "name": "OutlineModeEnum",
+  "description": "Enumeration of outline rendering modes for characters.",
+  "extends": [
+    "Object"
+  ],
+  "deprecated": "",
+  "instanceFields": [],
+  "instanceMethods": [],
+  "staticFields": [
+    {
+      "label": "OutlineAll",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "OutlineAll: outlines all parts of the object.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "OutlineVisible",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "OutlineVisible: outlines only visible parts.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "OutlineHidden",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "OutlineHidden: outlines only hidden parts.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "OutlineAndSilhouette",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "OutlineAndSilhouette: combines outline and silhouette.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "SilhouetteOnly",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "SilhouetteOnly: shows only the silhouette.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "OutlineAndLightenColor",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "OutlineAndLightenColor: combines outline with lightened color.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    }
+  ],
+  "staticMethods": [],
+  "constructors": []
+}

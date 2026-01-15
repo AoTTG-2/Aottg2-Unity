@@ -487,16 +487,15 @@ namespace UI
             string text = _inputField.text;
             string emojiCode = $":{spriteIndex}:";
             
-            int insertPosition = text.Length;
+            int insertPosition = _inputField.caretPosition;
             string newText = text.Insert(insertPosition, emojiCode);
             int maxLength = _inputField.characterLimit > 0 ? _inputField.characterLimit : int.MaxValue;
             if (newText.Length > maxLength)
             {
                 return;
             }
-            string processedText = ProcessEmojiCodes(newText);
-            _inputField.SetTextWithoutNotify(processedText);
-            int newCaretPos = newText.Length;
+            _inputField.text = newText;
+            int newCaretPos = insertPosition + emojiCode.Length;
             _inputField.caretPosition = newCaretPos;
             _inputField.selectionAnchorPosition = newCaretPos;
             _inputField.selectionFocusPosition = newCaretPos;
@@ -856,17 +855,27 @@ namespace UI
                 (_emojiPanel != null && _emojiPanel.activeSelf && 
                  RectTransformUtility.RectangleContainsScreenPoint(GetCachedRectTransform(_emojiPanel), mousePosition))
             );
+            bool pointerAlreadySet = (CursorManager.State == CursorState.Pointer);
             if (Input.GetMouseButtonDown(0))
             {
-                _wasChatUIClicked = isOverChatUI;
-                if (!isOverChatUI)
+                if (pointerAlreadySet)
+                {
+                    _wasChatUIClicked = isOverChatUI;
+                }
+                else
+                {
+                    _wasChatUIClicked = false;
+                }
+
+                if (!isOverChatUI && pointerAlreadySet)
                 {
                     _isInteractingWithChatUI = false;
                     ChatManager.ClearLastSuggestions();
                     IgnoreNextActivation = false;
                 }
             }
-            if (isOverChatUI)
+
+            if (isOverChatUI && pointerAlreadySet)
             {
                 _isInteractingWithChatUI = true;
             }
@@ -1035,13 +1044,6 @@ namespace UI
             _lastTypeTime = Time.unscaledTime;
             if (text == null)
                 text = string.Empty;
-            string processedText = ProcessEmojiCodes(text);
-            if (processedText != text)
-            {
-                int caretPos = _inputField.caretPosition;
-                _inputField.SetTextWithoutNotify(processedText);
-                _inputField.caretPosition = caretPos;
-            }
             ChatManager.HandleTyping(text);
         }
 
