@@ -613,14 +613,8 @@ class Main
     _rpcs = Dict();
 
     _rock_t_path = "ErenRig_VER2/Core/Rock";
-    _rock_lift = "ErenRig_VER2|et_rock_lift";
-    _rock_walk = "ErenRig_VER2|et_rock_walk";
-    _rock_fix_hole = "ErenRig_VER2|et_rock_fix_hole";
-    _run = "ErenRig_VER2|et_run";
-    _die = "ErenRig_VER2|et_die";
-    _idle = "ErenRig_VER2|et_idle";
-    _sound_footstep1 = "Footstep1";
-    _sound_footstep2 = "Footstep2";
+    _sound_footstep1 = HumanSoundEnum.Footstep1;
+    _sound_footstep2 = HumanSoundEnum.Footstep2;
     _soundPhase = 1;
     _runSpeed = 25;
     _rockSpeed = 10;
@@ -737,7 +731,7 @@ class Main
 
             if (!valid)
             {
-                UI.SetLabel("MiddleCenter", UI.WrapStyleTag(UI.WrapStyleTag("Map Not Supported!" + String.Newline + "Please add the listed dependencies to the map in order to use this mode.", "color", "red"), "size", "25"));
+                UI.SetLabel(UILabelEnum.MiddleCenter, UI.WrapStyleTag(UI.WrapStyleTag("Map Not Supported!" + String.Newline + "Please add the listed dependencies to the map in order to use this mode.", "color", "red"), "size", "25"));
                 Time.TimeScale = 0;
                 return;
             }
@@ -774,8 +768,8 @@ class Main
     {
         if (Network.IsMasterClient)
         {
-            self._eren = Game.SpawnShifterAt("Eren", self._erenSpawnPoint.Position);
-            self._eren.Team = "Human";
+            self._eren = Game.SpawnShifterAt(ShifterTypeEnum.Eren, self._erenSpawnPoint.Position);
+            self._eren.Team = TeamEnum.Human;
             self._eren.AIEnabled = false;
             self._eren.UsePathfinding = false;
             self._erenRockT = self._eren.Transform.GetTransform(self._rock_t_path);
@@ -878,10 +872,10 @@ class Main
 
     function StepSound()
     {
-        #.PlaySound("Footstep1");
-        if (self._eren.CurrentAnimation == self._rock_walk)
+        #.PlaySound(HumanSoundEnum.Footstep1);
+        if (self._eren.CurrentAnimation == ErenAnimationEnum.RockWalk)
         {
-            normTime = self._eren.GetAnimationNormalizedTime(self._rock_walk);
+            normTime = self._eren.GetAnimationNormalizedTime(ErenAnimationEnum.RockWalk);
             normTime = Math.Repeat(normTime, 1);
             if (normTime >= 0.5 && self._soundPhase == 1)
             {
@@ -896,9 +890,9 @@ class Main
                 self._soundPhase = 1;
             }
         }
-        elif (self._eren.CurrentAnimation == self._run)
+        elif (self._eren.CurrentAnimation == ErenAnimationEnum.Run)
         {
-            normTime = self._eren.GetAnimationNormalizedTime(self._run);
+            normTime = self._eren.GetAnimationNormalizedTime(ErenAnimationEnum.Run);
             normTime = Math.Repeat(normTime, 1);
             if (normTime > 0.75 && self._soundPhase == 1)
             {
@@ -939,7 +933,7 @@ class Main
             for (i in Range(count))
             {
                 position = self._eren.Position + self._eren.Transform.Forward * 100 + Vector3(0, 80, 0);
-                titan = Game.SpawnTitanAt("Default", position);
+                titan = Game.SpawnTitanAt(TitanTypeEnum.Default, position);
                 if (targetsEren && !titan.IsCrawler && titan.Name != "Thrower")
                 {
                     titan.Target(self._eren, 100000.0);
@@ -953,7 +947,7 @@ class Main
         for (i in Range(count))
         {
             zone = Random.RandomInt(0, zones.Count);
-            titan = Game.SpawnTitanAt("Default", zones.Get(zone).Position);
+            titan = Game.SpawnTitanAt(TitanTypeEnum.Default, zones.Get(zone).Position);
             if (targetsEren && !titan.IsCrawler && titan.Name != "Thrower")
             {
                 titan.Target(self._eren, 100000.0);
@@ -970,7 +964,7 @@ class Main
         for (i in Range(count))
         {
             zone = Random.RandomInt(0, zones.Count);
-            titan = Game.SpawnTitanAt("Default", zones.Get(zone).Position);
+            titan = Game.SpawnTitanAt(TitanTypeEnum.Default, zones.Get(zone).Position);
             if (targetsEren && !titan.IsCrawler && titan.Name != "Thrower")
             {
                 titan.Target(self._eren, 100000.0);
@@ -1040,19 +1034,19 @@ class Main
             # Sync animation loop locally due to low duration of loop.
             if (self._phase == self._phase_1_wait_clear && self._eren != null)
             {
-                if (self._eren.GetAnimationNormalizedTime(self._die) >= 0.99)
+                if (self._eren.GetAnimationNormalizedTime(ErenAnimationEnum.Die) >= 0.99)
                 {
                     # Bounce between 1.75 and 1.93
-                    self._eren.SetAnimationSpeed(self._die, -1, false);
+                    self._eren.SetAnimationSpeed(ErenAnimationEnum.Die, -1, false);
                 }
-                elif (self._eren.GetAnimationNormalizedTime(self._die) <= 0.9)
+                elif (self._eren.GetAnimationNormalizedTime(ErenAnimationEnum.Die) <= 0.9)
                 {
-                    self._eren.SetAnimationSpeed(self._die, 1, false);
+                    self._eren.SetAnimationSpeed(ErenAnimationEnum.Die, 1, false);
                 }
             }
-            if (self._phase == self._phase_2_to_rock && self._eren.GetAnimationSpeed(self._die) != 1)
+            if (self._phase == self._phase_2_to_rock && self._eren.GetAnimationSpeed(ErenAnimationEnum.Die) != 1)
             {
-                self._eren.SetAnimationSpeed(self._die, 1, false);
+                self._eren.SetAnimationSpeed(ErenAnimationEnum.Die, 1, false);
             }
             
             return;
@@ -1066,7 +1060,7 @@ class Main
             if (self._bs_state_timer_garbage_thx <= 0)
             {
                 self.SpawnTitansAroundEren(self._start_titans, 80, 200, true, 100000);
-                self._eren.ForceAnimation(self._die, 1);
+                self._eren.ForceAnimation(ErenAnimationEnum.Die, 1);
                 self._phase = self._phase_1_wait_clear;
                 self.SyncPhase();
             }
@@ -1075,19 +1069,19 @@ class Main
         elif (self._phase == self._phase_1_wait_clear)
         {
             # Need this bounce logic to be rpc'd or handled by all players. (TG1 just let the born animation play for 20s which is what allowed it to look synced)
-            if (self._eren.GetAnimationNormalizedTime(self._die) >= 0.99)
+            if (self._eren.GetAnimationNormalizedTime(ErenAnimationEnum.Die) >= 0.99)
             {
                 # Bounce between 1.75 and 1.93
-                self._eren.SetAnimationSpeed(self._die, -1, false);
+                self._eren.SetAnimationSpeed(ErenAnimationEnum.Die, -1, false);
             }
-            elif (self._eren.GetAnimationNormalizedTime(self._die) <= 0.9)
+            elif (self._eren.GetAnimationNormalizedTime(ErenAnimationEnum.Die) <= 0.9)
             {
-                self._eren.SetAnimationSpeed(self._die, 1, false);
+                self._eren.SetAnimationSpeed(ErenAnimationEnum.Die, 1, false);
             }
             if (Game.AITitans.Count == 0)
             {
-                self._eren.SetAnimationSpeed(self._die, 1, false);
-                self._eren.PlayAnimation(self._idle, 0.1);
+                self._eren.SetAnimationSpeed(ErenAnimationEnum.Die, 1, false);
+                self._eren.PlayAnimation(ErenAnimationEnum.Idle, 0.1);
                 self._phase = self._phase_2_to_rock;
                 self.SyncPhase();
                 self._lerp_progress = 0;
@@ -1099,10 +1093,10 @@ class Main
         elif (self._phase == self._phase_2_to_rock)
         {
             atRock = self.MoveTowardsCheckpoint();
-            self._eren.PlayAnimation(self._run, 0.1);
+            self._eren.PlayAnimation(ErenAnimationEnum.Run, 0.1);
             if (atRock)
             {
-                self._eren.PlayAnimation(self._rock_lift, 0.1);
+                self._eren.PlayAnimation(ErenAnimationEnum.RockLift, 0.1);
                 #self.RPC("StartMovingRockRPC", "all", List());
                 self._phase = self._phase_3_pickup_rock;
                 self.SyncPhase();
@@ -1115,11 +1109,11 @@ class Main
 
         elif (self._phase == self._phase_3_pickup_rock)
         {
-            if (self._eren.GetAnimationNormalizedTime(self._rock_lift) > 0.5 && self._isHoldingRock == false)
+            if (self._eren.GetAnimationNormalizedTime(ErenAnimationEnum.RockLift) > 0.5 && self._isHoldingRock == false)
             {
                 self.RPC("StartMovingRockRPC", "all", List());
             }
-            if (self._eren.GetAnimationNormalizedTime(self._rock_lift) > 0.9)
+            if (self._eren.GetAnimationNormalizedTime(ErenAnimationEnum.RockLift) > 0.9)
             {
                 if (self.SpawnExtraTitans > 0)
                 {
@@ -1133,8 +1127,7 @@ class Main
         elif (self._phase == self._phase_4_pathfind)
         {
             self.UpdateWaves();
-            self._eren.PlayAnimation(self._rock_walk, 0);
-            #self._eren.Transform.SetAnimationSpeed(self.Speed / 10); Funny but not synced
+            self._eren.PlayAnimation(ErenAnimationEnum.RockWalk, 0);
             atNextCheckpoint = self.MoveTowardsCheckpoint();
 
             if (atNextCheckpoint)
@@ -1160,16 +1153,16 @@ class Main
         {
             self._phase = self._phase_6_wait_spawn_effect;
             self.SyncPhase();
-            self._eren.PlayAnimation(self._rock_fix_hole, 0);
+            self._eren.PlayAnimation(ErenAnimationEnum.RockFixHole, 0);
         }
 
         elif (self._phase == self._phase_6_wait_spawn_effect)
         {
-            if (self._eren.GetAnimationNormalizedTime(self._rock_fix_hole) >= 0.69)
+            if (self._eren.GetAnimationNormalizedTime(ErenAnimationEnum.RockFixHole) >= 0.69)
             {
                 self._phase = self._phase_7_no_transition;
                 self.SyncPhase();
-                #Game.SpawnEffect("Boom2", self._eren.Transform.Position + (self._eren.Transform.Forward * 65) + Vector3(0, 11, 0), Quaternion.Identity.Euler, 10);
+                #Game.SpawnEffect(EffectNameEnum.Boom2, self._eren.Transform.Position + (self._eren.Transform.Forward * 65) + Vector3(0, 11, 0), Quaternion.Identity.Euler, 10);
                 self.RPC("EndMovingRockRPC", "all", List());
                 # self.WaitAndDie();
             }
@@ -1350,8 +1343,8 @@ class Main
                 }
             }
 
-            Game.SpawnEffect("GasBurst", end + Vector3.Forward * -40.0 + Vector3.Up * 10.0, Vector3(0.0, 0.0, 0.0), 100.0);
-            Game.SpawnEffect("Boom2", end + Vector3.Forward * -20.0 + Vector3.Up * 0.0, Vector3(90.0, 0.0, 0.0), 30);
+            Game.SpawnEffect(EffectNameEnum.GasBurst, end + Vector3.Forward * -40.0 + Vector3.Up * 10.0, Vector3(0.0, 0.0, 0.0), 100.0);
+            Game.SpawnEffect(EffectNameEnum.Boom2, end + Vector3.Forward * -20.0 + Vector3.Up * 0.0, Vector3(90.0, 0.0, 0.0), 30);
         }
         if (Network.IsMasterClient)
         {
@@ -1365,7 +1358,7 @@ class Main
     {
         self._eren.Idle(3);
         wait 2;
-        self._eren.PlayAnimation(self._die, 2);
+        self._eren.PlayAnimation(ErenAnimationEnum.Die, 2);
     }
 
     function ChangePhaseRPC(sender, params)
@@ -1395,7 +1388,7 @@ class Main
         {
             if (Network.IsMasterClient)
             {
-                UI.SetLabelAll("MiddleCenter", "All hope is now lost ...");
+                UI.SetLabelAll(UILabelEnum.MiddleCenter, "All hope is now lost ...");
                 Game.End(10.0);
             }
             if (self._isHoldingRock)
@@ -1410,7 +1403,7 @@ class Main
         {
             if (Network.IsMasterClient)
             {
-                UI.SetLabelAll("MiddleCenter", "All hope is now lost ...");
+                UI.SetLabelAll(UILabelEnum.MiddleCenter, "All hope is now lost ...");
                 Game.End(10.0);
             }
         }
@@ -1431,11 +1424,11 @@ cutscene MainCutscene
         }
 
         # To Do: Add translations.
-        Cutscene.ShowDialogueForTime("Ian1", "Commander", "Defend him at all costs!", 2.0);
+        Cutscene.ShowDialogueForTime(ProfileIconEnum.Ian1, "Commander", "Defend him at all costs!", 2.0);
         wait 2.0;
-        Cutscene.ShowDialogueForTime("Ian1", "Commander", "Protect Eren until he reaches the gates, even if it costs your lifes!", 4.0);
+        Cutscene.ShowDialogueForTime(ProfileIconEnum.Ian1, "Commander", "Protect Eren until he reaches the gates, even if it costs your lifes!", 4.0);
         wait 4.0;
-        Cutscene.ShowDialogueForTime("Ian1", "Commander", "Don't let titan near him!", 2.0);
+        Cutscene.ShowDialogueForTime(ProfileIconEnum.Ian1, "Commander", "Don't let titan near him!", 2.0);
         wait 2.0;
         return;
     }

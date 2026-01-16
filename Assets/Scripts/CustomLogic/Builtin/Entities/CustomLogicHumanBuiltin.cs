@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using ApplicationManagers;
 using Characters;
@@ -15,8 +16,8 @@ namespace CustomLogic
     /// {
     ///     if (character.IsMainCharacter &amp;&amp; character.Type == "Human")
     ///     {
-    ///         character.SetWeapon("Blade");
-    ///         character.SetSpecial("Potato");
+    ///         character.SetWeapon(WeaponEnum.Blade);
+    ///         character.SetSpecial(SpecialEnum.Potato);
     ///         character.CurrentGas = character.MaxGas / 2;
     ///     }
     /// }
@@ -34,7 +35,7 @@ namespace CustomLogic
         /// <summary>
         /// The weapon the human is using.
         /// </summary>
-        [CLProperty(Enum = typeof(CustomLogicWeaponEnum))]
+        [CLProperty(Enum = new Type[] { typeof(CustomLogicWeaponEnum) })]
         public string Weapon
         {
             get => Human.Setup.Weapon.ToString();
@@ -44,7 +45,7 @@ namespace CustomLogic
         /// <summary>
         /// The current special the human is using.
         /// </summary>
-        [CLProperty]
+        [CLProperty(Enum = new Type[] { typeof(CustomLogicSpecialEnum) })]
         public string CurrentSpecial
         {
             get => Human.CurrentSpecial;
@@ -403,7 +404,7 @@ namespace CustomLogic
         /// <summary>
         /// The state of the human.
         /// </summary>
-        [CLProperty]
+        [CLProperty(Enum = new Type[] { typeof(CustomLogicHumanStateEnum) })]
         public string State => Human.State.ToString();
 
         /// <summary>
@@ -585,7 +586,7 @@ namespace CustomLogic
         /// </summary>
         /// <param name="special">The name of the special to set.</param>
         [CLMethod]
-        public void SetSpecial(string special)
+        public void SetSpecial([CLParam(Enum = new Type[] { typeof(CustomLogicSpecialEnum) })] string special)
         {
             if (Human.IsMine())
                 Human.SetSpecial(special);
@@ -609,18 +610,18 @@ namespace CustomLogic
         /// </summary>
         /// <param name="weapon">Name of the weapon.</param>
         [CLMethod]
-        public void SetWeapon([CLParam(Enum = typeof(CustomLogicWeaponEnum))] string weapon)
+        public void SetWeapon([CLParam(Enum = new Type[] { typeof(CustomLogicWeaponEnum) })] string weapon)
         {
             if (!Human.IsMine())
                 return;
             var gameManager = (InGameManager)SceneLoader.CurrentGameManager;
             if (gameManager.CurrentCharacter != null && gameManager.CurrentCharacter is Human && Human.IsMine())
             {
-
+                // TODO: Remove on the next update when CL developers will migrate to the new enum.
                 if (weapon == "Blades")
-                    weapon = "Blade"; // Normalize to Blade for compatibility
+                    weapon = CustomLogicWeaponEnum.Blade; // Normalize to Blade for compatibility
                 else if (weapon == "Thunderspears")
-                    weapon = "Thunderspear"; // Normalize to Thunderspear for compatibility
+                    weapon = CustomLogicWeaponEnum.Thunderspear; // Normalize to Thunderspear for compatibility
 
                 var miscSettings = SettingsManager.InGameCurrent.Misc;
                 if (!Human.Dead)
@@ -664,7 +665,7 @@ namespace CustomLogic
         /// <param name="enabled">True to enable, false to disable.</param>
         [CLMethod]
         public void SetParticleEffect(
-            [CLParam(Enum = typeof(CustomLogicHumanParticleEffectEnum))] string effectName,
+            [CLParam(Enum = new Type[] { typeof(CustomLogicHumanParticleEffectEnum) })] string effectName,
             bool enabled)
         {
             if (!Human.IsMine())
@@ -672,13 +673,13 @@ namespace CustomLogic
 
             switch (effectName)
             {
-                case "Buff1":
+                case CustomLogicHumanParticleEffectEnum.Buff1Value:
                     Human.ToggleBuff1(enabled);
                     break;
-                case "Buff2":
+                case CustomLogicHumanParticleEffectEnum.Buff2Value:
                     Human.ToggleBuff2(enabled);
                     break;
-                case "Fire1":
+                case CustomLogicHumanParticleEffectEnum.Fire1Value:
                     Human.ToggleFire1(enabled);
                     break;
                 default:

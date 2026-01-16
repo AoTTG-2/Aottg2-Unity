@@ -256,6 +256,17 @@ namespace CustomLogic
             return newSet;
         }
 
+        /// <summary>
+        /// Copy the list to a new list.
+        /// </summary>
+        [CLMethod(ReturnTypeArguments = new[] { "T" })]
+        public CustomLogicListBuiltin Copy()
+        {
+            CustomLogicListBuiltin newList = new CustomLogicListBuiltin();
+            newList.List = List.ToList();
+            return newList;
+        }
+
         public override string ToString()
         {
             var builder = new StringBuilder();

@@ -1804,12 +1804,12 @@ class Main
         }
 
         # ResetUI
-        UI.SetLabelAll("MiddleCenter", "");
+        UI.SetLabelAll(UILabelEnum.MiddleCenter, "");
         
         # Pick a random player and announce it to the other players
         for(p in Network.Players)
         {
-            if (p.Status == "Alive")
+            if (p.Status == PlayerStatusEnum.Alive)
             {
                 self.SeekerFound.Add(p);
             }
@@ -1850,9 +1850,9 @@ class Main
     {
         if (character.IsMine && character.Type == "Human")
         {
-            character.Team = "Blue";
-            character.SetSpecial("SmokeBomb");
-            character.SetWeapon("Blades");
+            character.Team = TeamEnum.Blue;
+            character.SetSpecial(SpecialEnum.SmokeBomb);
+            character.SetWeapon(WeaponEnum.Blade);
             character.CustomDamageEnabled = true;
             character.CustomDamage = 0;
             character.MaxGas = 999999;
@@ -1860,7 +1860,7 @@ class Main
             character.MaxBlade = 0;
             character.CurrentBlade = 0;
             character.CurrentBladeDurability = 0;
-            Game.Print("<color=cyan>Press</color> " + "<color=lightgreen>"+Input.GetKeyName("Interaction/Interact") + "</color> <color=cyan> to Taunt</color>");
+            Game.Print("<color=cyan>Press</color> " + "<color=lightgreen>"+Input.GetKeyName(InputInteractionEnum.Interact) + "</color> <color=cyan> to Taunt</color>");
             
         }
     }
@@ -1904,8 +1904,8 @@ class Main
             _Character = Network.MyPlayer.Character;
             self._myPlayerIsSeeker = true;
             #Set Weapons
-            _Character.SetWeapon("AHSS");
-            _Character.Team = "Red";
+            _Character.SetWeapon(WeaponEnum.AHSS);
+            _Character.Team = TeamEnum.Red;
             _Character.MaxHealth = 9999999;
             _Character.Health = 9999999;
             _Character.MaxAmmoTotal = 999;
@@ -1928,13 +1928,13 @@ class Main
     function OnTick()
     {
         if (Game.GetMiscSetting("GlobalMinimapDisable") == false) {
-            UI.SetLabelAll("MiddleCenter", "<color=red>Disable the minimap to play this gamemode</color>");
+            UI.SetLabelAll(UILabelEnum.MiddleCenter, "<color=red>Disable the minimap to play this gamemode</color>");
             return;
         }
 
-        if (Input.GetKeyHold("Interaction/Interact"))
+        if (Input.GetKeyHold(InputInteractionEnum.Interact))
         {
-            Network.MyPlayer.Character.PlaySound("WaterSplash");
+            Network.MyPlayer.Character.PlaySound(HumanSoundEnum.WaterSplash);
         }
 
         if (self.ForceFPSCam)
@@ -1943,7 +1943,7 @@ class Main
         }
         if (self._HidingTimeStart == true && self._stopallUI == false) 
         {
-            UI.SetLabelAll("MiddleCenter", "Hiding time : " + String.FormatFloat(self._seekerTimer - Time.GameTime, 2));
+            UI.SetLabelAll(UILabelEnum.MiddleCenter, "Hiding time : " + String.FormatFloat(self._seekerTimer - Time.GameTime, 2));
             if (self._seekerTimer - Time.GameTime <= 0)
             {
                 self._startBarriers = Map.FindMapObjectsByName("seekerBlock");
@@ -1958,7 +1958,7 @@ class Main
         }
         else
         {
-            UI.SetLabelAll("MiddleCenter", "");
+            UI.SetLabelAll(UILabelEnum.MiddleCenter, "");
         }
 
         numPlayers = Game.Humans.Count;
@@ -1972,7 +1972,7 @@ class Main
             else
             {
                 _CurrentTimer = 99999;
-                UI.SetLabelAll("MiddleCenter", "Waiting for players...");
+                UI.SetLabelAll(UILabelEnum.MiddleCenter, "Waiting for players...");
             }
         }
 
@@ -1983,7 +1983,7 @@ class Main
 
         if (self._GameStart && !self._GameStarted)
         {
-            UI.SetLabelAll("MiddleCenter", "Match starting in : " + String.FormatFloat(self._CurrentTimer - Time.GameTime, 2));
+            UI.SetLabelAll(UILabelEnum.MiddleCenter, "Match starting in : " + String.FormatFloat(self._CurrentTimer - Time.GameTime, 2));
         }
         if (self._CurrentTimer - Time.GameTime <= 0.0 && !self._GameStarted && self._GameStart)
         {
@@ -2043,17 +2043,17 @@ class Main
         }
         if (value == 2)
         {
-            UI.SetLabelAll("MiddleCenter", "Seeker won");
+            UI.SetLabelAll(UILabelEnum.MiddleCenter, "Seeker won");
             self._SeekerWin = "X";
         }
         elif (value == 1)
         {
-            UI.SetLabelAll("MiddleCenter", "Humans won");
+            UI.SetLabelAll(UILabelEnum.MiddleCenter, "Humans won");
             self._HumanityWin = "X";
         }
         elif (value == 3)
         {
-            UI.SetLabelAll("MiddleCenter", "Seeker left the game");
+            UI.SetLabelAll(UILabelEnum.MiddleCenter, "Seeker left the game");
             Game.End(5);
         }
     }

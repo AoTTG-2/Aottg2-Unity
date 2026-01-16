@@ -1,9 +1,13 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UI;
 using UnityEngine;
 
 namespace CustomLogic
 {
+    /// <summary>
+    /// Provides methods to control in-game cutscenes and dialogues from custom logic scripts.
+    /// </summary>
     [CLType(Name = "Cutscene", Abstract = true, Static = true)]
     partial class CustomLogicCutsceneBuiltin : BuiltinClassInstance
     {
@@ -34,7 +38,7 @@ namespace CustomLogic
         /// <param name="content">The content text of the dialogue.</param>
         [CLMethod(Static = true)]
         public void ShowDialogue(
-            string icon,
+            [CLParam(Enum = new Type[] { typeof(CustomLogicProfileIconEnum) })] string icon,
             string title,
             string content)
         {
@@ -50,7 +54,7 @@ namespace CustomLogic
         /// <param name="time">The duration in seconds to show the dialogue.</param>
         [CLMethod(Static = true)]
         public void ShowDialogueForTime(
-            string icon,
+            [CLParam(Enum = new Type[] { typeof(CustomLogicProfileIconEnum) })] string icon,
             string title,
             string content,
             float time)

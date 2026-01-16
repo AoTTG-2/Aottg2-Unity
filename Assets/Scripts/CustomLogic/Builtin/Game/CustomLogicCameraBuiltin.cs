@@ -172,8 +172,9 @@ namespace CustomLogic
         /// Forces the player to use a certain camera mode, taking priority over their camera setting.
         /// </summary>
         /// <param name="mode">The camera mode. Accepted values are TPS, Original, FPS.</param>
+        /// TODO: Migrate from string to int on the next update when CL developers will migrate to the new enum.
         [CLMethod]
-        public static void SetCameraMode(string mode)
+        public static void SetCameraMode([CLParam(Enum = new Type[] { typeof(CustomLogicCameraModeEnum) })] string mode)
         {
             if (mode == "null")
                 CustomLogicManager.CameraMode = null;

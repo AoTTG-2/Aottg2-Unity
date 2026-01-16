@@ -2,6 +2,7 @@
 using GameManagers;
 using Photon.Pun;
 using Photon.Realtime;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -77,25 +78,25 @@ namespace CustomLogic
         /// Player's chosen team. Note that this may be different from the character's final team
         /// (Character.Team field) if the character's team field is modified.
         /// </summary>
-        [CLProperty(Enum = typeof(CustomLogicTeamEnum))]
+        [CLProperty(Enum = new Type[] { typeof(CustomLogicTeamEnum) })]
         public string Team => Player.GetStringProperty(PlayerProperty.Team);
 
         /// <summary>
         /// Player's spawn status.
         /// </summary>
-        [CLProperty(Enum = typeof(CustomLogicPlayerStatusEnum))]
+        [CLProperty(Enum = new Type[] { typeof(CustomLogicPlayerStatusEnum) })]
         public string Status => Player.GetStringProperty(PlayerProperty.Status);
 
         /// <summary>
         /// Player's chosen character.
         /// </summary>
-        [CLProperty(Enum = typeof(CustomLogicCharacterTypeEnum))]
+        [CLProperty(Enum = new Type[] { typeof(CustomLogicCharacterTypeEnum) })]
         public string CharacterType => Player.GetStringProperty(PlayerProperty.Character);
 
         /// <summary>
         /// Player's chosen loadout.
         /// </summary>
-        [CLProperty(Enum = typeof(CustomLogicLoadoutEnum))]
+        [CLProperty(Enum = new Type[] { typeof(CustomLogicLoadoutEnum) })]
         public string Loadout => Player.GetStringProperty(PlayerProperty.Loadout);
 
         /// <summary>

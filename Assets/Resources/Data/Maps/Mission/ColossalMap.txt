@@ -1214,7 +1214,7 @@ class Main
 
 	function FinalDialogue()
 	{
-		Cutscene.ShowDialogueForTime("Armin1", "Armin", "The Colossal titan has vanished, but some titans have broken through the gate!", 5.0);
+		Cutscene.ShowDialogueForTime(ProfileIconEnum.Armin1, "Armin", "The Colossal titan has vanished, but some titans have broken through the gate!", 5.0);
 	}
 
 	function OnTick()
@@ -1244,15 +1244,15 @@ class Main
 				}
 				if (titans <= 0)
 				{
-					UI.SetLabelAll("TopCenter", "");
-					UI.SetLabelAll("MiddleCenter", "Humanity wins!");
+					UI.SetLabelAll(UILabelEnum.TopCenter, "");
+					UI.SetLabelAll(UILabelEnum.MiddleCenter, "Humanity wins!");
 					Game.End(10.0);
 					return;
 				}
 			}
 			if (humans == 0 && playerShifters == 0 && self._hasSpawned)
 			{
-				UI.SetLabelAll("MiddleCenter", "Humanity failed!");
+				UI.SetLabelAll(UILabelEnum.MiddleCenter, "Humanity failed!");
 				Game.End(10.0);
 				return;
 			}
@@ -1260,7 +1260,7 @@ class Main
 			{
 				if (self._handMode)
 				{
-					#UI.SetLabelAll("TopCenter", "<b><size=28><color=#008000>Colossal Hand: </color>" + self._colossal.HandHealth + "</size></b>");
+					#UI.SetLabelAll(UILabelEnum.TopCenter, "<b><size=28><color=#008000>Colossal Hand: </color>" + self._colossal.HandHealth + "</size></b>");
 					if (self._colossal.LeftHandHealth <= 0 && self._colossal.RightHandHealth <= 0)
 					{
 						self._handMode = false;
@@ -1270,11 +1270,11 @@ class Main
 				}
 				else
 				{
-					#UI.SetLabelAll("TopCenter", "<b><size=28><color=#ff0000>Colossal Nape: </color>" + self._colossal.Health + "</size></b>");
+					#UI.SetLabelAll(UILabelEnum.TopCenter, "<b><size=28><color=#ff0000>Colossal Nape: </color>" + self._colossal.Health + "</size></b>");
 					self._handCooldownLeft -= Time.TickTime;
 					if (self._handCooldownLeft <= 0)
 					{
-						if (self._colossal.SteamState == "Off")
+						if (self._colossal.SteamState == SteamStateEnum.Off)
 						{
 							self._colossal.AttackSteam();
 						}
@@ -1302,11 +1302,11 @@ class Main
 			}
 			elif (titans > 0)
 			{
-				UI.SetLabelAll("TopCenter", "Titans Left: " + titans);
+				UI.SetLabelAll(UILabelEnum.TopCenter, "Titans Left: " + titans);
 			}
 			else
 			{
-				UI.SetLabelAll("TopCenter", "");
+				UI.SetLabelAll(UILabelEnum.TopCenter, "");
 			}
 			if (self._titanSpawnTimeLeft <= 0 && titans < self.MaxTitans && self._colossal != null)
 			{
@@ -1318,7 +1318,7 @@ class Main
 
 	function SpawnTitan()
 	{
-		titan = Game.SpawnTitan("Default");
+		titan = Game.SpawnTitan(TitanTypeEnum.Default);
 		titan.Rotation = Vector3(0, 180, 0);
 		titan.MoveTo(Vector3(0, 0, 400), 20, false);
 		titan.UsePathfinding = true;
@@ -1337,8 +1337,8 @@ cutscene MainCutscene
 		Camera.SetPosition(Vector3(0, 200, 1200));
 		Camera.SetRotation(startRotation);
 		Camera.SetVelocity(velocity);
-		Cutscene.ShowDialogue("Armin1", "Armin", "The colossal titan is coming, prepare yourselves!");
-		Game.SpawnEffect("ColossalSpawn", Vector3(0, 150, 765), Vector3(-90, 0, 0), 5.0);
+		Cutscene.ShowDialogue(ProfileIconEnum.Armin1, "Armin", "The colossal titan is coming, prepare yourselves!");
+		Game.SpawnEffect(EffectNameEnum.ColossalSpawn, Vector3(0, 150, 765), Vector3(-90, 0, 0), 5.0);
 		wait 2.5;
 		human = Network.MyPlayer.Character;
 		if (human != null && human.Type == "Human")
@@ -1348,7 +1348,7 @@ cutscene MainCutscene
 		}
 		if (Network.IsMasterClient)
 		{
-			colossal = Game.SpawnShifterAt("WallColossal", spawnPosition, -180);
+			colossal = Game.SpawnShifterAt(ShifterTypeEnum.WallColossal, spawnPosition, -180);
 			colossal.Size = 0.945;
 			rb = colossal.Rigidbody;
 			rb.FreezeXPosition = true;
@@ -1374,8 +1374,8 @@ cutscene MainCutscene
 			position = Vector3(0, 50, 650);
 			velocity = Vector3(0, 200, -200);
 			gravity = Vector3(0, -9000, 0);
-            Game.SpawnUnscaledEffect("ColossalKick", position, Vector3(0,180,0));
-			Game.SpawnProjectile("Rock2", position, Vector3.Zero, velocity, gravity, 10000, "Titan", 15.0);
+            Game.SpawnUnscaledEffect(EffectNameEnum.ColossalKick, position, Vector3(0,180,0));
+			Game.SpawnProjectile(ProjectileNameEnum.Rock2, position, Vector3.Zero, velocity, gravity, 10000, TeamEnum.Titan, 15.0);
 		}
 		wait 2.0;
 		Camera.SetPosition(Vector3(-150, 340, 630));
@@ -1383,7 +1383,7 @@ cutscene MainCutscene
 		Camera.SetVelocity(Vector3.Zero);
 		Cutscene.HideDialogue();
 		wait 1.5;
-		Cutscene.ShowDialogue("Armin1", "Armin", "We can't get close to the Colossal titan with all the steam. Attack his hands first to distract him!");
+		Cutscene.ShowDialogue(ProfileIconEnum.Armin1, "Armin", "We can't get close to the Colossal titan with all the steam. Attack his hands first to distract him!");
 		wait 6.0;
 		if (human != null && human.Type == "Human")
 		{
@@ -1424,7 +1424,7 @@ component Civilians
 
 	function Init()
 	{
-		self.MapObject.AddBoxCollider("Region", "Titans", Vector3(), self.MapObject.Scale);
+		self.MapObject.AddBoxCollider(CollideModeEnum.Region, CollideWithEnum.Titans, Vector3(), self.MapObject.Scale);
 	}
 
 	function OnGameStart()
@@ -1436,7 +1436,7 @@ component Civilians
 	{
 		if (character.Type == "Titan" && Network.IsMasterClient)
 		{
-			Game.SpawnEffect("Blood2", position, Vector3(), 5.0);
+			Game.SpawnEffect(EffectNameEnum.Blood2, position, Vector3(), 5.0);
 
 			if (!Game.IsEnding)
 			{
@@ -1444,9 +1444,9 @@ component Civilians
 
 				if (self._health <= 0)
 				{
-					UI.SetLabelAll("MiddleCenter", "<size=30><b>The civilians have been killed.</b></size>" + String.Newline + "Humanity failed.");
-					UI.SetLabelAll("TopCenter", "");
-					UI.SetLabelAll("BottomCenter", "");
+					UI.SetLabelAll(UILabelEnum.MiddleCenter, "<size=30><b>The civilians have been killed.</b></size>" + String.Newline + "Humanity failed.");
+					UI.SetLabelAll(UILabelEnum.TopCenter, "");
+					UI.SetLabelAll(UILabelEnum.BottomCenter, "");
 					Game.End(10.0);
 				}
 			}
@@ -1457,7 +1457,7 @@ component Civilians
 	{
 		if (obj.Type == "Titan" && !Game.IsEnding)
 		{
-			UI.SetLabelForTime("MiddleCenter", "<size=30><color=red><b>The civilians are under attack!</b></color></size>", 0.5);
+			UI.SetLabelForTime(UILabelEnum.MiddleCenter, "<size=30><color=red><b>The civilians are under attack!</b></color></size>", 0.5);
 		}
 	}
 }
@@ -1469,7 +1469,7 @@ component TitanWarning
 		if (obj.Type == "Titan" && !Game.IsEnding)
 		{
 			text = "<color=#A8FF24><size=30><b>The titans are approaching the north gate!</b></size></color>" + String.Newline + String.Newline + String.Newline + String.Newline + String.Newline + String.Newline;
-			UI.SetLabelForTime("BottomCenter", text, 0.1);
+			UI.SetLabelForTime(UILabelEnum.BottomCenter, text, 0.1);
 		}
 	}
 }
@@ -1578,10 +1578,10 @@ class BossHealthBar
     {
         # Main row container with left hand, center content, and right hand
         mainRow = UI.VisualElement()
-            .FlexDirection("Row")
+            .FlexDirection(FlexDirectionEnum.Row)
             .Width(100, true)
-            .AlignItems("Center")
-            .JustifyContent("SpaceBetween");
+            .AlignItems(AlignEnum.Center)
+            .JustifyContent(JustifyEnum.SpaceBetween);
 
         # Left hand vertical health bar
         self.CreateVerticalHandBar(true);
@@ -1589,7 +1589,7 @@ class BossHealthBar
 
         # Center container for boss info and horizontal health bar
         centerContainer = UI.VisualElement()
-            .FlexDirection("Column")
+            .FlexDirection(FlexDirectionEnum.Column)
             .FlexGrow(1)
             .FlexShrink(1)
             .MarginLeft(15, false)
@@ -1598,9 +1598,9 @@ class BossHealthBar
         # Boss name label on top
         self._nameLabel = UI.Label(self._bossName)
             .FontSize(18, false)
-            .FontStyle("Bold")
+            .FontStyle(FontStyleEnum.Bold)
             .Color(Color(255, 255, 255))
-            .AlignSelf("Center");
+            .AlignSelf(AlignEnum.Center);
 
         # Create custom health bar
         self.CreateHealthBar();
@@ -1608,9 +1608,9 @@ class BossHealthBar
         # Health text label below bar
         self._healthLabel = UI.Label(self.GetHealthText())
             .FontSize(14, false)
-            .FontStyle("Bold")
+            .FontStyle(FontStyleEnum.Bold)
             .Color(Color(255, 255, 255))
-            .AlignSelf("Center");
+            .AlignSelf(AlignEnum.Center");
 
         centerContainer.Add(self._nameLabel);
         centerContainer.Add(self._healthBarContainer);
@@ -1629,21 +1629,21 @@ class BossHealthBar
     {
         # Container with row layout
         container = UI.VisualElement()
-            .FlexDirection("Row")
-            .AlignItems("Center")
+            .FlexDirection(FlexDirectionEnum.Row)
+            .AlignItems(AlignEnum.Center)
             .Width(100, true);
 
         # Boss name label on the left
         self._nameLabel = UI.Label(self._bossName)
             .FontSize(24, true)
-            .FontStyle("Bold")
+            .FontStyle(FontStyleEnum.Bold)
             .Color(Color(255, 255, 255))
             .FlexShrink(0)
             .MarginRight(1, true);
 
         # Right side container for bar and health text
         rightContainer = UI.VisualElement()
-            .FlexDirection("Column")
+            .FlexDirection(FlexDirectionEnum.Column)
             .FlexGrow(1)
             .FlexShrink(1);
 
@@ -1653,9 +1653,9 @@ class BossHealthBar
         # Health text label
         self._healthLabel = UI.Label(self.GetHealthText())
             .FontSize(14, true)
-            .FontStyle("Bold")
+            .FontStyle(FontStyleEnum.Bold)
             .Color(Color(255, 255, 255))
-            .AlignSelf("Center")
+            .AlignSelf(AlignEnum.Center)
             .MarginTop(0.3, true);
 
         rightContainer.Add(self._healthBarContainer);
@@ -1671,8 +1671,8 @@ class BossHealthBar
     {
         # Outer container for the hand health bar
         container = UI.VisualElement()
-            .FlexDirection("Column")
-            .AlignItems("Center")
+            .FlexDirection(FlexDirectionEnum.Column)
+            .AlignItems(AlignEnum.Center)
             .Width(50, false)
             .FlexShrink(0);
 
@@ -1690,8 +1690,8 @@ class BossHealthBar
             .BorderRadius(4, false)
             .BorderWidth(2, false)
             .BorderColor(Color(80, 80, 80, 255))
-            .FlexDirection("Column")
-            .JustifyContent("FlexEnd")
+            .FlexDirection(FlexDirectionEnum.Column)
+            .JustifyContent(JustifyEnum.FlexEnd)
             .Absolute(true)
             .Top(0, false)
             .Left(0, false);
@@ -1725,9 +1725,9 @@ class BossHealthBar
 
         handLabel = UI.Label(handLabelText)
             .FontSize(12, false)
-            .FontStyle("Bold")
+            .FontStyle(FontStyleEnum.Bold)
             .Color(Color(255, 255, 255))
-            .AlignSelf("Center")
+            .AlignSelf(AlignEnum.Center)
             .MarginTop(5, false);
 
         container.Add(stackContainer);
@@ -1757,7 +1757,7 @@ class BossHealthBar
             .BorderRadius(4, false)
             .BorderWidth(2, false)
             .BorderColor(Color(80, 80, 80, 255))
-            .FlexDirection("Row");
+            .FlexDirection(FlexDirectionEnum.Row);
 
         # Fill bar (current health) - starts at 100%
         self._healthBarFill = UI.VisualElement()

@@ -38,31 +38,6 @@ namespace CustomLogic
             Value = (Rigidbody)Component;
         }
 
-        // Add Static Getters for ForceMode
-        /// <summary>
-        /// ForceMode.Acceleration.
-        /// </summary>
-        [CLProperty(Name = "ForceModeAcceleration")]
-        public static int ForceModeAcceleration => (int)ForceMode.Acceleration;
-
-        /// <summary>
-        /// ForceMode.Force.
-        /// </summary>
-        [CLProperty(Name = "ForceModeForce")]
-        public static int ForceModeForce => (int)ForceMode.Force;
-
-        /// <summary>
-        /// ForceMode.Impulse.
-        /// </summary>
-        [CLProperty(Name = "ForceModeImpulse")]
-        public static int ForceModeImpulse => (int)ForceMode.Impulse;
-
-        /// <summary>
-        /// ForceMode.VelocityChange.
-        /// </summary>
-        [CLProperty(Name = "ForceModeVelocityChange")]
-        public static int ForceModeVelocityChange => (int)ForceMode.VelocityChange;
-
         /// <summary>
         /// The MapObject this rigidbody is attached to.
         /// </summary>
@@ -357,29 +332,17 @@ namespace CustomLogic
         /// <summary>
         /// The collision detection mode of the Rigidbody. This determines how collisions are detected and resolved.
         /// </summary>
-        [CLProperty(Enum = typeof(CustomLogicCollisionDetectionModeEnum))]
-        public string CollisionDetectionMode
+        [CLProperty(Enum = new Type[] { typeof(CustomLogicCollisionDetectionModeEnum) })]
+        public int CollisionDetectionMode
         {
-            get => Value.collisionDetectionMode.ToString();
+            get => (int)Value.collisionDetectionMode;
             set
             {
-                switch (value)
+                if (!Enum.IsDefined(typeof(CollisionDetectionMode), value))
                 {
-                    case "Discrete":
-                        Value.collisionDetectionMode = UnityEngine.CollisionDetectionMode.Discrete;
-                        break;
-                    case "Continuous":
-                        Value.collisionDetectionMode = UnityEngine.CollisionDetectionMode.Continuous;
-                        break;
-                    case "ContinuousDynamic":
-                        Value.collisionDetectionMode = UnityEngine.CollisionDetectionMode.ContinuousDynamic;
-                        break;
-                    case "ContinuousSpeculative":
-                        Value.collisionDetectionMode = UnityEngine.CollisionDetectionMode.ContinuousSpeculative;
-                        break;
-                    default:
-                        throw new ArgumentException($"Invalid collision detection mode: {value}, valid options are Discrete, Continuous, ContinuousDynamic, and ContinuousSpeculative");
+                    throw new ArgumentException($"Invalid collision detection mode: {value}");
                 }
+                Value.collisionDetectionMode = (CollisionDetectionMode)value;
             }
         }
 
@@ -395,7 +358,7 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// Apply a force to the Rigidbody - legacy version, please use optimized if possible.
+        /// Apply a force to the Rigidbody.
         /// </summary>
         /// <param name="force">The force vector to apply.</param>
         /// <param name="forceMode">The force mode.</param>
@@ -403,91 +366,25 @@ namespace CustomLogic
         [CLMethod]
         public void AddForce(
             CustomLogicVector3Builtin force,
-            [CLParam(Enum = typeof(CustomLogicForceModeEnum))] string forceMode = "Acceleration",
-            CustomLogicVector3Builtin? atPoint = null)
-        {
-            ForceMode mode = ForceMode.Acceleration;
-            switch (forceMode)
-            {
-                case "Force":
-                    mode = ForceMode.Force;
-                    break;
-                case "Acceleration":
-                    mode = ForceMode.Acceleration;
-                    break;
-                case "Impulse":
-                    mode = ForceMode.Impulse;
-                    break;
-                case "VelocityChange":
-                    mode = ForceMode.VelocityChange;
-                    break;
-                default:
-                    throw new ArgumentException($"Invalid force mode: {forceMode}, valid options are Force, Acceleration, Impulse, and VelocityChange");
-            }
-            AddForceOptimized(force, (int)mode, atPoint);
-        }
-
-        /// <summary>
-        /// Apply a force to the Rigidbody.
-        /// </summary>
-        /// <param name="force">The force vector to apply.</param>
-        /// <param name="forceMode">The force mode as integer (use ForceModeAcceleration, ForceModeForce, ForceModeImpulse, or ForceModeVelocityChange constants, default: 5).</param>
-        /// <param name="atPoint">Optional. If provided, applies force at this world position instead of center of mass.</param>
-        [CLMethod]
-        public void AddForceOptimized(
-            CustomLogicVector3Builtin force,
-            int forceMode = 5,
+            [CLParam(Enum = new Type[] { typeof(CustomLogicForceModeEnum) })] int forceMode,
             CustomLogicVector3Builtin? atPoint = null)
         {
             ForceMode mode = (ForceMode)forceMode;
             if (atPoint != null)
-            {
                 Value.AddForceAtPosition(force.Value, atPoint.Value, mode);
-            }
             else
-            {
                 Value.AddForce(force.Value, mode);
-            }
-        }
-
-        /// <summary>
-        /// Apply a torque to the Rigidbody - legacy version, please use optimized if possible.
-        /// </summary>
-        /// <param name="torque">The torque vector to apply.</param>
-        /// <param name="forceMode">The force mode.</param>
-        [CLMethod]
-        public void AddTorque(
-            CustomLogicVector3Builtin torque,
-            [CLParam(Enum = typeof(CustomLogicForceModeEnum))] string forceMode)
-        {
-            ForceMode mode = ForceMode.Acceleration;
-            switch (forceMode)
-            {
-                case "Force":
-                    mode = ForceMode.Force;
-                    break;
-                case "Acceleration":
-                    mode = ForceMode.Acceleration;
-                    break;
-                case "Impulse":
-                    mode = ForceMode.Impulse;
-                    break;
-                case "VelocityChange":
-                    mode = ForceMode.VelocityChange;
-                    break;
-                default:
-                    throw new ArgumentException($"Invalid force mode: {forceMode}, valid options are Force, Acceleration, Impulse, and VelocityChange");
-            }
-            AddTorqueOptimized(torque, (int)mode);
         }
 
         /// <summary>
         /// Apply a torque to the Rigidbody.
         /// </summary>
         /// <param name="torque">The torque vector to apply.</param>
-        /// <param name="forceMode">The force mode as integer (use ForceModeAcceleration, ForceModeForce, ForceModeImpulse, or ForceModeVelocityChange constants, default: 5).</param>
+        /// <param name="forceMode">The force mode.</param>
         [CLMethod]
-        public void AddTorqueOptimized(CustomLogicVector3Builtin torque, int forceMode = 5)
+        public void AddTorque(
+            CustomLogicVector3Builtin torque,
+            [CLParam(Enum = new Type[] { typeof(CustomLogicForceModeEnum) })] int forceMode)
         {
             ForceMode mode = (ForceMode)forceMode;
             Value.AddTorque(torque.Value, mode);

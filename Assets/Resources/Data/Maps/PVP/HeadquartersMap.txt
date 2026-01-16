@@ -588,7 +588,7 @@ component RefuelGasDrop
 
     function Init()
     {
-        self.MapObject.AddBoxCollider("Region", "Characters");
+        self.MapObject.AddBoxCollider(CollideModeEnum.Region, CollideWithEnum.Characters);
         self._usesLeft = self.Uses;
     }
 
@@ -632,7 +632,7 @@ component RefuelGasDrop
 
             if (self.RefillAmmo)
             {
-                if (other.Weapon == "Blade")
+                if (other.Weapon == WeaponEnum.Blade)
                 {
                     if (other.CurrentBladeDurability < other.MaxBladeDurability || other.currentBlade < other.MaxBlade)
                     {
@@ -668,7 +668,7 @@ component RefuelGasDrop
 
             if (self.PlaySound && used)
             {
-                other.PlaySound("Checkpoint");
+                other.PlaySound(HumanSoundEnum.Checkpoint);
             }
 
             data = Dict();
