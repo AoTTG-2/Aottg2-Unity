@@ -1,0 +1,696 @@
+{
+  "kind": "extension",
+  "name": "Vector2",
+  "description": "",
+  "extends": [
+    "Object"
+  ],
+  "deprecated": "",
+  "instanceFields": [
+    {
+      "label": "X",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "The X component of the vector.",
+      "readonly": false,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Y",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "The Y component of the vector.",
+      "readonly": false,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Normalized",
+      "type": {
+        "name": "Vector2",
+        "typeArguments": []
+      },
+      "description": "Returns a normalized copy of this vector (magnitude of 1).",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Magnitude",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Returns the length of this vector.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "SqrMagnitude",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Returns the squared length of this vector (faster than Magnitude).",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    }
+  ],
+  "instanceMethods": [
+    {
+      "label": "Set",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Sets the X and Y components of the vector.",
+      "parameters": [
+        {
+          "name": "x",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The X component.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "y",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The Y component.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Normalize",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Normalizes the vector in place.",
+      "parameters": [],
+      "kind": "function",
+      "deprecated": ""
+    }
+  ],
+  "staticFields": [
+    {
+      "label": "Zero",
+      "type": {
+        "name": "Vector2",
+        "typeArguments": []
+      },
+      "description": "Shorthand for writing Vector2(0, 0).",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "One",
+      "type": {
+        "name": "Vector2",
+        "typeArguments": []
+      },
+      "description": "Shorthand for writing Vector2(1, 1).",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Up",
+      "type": {
+        "name": "Vector2",
+        "typeArguments": []
+      },
+      "description": "Shorthand for writing Vector2(0, 1).",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Down",
+      "type": {
+        "name": "Vector2",
+        "typeArguments": []
+      },
+      "description": "Shorthand for writing Vector2(0, -1).",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Left",
+      "type": {
+        "name": "Vector2",
+        "typeArguments": []
+      },
+      "description": "Shorthand for writing Vector2(-1, 0).",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Right",
+      "type": {
+        "name": "Vector2",
+        "typeArguments": []
+      },
+      "description": "Shorthand for writing Vector2(1, 0).",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "NegativeInfinity",
+      "type": {
+        "name": "Vector2",
+        "typeArguments": []
+      },
+      "description": "Shorthand for writing Vector2(float.NegativeInfinity, float.NegativeInfinity).",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "PositiveInfinity",
+      "type": {
+        "name": "Vector2",
+        "typeArguments": []
+      },
+      "description": "Shorthand for writing Vector2(float.PositiveInfinity, float.PositiveInfinity).",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    }
+  ],
+  "staticMethods": [
+    {
+      "label": "Angle",
+      "returnType": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Calculates the angle between two vectors.",
+      "parameters": [
+        {
+          "name": "from",
+          "type": {
+            "name": "Vector2",
+            "typeArguments": []
+          },
+          "description": "The vector from which the angular difference is measured.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "to",
+          "type": {
+            "name": "Vector2",
+            "typeArguments": []
+          },
+          "description": "The vector to which the angular difference is measured.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "ClampMagnitude",
+      "returnType": {
+        "name": "Vector2",
+        "typeArguments": []
+      },
+      "description": "Clamps the magnitude of a vector to a maximum value.",
+      "parameters": [
+        {
+          "name": "vector",
+          "type": {
+            "name": "Vector2",
+            "typeArguments": []
+          },
+          "description": "The vector to clamp.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "maxLength",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The maximum length of the vector.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Distance",
+      "returnType": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Calculates the distance between two points.",
+      "parameters": [
+        {
+          "name": "a",
+          "type": {
+            "name": "Vector2",
+            "typeArguments": []
+          },
+          "description": "The first point.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "b",
+          "type": {
+            "name": "Vector2",
+            "typeArguments": []
+          },
+          "description": "The second point.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Dot",
+      "returnType": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Calculates the dot product of two vectors.",
+      "parameters": [
+        {
+          "name": "a",
+          "type": {
+            "name": "Vector2",
+            "typeArguments": []
+          },
+          "description": "The first vector.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "b",
+          "type": {
+            "name": "Vector2",
+            "typeArguments": []
+          },
+          "description": "The second vector.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Lerp",
+      "returnType": {
+        "name": "Vector2",
+        "typeArguments": []
+      },
+      "description": "Linearly interpolates between two vectors.",
+      "parameters": [
+        {
+          "name": "a",
+          "type": {
+            "name": "Vector2",
+            "typeArguments": []
+          },
+          "description": "The start value.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "b",
+          "type": {
+            "name": "Vector2",
+            "typeArguments": []
+          },
+          "description": "The end value.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "t",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The interpolation factor (clamped between 0 and 1).",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "LerpUnclamped",
+      "returnType": {
+        "name": "Vector2",
+        "typeArguments": []
+      },
+      "description": "Linearly interpolates between two vectors without clamping.",
+      "parameters": [
+        {
+          "name": "a",
+          "type": {
+            "name": "Vector2",
+            "typeArguments": []
+          },
+          "description": "The start value.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "b",
+          "type": {
+            "name": "Vector2",
+            "typeArguments": []
+          },
+          "description": "The end value.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "t",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The interpolation factor (not clamped).",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Max",
+      "returnType": {
+        "name": "Vector2",
+        "typeArguments": []
+      },
+      "description": "Returns a vector that is made from the largest components of two vectors.",
+      "parameters": [
+        {
+          "name": "a",
+          "type": {
+            "name": "Vector2",
+            "typeArguments": []
+          },
+          "description": "The first vector.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "b",
+          "type": {
+            "name": "Vector2",
+            "typeArguments": []
+          },
+          "description": "The second vector.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Min",
+      "returnType": {
+        "name": "Vector2",
+        "typeArguments": []
+      },
+      "description": "Returns a vector that is made from the smallest components of two vectors.",
+      "parameters": [
+        {
+          "name": "a",
+          "type": {
+            "name": "Vector2",
+            "typeArguments": []
+          },
+          "description": "The first vector.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "b",
+          "type": {
+            "name": "Vector2",
+            "typeArguments": []
+          },
+          "description": "The second vector.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "MoveTowards",
+      "returnType": {
+        "name": "Vector2",
+        "typeArguments": []
+      },
+      "description": "Moves a point towards a target position.",
+      "parameters": [
+        {
+          "name": "current",
+          "type": {
+            "name": "Vector2",
+            "typeArguments": []
+          },
+          "description": "The current position.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "target",
+          "type": {
+            "name": "Vector2",
+            "typeArguments": []
+          },
+          "description": "The target position.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "maxDistanceDelta",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The maximum distance to move.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Reflect",
+      "returnType": {
+        "name": "Vector2",
+        "typeArguments": []
+      },
+      "description": "Reflects a vector off a plane defined by a normal vector.",
+      "parameters": [
+        {
+          "name": "inDirection",
+          "type": {
+            "name": "Vector2",
+            "typeArguments": []
+          },
+          "description": "The incoming direction vector.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "inNormal",
+          "type": {
+            "name": "Vector2",
+            "typeArguments": []
+          },
+          "description": "The normal vector of the surface.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "SignedAngle",
+      "returnType": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Calculates the signed angle between two vectors.",
+      "parameters": [
+        {
+          "name": "from",
+          "type": {
+            "name": "Vector2",
+            "typeArguments": []
+          },
+          "description": "The vector from which the angular difference is measured.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "to",
+          "type": {
+            "name": "Vector2",
+            "typeArguments": []
+          },
+          "description": "The vector to which the angular difference is measured.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "SmoothDamp",
+      "returnType": {
+        "name": "Vector2",
+        "typeArguments": []
+      },
+      "description": "Smoothly dampens a vector towards a target over time.",
+      "parameters": [
+        {
+          "name": "current",
+          "type": {
+            "name": "Vector2",
+            "typeArguments": []
+          },
+          "description": "The current position.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "target",
+          "type": {
+            "name": "Vector2",
+            "typeArguments": []
+          },
+          "description": "The target position.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "currentVelocity",
+          "type": {
+            "name": "Vector2",
+            "typeArguments": []
+          },
+          "description": "The current velocity (modified by the function).",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "smoothTime",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The time it takes to reach the target (approximately).",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "maxSpeed",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The maximum speed.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    }
+  ],
+  "constructors": [
+    {
+      "parameters": [],
+      "description": "Default constructor, initializes the Vector2 to (0, 0).",
+      "deprecated": ""
+    },
+    {
+      "parameters": [
+        {
+          "name": "xy",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The value for X and Y components.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "description": "Initializes the Vector2 to (xy, xy).",
+      "deprecated": ""
+    },
+    {
+      "parameters": [
+        {
+          "name": "x",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The X component.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "y",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The Y component.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "description": "Initializes the Vector2 to (x, y).",
+      "deprecated": ""
+    }
+  ]
+}

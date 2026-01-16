@@ -1,0 +1,82 @@
+{
+  "kind": "class",
+  "name": "Icon",
+  "description": "UI element for displaying icons/images.",
+  "extends": [
+    "VisualElement"
+  ],
+  "deprecated": "",
+  "instanceFields": [
+    {
+      "label": "IconPath",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "The current icon path. Setting this will load the icon from the resource path.",
+      "readonly": false,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "ScaleMode",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "The scale mode for the icon. Refer to ScaleModeEnum",
+      "readonly": false,
+      "private": false,
+      "deprecated": ""
+    }
+  ],
+  "instanceMethods": [
+    {
+      "label": "SetIcon",
+      "returnType": {
+        "name": "Icon",
+        "typeArguments": []
+      },
+      "description": "Set the icon to display from a resource path.",
+      "parameters": [
+        {
+          "name": "iconPath",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "Path to the icon resource (e.g., \"Icons/Game/BladeIcon\")",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "SetTintColor",
+      "returnType": {
+        "name": "Icon",
+        "typeArguments": []
+      },
+      "description": "Set the tint color of the icon.",
+      "parameters": [
+        {
+          "name": "color",
+          "type": {
+            "name": "Color",
+            "typeArguments": []
+          },
+          "description": "The color to tint the icon with.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    }
+  ],
+  "staticFields": [],
+  "staticMethods": [],
+  "constructors": []
+}

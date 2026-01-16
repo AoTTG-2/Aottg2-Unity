@@ -11,7 +11,7 @@ namespace Effects
     {
         public static void Spawn(string name, Vector3 position, Quaternion rotation, float scale = 1f, bool scaleSize = true, object[] settings = null)
         {
-            RPCManager.PhotonView.RPC("SpawnEffectRPC", RpcTarget.All, new object[] { name, position, rotation, scale, scaleSize, settings });
+            RPCManager.PhotonView.RPC(nameof(RPCManager.SpawnEffectRPC), RpcTarget.All, new object[] { name, position, rotation, scale, scaleSize, settings });
         }
 
         public static void OnSpawnEffectRPC(string name, Vector3 position, Quaternion rotation, float scale, bool scaleSize, object[] settings, PhotonMessageInfo info)

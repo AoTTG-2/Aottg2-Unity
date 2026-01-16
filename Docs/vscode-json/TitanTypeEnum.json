@@ -1,0 +1,103 @@
+{
+  "kind": "extension",
+  "name": "TitanTypeEnum",
+  "description": "Enumeration of titan types that can be spawned.",
+  "extends": [
+    "Object"
+  ],
+  "deprecated": "",
+  "instanceFields": [],
+  "instanceMethods": [],
+  "staticFields": [
+    {
+      "label": "Normal",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Normal titan type.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Abnormal",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Abnormal titan type.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Jumper",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Jumper titan type.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Crawler",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Crawler titan type.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Thrower",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Thrower titan type.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Punk",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Punk titan type.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Default",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Default titan type (uses spawn rate settings).",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Random",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Random titan type (randomly selects from available types).",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    }
+  ],
+  "staticMethods": [],
+  "constructors": []
+}

@@ -65,7 +65,7 @@ namespace Characters
                 else
                     _runAnimation = BasicAnimations.Runs[runAnimationType - 1];
             }
-            Cache.PhotonView.RPC("SetCrawlerRPC", RpcTarget.AllBuffered, new object[] { IsCrawler });
+            Cache.PhotonView.RPC(nameof(SetCrawlerRPC), RpcTarget.AllBuffered, new object[] { IsCrawler });
             base.Init(ai, team, data);
             Animation.SetSpeed(BasicAnimations.CoverNape, 1.2f);
         }
@@ -146,7 +146,7 @@ namespace Characters
             if (IsMine())
             {
                 string setup = _customSet.SerializeToJsonString();
-                Cache.PhotonView.RPC("SetupRPC", RpcTarget.AllBuffered, new object[] { setup });
+                Cache.PhotonView.RPC(nameof(SetupRPC), RpcTarget.AllBuffered, new object[] { setup });
                 EffectSpawner.Spawn(EffectPrefabs.TitanSpawn, Cache.Transform.position, Quaternion.Euler(-90f, 0f, 0f), GetSpawnEffectSize());
             }
         }
@@ -175,7 +175,7 @@ namespace Characters
 
         public override void Emote(string emote)
         {
-            if (CanAction())
+            if (CanEmote())
             {
                 string anim = string.Empty;
                 if (emote == "Laugh")
@@ -223,7 +223,7 @@ namespace Characters
                 return;
             if (left && !LeftArmDisabled)
             {
-                Cache.PhotonView.RPC("DisableArmRPC", RpcTarget.All, new object[] { left });
+                Cache.PhotonView.RPC(nameof(DisableArmRPC), RpcTarget.All, new object[] { left });
                 if (HoldHuman != null && HoldHumanLeft)
                 {
                     Ungrab();
@@ -237,7 +237,7 @@ namespace Characters
             }
             else if (!left && !RightArmDisabled)
             {
-                Cache.PhotonView.RPC("DisableArmRPC", RpcTarget.All, new object[] { left });
+                Cache.PhotonView.RPC(nameof(DisableArmRPC), RpcTarget.All, new object[] { left });
                 if (HoldHuman != null && !HoldHumanLeft)
                 {
                     Ungrab();
@@ -277,12 +277,12 @@ namespace Characters
 
         public void Laugh(BaseCharacter character)
         {
-            Cache.PhotonView.RPC("LaughRPC", Cache.PhotonView.Owner, new object[] { character.Cache.Transform.position });
+            Cache.PhotonView.RPC(nameof(LaughRPC), Cache.PhotonView.Owner, new object[] { character.Cache.Transform.position });
         }
 
         public void Distract(BaseCharacter character)
         {
-            Cache.PhotonView.RPC("DistractRPC", Cache.PhotonView.Owner, new object[] { character.Cache.PhotonView.ViewID });
+            Cache.PhotonView.RPC(nameof(DistractRPC), Cache.PhotonView.Owner, new object[] { character.Cache.PhotonView.ViewID });
         }
 
         [PunRPC]
@@ -960,7 +960,7 @@ namespace Characters
                     PlaySound(sound);
                     _currentAttackStage = 2;
                     Vector3 direction = (_rockThrowTarget - hand).normalized;
-                    Cache.PhotonView.RPC("ClearRockRPC", RpcTarget.All, new object[0]);
+                    Cache.PhotonView.RPC(nameof(ClearRockRPC), RpcTarget.All, new object[0]);
                     ProjectileSpawner.Spawn(ProjectilePrefabs.Rock1, hand, Quaternion.LookRotation(direction), direction * RockThrow1Speed,
                         Vector3.zero, 10f, Cache.PhotonView.ViewID, "", new object[] { Size * 1.5f });
                 }
@@ -1005,7 +1005,7 @@ namespace Characters
                 Vector3 pos = (GetAimPoint() - hand).normalized * 150;
                 Ungrab();
                 if (temp.photonView.gameObject != null)
-                    temp.photonView.RPC("BlowAwayRPC", temp.photonView.Owner, new object[] { pos });
+                    temp.photonView.RPC(nameof(temp.BlowAwayRPC), temp.photonView.Owner, new object[] { pos });
             }
         }
 

@@ -1,0 +1,202 @@
+{
+  "kind": "class",
+  "name": "Prefab",
+  "description": "Represents a prefab object that can be instantiated in the map. Currently handles single elements, not children.",
+  "extends": [
+    "Object"
+  ],
+  "deprecated": "",
+  "instanceFields": [
+    {
+      "label": "AssetType",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "The type of the prefab asset.",
+      "readonly": false,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Asset",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "The asset path/name of the prefab.",
+      "readonly": false,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Active",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Whether the prefab is active.",
+      "readonly": false,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Static",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Whether the prefab is marked as static.",
+      "readonly": false,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Visible",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Whether the prefab is visible.",
+      "readonly": false,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Name",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "The name of the prefab.",
+      "readonly": false,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Position",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "The position of the prefab in world space.",
+      "readonly": false,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Rotation",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "The rotation of the prefab in euler angles.",
+      "readonly": false,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Scale",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "The scale of the prefab.",
+      "readonly": false,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "CollideMode",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "The collision mode of the prefab.",
+      "readonly": false,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "CollideWith",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "The layers that this prefab can collide with.",
+      "readonly": false,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "PhysicsMaterial",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "The name of the physics material applied to the prefab.",
+      "readonly": false,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "PersistsOwnership",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "If true and this prefab is spawned at runtime with networking, the ownership will transfer to host if the player who spawned it leaves.",
+      "readonly": false,
+      "private": false,
+      "deprecated": ""
+    }
+  ],
+  "instanceMethods": [
+    {
+      "label": "ClearComponents",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Clears all components from the prefab.",
+      "parameters": [],
+      "kind": "function",
+      "deprecated": ""
+    }
+  ],
+  "staticFields": [],
+  "staticMethods": [],
+  "constructors": [
+    {
+      "parameters": [],
+      "description": "Creates a new empty Prefab instance.",
+      "deprecated": ""
+    },
+    {
+      "parameters": [
+        {
+          "name": "prefabCSV",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "The serialized CSV string describing the prefab.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "clearComponents",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "If true, clears all components from the prefab.",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "description": "Creates a new Prefab instance from a serialized CSV string.",
+      "deprecated": ""
+    }
+  ]
+}

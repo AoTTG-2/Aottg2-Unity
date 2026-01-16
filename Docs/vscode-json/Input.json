@@ -1,0 +1,342 @@
+{
+  "kind": "extension",
+  "name": "Input",
+  "description": "Reading player key inputs. Note that inputs are best handled in OnFrame rather than OnTick, due to being updated every frame and not every physics tick.",
+  "extends": [
+    "Object"
+  ],
+  "deprecated": "",
+  "instanceFields": [],
+  "instanceMethods": [],
+  "staticFields": [],
+  "staticMethods": [
+    {
+      "label": "GetKeyName",
+      "returnType": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Gets the key name the player assigned to the key setting.",
+      "parameters": [
+        {
+          "name": "key",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "The key setting path (e.g., \"General/Attack\" or \"CustomKey/Space\").",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "GetKeyHold",
+      "returnType": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Returns true if the key is being held down.",
+      "parameters": [
+        {
+          "name": "key",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "The key setting path (e.g., \"General/Attack\" or \"CustomKey/Space\").",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "GetKeyDown",
+      "returnType": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Returns true if the key was pressed down this frame.",
+      "parameters": [
+        {
+          "name": "key",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "The key setting path (e.g., \"General/Attack\" or \"CustomKey/Space\").",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "GetKeyUp",
+      "returnType": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Returns true if the key was released this frame.",
+      "parameters": [
+        {
+          "name": "key",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "The key setting path (e.g., \"General/Attack\" or \"CustomKey/Space\").",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "GetMouseAim",
+      "returnType": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Returns the position the player is aiming at.",
+      "parameters": [],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "GetCursorAimDirection",
+      "returnType": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Returns the ray the player is aiming at.",
+      "parameters": [],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "GetMouseSpeed",
+      "returnType": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Returns the speed of the mouse.",
+      "parameters": [],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "GetMousePosition",
+      "returnType": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Returns the position of the mouse.",
+      "parameters": [],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "GetScreenDimensions",
+      "returnType": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Returns the dimensions of the screen.",
+      "parameters": [],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "SetKeyDefaultEnabled",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Sets whether the key is enabled by default.",
+      "parameters": [
+        {
+          "name": "key",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "The key setting path (e.g., \"General/Attack\" or \"CustomKey/Space\").",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "enabled",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "Whether the key should be enabled by default.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "SetKeyHold",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Sets whether the key is being held down.",
+      "parameters": [
+        {
+          "name": "key",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "The key setting path (e.g., \"General/Attack\" or \"CustomKey/Space\").",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "enabled",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "Whether the key should be held down.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "SetCategoryKeysEnabled",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Sets whether all keys in the specified category are enabled by default.",
+      "parameters": [
+        {
+          "name": "category",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "The category name. Refer to InputCategoryEnum",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "enabled",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "Whether the keys should be enabled by default.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "SetGeneralKeysEnabled",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Sets whether all General category keys are enabled by default.",
+      "parameters": [
+        {
+          "name": "enabled",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "Whether the keys should be enabled by default.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "SetInteractionKeysEnabled",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Sets whether all Interaction category keys are enabled by default.",
+      "parameters": [
+        {
+          "name": "enabled",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "Whether the keys should be enabled by default.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "SetTitanKeysEnabled",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Sets whether all Titan category keys are enabled by default.",
+      "parameters": [
+        {
+          "name": "enabled",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "Whether the keys should be enabled by default.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "SetHumanKeysEnabled",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Sets whether all Human category keys are enabled by default.",
+      "parameters": [
+        {
+          "name": "enabled",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "Whether the keys should be enabled by default.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    }
+  ],
+  "constructors": []
+}

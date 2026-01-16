@@ -30,7 +30,11 @@ namespace Characters
         public BaseHitbox APGHit;
         public Transform GroundLeft;
         public Transform GroundRight;
-        
+
+        public Transform Buff1;
+        public Transform Buff2;
+        public Transform Fire1;
+
         public HumanComponentCache(GameObject owner): base(owner)
         {
             Spine = Transform.Find("Armature/Core/Controller_Body/hip/spine");
@@ -47,6 +51,12 @@ namespace Characters
             HandR = ForearmR.Find("hand_R");
             Sparks = Transform.Find("slideSparks").GetComponent<ParticleSystem>();
             Smoke = Transform.Find("3dmg_smoke").GetComponent<ParticleSystem>();
+
+            // Player effects
+            Buff1 = Transform.Find("buff1");
+            Buff2 = Transform.Find("buff2");
+            Fire1 = Transform.Find("fire1");
+
             var emission = Smoke.emission;
             emission.enabled = false;
             emission = Sparks.emission;

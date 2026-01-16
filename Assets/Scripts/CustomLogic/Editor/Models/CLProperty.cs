@@ -13,5 +13,8 @@ namespace CustomLogic.Editor.Models
 
         [JsonProperty("readonly")]
         public bool IsReadonly { get; set; }
+
+        [JsonIgnore]
+        public string EnumName { get; set; }
     }
 }

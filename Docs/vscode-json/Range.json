@@ -1,0 +1,90 @@
+{
+  "kind": "class",
+  "name": "Range",
+  "description": "Range allows you to create lists of integers for convenient iteration, particularly in for loops.",
+  "deprecated": "",
+  "instanceFields": [],
+  "instanceMethods": [],
+  "staticFields": [],
+  "staticMethods": [],
+  "constructors": [
+    {
+      "parameters": [
+        {
+          "name": "end",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "The end value (exclusive).",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "description": "Creates a range from 0 to end-1.",
+      "deprecated": ""
+    },
+    {
+      "parameters": [
+        {
+          "name": "start",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "The start value.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "end",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "The end value (exclusive).",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "description": "Creates a range from start to end-1.",
+      "deprecated": ""
+    },
+    {
+      "parameters": [
+        {
+          "name": "start",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "The start value.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "end",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "The end value (exclusive).",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "step",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "The step value.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "description": "Creates a range from start to end-1 with the specified step.",
+      "deprecated": ""
+    }
+  ]
+}

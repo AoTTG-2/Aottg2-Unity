@@ -11,7 +11,7 @@ namespace Spawnables
     {
         public static void Spawn(string name, Vector3 position, Quaternion rotation, float scale = 1f, object[] settings = null)
         {
-            RPCManager.PhotonView.RPC("SpawnSpawnableRPC", RpcTarget.All, new object[] { name, position, rotation, scale, settings });
+            RPCManager.PhotonView.RPC(nameof(RPCManager.SpawnSpawnableRPC), RpcTarget.All, new object[] { name, position, rotation, scale, settings });
         }
 
         public static void OnSpawnSpawnableRPC(string name, Vector3 position, Quaternion rotation, float scale, object[] settings, PhotonMessageInfo info)

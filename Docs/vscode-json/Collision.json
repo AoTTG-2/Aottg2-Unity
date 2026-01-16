@@ -1,0 +1,148 @@
+{
+  "kind": "component",
+  "name": "Collision",
+  "description": "",
+  "extends": [
+    "Object"
+  ],
+  "deprecated": "",
+  "instanceFields": [
+    {
+      "label": "Collider",
+      "type": {
+        "name": "Collider",
+        "typeArguments": []
+      },
+      "description": "The collider involved in the collision.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Impulse",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "The impulse response of the collision.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "RelativeVelocity",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "The relative velocity of the collision. (sum of velocities)",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "ContactCount",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "The number of contacts in the collision, iterate over this in conjunction with the GetContact Point, Norm, Impulse, and Separation.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    }
+  ],
+  "instanceMethods": [
+    {
+      "label": "GetContactPoint",
+      "returnType": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "The contact point of the collision.",
+      "parameters": [
+        {
+          "name": "index",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "The contact index (0 to ContactCount-1).",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "GetContactNorms",
+      "returnType": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "The contact norm of the collision.",
+      "parameters": [
+        {
+          "name": "index",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "The contact index (0 to ContactCount-1).",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "GetContactImpulses",
+      "returnType": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "The contact impulse of the collision.",
+      "parameters": [
+        {
+          "name": "index",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "The contact index (0 to ContactCount-1).",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "GetContactSeparations",
+      "returnType": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "The separation between colliders at the given contact point.",
+      "parameters": [
+        {
+          "name": "index",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "The contact index (0 to ContactCount-1).",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    }
+  ],
+  "staticFields": [],
+  "staticMethods": [],
+  "constructors": []
+}

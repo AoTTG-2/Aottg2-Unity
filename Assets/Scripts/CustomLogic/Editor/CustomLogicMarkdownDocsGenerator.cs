@@ -166,12 +166,22 @@ namespace CustomLogic.Editor
             var rows = new List<List<string>>();
             foreach (var property in properties)
             {
+                var description = TrimAndCleanLines(property.Info?.Summary ?? "").Replace("\r\n", " ").Replace('\n', ' ').Replace('\t', ' ');
+                
+                if (!string.IsNullOrEmpty(property.EnumName))
+                {
+                    var enumRef = GetEnumReference(property.EnumName);
+                    if (!string.IsNullOrEmpty(description))
+                        description += " ";
+                    description += $"Refer to {enumRef}";
+                }
+                
                 var row = new List<string>
                     {
                         property.Name,
                         GetTypeReferenceStr(property.Type, TypeLinkKind.Absolute),
                         property.IsReadonly.ToString(),
-                        TrimAndCleanLines(property.Info.Summary).Replace("\r\n", " ").Replace('\n', ' ').Replace('\t', ' ')
+                        description
                     };
 
                 rows.Add(row);
@@ -218,14 +228,25 @@ namespace CustomLogic.Editor
                         _sb.AppendLine("> ");
                     }
 
-                    if (method.Info.Parameters != null && method.Info.Parameters.Count > 0)
+                    var hasParameterDocs = method.Parameters != null && method.Parameters.Any(p => (!string.IsNullOrEmpty(p.Description)) || !string.IsNullOrEmpty(p.EnumName));
+                    if (hasParameterDocs)
                     {
                         _sb.AppendLine("> **Parameters**:");
                         foreach (var parameter in method.Parameters)
                         {
-                            if (method.Info.Parameters.TryGetValue(parameter.Name, out var parameterInfo) == false)
+                            var paramDescription = !string.IsNullOrEmpty(parameter.Description) ? TrimAndCleanLines(parameter.Description) : "";
+                            
+                            if (!string.IsNullOrEmpty(parameter.EnumName))
+                            {
+                                var enumRef = GetEnumReference(parameter.EnumName);
+                                if (!string.IsNullOrEmpty(paramDescription))
+                                    paramDescription += " ";
+                                paramDescription += $"Refer to {enumRef}";
+                            }
+                            
+                            if (string.IsNullOrEmpty(paramDescription))
                                 continue;
-                            _sb.AppendLine($"> - `{parameter.Name}`: {TrimAndCleanLines(parameterInfo)}");
+                            _sb.AppendLine($"> - `{parameter.Name}`: {paramDescription}");
                         }
                         _sb.AppendLine("> ");
                     }
@@ -285,6 +306,17 @@ namespace CustomLogic.Editor
                 return $"{name}<{string.Join(",", typeReference.Arguments.Select(x => GetTypeReferenceStr(x, linkKind)))}>";
 
             return name;
+        }
+
+        private string GetEnumReference(string enumName)
+        {
+            if (_typeNameMap.ContainsKey(enumName))
+            {
+                var enumType = _typeNameMap[enumName];
+                var path = GetRelativeRefPath(enumType);
+                return $"[{enumName}](../{path})";
+            }
+            return enumName;
         }
 
         private static string CreateTable(List<string> headers, List<List<string>> rows)

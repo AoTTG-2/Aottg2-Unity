@@ -1,0 +1,382 @@
+{
+  "kind": "extension",
+  "name": "Random",
+  "description": "Random can be initialized as a class with an int given as the seed value. Note that this is optional, and you can reference Random directly as a static class.",
+  "extends": [
+    "Object"
+  ],
+  "deprecated": "",
+  "instanceFields": [],
+  "instanceMethods": [
+    {
+      "label": "RandomInt",
+      "returnType": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "Generates a random integer between the specified range.",
+      "parameters": [
+        {
+          "name": "min",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "The minimum value (inclusive).",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "max",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "The maximum value (exclusive).",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "RandomFloat",
+      "returnType": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Generates a random float between the specified range.",
+      "parameters": [
+        {
+          "name": "min",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The minimum value (inclusive).",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "max",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The maximum value (inclusive).",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "RandomBool",
+      "returnType": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Returns random boolean.",
+      "parameters": [],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "RandomVector3",
+      "returnType": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Generates a random Vector3 between the specified ranges.",
+      "parameters": [
+        {
+          "name": "a",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "The minimum Vector3 values.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "b",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "The maximum Vector3 values.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "RandomDirection",
+      "returnType": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Generates a random normalized direction vector. If flat is true, the y component will be zero.",
+      "parameters": [
+        {
+          "name": "flat",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "If true, the y component will be zero.",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "RandomSign",
+      "returnType": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "Generates a random sign, either 1 or -1.",
+      "parameters": [],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "PerlinNoise",
+      "returnType": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Returns a point sampled from generated 2d perlin noise. (see Unity Mathf.PerlinNoise for more information)",
+      "parameters": [
+        {
+          "name": "x",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The X coordinate for the noise sample.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "y",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The Y coordinate for the noise sample.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    }
+  ],
+  "staticFields": [],
+  "staticMethods": [
+    {
+      "label": "RandomInt",
+      "returnType": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "Generates a random integer between the specified range.",
+      "parameters": [
+        {
+          "name": "min",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "The minimum value (inclusive).",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "max",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "The maximum value (exclusive).",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "RandomFloat",
+      "returnType": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Generates a random float between the specified range.",
+      "parameters": [
+        {
+          "name": "min",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The minimum value (inclusive).",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "max",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The maximum value (inclusive).",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "RandomBool",
+      "returnType": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Returns random boolean.",
+      "parameters": [],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "RandomVector3",
+      "returnType": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Generates a random Vector3 between the specified ranges.",
+      "parameters": [
+        {
+          "name": "a",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "The minimum Vector3 values.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "b",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "The maximum Vector3 values.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "RandomDirection",
+      "returnType": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Generates a random normalized direction vector. If flat is true, the y component will be zero.",
+      "parameters": [
+        {
+          "name": "flat",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "If true, the y component will be zero.",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "RandomSign",
+      "returnType": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "Generates a random sign, either 1 or -1.",
+      "parameters": [],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "PerlinNoise",
+      "returnType": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Returns a point sampled from generated 2d perlin noise. (see Unity Mathf.PerlinNoise for more information)",
+      "parameters": [
+        {
+          "name": "x",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The X coordinate for the noise sample.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "y",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The Y coordinate for the noise sample.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    }
+  ],
+  "constructors": [
+    {
+      "parameters": [],
+      "description": "Creates a new Random instance with default seed.",
+      "deprecated": ""
+    },
+    {
+      "parameters": [
+        {
+          "name": "seed",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "The seed value for the random number generator.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "description": "Creates a new Random instance with the specified seed.",
+      "deprecated": ""
+    }
+  ]
+}

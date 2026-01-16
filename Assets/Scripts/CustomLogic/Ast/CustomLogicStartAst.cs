@@ -3,9 +3,15 @@ using UnityEngine;
 
 namespace CustomLogic
 {
-    class CustomLogicStartAst: CustomLogicBaseAst
+    internal class CustomLogicStartAst: CustomLogicBaseAst
     {
         public Dictionary<string, CustomLogicClassDefinitionAst> Classes = new Dictionary<string, CustomLogicClassDefinitionAst>();
+        
+        /// <summary>
+        /// Maps class names to their defining namespace for namespace-aware resolution.
+        /// Key: ClassName, Value: Namespace (source file type)
+        /// </summary>
+        public Dictionary<string, CustomLogicSourceType> ClassNamespaces = new Dictionary<string, CustomLogicSourceType>();
 
         public CustomLogicStartAst(): base(CustomLogicAstType.Start, 0)
         {
@@ -25,6 +31,12 @@ namespace CustomLogic
             }
             else
                 Classes.Add(className, classAst);
+            
+            // Track the namespace if available
+            if (classAst.Namespace.HasValue)
+            {
+                ClassNamespaces[className] = classAst.Namespace.Value;
+            }
         }
     }
 }

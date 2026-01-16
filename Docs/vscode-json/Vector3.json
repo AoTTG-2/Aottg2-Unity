@@ -1,0 +1,1178 @@
+{
+  "kind": "extension",
+  "name": "Vector3",
+  "description": "",
+  "extends": [
+    "Object"
+  ],
+  "deprecated": "",
+  "instanceFields": [
+    {
+      "label": "X",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "The X component of the vector.",
+      "readonly": false,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Y",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "The Y component of the vector.",
+      "readonly": false,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Z",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "The Z component of the vector.",
+      "readonly": false,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Normalized",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Returns a normalized copy of this vector (magnitude of 1).",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Magnitude",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Returns the length of this vector.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "SqrMagnitude",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Returns the squared length of this vector (faster than Magnitude).",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    }
+  ],
+  "instanceMethods": [
+    {
+      "label": "Set",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Sets the X, Y, and Z components of the vector.",
+      "parameters": [
+        {
+          "name": "x",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The X component.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "y",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The Y component.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "z",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The Z component.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Scale",
+      "returnType": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Scales the vector by a float or Vector3. Returns: A new scaled vector.",
+      "parameters": [
+        {
+          "name": "scale",
+          "type": {
+            "name": "Object",
+            "typeArguments": []
+          },
+          "description": "The scale value (float or Vector3).",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": "Use multiply operator instead"
+    }
+  ],
+  "staticFields": [
+    {
+      "label": "Zero",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Shorthand for writing Vector3(0, 0, 0).",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "One",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Shorthand for writing Vector3(1, 1, 1).",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Up",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Shorthand for writing Vector3(0, 1, 0).",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Down",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Shorthand for writing Vector3(0, -1, 0).",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Left",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Shorthand for writing Vector3(-1, 0, 0).",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Right",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Shorthand for writing Vector3(1, 0, 0).",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Forward",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Shorthand for writing Vector3(0, 0, 1).",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Back",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Shorthand for writing Vector3(0, 0, -1).",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "NegativeInfinity",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Shorthand for writing Vector3(float.NegativeInfinity, float.NegativeInfinity, float.NegativeInfinity).",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "PositiveInfinity",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Shorthand for writing Vector3(float.PositiveInfinity, float.PositiveInfinity, float.PositiveInfinity).",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    }
+  ],
+  "staticMethods": [
+    {
+      "label": "Angle",
+      "returnType": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Calculates the angle between two vectors.",
+      "parameters": [
+        {
+          "name": "from",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "The vector from which the angular difference is measured.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "to",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "The vector to which the angular difference is measured.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "ClampMagnitude",
+      "returnType": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Clamps the magnitude of a vector to a maximum value.",
+      "parameters": [
+        {
+          "name": "vector",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "The vector to clamp.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "maxLength",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The maximum length of the vector.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Cross",
+      "returnType": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Calculates the cross product of two vectors.",
+      "parameters": [
+        {
+          "name": "a",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "The first vector.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "b",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "The second vector.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Distance",
+      "returnType": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Calculates the distance between two points.",
+      "parameters": [
+        {
+          "name": "a",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "The first point.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "b",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "The second point.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Dot",
+      "returnType": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Calculates the dot product of two vectors.",
+      "parameters": [
+        {
+          "name": "a",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "The first vector.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "b",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "The second vector.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Lerp",
+      "returnType": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Linearly interpolates between two vectors.",
+      "parameters": [
+        {
+          "name": "a",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "The start value.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "b",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "The end value.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "t",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The interpolation factor (clamped between 0 and 1).",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "LerpUnclamped",
+      "returnType": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Linearly interpolates between two vectors without clamping.",
+      "parameters": [
+        {
+          "name": "a",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "The start value.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "b",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "The end value.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "t",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The interpolation factor (not clamped).",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Max",
+      "returnType": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Returns a vector that is made from the largest components of two vectors.",
+      "parameters": [
+        {
+          "name": "a",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "The first vector.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "b",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "The second vector.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Min",
+      "returnType": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Returns a vector that is made from the smallest components of two vectors.",
+      "parameters": [
+        {
+          "name": "a",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "The first vector.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "b",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "The second vector.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "MoveTowards",
+      "returnType": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Moves a point towards a target position.",
+      "parameters": [
+        {
+          "name": "current",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "The current position.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "target",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "The target position.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "maxDistanceDelta",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The maximum distance to move.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Normalize",
+      "returnType": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Returns a normalized copy of the vector.",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "The vector to normalize.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "OrthoNormalize",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Orthonormalizes two vectors (normalizes the normal vector and makes the tangent vector orthogonal to it).",
+      "parameters": [
+        {
+          "name": "normal",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "The normal vector (will be normalized).",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "tangent",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "The tangent vector (will be normalized and made orthogonal to normal).",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Project",
+      "returnType": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Projects a vector onto another vector.",
+      "parameters": [
+        {
+          "name": "a",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "The vector to project.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "b",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "The vector to project onto.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "ProjectOnPlane",
+      "returnType": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Projects a vector onto a plane defined by a normal vector.",
+      "parameters": [
+        {
+          "name": "vector",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "The vector to project.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "plane",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "The plane normal vector.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Reflect",
+      "returnType": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Reflects a vector off a plane defined by a normal vector.",
+      "parameters": [
+        {
+          "name": "inDirection",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "The incoming direction vector.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "inNormal",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "The normal vector of the surface.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "RotateTowards",
+      "returnType": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Rotates a vector towards a target vector.",
+      "parameters": [
+        {
+          "name": "current",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "The current direction vector.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "target",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "The target direction vector.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "maxRadiansDelta",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The maximum change in radians.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "maxMagnitudeDelta",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The maximum change in magnitude.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "SignedAngle",
+      "returnType": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Calculates the signed angle between two vectors.",
+      "parameters": [
+        {
+          "name": "from",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "The vector from which the angular difference is measured.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "to",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "The vector to which the angular difference is measured.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "axis",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "The axis around which the rotation is measured.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Slerp",
+      "returnType": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Spherically interpolates between two vectors.",
+      "parameters": [
+        {
+          "name": "a",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "The start value.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "b",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "The end value.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "t",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The interpolation factor (clamped between 0 and 1).",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "SlerpUnclamped",
+      "returnType": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Spherically interpolates between two vectors without clamping.",
+      "parameters": [
+        {
+          "name": "a",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "The start value.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "b",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "The end value.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "t",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The interpolation factor (not clamped).",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "SmoothDamp",
+      "returnType": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Smoothly dampens a vector towards a target over time.",
+      "parameters": [
+        {
+          "name": "current",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "The current position.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "target",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "The target position.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "currentVelocity",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "The current velocity (modified by the function).",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "smoothTime",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The time it takes to reach the target (approximately).",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "maxSpeed",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The maximum speed.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "GetRotationDirection",
+      "returnType": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Gets the direction vector transformed by a rotation. Returns: A new direction vector.",
+      "parameters": [
+        {
+          "name": "a",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "The reference rotation vector (e.g., forward direction).",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "b",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "The vector to transform relative to the reference.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Multiply",
+      "returnType": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Multiplies two vectors component-wise. Returns: A new vector with multiplied components.",
+      "parameters": [
+        {
+          "name": "a",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "The first vector.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "b",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "The second vector.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": "Use multiply operator instead"
+    },
+    {
+      "label": "Divide",
+      "returnType": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Divides two vectors component-wise. Returns: A new vector with divided components.",
+      "parameters": [
+        {
+          "name": "a",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "The first vector.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "b",
+          "type": {
+            "name": "Vector3",
+            "typeArguments": []
+          },
+          "description": "The second vector.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": "Use divide operator instead"
+    }
+  ],
+  "constructors": [
+    {
+      "parameters": [],
+      "description": "Default constructor, Initializes the Vector3 to (0, 0, 0).",
+      "deprecated": ""
+    },
+    {
+      "parameters": [
+        {
+          "name": "xyz",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The value for X, Y, and Z components.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "description": "Initializes the Vector3 to (xyz, xyz, xyz).",
+      "deprecated": ""
+    },
+    {
+      "parameters": [
+        {
+          "name": "x",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The X component.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "y",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The Y component.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "description": "Initializes the Vector3 to (x, y, 0).",
+      "deprecated": ""
+    },
+    {
+      "parameters": [
+        {
+          "name": "x",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The X component.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "y",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The Y component.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "z",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The Z component.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "description": "Initializes the Vector3 to (x, y, z).",
+      "deprecated": ""
+    }
+  ]
+}

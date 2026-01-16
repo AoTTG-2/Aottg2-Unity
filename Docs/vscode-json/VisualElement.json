@@ -1,0 +1,1961 @@
+{
+  "kind": "class",
+  "name": "VisualElement",
+  "description": "Base class for all UI elements. Note: Most methods return self to allow method chaining.",
+  "extends": [
+    "Object"
+  ],
+  "deprecated": "",
+  "instanceFields": [
+    {
+      "label": "ChildCount",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "The number of child elements in this visual element.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    }
+  ],
+  "instanceMethods": [
+    {
+      "label": "Add",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Add a child element.",
+      "parameters": [
+        {
+          "name": "visualElement",
+          "type": {
+            "name": "VisualElement",
+            "typeArguments": []
+          },
+          "description": "The visual element to add as a child.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Remove",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Remove a child element.",
+      "parameters": [
+        {
+          "name": "visualElement",
+          "type": {
+            "name": "VisualElement",
+            "typeArguments": []
+          },
+          "description": "The visual element to remove.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "RemoveFromHierarchy",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Removes this element from its parent hierarchy.",
+      "parameters": [],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Clear",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Remove all child elements.",
+      "parameters": [],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "GetElementAt",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Get child element at index.",
+      "parameters": [
+        {
+          "name": "index",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "The index of the child element to get.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "QueryByName",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Query child element by name. Returns: The first child element with the matching name.",
+      "parameters": [
+        {
+          "name": "name",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "The name of the element to find.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "QueryByClassName",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Query child element by class name. Returns: The first child element with the matching class name.",
+      "parameters": [
+        {
+          "name": "className",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "The class name of the element to find.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "RegisterMouseEnterEventCallback",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Register a callback for mouse enter event. Mouse enter event is fired when the mouse pointer enters an element or one of its children",
+      "parameters": [
+        {
+          "name": "method",
+          "type": {
+            "name": "function",
+            "typeArguments": []
+          },
+          "description": "The method to call when the mouse enters the element.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "RegisterMouseLeaveEventCallback",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Register a callback for mouse leave event. Mouse leave event is fired when the mouse pointer exits an element and all its children",
+      "parameters": [
+        {
+          "name": "method",
+          "type": {
+            "name": "function",
+            "typeArguments": []
+          },
+          "description": "The method to call when the mouse leaves the element.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "RegisterClickEventCallback",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Register a callback for click event",
+      "parameters": [
+        {
+          "name": "method",
+          "type": {
+            "name": "function",
+            "typeArguments": []
+          },
+          "description": "The method to call when the element is clicked.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "RegisterFocusInEventCallback",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Register a callback for focus in event. Focus in event is fired immediately before an element gains focus",
+      "parameters": [
+        {
+          "name": "method",
+          "type": {
+            "name": "function",
+            "typeArguments": []
+          },
+          "description": "The method to call when the element gains focus.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "RegisterFocusOutEventCallback",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Register a callback for focus out event. Focus out event is fired immediately before an element loses focus",
+      "parameters": [
+        {
+          "name": "method",
+          "type": {
+            "name": "function",
+            "typeArguments": []
+          },
+          "description": "The method to call when the element loses focus.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Opacity",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the opacity of the element",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "a value between 0 and 100",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Active",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the element to be active or inactive",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Visible",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the element to be visible or hidden",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "TransitionDuration",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the transition duration of the element",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Absolute",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the element to be absolute or relative positioned",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Left",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the left position of the element",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "the value",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "percentage",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "if true, the `value` will be treated as percentage value",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Top",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the top position of the element",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "the value",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "percentage",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "if true, the `value` will be treated as percentage value",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Right",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the right position of the element",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "the value",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "percentage",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "if true, the `value` will be treated as percentage value",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Bottom",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the bottom position of the element",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "the value",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "percentage",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "if true, the `value` will be treated as percentage value",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "FlexShrink",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the flex shrink value",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "FlexGrow",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the flex grow value",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "FlexDirection",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the flex direction",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "Acceptable values are: `Row`, `Column`, `RowReverse`, and `ColumnReverse`",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "AlignItems",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the align items property",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "Acceptable values are: `Auto`, `FlexStart`, `Center`, `FlexEnd`, and `Stretch`",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "JustifyContent",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the justify content property",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "Acceptable values are: `FlexStart`, `Center`, `FlexEnd`, `SpaceBetween`, `SpaceAround`, and `SpaceEvenly`",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "AlignSelf",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the align self property",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "Acceptable values are: `Auto`, `FlexStart`, `Center`, `FlexEnd`, and `Stretch`",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Width",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the width of the element",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "the value",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "percentage",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "if true, the `value` will be treated as percentage value",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Height",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the height of the element",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "the value",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "percentage",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "if true, the `value` will be treated as percentage value",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Margin",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the margin of the element",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "the value",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "percentage",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "if true, the `value` will be treated as percentage value",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "MarginLeft",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the left margin of the element",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "the value",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "percentage",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "if true, the `value` will be treated as percentage value",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "MarginTop",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the top margin of the element",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "the value",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "percentage",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "if true, the `value` will be treated as percentage value",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "MarginRight",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the right margin of the element",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "the value",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "percentage",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "if true, the `value` will be treated as percentage value",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "MarginBottom",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the bottom margin of the element",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "the value",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "percentage",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "if true, the `value` will be treated as percentage value",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Padding",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the padding of the element",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "the value",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "percentage",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "if true, the `value` will be treated as percentage value",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "PaddingLeft",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the left padding of the element",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "the value",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "percentage",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "if true, the `value` will be treated as percentage value",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "PaddingTop",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the top padding of the element",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "the value",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "percentage",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "if true, the `value` will be treated as percentage value",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "PaddingRight",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the right padding of the element",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "the value",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "percentage",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "if true, the `value` will be treated as percentage value",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "PaddingBottom",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the bottom padding of the element",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "the value",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "percentage",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "if true, the `value` will be treated as percentage value",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "FontStyle",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the font style of the element",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "Acceptable values are: `Normal`, `Bold`, `Italic`, and `BoldAndItalic`",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "FontSize",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the font size of the element",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "the value",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "percentage",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "if true, the `value` will be treated as percentage value",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Color",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the text color of the element",
+      "parameters": [
+        {
+          "name": "color",
+          "type": {
+            "name": "Color",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "TextAlign",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the text alignment of the element",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "Valid values are: `UpperLeft`, `UpperCenter`, `UpperRight`, `MiddleLeft`, `MiddleCenter`, `MiddleRight`, `LowerLeft`, `LowerCenter`, `LowerRight`",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "TextWrap",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set whether the text should wrap or not",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "TextOverflow",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the text overflow behavior",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "Acceptable values are: `Clip`, `Ellipsis`",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "TextOutlineWidth",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the text outline width",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "TextOutlineColor",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the text outline color",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "Color",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "TextShadowColor",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the text shadow color",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "Color",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "TextShadowOffset",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the text shadow offset",
+      "parameters": [
+        {
+          "name": "horizontal",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "horizontal offset",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "vertical",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "vertical offset",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "TextShadowHorizontalOffset",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the text shadow horizontal offset",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "TextShadowVerticalOffset",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the text shadow vertical offset",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "TextShadowBlurRadius",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the text shadow blur radius",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "TextLetterSpacing",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the text letter spacing",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "TextWordSpacing",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the text word spacing",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "TextParagraphSpacing",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the text paragraph spacing",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "BackgroundColor",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the background color of the element",
+      "parameters": [
+        {
+          "name": "color",
+          "type": {
+            "name": "Color",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "SetBackgroundImage",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the background image of the element",
+      "parameters": [
+        {
+          "name": "image",
+          "type": {
+            "name": "Image",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "BorderColor",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the border color of the element",
+      "parameters": [
+        {
+          "name": "color",
+          "type": {
+            "name": "Color",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "BorderColorLeft",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the left border color of the element",
+      "parameters": [
+        {
+          "name": "color",
+          "type": {
+            "name": "Color",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "BorderColorTop",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the top border color of the element",
+      "parameters": [
+        {
+          "name": "color",
+          "type": {
+            "name": "Color",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "BorderColorRight",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the right border color of the element",
+      "parameters": [
+        {
+          "name": "color",
+          "type": {
+            "name": "Color",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "BorderColorBottom",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the bottom border color of the element",
+      "parameters": [
+        {
+          "name": "color",
+          "type": {
+            "name": "Color",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "BorderWidth",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the border width of the element",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "BorderWidthLeft",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the left border width of the element",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "BorderWidthTop",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the top border width of the element",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "BorderWidthRight",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the right border width of the element",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "BorderWidthBottom",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the bottom border width of the element",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "BorderRadius",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the border radius of the element",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "BorderRadiusTopLeft",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the top-left border radius of the element",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "BorderRadiusTopRight",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the top-right border radius of the element",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "BorderRadiusBottomLeft",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the bottom-left border radius of the element",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "BorderRadiusBottomRight",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the bottom-right border radius of the element",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "OverflowX",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the overflow behavior on the X axis",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "Acceptable values are: `Visible` and `Hidden`",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "OverflowY",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the overflow behavior on the Y axis",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "Acceptable values are: `Visible` and `Hidden`",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "SetTransformOrigin",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Set the origin of the element",
+      "parameters": [
+        {
+          "name": "x",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "x value",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "y",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "y value",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "percentage",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "if true, the `value` will be treated as percentage value",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "TransformTranslate",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Translate the element",
+      "parameters": [
+        {
+          "name": "x",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "x value",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "y",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "y value",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "percentage",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "if true, the `value` will be treated as percentage value",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "TransformScale",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Scale the element",
+      "parameters": [
+        {
+          "name": "x",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "x value",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "y",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "y value",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "TransformRotate",
+      "returnType": {
+        "name": "VisualElement",
+        "typeArguments": []
+      },
+      "description": "Rotate the element",
+      "parameters": [
+        {
+          "name": "angle",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "the angle of rotation",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "angleUnit",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "the unit of the angle. Valid values are: `Degree`, `Gradian`, `Radian`, and `Turn`",
+          "isOptional": true,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    }
+  ],
+  "staticFields": [],
+  "staticMethods": [],
+  "constructors": []
+}

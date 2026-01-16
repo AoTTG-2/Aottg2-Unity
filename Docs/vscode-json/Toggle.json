@@ -1,0 +1,93 @@
+{
+  "kind": "class",
+  "name": "Toggle",
+  "description": "A UI element that represents a toggle button with on/off states.",
+  "extends": [
+    "VisualElement"
+  ],
+  "deprecated": "",
+  "instanceFields": [
+    {
+      "label": "Label",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "The label text displayed next to the Toggle.",
+      "readonly": false,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Text",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "The text displayed by the Toggle.",
+      "readonly": false,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Value",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "The current value of the Toggle (true = checked, false = unchecked).",
+      "readonly": false,
+      "private": false,
+      "deprecated": ""
+    }
+  ],
+  "instanceMethods": [
+    {
+      "label": "OnValueChanged",
+      "returnType": {
+        "name": "Toggle",
+        "typeArguments": []
+      },
+      "description": "Sets the method to be called when the Toggle value changes.",
+      "parameters": [
+        {
+          "name": "valueChangedEvent",
+          "type": {
+            "name": "function",
+            "typeArguments": []
+          },
+          "description": "Method that will be called with the new boolean value as parameter",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "SetValueWithoutNotify",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Sets the value of the Toggle without triggering any change events.",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "bool",
+            "typeArguments": []
+          },
+          "description": "The value to set.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    }
+  ],
+  "staticFields": [],
+  "staticMethods": [],
+  "constructors": []
+}

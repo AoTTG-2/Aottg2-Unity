@@ -1,0 +1,224 @@
+{
+  "kind": "extension",
+  "name": "LanguageEnum",
+  "description": "Enumeration of available language codes. Duplicates Locale language constants for consistency.",
+  "extends": [
+    "Object"
+  ],
+  "deprecated": "",
+  "instanceFields": [],
+  "instanceMethods": [],
+  "staticFields": [
+    {
+      "label": "Arabic",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Arabic language code.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "BrazilianPortuguese",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Brazilian Portuguese language code.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Chinese",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Chinese language code.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Czech",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Czech language code.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Dutch",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Dutch language code.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "English",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "English language code.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "French",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "French language code.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "German",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "German language code.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Greek",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Greek language code.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Indonesian",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Indonesian language code.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Italian",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Italian language code.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Japanese",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Japanese language code.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Korean",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Korean language code.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Polish",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Polish language code.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Russian",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Russian language code.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Spanish",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Spanish language code.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "TraditionalChinese",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Traditional Chinese language code.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Turkish",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Turkish language code.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Ukrainian",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Ukrainian language code.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    }
+  ],
+  "staticMethods": [],
+  "constructors": []
+}

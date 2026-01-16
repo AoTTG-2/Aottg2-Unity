@@ -1,0 +1,257 @@
+{
+  "kind": "class",
+  "name": "Player",
+  "description": "Represents a network player. Only master client or player may modify fields.",
+  "extends": [
+    "Object"
+  ],
+  "deprecated": "",
+  "instanceFields": [
+    {
+      "label": "Character",
+      "type": {
+        "name": "Character",
+        "typeArguments": []
+      },
+      "description": "Player's current character, if alive.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Connected",
+      "type": {
+        "name": "bool",
+        "typeArguments": []
+      },
+      "description": "Player is still connected to the room.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "ID",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "Player unique ID.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Name",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Player name.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Guild",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Player guild.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Team",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Player's chosen team. Note that this may be different from the character's final team (Character.Team field) if the character's team field is modified. Refer to TeamEnum",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Status",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Player's spawn status. Refer to PlayerStatusEnum",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "CharacterType",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Player's chosen character. Refer to CharacterTypeEnum",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Loadout",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Player's chosen loadout. Refer to LoadoutEnum",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Kills",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "Player's kills.",
+      "readonly": false,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Deaths",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "Player's deaths.",
+      "readonly": false,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "HighestDamage",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "Player's highest damage.",
+      "readonly": false,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "TotalDamage",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "Player's total damage.",
+      "readonly": false,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Ping",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "The player's connection ping.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "SpectateID",
+      "type": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "The player's spectating ID. If not spectating anyone, returns -1.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "SpawnPoint",
+      "type": {
+        "name": "Vector3",
+        "typeArguments": []
+      },
+      "description": "Player's respawn point. Is initially null and can be set back to null, at which point map spawn points are used.",
+      "readonly": false,
+      "private": false,
+      "deprecated": ""
+    }
+  ],
+  "instanceMethods": [
+    {
+      "label": "GetCustomProperty",
+      "returnType": {
+        "name": "Object",
+        "typeArguments": []
+      },
+      "description": "Get a custom property at given key. Must be a primitive type. This is synced to all clients.",
+      "parameters": [
+        {
+          "name": "property",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "The property key to get.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "SetCustomProperty",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Sets a custom property at given key. Must be a primitive type. This is synced to all clients.",
+      "parameters": [
+        {
+          "name": "property",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "The property key to set.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "value",
+          "type": {
+            "name": "Object",
+            "typeArguments": []
+          },
+          "description": "The value to set (must be a primitive type).",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "ClearKDR",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Clears kills, deaths, highestdamage, and totaldamage properties.",
+      "parameters": [],
+      "kind": "function",
+      "deprecated": ""
+    }
+  ],
+  "staticFields": [],
+  "staticMethods": [],
+  "constructors": []
+}

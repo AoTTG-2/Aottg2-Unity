@@ -10,11 +10,26 @@ namespace CustomLogic
         public static Dictionary<int, int> BinopSymbolPriorities = new Dictionary<int, int>();
         public static HashSet<int> ClassSymbols = new HashSet<int>();
         public static HashSet<int> ConditionalSymbols = new HashSet<int>();
+        private static bool _loaded = false;
 
         public static void Init()
         {
+            if (_loaded)
+                return;
+            ClearSymbols();
             AddSymbols();
             CategorizeSymbols();
+            _loaded = true;
+        }
+
+        private static void ClearSymbols()
+        {
+            Symbols.Clear();
+            SpecialSymbolNames.Clear();
+            AlphaSymbolNames.Clear();
+            BinopSymbolPriorities.Clear();
+            ClassSymbols.Clear();
+            ConditionalSymbols.Clear();
         }
 
         private static void AddSymbols()

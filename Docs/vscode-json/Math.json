@@ -1,0 +1,1176 @@
+{
+  "kind": "extension",
+  "name": "Math",
+  "description": "",
+  "extends": [
+    "Object"
+  ],
+  "deprecated": "",
+  "instanceFields": [],
+  "instanceMethods": [],
+  "staticFields": [
+    {
+      "label": "PI",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "The value of PI.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Infinity",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "The value of Infinity.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "NegativeInfinity",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "The value of Negative Infinity.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Rad2DegConstant",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "The value of Rad2Deg constant.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Deg2RadConstant",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "The value of Deg2Rad constant.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "Epsilon",
+      "type": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "The value of Epsilon.",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    }
+  ],
+  "staticMethods": [
+    {
+      "label": "Clamp",
+      "returnType": {
+        "name": "Object",
+        "typeArguments": []
+      },
+      "description": "Clamp a value between a minimum and maximum value. Returns: The clamped value. Will be the same type as the inputs",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "Object",
+            "typeArguments": []
+          },
+          "description": "The value to clamp. Can be int or float",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "min",
+          "type": {
+            "name": "Object",
+            "typeArguments": []
+          },
+          "description": "The minimum value. Can be int or float",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "max",
+          "type": {
+            "name": "Object",
+            "typeArguments": []
+          },
+          "description": "The maximum value. Can be int or float",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Max",
+      "returnType": {
+        "name": "Object",
+        "typeArguments": []
+      },
+      "description": "Get the maximum of two values. Returns: The maximum of the two values. Will be the same type as the inputs",
+      "parameters": [
+        {
+          "name": "a",
+          "type": {
+            "name": "Object",
+            "typeArguments": []
+          },
+          "description": "The first value. Can be int or float",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "b",
+          "type": {
+            "name": "Object",
+            "typeArguments": []
+          },
+          "description": "The second value. Can be int or float",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Min",
+      "returnType": {
+        "name": "Object",
+        "typeArguments": []
+      },
+      "description": "Get the minimum of two values. Returns: The minimum of the two values. Will be the same type as the inputs",
+      "parameters": [
+        {
+          "name": "a",
+          "type": {
+            "name": "Object",
+            "typeArguments": []
+          },
+          "description": "The first value. Can be int or float",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "b",
+          "type": {
+            "name": "Object",
+            "typeArguments": []
+          },
+          "description": "The second value. Can be int or float",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Pow",
+      "returnType": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Raise a value to the power of another value",
+      "parameters": [
+        {
+          "name": "a",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The base value.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "b",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The exponent value.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Abs",
+      "returnType": {
+        "name": "Object",
+        "typeArguments": []
+      },
+      "description": "Get the absolute value of a number. Returns: The absolute value. Will be the same type as the input",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "Object",
+            "typeArguments": []
+          },
+          "description": "The number. Can be int or float",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Sqrt",
+      "returnType": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Get the square root of a number",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The value to get the square root of.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Repeat",
+      "returnType": {
+        "name": "Object",
+        "typeArguments": []
+      },
+      "description": "Modulo for floats",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "Object",
+            "typeArguments": []
+          },
+          "description": "The value to repeat.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "max",
+          "type": {
+            "name": "Object",
+            "typeArguments": []
+          },
+          "description": "The maximum value to repeat to.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Mod",
+      "returnType": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "Get the remainder of a division operation",
+      "parameters": [
+        {
+          "name": "a",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "The dividend.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "b",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "The divisor.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Sin",
+      "returnType": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Get the sine of an angle. Returns: Value between -1 and 1",
+      "parameters": [
+        {
+          "name": "angle",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The angle in degrees",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Cos",
+      "returnType": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Get the cosine of an angle. Returns: Value between -1 and 1",
+      "parameters": [
+        {
+          "name": "angle",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The angle in degrees",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Tan",
+      "returnType": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Get the tangent of an angle in radians",
+      "parameters": [
+        {
+          "name": "angle",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The angle in degrees",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Asin",
+      "returnType": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Get the arcsine of a value in degrees",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The value (must be between -1 and 1).",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Acos",
+      "returnType": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Get the arccosine of a value in degrees",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The value (must be between -1 and 1).",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Atan",
+      "returnType": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Get the arctangent of a value in degrees",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The value to get the arctangent of.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Atan2",
+      "returnType": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Get the arctangent of a value in degrees",
+      "parameters": [
+        {
+          "name": "a",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The Y component.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "b",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The X component.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Ceil",
+      "returnType": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "Get the smallest integer greater than or equal to a value",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The value to round up.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Floor",
+      "returnType": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "Get the largest integer less than or equal to a value",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The value to round down.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Round",
+      "returnType": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "Round a value to the nearest integer",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The value to round.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Deg2Rad",
+      "returnType": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Convert an angle from degrees to radians",
+      "parameters": [
+        {
+          "name": "angle",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The angle in degrees.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Rad2Deg",
+      "returnType": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Convert an angle from radians to degrees",
+      "parameters": [
+        {
+          "name": "angle",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The angle in radians.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Lerp",
+      "returnType": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Linearly interpolate between two values",
+      "parameters": [
+        {
+          "name": "a",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The start value.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "b",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The end value.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "t",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The interpolation factor (clamped between 0 and 1).",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "LerpUnclamped",
+      "returnType": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Linearly interpolate between two values without clamping",
+      "parameters": [
+        {
+          "name": "a",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The start value.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "b",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The end value.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "t",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The interpolation factor (not clamped).",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Sign",
+      "returnType": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Get the sign of a value",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The value to get the sign of.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "InverseLerp",
+      "returnType": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Get the inverse lerp of two values",
+      "parameters": [
+        {
+          "name": "a",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The start value.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "b",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The end value.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The value to find the interpolation factor for.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "LerpAngle",
+      "returnType": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Linearly interpolate between two angles",
+      "parameters": [
+        {
+          "name": "a",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The start angle in degrees.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "b",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The end angle in degrees.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "t",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The interpolation factor (clamped between 0 and 1).",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Log",
+      "returnType": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Get the natural logarithm of a value",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The value to get the logarithm of.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "MoveTowards",
+      "returnType": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Move a value towards a target value",
+      "parameters": [
+        {
+          "name": "current",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The current value.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "target",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The target value.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "maxDelta",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The maximum change allowed.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "MoveTowardsAngle",
+      "returnType": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Move an angle towards a target angle",
+      "parameters": [
+        {
+          "name": "current",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The current angle in degrees.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "target",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The target angle in degrees.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "maxDelta",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The maximum change in degrees allowed.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "PingPong",
+      "returnType": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Get the ping pong value of a time value",
+      "parameters": [
+        {
+          "name": "t",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The time value.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "length",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The length of the ping pong cycle.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Exp",
+      "returnType": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Get the exponential value of a number",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The value to exponentiate.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "SmoothStep",
+      "returnType": {
+        "name": "float",
+        "typeArguments": []
+      },
+      "description": "Smoothly step between two values",
+      "parameters": [
+        {
+          "name": "a",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The start value.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "b",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The end value.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "t",
+          "type": {
+            "name": "float",
+            "typeArguments": []
+          },
+          "description": "The interpolation factor (clamped between 0 and 1).",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "BitwiseAnd",
+      "returnType": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "Perform a bitwise AND operation",
+      "parameters": [
+        {
+          "name": "a",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "The first integer.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "b",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "The second integer.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "BitwiseOr",
+      "returnType": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "Perform a bitwise OR operation",
+      "parameters": [
+        {
+          "name": "a",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "The first integer.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "b",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "The second integer.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "BitwiseXor",
+      "returnType": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "Perform a bitwise XOR operation",
+      "parameters": [
+        {
+          "name": "a",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "The first integer.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "b",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "The second integer.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "BitwiseNot",
+      "returnType": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "Perform a bitwise NOT operation",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "The integer to negate.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "BitwiseLeftShift",
+      "returnType": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "Shift bits to the left",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "The integer to shift.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "shift",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "The number of bits to shift left.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "BitwiseRightShift",
+      "returnType": {
+        "name": "int",
+        "typeArguments": []
+      },
+      "description": "Shift bits to the right",
+      "parameters": [
+        {
+          "name": "value",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "The integer to shift.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "shift",
+          "type": {
+            "name": "int",
+            "typeArguments": []
+          },
+          "description": "The number of bits to shift right.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    }
+  ],
+  "constructors": []
+}

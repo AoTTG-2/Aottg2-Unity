@@ -1,0 +1,219 @@
+{
+  "kind": "extension",
+  "name": "Locale",
+  "description": "Internationalization (Locale) utility for managing localized strings. Supports single-level (non-recursive) language fallbacks and automatic UI language detection.",
+  "extends": [
+    "Object"
+  ],
+  "deprecated": "",
+  "instanceFields": [],
+  "instanceMethods": [],
+  "staticFields": [
+    {
+      "label": "CurrentLanguage",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Returns the current language (e.g. \"English\" or \"简体中文\").",
+      "readonly": true,
+      "private": false,
+      "deprecated": ""
+    },
+    {
+      "label": "DefaultLanguage",
+      "type": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "The default language to use when a string is not found in the current language pack. English by default. Refer to LanguageEnum",
+      "readonly": false,
+      "private": false,
+      "deprecated": ""
+    }
+  ],
+  "staticMethods": [
+    {
+      "label": "Get",
+      "returnType": {
+        "name": "string",
+        "typeArguments": []
+      },
+      "description": "Get the localized string for the given key. Searches the current UI language, then any registered fallbacks, and finally the default language. Throws an exception if the key is not found in any language pack.",
+      "parameters": [
+        {
+          "name": "key",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "The key of the localized string to get.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "Set",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Set or override a localized string for the specified language and key.",
+      "parameters": [
+        {
+          "name": "language",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "The language code. Refer to LanguageEnum",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "key",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "The key of the localized string.",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "value",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "The localized string value.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "RegisterLanguage",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Register a single-level (non-recursive) fallback: if a string is not found in 'fromLanguage', the system will search only in 'toLanguage', without chaining further.",
+      "parameters": [
+        {
+          "name": "language",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "The language code to register. Refer to LanguageEnum",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "strings",
+          "type": {
+            "name": "Dict",
+            "typeArguments": [
+              {
+                "name": "string",
+                "typeArguments": []
+              },
+              {
+                "name": "string",
+                "typeArguments": []
+              }
+            ]
+          },
+          "description": "The dictionary containing key-value pairs of localized strings.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "RegisterLanguages",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Register all localized strings from JSON files for a specific category across all available languages. Use 'internal://' prefix for internal files (e.g., 'internal://BasicTutorialMap') or no prefix for external files (e.g., 'MyCustomMod').",
+      "parameters": [
+        {
+          "name": "pattern",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "The category pattern. Use 'internal://' prefix for internal files or no prefix for external files.",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "RegisterFallback",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Register a fallback language. When a string is not found in 'fromLanguage', it will try 'toLanguage'.",
+      "parameters": [
+        {
+          "name": "fromLanguage",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "The language code that will fallback to another language. Refer to LanguageEnum",
+          "isOptional": false,
+          "isVariadic": false
+        },
+        {
+          "name": "toLanguage",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "The language code to fallback to. Refer to LanguageEnum",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    },
+    {
+      "label": "RemoveFallback",
+      "returnType": {
+        "name": "void",
+        "typeArguments": []
+      },
+      "description": "Remove a language fallback.",
+      "parameters": [
+        {
+          "name": "fromLanguage",
+          "type": {
+            "name": "string",
+            "typeArguments": []
+          },
+          "description": "The language code to remove the fallback for. Refer to LanguageEnum",
+          "isOptional": false,
+          "isVariadic": false
+        }
+      ],
+      "kind": "function",
+      "deprecated": ""
+    }
+  ],
+  "constructors": []
+}
