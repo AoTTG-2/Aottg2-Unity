@@ -387,7 +387,7 @@ namespace Controllers
                     _attackRange = CloseAttackRange * _titan.Size;
                     MoveToEnemy();
                 }
-                if (distance < _moveToRange || !_moveToActive || (_moveToExact && _moveToTimeout <= 0))
+                else if (distance < _moveToRange || !_moveToActive || (_moveToExact && _moveToTimeout <= 0))
                 {
                     if (_moveToExact)
                     {

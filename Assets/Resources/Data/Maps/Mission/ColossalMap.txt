@@ -1,5 +1,5 @@
 /// Options
-EditorVersion:1.0|Description:A colossal titan appears at the wall.|HasWeather:0
+EditorVersion:1.0|Description:A colossal titan appears at the wall.|HasWeather:1
 /// CustomAssets
 
 /// Objects
@@ -477,25 +477,6 @@ Scene,Decor/Box1,2767,0,1,1,1,0,Box1,603,10.45856,53,0,299.3333,0,0.75,0.75,0.75
 Scene,Decor/Box1,2768,0,1,1,1,0,Box1,604.2816,10.45856,84.18816,0,299.3333,0,0.75,0.75,0.75,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Barrel4,2769,0,1,1,1,0,Barrel4,483.6082,10.27209,-61.77251,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Barrel4,2770,0,1,1,1,0,Barrel4,477.1974,12.62389,-53.61294,292.0137,45.26635,274.1263,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Geometry/Cuboid,2779,0,1,1,1,0,Cuboid,-3.700378,19.518,-408.3779,0,0,0,1.948371,1.36248,13.25029,Physical,Entities,Default,Basic|255/255/255/255|Brick/Brick7|1.5/3|0/0,;
-Scene,Geometry/Cuboid,2772,0,1,1,1,0,Cuboid,-3.700378,19.77507,-408.3779,0,0,0,1.843331,1.36248,13.16654,Physical,Entities,Default,Basic|255/255/255/255|Nature/Grass4|0.5/2|0/0,;
-Scene,Nature/Tree18,2773,0,1,1,1,0,Tree18,-4.679422,26.49871,-458.855,0,0,0,0.1,0.1,0.1,None,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Tree18,2774,0,1,1,1,0,Tree18,-4.679422,26.49871,-428.3138,0,0,0,0.1,0.1,0.1,None,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Tree18,2775,0,1,1,1,0,Tree18,-4.679422,26.49871,-388.9454,0,0,0,0.1,0.1,0.1,None,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Tree18,2776,0,1,1,1,0,Tree18,-4.679422,26.49871,-357.7726,0,0,0,0.1,0.1,0.1,None,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Field3,2786,0,1,1,1,0,Field3,-4.121251,26.50008,-405.4602,0,270,0,0.25,0.2,0.25,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Field3,2785,0,1,1,1,0,Field3,-4.121251,26.50008,-423.0572,0,270,0,0.25,0.2,0.25,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Field3,2784,0,1,1,1,0,Field3,-4.121251,26.50008,-442.6237,0,270,0,0.25,0.2,0.25,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Field3,2783,0,1,1,1,0,Field3,-4.121251,26.50008,-463.3177,0,270,0,0.25,0.2,0.25,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Field3,2787,0,1,1,1,0,Field3,-4.121251,26.50008,-388.6117,0,270,0,0.25,0.2,0.25,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Field3,2788,0,1,1,1,0,Field3,-4.121251,26.50008,-371.2019,0,270,0,0.25,0.2,0.25,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Field3,2789,0,1,1,1,0,Field3,-4.121251,26.50008,-354.6767,0,270,0,0.25,0.2,0.25,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Field3,2790,0,1,1,1,0,Field3,-4.121251,26.50008,-365.0645,0,0,0,0.2,0.2,0.2,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Field3,2791,0,1,1,1,0,Field3,-3.608257,26.50008,-379.1835,0,180,0,0.2,0.2,0.2,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Field3,2792,0,1,1,1,0,Field3,-3.608257,26.50008,-414.4652,0,180,0,0.2,0.2,0.2,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Field3,2793,0,1,1,1,0,Field3,-3.608257,26.50008,-451.5694,0,180,0,0.2,0.2,0.2,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Field3,2794,0,1,1,1,0,Field3,-3.608257,26.50008,-433.897,0,0,0,0.2,0.2,0.2,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Field3,2795,0,1,1,1,0,Field3,-3.608257,26.50008,-395.1432,0,0,0,0.2,0.2,0.2,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Tree12,2810,0,1,1,1,0,Tree12,-396.7007,42.04031,-84.24413,0,0,0,0.2,0.33,0.2,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Tree12,2811,0,1,1,1,0,Tree12,-334.1427,41.58248,28.27917,0,0,0,0.2,0.33,0.2,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Bell1b,2926,0,1,0,1,1,Bell1b,482,111,-505,0,0,0,1.5,1.5,1.5,Physical,Entities,Default,Default|255/255/255/255,Bell|ResetDelay:0.3|LureTitans:false|LureRadius:100|LureDuration:5|VelocityHitThreshold:30;
@@ -1147,48 +1128,55 @@ class Main
 	_wallGateDestroyed = null;
 	_hasFinalDialogue = false;
 	_bossHealthBar = null;
+	_difficulty = 1;
+	_civilians = null;
+	_startAttackCooldown = 5.0;
 
 	function OnGameStart()
 	{
 		Game.SetPlaylist("Battle");
-		difficulty = Game.GetGeneralSetting("Difficulty");
-		if (difficulty == 0)
+		self._difficulty = Game.GetGeneralSetting("Difficulty");
+		if (self._difficulty == 0)
 		{
 			self._handCooldown = 1000.0;
 		}
-		elif (difficulty == 1)
+		elif (self._difficulty == 1)
 		{
 			self._handCooldown = 10.0;
 		}
-		elif (difficulty == 2)
+		elif (self._difficulty == 2)
 		{
 			self._handCooldown = 7.0;
 		}
-		elif (difficulty == 3)
+		elif (self._difficulty == 3)
 		{
 			self._handCooldown = 5.5;
 		}
-		elif (difficulty == 4)
+		elif (self._difficulty == 4)
 		{
 			self._handCooldown = 4.0;
 		}
-
 		self._bossHealthBar = BossHealthBar("Colossal Titan", 1000.0, "Top", true);
-
-        # Set hand health values
-        self._bossHealthBar.SetLeftHandMaxHealth(500.0);
-        self._bossHealthBar.SetLeftHandHealth(500.0);
-        self._bossHealthBar.SetRightHandMaxHealth(500.0);
-        self._bossHealthBar.SetRightHandHealth(500.0);
-
-        # Show the health bar
-        self._bossHealthBar.Show();
-
 		self._wallGateStart = Map.FindMapObjectByName("WallGateStart");
 		self._wallGateDestroyed = Map.FindMapObjectByName("WallGateDestroyed");
+		self._civilians = Map.FindMapObjectByName("Civilians").GetComponent("Civilians");
+
 		if (Network.IsMasterClient)
 		{
+			self.ColossalCutscene();
 			Network.SendMessageAll("StartCutscene");
+		}
+	}
+
+	function OnPlayerJoin(player)
+	{
+		if (self._colossal != null)
+		{
+			Network.SendMessage(player, "SetColossal " + self._colossal.ViewID);
+			if (self._hasKicked)
+			{
+				Network.SendMessage(player, "DestroyGate");
+			}
 		}
 	}
 
@@ -1202,14 +1190,50 @@ class Main
 			}
 			elif (message == "DestroyGate")
 			{
-				self._wallGateStart.Active = false;
-				self._wallGateDestroyed.Active = true;
+				self.SetDestroyedGate();
 			}
 			elif (message == "FinalDialogue")
 			{
 				self.FinalDialogue();
 			}
+			elif (String.StartsWith(message, "SetColossal "))
+			{
+				viewID = Convert.ToInt(String.Substring(message, 12));
+				self._colossal = Game.FindCharacterByViewID(viewID);
+				self.SetHealthBar();
+			}
 		}
+	}
+
+	coroutine ColossalCutscene()
+	{
+		spawnPosition = Vector3(0, 8, 755);
+		startRotation = Vector3(0, 180, 0);
+		Game.SpawnEffect("ColossalSpawn", Vector3(0, 150, 765), Vector3(-90, 0, 0), 5.0);
+		wait 2.5;
+		colossal = Game.SpawnShifterAt("WallColossal", spawnPosition, -180);
+		colossal.Size = 0.945;
+		rb = colossal.Rigidbody;
+		rb.FreezeAllPositions = true;
+		rb.FreezeAllRotations = true;
+		Network.SendMessageAll("SetColossal " + colossal.ViewID);
+		self._colossal = colossal;
+		wait 1.0;
+		colossal.Attack("AttackKick");
+		colossal.WallAttackCooldownLeft = 999;
+		wait 1.0;
+		Network.SendMessageAll("DestroyGate");
+		position = Vector3(0, 50, 650);
+		velocity = Vector3(0, 200, -200);
+		gravity = Vector3(0, -9000, 0);
+		Game.SpawnUnscaledEffect("ColossalKick", position, Vector3(0,180,0));
+		Game.SpawnProjectile("Rock2", position, Vector3.Zero, velocity, gravity, 10000, "Titan", 15.0);
+		wait 3.5;
+		if (self._hasSpawned)
+		{
+			colossal.WallAttackCooldownLeft = self._startAttackCooldown;
+		}
+		Main._titanSpawnTimeLeft = 5.0;
 	}
 
 	function FinalDialogue()
@@ -1219,99 +1243,106 @@ class Main
 
 	function OnTick()
 	{
-		if (Network.IsMasterClient && !Game.IsEnding)
+		if (!Game.IsEnding)
 		{
-			self._titanSpawnTimeLeft -= Time.TickTime;
-			titans = Game.Titans.Count;
-			humans = Game.Humans.Count;
-			aiShifters = Game.AIShifters.Count;
-			playerShifters = Game.PlayerShifters.Count;
-			if (humans > 0 || playerShifters > 0)
+			if (Network.IsMasterClient)
 			{
-				self._hasSpawned = true;
-			}
-			if (aiShifters > 0)
-			{
-				self._hasSpawnedEnemy = true;
-			}
-			if (aiShifters == 0 && self._hasSpawnedEnemy)
-			{
-				if (titans > 0 && !self._hasFinalDialogue)
+				self._titanSpawnTimeLeft -= Time.TickTime;
+				titans = Game.Titans.Count;
+				humans = Game.Humans.Count;
+				aiShifters = Game.AIShifters.Count;
+				playerShifters = Game.PlayerShifters.Count;
+				if (!self._hasSpawned && (humans > 0 || playerShifters > 0))
 				{
-					self._hasFinalDialogue = true;
-					Network.SendMessageAll("FinalDialogue");
-					return;
+					self._hasSpawned = true;
+					if (self._colossal != null)
+					{
+						self._colossal.WallAttackCooldownLeft = self._startAttackCooldown;
+					}
 				}
-				if (titans <= 0)
+				if (aiShifters > 0)
 				{
-					UI.SetLabelAll("TopCenter", "");
-					UI.SetLabelAll("MiddleCenter", "Humanity wins!");
+					self._hasSpawnedEnemy = true;
+				}
+				if (aiShifters == 0 && self._hasSpawnedEnemy)
+				{
+					if (titans > 0 && !self._hasFinalDialogue)
+					{
+						self._hasFinalDialogue = true;
+						Network.SendMessageAll("FinalDialogue");
+						return;
+					}
+					if (titans <= 0)
+					{
+						UI.SetLabelAll("TopCenter", "");
+						UI.SetLabelAll("MiddleCenter", "Humanity wins!");
+						Game.End(10.0);
+						return;
+					}
+				}
+				if (humans == 0 && playerShifters == 0 && self._hasSpawned)
+				{
+					UI.SetLabelAll("MiddleCenter", "Humanity failed!");
 					Game.End(10.0);
 					return;
 				}
-			}
-			if (humans == 0 && playerShifters == 0 && self._hasSpawned)
-			{
-				UI.SetLabelAll("MiddleCenter", "Humanity failed!");
-				Game.End(10.0);
-				return;
-			}
-			if (self._colossal != null && self._hasKicked)
-			{
-				if (self._handMode)
-				{
-					#UI.SetLabelAll("TopCenter", "<b><size=28><color=#008000>Colossal Hand: </color>" + self._colossal.HandHealth + "</size></b>");
-					if (self._colossal.LeftHandHealth <= 0 && self._colossal.RightHandHealth <= 0)
-					{
-						self._handMode = false;
-						self._colossal.StopSteam();
-						self._handCooldownLeft = self._handCooldown;
-					}
-				}
 				else
 				{
-					#UI.SetLabelAll("TopCenter", "<b><size=28><color=#ff0000>Colossal Nape: </color>" + self._colossal.Health + "</size></b>");
-					self._handCooldownLeft -= Time.TickTime;
-					if (self._handCooldownLeft <= 0)
+					UI.SetLabelAll("TopCenter", "");
+				}
+
+				if (self._colossal != null && self._hasKicked)
+				{
+					if (Network.IsMasterClient)
 					{
-						if (self._colossal.SteamState == "Off")
+						if (self._handMode)
 						{
-							self._colossal.AttackSteam();
+							#UI.SetLabelAll("TopCenter", "<b><size=28><color=#008000>Colossal Hand: </color>" + self._colossal.HandHealth + "</size></b>");
+							if (self._colossal.LeftHandHealth <= 0 && self._colossal.RightHandHealth <= 0)
+							{
+								self._handMode = false;
+								self._colossal.StopSteam();
+								self._handCooldownLeft = self._handCooldown;
+							}
 						}
 						else
 						{
-							self._handMode = true;
-							self._colossal.HandHealth = self._colossal.MaxHandHealth;
+							#UI.SetLabelAll("TopCenter", "<b><size=28><color=#ff0000>Colossal Nape: </color>" + self._colossal.Health + "</size></b>");
+							self._handCooldownLeft -= Time.TickTime;
+							if (self._handCooldownLeft <= 0)
+							{
+								if (self._colossal.SteamState == "Off")
+								{
+									self._colossal.AttackSteam();
+								}
+								else
+								{
+									self._handMode = true;
+									self._colossal.HandHealth = self._colossal.MaxHandHealth;
+								}
+							}
 						}
 					}
 				}
-
-				if (self._bossHealthBar != null)
+				if (self._difficulty > 0 && self._titanSpawnTimeLeft <= 0 && titans < self.MaxTitans && self._colossal != null)
 				{
-					self._bossHealthBar.SetMaxHealth(self._colossal.MaxHealth);
-					self._bossHealthBar.SetCurrentHealth(self._colossal.Health);
-					self._bossHealthBar.SetLeftHandMaxHealth(self._colossal.MaxLeftHandHealth);
-					self._bossHealthBar.SetLeftHandHealth(self._colossal.LeftHandHealth);
-					self._bossHealthBar.SetRightHandMaxHealth(self._colossal.MaxRightHandHealth);
-					self._bossHealthBar.SetRightHandHealth(self._colossal.RightHandHealth);
-					if (self._bossHealthBar.IsDead())
-					{
-						self._bossHealthBar.Hide();
-					}
+					self._titanSpawnTimeLeft = self.TitanSpawnTime;
+					self.SpawnTitan();
 				}
+
+				self.UpdateTopLabel();
 			}
-			elif (titans > 0)
+		}
+
+		if (self._colossal != null && self._bossHealthBar != null)
+		{
+			self._bossHealthBar.SetCurrentHealth(self._colossal.Health);
+			self._bossHealthBar.SetLeftHandHealth(self._colossal.LeftHandHealth);
+			self._bossHealthBar.SetRightHandHealth(self._colossal.RightHandHealth);
+
+			if (self._bossHealthBar.IsDead())
 			{
-				UI.SetLabelAll("TopCenter", "Titans Left: " + titans);
-			}
-			else
-			{
-				UI.SetLabelAll("TopCenter", "");
-			}
-			if (self._titanSpawnTimeLeft <= 0 && titans < self.MaxTitans && self._colossal != null)
-			{
-				self._titanSpawnTimeLeft = self.TitanSpawnTime;
-				self.SpawnTitan();
+				self._bossHealthBar.Hide();
 			}
 		}
 	}
@@ -1324,6 +1355,32 @@ class Main
 		titan.UsePathfinding = true;
 		titan.DetectRange = 150;
 		titan.FocusRange = 300;
+	}
+
+	function SetHealthBar()
+	{
+		self._bossHealthBar.SetMaxHealth(self._colossal.MaxHealth);
+		self._bossHealthBar.SetCurrentHealth(self._colossal.Health);
+		self._bossHealthBar.SetLeftHandMaxHealth(self._colossal.MaxLeftHandHealth);
+		self._bossHealthBar.SetLeftHandHealth(self._colossal.LeftHandHealth);
+		self._bossHealthBar.SetRightHandMaxHealth(self._colossal.MaxRightHandHealth);
+		self._bossHealthBar.SetRightHandHealth(self._colossal.RightHandHealth);
+		self._bossHealthBar.Show();
+	}
+
+	function SetDestroyedGate()
+	{
+		self._wallGateStart.Active = false;
+		self._wallGateDestroyed.Active = true;
+		self._hasKicked = true;
+	}
+
+	function UpdateTopLabel()
+	{
+		if (!Game.IsEnding)
+		{
+			UI.SetLabelAll("TopCenter", "Titans: " + Convert.ToString(Game.Titans.Count) + "    Civilians health: " + Convert.ToString(self._civilians.GetHealthPercentage()) + "%");
+		}
 	}
 }
 
@@ -1338,58 +1395,17 @@ cutscene MainCutscene
 		Camera.SetRotation(startRotation);
 		Camera.SetVelocity(velocity);
 		Cutscene.ShowDialogue("Armin1", "Armin", "The colossal titan is coming, prepare yourselves!");
-		Game.SpawnEffect("ColossalSpawn", Vector3(0, 150, 765), Vector3(-90, 0, 0), 5.0);
-		wait 2.5;
-		human = Network.MyPlayer.Character;
-		if (human != null && human.Type == "Human")
-		{
-			human.IsInvincible = true;
-			human.InvincibleTimeLeft = 100.0;
-		}
-		if (Network.IsMasterClient)
-		{
-			colossal = Game.SpawnShifterAt("WallColossal", spawnPosition, -180);
-			colossal.Size = 0.945;
-			rb = colossal.Rigidbody;
-			rb.FreezeXPosition = true;
-			rb.FreezeYPosition = true;
-			rb.FreezeZPosition = true;
-			Main._colossal = colossal;
-		}
-		wait 1.0;
-		if (Network.IsMasterClient)
-		{
-			colossal.Attack("AttackKick");
-			colossal.WallAttackCooldownLeft = 2.0;
-			Main._hasKicked = true;
-		}
-		wait 0.5;
+		wait 4.0;
 		Camera.SetPosition(Vector3(200, 120, 400));
 		Camera.SetRotation(Vector3(0, -50, 0));
 		Camera.SetVelocity(velocity * -1.0);
-		wait 0.5;
-		if (Network.IsMasterClient)
-		{
-			Network.SendMessageAll("DestroyGate");
-			position = Vector3(0, 50, 650);
-			velocity = Vector3(0, 200, -200);
-			gravity = Vector3(0, -9000, 0);
-            Game.SpawnUnscaledEffect("ColossalKick", position, Vector3(0,180,0));
-			Game.SpawnProjectile("Rock2", position, Vector3.Zero, velocity, gravity, 10000, "Titan", 15.0);
-		}
-		wait 2.0;
+		wait 2.5;
 		Camera.SetPosition(Vector3(-150, 340, 630));
 		Camera.SetRotation(Vector3(0, 70, 0));
 		Camera.SetVelocity(Vector3.Zero);
 		Cutscene.HideDialogue();
 		wait 1.5;
 		Cutscene.ShowDialogue("Armin1", "Armin", "We can't get close to the Colossal titan with all the steam. Attack his hands first to distract him!");
-		wait 6.0;
-		if (human != null && human.Type == "Human")
-		{
-			human.InvincibleTimeLeft = 1.0;
-		}
-		Main._titanSpawnTimeLeft = 5.0;
 	}
 }
 
@@ -1421,6 +1437,7 @@ component MoveTo
 component Civilians
 {
 	_health = 1000;
+	_maxHealth = 1000;
 
 	function Init()
 	{
@@ -1429,27 +1446,33 @@ component Civilians
 
 	function OnGameStart()
 	{
-		self._health = Main.CiviliansHealth;
+		self.SetHealth(Main.CiviliansHealth);
 	}
 
 	function OnGetHit(character, name, damage, type, position)
 	{
 		if (character.Type == "Titan" && Network.IsMasterClient)
 		{
+			Game.ShowKillFeedAll(name, "Civilians", damage, type);
 			Game.SpawnEffect("Blood2", position, Vector3(), 5.0);
 
 			if (!Game.IsEnding)
 			{
-				self._health -= damage;
-
-				if (self._health <= 0)
-				{
-					UI.SetLabelAll("MiddleCenter", "<size=30><b>The civilians have been killed.</b></size>" + String.Newline + "Humanity failed.");
-					UI.SetLabelAll("TopCenter", "");
-					UI.SetLabelAll("BottomCenter", "");
-					Game.End(10.0);
-				}
+				self.NetworkView.SendMessageAll("SetHealth " + Convert.ToString(damage));
 			}
+		}
+	}
+
+	function OnNetworkMessage(sender, message)
+	{
+		if (sender == Network.MasterClient)
+		{
+			if (String.StartsWith(message, "SetHealth "))
+			{
+				damage = Convert.ToInt(String.Substring(message, 10));
+				self.TakeDamage(damage);
+			}
+
 		}
 	}
 
@@ -1459,6 +1482,32 @@ component Civilians
 		{
 			UI.SetLabelForTime("MiddleCenter", "<size=30><color=red><b>The civilians are under attack!</b></color></size>", 0.5);
 		}
+	}
+
+	function TakeDamage(damage)
+	{
+		self._health -= damage;
+
+		if (self._health <= 0)
+		{
+			self._health = 0;
+
+			UI.SetLabelAll("MiddleCenter", "<size=30><b>The civilians have been killed.</b></size>" + String.Newline + "Humanity failed.");
+			UI.SetLabelAll("TopCenter", "");
+			UI.SetLabelAll("BottomCenter", "");
+			Game.End(10.0);
+		}
+	}
+
+	function GetHealthPercentage()
+	{
+		return Math.Ceil(Convert.ToFloat(self._health) / self._maxHealth * 100);
+	}
+
+	function SetHealth(health)
+	{
+		self._maxHealth = health;
+		self._health    = health;
 	}
 }
 
@@ -1473,6 +1522,7 @@ component TitanWarning
 		}
 	}
 }
+
 class BossHealthBar
 {
     # Configuration (set via Init)
@@ -1491,7 +1541,7 @@ class BossHealthBar
     _healthBarFill = null;
     _nameLabel = null;
     _healthLabel = null;
-    _isVisible = false;
+    _isVisible = true;
 
     # Hand health bars (vertical)
     _leftHandContainer = null;
@@ -1551,11 +1601,12 @@ class BossHealthBar
         self._rootContainer = UI.VisualElement()
             .Absolute(true)
             .Width(40, true)
-            .Height(10, true)
-            .Top(1, true)
+            .Height(8, true)
+            .Top(4, true)
             .Left(30, true)
             .Right(30, true)
-            .Padding(10, false)
+            .Padding(0.5, true)
+            .BorderRadius(3)
             .BackgroundColor(Color(20, 20, 20, 200));
 
         # Create layout based on label position
@@ -1580,6 +1631,7 @@ class BossHealthBar
         mainRow = UI.VisualElement()
             .FlexDirection("Row")
             .Width(100, true)
+            .Height(100, true)
             .AlignItems("Center")
             .JustifyContent("SpaceBetween");
 
@@ -1592,12 +1644,14 @@ class BossHealthBar
             .FlexDirection("Column")
             .FlexGrow(1)
             .FlexShrink(1)
+            .Height(100, true)
             .MarginLeft(15, false)
             .MarginRight(15, false);
 
         # Boss name label on top
         self._nameLabel = UI.Label(self._bossName)
-            .FontSize(18, false)
+            .Height(55,true)
+            .FontSize(70, true)
             .FontStyle("Bold")
             .Color(Color(255, 255, 255))
             .AlignSelf("Center");
@@ -1605,16 +1659,28 @@ class BossHealthBar
         # Create custom health bar
         self.CreateHealthBar();
 
-        # Health text label below bar
+        healthContainer = UI.VisualElement()
+            .Width(100, true)
+            .Height(100, true)
+            .Absolute(true)
+            .AlignItems("Center")
+            .JustifyContent("SpaceBetween");
+
+        # Health text label
         self._healthLabel = UI.Label(self.GetHealthText())
-            .FontSize(14, false)
+            .Absolute(true)
+            .Height(100,true)
+            .FontSize(75, true)
             .FontStyle("Bold")
-            .Color(Color(255, 255, 255))
-            .AlignSelf("Center");
+            .Padding(0,true)
+            .Margin(0,true)
+            .Color(Color(255, 255, 255));
+
+        healthContainer.Add(self._healthLabel);
+        self._healthBarContainer.Add(healthContainer);
 
         centerContainer.Add(self._nameLabel);
         centerContainer.Add(self._healthBarContainer);
-        centerContainer.Add(self._healthLabel);
 
         mainRow.Add(centerContainer);
 
@@ -1635,7 +1701,7 @@ class BossHealthBar
 
         # Boss name label on the left
         self._nameLabel = UI.Label(self._bossName)
-            .FontSize(24, true)
+            .FontSize(65, true)
             .FontStyle("Bold")
             .Color(Color(255, 255, 255))
             .FlexShrink(0)
@@ -1652,7 +1718,7 @@ class BossHealthBar
 
         # Health text label
         self._healthLabel = UI.Label(self.GetHealthText())
-            .FontSize(14, true)
+            .FontSize(50, true)
             .FontStyle("Bold")
             .Color(Color(255, 255, 255))
             .AlignSelf("Center")
@@ -1667,25 +1733,21 @@ class BossHealthBar
         self._rootContainer.Add(container);
     }
 
+
     function CreateVerticalHandBar(isLeftHand)
     {
         # Outer container for the hand health bar
         container = UI.VisualElement()
+            .AspectRatio(1,"Width")
+            .Height(100, true)
             .FlexDirection("Column")
             .AlignItems("Center")
-            .Width(50, false)
-            .FlexShrink(0);
-
-        # Stack container for bar and icon overlay (icon size only)
-        stackContainer = UI.VisualElement()
-            .Width(50, false)
-            .Height(50, false)
             .FlexShrink(0);
 
         # Background container for the vertical bar (icon size)
         barBackground = UI.VisualElement()
-            .Width(50, false)
-            .Height(50, false)
+            .Width(100, true)
+            .Height(100, true)
             .BackgroundColor(Color(40, 40, 40, 200))
             .BorderRadius(4, false)
             .BorderWidth(2, false)
@@ -1705,33 +1767,25 @@ class BossHealthBar
 
         barBackground.Add(fill);
 
+        handIconScale = -1;
+
+        if (isLeftHand)
+        {
+            handIconScale = 1;
+        }
+
         # Icon overlay on top (same size as container)
         icon = UI.Icon("Icons/Specials/EscapeSpecialIcon")
-            .Width(50, false)
-            .Height(50, false)
+            .Width(100, true)
+            .Height(100, true)
+            .TransformScale(handIconScale, 1)
             .Absolute(true)
+            .Padding(5, true)
             .Top(0, false)
             .Left(0, false);
 
-        stackContainer.Add(barBackground);
-        stackContainer.Add(icon);
-
-        # Label for hand name
-        handLabelText = "Right Hand";
-        if (isLeftHand)
-        {
-            handLabelText = "Left Hand";
-        }
-
-        handLabel = UI.Label(handLabelText)
-            .FontSize(12, false)
-            .FontStyle("Bold")
-            .Color(Color(255, 255, 255))
-            .AlignSelf("Center")
-            .MarginTop(5, false);
-
-        container.Add(stackContainer);
-        container.Add(handLabel);
+        container.Add(barBackground);
+        container.Add(icon);
 
         if (isLeftHand)
         {
@@ -1751,9 +1805,8 @@ class BossHealthBar
     {
         # Container for the health bar with border
         self._healthBarContainer = UI.VisualElement()
-            .Width(100, true)
-            .Height(23, false)
             .BackgroundColor(Color(40, 40, 40, 255))
+            .Height(25)
             .BorderRadius(4, false)
             .BorderWidth(2, false)
             .BorderColor(Color(80, 80, 80, 255))
@@ -1820,7 +1873,7 @@ class BossHealthBar
         # Update left hand
         if (self._leftHandFill != null)
         {
-            leftPercentage = (self._leftHandHealth / self._leftHandMaxHealth) * 100.0;
+            leftPercentage = (Convert.ToFloat(self._leftHandHealth) / self._leftHandMaxHealth) * 100.0;
             self._leftHandFill.Height(leftPercentage, true);
             self.UpdateHandBarColor(self._leftHandFill, leftPercentage);
         }
@@ -1828,7 +1881,7 @@ class BossHealthBar
         # Update right hand
         if (self._rightHandFill != null)
         {
-            rightPercentage = (self._rightHandHealth / self._rightHandMaxHealth) * 100.0;
+            rightPercentage = (Convert.ToFloat(self._rightHandHealth) / self._rightHandMaxHealth) * 100.0;
             self._rightHandFill.Height(rightPercentage, true);
             self.UpdateHandBarColor(self._rightHandFill, rightPercentage);
         }
@@ -2123,31 +2176,32 @@ class BossHealthBar
     }
 }
 
+
 /// Weather
 {
-    "Skybox" : "Day1",
+    "Skybox" : "Dawn1",
     "SkyboxColor" : [
-        128,
-        128,
-        128,
+        0,
+        164,
+        255,
         255
     ],
     "Daylight" : [
         255,
-        255,
-        255,
+        250,
+        250,
         255
     ],
-    "DaylightIntensity" : 1,
+    "DaylightIntensity" : 1.68259847164154,
     "DaylightDirection" : [
         45,
         45,
         0
     ],
     "AmbientLight" : [
-        126,
-        122,
-        114,
+        115,
+        123,
+        157,
         255
     ],
     "Flashlight" : [
@@ -2156,11 +2210,11 @@ class BossHealthBar
         255,
         0
     ],
-    "FogDensity" : 0,
+    "FogDensity" : 0.00800000037997961,
     "FogColor" : [
-        128,
-        128,
-        128,
+        157,
+        178,
+        200,
         255
     ],
     "Rain" : 0,
