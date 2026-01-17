@@ -1252,7 +1252,7 @@ class Main
 				humans = Game.Humans.Count;
 				aiShifters = Game.AIShifters.Count;
 				playerShifters = Game.PlayerShifters.Count;
-				if (humans > 0 || playerShifters > 0)
+				if (!self._hasSpawned && (humans > 0 || playerShifters > 0))
 				{
 					self._hasSpawned = true;
 					if (self._colossal != null)
@@ -1602,10 +1602,10 @@ class BossHealthBar
             .Absolute(true)
             .Width(40, true)
             .Height(8, true)
-            .Top(5, true)
+            .Top(4, true)
             .Left(30, true)
             .Right(30, true)
-            .Padding(10, false)
+            .Padding(0.5, true)
             .BorderRadius(3)
             .BackgroundColor(Color(20, 20, 20, 200));
 
@@ -1631,6 +1631,7 @@ class BossHealthBar
         mainRow = UI.VisualElement()
             .FlexDirection("Row")
             .Width(100, true)
+            .Height(100, true)
             .AlignItems("Center")
             .JustifyContent("SpaceBetween");
 
@@ -1643,12 +1644,14 @@ class BossHealthBar
             .FlexDirection("Column")
             .FlexGrow(1)
             .FlexShrink(1)
+            .Height(100, true)
             .MarginLeft(15, false)
             .MarginRight(15, false);
 
         # Boss name label on top
         self._nameLabel = UI.Label(self._bossName)
-            .FontSize(18, false)
+            .Height(55,true)
+            .FontSize(70, true)
             .FontStyle("Bold")
             .Color(Color(255, 255, 255))
             .AlignSelf("Center");
@@ -1667,7 +1670,7 @@ class BossHealthBar
         self._healthLabel = UI.Label(self.GetHealthText())
             .Absolute(true)
             .Height(100,true)
-            .FontSize(14, false)
+            .FontSize(75, true)
             .FontStyle("Bold")
             .Padding(0,true)
             .Margin(0,true)
@@ -1698,7 +1701,7 @@ class BossHealthBar
 
         # Boss name label on the left
         self._nameLabel = UI.Label(self._bossName)
-            .FontSize(24, true)
+            .FontSize(65, true)
             .FontStyle("Bold")
             .Color(Color(255, 255, 255))
             .FlexShrink(0)
@@ -1715,7 +1718,7 @@ class BossHealthBar
 
         # Health text label
         self._healthLabel = UI.Label(self.GetHealthText())
-            .FontSize(14, true)
+            .FontSize(50, true)
             .FontStyle("Bold")
             .Color(Color(255, 255, 255))
             .AlignSelf("Center")
@@ -1730,25 +1733,21 @@ class BossHealthBar
         self._rootContainer.Add(container);
     }
 
+
     function CreateVerticalHandBar(isLeftHand)
     {
         # Outer container for the hand health bar
         container = UI.VisualElement()
+            .AspectRatio(1,"Width")
+            .Height(100, true)
             .FlexDirection("Column")
             .AlignItems("Center")
-            .Width(70, false)
-            .FlexShrink(0);
-
-        # Stack container for bar and icon overlay (icon size only)
-        stackContainer = UI.VisualElement()
-            .Width(60, false)
-            .Height(60, false)
             .FlexShrink(0);
 
         # Background container for the vertical bar (icon size)
         barBackground = UI.VisualElement()
-            .Width(60, false)
-            .Height(60, false)
+            .Width(100, true)
+            .Height(100, true)
             .BackgroundColor(Color(40, 40, 40, 200))
             .BorderRadius(4, false)
             .BorderWidth(2, false)
@@ -1768,12 +1767,10 @@ class BossHealthBar
 
         barBackground.Add(fill);
 
-        handLabelText = "Right Hand";
         handIconScale = -1;
 
         if (isLeftHand)
         {
-            handLabelText = "Left Hand";
             handIconScale = 1;
         }
 
@@ -1783,23 +1780,12 @@ class BossHealthBar
             .Height(100, true)
             .TransformScale(handIconScale, 1)
             .Absolute(true)
+            .Padding(5, true)
             .Top(0, false)
             .Left(0, false);
 
-        stackContainer.Add(barBackground);
-        stackContainer.Add(icon);
-
-
-        handLabel = UI.Label(handLabelText)
-            .FontSize(12, false)
-            .FontStyle("Bold")
-            .Color(Color(255, 255, 255))
-            .AlignSelf("Center")
-            .Padding(0, false)
-            .Margin(0, false);
-
-        container.Add(stackContainer);
-        container.Add(handLabel);
+        container.Add(barBackground);
+        container.Add(icon);
 
         if (isLeftHand)
         {
@@ -1819,9 +1805,8 @@ class BossHealthBar
     {
         # Container for the health bar with border
         self._healthBarContainer = UI.VisualElement()
-            .Width(100, true)
-            .Height(23, false)
             .BackgroundColor(Color(40, 40, 40, 255))
+            .Height(25)
             .BorderRadius(4, false)
             .BorderWidth(2, false)
             .BorderColor(Color(80, 80, 80, 255))
