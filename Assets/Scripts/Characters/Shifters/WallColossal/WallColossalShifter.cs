@@ -111,10 +111,9 @@ namespace Characters
 
             if (CurrentLeftHandHealth <= 0 && _leftHandState == ColossalHandState.Healthy)
             {
-                ApplyLeftHandState(ColossalHandState.Broken);
                 LeftHandRecoveryTimeLeft = HandRecoveryTime;
                 if (IsMine())
-                    photonView.RPC(nameof(SetLeftHandStateRPC), RpcTarget.Others, new object[] { (byte)ColossalHandState.Broken });
+                    photonView.RPC(nameof(SetLeftHandStateRPC), RpcTarget.All, new object[] { (byte)ColossalHandState.Broken });
             }
 
             if (IsMine())
@@ -126,10 +125,9 @@ namespace Characters
 
             if (CurrentRightHandHealth <= 0 && _rightHandState == ColossalHandState.Healthy)
             {
-                ApplyRightHandState(ColossalHandState.Broken);
                 RightHandRecoveryTimeLeft = HandRecoveryTime;
                 if (IsMine())
-                    photonView.RPC(nameof(SetRightHandStateRPC), RpcTarget.Others, new object[] { (byte)ColossalHandState.Broken });
+                    photonView.RPC(nameof(SetRightHandStateRPC), RpcTarget.All, new object[] { (byte)ColossalHandState.Broken });
             }
 
             if (IsMine())
@@ -396,8 +394,7 @@ namespace Characters
         {
             if (_steamState != ColossalSteamState.Off && IsMine())
             {
-                ApplySteamState(ColossalSteamState.Off);
-                photonView.RPC(nameof(SetSteamStateRPC), RpcTarget.Others, new object[] { (byte)ColossalSteamState.Off });
+                photonView.RPC(nameof(SetSteamStateRPC), RpcTarget.All, new object[] { (byte)ColossalSteamState.Off });
             }
         }
 
@@ -408,8 +405,7 @@ namespace Characters
 
             if (IsMine())
             {
-                ApplySteamState(ColossalSteamState.Warning);
-                photonView.RPC(nameof(SetSteamStateRPC), RpcTarget.Others, new object[] { (byte)ColossalSteamState.Warning });
+                photonView.RPC(nameof(SetSteamStateRPC), RpcTarget.All, new object[] { (byte)ColossalSteamState.Warning });
             }
         }
 
@@ -431,8 +427,7 @@ namespace Characters
             {
                 if (IsMine())
                 {
-                    ApplySteamState(ColossalSteamState.Damage);
-                    photonView.RPC(nameof(SetSteamStateRPC), RpcTarget.Others, new object[] { (byte)ColossalSteamState.Damage });
+                    photonView.RPC(nameof(SetSteamStateRPC), RpcTarget.All, new object[] { (byte)ColossalSteamState.Damage });
                 }
             }
         }
@@ -449,9 +444,8 @@ namespace Characters
 
                 if (LeftHandRecoveryTimeLeft <= 0f)
                 {
-                    ApplyLeftHandState(ColossalHandState.Healthy);
                     SetCurrentLeftHandHealth(MaxLeftHandHealth);
-                    photonView.RPC(nameof(SetLeftHandStateRPC), RpcTarget.Others, new object[] { (byte)ColossalHandState.Healthy });
+                    photonView.RPC(nameof(SetLeftHandStateRPC), RpcTarget.All, new object[] { (byte)ColossalHandState.Healthy });
                 }
             }
 
@@ -462,9 +456,8 @@ namespace Characters
 
                 if (RightHandRecoveryTimeLeft <= 0f)
                 {
-                    ApplyRightHandState(ColossalHandState.Healthy);
                     SetCurrentRightHandHealth(MaxRightHandHealth);
-                    photonView.RPC(nameof(SetRightHandStateRPC), RpcTarget.Others, new object[] { (byte)ColossalHandState.Healthy });
+                    photonView.RPC(nameof(SetRightHandStateRPC), RpcTarget.All, new object[] { (byte)ColossalHandState.Healthy });
                 }
             }
         }
