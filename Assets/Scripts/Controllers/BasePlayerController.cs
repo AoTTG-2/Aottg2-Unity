@@ -106,7 +106,8 @@ namespace Controllers
                 forward = 1;
             else if (isBackHeld)
                 forward = -1;
-                
+            if (forward != 0 || right != 0)
+                _autorun = false;
             if (_autorun)
             {
                 forward = 1;
