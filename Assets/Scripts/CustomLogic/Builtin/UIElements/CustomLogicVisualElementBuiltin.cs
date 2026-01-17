@@ -14,6 +14,7 @@ namespace CustomLogic
         private readonly VisualElement _visualElement;
 
         private TextShadow _textShadow = new();
+        private readonly Dictionary<string,EventCallback<GeometryChangedEvent>> _onResize = new();
 
         public CustomLogicVisualElementBuiltin(VisualElement visualElement)
         {
@@ -413,6 +414,39 @@ namespace CustomLogic
             return this;
         }
 
+        /// <summary>
+        /// Set the height of the element.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="mode">Determines the direction of the aspect ratio.</param>
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin AspectRatio(float value, string mode = "Width")
+        {
+            if (_onResize.TryGetValue("AspectRatio", out var evt))
+                _visualElement.UnregisterCallback(evt);
+
+            if (value == 0)
+                return this;
+
+            if (mode != "Height" && mode != "Width") // need to convert to enum
+               throw new System.Exception("Unknown aspect ratio mode");
+
+            _visualElement.RegisterCallback<GeometryChangedEvent>(evt =>
+            {
+                if (mode == "Height")
+                {
+                    float width = evt.newRect.width;
+                    _visualElement.style.height = width / value;
+                }
+                else if (mode == "Width")
+                {
+                    float height = evt.newRect.height;
+                    _visualElement.style.width = height / value;
+                }
+            });
+            return this;
+        }
+
         #endregion
 
         #region Margin
@@ -572,10 +606,35 @@ namespace CustomLogic
         /// </summary>
         /// <param name="value">The value.</param>
         /// <param name="percentage">If true, the `value` will be treated as percentage value.</param>
+        /// <param name="scaleMode">Determines the container dimension used for percentage calculations.</param>
         [CLMethod]
-        public CustomLogicVisualElementBuiltin FontSize(float value, bool percentage = false)
+        public CustomLogicVisualElementBuiltin FontSize(float value, bool percentage = false, string scaleMode = "Height")
         {
-            _visualElement.style.fontSize = GetLength(value, percentage);
+            if (_onResize.TryGetValue("FontScale", out var evt))
+                _visualElement.UnregisterCallback(evt);
+
+            if (scaleMode != "Height" && scaleMode != "Width") // need to convert to enum
+               throw new System.Exception("Unknown font scale mode");
+
+            if (percentage)
+            {
+                _visualElement.RegisterCallback<GeometryChangedEvent>(evt =>
+                {
+                    float percent = value / 100f;
+                    float scale = scaleMode switch
+                    {
+                        "Height" => evt.newRect.height,
+                        "Width" => evt.newRect.width,
+                        _ => 1
+                    };
+
+                    _visualElement.style.fontSize = scale * percent;
+                });
+            }
+            else
+            {
+                _visualElement.style.fontSize = new Length(value);
+            }
             return this;
         }
 
