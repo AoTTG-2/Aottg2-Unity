@@ -369,7 +369,7 @@ namespace CustomLogic
             {
                 if (Human.MountedMapObject == null)
                     return null;
-                return new CustomLogicMapObjectBuiltin(Human.MountedMapObject);
+                return CustomLogicManager.Evaluator.GetOrCreateMapObjectBuiltin(Human.MountedMapObject);
             }
         }
 
