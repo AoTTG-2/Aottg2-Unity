@@ -90,5 +90,7 @@
         public string EmoteNod = "Amarture_VER2|emote_titan_yes";
         public string EmoteShake = "Amarture_VER2|emote_titan_no";
         public string EmoteRoar = "Amarture_VER2|attack.scream";
+        public override string UnhookNape => "Amarture_VER2|grab.head.back.l";
+
     }
 }

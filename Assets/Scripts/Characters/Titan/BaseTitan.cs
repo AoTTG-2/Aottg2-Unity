@@ -95,6 +95,11 @@ namespace Characters
         public Dictionary<string, string> AttackAnimations = new Dictionary<string, string>();
         public bool EnableAI = true;
 
+        // Nape Hook Removal
+        protected float _napeHookRemoveTimer = 0f;
+        protected Hook _napeHookToRemove = null;
+        protected float _napeHookAnimDuration = 0f;
+
         public virtual void Init(bool ai, string team, JSONNode data)
         {
             base.Init(ai, team);
@@ -571,6 +576,27 @@ namespace Characters
             UpdateAnimationColliders();
             if (IsMine())
             {
+                if (State == TitanState.UnhookNape)
+                {
+                    if (_napeHookRemoveTimer > 0f)
+                    {
+                        _napeHookRemoveTimer -= Time.deltaTime;
+                        if (_napeHookRemoveTimer <= 0f)
+                        {                            if (_napeHookToRemove != null && _napeHookToRemove.IsAttached())
+                            {
+                                _napeHookToRemove.Detach();
+                            }
+                            _napeHookToRemove = null;
+                        }
+                    }
+
+                    if (_stateTimeLeft <= 0f)
+                    {                        Idle(0.1f);
+                        _napeHookToRemove = null;
+                        _napeHookRemoveTimer = 0f;
+                        _napeHookAnimDuration = 0f;
+                    }
+                }
                 if (!EnableAI)
                     return;
                 _disableCooldownLeft -= Time.deltaTime;
@@ -1093,6 +1119,46 @@ namespace Characters
         {
             return Size * SizeMultiplier * 20f;
         }
+
+        public virtual void OnHooked(Hook hook, Collider part)
+        {            
+            if (part.gameObject.name == "neck")
+            {
+                bool isHardDifficulty = (int)SettingsManager.InGameCurrent.General.Difficulty.Value >= (int)GameDifficulty.Hard;
+
+                Vector3 hitPoint = hook.GetHookPosition();
+
+                Vector3 hitDirection = (hitPoint - BaseTitanCache.Neck.position).normalized;
+
+                float angle = Vector3.Angle(Cache.Transform.forward, hitDirection);
+
+                bool hitTheBack = angle > 120f;
+
+                if (isHardDifficulty && hitTheBack)
+                {                    StartNapeHookRemoval(hook);
+                }
+            }
+        }
+
+        protected virtual void StartNapeHookRemoval(Hook hook) 
+        {
+            if (State == TitanState.UnhookNape) return;
+
+            _napeHookToRemove = hook;
+
+            if (BaseTitanAnimations.UnhookNape != string.Empty)
+            {
+                string animName = BaseTitanAnimations.UnhookNape;
+                _napeHookAnimDuration = Animation.GetTotalTime(animName);
+                StateAction(TitanState.UnhookNape, animName, 0.1f);
+                _napeHookRemoveTimer = _napeHookAnimDuration * 0.55f;
+            }
+            else
+            {
+                _napeHookAnimDuration = 1.21f;
+                _napeHookRemoveTimer = 1.21f;
+                State = TitanState.UnhookNape;
+            }        }
     }
 
     public enum TitanState
@@ -1124,6 +1190,7 @@ namespace Characters
         Turn,
         WallClimb,
         CoverNape,
-        HumanThrow
+        HumanThrow,
+        UnhookNape
     }
 }
