@@ -7,6 +7,7 @@ using Settings;
 using SimpleJSONFixed;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Utility;
 
@@ -20,7 +21,7 @@ namespace Characters
         public bool IsWalk;
         public bool IsSprint;
         public bool IsSit;
-        public Human HoldHuman = null;
+        public List<Human> HeldHumans = new List<Human>();
         public bool HoldHumanLeft;
         public float Size = 1f;
         public virtual float DefaultCrippleTime => 8f;
@@ -385,7 +386,7 @@ namespace Characters
                 return;
             var human = view.GetComponent<Human>();
             if (this.IsMine())
-                HoldHuman = human;
+                HeldHumans.Add(human);
             human.Grabber = this;
             if (left)
                 human.GrabHand = this.BaseTitanCache.GrabLSocket;
@@ -401,18 +402,19 @@ namespace Characters
                 return;
             var human = view.GetComponent<Human>();
             if (this.IsMine())
-                HoldHuman = null;
+                HeldHumans.Clear();
             human.Grabber = null;
             human.GrabHand = null;
         }
 
         public virtual void Ungrab()
         {
-            if (HoldHuman != null)
+            if (!IsHoldingHuman()) return;
+
+            foreach (var human in HeldHumans)
             {
-                HoldHuman.Cache.PhotonView.RPC(nameof(HoldHuman.UngrabRPC), RpcTarget.All, new object[0]);
-                HoldHuman.GrabHand = null;
-                HoldHuman = null;
+                human.Cache.PhotonView.RPC(nameof(human.UngrabRPC), RpcTarget.All, new object[0]);
+                human.GrabHand = null;
             }
         }
 
@@ -622,7 +624,7 @@ namespace Characters
                 _stateTimeLeft -= Time.deltaTime;
                 if (_stateTimeLeft > 0f)
                     return;
-                if (State == TitanState.Attack && HoldHuman != null)
+                if (State == TitanState.Attack && IsHoldingHuman())
                 {
                     Eat();
                     return;
@@ -1093,6 +1095,8 @@ namespace Characters
         {
             return Size * SizeMultiplier * 20f;
         }
+
+        public bool IsHoldingHuman() => HeldHumans.Any();
     }
 
     public enum TitanState
