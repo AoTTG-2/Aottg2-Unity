@@ -616,7 +616,7 @@ component Target
 
     function Init()
     {
-        self.MapObject.AddBoxCollider("Region", "Characters");
+        self.MapObject.AddBoxCollider(CollideModeEnum.Region, CollideWithEnum.Characters);
     }
 
     function IsDestroyed()
@@ -694,7 +694,7 @@ component Target
         {
             self._destroyed = true;
             self._health = 0;
-            sender.Character.PlaySound("Checkpoint");
+            sender.Character.PlaySound(HumanSoundEnum.Checkpoint);
             Game.SpawnEffect(self.SpawnEffect, self.MapObject.Position, self.MapObject.Rotation, 1.0);
             self.MapObject.Active = false;
         }
@@ -748,7 +748,7 @@ component RefuelGasDrop
 
     function Init()
     {
-        self.MapObject.AddBoxCollider("Region", "Characters");
+        self.MapObject.AddBoxCollider(CollideModeEnum.Region, CollideWithEnum.Characters);
         self._usesLeft = self.Uses;
     }
 
@@ -792,7 +792,7 @@ component RefuelGasDrop
 
             if (self.RefillAmmo)
             {
-                if (other.Weapon == "Blade")
+                if (other.Weapon == WeaponEnum.Blade)
                 {
                     if (other.CurrentBladeDurability < other.MaxBladeDurability || other.currentBlade < other.MaxBlade)
                     {
@@ -828,7 +828,7 @@ component RefuelGasDrop
 
             if (self.PlaySound && used)
             {
-                other.PlaySound("Checkpoint");
+                other.PlaySound(HumanSoundEnum.Checkpoint);
             }
 
             data = Dict();
@@ -972,15 +972,15 @@ class Main
                 
                 message = "Time: " + UI.WrapStyleTag(String.FormatFloat(timer, 2), "color", color) + "    ";
                 message = message + "Targets Remaining: " + UI.WrapStyleTag(Convert.ToString(self._targets.Count - destroyedTargets), "color", targetColor);
-                UI.SetLabelAll("TopCenter", message);
-                UI.SetLabelAll("MiddleCenter", winner.Name + " wins!");
+                UI.SetLabelAll(UILabelEnum.TopCenter, message);
+                UI.SetLabelAll(UILabelEnum.MiddleCenter, winner.Name + " wins!");
                 Game.End(5.0);
                 return;
             }
 
             message = "Time: " + UI.WrapStyleTag(String.FormatFloat(Time.GameTime, 2), "color", color) + "    ";
             message = message + "Targets Remaining: " + UI.WrapStyleTag(Convert.ToString(self._targets.Count - destroyedTargets), "color", targetColor);
-            UI.SetLabelAll("TopCenter", message);
+            UI.SetLabelAll(UILabelEnum.TopCenter, message);
         }
     }
 }

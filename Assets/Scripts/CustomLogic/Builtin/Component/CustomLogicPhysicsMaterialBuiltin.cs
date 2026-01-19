@@ -1,4 +1,5 @@
-﻿using Map;
+﻿using System;
+using Map;
 using UnityEngine;
 
 namespace CustomLogic
@@ -22,30 +23,6 @@ namespace CustomLogic
             Owner = owner.Value.GameObject;
             Value = (CustomPhysicsMaterial)Component;
         }
-
-        /// <summary>
-        /// PhysicMaterialCombine.Minimum.
-        /// </summary>
-        [CLProperty]
-        public static int FrictionCombineMinimum => (int)PhysicMaterialCombine.Minimum;
-
-        /// <summary>
-        /// PhysicMaterialCombine.Multiply.
-        /// </summary>
-        [CLProperty]
-        public static int FrictionCombineMultiply => (int)PhysicMaterialCombine.Multiply;
-
-        /// <summary>
-        /// PhysicMaterialCombine.Maximum.
-        /// </summary>
-        [CLProperty]
-        public static int FrictionCombineMaximum => (int)PhysicMaterialCombine.Maximum;
-
-        /// <summary>
-        /// PhysicMaterialCombine.Average.
-        /// </summary>
-        [CLProperty]
-        public static int FrictionCombineAverage => (int)PhysicMaterialCombine.Average;
 
         // Static Friction
         /// <summary>
@@ -84,7 +61,7 @@ namespace CustomLogic
         /// <summary>
         /// The friction combine mode of the material.
         /// </summary>
-        [CLProperty(Enum = typeof(CustomLogicPhysicMaterialCombineEnum))]
+        [CLProperty(Enum = new Type[] { typeof(CustomLogicPhysicMaterialCombineEnum) })]
         public int FrictionCombine
         {
             get => (int)Value.FrictionCombine;
@@ -95,7 +72,7 @@ namespace CustomLogic
         /// <summary>
         /// The bounce combine mode of the material.
         /// </summary>
-        [CLProperty(Enum = typeof(CustomLogicPhysicMaterialCombineEnum))]
+        [CLProperty(Enum = new Type[] { typeof(CustomLogicPhysicMaterialCombineEnum) })]
         public int BounceCombine
         {
             get => (int)Value.BounceCombine;

@@ -1,3 +1,4 @@
+using System;
 using ApplicationManagers;
 using Characters;
 using GameManagers;
@@ -51,7 +52,7 @@ namespace CustomLogic
         /// <param name="key">The key setting path (e.g., "General/Attack" or "CustomKey/Space").</param>
         /// <returns>The key name.</returns>
         [CLMethod]
-        public static string GetKeyName(string key)
+        public static string GetKeyName([CLParam(Enum = new Type[] { typeof(CustomLogicInputGeneralEnum), typeof(CustomLogicInputHumanEnum), typeof(CustomLogicInputTitanEnum), typeof(CustomLogicInputInteractionEnum), typeof(CustomLogicInputAnnieShifterEnum), typeof(CustomLogicInputErenShifterEnum) })] string key)
         {
             KeyCode? customKey = GetCustomKeyCode(key);
             if (customKey.HasValue)
@@ -67,7 +68,7 @@ namespace CustomLogic
         /// <param name="key">The key setting path (e.g., "General/Attack" or "CustomKey/Space").</param>
         /// <returns>True if the key is being held down, false otherwise.</returns>
         [CLMethod]
-        public static bool GetKeyHold(string key)
+        public static bool GetKeyHold([CLParam(Enum = new Type[] { typeof(CustomLogicInputGeneralEnum), typeof(CustomLogicInputHumanEnum), typeof(CustomLogicInputTitanEnum), typeof(CustomLogicInputInteractionEnum), typeof(CustomLogicInputAnnieShifterEnum), typeof(CustomLogicInputErenShifterEnum) })] string key)
         {
             KeyCode? customKey = GetCustomKeyCode(key);
             if (customKey.HasValue)
@@ -83,7 +84,7 @@ namespace CustomLogic
         /// <param name="key">The key setting path (e.g., "General/Attack" or "CustomKey/Space").</param>
         /// <returns>True if the key was pressed down this frame, false otherwise.</returns>
         [CLMethod]
-        public static bool GetKeyDown(string key)
+        public static bool GetKeyDown([CLParam(Enum = new Type[] { typeof(CustomLogicInputGeneralEnum), typeof(CustomLogicInputHumanEnum), typeof(CustomLogicInputTitanEnum), typeof(CustomLogicInputInteractionEnum), typeof(CustomLogicInputAnnieShifterEnum), typeof(CustomLogicInputErenShifterEnum) })] string key)
         {
             KeyCode? customKey = GetCustomKeyCode(key);
             if (customKey.HasValue)
@@ -99,7 +100,7 @@ namespace CustomLogic
         /// <param name="key">The key setting path (e.g., "General/Attack" or "CustomKey/Space").</param>
         /// <returns>True if the key was released this frame, false otherwise.</returns>
         [CLMethod]
-        public static bool GetKeyUp(string key)
+        public static bool GetKeyUp([CLParam(Enum = new Type[] { typeof(CustomLogicInputGeneralEnum), typeof(CustomLogicInputHumanEnum), typeof(CustomLogicInputTitanEnum), typeof(CustomLogicInputInteractionEnum), typeof(CustomLogicInputAnnieShifterEnum), typeof(CustomLogicInputErenShifterEnum) })] string key)
         {
             KeyCode? customKey = GetCustomKeyCode(key);
             if (customKey.HasValue)
@@ -174,7 +175,7 @@ namespace CustomLogic
         /// <param name="key">The key setting path (e.g., "General/Attack" or "CustomKey/Space").</param>
         /// <param name="enabled">Whether the key should be enabled by default.</param>
         [CLMethod]
-        public static void SetKeyDefaultEnabled(string key, bool enabled)
+        public static void SetKeyDefaultEnabled([CLParam(Enum = new Type[] { typeof(CustomLogicInputGeneralEnum), typeof(CustomLogicInputHumanEnum), typeof(CustomLogicInputTitanEnum), typeof(CustomLogicInputInteractionEnum), typeof(CustomLogicInputAnnieShifterEnum), typeof(CustomLogicInputErenShifterEnum) })] string key, bool enabled)
         {
             KeybindSetting keybind = GetKeybind(key);
             if (enabled && CustomLogicManager.KeybindDefaultDisabled.Contains(keybind))
@@ -189,7 +190,7 @@ namespace CustomLogic
         /// <param name="key">The key setting path (e.g., "General/Attack" or "CustomKey/Space").</param>
         /// <param name="enabled">Whether the key should be held down.</param>
         [CLMethod]
-        public static void SetKeyHold(string key, bool enabled)
+        public static void SetKeyHold([CLParam(Enum = new Type[] { typeof(CustomLogicInputGeneralEnum), typeof(CustomLogicInputHumanEnum), typeof(CustomLogicInputTitanEnum), typeof(CustomLogicInputInteractionEnum), typeof(CustomLogicInputAnnieShifterEnum), typeof(CustomLogicInputErenShifterEnum) })] string key, bool enabled)
         {
             KeybindSetting keybind = GetKeybind(key);
             if (!enabled && CustomLogicManager.KeybindHold.Contains(keybind))
@@ -205,7 +206,7 @@ namespace CustomLogic
         /// <param name="enabled">Whether the keys should be enabled by default.</param>
         [CLMethod]
         public static void SetCategoryKeysEnabled(
-            [CLParam(Enum = typeof(CustomLogicInputCategoryEnum))] string category,
+            [CLParam(Enum = new Type[] { typeof(CustomLogicInputCategoryEnum) })] string category,
             bool enabled)
         {
             if (!SettingsManager.InputSettings.Settings.Contains(category))

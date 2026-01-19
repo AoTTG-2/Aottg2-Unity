@@ -13,7 +13,7 @@ class Main
     {
         if (Network.IsMasterClient)
         {
-            Game.SpawnTitans("Default", self.MaxTitans);
+            Game.SpawnTitans(TitanTypeEnum.Default, self.MaxTitans);
         }
     }
 
@@ -27,7 +27,7 @@ class Main
 
     function OnSecond()
     {
-        if (Network.MyPlayer.Status == "Alive")
+        if (Network.MyPlayer.Status == PlayerStatusEnum.Alive)
         {
             character = Network.MyPlayer.Character;
             if (character != null && character.Type == "Human")
@@ -48,18 +48,18 @@ class Main
     function OnTick()
     {
         self._dieTimeLeft = self._dieTimeLeft - Time.TickTime;
-        if (Network.MyPlayer.Status == "Dead")
+        if (Network.MyPlayer.Status == PlayerStatusEnum.Dead)
         {
             if (self._dieTimeLeft <= 0.0)
             {
                 Game.SpawnPlayer(Network.MyPlayer, false);
-                UI.SetLabel("MiddleCenter", "");
+                UI.SetLabel(UILabelEnum.MiddleCenter, "");
             }
             else
             {
                 str = "Respawning in: " + String.Newline;
                 str += UI.WrapStyleTag(String.FormatFloat(self._dieTimeLeft, 2), "size", "34");
-                UI.SetLabel("MiddleCenter", str);
+                UI.SetLabel(UILabelEnum.MiddleCenter, str);
             }
         }
         if (Network.IsMasterClient)
@@ -70,7 +70,7 @@ class Main
                 self._spawnTimeLeft = self._spawnTimeLeft - Time.TickTime;
                 if (self._spawnTimeLeft <= 0.0)
                 {
-                    Game.SpawnTitans("Default", 1);
+                    Game.SpawnTitans(TitanTypeEnum.Default, 1);
                     self._spawnTimeLeft = self.TitanSpawnEvery;
                 }
             }
@@ -78,7 +78,7 @@ class Main
             {
                 self._spawnTimeLeft = self.TitanSpawnEvery;
             }
-            UI.SetLabelAll("TopCenter", "Titans: " + Convert.ToString(titans));
+            UI.SetLabelAll(UILabelEnum.TopCenter, "Titans: " + Convert.ToString(titans));
         }
     }
 }

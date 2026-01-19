@@ -788,17 +788,17 @@ class Main
 					return;
 				}
 
-				UI.SetLabelAll("MiddleCenter", "Humanity wins!");
+				UI.SetLabelAll(UILabelEnum.MiddleCenter, "Humanity wins!");
 				Game.End(10.0);
 				return;
 			}
 			if (humans == 0 && playerShifters == 0 && self._hasSpawned)
 			{
-				UI.SetLabelAll("MiddleCenter", "Humanity failed!");
+				UI.SetLabelAll(UILabelEnum.MiddleCenter, "Humanity failed!");
 				Game.End(10.0);
 				return;
 			}
-			UI.SetLabelAll("TopCenter", "Titans Left: " + Convert.ToString(titans + aiShifters));
+			UI.SetLabelAll(UILabelEnum.TopCenter, "Titans Left: " + Convert.ToString(titans + aiShifters));
 		}
 	}
 
@@ -808,7 +808,7 @@ class Main
 		titans = List();
 		while (i < count)
 		{
-			titan = Game.SpawnTitan("Default");
+			titan = Game.SpawnTitan(TitanTypeEnum.Default);
 			titan.DetectRange = 0;
 			titan.FocusRange = 0;
 			titans.Add(titan);
@@ -847,11 +847,11 @@ cutscene MainCutscene
 		Camera.SetPosition(startPosition);
 		Camera.SetRotation(startRotation);
 		Camera.SetVelocity(velocity);
-		Cutscene.ShowDialogue("Levi1", "Levi", "Defeat the female titan before she escapes the forest!");
+		Cutscene.ShowDialogue(ProfileIconEnum.Levi1, "Levi", "Defeat the female titan before she escapes the forest!");
 		wait 1.0;
 		if (Network.IsMasterClient)
 		{
-			annie = Game.SpawnShifterAt("Annie", spawn.Position);
+			annie = Game.SpawnShifterAt(ShifterTypeEnum.Annie, spawn.Position);
 			annie.Rotation = Vector3(0, 180, 0);
 			annie.DeathAnimLength = 10;
 		}

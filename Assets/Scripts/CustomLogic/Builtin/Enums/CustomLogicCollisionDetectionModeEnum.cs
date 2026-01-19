@@ -13,24 +13,24 @@ namespace CustomLogic
         /// Discrete collision detection mode.
         /// </summary>
         [CLProperty]
-        public static string Discrete => "Discrete";
+        public static int Discrete => (int)UnityEngine.CollisionDetectionMode.Discrete;
 
         /// <summary>
         /// Continuous collision detection mode.
         /// </summary>
         [CLProperty]
-        public static string Continuous => "Continuous";
+        public static int Continuous => (int)UnityEngine.CollisionDetectionMode.Continuous;
 
         /// <summary>
         /// ContinuousDynamic collision detection mode.
         /// </summary>
         [CLProperty]
-        public static string ContinuousDynamic => "ContinuousDynamic";
+        public static int ContinuousDynamic => (int)UnityEngine.CollisionDetectionMode.ContinuousDynamic;
 
         /// <summary>
         /// ContinuousSpeculative collision detection mode.
         /// </summary>
         [CLProperty]
-        public static string ContinuousSpeculative => "ContinuousSpeculative";
+        public static int ContinuousSpeculative => (int)UnityEngine.CollisionDetectionMode.ContinuousSpeculative;
     }
 }

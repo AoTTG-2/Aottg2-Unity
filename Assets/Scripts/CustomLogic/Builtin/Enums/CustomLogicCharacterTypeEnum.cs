@@ -1,3 +1,5 @@
+using GameManagers;
+
 namespace CustomLogic
 {
     /// <summary>
@@ -13,18 +15,18 @@ namespace CustomLogic
         /// Human character type.
         /// </summary>
         [CLProperty]
-        public static string Human => "Human";
+        public static string Human => PlayerCharacter.Human;
 
         /// <summary>
         /// Titan character type.
         /// </summary>
         [CLProperty]
-        public static string Titan => "Titan";
+        public static string Titan => PlayerCharacter.Titan;
 
         /// <summary>
         /// Shifter character type.
         /// </summary>
         [CLProperty]
-        public static string Shifter => "Shifter";
+        public static string Shifter => PlayerCharacter.Shifter;
     }
 }

@@ -41,7 +41,7 @@ namespace CustomLogic
             CustomLogicListBuiltin listBuiltin = new CustomLogicListBuiltin();
             foreach (MapObject mapObject in MapLoader.GoToMapObject.Values)
             {
-                listBuiltin.List.Add(new CustomLogicMapObjectBuiltin(mapObject));
+                listBuiltin.List.Add(CustomLogicManager.Evaluator.GetOrCreateMapObjectBuiltin(mapObject));
             }
             return listBuiltin;
         }
@@ -57,7 +57,7 @@ namespace CustomLogic
             foreach (MapObject mapObject in MapLoader.GoToMapObject.Values)
             {
                 if (mapObject.ScriptObject.Name == objectName)
-                    return new CustomLogicMapObjectBuiltin(mapObject);
+                    return CustomLogicManager.Evaluator.GetOrCreateMapObjectBuiltin(mapObject);
             }
             return null;
         }
@@ -74,7 +74,7 @@ namespace CustomLogic
             foreach (MapObject mapObject in MapLoader.GoToMapObject.Values)
             {
                 if (mapObject.ScriptObject.Name == objectName)
-                    listBuiltin.List.Add(new CustomLogicMapObjectBuiltin(mapObject));
+                    listBuiltin.List.Add(CustomLogicManager.Evaluator.GetOrCreateMapObjectBuiltin(mapObject));
             }
             return listBuiltin;
         }
@@ -94,7 +94,7 @@ namespace CustomLogic
             {
                 if (regex.IsMatch(mapObject.ScriptObject.Name))
                 {
-                    listBuiltin.List.Add(new CustomLogicMapObjectBuiltin(mapObject));
+                    listBuiltin.List.Add(CustomLogicManager.Evaluator.GetOrCreateMapObjectBuiltin(mapObject));
                 }
             }
 
@@ -133,7 +133,7 @@ namespace CustomLogic
                 {
                     if (component.ClassName == className)
                     {
-                        listBuiltin.List.Add(new CustomLogicMapObjectBuiltin(mapObject));
+                        listBuiltin.List.Add(CustomLogicManager.Evaluator.GetOrCreateMapObjectBuiltin(mapObject));
                         break;
                     }
                 }
@@ -150,7 +150,7 @@ namespace CustomLogic
         public static CustomLogicMapObjectBuiltin FindMapObjectByID(int id)
         {
             if (MapLoader.IdToMapObject.ContainsKey(id))
-                return new CustomLogicMapObjectBuiltin(MapLoader.IdToMapObject[id]);
+                return CustomLogicManager.Evaluator.GetOrCreateMapObjectBuiltin(MapLoader.IdToMapObject[id]);
             return null;
         }
 
@@ -165,7 +165,7 @@ namespace CustomLogic
             if (MapLoader.Tags.ContainsKey(tag))
             {
                 if (MapLoader.Tags[tag].Count > 0)
-                    return new CustomLogicMapObjectBuiltin(MapLoader.Tags[tag][0]);
+                    return CustomLogicManager.Evaluator.GetOrCreateMapObjectBuiltin(MapLoader.Tags[tag][0]);
             }
             return null;
         }
@@ -183,7 +183,7 @@ namespace CustomLogic
             {
                 {
                     foreach (MapObject mapObject in MapLoader.Tags[tag])
-                        listBuiltin.List.Add(new CustomLogicMapObjectBuiltin(mapObject));
+                        listBuiltin.List.Add(CustomLogicManager.Evaluator.GetOrCreateMapObjectBuiltin(mapObject));
                 }
             }
             return listBuiltin;
@@ -305,7 +305,7 @@ namespace CustomLogic
         {
             var copy = CopyMapObject(mapObject.Value, mapObject.Value.Parent, includeChildren);
             copy.RuntimeCreated = true;
-            return new CustomLogicMapObjectBuiltin(copy);
+            return CustomLogicManager.Evaluator.GetOrCreateMapObjectBuiltin(copy);
         }
 
         /// <summary>
@@ -360,7 +360,7 @@ namespace CustomLogic
             MapLoader.SetParent(mapObject);
             CustomLogicManager.Evaluator.LoadMapObjectComponents(mapObject, true);
             mapObject.RuntimeCreated = true;
-            return new CustomLogicMapObjectBuiltin(mapObject);
+            return CustomLogicManager.Evaluator.GetOrCreateMapObjectBuiltin(mapObject);
         }
 
         protected static MapObject CopyMapObject(MapObject obj, int parent, bool recursive)

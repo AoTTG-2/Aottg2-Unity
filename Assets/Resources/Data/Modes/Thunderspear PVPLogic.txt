@@ -57,7 +57,7 @@ class Main
 
     function OnFrame()
     {
-        if (self._isAFK && self.AfkCanRespawn && Input.GetKeyDown("General/Forward"))
+        if (self._isAFK && self.AfkCanRespawn && Input.GetKeyDown(InputGeneralEnum.Forward))
         {
             self._isAFK = false;
             self._AfkTimer = self.AfkTimer;
@@ -75,10 +75,10 @@ class Main
 
         if (self._isAFK)
         {
-            UI.SetLabelForTime("MiddleCenter", "You are AFK" + String.Newline + "Press '<color=#ff0000>" + Input.GetKeyName("General/Forward") + "</color>' to respawn.", 1.1);
+            UI.SetLabelForTime(UILabelEnum.MiddleCenter, "You are AFK" + String.Newline + "Press '<color=#ff0000>" + Input.GetKeyName(InputGeneralEnum.Forward) + "</color>' to respawn.", 1.1);
         }
 
-        if (Network.MyPlayer.Status == "Alive")
+        if (Network.MyPlayer.Status == PlayerStatusEnum.Alive)
         {
             if (Vector3.Distance(Network.MyPlayer.Character.Position, self._lastPosition) < 0.1)
             {
@@ -232,7 +232,7 @@ class Main
     function PointModeFFA()
     {
         self._dieTimeLeft = self._dieTimeLeft - Time.TickTime;
-        if (Network.MyPlayer.Status == "Dead" && self._dieTimeLeft <= 0.0 && !self._isAFK)
+        if (Network.MyPlayer.Status == PlayerStatusEnum.Dead && self._dieTimeLeft <= 0.0 && !self._isAFK)
         {
             Game.SpawnPlayer(Network.MyPlayer, false);
         }
@@ -243,18 +243,18 @@ class Main
                 {
                     if (player.Kills >= self.MaxPoints)
                     {
-                        UI.SetLabelAll("MiddleCenter", player.Name + " wins!");
+                        UI.SetLabelAll(UILabelEnum.MiddleCenter, player.Name + " wins!");
                         Game.End(10.0);
                     }
                 }
             }
-            UI.SetLabel("TopCenter", "Points: " + Convert.ToString(Network.MyPlayer.Kills));
+            UI.SetLabel(UILabelEnum.TopCenter, "Points: " + Convert.ToString(Network.MyPlayer.Kills));
     }
 
     function PointModeTeams()
     {
         self._dieTimeLeft = self._dieTimeLeft - Time.TickTime;
-        if (Network.MyPlayer.Status == "Dead" && self._dieTimeLeft <= 0.0 && !self._isAFK)
+        if (Network.MyPlayer.Status == PlayerStatusEnum.Dead && self._dieTimeLeft <= 0.0 && !self._isAFK)
         {
             Game.SpawnPlayer(Network.MyPlayer, false);
         }
@@ -263,11 +263,11 @@ class Main
         blueKills = 0;
         for (player in Network.Players)
         {
-            if (player.Team == "Red")
+            if (player.Team == TeamEnum.Red)
             {
                 redKills = redKills + player.Kills;
             }
-            elif (player.Team == "Blue")
+            elif (player.Team == TeamEnum.Blue)
             {
                 blueKills = blueKills + player.Kills;
             }
@@ -276,22 +276,22 @@ class Main
         {
             if (redKills >= self.MaxPoints)
             {
-                UI.SetLabelAll("MiddleCenter", "Red team wins!");
+                UI.SetLabelAll(UILabelEnum.MiddleCenter, "Red team wins!");
                 Game.End(10.0);
             }
             elif (blueKills >= self.MaxPoints)
             {
-                UI.SetLabelAll("MiddleCenter", "Blue team wins!");
+                UI.SetLabelAll(UILabelEnum.MiddleCenter, "Blue team wins!");
                 Game.End(10.0);
             }
         }
-        UI.SetLabel("TopCenter", "Red: " + Convert.ToString(redKills) + "   Blue: " + Convert.ToString(blueKills));
+        UI.SetLabel(UILabelEnum.TopCenter, "Red: " + Convert.ToString(redKills) + "   Blue: " + Convert.ToString(blueKills));
     }
 
     function LastManModeFFA()
     {
         humans = Game.Humans.Count;
-        UI.SetLabel("TopCenter", "Players alive: " + Convert.ToString(humans));
+        UI.SetLabel(UILabelEnum.TopCenter, "Players alive: " + Convert.ToString(humans));
         if (!Network.IsMasterClient)
         {
             return;
@@ -302,12 +302,12 @@ class Main
         }
         elif (humans == 1 && self._hasSpawned)
         {
-            UI.SetLabelAll("MiddleCenter", Game.Humans.Get(0).Player.Name + " wins!");
+            UI.SetLabelAll(UILabelEnum.MiddleCenter, Game.Humans.Get(0).Player.Name + " wins!");
             Game.End(self.RoundEndTimer);
         }
         elif (humans == 0 && self._hasSpawned)
         {
-            UI.SetLabelAll("MiddleCenter", "Nobody wins!");
+            UI.SetLabelAll(UILabelEnum.MiddleCenter, "Nobody wins!");
             Game.End(self.RoundEndTimer);
         }
     }
@@ -331,7 +331,7 @@ class Main
 
         finalString = String.Newline + redString + split + blueString;
 
-        UI.SetLabel("TopCenter", "<size=25>" +finalString+ "</size>");
+        UI.SetLabel(UILabelEnum.TopCenter, "<size=25>" +finalString+ "</size>");
     }
 
     function LastManModeTeams()
@@ -353,11 +353,11 @@ class Main
         humans = humanPlayers.Count;
         for (character in humanPlayers)
         {
-            if (character.Team == "Red")
+            if (character.Team == TeamEnum.Red)
             {
                 red = red + 1;
             }
-            elif (character.Team == "Blue")
+            elif (character.Team == TeamEnum.Blue)
             {
                 blue = blue + 1;
             }
@@ -374,7 +374,7 @@ class Main
 
         if (playerCount == 1 || playerCount == red || playerCount == blue)
         {
-            UI.SetLabelAll("TopCenter", "Waiting for players...");
+            UI.SetLabelAll(UILabelEnum.TopCenter, "Waiting for players...");
             return;
         }
 
@@ -383,20 +383,20 @@ class Main
         }
         elif (red == 0 && blue == 0 && self._hasSpawned && !Game.IsEnding)
         {
-            UI.SetLabelAll("MiddleCenter", "Nobody wins!");
+            UI.SetLabelAll(UILabelEnum.MiddleCenter, "Nobody wins!");
             self.SyncRoomData();
             Game.End(self.RoundEndTimer);
         }
         elif (red == 0 && self._hasSpawned && !Game.IsEnding)
         {
-            UI.SetLabelAll("MiddleCenter", "Blue team wins!");
+            UI.SetLabelAll(UILabelEnum.MiddleCenter, "Blue team wins!");
             RoomData.SetProperty("BlueRounds", blueRounds + 1);
             self.SyncRoomData();
             Game.End(self.RoundEndTimer);
         }
         elif (blue == 0 && self._hasSpawned && !Game.IsEnding)
         {
-            UI.SetLabelAll("MiddleCenter", "Red team wins!");
+            UI.SetLabelAll(UILabelEnum.MiddleCenter, "Red team wins!");
             RoomData.SetProperty("RedRounds", redRounds + 1);
             self.SyncRoomData();
             Game.End(self.RoundEndTimer);

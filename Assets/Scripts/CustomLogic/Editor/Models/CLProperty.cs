@@ -15,6 +15,6 @@ namespace CustomLogic.Editor.Models
         public bool IsReadonly { get; set; }
 
         [JsonIgnore]
-        public string EnumName { get; set; }
+        public string[] EnumNames { get; set; }
     }
 }
