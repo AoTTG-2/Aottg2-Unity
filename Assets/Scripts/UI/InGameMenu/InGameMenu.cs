@@ -42,6 +42,7 @@ namespace UI
         public BasePopup _scoreboardPopup;
         public BasePopup _mapPopup;
         public BasePopup _selectMapPopup;
+        public BasePopup _songPopup;
         public SkillTooltipPopup SkillTooltipPopup;
         public CustomAssetUrlPopup _customAssetUrlPopup;
         public SnapshotPopup _snapshotPopup;
@@ -96,6 +97,7 @@ namespace UI
             gameObject.AddComponent<CrosshairHandler>();
             NapeLock = ElementFactory.InstantiateAndBind(transform, "Prefabs/InGame/NapeLockImage");
             NapeLock.SetActive(false);
+            _songPopup = ElementFactory.CreateDefaultPopup<SongPopup>(transform);
             SetupChat();
             SetupMinimap();
             SetupSnapshot();
