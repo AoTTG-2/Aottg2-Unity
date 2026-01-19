@@ -377,6 +377,7 @@
 		"UI.ShowKeybindTip": "Show keybind tips",
 		"UI.ShowKeybindTooltip": "Show bottom right keybind tips",
 		"UI.ShowGameTime": "Show game time",
+		"UI.ShowSongPopup": "Show popup on song change",
 		"UI.FadeMainMenu": "Fade main menu",
 		"UI.FadeMainMenuTooltip": "Fade main menu when not focused by mouse",
 		"UI.FadeLoadscreen": "Fade loadscreen",
