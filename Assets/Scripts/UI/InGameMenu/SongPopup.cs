@@ -4,14 +4,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using Settings;
 namespace UI
 {
     class SongPopup : BasePopup
     {
         ushort ienumCount = 0;
-        Text _nextSongPanelLabel;
-        protected override float Width => 225f;
+        Text _songName;
+        Text _authorName;
+        protected override float Width => 275f;
         protected override float Height => 65f;
         protected override bool DoublePanel => true;
         protected override bool DoublePanelDivider => false;
@@ -37,8 +38,9 @@ namespace UI
             doublePanelLeftVerticalLayoutGroup.childAlignment = TextAnchor.MiddleCenter;
             doublePanelLeftVerticalLayoutGroup.childControlHeight = false;
             doublePanelLeftVerticalLayoutGroup.childControlWidth = false;
+
             var doublePanelRightLayout = DoublePanelRight.GetComponent<LayoutElement>();
-            doublePanelRightLayout.preferredWidth = 150;
+            doublePanelRightLayout.preferredWidth = 200;
             doublePanelRightLayout.preferredHeight = Height;
             var doublePanelRightVerticalLayoutGroup = DoublePanelRight.GetComponent<VerticalLayoutGroup>();
             doublePanelRightVerticalLayoutGroup.childAlignment = TextAnchor.MiddleCenter;
@@ -46,31 +48,47 @@ namespace UI
             Parent = parent;
             var coverImage = ElementFactory.CreateRawImage(DoublePanelLeft.transform, new ElementStyle(), "Sprites/ost_cover").GetComponent<RawImage>();
             coverImage.GetComponent<RectTransform>().sizeDelta = new Vector2(55, 55);
-            var _nextSongPanelLabelElement = ElementFactory.CreateDefaultLabel(DoublePanelRight.transform, new ElementStyle(), "");
-            _nextSongPanelLabel = _nextSongPanelLabelElement.GetComponent<Text>();
-            _nextSongPanelLabel.color = Color.white;
-            _nextSongPanelLabel.fontSize = 16;
+            var _songNameLabelElement = ElementFactory.CreateDefaultLabel(DoublePanelRight.transform, new ElementStyle(), "");
+            _songName = _songNameLabelElement.GetComponent<Text>();
+            _songName.color = Color.white;
+            _songName.fontSize = 18;
+            _songName.alignment = TextAnchor.UpperLeft;
+            var _authorNameLabelElement = ElementFactory.CreateDefaultLabel(DoublePanelRight.transform, new ElementStyle(), "");
+            _authorName = _authorNameLabelElement.GetComponent<Text>();
+            _authorName.color = Color.white;
+            _authorName.fontSize = 14;
+            _authorName.alignment = TextAnchor.LowerRight;
+
             ElementFactory.SetAnchor(coverImage.gameObject, TextAnchor.MiddleCenter, TextAnchor.MiddleCenter, new Vector2(20, 0));
-            ElementFactory.SetAnchor(gameObject, TextAnchor.UpperRight, TextAnchor.UpperRight, new Vector2(-350f, -10f));
-            ElementFactory.SetAnchor(_nextSongPanelLabelElement, TextAnchor.MiddleLeft, TextAnchor.MiddleLeft, new Vector2(250f, 0));
+            if (SettingsManager.InGameCurrent.Misc.GlobalMinimapDisable.Value || SettingsManager.InGameCurrent.Misc.RealismMode.Value)
+            {
+                ElementFactory.SetAnchor(gameObject, TextAnchor.UpperRight, TextAnchor.UpperRight, new Vector2(-15f, -10f));
+            }
+            else 
+            { 
+                ElementFactory.SetAnchor(gameObject, TextAnchor.UpperRight, TextAnchor.UpperRight, new Vector2(-350f, -10f));
+            }
+            ElementFactory.SetAnchor(_songNameLabelElement, TextAnchor.UpperLeft, TextAnchor.UpperLeft, new Vector2(0, 0));
+            ElementFactory.SetAnchor(_authorNameLabelElement, TextAnchor.LowerRight, TextAnchor.LowerRight, new Vector2(0, 0));
             Hide();
         }
         public void ChangeSongInfo(string name)
         {
             ParseMusicString(name, out var authors, out var song);
-            var newText = song;
+            _songName.text = song;
+            var authorsLabel = "";
             for(var i = 0; i < authors.Count; i++)
             {
                 if (i == 0)
                 {
-                    newText += " by " + authors[i];
+                    authorsLabel += "by " + authors[i];
                 }
                 else
                 {
-                    newText += " and " + authors[i];
+                    authorsLabel += " and " + authors[i];
                 }
             }
-            _nextSongPanelLabel.text = newText;
+            _authorName.text = authorsLabel;
         }
         public static void ParseMusicString(string input, out List<string> authors, out string song)
         {

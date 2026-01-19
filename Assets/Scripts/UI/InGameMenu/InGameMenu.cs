@@ -97,9 +97,9 @@ namespace UI
             gameObject.AddComponent<CrosshairHandler>();
             NapeLock = ElementFactory.InstantiateAndBind(transform, "Prefabs/InGame/NapeLockImage");
             NapeLock.SetActive(false);
-            _songPopup = ElementFactory.CreateDefaultPopup<SongPopup>(transform);
             SetupChat();
             SetupMinimap();
+            _songPopup = ElementFactory.CreateDefaultPopup<SongPopup>(transform);
             SetupSnapshot();
             HideAllMenus();
             _uiDocument = GetComponent<UIDocument>();
