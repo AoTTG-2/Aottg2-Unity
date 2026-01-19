@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -32,7 +33,7 @@ namespace CustomLogic
         /// <param name="anim">The name of the animation to check.</param>
         /// <param name="layer">The animation layer to check (default: 0).</param>
         [CLMethod]
-        public bool IsPlaying(string anim, int layer = 0)
+        public bool IsPlaying([CLParam(Enum = new Type[] { typeof(CustomLogicHumanAnimationEnum), typeof(CustomLogicTitanAnimationEnum), typeof(CustomLogicAnnieAnimationEnum), typeof(CustomLogicErenAnimationEnum), typeof(CustomLogicWallColossalAnimationEnum), typeof(CustomLogicDummyAnimationEnum), typeof(CustomLogicHorseAnimationEnum) })] string anim, int layer = 0)
         {
             AnimatorStateInfo stateInfo = Value.IsInTransition(layer) ? Value.GetNextAnimatorStateInfo(layer) : Value.GetCurrentAnimatorStateInfo(layer);
             return stateInfo.IsName(anim);
@@ -45,7 +46,7 @@ namespace CustomLogic
         /// <param name="fade">The fade time in seconds for cross-fading (default: 0.1).</param>
         /// <param name="layer">The animation layer to play on (default: 0).</param>
         [CLMethod]
-        public void PlayAnimation(string anim, float fade = 0.1f, int layer = 0) => Value.CrossFade(anim, fade, layer);
+        public void PlayAnimation([CLParam(Enum = new Type[] { typeof(CustomLogicHumanAnimationEnum), typeof(CustomLogicTitanAnimationEnum), typeof(CustomLogicAnnieAnimationEnum), typeof(CustomLogicErenAnimationEnum), typeof(CustomLogicWallColossalAnimationEnum), typeof(CustomLogicDummyAnimationEnum), typeof(CustomLogicHorseAnimationEnum) })] string anim, float fade = 0.1f, int layer = 0) => Value.CrossFade(anim, fade, layer);
 
         /// <summary>
         /// Plays the specified animation starting from a normalized time.
@@ -55,7 +56,7 @@ namespace CustomLogic
         /// <param name="fade">The fade time in seconds for cross-fading (default: 0.1).</param>
         /// <param name="layer">The animation layer to play on (default: 0).</param>
         [CLMethod]
-        public void PlayAnimationAt(string anim, float normalizedTime, float fade = 0.1f, int layer = 0)
+        public void PlayAnimationAt([CLParam(Enum = new Type[] { typeof(CustomLogicHumanAnimationEnum), typeof(CustomLogicTitanAnimationEnum), typeof(CustomLogicAnnieAnimationEnum), typeof(CustomLogicErenAnimationEnum), typeof(CustomLogicWallColossalAnimationEnum), typeof(CustomLogicDummyAnimationEnum), typeof(CustomLogicHorseAnimationEnum) })] string anim, float normalizedTime, float fade = 0.1f, int layer = 0)
             => Value.CrossFade(anim, fade, layer, normalizedTime);
 
         /// <summary>
@@ -70,7 +71,7 @@ namespace CustomLogic
         /// </summary>
         /// <param name="anim">The name of the animation.</param>
         [CLMethod]
-        public float GetAnimationLength(string anim) => _animatorClips[anim].length;
+        public float GetAnimationLength([CLParam(Enum = new Type[] { typeof(CustomLogicHumanAnimationEnum), typeof(CustomLogicTitanAnimationEnum), typeof(CustomLogicAnnieAnimationEnum), typeof(CustomLogicErenAnimationEnum), typeof(CustomLogicWallColossalAnimationEnum), typeof(CustomLogicDummyAnimationEnum), typeof(CustomLogicHorseAnimationEnum) })] string anim) => _animatorClips[anim].length;
 
         /// <summary>
         /// Gets an animation float parameter.

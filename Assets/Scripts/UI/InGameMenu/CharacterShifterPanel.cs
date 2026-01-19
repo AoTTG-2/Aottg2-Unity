@@ -16,7 +16,7 @@ namespace UI
             InGameCharacterSettings charSettings = SettingsManager.InGameCharacterSettings;
             charSettings.CharacterType.Value = PlayerCharacter.Shifter;
             ElementStyle dropdownStyle = new ElementStyle(titleWidth: 200f, themePanel: ThemePanel);
-            List<string> loadouts = new List<string>() { "Annie", "Eren" };
+            List<string> loadouts = new List<string>() { ShifterLoadout.Annie, ShifterLoadout.Eren };
             if (!loadouts.Contains(charSettings.Loadout.Value))
                 charSettings.Loadout.Value = loadouts[0];
             ElementFactory.CreateDropdownSetting(DoublePanelLeft, dropdownStyle, charSettings.Loadout, UIManager.GetLocale(cat, sub, "Character"),
@@ -24,7 +24,7 @@ namespace UI
             if (miscSettings.PVP.Value == (int)PVPMode.Team)
             {
                 ElementFactory.CreateDropdownSetting(DoublePanelRight, dropdownStyle, charSettings.Team, UIManager.GetLocaleCommon("Team"),
-               new string[] { "Blue", "Red" }, elementWidth: 180f, optionsWidth: 180f);
+               new string[] { TeamInfo.Blue, TeamInfo.Red }, elementWidth: 180f, optionsWidth: 180f);
             }
         }
     }

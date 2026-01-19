@@ -5,6 +5,7 @@ using GameManagers;
 using Photon.Pun;
 using Projectiles;
 using Settings;
+using System;
 using System.Collections.Generic;
 using UI;
 using UnityEngine;
@@ -332,7 +333,7 @@ namespace CustomLogic
         /// <summary>
         /// Forced character type.
         /// </summary>
-        [CLProperty(Static = true, Enum = typeof(CustomLogicCharacterTypeEnum))]
+        [CLProperty(Static = true, Enum = new Type[] { typeof(CustomLogicCharacterTypeEnum) })]
         public string ForcedCharacterType
         {
             get => CustomLogicManager.Evaluator.ForcedCharacterType;
@@ -342,7 +343,7 @@ namespace CustomLogic
         /// <summary>
         /// Forced loadout.
         /// </summary>
-        [CLProperty(Static = true, Enum = typeof(CustomLogicLoadoutEnum))]
+        [CLProperty(Static = true, Enum = new Type[] { typeof(CustomLogicLoadoutEnum) })]
         public string ForcedLoadout
         {
             get => CustomLogicManager.Evaluator.ForcedLoadout;
@@ -451,7 +452,7 @@ namespace CustomLogic
         /// <param name="type">The type of titan to spawn.</param>
         /// <returns>The spawned titan, or null if not master client.</returns>
         [CLMethod(Static = true)]
-        public CustomLogicTitanBuiltin SpawnTitan([CLParam(Enum = typeof(CustomLogicTitanTypeEnum))] string type)
+        public CustomLogicTitanBuiltin SpawnTitan([CLParam(Enum = new Type[] { typeof(CustomLogicTitanTypeEnum) })] string type)
         {
             if (PhotonNetwork.IsMasterClient)
             {
@@ -470,7 +471,7 @@ namespace CustomLogic
         /// <returns>The spawned titan, or null if not master client.</returns>
         [CLMethod(Static = true)]
         public CustomLogicTitanBuiltin SpawnTitanAt(
-            [CLParam(Enum = typeof(CustomLogicTitanTypeEnum))] string type,
+            [CLParam(Enum = new Type[] { typeof(CustomLogicTitanTypeEnum) })] string type,
             CustomLogicVector3Builtin position,
             float rotationY = 0f)
         {
@@ -490,7 +491,7 @@ namespace CustomLogic
         /// <returns>A list of spawned titans, or null if not master client.</returns>
         [CLMethod(Static = true, ReturnTypeArguments = new[] { "Titan" })]
         public CustomLogicListBuiltin SpawnTitans(
-            [CLParam(Enum = typeof(CustomLogicTitanTypeEnum))] string type,
+            [CLParam(Enum = new Type[] { typeof(CustomLogicTitanTypeEnum) })] string type,
             int count)
         {
             if (PhotonNetwork.IsMasterClient)
@@ -510,7 +511,7 @@ namespace CustomLogic
         /// <param name="count">The number of titans to spawn.</param>
         [CLMethod(Static = true)]
         public void SpawnTitansAsync(
-            [CLParam(Enum = typeof(CustomLogicTitanTypeEnum))] string type,
+            [CLParam(Enum = new Type[] { typeof(CustomLogicTitanTypeEnum) })] string type,
             int count)
         {
             if (PhotonNetwork.IsMasterClient)
@@ -527,7 +528,7 @@ namespace CustomLogic
         /// <returns>A list of spawned titans, or null if not master client.</returns>
         [CLMethod(Static = true, ReturnTypeArguments = new[] { "Titan" })]
         public CustomLogicListBuiltin SpawnTitansAt(
-            [CLParam(Enum = typeof(CustomLogicTitanTypeEnum))] string type,
+            [CLParam(Enum = new Type[] { typeof(CustomLogicTitanTypeEnum) })] string type,
             int count,
             CustomLogicVector3Builtin position,
             float rotationY = 0f)
@@ -554,7 +555,7 @@ namespace CustomLogic
         /// <param name="rotationY">The Y rotation in degrees (default: 0).</param>
         [CLMethod(Static = true)]
         public void SpawnTitansAtAsync(
-            [CLParam(Enum = typeof(CustomLogicTitanTypeEnum))] string type,
+            [CLParam(Enum = new Type[] { typeof(CustomLogicTitanTypeEnum) })] string type,
             int count,
             CustomLogicVector3Builtin position,
             float rotationY = 0f)
@@ -569,12 +570,12 @@ namespace CustomLogic
         /// <param name="type">The type of shifter to spawn.</param>
         /// <returns>The spawned shifter, or null if not master client.</returns>
         [CLMethod(Static = true)]
-        public CustomLogicShifterBuiltin SpawnShifter([CLParam(Enum = typeof(CustomLogicShifterTypeEnum))] string type)
+        public CustomLogicShifterBuiltin SpawnShifter([CLParam(Enum = new Type[] { typeof(CustomLogicShifterTypeEnum) })] string type)
         {
             if (PhotonNetwork.IsMasterClient)
             {
                 var shifter = _inGameManager.SpawnAIShifter(type);
-                if (type == "WallColossal")
+                if (type == CustomLogicShifterTypeEnum.WallColossal)
                     return new CustomLogicWallColossalBuiltin((WallColossalShifter)shifter);
                 return new CustomLogicShifterBuiltin(shifter);
             }
@@ -590,14 +591,14 @@ namespace CustomLogic
         /// <returns>The spawned shifter, or null if not master client.</returns>
         [CLMethod(Static = true)]
         public CustomLogicShifterBuiltin SpawnShifterAt(
-            [CLParam(Enum = typeof(CustomLogicShifterTypeEnum))] string type,
+            [CLParam(Enum = new Type[] { typeof(CustomLogicShifterTypeEnum) })] string type,
             CustomLogicVector3Builtin position,
             float rotationY = 0f)
         {
             if (PhotonNetwork.IsMasterClient)
             {
                 var shifter = _inGameManager.SpawnAIShifterAt(type, position.Value, rotationY);
-                if (type == "WallColossal")
+                if (type == CustomLogicShifterTypeEnum.WallColossal)
                     return new CustomLogicWallColossalBuiltin((WallColossalShifter)shifter);
                 return new CustomLogicShifterBuiltin(shifter);
             }
@@ -619,13 +620,13 @@ namespace CustomLogic
         /// <param name="extraParam2">Optional. Type depends on projectile: Thunderspear: Color (projectile color), Others: unused.</param>
         [CLMethod(Static = true)]
         public void SpawnProjectile(
-            [CLParam(Enum = typeof(CustomLogicProjectileNameEnum))] string projectileName,
+            [CLParam(Enum = new Type[] { typeof(CustomLogicProjectileNameEnum) })] string projectileName,
             CustomLogicVector3Builtin position,
             CustomLogicVector3Builtin rotation,
             CustomLogicVector3Builtin velocity,
             CustomLogicVector3Builtin gravity,
             float liveTime,
-            [CLParam(Enum = typeof(CustomLogicTeamEnum))] string team,
+            [CLParam(Enum = new Type[] { typeof(CustomLogicTeamEnum) })] string team,
             object extraParam = null,
             object extraParam2 = null)
         {
@@ -664,7 +665,7 @@ namespace CustomLogic
         /// <param name="extraParam2">Optional. Type depends on projectile: Thunderspear: Color (projectile color), Others: unused.</param>
         [CLMethod(Static = true)]
         public void SpawnProjectileWithOwner(
-            [CLParam(Enum = typeof(CustomLogicProjectileNameEnum))] string projectileName,
+            [CLParam(Enum = new Type[] { typeof(CustomLogicProjectileNameEnum) })] string projectileName,
             CustomLogicVector3Builtin position,
             CustomLogicVector3Builtin rotation,
             CustomLogicVector3Builtin velocity,
@@ -707,37 +708,14 @@ namespace CustomLogic
         /// <param name="tsKillSound">Optional. Thunderspear explode sound (Only valid when effectName is "ThunderspearExplode").</param>
         [CLMethod(Static = true)]
         public void SpawnEffect(
-            [CLParam(Enum = typeof(CustomLogicEffectNameEnum))] string effectName,
+            [CLParam(Enum = new Type[] { typeof(CustomLogicEffectNameEnum) })] string effectName,
             CustomLogicVector3Builtin position,
             CustomLogicVector3Builtin rotation,
             float scale,
             CustomLogicColorBuiltin tsExplodeColor = null,
-            [CLParam(Enum = typeof(CustomLogicTSKillSoundEnum))] string tsKillSound = null)
+            [CLParam(Enum = new Type[] { typeof(CustomLogicTSKillSoundEnum) })] string tsKillSound = null)
         {
-            var field = typeof(EffectPrefabs).GetField(effectName);
-            if (field != null)
-                effectName = (string)field.GetValue(null);
-            
-            object[] settings = null;
-            if (effectName == EffectPrefabs.ThunderspearExplode)
-            {
-                Color color = tsExplodeColor.Value.ToColor();
-                TSKillType killSound = TSKillType.Kill;
-                if (tsKillSound != null)
-                {
-                    killSound = tsKillSound switch
-                    {
-                        "Air" => TSKillType.Air,
-                        "Ground" => TSKillType.Ground,
-                        "ArmorHit" => TSKillType.ArmorHit,
-                        "CloseShot" => TSKillType.CloseShot,
-                        "MaxRangeShot" => TSKillType.MaxRangeShot,
-                        _ => TSKillType.Kill
-                    };
-                }
-                settings = new object[] { color, killSound };
-            }
-            EffectSpawner.Spawn(effectName, position, Quaternion.Euler(rotation), scale, true, settings);
+            SpawnEffectInternal(effectName, position, rotation, scale, true, tsExplodeColor, tsKillSound);
         }
 
         /// <summary>
@@ -750,36 +728,13 @@ namespace CustomLogic
         /// <param name="tsKillSound">Optional. Thunderspear explode sound (Only valid when effectName is "ThunderspearExplode").</param>
         [CLMethod(Static = true)]
         public void SpawnUnscaledEffect(
-            [CLParam(Enum = typeof(CustomLogicEffectNameEnum))] string effectName,
+            [CLParam(Enum = new Type[] { typeof(CustomLogicEffectNameEnum) })] string effectName,
             CustomLogicVector3Builtin position,
             CustomLogicVector3Builtin rotation,
             CustomLogicColorBuiltin tsExplodeColor = null,
-            [CLParam(Enum = typeof(CustomLogicTSKillSoundEnum))] string tsKillSound = null)
+            [CLParam(Enum = new Type[] { typeof(CustomLogicTSKillSoundEnum) })] string tsKillSound = null)
         {
-            var field = typeof(EffectPrefabs).GetField(effectName);
-            if (field != null)
-                effectName = (string)field.GetValue(null);
-            
-            object[] settings = null;
-            if (effectName == EffectPrefabs.ThunderspearExplode)
-            {
-                Color color = tsExplodeColor.Value.ToColor();
-                TSKillType killSound = TSKillType.Kill;
-                if (tsKillSound != null)
-                {
-                    killSound = tsKillSound switch
-                    {
-                        "Air" => TSKillType.Air,
-                        "Ground" => TSKillType.Ground,
-                        "ArmorHit" => TSKillType.ArmorHit,
-                        "CloseShot" => TSKillType.CloseShot,
-                        "MaxRangeShot" => TSKillType.MaxRangeShot,
-                        _ => TSKillType.Kill
-                    };
-                }
-                settings = new object[] { color, killSound };
-            }
-            EffectSpawner.Spawn(effectName, position, Quaternion.Euler(rotation), 1, false, settings);
+            SpawnEffectInternal(effectName, position, rotation, 1, false, tsExplodeColor, tsKillSound);
         }
 
         /// <summary>
@@ -930,6 +885,33 @@ namespace CustomLogic
                 }
             }
             return index != cachedList.List.Count;
+        }
+
+        private static void SpawnEffectInternal(
+            string effectName,
+            CustomLogicVector3Builtin position,
+            CustomLogicVector3Builtin rotation,
+            float scale,
+            bool scaled,
+            CustomLogicColorBuiltin tsExplodeColor,
+            string tsKillSound)
+        {
+            // TODO: Remove on the next update when CL developers will migrate to the new enum.
+            var field = typeof(EffectPrefabs).GetField(effectName);
+            if (field != null)
+                effectName = (string)field.GetValue(null);
+            
+            object[] settings = null;
+            if (effectName == CustomLogicEffectNameEnum.ThunderspearExplode)
+            {
+                var killSound = TSKillType.Kill;
+                // TODO: Migrate from string to int on the next update when CL developers will migrate to the new enum.
+                if (tsKillSound != null && !Enum.TryParse(tsKillSound, out killSound))
+                    throw new ArgumentException($"Unknown Thunderspear kill sound type: {tsKillSound}");
+                
+                settings = new object[] { tsExplodeColor.Value.ToColor(), killSound };
+            }
+            EffectSpawner.Spawn(effectName, position, Quaternion.Euler(rotation), scale, scaled, settings);
         }
     }
 }

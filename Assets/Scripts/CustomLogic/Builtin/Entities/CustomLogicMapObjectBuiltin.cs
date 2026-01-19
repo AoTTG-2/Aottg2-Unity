@@ -1,4 +1,5 @@
 using Map;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -444,8 +445,8 @@ namespace CustomLogic
         /// <param name="radius">The radius of the sphere collider.</param>
         [CLMethod]
         public void AddSphereCollider(
-            [CLParam(Enum = typeof(CustomLogicCollideModeEnum))] string collideMode,
-            [CLParam(Enum = typeof(CustomLogicCollideWithEnum))] string collideWith,
+            [CLParam(Enum = new Type[] { typeof(CustomLogicCollideModeEnum) })] string collideMode,
+            [CLParam(Enum = new Type[] { typeof(CustomLogicCollideWithEnum) })] string collideWith,
             CustomLogicVector3Builtin center,
             float radius)
         {
@@ -478,8 +479,8 @@ namespace CustomLogic
         /// <param name="size">The size of the box collider (optional, defaults to calculated bounds).</param>
         [CLMethod]
         public void AddBoxCollider(
-            [CLParam(Enum = typeof(CustomLogicCollideModeEnum))] string collideMode,
-            [CLParam(Enum = typeof(CustomLogicCollideWithEnum))] string collideWith,
+            [CLParam(Enum = new Type[] { typeof(CustomLogicCollideModeEnum) })] string collideMode,
+            [CLParam(Enum = new Type[] { typeof(CustomLogicCollideWithEnum) })] string collideWith,
             CustomLogicVector3Builtin center = null,
             CustomLogicVector3Builtin size = null)
         {
@@ -548,7 +549,7 @@ namespace CustomLogic
         /// <returns>The created targetable object.</returns>
         [CLMethod]
         public CustomLogicMapTargetableBuiltin AddSphereTarget(
-            [CLParam(Enum = typeof(CustomLogicTeamEnum))] string team,
+            [CLParam(Enum = new Type[] { typeof(CustomLogicTeamEnum) })] string team,
             CustomLogicVector3Builtin center,
             float radius)
         {
@@ -586,7 +587,7 @@ namespace CustomLogic
         /// <returns>The created targetable object.</returns>
         [CLMethod]
         public CustomLogicMapTargetableBuiltin AddBoxTarget(
-            [CLParam(Enum = typeof(CustomLogicTeamEnum))] string team,
+            [CLParam(Enum = new Type[] { typeof(CustomLogicTeamEnum) })] string team,
             CustomLogicVector3Builtin center,
             CustomLogicVector3Builtin size)
         {

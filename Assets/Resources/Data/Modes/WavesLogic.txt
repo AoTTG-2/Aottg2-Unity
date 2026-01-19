@@ -51,11 +51,11 @@ class Main
             }
             if (humans == 0 && playerShifters == 0 && self._hasSpawned)
             {
-                UI.SetLabelAll("MiddleCenter", "Humanity failed!");
+                UI.SetLabelAll(UILabelEnum.MiddleCenter, "Humanity failed!");
                 Game.End(10.0);
                 return;
             }
-            UI.SetLabelAll("TopCenter", "Titans Left: " + Convert.ToString(titans) + "  " + "Wave: " + Convert.ToString(self._currentWave));
+            UI.SetLabelAll(UILabelEnum.TopCenter, "Titans Left: " + Convert.ToString(titans) + "  " + "Wave: " + Convert.ToString(self._currentWave));
         }
     }
 
@@ -64,30 +64,30 @@ class Main
         self._currentWave = self._currentWave + 1;
         if (self._currentWave > self.MaxWaves)
         {
-            UI.SetLabelAll("MiddleCenter", "All waves cleared, humanity wins!");
+            UI.SetLabelAll(UILabelEnum.MiddleCenter, "All waves cleared, humanity wins!");
             Game.End(10.0);
             return;
         }
         amount = self.AddTitansPerWave * (self._currentWave - 1) + self.StartTitans;
-        type = "Default";
+        type = TitanTypeEnum.Default;
         if (self.ChallengeWaves != "Disabled" && self.ChallengeWavesEveryX > 0 && Math.Mod(self._currentWave, self.ChallengeWavesEveryX) == 0)
         {
             amount = self._currentWave / self.ChallengeWavesEveryX;
             if (self.ChallengeWaves == "Punks")
             {
-                type = "Punk";
+                type = TitanTypeEnum.Punk;
             }
             elif (self.ChallengeWaves == "Throwers")
             {
-                type = "Thrower";
+                type = TitanTypeEnum.Thrower;
             }
             elif (self.ChallengeWaves == "Crawlers")
             {
-                type = "Crawler";
+                type = TitanTypeEnum.Crawler;
             }
             elif (self.ChallengeWaves == "Random")
             {
-                type = "Random";
+                type = TitanTypeEnum.Random;
             }
         }
         if (self.GradualSpawn)

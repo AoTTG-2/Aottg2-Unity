@@ -16,7 +16,7 @@ class Main
     {
         if (Network.IsMasterClient)
         {
-            Game.SpawnTitans("Default", self.MaxTitans);
+            Game.SpawnTitans(TitanTypeEnum.Default, self.MaxTitans);
         }
     }
 
@@ -54,7 +54,7 @@ class Main
             {
                 position = character.NapePosition;
             }
-            Game.SpawnEffect("ThunderspearExplode", position, Vector3.Zero, 50.0, Color(255, 255, 255, 255), "Air");
+            Game.SpawnEffect(EffectNameEnum.ThunderspearExplode, position, Vector3.Zero, 50.0, Color(255, 255, 255, 255), "Air");
         }
     }
 
@@ -74,7 +74,7 @@ class Main
                 self._spawnTimeLeft = self._spawnTimeLeft - Time.TickTime;
                 if (self._spawnTimeLeft <= 0.0)
                 {
-                    Game.SpawnTitans("Default", 1);
+                    Game.SpawnTitans(TitanTypeEnum.Default, 1);
                     self._spawnTimeLeft = self.TitanSpawnEvery;
                 }
             }
@@ -84,7 +84,7 @@ class Main
             }
             if (humans == 0 && playerShifters == 0 && self._hasSpawned)
             {
-                UI.SetLabelAll("MiddleCenter", "Humanity failed!");
+                UI.SetLabelAll(UILabelEnum.MiddleCenter, "Humanity failed!");
                 Game.End(10.0);
                 return;
             }
@@ -118,6 +118,6 @@ class Main
                 CrankedTimeDisplay = CrankedTimeDisplay + String.Newline + "You survived <color=#ffd700>" + String.FormatFloat(surviveTime, 2) + "</color> seconds";
             }
         }
-        UI.SetLabel("TopCenter", "Titans Left: " + Convert.ToString(titans) + String.Newline + CrankedTimeDisplay);
+        UI.SetLabel(UILabelEnum.TopCenter, "Titans Left: " + Convert.ToString(titans) + String.Newline + CrankedTimeDisplay);
     }
 }

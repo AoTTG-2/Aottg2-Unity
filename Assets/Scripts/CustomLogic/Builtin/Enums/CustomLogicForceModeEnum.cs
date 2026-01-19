@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace CustomLogic
 {
     /// <summary>
@@ -13,24 +15,24 @@ namespace CustomLogic
         /// Force mode: applies force continuously over time.
         /// </summary>
         [CLProperty]
-        public static string Force => "Force";
+        public static int Force => (int)ForceMode.Force;
 
         /// <summary>
         /// Acceleration mode: applies force as acceleration, ignoring mass.
         /// </summary>
         [CLProperty]
-        public static string Acceleration => "Acceleration";
+        public static int Acceleration => (int)ForceMode.Acceleration;
 
         /// <summary>
         /// Impulse mode: applies force instantly as an impulse.
         /// </summary>
         [CLProperty]
-        public static string Impulse => "Impulse";
+        public static int Impulse => (int)ForceMode.Impulse;
 
         /// <summary>
         /// VelocityChange mode: applies force as a direct velocity change, ignoring mass.
         /// </summary>
         [CLProperty]
-        public static string VelocityChange => "VelocityChange";
+        public static int VelocityChange => (int)ForceMode.VelocityChange;
     }
 }

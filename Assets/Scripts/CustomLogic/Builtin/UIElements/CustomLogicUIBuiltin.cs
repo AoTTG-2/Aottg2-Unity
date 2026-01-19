@@ -3,6 +3,7 @@ using Characters;
 using GameManagers;
 using Photon.Pun;
 using Photon.Realtime;
+using System;
 using System.Collections.Generic;
 using UI;
 using UnityEngine.UIElements;
@@ -46,67 +47,16 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// "TopCenter" constant.
-        /// </summary>
-        [CLProperty]
-        public static string TopCenter => "TopCenter";
-
-        /// <summary>
-        /// "TopLeft" constant.
-        /// </summary>
-        [CLProperty]
-        public static string TopLeft => "TopLeft";
-
-        /// <summary>
-        /// "TopRight" constant.
-        /// </summary>
-        [CLProperty]
-        public static string TopRight => "TopRight";
-
-        /// <summary>
-        /// "MiddleCenter" constant.
-        /// </summary>
-        [CLProperty]
-        public static string MiddleCenter => "MiddleCenter";
-
-        /// <summary>
-        /// "MiddleLeft" constant.
-        /// </summary>
-        [CLProperty]
-        public static string MiddleLeft => "MiddleLeft";
-
-        /// <summary>
-        /// "MiddleRight" constant.
-        /// </summary>
-        [CLProperty]
-        public static string MiddleRight => "MiddleRight";
-
-        /// <summary>
-        /// "BottomCenter" constant.
-        /// </summary>
-        [CLProperty]
-        public static string BottomCenter => "BottomCenter";
-
-        /// <summary>
-        /// "BottomLeft" constant.
-        /// </summary>
-        [CLProperty]
-        public static string BottomLeft => "BottomLeft";
-
-        /// <summary>
-        /// "BottomRight" constant.
-        /// </summary>
-        [CLProperty]
-        public static string BottomRight => "BottomRight";
-
-        /// <summary>
         /// Sets the label at a certain location. Valid types: "TopCenter", "TopLeft", "TopRight",
         /// "MiddleCenter", "MiddleLeft", "MiddleRight", "BottomLeft", "BottomRight", "BottomCenter".
         /// </summary>
         /// <param name="label">The label location.</param>
         /// <param name="message">The message to display.</param>
         [CLMethod]
-        public static void SetLabel(string label, string message)
+        public static void SetLabel(
+            [CLParam(Enum = new Type[] { typeof(CustomLogicUILabelEnum) })]
+            string label,
+            string message)
             => InGameManager.SetLabel(label, message);
 
         /// <summary>
@@ -116,7 +66,11 @@ namespace CustomLogic
         /// <param name="message">The message to display.</param>
         /// <param name="time">The time in seconds before the label is cleared.</param>
         [CLMethod]
-        public static void SetLabelForTime(string label, string message, float time)
+        public static void SetLabelForTime(
+            [CLParam(Enum = new Type[] { typeof(CustomLogicUILabelEnum) })]
+            string label,
+            string message,
+            float time)
             => InGameManager.SetLabel(label, message, time);
 
         /// <summary>
@@ -125,7 +79,9 @@ namespace CustomLogic
         /// <param name="label">The label location.</param>
         /// <param name="message">The message to display.</param>
         [CLMethod]
-        public static void SetLabelAll(string label, string message)
+        public static void SetLabelAll(
+            [CLParam(Enum = new Type[] { typeof(CustomLogicUILabelEnum) })] string label,
+            string message)
         {
             if (PhotonNetwork.IsMasterClient)
             {
