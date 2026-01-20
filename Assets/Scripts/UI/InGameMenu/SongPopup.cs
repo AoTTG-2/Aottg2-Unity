@@ -60,7 +60,10 @@ namespace UI
             _authorName.alignment = TextAnchor.LowerRight;
 
             ElementFactory.SetAnchor(coverImage.gameObject, TextAnchor.MiddleCenter, TextAnchor.MiddleCenter, new Vector2(20, 0));
-            if (SettingsManager.InGameCurrent.Misc.GlobalMinimapDisable.Value || SettingsManager.InGameCurrent.Misc.RealismMode.Value)
+            bool isMapHidden = SettingsManager.InGameCurrent.Misc.GlobalMinimapDisable.Value
+                || SettingsManager.InGameCurrent.Misc.RealismMode.Value
+                || !SettingsManager.GeneralSettings.MinimapEnabled.Value;
+            if (isMapHidden)
             {
                 ElementFactory.SetAnchor(gameObject, TextAnchor.UpperRight, TextAnchor.UpperRight, new Vector2(-15f, -10f));
             }
