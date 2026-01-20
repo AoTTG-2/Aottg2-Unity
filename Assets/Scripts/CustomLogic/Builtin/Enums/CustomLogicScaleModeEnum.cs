@@ -10,21 +10,21 @@ namespace CustomLogic
         public CustomLogicScaleModeEnum() { }
 
         /// <summary>
+        /// StretchToFill scale mode.
+        /// </summary>
+        [CLProperty]
+        public static int StretchToFill => (int)UnityEngine.ScaleMode.StretchToFill;
+
+        /// <summary>
         /// ScaleAndCrop scale mode.
         /// </summary>
         [CLProperty]
-        public static string ScaleAndCrop => "ScaleAndCrop";
+        public static int ScaleAndCrop => (int)UnityEngine.ScaleMode.ScaleAndCrop;
 
         /// <summary>
         /// ScaleToFit scale mode.
         /// </summary>
         [CLProperty]
-        public static string ScaleToFit => "ScaleToFit";
-
-        /// <summary>
-        /// StretchToFill scale mode.
-        /// </summary>
-        [CLProperty]
-        public static string StretchToFill => "StretchToFill";
+        public static int ScaleToFit => (int)UnityEngine.ScaleMode.ScaleToFit;
     }
 }

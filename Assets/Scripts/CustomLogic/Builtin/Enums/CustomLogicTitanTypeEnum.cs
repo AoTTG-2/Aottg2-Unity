@@ -1,3 +1,5 @@
+using GameManagers;
+
 namespace CustomLogic
 {
     /// <summary>
@@ -13,48 +15,48 @@ namespace CustomLogic
         /// Normal titan type.
         /// </summary>
         [CLProperty]
-        public static string Normal => "Normal";
+        public static string Normal => TitanType.Normal;
 
         /// <summary>
         /// Abnormal titan type.
         /// </summary>
         [CLProperty]
-        public static string Abnormal => "Abnormal";
+        public static string Abnormal => TitanType.Abnormal;
 
         /// <summary>
         /// Jumper titan type.
         /// </summary>
         [CLProperty]
-        public static string Jumper => "Jumper";
+        public static string Jumper => TitanType.Jumper;
 
         /// <summary>
         /// Crawler titan type.
         /// </summary>
         [CLProperty]
-        public static string Crawler => "Crawler";
+        public static string Crawler => TitanType.Crawler;
 
         /// <summary>
         /// Thrower titan type.
         /// </summary>
         [CLProperty]
-        public static string Thrower => "Thrower";
+        public static string Thrower => TitanType.Thrower;
 
         /// <summary>
         /// Punk titan type.
         /// </summary>
         [CLProperty]
-        public static string Punk => "Punk";
+        public static string Punk => TitanType.Punk;
 
         /// <summary>
         /// Default titan type (uses spawn rate settings).
         /// </summary>
         [CLProperty]
-        public static string Default => "Default";
+        public static string Default => TitanType.Default;
 
         /// <summary>
         /// Random titan type (randomly selects from available types).
         /// </summary>
         [CLProperty]
-        public static string Random => "Random";
+        public static string Random => TitanType.Random;
     }
 }

@@ -1421,7 +1421,7 @@ class Main
 		while (i < Network.Players.Count)
 		{
 			p = Network.Players.Get(i);
-			if (p.CharacterType == "Human" && p.Status == "Alive")
+			if (p.CharacterType == CharacterTypeEnum.Human && p.Status == PlayerStatusEnum.Alive)
 			{
 				alive = true;
 				i = Network.Players.Count;
@@ -1431,7 +1431,7 @@ class Main
 
 		if (!alive)
 		{
-			UI.SetLabelAll("MiddleCenter", "Humanity failed!");
+			UI.SetLabelAll(UILabelEnum.MiddleCenter, "Humanity failed!");
 			Game.End(10.0);
 		}
 	}
@@ -2223,7 +2223,7 @@ class Event8
 
 			if (self._titans.Count == 0)
 			{
-				UI.SetLabelAll("MiddleCenter", "Humanity wins!");
+				UI.SetLabelAll(UILabelEnum.MiddleCenter, "Humanity wins!");
 				Game.End(10.0);
 			}
 		}
@@ -2249,7 +2249,7 @@ class Event8
 		while (i < self.TitansCount)
 		{
 			position = TitanSpawnPoints.GetSpawnPoint(self.CaptureZone);
-			titan = Game.SpawnTitanAt("Default", position);
+			titan = Game.SpawnTitanAt(TitanTypeEnum.Default, position);
 			titan.DetectRange = 0;
 			titan.FocusRange = 0;
 			titan.MoveTo(shifterPosition, 1, false);
@@ -2299,7 +2299,7 @@ extension CaptureZones
 			captureZoneOrderMap.Set(captureZoneComponent.Order, captureZoneComponent);
 		}
 
-		keys = captureZoneOrderMap.Keys;
+		keys = captureZoneOrderMap.Keys.Copy();
 		keys.Sort();
 		for(key in keys)
 		{
@@ -2488,7 +2488,7 @@ extension ReinforcementZones
 		{
 			for(z in self._zones)
 			{
-				text = "Press " + Input.GetKeyName("Interaction/" + z.Key) + " to revive teammates." + String.Newline;
+				text = "Press " + Input.GetKeyName(InputCategoryEnum.Interaction + "/" + z.Key) + " to revive teammates." + String.Newline;
 				text += "<b><size=18>" + remaining + "</size></b>" + " revive";
 				if (remaining >= 2)
 				{
@@ -2543,22 +2543,22 @@ extension DialogueUtils
 	function Init()
 	{
 		self.Profiles = List();
-		self.Profiles.Add(Profile("Eren", "Eren1"));
-		self.Profiles.Add(Profile("Eren", "Eren2"));
-		self.Profiles.Add(Profile("Erwin", "Erwin1"));
-		self.Profiles.Add(Profile("Erwin", "Erwin2"));
-		self.Profiles.Add(Profile("Erwin", "Erwin3"));
-		self.Profiles.Add(Profile("Erwin", "Erwin4"));
-		self.Profiles.Add(Profile("Fenglee", "Fenglee1"));
-		self.Profiles.Add(Profile("Gunther", "Gunther1"));
-		self.Profiles.Add(Profile("Hange", "Hange1"));
-		self.Profiles.Add(Profile("Ian", "Ian1"));
-		self.Profiles.Add(Profile("Jean", "Jean1"));
-		self.Profiles.Add(Profile("Levi", "Levi1"));
-		self.Profiles.Add(Profile("Levi", "Levi2"));
-		self.Profiles.Add(Profile("Levi", "Levi4"));
-		self.Profiles.Add(Profile("Levi", "Levi5"));
-		self.Profiles.Add(Profile("Levi", "Levi6"));
+		self.Profiles.Add(Profile("Eren", ProfileIconEnum.Eren1));
+		self.Profiles.Add(Profile("Eren", ProfileIconEnum.Eren2));
+		self.Profiles.Add(Profile("Erwin", ProfileIconEnum.Erwin1));
+		self.Profiles.Add(Profile("Erwin", ProfileIconEnum.Erwin2));
+		self.Profiles.Add(Profile("Erwin", ProfileIconEnum.Erwin3));
+		self.Profiles.Add(Profile("Erwin", ProfileIconEnum.Erwin4));
+		self.Profiles.Add(Profile("Fenglee", ProfileIconEnum.Fenglee1));
+		self.Profiles.Add(Profile("Gunther", ProfileIconEnum.Gunther1));
+		self.Profiles.Add(Profile("Hange", ProfileIconEnum.Hange1));
+		self.Profiles.Add(Profile("Ian", ProfileIconEnum.Ian1));
+		self.Profiles.Add(Profile("Jean", ProfileIconEnum.Jean1));
+		self.Profiles.Add(Profile("Levi", ProfileIconEnum.Levi1));
+		self.Profiles.Add(Profile("Levi", ProfileIconEnum.Levi2));
+		self.Profiles.Add(Profile("Levi", ProfileIconEnum.Levi4));
+		self.Profiles.Add(Profile("Levi", ProfileIconEnum.Levi5));
+		self.Profiles.Add(Profile("Levi", ProfileIconEnum.Levi6));
 	}
 
 	function SendShowDialogueRandomProfileMessage(key)
@@ -2625,7 +2625,7 @@ extension PlayerUtils
 		dead = false;
 		for(p in Network.Players)
 		{
-			if (p.Status != "Alive")
+			if (p.Status != PlayerStatusEnum.Alive)
 			{
 				dead = true;
 			}
@@ -2688,7 +2688,7 @@ extension TitanUtils
 			{
 				if (seconds == null)
 				{
-					t.AddOutline();
+					t.AddOutline(null, OutlineModeEnum.OutlineAll);
 				}
 				else
 				{
@@ -2702,7 +2702,7 @@ extension TitanUtils
 	{
 		position = TitanSpawnPoints.GetAnnieSpawnPoint(captureZone);
 
-		shifter = Game.SpawnShifterAt("Annie", position);
+		shifter = Game.SpawnShifterAt(ShifterTypeEnum.Annie, position);
 		shifter.MaxHealth = health;
 		shifter.Health = health;
 
@@ -2716,7 +2716,7 @@ extension TitanUtils
 		while (i < count)
 		{
 			position = TitanSpawnPoints.GetSpawnPoint(captureZone);
-			titan = Game.SpawnTitanAt("Default", position);
+			titan = Game.SpawnTitanAt(TitanTypeEnum.Default, position);
 
 			if (Math.Mod(i, 10) == 0)
 			{

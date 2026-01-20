@@ -1,3 +1,5 @@
+using GameManagers;
+
 namespace CustomLogic
 {
     /// <summary>
@@ -13,18 +15,18 @@ namespace CustomLogic
         /// Player is alive.
         /// </summary>
         [CLProperty]
-        public static string Alive => "Alive";
+        public static string Alive => PlayerStatus.Alive;
 
         /// <summary>
         /// Player is dead.
         /// </summary>
         [CLProperty]
-        public static string Dead => "Dead";
+        public static string Dead => PlayerStatus.Dead;
 
         /// <summary>
         /// Player is spectating.
         /// </summary>
         [CLProperty]
-        public static string Spectating => "Spectating";
+        public static string Spectating => PlayerStatus.Spectating;
     }
 }

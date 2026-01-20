@@ -7,11 +7,11 @@ namespace Characters
 {
     class HumanSpecials
     {
-        public static string[] AnySpecials = new string[] {"Potato", "Escape", "Dance", "Distract", "Smell", "Supply", "SmokeBomb", "Carry", "Switchback", "Confuse"};
-        public static string[] AHSSSpecials = new string[] { "AHSSTwinShot" };
-        public static string[] BladeSpecials = new string[] { "DownStrike", "Spin1", "Spin2", "Spin3", "BladeThrow" };
-        public static string[] ShifterSpecials = new string[] { "Eren", "Annie" };
-        public static readonly string DefaultSpecial = "Potato";
+        public static string[] AnySpecials = new string[] {HumanSpecial.Potato, HumanSpecial.Escape, HumanSpecial.Dance, HumanSpecial.Distract, HumanSpecial.Smell, HumanSpecial.Supply, HumanSpecial.SmokeBomb, HumanSpecial.Carry, HumanSpecial.Switchback, HumanSpecial.Confuse};
+        public static string[] AHSSSpecials = new string[] { HumanSpecial.AHSSTwinShot };
+        public static string[] BladeSpecials = new string[] { HumanSpecial.DownStrike, HumanSpecial.Spin1, HumanSpecial.Spin2, HumanSpecial.Spin3, HumanSpecial.BladeThrow };
+        public static string[] ShifterSpecials = new string[] { HumanSpecial.Eren, HumanSpecial.Annie };
+        public static readonly string DefaultSpecial = HumanSpecial.Potato;
 
         public static List<string> GetSpecialNames(string loadout, bool includeShifters)
         {
@@ -34,8 +34,8 @@ namespace Characters
                     AddSpecialName(names, special);
             }
             if (loadout == HumanLoadout.Thunderspear)
-                AddSpecialName(names, "Stock");
-            AddSpecialName(names, "None");
+                AddSpecialName(names, HumanSpecial.Stock);
+            AddSpecialName(names, HumanSpecial.None);
             return names;
         }
 
@@ -71,27 +71,27 @@ namespace Characters
 
         public static BaseUseable GetSpecialUseable(BaseCharacter owner, string special) => special switch
         {
-            "Distract" => new DistractSpecial(owner),
-            "Escape" => new EscapeSpecial(owner),
-            "Dance" => new DanceSpecial(owner),
-            "Smell" => new SmellSpecial(owner),
-            "Potato" => new PotatoSpecial(owner),
-            "DownStrike" => new DownStrikeSpecial(owner),
-            "Spin1" => new Spin1Special(owner),
-            "Spin2" => new Spin2Special(owner),
-            "Spin3" => new Spin3Special(owner),
-            "BladeThrow" => new BladeThrowSpecial(owner),
-            "Stock" => new StockSpecial(owner),
-            "None" => new NoneSpecial(owner),
-            "Supply" => new SupplySpecial(owner),
-            "SmokeBomb" => new SmokeBombSpecial(owner),
-            "Carry" => new CarrySpecial(owner),
-            "AHSSTwinShot" => new AHSSTwinShot(owner),
-            "Eren" => new ShifterTransformSpecial(owner, "Eren"),
-            "Annie" => new ShifterTransformSpecial(owner, "Annie"),
-            "Armored" => new ShifterTransformSpecial(owner, "Armored"),
-            "Switchback" => new SwitchbackSpecial(owner),
-            "Confuse" => new ConfuseSpecial(owner),
+            HumanSpecial.Distract => new DistractSpecial(owner),
+            HumanSpecial.Escape => new EscapeSpecial(owner),
+            HumanSpecial.Dance => new DanceSpecial(owner),
+            HumanSpecial.Smell => new SmellSpecial(owner),
+            HumanSpecial.Potato => new PotatoSpecial(owner),
+            HumanSpecial.DownStrike => new DownStrikeSpecial(owner),
+            HumanSpecial.Spin1 => new Spin1Special(owner),
+            HumanSpecial.Spin2 => new Spin2Special(owner),
+            HumanSpecial.Spin3 => new Spin3Special(owner),
+            HumanSpecial.BladeThrow => new BladeThrowSpecial(owner),
+            HumanSpecial.Stock => new StockSpecial(owner),
+            HumanSpecial.None => new NoneSpecial(owner),
+            HumanSpecial.Supply => new SupplySpecial(owner),
+            HumanSpecial.SmokeBomb => new SmokeBombSpecial(owner),
+            HumanSpecial.Carry => new CarrySpecial(owner),
+            HumanSpecial.AHSSTwinShot => new AHSSTwinShot(owner),
+            HumanSpecial.Eren => new ShifterTransformSpecial(owner, ShifterType.Eren),
+            HumanSpecial.Annie => new ShifterTransformSpecial(owner, ShifterType.Annie),
+            HumanSpecial.Armored => new ShifterTransformSpecial(owner, ShifterType.Armored),
+            HumanSpecial.Switchback => new SwitchbackSpecial(owner),
+            HumanSpecial.Confuse => new ConfuseSpecial(owner),
             _ => null
         };
 

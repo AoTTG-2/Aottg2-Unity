@@ -116,7 +116,7 @@ namespace CustomLogic
         /// <summary>
         /// The default language to use when a string is not found in the current language pack. English by default.
         /// </summary>
-        [CLProperty(Enum = typeof(CustomLogicLanguageEnum))]
+        [CLProperty(Enum = new Type[] { typeof(CustomLogicLanguageEnum) })]
         public static string DefaultLanguage { get; set; }
 
         /// <summary>
@@ -145,7 +145,7 @@ namespace CustomLogic
         /// <param name="value">The localized string value.</param>
         [CLMethod]
         public static void Set(
-            [CLParam(Enum = typeof(CustomLogicLanguageEnum))] string language,
+            [CLParam(Enum = new Type[] { typeof(CustomLogicLanguageEnum) })] string language,
             string key,
             string value)
         {
@@ -166,7 +166,7 @@ namespace CustomLogic
         /// <param name="strings">The dictionary containing key-value pairs of localized strings.</param>
         [CLMethod]
         public static void RegisterLanguage(
-            [CLParam(Enum = typeof(CustomLogicLanguageEnum))] string language,
+            [CLParam(Enum = new Type[] { typeof(CustomLogicLanguageEnum) })] string language,
             [CLParam(Type = "Dict<string, string>")] CustomLogicDictBuiltin strings)
         {
             var dictionary = new Dictionary<string, string>(strings.Count);
@@ -194,8 +194,8 @@ namespace CustomLogic
         /// <param name="toLanguage">The language code to fallback to.</param>
         [CLMethod]
         public static void RegisterFallback(
-            [CLParam(Enum = typeof(CustomLogicLanguageEnum))] string fromLanguage,
-            [CLParam(Enum = typeof(CustomLogicLanguageEnum))] string toLanguage)
+            [CLParam(Enum = new Type[] { typeof(CustomLogicLanguageEnum) })] string fromLanguage,
+            [CLParam(Enum = new Type[] { typeof(CustomLogicLanguageEnum) })] string toLanguage)
         {
             _languageFallbacks[fromLanguage] = toLanguage;
         }
@@ -205,7 +205,7 @@ namespace CustomLogic
         /// </summary>
         /// <param name="fromLanguage">The language code to remove the fallback for.</param>
         [CLMethod]
-        public static void RemoveFallback([CLParam(Enum = typeof(CustomLogicLanguageEnum))] string fromLanguage)
+        public static void RemoveFallback([CLParam(Enum = new Type[] { typeof(CustomLogicLanguageEnum) })] string fromLanguage)
         {
             _languageFallbacks.Remove(fromLanguage);
         }

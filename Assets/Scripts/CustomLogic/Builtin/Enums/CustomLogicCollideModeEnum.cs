@@ -1,3 +1,5 @@
+using Map;
+
 namespace CustomLogic
 {
     /// <summary>
@@ -13,12 +15,18 @@ namespace CustomLogic
         /// Region collision mode.
         /// </summary>
         [CLProperty]
-        public static string Region => "Region";
+        public static string Region => MapObjectCollideMode.Region;
 
         /// <summary>
         /// Hitboxes collision mode.
         /// </summary>
         [CLProperty]
-        public static string Hitboxes => "Hitboxes";
+        public static string Physical => MapObjectCollideMode.Physical;
+
+        /// <summary>
+        /// None collision mode.
+        /// </summary>
+        [CLProperty]
+        public static string None => MapObjectCollideMode.None;
     }
 }

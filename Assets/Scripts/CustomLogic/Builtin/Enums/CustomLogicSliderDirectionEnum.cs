@@ -1,3 +1,5 @@
+using UnityEngine.UIElements;
+
 namespace CustomLogic
 {
     /// <summary>
@@ -13,12 +15,12 @@ namespace CustomLogic
         /// Horizontal slider direction.
         /// </summary>
         [CLProperty]
-        public static string Horizontal => "Horizontal";
+        public static int Horizontal => (int)SliderDirection.Horizontal;
 
         /// <summary>
         /// Vertical slider direction.
         /// </summary>
         [CLProperty]
-        public static string Vertical => "Vertical";
+        public static int Vertical => (int)SliderDirection.Vertical;
     }
 }

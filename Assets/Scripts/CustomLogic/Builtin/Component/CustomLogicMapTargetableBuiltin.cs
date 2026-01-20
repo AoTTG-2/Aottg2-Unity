@@ -20,6 +20,7 @@ namespace CustomLogic
             Value = mapTargetable;
         }
 
+        // TODO: Suggest team enum
         /// <summary>
         /// The team of the targetable.
         /// </summary>
