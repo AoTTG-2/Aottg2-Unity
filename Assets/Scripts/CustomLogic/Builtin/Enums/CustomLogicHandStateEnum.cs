@@ -16,9 +16,27 @@ namespace CustomLogic
         public static string Healthy => "Healthy";
 
         /// <summary>
-        /// Hand is broken.
+        /// Hand is damaged but not severed.
         /// </summary>
         [CLProperty]
-        public static string Broken => "Broken";
+        public static string Damaged => "Damaged";
+
+        /// <summary>
+        /// Hand is severed.
+        /// </summary>
+        [CLProperty]
+        public static string Severed => "Severed";
+
+        /// <summary>
+        /// Hand is recovering.
+        /// </summary>
+        [CLProperty]
+        public static string Recovering => "Recovering";
+
+        /// <summary>
+        /// Hand is broken (deprecated, use Severed instead).
+        /// </summary>
+        [CLProperty]
+        public static string Broken => "Severed";
     }
 }

@@ -1297,7 +1297,6 @@ class Main
 					{
 						if (self._handMode)
 						{
-							#UI.SetLabelAll("TopCenter", "<b><size=28><color=#008000>Colossal Hand: </color>" + self._colossal.HandHealth + "</size></b>");
 							if (self._colossal.LeftHandHealth <= 0 && self._colossal.RightHandHealth <= 0)
 							{
 								self._handMode = false;
@@ -1307,7 +1306,6 @@ class Main
 						}
 						else
 						{
-							#UI.SetLabelAll("TopCenter", "<b><size=28><color=#ff0000>Colossal Nape: </color>" + self._colossal.Health + "</size></b>");
 							self._handCooldownLeft -= Time.TickTime;
 							if (self._handCooldownLeft <= 0)
 							{
@@ -1318,7 +1316,8 @@ class Main
 								else
 								{
 									self._handMode = true;
-									self._colossal.HandHealth = self._colossal.MaxHandHealth;
+									self._colossal.LeftHandHealth = self._colossal.MaxLeftHandHealth;
+									self._colossal.RightHandHealth = self._colossal.MaxRightHandHealth;
 								}
 							}
 						}
@@ -1339,6 +1338,8 @@ class Main
 			self._bossHealthBar.SetCurrentHealth(self._colossal.Health);
 			self._bossHealthBar.SetLeftHandHealth(self._colossal.LeftHandHealth);
 			self._bossHealthBar.SetRightHandHealth(self._colossal.RightHandHealth);
+			self._bossHealthBar.SetLeftHandState(self._colossal.LeftHandState);
+			self._bossHealthBar.SetRightHandState(self._colossal.RightHandState);
 
 			if (self._bossHealthBar.IsDead())
 			{
@@ -1529,11 +1530,11 @@ class BossHealthBar
     _bossName = "Boss";
     _maxHealth = 100.0;
     _currentHealth = 100.0;
-    _labelPosition = "Top"; # "Top" or "Before"
+    _labelPosition = "Top";
     _showPercentage = true;
 
     # Color thresholds (percent -> color)
-    _colorThresholds = null; # List of threshold objects
+    _colorThresholds = null;
 
     # UI Elements
     _rootContainer = null;
@@ -1543,24 +1544,39 @@ class BossHealthBar
     _healthLabel = null;
     _isVisible = true;
 
-    # Hand health bars (vertical)
+    # Left hand health bars and icons
     _leftHandContainer = null;
     _leftHandFill = null;
-    _leftHandIcon = null;
+    _leftHandHealthyIcon = null;
+    _leftHandDamagedIcon = null;
+    _leftHandSeveredIcon = null;
+    _leftHandRecoveringIcon = null;
     _leftHandHealth = 100.0;
     _leftHandMaxHealth = 100.0;
+    _leftHandState = "Healthy";
 
+    # Right hand health bars and icons
     _rightHandContainer = null;
     _rightHandFill = null;
-    _rightHandIcon = null;
+    _rightHandHealthyIcon = null;
+    _rightHandDamagedIcon = null;
+    _rightHandSeveredIcon = null;
+    _rightHandRecoveringIcon = null;
     _rightHandHealth = 100.0;
     _rightHandMaxHealth = 100.0;
+    _rightHandState = "Healthy";
 
-    # Init parameters:
-    # - bossName: Name to display for the boss
-    # - maxHealth: Maximum health value
-    # - labelPosition: "Top" (label above bar) or "Before" (label to left of bar)
-    # - showPercentage: Whether to show percentage in the health text
+    # Icon paths for hand states
+    _leftHandHealthyIconPath = "Icons/Game/HealthyLeftHandIcon";
+    _leftHandDamagedIconPath = "Icons/Game/DamagedLeftHandIcon";
+    _leftHandSeveredIconPath = "Icons/Game/SeveredLeftHandIcon";
+    _leftHandRecoveringIconPath = "Icons/Game/SmokeLeftHandIcon";
+
+    _rightHandHealthyIconPath = "Icons/Game/HealthyRightHandIcon";
+    _rightHandDamagedIconPath = "Icons/Game/DamagedRightHandIcon";
+    _rightHandSeveredIconPath = "Icons/Game/SeveredRightHandIcon";
+    _rightHandRecoveringIconPath = "Icons/Game/SmokeRightHandIcon";
+
     function Init(bossName, maxHealth, labelPosition, showPercentage)
     {
         self._bossName = bossName;
@@ -1569,18 +1585,14 @@ class BossHealthBar
         self._labelPosition = labelPosition;
         self._showPercentage = showPercentage;
 
-        # Initialize default color thresholds
         self._colorThresholds = List();
 
-        # Add color thresholds after UI is created
-        self.AddColorThreshold(75.0, Color(100, 200, 100)); # Green above 75%
-        self.AddColorThreshold(50.0, Color(200, 200, 100)); # Yellow above 50%
-        self.AddColorThreshold(25.0, Color(200, 150, 50));  # Orange above 25%
-        self.AddColorThreshold(0.0, Color(200, 50, 50));    # Red above 0%
+        self.AddColorThreshold(75.0, Color(100, 200, 100));
+        self.AddColorThreshold(50.0, Color(200, 200, 100));
+        self.AddColorThreshold(25.0, Color(200, 150, 50));
+        self.AddColorThreshold(0.0, Color(200, 50, 50));
 
         self.CreateUI();
-
-
     }
 
     function DestroyUI()
@@ -1597,7 +1609,6 @@ class BossHealthBar
     {
         root = UI.GetRootVisualElement();
 
-        # Main container - positioned at top center of screen with fixed size
         self._rootContainer = UI.VisualElement()
             .Absolute(true)
             .Width(40, true)
@@ -1609,7 +1620,6 @@ class BossHealthBar
             .BorderRadius(3)
             .BackgroundColor(Color(20, 20, 20, 200));
 
-        # Create layout based on label position
         if (self._labelPosition == "Before")
         {
             self.CreateBeforeLabelLayout();
@@ -1621,13 +1631,11 @@ class BossHealthBar
 
         root.Add(self._rootContainer);
 
-        # Start hidden
         self.Hide();
     }
 
     function CreateTopLabelLayout()
     {
-        # Main row container with left hand, center content, and right hand
         mainRow = UI.VisualElement()
             .FlexDirection("Row")
             .Width(100, true)
@@ -1635,11 +1643,9 @@ class BossHealthBar
             .AlignItems("Center")
             .JustifyContent("SpaceBetween");
 
-        # Left hand vertical health bar
         self.CreateVerticalHandBar(true);
         mainRow.Add(self._leftHandContainer);
 
-        # Center container for boss info and horizontal health bar
         centerContainer = UI.VisualElement()
             .FlexDirection("Column")
             .FlexGrow(1)
@@ -1648,7 +1654,6 @@ class BossHealthBar
             .MarginLeft(15, false)
             .MarginRight(15, false);
 
-        # Boss name label on top
         self._nameLabel = UI.Label(self._bossName)
             .Height(55,true)
             .FontSize(70, true)
@@ -1656,7 +1661,6 @@ class BossHealthBar
             .Color(Color(255, 255, 255))
             .AlignSelf("Center");
 
-        # Create custom health bar
         self.CreateHealthBar();
 
         healthContainer = UI.VisualElement()
@@ -1666,7 +1670,6 @@ class BossHealthBar
             .AlignItems("Center")
             .JustifyContent("SpaceBetween");
 
-        # Health text label
         self._healthLabel = UI.Label(self.GetHealthText())
             .Absolute(true)
             .Height(100,true)
@@ -1684,7 +1687,6 @@ class BossHealthBar
 
         mainRow.Add(centerContainer);
 
-        # Right hand vertical health bar
         self.CreateVerticalHandBar(false);
         mainRow.Add(self._rightHandContainer);
 
@@ -1693,13 +1695,11 @@ class BossHealthBar
 
     function CreateBeforeLabelLayout()
     {
-        # Container with row layout
         container = UI.VisualElement()
             .FlexDirection("Row")
             .AlignItems("Center")
             .Width(100, true);
 
-        # Boss name label on the left
         self._nameLabel = UI.Label(self._bossName)
             .FontSize(65, true)
             .FontStyle("Bold")
@@ -1707,16 +1707,13 @@ class BossHealthBar
             .FlexShrink(0)
             .MarginRight(1, true);
 
-        # Right side container for bar and health text
         rightContainer = UI.VisualElement()
             .FlexDirection("Column")
             .FlexGrow(1)
             .FlexShrink(1);
 
-        # Create custom health bar
         self.CreateHealthBar();
 
-        # Health text label
         self._healthLabel = UI.Label(self.GetHealthText())
             .FontSize(50, true)
             .FontStyle("Bold")
@@ -1733,10 +1730,8 @@ class BossHealthBar
         self._rootContainer.Add(container);
     }
 
-
     function CreateVerticalHandBar(isLeftHand)
     {
-        # Outer container for the hand health bar
         container = UI.VisualElement()
             .AspectRatio(1,"Width")
             .Height(100, true)
@@ -1744,7 +1739,6 @@ class BossHealthBar
             .AlignItems("Center")
             .FlexShrink(0);
 
-        # Background container for the vertical bar (icon size)
         barBackground = UI.VisualElement()
             .Width(100, true)
             .Height(100, true)
@@ -1758,7 +1752,6 @@ class BossHealthBar
             .Top(0, false)
             .Left(0, false);
 
-        # Fill bar that grows from bottom to top
         fill = UI.VisualElement()
             .Width(100, true)
             .Height(100, true)
@@ -1766,44 +1759,126 @@ class BossHealthBar
             .TransitionDuration(300, false);
 
         barBackground.Add(fill);
-
-        handIconScale = -1;
+        container.Add(barBackground);
 
         if (isLeftHand)
         {
-            handIconScale = 1;
+            self._leftHandContainer = container;
+            self._leftHandFill = fill;
+            
+            self.CreateLeftHandIcons();
         }
+        else
+        {
+            self._rightHandContainer = container;
+            self._rightHandFill = fill;
+            
+            self.CreateRightHandIcons();
+        }
+    }
 
-        # Icon overlay on top (same size as container)
-        icon = UI.Icon("Icons/Specials/EscapeSpecialIcon")
+    function CreateLeftHandIcons()
+    {
+        handIconScale = 1;
+
+        self._leftHandHealthyIcon = UI.Icon(self._leftHandHealthyIconPath)
             .Width(100, true)
             .Height(100, true)
             .TransformScale(handIconScale, 1)
             .Absolute(true)
             .Padding(5, true)
             .Top(0, false)
-            .Left(0, false);
+            .Left(0, false)
+            .Active(true);
 
-        container.Add(barBackground);
-        container.Add(icon);
+        self._leftHandDamagedIcon = UI.Icon(self._leftHandDamagedIconPath)
+            .Width(100, true)
+            .Height(100, true)
+            .TransformScale(handIconScale, 1)
+            .Absolute(true)
+            .Padding(5, true)
+            .Top(0, false)
+            .Left(0, false)
+            .Active(false);
 
-        if (isLeftHand)
-        {
-            self._leftHandContainer = container;
-            self._leftHandFill = fill;
-            self._leftHandIcon = icon;
-        }
-        else
-        {
-            self._rightHandContainer = container;
-            self._rightHandFill = fill;
-            self._rightHandIcon = icon;
-        }
+        self._leftHandSeveredIcon = UI.Icon(self._leftHandSeveredIconPath)
+            .Width(100, true)
+            .Height(100, true)
+            .TransformScale(handIconScale, 1)
+            .Absolute(true)
+            .Padding(5, true)
+            .Top(0, false)
+            .Left(0, false)
+            .Active(false);
+
+        self._leftHandRecoveringIcon = UI.Icon(self._leftHandRecoveringIconPath)
+            .Width(100, true)
+            .Height(100, true)
+            .TransformScale(handIconScale, 1)
+            .Absolute(true)
+            .Padding(5, true)
+            .Top(0, false)
+            .Left(0, false)
+            .Active(false);
+
+        self._leftHandContainer.Add(self._leftHandHealthyIcon);
+        self._leftHandContainer.Add(self._leftHandDamagedIcon);
+        self._leftHandContainer.Add(self._leftHandSeveredIcon);
+        self._leftHandContainer.Add(self._leftHandRecoveringIcon);
+    }
+
+    function CreateRightHandIcons()
+    {
+        handIconScale = -1;
+
+        self._rightHandHealthyIcon = UI.Icon(self._rightHandHealthyIconPath)
+            .Width(100, true)
+            .Height(100, true)
+            .TransformScale(handIconScale, 1)
+            .Absolute(true)
+            .Padding(5, true)
+            .Top(0, false)
+            .Left(0, false)
+            .Active(true);
+
+        self._rightHandDamagedIcon = UI.Icon(self._rightHandDamagedIconPath)
+            .Width(100, true)
+            .Height(100, true)
+            .TransformScale(handIconScale, 1)
+            .Absolute(true)
+            .Padding(5, true)
+            .Top(0, false)
+            .Left(0, false)
+            .Active(false);
+
+        self._rightHandSeveredIcon = UI.Icon(self._rightHandSeveredIconPath)
+            .Width(100, true)
+            .Height(100, true)
+            .TransformScale(handIconScale, 1)
+            .Absolute(true)
+            .Padding(5, true)
+            .Top(0, false)
+            .Left(0, false)
+            .Active(false);
+
+        self._rightHandRecoveringIcon = UI.Icon(self._rightHandRecoveringIconPath)
+            .Width(100, true)
+            .Height(100, true)
+            .TransformScale(handIconScale, 1)
+            .Absolute(true)
+            .Padding(5, true)
+            .Top(0, false)
+            .Left(0, false)
+            .Active(false);
+
+        self._rightHandContainer.Add(self._rightHandHealthyIcon);
+        self._rightHandContainer.Add(self._rightHandDamagedIcon);
+        self._rightHandContainer.Add(self._rightHandSeveredIcon);
+        self._rightHandContainer.Add(self._rightHandRecoveringIcon);
     }
 
     function CreateHealthBar()
     {
-        # Container for the health bar with border
         self._healthBarContainer = UI.VisualElement()
             .BackgroundColor(Color(40, 40, 40, 255))
             .Height(25)
@@ -1812,7 +1887,6 @@ class BossHealthBar
             .BorderColor(Color(80, 80, 80, 255))
             .FlexDirection("Row");
 
-        # Fill bar (current health) - starts at 100%
         self._healthBarFill = UI.VisualElement()
             .Width(100, true)
             .Height(100, true)
@@ -1847,7 +1921,6 @@ class BossHealthBar
 
     function UpdateHealthBar()
     {
-        # Guard against null UI elements
         if (self._healthBarFill == null || self._healthLabel == null)
         {
             return;
@@ -1855,22 +1928,17 @@ class BossHealthBar
 
         percentage = self.GetHealthPercentage();
 
-        # Update fill bar width (animated)
         self._healthBarFill.Width(percentage, true);
 
-        # Update health text
         self._healthLabel.Text = self.GetHealthText();
 
-        # Update color based on thresholds
         self.UpdateBarColor(percentage);
 
-        # Update hand health bars
         self.UpdateHandHealthBars();
     }
 
     function UpdateHandHealthBars()
     {
-        # Update left hand
         if (self._leftHandFill != null)
         {
             leftPercentage = (Convert.ToFloat(self._leftHandHealth) / self._leftHandMaxHealth) * 100.0;
@@ -1878,19 +1946,93 @@ class BossHealthBar
             self.UpdateHandBarColor(self._leftHandFill, leftPercentage);
         }
 
-        # Update right hand
         if (self._rightHandFill != null)
         {
             rightPercentage = (Convert.ToFloat(self._rightHandHealth) / self._rightHandMaxHealth) * 100.0;
             self._rightHandFill.Height(rightPercentage, true);
             self.UpdateHandBarColor(self._rightHandFill, rightPercentage);
         }
+
+        self.UpdateHandIcons();
+    }
+
+    function UpdateHandIcons()
+    {
+        self.UpdateLeftHandIcon();
+        self.UpdateRightHandIcon();
+    }
+
+    function UpdateLeftHandIcon()
+    {
+        if (self._leftHandHealthyIcon == null)
+        {
+            return;
+        }
+
+        self._leftHandHealthyIcon.Active(false);
+        self._leftHandDamagedIcon.Active(false);
+        self._leftHandSeveredIcon.Active(false);
+        self._leftHandRecoveringIcon.Active(false);
+
+        if (self._leftHandState == "Healthy")
+        {
+            self._leftHandHealthyIcon.Active(true);
+        }
+        elif (self._leftHandState == "Damaged")
+        {
+            self._leftHandDamagedIcon.Active(true);
+        }
+        elif (self._leftHandState == "Severed")
+        {
+            self._leftHandSeveredIcon.Active(true);
+        }
+        elif (self._leftHandState == "Recovering")
+        {
+            self._leftHandRecoveringIcon.Active(true);
+        }
+        else
+        {
+            self._leftHandHealthyIcon.Active(true);
+        }
+    }
+
+    function UpdateRightHandIcon()
+    {
+        if (self._rightHandHealthyIcon == null)
+        {
+            return;
+        }
+
+        self._rightHandHealthyIcon.Active(false);
+        self._rightHandDamagedIcon.Active(false);
+        self._rightHandSeveredIcon.Active(false);
+        self._rightHandRecoveringIcon.Active(false);
+
+        if (self._rightHandState == "Healthy")
+        {
+            self._rightHandHealthyIcon.Active(true);
+        }
+        elif (self._rightHandState == "Damaged")
+        {
+            self._rightHandDamagedIcon.Active(true);
+        }
+        elif (self._rightHandState == "Severed")
+        {
+            self._rightHandSeveredIcon.Active(true);
+        }
+        elif (self._rightHandState == "Recovering")
+        {
+            self._rightHandRecoveringIcon.Active(true);
+        }
+        else
+        {
+            self._rightHandHealthyIcon.Active(true);
+        }
     }
 
     function UpdateHandBarColor(barElement, percentage)
     {
-        # Find the appropriate color based on thresholds
-        color = Color(200, 200, 200); # Default gray
+        color = Color(200, 200, 200);
 
         if (self._colorThresholds != null && self._colorThresholds.Count > 0)
         {
@@ -1912,12 +2054,10 @@ class BossHealthBar
 
     function UpdateBarColor(percentage)
     {
-        # Find the appropriate color based on thresholds
-        color = Color(200, 200, 200); # Default gray
+        color = Color(200, 200, 200);
 
         if (self._colorThresholds != null && self._colorThresholds.Count > 0)
         {
-            # Sort thresholds in descending order and find first match
             i = 0;
             while (i < self._colorThresholds.Count)
             {
@@ -1925,18 +2065,15 @@ class BossHealthBar
                 if (percentage >= threshold.Get("Percent"))
                 {
                     color = threshold.Get("Color");
-                    i = self._colorThresholds.Count + 1;  # Break not working properly.
+                    i = self._colorThresholds.Count + 1;
                     break;
                 }
                 i = i + 1;
             }
         }
 
-        # Apply color to the fill bar
         self._healthBarFill.BackgroundColor(color);
     }
-
-    # Public API Methods
 
     function Show()
     {
@@ -1960,7 +2097,6 @@ class BossHealthBar
     {
         self._maxHealth = maxHealth;
 
-        # Clamp current health to new max
         if (self._currentHealth > self._maxHealth)
         {
             self._currentHealth = self._maxHealth;
@@ -1971,7 +2107,6 @@ class BossHealthBar
 
     function SetCurrentHealth(currentHealth)
     {
-        # Clamp to valid range
         if (currentHealth < 0.0)
         {
             currentHealth = 0.0;
@@ -2009,17 +2144,14 @@ class BossHealthBar
 
     function AddColorThreshold(percent, color)
     {
-        # Create threshold object
         threshold = Dict();
         threshold.Set("Percent", percent);
         threshold.Set("Color", color);
 
         self._colorThresholds.Add(threshold);
 
-        # Sort thresholds in descending order by percent using bubble sort
         self.SortThresholds();
 
-        # Update bar color if needed (only if UI is initialized)
         if (self._healthBarFill != null)
         {
             self.UpdateHealthBar();
@@ -2033,7 +2165,6 @@ class BossHealthBar
 
     function SortThresholds()
     {
-        # Bubble sort in descending order
         n = self._colorThresholds.Count;
         i = 0;
         while (i < n - 1)
@@ -2046,7 +2177,6 @@ class BossHealthBar
 
                 if (current.Get("Percent") < next.Get("Percent"))
                 {
-                    # Swap
                     temp = self._colorThresholds.Get(j);
                     self._colorThresholds.Set(j, self._colorThresholds.Get(j + 1));
                     self._colorThresholds.Set(j + 1, temp);
@@ -2082,10 +2212,11 @@ class BossHealthBar
         self._currentHealth = self._maxHealth;
         self._leftHandHealth = self._leftHandMaxHealth;
         self._rightHandHealth = self._rightHandMaxHealth;
+        self._leftHandState = "Healthy";
+        self._rightHandState = "Healthy";
         self.UpdateHealthBar();
     }
 
-    # Left Hand Methods
     function SetLeftHandMaxHealth(maxHealth)
     {
         self._leftHandMaxHealth = maxHealth;
@@ -2110,6 +2241,12 @@ class BossHealthBar
         self.UpdateHandHealthBars();
     }
 
+    function SetLeftHandState(state)
+    {
+        self._leftHandState = state;
+        self.UpdateHandIcons();
+    }
+
     function AddLeftHandHealth(amount)
     {
         self.SetLeftHandHealth(self._leftHandHealth + amount);
@@ -2130,7 +2267,6 @@ class BossHealthBar
         return self._leftHandHealth <= 0.0;
     }
 
-    # Right Hand Methods
     function SetRightHandMaxHealth(maxHealth)
     {
         self._rightHandMaxHealth = maxHealth;
@@ -2153,6 +2289,12 @@ class BossHealthBar
         }
         self._rightHandHealth = health;
         self.UpdateHandHealthBars();
+    }
+
+    function SetRightHandState(state)
+    {
+        self._rightHandState = state;
+        self.UpdateHandIcons();
     }
 
     function AddRightHandHealth(amount)

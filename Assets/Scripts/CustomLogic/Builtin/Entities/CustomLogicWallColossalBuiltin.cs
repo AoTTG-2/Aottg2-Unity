@@ -131,46 +131,150 @@ namespace CustomLogic
         public string RightHandState => Shifter.RightHandState.ToString();
 
         /// <summary>
-        /// Time in seconds for a hand to fully recover from broken state.
+        /// Deprecated: Use HandSeverWindow instead. Time in seconds for a hand to fully recover from broken state (backward compatibility).
         /// </summary>
         [CLProperty]
         public float HandRecoveryTime
         {
-            get => Shifter.HandRecoveryTime;
+            get => Shifter.HandSeverWindow;
             set
             {
                 if (Shifter.IsMine())
-                    Shifter.HandRecoveryTime = value;
+                    Shifter.HandSeverWindow = value;
             }
         }
 
         /// <summary>
-        /// Time remaining in seconds for left hand to recover (0 if not recovering).
+        /// Deprecated: Use LeftHandSeverTimeLeft instead. Time remaining in seconds for left hand to recover (0 if not recovering).
         /// </summary>
         [CLProperty]
         public float LeftHandRecoveryTimeLeft
         {
-            get => Shifter.LeftHandRecoveryTimeLeft;
+            get => Shifter.LeftHandSeverTimeLeft;
             set
             {
                 if (Shifter.IsMine())
-                    Shifter.LeftHandRecoveryTimeLeft = value;
+                    Shifter.LeftHandSeverTimeLeft = value;
             }
         }
 
         /// <summary>
-        /// Time remaining in seconds for right hand to recover (0 if not recovering).
+        /// Deprecated: Use RightHandSeverTimeLeft instead. Time remaining in seconds for right hand to recover (0 if not recovering).
         /// </summary>
         [CLProperty]
         public float RightHandRecoveryTimeLeft
         {
-            get => Shifter.RightHandRecoveryTimeLeft;
+            get => Shifter.RightHandSeverTimeLeft;
             set
             {
                 if (Shifter.IsMine())
-                    Shifter.RightHandRecoveryTimeLeft = value;
+                    Shifter.RightHandSeverTimeLeft = value;
             }
         }
+
+        /// <summary>
+        /// Time window in seconds for both hands to be severed before they recover independently.
+        /// </summary>
+        [CLProperty]
+        public float HandSeverWindow
+        {
+            get => Shifter.HandSeverWindow;
+            set
+            {
+                if (Shifter.IsMine())
+                    Shifter.HandSeverWindow = value;
+            }
+        }
+
+        /// <summary>
+        /// Time remaining in seconds for left hand to recover from severed state (0 if not severed).
+        /// </summary>
+        [CLProperty]
+        public float LeftHandSeverTimeLeft
+        {
+            get => Shifter.LeftHandSeverTimeLeft;
+            set
+            {
+                if (Shifter.IsMine())
+                    Shifter.LeftHandSeverTimeLeft = value;
+            }
+        }
+
+        /// <summary>
+        /// Time remaining in seconds for right hand to recover from severed state (0 if not severed).
+        /// </summary>
+        [CLProperty]
+        public float RightHandSeverTimeLeft
+        {
+            get => Shifter.RightHandSeverTimeLeft;
+            set
+            {
+                if (Shifter.IsMine())
+                    Shifter.RightHandSeverTimeLeft = value;
+            }
+        }
+
+        /// <summary>
+        /// Duration in seconds that the colossal remains stunned after both hands are severed.
+        /// </summary>
+        [CLProperty]
+        public float StunDuration
+        {
+            get => Shifter.StunDuration;
+            set
+            {
+                if (Shifter.IsMine())
+                    Shifter.StunDuration = value;
+            }
+        }
+
+        /// <summary>
+        /// Time remaining in seconds for the stun phase (0 if not stunned).
+        /// </summary>
+        [CLProperty]
+        public float StunTimeLeft
+        {
+            get => Shifter.StunTimeLeft;
+            set
+            {
+                if (Shifter.IsMine())
+                    Shifter.StunTimeLeft = value;
+            }
+        }
+
+        /// <summary>
+        /// Duration in seconds for the recovery phase after being stunned.
+        /// </summary>
+        [CLProperty]
+        public float RecoveryDuration
+        {
+            get => Shifter.RecoveryDuration;
+            set
+            {
+                if (Shifter.IsMine())
+                    Shifter.RecoveryDuration = value;
+            }
+        }
+
+        /// <summary>
+        /// Time remaining in seconds for the recovery phase (0 if not recovering).
+        /// </summary>
+        [CLProperty]
+        public float RecoveryTimeLeft
+        {
+            get => Shifter.RecoveryTimeLeft;
+            set
+            {
+                if (Shifter.IsMine())
+                    Shifter.RecoveryTimeLeft = value;
+            }
+        }
+
+        /// <summary>
+        /// Colossal's current stun state.
+        /// </summary>
+        [CLProperty(Enum = typeof(CustomLogicStunStateEnum))]
+        public string StunState => Shifter.StunState.ToString();
 
         /// <summary>
         /// Colossal's (AI) wall attack cooldown per attack.
