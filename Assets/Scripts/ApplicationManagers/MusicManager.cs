@@ -169,12 +169,6 @@ namespace ApplicationManagers
             _instance._justEscapedGrab = false;
         }
 
-        public static void SetSong(string song, float startTime = 0f)
-        {
-            var songInfo = FindSong(song);
-            SetSong(songInfo, startTime);
-        }
-
         private static void PlaySoundEffect(JSONNode songInfo)
         {
             AudioClip clip = null;
@@ -216,8 +210,9 @@ namespace ApplicationManagers
             yield return new WaitForSeconds(clip.length);
         }
 
-        public static void SetSong(JSONNode songInfo, float startTime = 0f)
+        public static void SetSong(string song, float startTime = 0f)
         {
+            JSONNode songInfo = FindSong(song);
             _instance._autoPlay = false;
             AudioClip clip = null;
             float volume = 0f;
@@ -231,6 +226,8 @@ namespace ApplicationManagers
                         clip = (AudioClip)asset;
                     volume = songInfo["Volume"];
                     _instance._currentSongName = songInfo["Name"];
+                    if (SceneLoader.CurrentGameManager is InGameManager && SettingsManager.SoundSettings.Music.Value > 0 && SettingsManager.UISettings.ShowSongPopup.Value)
+                        ((InGameManager)(SceneLoader.CurrentGameManager)).OnSongChange();
                 }
                 else
                 {
@@ -264,14 +261,14 @@ namespace ApplicationManagers
                 _instance._currentSong++;
                 if (_instance._currentSong >= _instance._customPlaylist.Count)
                     _instance._currentSong = 0;
-                SetSong(FindSong(_instance._customPlaylist[_instance._currentSong]));
+                SetSong(_instance._customPlaylist[_instance._currentSong]);
             }
             else
             {
                 JSONNode playlist = _musicInfo[_instance._currentPlaylist];
                 JSONNode songInfo;
                 songInfo = playlist[Random.Range(0, playlist.Count)];
-                SetSong(songInfo);
+                SetSong(songInfo["Name"]);
             }
         }
 

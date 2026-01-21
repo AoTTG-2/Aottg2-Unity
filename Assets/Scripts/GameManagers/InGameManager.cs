@@ -1135,7 +1135,10 @@ namespace GameManagers
                 // TakePreviewScreenshot();
             }
         }
-
+        public void OnSongChange()
+        {
+            StartCoroutine(((SongPopup)_inGameMenu._songPopup).ShowNextSongPopup());
+        }
         private void TakePreviewScreenshot()
         {
             Texture2D texture = new Texture2D((int)1024, (int)1024, TextureFormat.RGB24, false);

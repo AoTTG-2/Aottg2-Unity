@@ -42,6 +42,7 @@ namespace UI
         public BasePopup _scoreboardPopup;
         public BasePopup _mapPopup;
         public BasePopup _selectMapPopup;
+        public BasePopup _songPopup;
         public SkillTooltipPopup SkillTooltipPopup;
         public CustomAssetUrlPopup _customAssetUrlPopup;
         public SnapshotPopup _snapshotPopup;
@@ -98,6 +99,7 @@ namespace UI
             NapeLock.SetActive(false);
             SetupChat();
             SetupMinimap();
+            _songPopup = ElementFactory.CreateDefaultPopup<SongPopup>(transform);
             SetupSnapshot();
             HideAllMenus();
             _uiDocument = GetComponent<UIDocument>();
