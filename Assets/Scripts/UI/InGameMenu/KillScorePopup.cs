@@ -37,7 +37,7 @@ namespace UI
             _shakeTimeLeft = 0f;
             float currentTime = Time.time;
             ElementFactory.SetAnchor(gameObject, TextAnchor.MiddleCenter, TextAnchor.MiddleCenter, Vector3.up * DefaultOffset);
-            if (currentTime - _lastShowTime < 1.5f)
+            if (currentTime - _lastShowTime < 1f)
             {
                 _shakeTimeLeft = ShakeDuration;
                 _currentShakeDistance = ShakeDistance;
