@@ -1567,10 +1567,10 @@ class BossHealthBar
     _rightHandState = "Healthy";
 
     # Icon paths for hand states
-    _leftHandHealthyIconPath = "Icons/Game/HealthyLeftHandIcon";
-    _leftHandDamagedIconPath = "Icons/Game/DamagedLeftHandIcon";
-    _leftHandSeveredIconPath = "Icons/Game/SeveredLeftHandIcon";
-    _leftHandRecoveringIconPath = "Icons/Game/SmokeLeftHandIcon";
+    _leftHandHealthyIconPath = "Icons/Game/HealthyRightHandIcon";
+    _leftHandDamagedIconPath = "Icons/Game/DamagedRightHandIcon";
+    _leftHandSeveredIconPath = "Icons/Game/SeveredRightHandIcon";
+    _leftHandRecoveringIconPath = "Icons/Game/SmokeRightHandIcon";
 
     _rightHandHealthyIconPath = "Icons/Game/HealthyRightHandIcon";
     _rightHandDamagedIconPath = "Icons/Game/DamagedRightHandIcon";

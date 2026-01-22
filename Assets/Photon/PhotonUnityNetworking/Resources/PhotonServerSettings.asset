@@ -150,6 +150,8 @@ MonoBehaviour:
   - ToggleBuff1RPC
   - ToggleBuff2RPC
   - ToggleFire1RPC
+  - SetSteamStateRPC
+  - SetStunStateRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
