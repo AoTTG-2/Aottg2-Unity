@@ -27,6 +27,12 @@ namespace CustomLogic.Editor
 
         public override string GetRelativeFilePath(CLType type)
         {
+            // If the type has a category, use it; otherwise fall back to static/objects
+            if (!string.IsNullOrEmpty(type.Category))
+            {
+                return $"md/{type.Category}/{type.Name}.md";
+            }
+            
             if (type.IsStatic && type.IsAbstract)
                 return $"md/static/{type.Name}.md";
 

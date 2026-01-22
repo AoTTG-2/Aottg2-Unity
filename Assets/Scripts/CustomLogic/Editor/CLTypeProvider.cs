@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Xml;
@@ -213,6 +214,56 @@ namespace CustomLogic.Editor
             return arguments.ToArray();
         }
 
+        private string ExtractCategoryFromType(Type type)
+        {
+            var typeName = type.Name;
+            var typeNameWithoutSuffix = typeName.Replace("Builtin", "").Replace("Instance", "");
+            
+            // Search for the source file in the project
+            var scriptPath = FindScriptPath(typeName);
+            if (!string.IsNullOrEmpty(scriptPath))
+            {
+                // Extract the parent folder name from the path
+                // Example: Assets\Scripts\CustomLogic\Builtin\Collections\CustomLogicDictBuiltin.cs
+                // Should extract "Collections"
+                var normalizedPath = scriptPath.Replace('\\', '/');
+                var builtinIndex = normalizedPath.IndexOf("Builtin/");
+                
+                if (builtinIndex >= 0)
+                {
+                    var afterBuiltin = normalizedPath.Substring(builtinIndex + "Builtin/".Length);
+                    var parts = afterBuiltin.Split('/');
+                    
+                    if (parts.Length > 1)
+                    {
+                        // Return the folder name immediately after "Builtin"
+                        return parts[0];
+                    }
+                }
+            }
+            
+            return null;
+        }
+
+        private string FindScriptPath(string typeName)
+        {
+            // Search for .cs files matching the type name
+            var guids = AssetDatabase.FindAssets($"{typeName} t:MonoScript");
+            
+            foreach (var guid in guids)
+            {
+                var path = AssetDatabase.GUIDToAssetPath(guid);
+                var fileName = Path.GetFileNameWithoutExtension(path);
+                
+                if (fileName == typeName)
+                {
+                    return path;
+                }
+            }
+            
+            return null;
+        }
+
         private void ResolveCLType(Type type, XmlDocument xmlDocument)
         {
             var clTypeAttribute = CustomLogicReflectionUtils.GetAttribute<CLTypeAttribute>(type);
@@ -229,6 +280,7 @@ namespace CustomLogic.Editor
             }
 
             var typeXmlInfo = XmlInfo.FromTypeXml(xmlDocument, type);
+            var category = ExtractCategoryFromType(type);
 
             var clType = new CLType
             {
@@ -238,6 +290,7 @@ namespace CustomLogic.Editor
                 InheritBaseMembers = inheritBaseMembers,
                 IsComponent = isComponent,
                 TypeParameters = typeParameters,
+                Category = category,
                 Info = typeXmlInfo,
                 ObsoleteMessage = CustomLogicReflectionUtils.GetObsoleteMessage(type),
             };

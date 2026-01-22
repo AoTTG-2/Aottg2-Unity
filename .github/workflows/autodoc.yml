@@ -16,13 +16,14 @@ jobs:
 
       - name: Filter and copy .md files
         run: |
-          mkdir -p temp-dir/objects temp-dir/static
-          find Docs/md/objects -name '*.md' -exec cp {} temp-dir/objects/ \;
-          find Docs/md/static -name '*.md' -exec cp {} temp-dir/static/ \;
-          echo "Copied .md files to temp-dir/objects:"
-          ls temp-dir/objects
-          echo "Copied .md files to temp-dir/static:"
-          ls temp-dir/static
+          # Dynamically find all category folders under Docs/md and copy their .md files
+          for category in $(ls -d Docs/md/*/); do
+            category_name=$(basename "$category")
+            mkdir -p "temp-dir/$category_name"
+            find "$category" -name '*.md' -exec cp {} "temp-dir/$category_name/" \;
+            echo "Copied .md files to temp-dir/$category_name:"
+            ls "temp-dir/$category_name"
+          done
 
       - name: Checkout target repository
         uses: actions/checkout@v4
@@ -32,34 +33,28 @@ jobs:
           ref: integration
           path: target-repo
 
-      - name: Delete existing files in target folders
+      - name: Delete existing folders in target reference (except callbacks)
         run: |
-          rm -rf target-repo/reference/objects/*
-          rm -rf target-repo/reference/static/*
+          # Delete all subfolders in reference except callbacks
+          for folder in target-repo/reference/*/; do
+            folder_name=$(basename "$folder")
+            if [ "$folder_name" != "callbacks" ]; then
+              rm -rf "$folder"
+              echo "Deleted: $folder"
+            else
+              echo "Preserved: $folder"
+            fi
+          done
 
-      - name: Ensure target directories exist
+      - name: Ensure target directories exist and copy files
         run: |
-          mkdir -p target-repo/reference/objects
-          mkdir -p target-repo/reference/static
-
-      - name: Check target directories
-        run: |
-          echo "Contents of target-repo/reference/objects before copy:"
-          ls target-repo/reference/objects
-          echo "Contents of target-repo/reference/static before copy:"
-          ls target-repo/reference/static
-
-      - name: Copy files to target repository
-        run: |
-          cp -R temp-dir/objects/* target-repo/reference/objects/
-          cp -R temp-dir/static/* target-repo/reference/static/
-
-      - name: Check target directories after copy
-        run: |
-          echo "Contents of target-repo/reference/objects after copy:"
-          ls target-repo/reference/objects
-          echo "Contents of target-repo/reference/static after copy:"
-          ls target-repo/reference/static
+          # Create directories and copy files for each category
+          for category in $(ls temp-dir/); do
+            mkdir -p "target-repo/reference/$category"
+            cp -R "temp-dir/$category/"* "target-repo/reference/$category/"
+            echo "Contents of target-repo/reference/$category after copy:"
+            ls "target-repo/reference/$category"
+          done
       
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -68,7 +63,7 @@ jobs:
 
       - name: Update summary.md
         run: |
-          python .github/workflows/updateSummary.py target-repo/SUMMARY.md target-repo/reference/objects/ target-repo/reference/static/
+          python .github/workflows/updateSummary.py target-repo/SUMMARY.md target-repo/reference/
 
       - name: Commit and push changes
         run: |
