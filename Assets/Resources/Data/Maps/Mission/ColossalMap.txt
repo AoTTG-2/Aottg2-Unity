@@ -1479,7 +1479,7 @@ class BossHealthBar
     _bossName = "Boss";
     _maxHealth = 100.0;
     _currentHealth = 100.0;
-    _labelPosition = "Top"; # "Top" or "Before"
+    _labelPosition = "Top";
     _showPercentage = true;
 
     # Color thresholds (percent -> color)
@@ -1610,7 +1610,7 @@ class BossHealthBar
             .FontSize(14, false)
             .FontStyle(FontStyleEnum.Bold)
             .Color(Color(255, 255, 255))
-            .AlignSelf(AlignEnum.Center");
+            .AlignSelf(AlignEnum.Center);
 
         centerContainer.Add(self._nameLabel);
         centerContainer.Add(self._healthBarContainer);
@@ -2102,7 +2102,7 @@ class BossHealthBar
         self.UpdateHandHealthBars();
     }
 
-    function AddRightHandHealth(amount)
+    function AddRightHandHealth(amount) 
     {
         self.SetRightHandHealth(self._rightHandHealth + amount);
     }
