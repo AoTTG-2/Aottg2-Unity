@@ -2999,11 +2999,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Armature_VER2|wall_to_roaming_2
-      takeName: Armature_VER2|wall_to_roaming_2
+      name: Armature_VER2|STRETCH
+      takeName: Armature_VER2|STRETCH
       internalID: 0
       firstFrame: 0
-      lastFrame: 59
+      lastFrame: 40
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
