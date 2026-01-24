@@ -1,3 +1,5 @@
+using Characters;
+
 namespace CustomLogic
 {
     /// <summary>
@@ -13,18 +15,18 @@ namespace CustomLogic
         /// Not stunned.
         /// </summary>
         [CLProperty]
-        public static string None => "None";
+        public static int None => (int)ColossalStunState.None;
 
         /// <summary>
         /// Currently stunned.
         /// </summary>
         [CLProperty]
-        public static string Stunned => "Stunned";
+        public static int Stunned => (int)ColossalStunState.Stunned;
 
         /// <summary>
         /// Recovering from stun.
         /// </summary>
         [CLProperty]
-        public static string Recovering => "Recovering";
+        public static int Recovering => (int)ColossalStunState.Recovering;
     }
 }

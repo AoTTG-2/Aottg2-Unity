@@ -274,7 +274,7 @@ namespace CustomLogic
         /// <summary>
         /// Colossal's current stun state.
         /// </summary>
-        [CLProperty(Enum = typeof(CustomLogicStunStateEnum))]
+        [CLProperty(Enum = new Type[] { typeof(CustomLogicStunStateEnum) })]
         public string StunState => Shifter.StunState.ToString();
 
         /// <summary>

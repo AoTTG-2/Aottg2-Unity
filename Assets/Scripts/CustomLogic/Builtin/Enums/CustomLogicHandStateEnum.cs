@@ -21,6 +21,18 @@ namespace CustomLogic
         /// Hand is damaged but not severed.
         /// </summary>
         [CLProperty]
-        public static int Broken => (int)ColossalHandState.Broken;
+        public static int Damaged => (int)ColossalHandState.Damaged;
+
+        /// <summary>
+        /// Hand is damaged but not severed.
+        /// </summary>
+        [CLProperty]
+        public static int Severed => (int)ColossalHandState.Severed;
+
+        /// <summary>
+        /// Hand is damaged but not severed.
+        /// </summary>
+        [CLProperty]
+        public static int Recovering => (int)ColossalHandState.Recovering;
     }
 }
