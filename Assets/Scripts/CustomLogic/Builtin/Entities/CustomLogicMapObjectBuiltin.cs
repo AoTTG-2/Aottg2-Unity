@@ -1,4 +1,5 @@
 using Map;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -23,6 +24,7 @@ namespace CustomLogic
         public CustomLogicMapObjectBuiltin(MapObject obj)
         {
             Value = obj;
+            _builtinCache = new Dictionary<string, BuiltinComponentInstance>();
         }
 
         /// <summary>
@@ -184,7 +186,7 @@ namespace CustomLogic
                 int parentId = Value.Parent;
                 if (parentId <= 0)
                     return null;
-                return new CustomLogicMapObjectBuiltin(MapLoader.IdToMapObject[parentId]);
+                return CustomLogicManager.Evaluator.GetOrCreateMapObjectBuiltin(MapLoader.IdToMapObject[parentId]);
             }
             set
             {
@@ -399,10 +401,6 @@ namespace CustomLogic
             }
             else
             {
-                if (_builtinCache == null)
-                {
-                    return;
-                }
                 if (_builtinCache.TryGetValue(name, out var builtinComp))
                 {
                     builtinComp.Enabled = enabled;
@@ -426,12 +424,9 @@ namespace CustomLogic
                 instance.Enabled = enabled;
             }
 
-            if (_builtinCache != null)
+            foreach (var comp in _builtinCache.Values)
             {
-                foreach (var comp in _builtinCache.Values)
-                {
-                    comp.Enabled = enabled;
-                }
+                comp.Enabled = enabled;
             }
         }
 
@@ -444,8 +439,8 @@ namespace CustomLogic
         /// <param name="radius">The radius of the sphere collider.</param>
         [CLMethod]
         public void AddSphereCollider(
-            [CLParam(Enum = typeof(CustomLogicCollideModeEnum))] string collideMode,
-            [CLParam(Enum = typeof(CustomLogicCollideWithEnum))] string collideWith,
+            [CLParam(Enum = new Type[] { typeof(CustomLogicCollideModeEnum) })] string collideMode,
+            [CLParam(Enum = new Type[] { typeof(CustomLogicCollideWithEnum) })] string collideWith,
             CustomLogicVector3Builtin center,
             float radius)
         {
@@ -478,8 +473,8 @@ namespace CustomLogic
         /// <param name="size">The size of the box collider (optional, defaults to calculated bounds).</param>
         [CLMethod]
         public void AddBoxCollider(
-            [CLParam(Enum = typeof(CustomLogicCollideModeEnum))] string collideMode,
-            [CLParam(Enum = typeof(CustomLogicCollideWithEnum))] string collideWith,
+            [CLParam(Enum = new Type[] { typeof(CustomLogicCollideModeEnum) })] string collideMode,
+            [CLParam(Enum = new Type[] { typeof(CustomLogicCollideWithEnum) })] string collideWith,
             CustomLogicVector3Builtin center = null,
             CustomLogicVector3Builtin size = null)
         {
@@ -540,6 +535,37 @@ namespace CustomLogic
         }
 
         /// <summary>
+        /// Set the collideWith property for all colliders on this object and its children.
+        /// This changes which layers the colliders can collide with.
+        /// </summary>
+        /// <param name="collideWith">What the colliders should collide with.</param>
+        [CLMethod]
+        public void SetCollideWith([CLParam(Enum = new Type[] { typeof(CustomLogicCollideWithEnum) })] string collideWith)
+        {
+            var colliders = Value.GameObject.GetComponentsInChildren<Collider>();
+            foreach (var collider in colliders)
+            {
+                string collideMode;
+                if (!collider.enabled)
+                {
+                    collideMode = MapObjectCollideMode.None;
+                }
+                else if (collider.isTrigger)
+                {
+                    collideMode = MapObjectCollideMode.Region;
+                }
+                else
+                {
+                    collideMode = MapObjectCollideMode.Physical;
+                }
+
+                MapLoader.SetCollider(collider, collideMode, collideWith);
+            }
+
+            Value.colliderCache = Value.GameObject.GetComponentsInChildren<Collider>();
+        }
+
+        /// <summary>
         /// Add a sphere target to the object.
         /// </summary>
         /// <param name="team">The team that can target this.</param>
@@ -548,7 +574,7 @@ namespace CustomLogic
         /// <returns>The created targetable object.</returns>
         [CLMethod]
         public CustomLogicMapTargetableBuiltin AddSphereTarget(
-            [CLParam(Enum = typeof(CustomLogicTeamEnum))] string team,
+            [CLParam(Enum = new Type[] { typeof(CustomLogicTeamEnum) })] string team,
             CustomLogicVector3Builtin center,
             float radius)
         {
@@ -586,7 +612,7 @@ namespace CustomLogic
         /// <returns>The created targetable object.</returns>
         [CLMethod]
         public CustomLogicMapTargetableBuiltin AddBoxTarget(
-            [CLParam(Enum = typeof(CustomLogicTeamEnum))] string team,
+            [CLParam(Enum = new Type[] { typeof(CustomLogicTeamEnum) })] string team,
             CustomLogicVector3Builtin center,
             CustomLogicVector3Builtin size)
         {
@@ -631,7 +657,7 @@ namespace CustomLogic
                     {
                         var go = MapLoader.IdToMapObject[childId];
                         if (go.ScriptObject.Name == name)
-                            return new CustomLogicMapObjectBuiltin(go);
+                            return CustomLogicManager.Evaluator.GetOrCreateMapObjectBuiltin(go);
                     }
                 }
             }
@@ -653,7 +679,7 @@ namespace CustomLogic
                     if (MapLoader.IdToMapObject.ContainsKey(childId))
                     {
                         var go = MapLoader.IdToMapObject[childId];
-                        listBuiltin.List.Add(new CustomLogicMapObjectBuiltin(go));
+                        listBuiltin.List.Add(CustomLogicManager.Evaluator.GetOrCreateMapObjectBuiltin(go));
                     }
                 }
             }
@@ -861,10 +887,6 @@ namespace CustomLogic
         public object AddBuiltinComponent(string name)
         {
             // Add the component and add to cache.
-            if (_builtinCache == null)
-            {
-                _builtinCache = new Dictionary<string, BuiltinComponentInstance>();
-            }
             if (_builtinCache.ContainsKey(name))
             {
                 throw new System.Exception($"MapObject already has a {name} component.");
@@ -911,13 +933,32 @@ namespace CustomLogic
         }
 
         /// <summary>
+        /// Add a Rigidbody component to the MapObject.
+        /// </summary>
+        [CLMethod]
+        public CustomLogicRigidbodyBuiltin AddRigidbody()
+        {
+            if (Value.ScriptObject.Static)
+            {
+                throw new System.Exception("AddRigidbody cannot be called on a static MapObject.");
+            }
+            if (_builtinCache.ContainsKey("Rigidbody"))
+            {
+                throw new Exception("MapObject already has a Rigidbody component.");
+            }
+            _rigidBody = new CustomLogicRigidbodyBuiltin(this);
+            _builtinCache["Rigidbody"] = _rigidBody;
+            return _rigidBody;
+        }
+
+        /// <summary>
         /// Gets a builtin component to the MapObject.
         /// </summary>
         /// <param name="name">The name of the builtin component to get.</param>
         [CLMethod]
         public object GetBuiltinComponent(string name)
         {
-            if (_builtinCache == null || !_builtinCache.ContainsKey(name))
+            if (!_builtinCache.ContainsKey(name))
             {
                 return null;
             }
@@ -931,7 +972,7 @@ namespace CustomLogic
         [CLMethod]
         public void RemoveBuiltinComponent(string name)
         {
-            if (_builtinCache == null || !_builtinCache.ContainsKey(name))
+            if (!_builtinCache.ContainsKey(name))
             {
                 throw new System.Exception($"MapObject does not have a {name} component.");
             }

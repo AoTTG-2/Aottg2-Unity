@@ -11,7 +11,7 @@ class Main
     {
         if (Network.IsMasterClient)
         {
-            Game.SpawnTitans("Default", self.MaxTitans);
+            Game.SpawnTitans(TitanTypeEnum.Default, self.MaxTitans);
         }
     }
 
@@ -33,7 +33,7 @@ class Main
     coroutine Explode(position, time)
     {
         wait time;
-        Game.SpawnEffect("ThunderspearExplode", position, Vector3.Zero, self.ExplodeRadius * 2.0, Color(255, 255, 255, 255));
+        Game.SpawnEffect(EffectNameEnum.ThunderspearExplode, position, Vector3.Zero, self.ExplodeRadius * 2.0, Color(255, 255, 255, 255));
         for (human in Game.Humans)
         {
             if (Vector3.Distance(human.Position, position) < self.ExplodeRadius)
@@ -59,7 +59,7 @@ class Main
                 self._spawnTimeLeft = self._spawnTimeLeft - Time.TickTime;
                 if (self._spawnTimeLeft <= 0.0)
                 {
-                    Game.SpawnTitans("Default", 1);
+                    Game.SpawnTitans(TitanTypeEnum.Default, 1);
                     self._spawnTimeLeft = self.TitanSpawnEvery;
                 }
             }
@@ -69,11 +69,11 @@ class Main
             }
             if (humans == 0 && playerShifters == 0 && self._hasSpawned)
             {
-                UI.SetLabelAll("MiddleCenter", "Humanity failed!");
+                UI.SetLabelAll(UILabelEnum.MiddleCenter, "Humanity failed!");
                 Game.End(10.0);
                 return;
             }
-            UI.SetLabelAll("TopCenter", "Titans Left: " + Convert.ToString(titans));
+            UI.SetLabelAll(UILabelEnum.TopCenter, "Titans Left: " + Convert.ToString(titans));
         }
     }
 }

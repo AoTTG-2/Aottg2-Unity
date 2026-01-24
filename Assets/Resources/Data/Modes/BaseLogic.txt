@@ -41,18 +41,18 @@ component InteractActionTrigger
             self._currentHuman = other;
             if (self._text != null)
             {
-                UI.SetLabelForTime("MiddleCenter", self._text, 0.1);
+                UI.SetLabelForTime(UILabelEnum.MiddleCenter, self._text, 0.1);
             }
             else
             {
-                UI.SetLabelForTime("MiddleCenter", "Press " + Input.GetKeyName("Interaction/" + self.Key) + " to trigger the action.", 0.1);
+                UI.SetLabelForTime(UILabelEnum.MiddleCenter, "Press " + Input.GetKeyName(InputCategoryEnum.Interaction + "/" + self.Key) + " to trigger the action.", 0.1);
             }
         }
     }
 
     function OnFrame()
     {
-        if (self._currentHuman != null && Input.GetKeyDown("Interaction/" + self.Key))
+        if (self._currentHuman != null && Input.GetKeyDown(InputCategoryEnum.Interaction + self.Key))
         {
             if (self._actionHandler != null)
             {
@@ -126,7 +126,7 @@ component Floater
 
     function Init()
     {
-        self._rb = self.MapObject.GetComponent("Rigidbody");
+        self._rb = self.MapObject.Rigidbody;
     }
 
     function SetState(surfaceHeight, isInWater, waveDistance, waveSpeed, scale, noiseStrength, noiseWalk)
@@ -179,15 +179,15 @@ component Floater
                     bForce = Vector3(0, gScale * Math.Abs(gravity.Y) * dMult - wdForce.Y, 0);
                     #Game.DrawRay(point, bForce, Color(0, 255, 0, 255), 1);
                     #self._rb.AddForceWithModeAtPoint(bForce, point, "Acceleration");
-                    self._rb.AddForceOptimized(bForce, self._rb.ForceModeAcceleration, point);
+                    self._rb.AddForce(bForce, ForceModeEnum.Acceleration, point);
 
                     wdForce = velocity.Scale(self.Drag * -1 * Time.TickTime);
                     #self._rb.AddForceWithMode(bForce, "Acceleration");
-                    self._rb.AddForceOptimized(bForce, self._rb.ForceModeAcceleration);
+                    self._rb.AddForce(bForce, ForceModeEnum.Acceleration);
 
                     ag = self._rb.AngularVelocity;
                     agdForce = ag.Scale(self.AngularDrag * -1 * Time.TickTime * dMult);
-                    self._rb.AddTorqueOptimized(agdForce, self._rb.ForceModeVelocityChange);
+                    self._rb.AddTorque(agdForce, ForceModeEnum.Acceleration);
                 }
             }
         }
@@ -342,12 +342,12 @@ component WaterPhysics
         }
         elif (other.Type == "MapObject")
         {
-            body = other.GetComponent("Rigidbody");
+            body = other.Rigidbody;
             if (body == null)
             {
                 return;
             }
-            body.AddForceWithMode(force, mode);
+            body.AddForce(force, mode);
         }
     }
 
@@ -375,7 +375,7 @@ component WaterPhysics
 
         effectSize = velocity.Magnitude / 100;
         effectSize = Math.Clamp(effectSize, 2, 7);
-        Game.SpawnEffect("Splash2", position, Vector3(-90,0,0), effectSize);
+        Game.SpawnEffect(EffectNameEnum.Splash2, position, Vector3(-90,0,0), effectSize);
         # Apply a force equal to the y velocity flipped and scaled by the buoyancy but only if the angle between the vector and the horizontal plane is 45 degrees and the y velocity is negative
         horizontalVector = Vector3(velocity.X, 0, velocity.Z);
         horizontalVector = horizontalVector.Normalized;
@@ -399,22 +399,22 @@ component WaterPhysics
 
             if (other.Type == "Human")
             {
-                if (other.CurrentAnimation != "Armature|slide" && !String.Contains(other.CurrentAnimation, "attack") && !String.Contains(other.CurrentAnimation, "special"))
+                if (other.CurrentAnimation != HumanAnimationEnum.Slide && !String.Contains(other.CurrentAnimation, "attack") && !String.Contains(other.CurrentAnimation, "special"))
                 {
-                    other.PlayAnimation("Armature|slide", 0.01);
+                    other.PlayAnimation(HumanAnimationEnum.Slide, 0.01);
                 }
             }
             return;
         }
         if (other.Type == "Human")
         {
-            other.PlaySound("WaterSplash");
+            other.PlaySound(HumanSoundEnum.WaterSplash);
         }
     }
 
     function GetMidPoint(v1, v2)
     {
-        return (v1 + v2).Scale(0.5);
+        return (v1 + v2) * 0.5;
     }
 
     function OnCollisionStay(other)
@@ -440,7 +440,7 @@ component WaterPhysics
             if (self.SupportDrowning)
             {
                 message = "Oxygen: " + String.FormatFloat((self.TimeToDrown - self._myPlayerTimer) / self.TimeToDrown * 100, 0) + "%";
-                UI.SetLabel("MiddleCenter", message);
+                UI.SetLabel(UILabelEnum.MiddleCenter, message);
                 self._isMyPlayerUnderwater = true;
                 self._myPlayerTimer = self._myPlayerTimer + Time.TickTime;
                 if (self._myPlayerTimer >= self.TimeToDrown)
@@ -477,7 +477,7 @@ component WaterPhysics
         }
         self._isMyPlayerUnderwater = false;
         self._myPlayerTimer = 0.0;
-        UI.SetLabel("MiddleCenter", "");
+        UI.SetLabel(UILabelEnum.MiddleCenter, "");
     }
 
     function OnCharacterDie(character, killer, killerName)
@@ -488,7 +488,7 @@ component WaterPhysics
         }
         self._isMyPlayerUnderwater = false;
         self._myPlayerTimer = 0.0;
-        UI.SetLabel("MiddleCenter", "");
+        UI.SetLabel(UILabelEnum.MiddleCenter, "");
     }
 }
 
@@ -528,10 +528,23 @@ component VelocityZone
 
     _enterVelocity = Vector3(0, 0, 0);
     _enterVelocities = Dict();
+    _forceModeEnum = null;
 
     function Init()
     {
-
+        self._forceModeEnum = ForceModeEnum.Acceleration;
+        if (self.ForceMode == "Force")
+        {
+            self._forceModeEnum = ForceModeEnum.Force;
+        }
+        elif (self.ForceMode == "Impulse")
+        {
+            self._forceModeEnum = ForceModeEnum.Impulse;
+        }
+        elif (self.ForceMode == "VelocityChange")
+        {
+            self._forceModeEnum = ForceModeEnum.VelocityChange;
+        }
     }
 
     function GetUniqueID(other)
@@ -571,12 +584,12 @@ component VelocityZone
         }
         elif (other.Type == "MapObject")
         {
-            body = other.GetComponent("Rigidbody");
+            body = other.Rigidbody;
             if (body == null)
             {
                 return;
             }
-            body.AddForceWithMode(force, self.ForceMode);
+            body.AddForce(force, self._forceModeEnum);
         }
     }
 
@@ -653,7 +666,7 @@ component VelocityZone
             appliedForce = self.CalculateForce(other, velocity);
         }
 
-        self.AddForce(other, appliedForce, self.ForceMode);
+        self.AddForce(other, appliedForce, self._forceModeEnum);
     }
 
     function OnCollisionEnter(other)
@@ -666,7 +679,7 @@ component VelocityZone
         {
             if (self.StopImmediately)
             {
-                self.AddForce(other, Vector3(0,0,0), self.ForceMode);
+                self.AddForce(other, Vector3(0,0,0), self._forceModeEnum);
             }
             else
             {
@@ -756,10 +769,10 @@ component TitanTarget
 
     function Init()
     {
-        self._targetable = self.MapObject.AddSphereTarget("Human", Vector3(0), 0.1);
+        self._targetable = self.MapObject.AddSphereTarget(TeamEnum.Human, Vector3(0), 0.1);
         self._targetable.Enabled = self.EnabledByDefault;
 
-        self.MapObject.AddSphereCollider("Region", "Characters", Vector3(0), self.PlayerPriorityRange);
+        self.MapObject.AddSphereCollider(CollideModeEnum.Region, CollideWithEnum.Characters, Vector3(0), self.PlayerPriorityRange);
     }
 
     function IsEnabled()
@@ -1133,19 +1146,19 @@ component CustomPhysicsMaterial
     {
         if (value == "Average")
         {
-            return self._material.FrictionCombineAverage;
+            return PhysicMaterialCombineEnum.Average;
         }
         elif (value == "Minimum")
         {
-            return self._material.FrictionCombineMinimum;
+            return PhysicMaterialCombineEnum.Minimum;
         }
         elif (value == "Maximum")
         {
-            return self._material.FrictionCombineMaximum;
+            return PhysicMaterialCombineEnum.Maximum;
         }
         elif (value == "Multiply")
         {
-            return self._material.FrictionCombineMultiply;
+            return PhysicMaterialCombineEnum.Multiply;
         }
     }
 
@@ -1193,6 +1206,7 @@ component CaptureZone
     _lastState = "Captured";
     _currentCapturer = "null";
     _captureProgress = 0.0;
+    # @type Dict<string,List<Character>>
     _teamsInZone = Dict();
 
     # Team Colors
@@ -1225,13 +1239,13 @@ component CaptureZone
     {
         # Setup colors
         self._teamToColor = Dict();
-        self._teamToColor.Set("Human", self._humanColor);
+        self._teamToColor.Set(TeamEnum.Human, self._humanColor);
         self._teamToColor.Set("Shifter", self._shifterColor);
-        self._teamToColor.Set("Titan", self._titanColor);
+        self._teamToColor.Set(TeamEnum.Titan, self._titanColor);
         self._teamToColor.Set("Neutral", self._neutralColor);
         self._teamToColor.Set("null", self._neutralColor);
-        self._teamToColor.Set("Blue", self._teamBlueColor);
-        self._teamToColor.Set("Red", self._teamRedColor);
+        self._teamToColor.Set(TeamEnum.Blue, self._teamBlueColor);
+        self._teamToColor.Set(TeamEnum.Red, self._teamRedColor);
         self._teamToColor.Set("Unknown", self._unknownTeamColor);
 
         # Setup supply station
@@ -1492,33 +1506,37 @@ component CaptureZone
 
     function CheckPlayersInZone()
     {
+        # @type List<string>
         teamsToRemove = List();
         for (team in self._teamsInZone.Keys)
         {
-            playersToRemove = List();
-            players = self._teamsInZone.Get(team);
-            for (player in players)
+            # @type List<Character>
+            charactersToRemove = List();
+            characters = self._teamsInZone.Get(team);
+            for (character in characters)
             {
-                if (player == null)
+                if (character == null)
                 {
-                    playersToRemove.Add(player);
+                    charactersToRemove.Add(character);
                 }
                 else {
-                    hPos = Vector3(player.Position.X, 0, player.Position.Z);
+                    # BUG: There is an issue here when a titan dies inside the capture zone. (If there is more than one titan in the zone)
+                    # It is being added to the list in OnCollisionEnter on the tick after the titan dies.
+                    hPos = Vector3(character.Position.X, 0, character.Position.Z);
                     hCenter = Vector3(self.MapObject.Position.X, 0, self.MapObject.Position.Z);
                     if (Vector3.Distance(hPos, hCenter) > self.MapObject.Scale.X * 20)
                     {
-                        playersToRemove.Add(player);
+                        charactersToRemove.Add(character);
                     }
                 }
             }
-            for (player in playersToRemove)
+            for (character in charactersToRemove)
             {
-                players.Remove(player);
+                characters.Remove(character);
             }
-            self._teamsInZone.Set(team, players);
+            self._teamsInZone.Set(team, characters);
 
-            if (players.Count == 0)
+            if (characters.Count == 0)
             {
                 teamsToRemove.Add(team);
             }
@@ -1592,7 +1610,7 @@ component CaptureZone
 
         if (Network.MyPlayer.Character == null)
 		{
-            UI.SetLabel("TopCenter", "");
+            UI.SetLabel(UILabelEnum.TopCenter, "");
 			return;
 		}
 
@@ -1602,7 +1620,7 @@ component CaptureZone
             if (self._isViewing == true)
             {
                 self._isViewing = false;
-                UI.SetLabel("TopCenter", "");
+                UI.SetLabel(UILabelEnum.TopCenter, "");
             }
             return;
 		}
@@ -1648,7 +1666,7 @@ component CaptureZone
                 message = UI.WrapStyleTag(message, "size", "30");
             }
 		}
-        UI.SetLabel("TopCenter", String.Newline + message);
+        UI.SetLabel(UILabelEnum.TopCenter, String.Newline + message);
     }
 
     function ListContains(list, target)
@@ -1663,54 +1681,77 @@ component CaptureZone
         return false;
     }
 
-    function AddTeamPlayer(player)
+    # @param character Character
+    function AddTeamCharacter(character)
     {
-        team = player.Team;
-        if (team == "None")
+        team = character.Team;
+        if (team == TeamEnum.None)
         {
-            team = player.Type;
+            team = character.Type;
         }
 
-        if (self._teamsInZone.Contains(team) == false)
-        {
-            self._teamsInZone.Set(team, List());
-        }
-        value = self._teamsInZone.Get(team);
-        if (self.ListContains(value, player) == false)
+        list = self._teamsInZone.Get(team, List());
+        if (!list.Contains(character))
 		{
-            value.Add(player);
-            self._teamsInZone.Set(team, value);
+            list.Add(character);
+            self._teamsInZone.Set(team, list);
         }
     }
 
-    function RemoveTeamPlayer(player)
+    # @param character Character
+    function RemoveTeamCharacter(character)
     {
-        team = player.Team;
-        if (team == "None")
+        team = character.Team;
+        if (team == TeamEnum.None)
         {
-            team = player.Type;
+            team = character.Type;
         }
 
-        if (self._teamsInZone.Contains(team) == false)
+        if (!self._teamsInZone.Contains(team))
         {
             return;
         }
-        value = self._teamsInZone.Get(team);
-        if (self.ListContains(value, player))
+        list = self._teamsInZone.Get(team);
+        if (list.Contains(character))
         {
-            value.Remove(player);
+            list.Remove(character);
         }
-        if (value.Count == 0)
+        if (list.Count == 0)
         {
             self._teamsInZone.Remove(team);
 		}
 		else
 		{
-			self._teamsInZone.Set(team, value);
+			self._teamsInZone.Set(team, list);
         }
     }
 
-    # Handle active player logic
+    # @param other Character
+    function CanCapture(character)
+    {
+        if (character.Type == "Human")
+        {
+            return self.HumanCanCapture;
+        }
+        elif (character.Type == "Shifter")
+        {
+            if (character.IsAI)
+            {
+                return self.AICanCapture;
+            }
+            return self.ShifterCanCapture;
+        }
+        elif (character.Type == "Titan")
+        {
+            if (character.IsAI)
+            {
+                return self.AICanCapture;
+            }
+            return self.TitanCanCapture;
+        }
+        return false;
+    }
+
     function OnCollisionEnter(other)
     {
         # Ignore non-characters and only let host handle collisions
@@ -1719,29 +1760,12 @@ component CaptureZone
             return;
         }
 
-        if (other.Type == "Human" && self.HumanCanCapture)
+        if (!self.CanCapture(other))
         {
-            if (other.Team != "Human" && self.TeamsCanCapture)
-            {
-                self.AddTeamPlayer(other);
-            }
-            else
-            {
-                self.AddTeamPlayer(other);
-            }
+            return;
         }
-        elif (other.Type == "Shifter" && self.ShifterCanCapture)
-        {
-            self.AddTeamPlayer(other);
-        }
-        elif (other.Type == "Titan" && other.IsMainCharacter && self.TitanCanCapture)
-        {
-            self.AddTeamPlayer(other);
-        }
-        elif (other.Type == "Titan" && self.AICanCapture)
-        {
-            self.AddTeamPlayer(other);
-        }
+
+        self.AddTeamCharacter(other);
     }
 
     function OnCollisionExit(other)
@@ -1752,39 +1776,22 @@ component CaptureZone
             return;
         }
 
-        if (other.Type == "Human" && self.HumanCanCapture)
+        if (!self.CanCapture(other))
         {
-            if (other.Team != "Human" && self.TeamsCanCapture)
-            {
-                self.RemoveTeamPlayer(other);
-            }
-            else
-            {
-                self.RemoveTeamPlayer(other);
-            }
+            return;
         }
-        elif (other.Type == "Shifter" && self.ShifterCanCapture)
-        {
-            self.RemoveTeamPlayer(other);
-        }
-        elif (other.Type == "Titan" && other.IsMainCharacter && self.TitanCanCapture) # Resolve bug here, main character is not the only pt anymore
-        {
-            self.RemoveTeamPlayer(other);
-        }
-        elif (other.Type == "Titan" && self.AICanCapture)
-        {
-            self.RemoveTeamPlayer(other);
-        }
+
+        self.RemoveTeamCharacter(other);
     }
 
     function OnCharacterDie(character, killer, killerName)
     {
-        self.RemoveTeamPlayer(character);
+        self.RemoveTeamCharacter(character);
     }
 
-    function OnCharacterLeave(player)
+    function OnPlayerLeave(player)
     {
-        self.RemoveTeamPlayer(player.Character);
+        self.RemoveTeamCharacter(player.Character);
     }
 }
 
@@ -1802,7 +1809,7 @@ component Bell
     function Init()
     {
         self._soundTransform = self.MapObject.GetTransform("BellHitSound");
-        self.MapObject.AddBoxCollider("Region", "Hitboxes", Vector3(0, 2.6, 0), Vector3(5.3, 6, 5.3));
+        self.MapObject.AddBoxCollider(CollideModeEnum.Region, CollideWithEnum.Hitboxes, Vector3(0, 2.6, 0), Vector3(5.3, 6, 5.3));
     }
 
     function OnNetworkMessage(sender, message)
@@ -1880,7 +1887,7 @@ component SupplyStation
     function Init()
     {
         self._refillsLeft = self.MaxRefills;
-        self.MapObject.AddBoxCollider("Region", "Characters", Vector3(0,-2,0), Vector3(14,10,14));
+        self.MapObject.AddBoxCollider(CollideModeEnum.Region, CollideWithEnum.Characters, Vector3(0,-2,0), Vector3(14,10,14));
     }
 
     function OnCollisionStay(other)
@@ -1892,13 +1899,13 @@ component SupplyStation
             text = "";
             if (self.LoadoutChange)
             {
-                text = "Press " + Input.GetKeyName("Interaction/Interact2") + " to change loadout.";
+                text = "Press " + Input.GetKeyName(InputInteractionEnum.Interact2) + " to change loadout.";
             }
             if (!self._currentHumanRefill.AutoRefillGas)
             {
-                text = "Press " + Input.GetKeyName("Interaction/Interact") + " to refill." + String.Newline + text;
+                text = "Press " + Input.GetKeyName(InputInteractionEnum.Interact) + " to refill." + String.Newline + text;
             }
-            UI.SetLabelForTime("MiddleCenter", text, 0.1);
+            UI.SetLabelForTime(UILabelEnum.MiddleCenter, text, 0.1);
         }
     }
 
@@ -1906,7 +1913,7 @@ component SupplyStation
     {
         if (self._currentHumanRefill != null)
         {
-            if ((self._currentHumanRefill.AutoRefillGas || Input.GetKeyDown("Interaction/Interact")) && self._currentHumanRefill.Refill())
+            if ((self._currentHumanRefill.AutoRefillGas || Input.GetKeyDown(InputInteractionEnum.Interact)) && self._currentHumanRefill.Refill())
             {
                 self._currentHumanRefill = null;
                 self._refillsLeft = self._refillsLeft - 1;
@@ -1914,7 +1921,7 @@ component SupplyStation
         }
         if (self.LoadoutChange && self._currentHuman != null)
         {
-            if (Input.GetKeyDown("Interaction/Interact2"))
+            if (Input.GetKeyDown(InputInteractionEnum.Interact2))
             {
                 self._currentHuman = null;
                 UI.ShowChangeCharacterMenu();
@@ -1957,11 +1964,7 @@ component Daylight
 
     function ParseEnum(value)
     {
-        if (value == "None")
-        {
-            return self._light.ShadowTypeNone;
-        }
-        elif (value == "Soft")
+        if (value == "Soft")
         {
             return self._light.ShadowTypeSoft;
         }
@@ -1969,6 +1972,7 @@ component Daylight
         {
             return self._light.ShadowTypeHard;
         }
+        return self._light.ShadowTypeNone;
     }
 }
 
@@ -2046,25 +2050,63 @@ component Rigidbody
 
     function AddForce(force)
     {
-        # self.MapObject.UpdateBuiltinComponent("Rigidbody", "AddForce", force);
-        self.MapObject.Rigidbody.AddForceOptimized(force);
+        self.MapObject.Rigidbody.AddForce(force, ForceModeEnum.Acceleration);
     }
 
     function AddForceWithMode(force, mode)
     {
-        # self.MapObject.UpdateBuiltinComponent("Rigidbody", "AddForce", force, mode);
-        self.MapObject.Rigidbody.AddForce(force, mode);
+        modeEnum = ForceModeEnum.Acceleration;
+        if (mode == "Force")
+        {
+            modeEnum = ForceModeEnum.Force;
+        }
+        elif (mode == "Impulse")
+        {
+            modeEnum = ForceModeEnum.Impulse;
+        }
+        elif (mode == "VelocityChange")
+        {
+            modeEnum = ForceModeEnum.VelocityChange;
+        }
+
+        self.MapObject.Rigidbody.AddForce(force, modeEnum);
     }
 
     function AddForceWithModeAtPoint(force, point, mode)
     {
-        # self.MapObject.UpdateBuiltinComponent("Rigidbody", "AddForce", force, mode, point);
-        self.MapObject.Rigidbody.AddForce(force, mode, point);
+        modeEnum = ForceModeEnum.Acceleration;
+        if (mode == "Force")
+        {
+            modeEnum = ForceModeEnum.Force;
+        }
+        elif (mode == "Impulse")
+        {
+            modeEnum = ForceModeEnum.Impulse;
+        }
+        elif (mode == "VelocityChange")
+        {
+            modeEnum = ForceModeEnum.VelocityChange;
+        }
+
+        self.MapObject.Rigidbody.AddForce(force, modeEnum, point);
     }
 
     function AddTorque(force, mode)
     {
-        # self.MapObject.UpdateBuiltinComponent("Rigidbody", "AddTorque", force, mode);
+        modeEnum = ForceModeEnum.Acceleration;
+        if (mode == "Force")
+        {
+            modeEnum = ForceModeEnum.Force;
+        }
+        elif (mode == "Impulse")
+        {
+            modeEnum = ForceModeEnum.Impulse;
+        }
+        elif (mode == "VelocityChange")
+        {
+            modeEnum = ForceModeEnum.VelocityChange;
+        }
+
         self.MapObject.Rigidbody.AddTorque(force, mode);
     }
 
@@ -2117,7 +2159,7 @@ component KillRegion
             {
                 return;
             }
-            if (other.Team != self.Team && self.Team != "None")
+            if (other.Team != self.Team && self.Team != TeamEnum.None)
             {
                 return;
             }
@@ -2152,7 +2194,7 @@ component DamageRegion
             {
                 return;
             }
-            if (other.Team != self.Team && self.Team != "None")
+            if (other.Team != self.Team && self.Team != TeamEnum.None)
             {
                 return;
             }
@@ -2240,7 +2282,7 @@ component RacingCheckpointRegion
             }
             if (self.PlaySound)
             {
-                other.PlaySound("Checkpoint");
+                other.PlaySound(HumanSoundEnum.Checkpoint);
             }
             other.Player.SpawnPoint = self.MapObject.Position;
             if (self.LapCheckpoint)
@@ -2323,7 +2365,7 @@ component GameEndRegion
     {
         if (self.EndMessage != "" && self._showMessage && Game.IsEnding)
         {
-            UI.SetLabelForTime("MiddleCenter", self.EndMessage, 0.1);
+            UI.SetLabelForTime(UILabelEnum.MiddleCenter, self.EndMessage, 0.1);
         }
     }
 
@@ -2343,7 +2385,7 @@ component GameEndRegion
             {
                 return;
             }
-            if (other.Team != self.Team && self.Team != "None")
+            if (other.Team != self.Team && self.Team != TeamEnum.None)
             {
                 return;
             }
@@ -2376,8 +2418,8 @@ component Dummy
 
     function Init()
     {
-        self.MapObject.Transform.PlayAnimation("Armature|dummy_idle");
-        self.MapObject.AddSphereCollider("Region", "Hitboxes", Vector3(0, 12.4, -3.7), 1.0);
+        self.MapObject.Transform.PlayAnimation(DummyAnimationEnum.Idle);
+        self.MapObject.AddSphereCollider(CollideModeEnum.Region, CollideWithEnum.Hitboxes, Vector3(0, 12.4, -3.7), 1.0);
     }
 
     function OnNetworkMessage(sender, message)
@@ -2386,7 +2428,7 @@ component Dummy
         {
             if (self._state == "Alive")
             {
-                self.MapObject.Transform.PlayAnimation("Armature|dummy_fall");
+                self.MapObject.Transform.PlayAnimation(DummyAnimationEnum.Fall);
                 self.MapObject.GetTransform("FallSound").PlaySound();
             }
             self._currentResetTime = self.ResetDelay;
@@ -2403,7 +2445,7 @@ component Dummy
             {
                 self.ResetCount = self.ResetCount - 1;
                 self._state = "Rise";
-                self.MapObject.Transform.PlayAnimation("Armature|dummy_rise");
+                self.MapObject.Transform.PlayAnimation(DummyAnimationEnum.Rise);
                 self.MapObject.GetTransform("RiseSound").PlaySound();
                 self._currentResetTime = 1.0;
             }
@@ -2413,7 +2455,7 @@ component Dummy
             if (self._currentResetTime <= 0)
             {
                 self._state = "Alive";
-                self.MapObject.Transform.PlayAnimation("Armature|dummy_idle");
+                self.MapObject.Transform.PlayAnimation(DummyAnimationEnum.Idle);
             }
         }
     }
@@ -2462,7 +2504,7 @@ component Wagon
 
     function Init()
     {
-        self.MapObject.AddSphereCollider("Region", "Characters", Vector3.Zero, 10.0);
+        self.MapObject.AddSphereCollider(CollideModeEnum.Region, CollideWithEnum.Characters, Vector3.Zero, 10.0);
         self._horse = self.MapObject.GetTransform("Horse");
         self._horse.Layer = 17; # NPC
         self._leftWheel = self.MapObject.GetTransform("Carriage/Wheels/LeftWheelPivot");
@@ -2559,7 +2601,7 @@ component Wagon
             {
                 if (!self._inUse && !self._riding && !other.IsMounted)
                 {
-                    UI.SetLabelForTime("MiddleCenter", "Press " + Input.GetKeyName("Human/HorseMount") + " to drive wagon.", 0.1);
+                    UI.SetLabelForTime(UILabelEnum.MiddleCenter, "Press " + Input.GetKeyName(InputHumanEnum.HorseMount) + " to drive wagon.", 0.1);
                     self._collidingHuman = other;
                     self._collidingDrive = true;
                 }
@@ -2570,14 +2612,14 @@ component Wagon
                 {
                     if (self.InfiniteSupply)
                     {
-                        UI.SetLabelForTime("MiddleCenter", "Press " + Input.GetKeyName("Interaction/Interact") + " to refill.", 0.1);
+                        UI.SetLabelForTime(UILabelEnum.MiddleCenter, "Press " + Input.GetKeyName(InputInteractionEnum.Interact) + " to refill.", 0.1);
                         self._collidingHuman = other;
                         self._collidingGas = true;
                     }
                     else
                     {
                         left = Math.Max(self._supplyTimesLeft, 0);
-                        UI.SetLabelForTime("MiddleCenter", "Press " + Input.GetKeyName("Interaction/Interact") + " to refill (" + Convert.ToString(self._supplyTimesLeft) + " left.)", 0.1);
+                        UI.SetLabelForTime(UILabelEnum.MiddleCenter, "Press " + Input.GetKeyName(InputInteractionEnum.Interact) + " to refill (" + Convert.ToString(self._supplyTimesLeft) + " left.)", 0.1);
                         if (left > 0)
                         {
                             self._collidingHuman = other;
@@ -2590,7 +2632,7 @@ component Wagon
             {
                 if (!self._riding && !other.IsMounted)
                 {
-                    UI.SetLabelForTime("MiddleCenter", "Press " + Input.GetKeyName("Interaction/Interact") + " to ride wagon.", 0.1);
+                    UI.SetLabelForTime(UILabelEnum.MiddleCenter, "Press " + Input.GetKeyName(InputInteractionEnum.Interact) + " to ride wagon.", 0.1);
                     self._collidingHuman = other;
                     self._collidingRide = true;
                 }
@@ -2658,7 +2700,7 @@ component Wagon
                             spd *= 1.0 - Math.Pow(dot, 0.6);
                         }
 
-                        self._rigidbody.AddForceOptimized(self._horse.Forward * spd * Time.TickTime / 0.007, self._rigidbody.ForceModeAcceleration, self._horse.Position);
+                        self._rigidbody.AddForce(self._horse.Forward * spd * Time.TickTime / 0.007, ForceModeEnum.Acceleration, self._horse.Position);
                     }
                     else
                     {
@@ -2680,7 +2722,7 @@ component Wagon
                 {
                     axis = Vector3.Cross(self.MapObject.Up, Vector3.Up).Normalized;
                     speed = 10 * Time.TickTime;
-                    self._rigidbody.AddTorqueOptimized(axis * speed * ((upAngle - maxTiltAngle) / maxTiltAngle), self._rigidbody.ForceModeVelocityChange);
+                    self._rigidbody.AddTorque(axis * speed * ((upAngle - maxTiltAngle) / maxTiltAngle), ForceModeEnum.VelocityChange);
                 }
             }
 
@@ -2720,7 +2762,7 @@ component Wagon
                     {
                         self._jumpCoolDown -= Time.FrameTime;
                     }
-                    elif (Input.GetKeyDown("Human/HorseJump"))
+                    elif (Input.GetKeyDown(InputHumanEnum.HorseJump))
                     {
                         velocity = self._rigidbody.Velocity;
                         velocity.Y = self.JumpVelocity;
@@ -2729,18 +2771,18 @@ component Wagon
                     }
                 }
 
-                if (self._human.State == "Idle")
+                if (self._human.State == HumanStateEnum.Idle)
                 {
                     if (self._rigidbody.Velocity.Magnitude > 1)
                     {
-                        self._human.PlayAnimation("Armature|horse_run");
+                        self._human.PlayAnimation(HumanAnimationEnum.HorseRun);
                     }
                     else
                     {
-                        self._human.PlayAnimation("Armature|horse_idle");
+                        self._human.PlayAnimation(HumanAnimationEnum.HorseIdle);
                     }
                 }
-                if (Input.GetKeyDown("Human/HorseMount"))
+                if (Input.GetKeyDown(InputHumanEnum.HorseMount))
                 {
                     self._delayUnmount = true;
                     self.NetworkView.Transfer(Network.MasterClient);
@@ -2756,19 +2798,19 @@ component Wagon
                 self._riding = false;
                 return;
             }
-            if (Input.GetKeyDown("Interaction/Interact"))
+            if (Input.GetKeyDown(InputInteractionEnum.Interact))
             {
                 self._human.Unmount();
                 self._riding = false;
             }
             else
             {
-                self._human.PlayAnimation("Armature|horse_idle");
+                self._human.PlayAnimation(HumanAnimationEnum.HorseIdle);
             }
         }
         if (self._collidingHuman != null)
         {
-            if (Input.GetKeyDown("Human/HorseMount"))
+            if (Input.GetKeyDown(InputHumanEnum.HorseMount))
             {
                 if (self._collidingDrive && !self._inUse)
                 {
@@ -2784,7 +2826,7 @@ component Wagon
                     }
                 }
             }
-            elif (Input.GetKeyDown("Interaction/Interact"))
+            elif (Input.GetKeyDown(InputInteractionEnum.Interact))
             {
                 if (self._collidingGas && !self._inUse)
                 {
@@ -2809,12 +2851,12 @@ component Wagon
     {
         if (self._rigidbody.Velocity.Magnitude > 1)
         {
-            self._horse.PlayAnimation("horse_Run");
+            self._horse.PlayAnimation(HorseAnimationEnum.Run);
             self._dust.ToggleParticle(true);
         }
         else
         {
-            self._horse.PlayAnimation("horse_idle0");
+            self._horse.PlayAnimation(HorseAnimationEnum.Idle0);
             self._dust.ToggleParticle(false);
         }
 
@@ -2830,7 +2872,7 @@ component Wagon
 
     function Grounded()
     {
-        horseCast = Physics.SphereCastAll(self._horse.Position + Vector3.Up * 0.6, self._horse.Position + Vector3.Down * 1.5, 0.5, Physics.CollideWithMapObjects);
+        horseCast = Physics.SphereCastAll(self._horse.Position + Vector3.Up * 0.6, self._horse.Position + Vector3.Down * 1.5, 0.5, CollideWithEnum.MapObjects);
         for (cast in horseCast)
         {
             if (cast.Collider != self.MapObject && !cast.ColliderInfo.IsTrigger)
@@ -2839,7 +2881,7 @@ component Wagon
             }
         }
 
-        wagonCast = Physics.BoxCastAll(self._wagonBase.Position + self._wagonBase.Position.Up, self._wagonBase.Position, self._wagonBase.Scale, self._wagonBase.QuaternionRotation, Physics.CollideWithMapObjects);
+        wagonCast = Physics.BoxCastAll(self._wagonBase.Position + self._wagonBase.Position.Up, self._wagonBase.Position, self._wagonBase.Scale, self._wagonBase.QuaternionRotation, CollideWithEnum.MapObjects);
         for (cast in wagonCast)
         {
             if (cast.Collider != self.MapObject && !cast.ColliderInfo.IsTrigger)
@@ -2862,7 +2904,7 @@ component Wagon
         elif (self._jumpCoolDown <= 0)
         {
             force = -150 * horizontalVelocity * Time.TickTime;
-            self._rigidbody.AddForce(force);
+            self._rigidbody.AddForce(force, ForceModeEnum.Acceleration);
         }
     }
 }
@@ -2890,7 +2932,7 @@ component Cannon
         self._barrel = self.MapObject.GetTransform("Barrel");
         self._barrelEnd = self._barrel.GetTransform("End");
         self._humanMount = self.MapObject.GetTransform("HumanMount");
-        self.MapObject.AddSphereCollider("Region", "Characters", Vector3.Zero, 15.0);
+        self.MapObject.AddSphereCollider(CollideModeEnum.Region, CollideWithEnum.Characters, Vector3.Zero, 15.0);
         self._ammoLeft = self.MaxAmmo;
     }
 
@@ -2940,7 +2982,7 @@ component Cannon
     {
         if (other.Type == "Human" && other.IsMine && !self._inUse)
         {
-            UI.SetLabelForTime("MiddleCenter", "Press " + Input.GetKeyName("Interaction/Interact") + " to use cannon.", 0.1);
+            UI.SetLabelForTime(UILabelEnum.MiddleCenter, "Press " + Input.GetKeyName(InputInteractionEnum.Interact) + " to use cannon.", 0.1);
             self._collidingHuman = other;
         }
     }
@@ -2960,22 +3002,22 @@ component Cannon
             {
                 message = message + " Ammo: " + Convert.ToString(self._ammoLeft);
             }
-            UI.SetLabelForTime("MiddleCenter", message, 0.1);
+            UI.SetLabelForTime(UILabelEnum.MiddleCenter, message, 0.1);
             barrelRotation = self._barrel.LocalRotation;
             baseRotation = self.MapObject.Rotation;
-            if (Input.GetKeyHold("General/Left"))
+            if (Input.GetKeyHold(InputGeneralEnum.Left))
             {
                 baseRotation.Y = baseRotation.Y - self._rotateSpeed * Time.FrameTime;
             }
-            elif (Input.GetKeyHold("General/Right"))
+            elif (Input.GetKeyHold(InputGeneralEnum.Right))
             {
                 baseRotation.Y = baseRotation.Y + self._rotateSpeed * Time.FrameTime;
             }
-            if (Input.GetKeyHold("General/Forward"))
+            if (Input.GetKeyHold(InputGeneralEnum.Forward))
             {
                 barrelRotation.X = barrelRotation.X - self._rotateSpeed * Time.FrameTime;
             }
-            elif (Input.GetKeyHold("General/Back"))
+            elif (Input.GetKeyHold(InputGeneralEnum.Back))
             {
                 barrelRotation.X = barrelRotation.X + self._rotateSpeed * Time.FrameTime;
             }
@@ -2983,11 +3025,11 @@ component Cannon
             self._barrel.LocalRotation = barrelRotation;
             self.MapObject.Rotation = baseRotation;
             hasAmmo = self._ammoLeft > 0 || self.UnlimitedAmmo;
-            if (self._cooldownLeft <= 0.0 && hasAmmo && Input.GetKeyHold("Human/AttackDefault"))
+            if (self._cooldownLeft <= 0.0 && hasAmmo && Input.GetKeyHold(InputHumanEnum.AttackDefault))
             {
                 self.Fire();
             }
-            if (Input.GetKeyDown("Interaction/Interact"))
+            if (Input.GetKeyDown(InputInteractionEnum.Interact))
             {
                 self._human.Unmount();
                 self.NetworkView.Transfer(Network.MasterClient);
@@ -3008,7 +3050,7 @@ component Cannon
         }
         if (!self._inUse && self._collidingHuman != null)
         {
-            if (Input.GetKeyDown("Interaction/Interact"))
+            if (Input.GetKeyDown(InputInteractionEnum.Interact))
             {
                 if (self.NetworkView.Owner == Network.MyPlayer)
                 {
@@ -3035,8 +3077,8 @@ component Cannon
         self._ammoLeft = self._ammoLeft - 1;
         if (self._human != null)
         {
-            Game.SpawnEffect("Boom2", self._barrelEnd.Position, self.MapObject.Rotation, 0.5);
-            Game.SpawnProjectileWithOwner("CannonBall", self._barrelEnd.Position, Vector3.Zero, self._barrel.Forward.Normalized * self._ballSpeed,
+            Game.SpawnEffect(EffectNameEnum.Boom2, self._barrelEnd.Position, self.MapObject.Rotation, 0.5);
+            Game.SpawnProjectileWithOwner(ProjectileNameEnum.CannonBall, self._barrelEnd.Position, Vector3.Zero, self._barrel.Forward.Normalized * self._ballSpeed,
             Vector3(0, -20, 0), self.ProjectileLiveTime, self._human);
         }
     }
@@ -3240,7 +3282,7 @@ component WallGateA1
 
     function Init()
     {
-        self.MapObject.AddBoxCollider("Region", "Characters", Vector3(0, 25, 0), Vector3(100, 50, 70));
+        self.MapObject.AddBoxCollider(CollideModeEnum.Region, CollideWithEnum.Characters, Vector3(0, 25, 0), Vector3(100, 50, 70));
         self._door = self.MapObject.GetTransform("Door");
         self._open = self.StartState == "Open";
 
@@ -3346,7 +3388,7 @@ component WallGateA1
         if (other.Type == "Human" && other.IsMine)
         {
             self._currentHuman = other;
-            UI.SetLabelForTime("MiddleCenter", "Press " + Input.GetKeyName("Interaction/Interact") + " to toggle gate.", 0.1);
+            UI.SetLabelForTime(UILabelEnum.MiddleCenter, "Press " + Input.GetKeyName(InputInteractionEnum.Interact) + " to toggle gate.", 0.1);
         }
     }
 
@@ -3354,7 +3396,7 @@ component WallGateA1
     {
         if (self.Interactable && self._currentHuman != null)
         {
-            if (Input.GetKeyDown("Interaction/Interact"))
+            if (Input.GetKeyDown(InputInteractionEnum.Interact))
             {
                 self.NetworkView.SendMessage(Network.MasterClient, "request");
             }
@@ -3416,7 +3458,7 @@ component Executioner
 
     function Init()
     {
-        self.MapObject.AddBoxCollider("Region", "Characters", Vector3(0, 120, 0), Vector3(80, 50, 80));
+        self.MapObject.AddBoxCollider(CollideModeEnum.Region, CollideWithEnum.Characters, Vector3(0, 120, 0), Vector3(80, 50, 80));
         self._log = self.MapObject.GetTransform("ExecutionerLog1");
         self._startPosition = self._log.Position;
         self._endTransform = self._log.GetTransform("End");
@@ -3448,7 +3490,7 @@ component Executioner
         if (other.Type == "Human" && other.IsMine)
         {
             self._currentHuman = other;
-            UI.SetLabelForTime("MiddleCenter", "Press " + Input.GetKeyName("Interaction/Interact") + " to use executioner.", 0.1);
+            UI.SetLabelForTime(UILabelEnum.MiddleCenter, "Press " + Input.GetKeyName(InputInteractionEnum.Interact) + " to use executioner.", 0.1);
         }
     }
 
@@ -3457,7 +3499,7 @@ component Executioner
         if (self._moving && self._dropping && Network.IsMasterClient)
         {
             radius = self._killRadius * self.MapObject.Scale.Z;
-            character = Physics.SphereCast(self._startPosition, self._endTransform.Position, radius, "Characters");
+            character = Physics.SphereCast(self._startPosition, self._endTransform.Position, radius, CollideWithEnum.Characters);
             if (character != null && (character.Type == "Titan" || character.Type == "Shifter"))
             {
                 character.GetKilled("Executioner");
@@ -3469,7 +3511,7 @@ component Executioner
     {
         if (self._currentHuman != null)
         {
-            if (Input.GetKeyDown("Interaction/Interact"))
+            if (Input.GetKeyDown(InputInteractionEnum.Interact))
             {
                 self.NetworkView.SendMessage(Network.MasterClient, "request");
             }
@@ -4476,11 +4518,11 @@ component SignalSender
         }
         if (self.SignalTrigger == "OnGetHit" || self.SignalTrigger == "Any")
         {
-            self.MapObject.AddBoxCollider("Physical", "Hitboxes", Vector3(0,self.MapObject.Scale.Y * 5, 0), Vector3(self.MapObject.Scale.X * 10,self.MapObject.Scale.Y * 10,self.MapObject.Scale.Z * 10));
+            self.MapObject.AddBoxCollider(CollideModeEnum.Physical, CollideWithEnum.Hitboxes, Vector3(0,self.MapObject.Scale.Y * 5, 0), Vector3(self.MapObject.Scale.X * 10,self.MapObject.Scale.Y * 10,self.MapObject.Scale.Z * 10));
         }
         if (self.SignalTrigger == "Interact")
         {
-            self.MapObject.AddBoxCollider("Region", "Characters", Vector3(0,self.MapObject.Scale.Y * 5,0), Vector3(self.MapObject.Scale.X * 10 + self.InteractDistance,self.MapObject.Scale.Y * 10 + self.InteractDistance,self.MapObject.Scale.Z * 10 + self.InteractDistance));
+            self.MapObject.AddBoxCollider(CollideModeEnum.Region, CollideWithEnum.Characters, Vector3(0,self.MapObject.Scale.Y * 5,0), Vector3(self.MapObject.Scale.X * 10 + self.InteractDistance,self.MapObject.Scale.Y * 10 + self.InteractDistance,self.MapObject.Scale.Z * 10 + self.InteractDistance));
         }
     }
     function OnCollisionEnter(other)
@@ -4513,7 +4555,7 @@ component SignalSender
         if (self.SignalTrigger == "Interact" && other.Type == "Human" && other.IsMine && (self.Uses > 0 || self.InfiniteUses))
         {
             self._HumanInRange = other;
-            UI.SetLabelForTime("MiddleCenter", "Press " + Input.GetKeyName("Interaction/Interact") + " to interact", 0.1);
+            UI.SetLabelForTime(UILabelEnum.MiddleCenter, "Press " + Input.GetKeyName(InputInteractionEnum.Interact) + " to interact", 0.1);
         }
     }
     function OnCollisionExit(other)
@@ -4552,7 +4594,7 @@ component SignalSender
     {
         if (self._HumanInRange != null)
         {
-            if (Input.GetKeyDown("Interaction/Interact") && (self.Uses > 0 || self.InfiniteUses))
+            if (Input.GetKeyDown(InputInteractionEnum.Interact) && (self.Uses > 0 || self.InfiniteUses))
             {
                 for (i in Range(0, self._Receivers.Count, 1))
                 {
@@ -4902,8 +4944,8 @@ component Vehicle
         self.ItsParentingTime(self._stuff, self._transform);
         self.ItsParentingTimeWheels(self._wheels, self._transform);
 
-        self.MapObject.AddSphereCollider("Region", "Characters", Vector3.Zero, self.InteractRadius);
-        self._rigidbody = self.MapObject.GetComponent("Rigidbody");
+        self.MapObject.AddSphereCollider(CollideModeEnum.Region, CollideWithEnum.Characters, Vector3.Zero, self.InteractRadius);
+        self._rigidbody = self.MapObject.Rigidbody;
     }
 
     function OnTick()
@@ -4961,7 +5003,7 @@ component Vehicle
         {
             if (!self._inUse)
             {
-                UI.SetLabelForTime("MiddleCenter", "Press " + Input.GetKeyName("Interaction/Interact") + " to " + self.InteractText, 0.1);
+                UI.SetLabelForTime(UILabelEnum.MiddleCenter, "Press " + Input.GetKeyName(InputInteractionEnum.Interact) + " to " + self.InteractText, 0.1);
                 self._collidingHuman = other;
                 self._collidingDrive = true;
             }
@@ -4984,25 +5026,25 @@ component Vehicle
                 if (self._human.HasTargetDirection)
                 {
                     self.MapObject.Forward = Vector3.Lerp(self.MapObject.Forward, self._human.TargetDirection, self.RotateSpeed * Time.FrameTime);
-                    self._rigidbody.AddForce(self.MapObject.Forward * self.MoveForce);
-                    velocity = self._rigidbody.GetVelocity();
-                    self._rigidbody.SetVelocity(velocity.Normalized * Math.Min(velocity.Magnitude, self.MaxMoveSpeed));
+                    self._rigidbody.AddForce(self.MapObject.Forward * self.MoveForce, ForceModeEnum.Acceleration);
+                    velocity = self._rigidbody.Velocity;
+                    self._rigidbody.Velocity = velocity.Normalized * Math.Min(velocity.Magnitude, self.MaxMoveSpeed);
                     self.NetworkView.SendMessageAll("Wheeling");
                 }
                 else
                 {
                     self.NetworkView.SendMessageAll("Unwheeling");
-                    velocity = self._rigidbody.GetVelocity();
+                    velocity = self._rigidbody.Velocity;
                     if (velocity.Magnitude < 1)
                     {
-                        self._rigidbody.SetVelocity(Vector3.Up * velocity.Y);
+                        self._rigidbody.Velocity = Vector3.Up * velocity.Y;
                     }
                     else
                     {
-                        self._rigidbody.AddForce(-0.5 * velocity.Normalized * velocity.Magnitude);
+                        self._rigidbody.AddForce(-0.5 * velocity.Normalized * velocity.Magnitude, ForceModeEnum.Acceleration);
                     }
                 }
-                if (Input.GetKeyDown("Interaction/Interact"))
+                if (Input.GetKeyDown(InputInteractionEnum.Interact))
                 {
                     Camera.ResetDistance();
                     self._human.Unmount();
@@ -5010,15 +5052,15 @@ component Vehicle
                     self._inUse = false;
                     return;
                 }
-                if (Input.GetKeyHold("Human/Jump") && self.CanFly)
+                if (Input.GetKeyHold(InputHumanEnum.Jump) && self.CanFly)
                 {
-                    self._rigidbody.AddForce(self.MapObject.Up * self.MoveForce);
+                    self._rigidbody.AddForce(self.MapObject.Up * self.MoveForce, ForceModeEnum.Acceleration);
                 }
-                if (Input.GetKeyHold("Human/Dodge") && self.CanFly)
+                if (Input.GetKeyHold(InputHumanEnum.Dodge) && self.CanFly)
                 {
-                    self._rigidbody.AddForce(self.MapObject.Up * self.MoveForce * -1);
+                    self._rigidbody.AddForce(self.MapObject.Up * self.MoveForce * -1, ForceModeEnum.Acceleration);
                 }
-                if (self._cooldownLeft <= 0.0 && Input.GetKeyHold("Human/AttackDefault"))
+                if (self._cooldownLeft <= 0.0 && Input.GetKeyHold(InputHumanEnum.AttackDefault))
                 {
                     self.horn();
                 }
@@ -5031,20 +5073,20 @@ component Vehicle
             }
             else
             {
-                velocity = self._rigidbody.GetVelocity();
+                velocity = self._rigidbody.Velocity;
                 if (velocity.Magnitude < 1)
                 {
-                    self._rigidbody.SetVelocity(Vector3.Up * velocity.Y);
+                    self._rigidbody.Velocity = Vector3.Up * velocity.Y;
                 }
                 else
                 {
-                    self._rigidbody.AddForce(-0.5 * velocity.Normalized * velocity.Magnitude);
+                    self._rigidbody.AddForce(-0.5 * velocity.Normalized * velocity.Magnitude, ForceModeEnum.Acceleration);
                 }
             }
         }
         if (self._collidingHuman != null)
         {
-            if (Input.GetKeyDown("Interaction/Interact"))
+            if (Input.GetKeyDown(InputInteractionEnum.Interact))
             {
                 if (self._collidingDrive && !self._inUse)
                 {
@@ -5124,7 +5166,7 @@ component Vehicle
     {
         for (obj in objectList)
         {
-            obj.Parent = _transform;
+            obj.Parent = self._transform;
         }
     }
 
@@ -5177,7 +5219,7 @@ component Chair
     {
 
         self._chair = self.MapObject.GetTransform(self.SeatPosObjectName);
-        self.MapObject.AddSphereCollider("Region", "Characters", Vector3.Zero, 5.0);
+        self.MapObject.AddSphereCollider(CollideModeEnum.Region, CollideWithEnum.Characters, Vector3.Zero, 5.0);
     }
 
     function OnNetworkMessage(sender, message)
@@ -5204,7 +5246,7 @@ component Chair
             {
                 human.MountTransform(self._chair, Vector3(0, 0, 0), Vector3.Zero);
                 self._human = human;
-                Network.MyPlayer.Character.PlayAnimation("Armature|horse_idle");
+                Network.MyPlayer.Character.PlayAnimation(HumanAnimationEnum.HorseIdle);
             }
         }
     }
@@ -5215,7 +5257,7 @@ component Chair
         {
             if (!self._inUse)
             {
-                UI.SetLabelForTime("MiddleCenter", "Press " + Input.GetKeyName("Interaction/Interact") + " " + self.InteractionText, 0.1);
+                UI.SetLabelForTime(UILabelEnum.MiddleCenter, "Press " + Input.GetKeyName(InputInteractionEnum.Interact) + " " + self.InteractionText, 0.1);
                 self._collidingHuman = other;
                 self._collidingSitter = true;
             }
@@ -5238,7 +5280,7 @@ component Chair
         {
             if (self._inUse)
             {
-                if (Input.GetKeyDown("Interaction/Interact"))
+                if (Input.GetKeyDown(InputInteractionEnum.Interact))
                 {
                     self._human.Unmount();
                     self.NetworkView.Transfer(Network.MasterClient);
@@ -5256,7 +5298,7 @@ component Chair
         }
         if (self._collidingHuman != null)
         {
-            if (Input.GetKeyDown("Interaction/Interact"))
+            if (Input.GetKeyDown(InputInteractionEnum.Interact))
             {
                 if (self._collidingSitter && !self._inUse)
                 {
@@ -5265,7 +5307,7 @@ component Chair
                         self._inUse = true;
                         self._collidingHuman.MountTransform(self._chair, Vector3(0, 0, 0), Vector3.Zero);
                         self._human = self._collidingHuman;
-                        Network.MyPlayer.Character.PlayAnimation("Armature|horse_idle");
+                        Network.MyPlayer.Character.PlayAnimation(HumanAnimationEnum.HorseIdle);
 
                     }
                     else

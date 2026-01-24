@@ -65,37 +65,86 @@ def create_page(file):
         'subpages': []
     }
 
+def create_category_entry(category_name, category_path, files):
+    """Create a category entry with its subpages."""
+    # Sort files alphabetically by filename
+    sorted_files = sorted(files, key=lambda x: x.split('/')[-1].lower())
+    
+    return {
+        'page_name': category_name,
+        'page_path': f'{category_path}/README.md',
+        'subpages': [create_page(file) for file in sorted_files if not file.endswith('README.md')]
+    }
 
-def update_summary(summary, object_files, static_files):
+def get_categories(reference_path):
+    """Get all category folders and their files from the reference path."""
+    categories = {}
+    
+    if not os.path.exists(reference_path):
+        return categories
+    
+    for item in os.listdir(reference_path):
+        item_path = os.path.join(reference_path, item)
+        if os.path.isdir(item_path):
+            # Get all .md files in this category folder
+            files = [f'reference/{item}/{file}' for file in os.listdir(item_path) if file.endswith('.md')]
+            categories[item] = files
+    
+    return categories
+
+def update_summary(summary, reference_path):
     # Parse the summary markdown content into a JSON tree structure
     tree = parse_markdown(summary)
 
-    print(tree)
+    print("Parsed tree:", tree)
 
-    # Delete all pages under reference/object and reference/static except for the README.md pages
-    reference = tree.index(next(group for group in tree if group['group_name'] == 'Reference'))
-    refs = tree[reference]['pages']
+    # Get all dynamic categories from the reference folder
+    categories = get_categories(reference_path)
+    print("Found categories:", list(categories.keys()))
 
-    for ref in refs:
-        if ref['page_name'] == 'Objects':
-            new_pages = [create_page(file) for file in object_files if file != 'reference/objects/README.md']
-            ref['subpages'] = new_pages
-        if ref['page_name'] == 'Static Classes':
-            new_pages = [create_page(file) for file in static_files if file != 'reference/static/README.md']
-            ref['subpages'] = new_pages
+    # Find the Reference group
+    reference_group = next((group for group in tree if group['group_name'] == 'Reference'), None)
+    if reference_group is None:
+        print("Warning: Reference group not found in summary")
+        return serialize_to_markdown(tree)
+
+    # Preserve callbacks, remove other dynamic categories, and add new ones
+    preserved_pages = []
+    for page in reference_group['pages']:
+        # Keep Callbacks (case-insensitive check)
+        if page['page_name'].lower() == 'callbacks':
+            preserved_pages.append(page)
+    
+    # Add dynamic categories (sorted alphabetically)
+    for category_name in sorted(categories.keys(), key=str.lower):
+        # Skip callbacks as it's preserved
+        if category_name.lower() == 'callbacks':
+            continue
+        
+        files = categories[category_name]
+        # Create a display name (capitalize first letter)
+        display_name = category_name.capitalize() if category_name.islower() else category_name
+        category_entry = create_category_entry(display_name, f'reference/{category_name}', files)
+        preserved_pages.append(category_entry)
+        print(f"Added category: {display_name} with {len(category_entry['subpages'])} subpages")
+
+    # Sort: Callbacks first, then alphabetically
+    def sort_key(page):
+        if page['page_name'].lower() == 'callbacks':
+            return ('0', page['page_name'].lower())
+        return ('1', page['page_name'].lower())
+    
+    reference_group['pages'] = sorted(preserved_pages, key=sort_key)
 
     # Serialize the JSON tree structure back to markdown content
     return serialize_to_markdown(tree)
 
 
 if __name__ == "__main__":
-    # Parse command line arguments which contains a file path for the summary.md file
+    # Parse command line arguments
     parser = argparse.ArgumentParser(description='Update summary.md file with dynamically synced content.')
     parser.add_argument('summary', type=str, help='Path to the summary.md file.')
-    
-    # Single folder for object folder
-    parser.add_argument('objects', type=str, help='Path to the objects folder.')
-    parser.add_argument('static', type=str, help='Path to the static folder.')
+    parser.add_argument('reference', type=str, help='Path to the reference folder containing category subfolders.')
 
     args = parser.parse_args()
 
@@ -103,21 +152,13 @@ if __name__ == "__main__":
     with open(args.summary, 'r') as file:
         summary = file.read()
 
-    # Get all file names under the object folder
-    object_files = [f'reference/objects/{file}' for file in os.listdir(args.objects)]
-    static_files = [f'reference/static/{file}' for file in os.listdir(args.static)]
-
-    # Sort both lists alphabetically by filename
-    object_files.sort(key=lambda x: x.split('/')[-1])
-    static_files.sort(key=lambda x: x.split('/')[-1])
-
-    # print object_files and static_files
-    print("object_files: ", object_files)
-    print("static_files: ", static_files)
+    print(f"Reference path: {args.reference}")
+    print(f"Categories found: {os.listdir(args.reference) if os.path.exists(args.reference) else 'Path not found'}")
 
     # Update the summary.md file with the dynamically synced content
-    updated_summary = update_summary(summary, object_files, static_files)
+    updated_summary = update_summary(summary, args.reference)
 
+    print("\nUpdated summary:")
     print(updated_summary)
 
     # Write the updated summary.md file

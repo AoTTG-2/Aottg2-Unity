@@ -1,0 +1,240 @@
+# Convert
+Inherits from [Object](../objects/Object.md)
+
+Converting objects to different types.
+
+### Static Methods
+<pre class="language-typescript"><code class="lang-typescript">function ToFloat(value: <a data-footnote-ref href="#user-content-fn-116">Object</a>) -> float</code></pre>
+> Converts a value to a float.
+> 
+> **Parameters**:
+> - `value`: The value to convert (can be string, float, int, or bool).
+> 
+> **Returns**: The converted float value.
+<pre class="language-typescript"><code class="lang-typescript">function ToInt(value: <a data-footnote-ref href="#user-content-fn-116">Object</a>) -> int</code></pre>
+> Converts a value to an int.
+> 
+> **Parameters**:
+> - `value`: The value to convert (can be string, float, int, or bool).
+> 
+> **Returns**: The converted int value.
+<pre class="language-typescript"><code class="lang-typescript">function ToBool(value: <a data-footnote-ref href="#user-content-fn-116">Object</a>) -> bool</code></pre>
+> Converts a value to a bool.
+> 
+> **Parameters**:
+> - `value`: The value to convert (can be string, float, int, or bool).
+> 
+> **Returns**: The converted bool value.
+<pre class="language-typescript"><code class="lang-typescript">function ToString(value: <a data-footnote-ref href="#user-content-fn-116">Object</a>) -> string</code></pre>
+> Converts a value to a string.
+> 
+> **Parameters**:
+> - `value`: The value to convert.
+> 
+> **Returns**: The converted string value.
+<pre class="language-typescript"><code class="lang-typescript">function IsFloat(value: <a data-footnote-ref href="#user-content-fn-116">Object</a>) -> bool</code></pre>
+> Checks if the value is a float.
+> 
+> **Parameters**:
+> - `value`: The value to check.
+> 
+> **Returns**: True if the value is a float, false otherwise.
+<pre class="language-typescript"><code class="lang-typescript">function IsInt(value: <a data-footnote-ref href="#user-content-fn-116">Object</a>) -> bool</code></pre>
+> Checks if the value is an int.
+> 
+> **Parameters**:
+> - `value`: The value to check.
+> 
+> **Returns**: True if the value is an int, false otherwise.
+<pre class="language-typescript"><code class="lang-typescript">function IsBool(value: <a data-footnote-ref href="#user-content-fn-116">Object</a>) -> bool</code></pre>
+> Checks if the value is a bool.
+> 
+> **Parameters**:
+> - `value`: The value to check.
+> 
+> **Returns**: True if the value is a bool, false otherwise.
+<pre class="language-typescript"><code class="lang-typescript">function IsString(value: <a data-footnote-ref href="#user-content-fn-116">Object</a>) -> bool</code></pre>
+> Checks if the value is a string.
+> 
+> **Parameters**:
+> - `value`: The value to check.
+> 
+> **Returns**: True if the value is a string, false otherwise.
+<pre class="language-typescript"><code class="lang-typescript">function IsObject(value: <a data-footnote-ref href="#user-content-fn-116">Object</a>) -> bool</code></pre>
+> Checks if the value is an object.
+> 
+> **Parameters**:
+> - `value`: The value to check.
+> 
+> **Returns**: True if the value is an object, false otherwise.
+<pre class="language-typescript"><code class="lang-typescript">function IsList(value: <a data-footnote-ref href="#user-content-fn-116">Object</a>) -> bool</code></pre>
+> Checks if the value is a list.
+> 
+> **Parameters**:
+> - `value`: The value to check.
+> 
+> **Returns**: True if the value is a list, false otherwise.
+<pre class="language-typescript"><code class="lang-typescript">function IsDict(value: <a data-footnote-ref href="#user-content-fn-116">Object</a>) -> bool</code></pre>
+> Checks if the value is a dictionary.
+> 
+> **Parameters**:
+> - `value`: The value to check.
+> 
+> **Returns**: True if the value is a dictionary, false otherwise.
+<pre class="language-typescript"><code class="lang-typescript">function HasVariable(cInstance: class, variableName: string) -> bool</code></pre>
+> Checks if the class instance has a variable.
+> 
+> **Parameters**:
+> - `cInstance`: The class instance to check.
+> - `variableName`: The name of the variable to check for.
+> 
+> **Returns**: True if the class instance has the variable, false otherwise.
+<pre class="language-typescript"><code class="lang-typescript">function DefineVariable(cInstance: class, variableName: string, value: <a data-footnote-ref href="#user-content-fn-116">Object</a>)</code></pre>
+> Defines a variable for the class instance.
+> 
+> **Parameters**:
+> - `cInstance`: The class instance to define the variable on.
+> - `variableName`: The name of the variable to define.
+> - `value`: The value to assign to the variable.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function RemoveVariable(cInstance: class, variableName: string)</code></pre>
+> Removes a variable from the class instance.
+> 
+> **Parameters**:
+> - `cInstance`: The class instance to remove the variable from.
+> - `variableName`: The name of the variable to remove.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function HasMethod(cInstance: class, methodName: string) -> bool</code></pre>
+> Checks if the class instance has a method.
+> 
+> **Parameters**:
+> - `cInstance`: The class instance to check.
+> - `methodName`: The name of the method to check for.
+> 
+> **Returns**: True if the class instance has the method, false otherwise.
+<pre class="language-typescript"><code class="lang-typescript">function GetType(cInstance: class) -> string</code></pre>
+> Gets the type of the class instance.
+> 
+> **Parameters**:
+> - `cInstance`: The class instance to get the type of.
+> 
+> **Returns**: The class name of the instance.
+
+[^0]: [Color](../Collections/Color.md)
+[^1]: [Dict](../Collections/Dict.md)
+[^2]: [LightBuiltin](../Collections/LightBuiltin.md)
+[^3]: [LineCastHitResult](../Collections/LineCastHitResult.md)
+[^4]: [List](../Collections/List.md)
+[^5]: [Quaternion](../Collections/Quaternion.md)
+[^6]: [Range](../Collections/Range.md)
+[^7]: [Set](../Collections/Set.md)
+[^8]: [Vector2](../Collections/Vector2.md)
+[^9]: [Vector3](../Collections/Vector3.md)
+[^10]: [Animation](../Component/Animation.md)
+[^11]: [Animator](../Component/Animator.md)
+[^12]: [AudioSource](../Component/AudioSource.md)
+[^13]: [Collider](../Component/Collider.md)
+[^14]: [Collision](../Component/Collision.md)
+[^15]: [LineRenderer](../Component/LineRenderer.md)
+[^16]: [LodBuiltin](../Component/LodBuiltin.md)
+[^17]: [MapTargetable](../Component/MapTargetable.md)
+[^18]: [NavmeshObstacleBuiltin](../Component/NavmeshObstacleBuiltin.md)
+[^19]: [PhysicsMaterialBuiltin](../Component/PhysicsMaterialBuiltin.md)
+[^20]: [RigidbodyBuiltin](../Component/RigidbodyBuiltin.md)
+[^21]: [Character](../Entities/Character.md)
+[^22]: [Human](../Entities/Human.md)
+[^23]: [MapObject](../Entities/MapObject.md)
+[^24]: [NetworkView](../Entities/NetworkView.md)
+[^25]: [Player](../Entities/Player.md)
+[^26]: [Prefab](../Entities/Prefab.md)
+[^27]: [Shifter](../Entities/Shifter.md)
+[^28]: [Titan](../Entities/Titan.md)
+[^29]: [Transform](../Entities/Transform.md)
+[^30]: [WallColossal](../Entities/WallColossal.md)
+[^31]: [AlignEnum](../Enums/AlignEnum.md)
+[^32]: [AngleUnitEnum](../Enums/AngleUnitEnum.md)
+[^33]: [AnnieAnimationEnum](../Enums/AnnieAnimationEnum.md)
+[^34]: [CameraModeEnum](../Enums/CameraModeEnum.md)
+[^35]: [CharacterTypeEnum](../Enums/CharacterTypeEnum.md)
+[^36]: [CollideModeEnum](../Enums/CollideModeEnum.md)
+[^37]: [CollideWithEnum](../Enums/CollideWithEnum.md)
+[^38]: [CollisionDetectionModeEnum](../Enums/CollisionDetectionModeEnum.md)
+[^39]: [DummyAnimationEnum](../Enums/DummyAnimationEnum.md)
+[^40]: [EffectNameEnum](../Enums/EffectNameEnum.md)
+[^41]: [ErenAnimationEnum](../Enums/ErenAnimationEnum.md)
+[^42]: [FlexDirectionEnum](../Enums/FlexDirectionEnum.md)
+[^43]: [FontStyleEnum](../Enums/FontStyleEnum.md)
+[^44]: [ForceModeEnum](../Enums/ForceModeEnum.md)
+[^45]: [GradientModeEnum](../Enums/GradientModeEnum.md)
+[^46]: [HandStateEnum](../Enums/HandStateEnum.md)
+[^47]: [HorseAnimationEnum](../Enums/HorseAnimationEnum.md)
+[^48]: [HumanAnimationEnum](../Enums/HumanAnimationEnum.md)
+[^49]: [HumanParticleEffectEnum](../Enums/HumanParticleEffectEnum.md)
+[^50]: [HumanSoundEnum](../Enums/HumanSoundEnum.md)
+[^51]: [HumanStateEnum](../Enums/HumanStateEnum.md)
+[^52]: [InputAnnieShifterEnum](../Enums/InputAnnieShifterEnum.md)
+[^53]: [InputCategoryEnum](../Enums/InputCategoryEnum.md)
+[^54]: [InputErenShifterEnum](../Enums/InputErenShifterEnum.md)
+[^55]: [InputGeneralEnum](../Enums/InputGeneralEnum.md)
+[^56]: [InputHumanEnum](../Enums/InputHumanEnum.md)
+[^57]: [InputInteractionEnum](../Enums/InputInteractionEnum.md)
+[^58]: [InputTitanEnum](../Enums/InputTitanEnum.md)
+[^59]: [JustifyEnum](../Enums/JustifyEnum.md)
+[^60]: [LanguageEnum](../Enums/LanguageEnum.md)
+[^61]: [LineAlignmentEnum](../Enums/LineAlignmentEnum.md)
+[^62]: [LineTextureModeEnum](../Enums/LineTextureModeEnum.md)
+[^63]: [LoadoutEnum](../Enums/LoadoutEnum.md)
+[^64]: [OutlineModeEnum](../Enums/OutlineModeEnum.md)
+[^65]: [OverflowEnum](../Enums/OverflowEnum.md)
+[^66]: [PhysicMaterialCombineEnum](../Enums/PhysicMaterialCombineEnum.md)
+[^67]: [PlayerStatusEnum](../Enums/PlayerStatusEnum.md)
+[^68]: [ProfileIconEnum](../Enums/ProfileIconEnum.md)
+[^69]: [ProjectileNameEnum](../Enums/ProjectileNameEnum.md)
+[^70]: [ScaleModeEnum](../Enums/ScaleModeEnum.md)
+[^71]: [ScrollElasticityEnum](../Enums/ScrollElasticityEnum.md)
+[^72]: [ShadowCastingModeEnum](../Enums/ShadowCastingModeEnum.md)
+[^73]: [ShifterSoundEnum](../Enums/ShifterSoundEnum.md)
+[^74]: [ShifterTypeEnum](../Enums/ShifterTypeEnum.md)
+[^75]: [SliderDirectionEnum](../Enums/SliderDirectionEnum.md)
+[^76]: [SpecialEnum](../Enums/SpecialEnum.md)
+[^77]: [SteamStateEnum](../Enums/SteamStateEnum.md)
+[^78]: [TeamEnum](../Enums/TeamEnum.md)
+[^79]: [TextAlignEnum](../Enums/TextAlignEnum.md)
+[^80]: [TextOverflowEnum](../Enums/TextOverflowEnum.md)
+[^81]: [TitanAnimationEnum](../Enums/TitanAnimationEnum.md)
+[^82]: [TitanSoundEnum](../Enums/TitanSoundEnum.md)
+[^83]: [TitanTypeEnum](../Enums/TitanTypeEnum.md)
+[^84]: [TSKillSoundEnum](../Enums/TSKillSoundEnum.md)
+[^85]: [UILabelEnum](../Enums/UILabelEnum.md)
+[^86]: [WallColossalAnimationEnum](../Enums/WallColossalAnimationEnum.md)
+[^87]: [WeaponEnum](../Enums/WeaponEnum.md)
+[^88]: [Camera](../Game/Camera.md)
+[^89]: [Cutscene](../Game/Cutscene.md)
+[^90]: [Game](../Game/Game.md)
+[^91]: [Input](../Game/Input.md)
+[^92]: [Locale](../Game/Locale.md)
+[^93]: [Map](../Game/Map.md)
+[^94]: [Network](../Game/Network.md)
+[^95]: [PersistentData](../Game/PersistentData.md)
+[^96]: [Physics](../Game/Physics.md)
+[^97]: [RoomData](../Game/RoomData.md)
+[^98]: [Time](../Game/Time.md)
+[^99]: [Button](../UIElements/Button.md)
+[^100]: [Dropdown](../UIElements/Dropdown.md)
+[^101]: [Icon](../UIElements/Icon.md)
+[^102]: [Image](../UIElements/Image.md)
+[^103]: [Label](../UIElements/Label.md)
+[^104]: [ProgressBar](../UIElements/ProgressBar.md)
+[^105]: [ScrollView](../UIElements/ScrollView.md)
+[^106]: [Slider](../UIElements/Slider.md)
+[^107]: [TextField](../UIElements/TextField.md)
+[^108]: [Toggle](../UIElements/Toggle.md)
+[^109]: [UI](../UIElements/UI.md)
+[^110]: [VisualElement](../UIElements/VisualElement.md)
+[^111]: [Convert](../Utility/Convert.md)
+[^112]: [Json](../Utility/Json.md)
+[^113]: [Math](../Utility/Math.md)
+[^114]: [Random](../Utility/Random.md)
+[^115]: [String](../Utility/String.md)
+[^116]: [Object](../objects/Object.md)
+[^117]: [Component](../objects/Component.md)

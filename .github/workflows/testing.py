@@ -1,5 +1,6 @@
 import json
 import re
+import os
 
 def parse_markdown(markdown):
     lines = markdown.split('\n')
@@ -54,6 +55,72 @@ def serialize_to_markdown(json_content):
     
     return markdown_content
 
+def create_page(file):
+    # Get the file name without .md
+    parts = file.split('/')
+    return {
+        'page_name': parts[-1].split('.')[0],
+        'page_path': file,
+        'subpages': []
+    }
+
+def create_category_entry(category_name, category_path, files):
+    """Create a category entry with its subpages."""
+    sorted_files = sorted(files, key=lambda x: x.split('/')[-1].lower())
+    
+    return {
+        'page_name': category_name,
+        'page_path': f'{category_path}/README.md',
+        'subpages': [create_page(file) for file in sorted_files if not file.endswith('README.md')]
+    }
+
+def simulate_categories():
+    """Simulate dynamic categories for testing."""
+    return {
+        'callbacks': ['reference/callbacks/main.md', 'reference/callbacks/components.md', 'reference/callbacks/README.md'],
+        'Collections': ['reference/Collections/List.md', 'reference/Collections/Dict.md', 'reference/Collections/README.md'],
+        'Component': ['reference/Component/Transform.md', 'reference/Component/NetworkView.md', 'reference/Component/README.md'],
+        'Entities': ['reference/Entities/Human.md', 'reference/Entities/Titan.md', 'reference/Entities/Character.md', 'reference/Entities/README.md'],
+        'Enums': ['reference/Enums/KeyCode.md', 'reference/Enums/README.md'],
+        'Game': ['reference/Game/Player.md', 'reference/Game/MapObject.md', 'reference/Game/README.md'],
+        'UIElements': ['reference/UIElements/Button.md', 'reference/UIElements/Label.md', 'reference/UIElements/README.md'],
+        'Utility': ['reference/Utility/Vector3.md', 'reference/Utility/Color.md', 'reference/Utility/Quaternion.md', 'reference/Utility/README.md'],
+    }
+
+def update_summary_with_categories(summary, categories):
+    """Update summary with dynamic categories."""
+    tree = parse_markdown(summary)
+    
+    reference_group = next((group for group in tree if group['group_name'] == 'Reference'), None)
+    if reference_group is None:
+        print("Warning: Reference group not found")
+        return serialize_to_markdown(tree)
+    
+    # Preserve callbacks, add dynamic categories
+    preserved_pages = []
+    for page in reference_group['pages']:
+        if page['page_name'].lower() == 'callbacks':
+            preserved_pages.append(page)
+    
+    for category_name in sorted(categories.keys(), key=str.lower):
+        if category_name.lower() == 'callbacks':
+            continue
+        
+        files = categories[category_name]
+        display_name = category_name.capitalize() if category_name.islower() else category_name
+        category_entry = create_category_entry(display_name, f'reference/{category_name}', files)
+        preserved_pages.append(category_entry)
+    
+    # Sort: Callbacks first, then alphabetically
+    def sort_key(page):
+        if page['page_name'].lower() == 'callbacks':
+            return ('0', page['page_name'].lower())
+        return ('1', page['page_name'].lower())
+    
+    reference_group['pages'] = sorted(preserved_pages, key=sort_key)
+    
+    return serialize_to_markdown(tree)
+
 # Example markdown content
 markdown_content = """
 # Table of contents
@@ -62,81 +129,14 @@ markdown_content = """
 
 * [Custom Map Introduction](README.md)
 * [Your first map](custom-map-tutorial/your-first-map.md)
-* [Map Navigation](custom-map-tutorial/map-navigation.md)
-* [Object Selection](custom-map-tutorial/object-selection.md)
-* [Object Positioning](custom-map-tutorial/object-positioning.md)
-* [Object Attributes](custom-map-tutorial/object-attributes.md)
-* [Shortcuts and Macros](custom-map-tutorial/shortcuts-and-macros.md)
-* [Editor Settings](custom-map-tutorial/editor-settings.md)
-* [Built-in Components Common Errors](custom-map-tutorial/built-in-components-common-errors.md)
-* [Map Performance](custom-map-tutorial/map-performance.md)
-* [Custom Assets](custom-map-tutorial/custom-assets/README.md)
-  * [Your first Asset Bundle](custom-map-tutorial/custom-assets/your-first-asset-bundle.md)
-  * [Asset Bundles in Map Editor](custom-map-tutorial/custom-assets/asset-bundles-in-map-editor.md)
-  * [Asset Bundles in Game](custom-map-tutorial/custom-assets/asset-bundles-in-game.md)
-  * [Adding to Asset Bundles](custom-map-tutorial/custom-assets/adding-to-asset-bundles.md)
-  * [Asset Bundle naming](custom-map-tutorial/custom-assets/asset-bundle-naming.md)
 
 ## Custom Logic Tutorial
 
 * [Custom Logic Introduction](custom-logic-tutorial/custom-logic-introduction.md)
 * [Your first script](custom-logic-tutorial/your-first-script.md)
-* [Variables](custom-logic-tutorial/variables.md)
-* [Types](custom-logic-tutorial/types.md)
-* [Variable Inspector](custom-logic-tutorial/variable-inspector.md)
-* [Expressions](custom-logic-tutorial/expressions.md)
-* [Conditionals](custom-logic-tutorial/conditionals.md)
-* [Loops](custom-logic-tutorial/loops.md)
-* [Functions](custom-logic-tutorial/functions.md)
-* [Coroutines](custom-logic-tutorial/coroutines.md)
-* [Classes](custom-logic-tutorial/classes.md)
-* [Static Classes](custom-logic-tutorial/static-classes.md)
-* [Components](custom-logic-tutorial/components.md)
-* [Extensions](custom-logic-tutorial/extensions.md)
-* [Cutscenes](custom-logic-tutorial/cutscenes.md)
-* [Static Objects](custom-logic-tutorial/static-objects.md)
-* [Networking](custom-logic-tutorial/networking.md)
-* [Commenting](custom-logic-tutorial/commenting.md)
 
 ## Reference
 
-* [Static Classes](reference/static-classes/README.md)
-  * [Game](reference/static-classes/game.md)
-  * [Network](reference/static-classes/network.md)
-  * [Map](reference/static-classes/map.md)
-  * [UI](reference/static-classes/ui.md)
-  * [Time](reference/static-classes/time.md)
-  * [Convert](reference/static-classes/convert.md)
-  * [String](reference/static-classes/string.md)
-  * [Input](reference/static-classes/input.md)
-  * [Math](reference/static-classes/math.md)
-  * [Random](reference/static-classes/random.md)
-  * [Cutscene](reference/static-classes/cutscene.md)
-  * [Camera](reference/static-classes/camera.md)
-  * [RoomData](reference/static-classes/roomdata.md)
-  * [PersistentData](reference/static-classes/persistentdata.md)
-  * [Json](reference/static-classes/json.md)
-  * [Physics](reference/static-classes/physics.md)
-* [Objects](reference/objects/README.md)
-  * [Component](reference/objects/component.md)
-  * [Object](reference/objects/object.md)
-  * [Character](reference/objects/character.md)
-  * [Human](reference/objects/human.md)
-  * [Titan](reference/objects/titan.md)
-  * [Shifter](reference/objects/shifter.md)
-  * [MapObject](reference/objects/mapobject.md)
-  * [Transform](reference/objects/transform.md)
-  * [Player](reference/objects/player.md)
-  * [NetworkView](reference/objects/networkview.md)
-  * [Color](reference/objects/color.md)
-  * [Vector3](reference/objects/vector3.md)
-  * [Quaternion](reference/objects/quaternion.md)
-  * [Dict](reference/objects/dict.md)
-  * [List](reference/objects/list.md)
-  * [Range](reference/objects/range.md)
-  * [LineCastHitResult](reference/objects/linecasthitresult.md)
-  * [MapTargetable](reference/objects/maptargetable.md)
-  * [Random](reference/objects/random.md)
 * [Callbacks](reference/callbacks/README.md)
   * [Main](reference/callbacks/main.md)
   * [Components](reference/callbacks/components.md)
@@ -145,40 +145,17 @@ markdown_content = """
 
 * [Gamemodes](examples/gamemodes/README.md)
   * [Survive](examples/gamemodes/survive.md)
-  * [Waves](examples/gamemodes/waves.md)
-  * [Endless](examples/gamemodes/endless.md)
-  * [Racing](examples/gamemodes/racing.md)
-  * [Blade PVP](examples/gamemodes/blade-pvp.md)
-  * [Thunderspear PVP](examples/gamemodes/thunderspear-pvp.md)
-  * [Titan Explode](examples/gamemodes/titan-explode.md)
-  * [Cranked](examples/gamemodes/cranked.md)
-  * [More Examples](examples/gamemodes/more-examples.md)
-* [Components](examples/components/README.md)
-  * [SupplyStation](examples/components/supplystation.md)
-  * [Daylight](examples/components/daylight.md)
-  * [PointLight](examples/components/pointlight.md)
-  * [Rigidbody](examples/components/rigidbody.md)
-  * [NavMeshObstacle](examples/components/navmeshobstacle.md)
-  * [Cannon](examples/components/cannon.md)
-  * [Dummy](examples/components/dummy.md)
-  * [Wagon](examples/components/wagon.md)
-  * [Tag](examples/components/tag.md)
-  * [KillRegion](examples/components/killregion.md)
-  * [DamageRegion](examples/components/damageregion.md)
-  * [MovePingPong](examples/components/movepingpong.md)
-  * [RacingCheckpointRegion](examples/components/racingcheckpointregion.md)
-  * [RacingFinishRegion](examples/components/racingfinishregion.md)
-  * [TeleportRegion](examples/components/teleportregion.md)
-  * [Animal](examples/components/animal.md)
-  * [SignalMover](examples/components/signalmover.md)
-  * [SignalSender](examples/components/signalsender.md)
-  * [More Examples](examples/components/more-examples.md)
 """
 
 # Parse the markdown content
 parsed_content = parse_markdown(markdown_content)
+print("Parsed content:", json.dumps(parsed_content, indent=2))
 
-# Update the parsed content
+# Simulate dynamic categories
+categories = simulate_categories()
+print("\nSimulated categories:", list(categories.keys()))
 
-# Convert back to markdown
-markdown_content = serialize_to_markdown(parsed_content)
+# Update with dynamic categories
+updated_markdown = update_summary_with_categories(markdown_content, categories)
+print("\nUpdated markdown:")
+print(updated_markdown)

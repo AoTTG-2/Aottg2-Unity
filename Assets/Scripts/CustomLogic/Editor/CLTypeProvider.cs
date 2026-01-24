@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Xml;
@@ -9,6 +10,7 @@ using UnityEditor;
 
 namespace CustomLogic.Editor
 {
+#if UNITY_EDITOR
     class CLTypeProvider
     {
         private const BindingFlags MemberFlags = BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance | BindingFlags.DeclaredOnly;
@@ -116,6 +118,22 @@ namespace CustomLogic.Editor
             return type.Name;
         }
 
+        private string[] ResolveEnumNames(Type[] enumTypes)
+        {
+            if (enumTypes == null || enumTypes.Length == 0)
+                return null;
+
+            var enumNames = new List<string>();
+            foreach (var enumType in enumTypes)
+            {
+                var enumClTypeAttribute = CustomLogicReflectionUtils.GetAttribute<CLTypeAttribute>(enumType);
+                var enumName = enumClTypeAttribute != null ? enumClTypeAttribute.Name : enumType.Name;
+                enumNames.Add(enumName);
+            }
+
+            return enumNames.Count > 0 ? enumNames.ToArray() : null;
+        }
+
         /// <summary>
         /// Parses a type reference string that may contain generic type arguments.
         /// Examples: "K", "List&lt;string&gt;", "List&lt;K&gt;", "Dict&lt;K,V&gt;"
@@ -197,6 +215,56 @@ namespace CustomLogic.Editor
             return arguments.ToArray();
         }
 
+        private string ExtractCategoryFromType(Type type)
+        {
+            var typeName = type.Name;
+            var typeNameWithoutSuffix = typeName.Replace("Builtin", "").Replace("Instance", "");
+            
+            // Search for the source file in the project
+            var scriptPath = FindScriptPath(typeName);
+            if (!string.IsNullOrEmpty(scriptPath))
+            {
+                // Extract the parent folder name from the path
+                // Example: Assets\Scripts\CustomLogic\Builtin\Collections\CustomLogicDictBuiltin.cs
+                // Should extract "Collections"
+                var normalizedPath = scriptPath.Replace('\\', '/');
+                var builtinIndex = normalizedPath.IndexOf("Builtin/");
+                
+                if (builtinIndex >= 0)
+                {
+                    var afterBuiltin = normalizedPath.Substring(builtinIndex + "Builtin/".Length);
+                    var parts = afterBuiltin.Split('/');
+                    
+                    if (parts.Length > 1)
+                    {
+                        // Return the folder name immediately after "Builtin"
+                        return parts[0];
+                    }
+                }
+            }
+            
+            return null;
+        }
+
+        private string FindScriptPath(string typeName)
+        {
+            // Search for .cs files matching the type name
+            var guids = AssetDatabase.FindAssets($"{typeName} t:MonoScript");
+            
+            foreach (var guid in guids)
+            {
+                var path = AssetDatabase.GUIDToAssetPath(guid);
+                var fileName = Path.GetFileNameWithoutExtension(path);
+                
+                if (fileName == typeName)
+                {
+                    return path;
+                }
+            }
+            
+            return null;
+        }
+
         private void ResolveCLType(Type type, XmlDocument xmlDocument)
         {
             var clTypeAttribute = CustomLogicReflectionUtils.GetAttribute<CLTypeAttribute>(type);
@@ -213,6 +281,7 @@ namespace CustomLogic.Editor
             }
 
             var typeXmlInfo = XmlInfo.FromTypeXml(xmlDocument, type);
+            var category = ExtractCategoryFromType(type);
 
             var clType = new CLType
             {
@@ -222,6 +291,7 @@ namespace CustomLogic.Editor
                 InheritBaseMembers = inheritBaseMembers,
                 IsComponent = isComponent,
                 TypeParameters = typeParameters,
+                Category = category,
                 Info = typeXmlInfo,
                 ObsoleteMessage = CustomLogicReflectionUtils.GetObsoleteMessage(type),
             };
@@ -271,15 +341,10 @@ namespace CustomLogic.Editor
                             parameterType = ParseTypeReferenceString(clParamAttribute.Type);
                         }
                         
-                        string enumName = null;
-                        if (clParamAttribute != null)
+                        string[] enumNames = null;
+                        if (clParamAttribute != null && clParamAttribute.Enum != null && clParamAttribute.Enum.Length > 0)
                         {
-                            if (clParamAttribute.Enum != null)
-                            {
-                                var enumType = clParamAttribute.Enum;
-                                var enumClTypeAttribute = CustomLogicReflectionUtils.GetAttribute<CLTypeAttribute>(enumType);
-                                enumName = enumClTypeAttribute != null ? enumClTypeAttribute.Name : enumType.Name;
-                            }
+                            enumNames = ResolveEnumNames(clParamAttribute.Enum);
                         }
                         
                         string parameterDescription = XmlDocumentUtils.GetParameterNodeText(xmlDocument, type, ctor, parameterInfo);
@@ -292,7 +357,7 @@ namespace CustomLogic.Editor
                             DefaultValue = parameterValues[j],
                             IsOptional = parameterInfo.IsOptional,
                             IsVariadic = CustomLogicReflectionUtils.IsVariadicParameter(parameters[j]),
-                            EnumName = enumName
+                            EnumNames = enumNames
                         });
                     }
 
@@ -360,12 +425,10 @@ namespace CustomLogic.Editor
 
                 var propertyXmlInfo = XmlInfo.FromPropertyXml(xmlDocument, type, property);
 
-                string enumName = null;
-                if (clPropertyAttribute?.Enum != null)
+                string[] enumNames = null;
+                if (clPropertyAttribute != null && clPropertyAttribute.Enum != null && clPropertyAttribute.Enum.Length > 0)
                 {
-                    var enumType = clPropertyAttribute.Enum;
-                    var enumClTypeAttribute = CustomLogicReflectionUtils.GetAttribute<CLTypeAttribute>(enumType);
-                    enumName = enumClTypeAttribute != null ? enumClTypeAttribute.Name : enumType.Name;
+                    enumNames = ResolveEnumNames(clPropertyAttribute.Enum);
                 }
 
                 var cLProperty = new CLProperty
@@ -375,7 +438,7 @@ namespace CustomLogic.Editor
                     IsReadonly = clPropertyAttribute.ReadOnly || !property.CanWrite,
                     Info = propertyXmlInfo,
                     ObsoleteMessage = CustomLogicReflectionUtils.GetObsoleteMessage(property),
-                    EnumName = enumName,
+                    EnumNames = enumNames
                 };
 
                 if (isHybrid || isStatic)
@@ -397,12 +460,10 @@ namespace CustomLogic.Editor
 
                 var fieldXmlInfo = XmlInfo.FromFieldXml(xmlDocument, type, field);
 
-                string enumName = null;
-                if (clPropertyAttribute?.Enum != null)
+                string[] enumNames = null;
+                if (clPropertyAttribute != null && clPropertyAttribute.Enum != null && clPropertyAttribute.Enum.Length > 0)
                 {
-                    var enumType = clPropertyAttribute.Enum;
-                    var enumClTypeAttribute = CustomLogicReflectionUtils.GetAttribute<CLTypeAttribute>(enumType);
-                    enumName = enumClTypeAttribute != null ? enumClTypeAttribute.Name : enumType.Name;
+                    enumNames = ResolveEnumNames(clPropertyAttribute.Enum);
                 }
 
                 var cLProperty = new CLProperty
@@ -412,7 +473,7 @@ namespace CustomLogic.Editor
                     IsReadonly = clPropertyAttribute.ReadOnly,
                     Info = fieldXmlInfo,
                     ObsoleteMessage = CustomLogicReflectionUtils.GetObsoleteMessage(field),
-                    EnumName = enumName,
+                    EnumNames = enumNames
                 };
 
                 var isStatic = field.IsStatic || clPropertyAttribute.Static;
@@ -472,15 +533,10 @@ namespace CustomLogic.Editor
                         parameterType = ParseTypeReferenceString(clParamAttribute.Type);
                     }
                     
-                    string enumName = null;
-                    if (clParamAttribute != null)
+                    string[] enumNames = null;
+                    if (clParamAttribute != null && clParamAttribute.Enum != null && clParamAttribute.Enum.Length > 0)
                     {
-                        if (clParamAttribute.Enum != null)
-                        {
-                            var enumType = clParamAttribute.Enum;
-                            var enumClTypeAttribute = CustomLogicReflectionUtils.GetAttribute<CLTypeAttribute>(enumType);
-                            enumName = enumClTypeAttribute != null ? enumClTypeAttribute.Name : enumType.Name;
-                        }
+                        enumNames = ResolveEnumNames(clParamAttribute.Enum);
                     }
                     
                     string parameterDescription = XmlDocumentUtils.GetParameterNodeText(xmlDocument, type, method, parameterInfo);
@@ -493,7 +549,7 @@ namespace CustomLogic.Editor
                         DefaultValue = parameterValues[j],
                         IsOptional = parameterInfo.IsOptional,
                         IsVariadic = CustomLogicReflectionUtils.IsVariadicParameter(parameterInfo),
-                        EnumName = enumName
+                        EnumNames = enumNames
                     });
                 }
 
@@ -554,4 +610,5 @@ namespace CustomLogic.Editor
             return _resolvedTypes.Values.Append(ObjectType).Append(ComponentType).ToArray();
         }
     }
+#endif
 }

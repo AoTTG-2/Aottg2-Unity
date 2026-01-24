@@ -1,3 +1,5 @@
+using GameManagers;
+
 namespace CustomLogic
 {
     /// <summary>
@@ -13,24 +15,24 @@ namespace CustomLogic
         /// Annie shifter type.
         /// </summary>
         [CLProperty]
-        public static string Annie => "Annie";
+        public static string Annie => ShifterType.Annie;
 
         /// <summary>
         /// Armored shifter type.
         /// </summary>
         [CLProperty]
-        public static string Armored => "Armored";
+        public static string Armored => ShifterType.Armored;
 
         /// <summary>
         /// Eren shifter type.
         /// </summary>
         [CLProperty]
-        public static string Eren => "Eren";
+        public static string Eren => ShifterType.Eren;
 
         /// <summary>
         /// WallColossal shifter type.
         /// </summary>
         [CLProperty]
-        public static string WallColossal => "WallColossal";
+        public static string WallColossal => ShifterType.WallColossal;
     }
 }

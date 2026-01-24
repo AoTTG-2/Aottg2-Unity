@@ -114,15 +114,11 @@ namespace CustomLogic
         /// </summary>
         /// <param name="value">Acceptable values are: `Clamped`, `Elastic`, and `Unrestricted`.</param>
         [CLMethod]
-        public CustomLogicScrollViewBuiltin Elasticity(string value)
+        public CustomLogicScrollViewBuiltin Elasticity([CLParam(Enum = new Type[] { typeof(CustomLogicScrollElasticityEnum) })] int value)
         {
-            _scrollView.touchScrollBehavior = value switch
-            {
-                "Clamped" => ScrollView.TouchScrollBehavior.Clamped,
-                "Elastic" => ScrollView.TouchScrollBehavior.Elastic,
-                "Unrestricted" => ScrollView.TouchScrollBehavior.Unrestricted,
-                _ => throw new Exception("Unknown elasticity value")
-            };
+            if (!Enum.IsDefined(typeof(ScrollView.TouchScrollBehavior), value))
+                throw new ArgumentException($"Unknown elasticity value: {value}");
+            _scrollView.touchScrollBehavior = (ScrollView.TouchScrollBehavior)value;
             return this;
         }
 

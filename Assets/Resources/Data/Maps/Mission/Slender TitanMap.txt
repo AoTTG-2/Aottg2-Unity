@@ -747,7 +747,7 @@ function OnCollisionEnter(other)
 if (other.Type == "Human" && other.IsMainCharacter && !self._Found)
 {
 self._Found = true;
-other.PlaySound("Checkpoint");
+other.PlaySound(HumanSoundEnum.Checkpoint);
 Network.SendMessage(Network.MasterClient, "Found" + Convert.ToString(self.MapObject.ID));
 }
 }
@@ -812,7 +812,7 @@ character.FocusRange = 500;
 }
 if (character.Type == "Human")
 {
-character.SetSpecial("Potato");
+character.SetSpecial(SpecialEnum.Potato);
 character.MaxGas = 60;
 character.CurrentGas = 60;
 character.CustomDamageEnabled = true;
@@ -881,7 +881,7 @@ self._hasSpawned = true;
 }
 if (humans == 0 && playerShifters == 0 && self._hasSpawned)
 {
-UI.SetLabelAll("MiddleCenter", "Humanity failed!");
+UI.SetLabelAll(UILabelEnum.MiddleCenter, "Humanity failed!");
 Game.End(10.0);
 return;
 }
@@ -889,7 +889,7 @@ return;
 character = Network.MyPlayer.Character;
 if (character != null && character.Type == "Human")
 {
-Camera.SetCameraMode("FPS");
+Camera.SetCameraMode(CameraModeEnum.FPS);
 }
 elif (character == null)
 {
@@ -902,7 +902,7 @@ function SpawnTitans()
 titans = Game.Titans.Count;
 if (titans < self._maxTitans)
 {
-Game.SpawnTitans("Normal", self._spawnTitans);
+Game.SpawnTitans(TitanTypeEnum.Normal, self._spawnTitans);
 }
 }
 
@@ -911,10 +911,10 @@ function Sync()
 foundPapers = self.Papers - self._activePapers.Count;
 if (self._activePapers.Count == 0 && !Game.IsEnding)
 {
-UI.SetLabelAll("MiddleCenter", "<color=#00FF00><size=30>All the notes have been found!</size></color>");
+UI.SetLabelAll(UILabelEnum.MiddleCenter, "<color=#00FF00><size=30>All the notes have been found!</size></color>");
 Game.End(10);
 }
-UI.SetLabelAll("TopCenter", "<color=red><size=30>Find all the notes</size></color>" + String.Newline + "Notes Found: " + foundPapers + " / " + self.Papers);
+UI.SetLabelAll(UILabelEnum.TopCenter, "<color=red><size=30>Find all the notes</size></color>" + String.Newline + "Notes Found: " + foundPapers + " / " + self.Papers);
 message = "Sync";
 idStrs = List();
 for (id in self._activePapers)

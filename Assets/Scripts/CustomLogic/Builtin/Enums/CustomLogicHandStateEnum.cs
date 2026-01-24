@@ -1,3 +1,5 @@
+using Characters;
+
 namespace CustomLogic
 {
     /// <summary>
@@ -13,30 +15,12 @@ namespace CustomLogic
         /// Hand is healthy.
         /// </summary>
         [CLProperty]
-        public static string Healthy => "Healthy";
+        public static int Healthy => (int)ColossalHandState.Healthy;
 
         /// <summary>
         /// Hand is damaged but not severed.
         /// </summary>
         [CLProperty]
-        public static string Damaged => "Damaged";
-
-        /// <summary>
-        /// Hand is severed.
-        /// </summary>
-        [CLProperty]
-        public static string Severed => "Severed";
-
-        /// <summary>
-        /// Hand is recovering.
-        /// </summary>
-        [CLProperty]
-        public static string Recovering => "Recovering";
-
-        /// <summary>
-        /// Hand is broken (deprecated, use Severed instead).
-        /// </summary>
-        [CLProperty]
-        public static string Broken => "Severed";
+        public static int Broken => (int)ColossalHandState.Broken;
     }
 }
