@@ -35,6 +35,8 @@ namespace Characters
         public int MaxRightHandHealth = 1000;
         public int CurrentLeftHandHealth = 1000;
         public int CurrentRightHandHealth = 1000;
+        public bool CanDamageLeftHand = true;
+        public bool CanDamageRightHand = true;
 
         protected ColossalHandState _leftHandState = ColossalHandState.Healthy;
         protected ColossalHandState _rightHandState = ColossalHandState.Healthy;
@@ -758,6 +760,9 @@ namespace Characters
             }
             else if (collider == ColossalCache.HandLHurtbox.name)
             {
+                if (!CanDamageLeftHand)
+                    return;
+
                 if (_leftHandState == ColossalHandState.Healthy || _leftHandState == ColossalHandState.Damaged)
                 {
                     SetCurrentLeftHandHealth(CurrentLeftHandHealth - damage);
@@ -765,6 +770,9 @@ namespace Characters
             }
             else if (collider == ColossalCache.HandRHurtbox.name)
             {
+                if (!CanDamageRightHand)
+                    return;
+
                 if (_rightHandState == ColossalHandState.Healthy || _rightHandState == ColossalHandState.Damaged)
                 {
                     SetCurrentRightHandHealth(CurrentRightHandHealth - damage);
