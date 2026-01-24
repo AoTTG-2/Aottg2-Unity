@@ -1964,11 +1964,7 @@ component Daylight
 
     function ParseEnum(value)
     {
-        if (value == "None")
-        {
-            return self._light.ShadowTypeNone;
-        }
-        elif (value == "Soft")
+        if (value == "Soft")
         {
             return self._light.ShadowTypeSoft;
         }
@@ -1976,6 +1972,7 @@ component Daylight
         {
             return self._light.ShadowTypeHard;
         }
+        return self._light.ShadowTypeNone;
     }
 }
 

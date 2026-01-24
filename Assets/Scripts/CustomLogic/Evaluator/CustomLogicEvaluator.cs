@@ -1031,38 +1031,97 @@ namespace CustomLogic
 
         public bool CheckEquals(object left, object right)
         {
+            // Handle both null
             if (left == null && right == null)
                 return true;
+
+            // Check for custom __Eq__ BEFORE null early return
+            // This allows custom equality to handle null specially
+            bool leftIsClassInstance = left is CustomLogicClassInstance;
+            bool leftCanCallEq = leftIsClassInstance && ((CustomLogicClassInstance)left).HasVariable(eq);
+            bool rightIsClassInstance = right is CustomLogicClassInstance;
+            bool rightCanCallEq = rightIsClassInstance && ((CustomLogicClassInstance)right).HasVariable(eq);
+
+            if (leftCanCallEq)
+            {
+                object[] parameters = ArrayPool<object>.New(2);
+                parameters[0] = left;
+                parameters[1] = right;
+                var result = EvaluateMethod((CustomLogicClassInstance)left, eq, parameters);
+                ArrayPool<object>.Free(parameters);
+                return (bool)result;
+            }
+            else if (rightCanCallEq)
+            {
+                object[] parameters = ArrayPool<object>.New(2);
+                parameters[0] = left;
+                parameters[1] = right;
+                var result = EvaluateMethod((CustomLogicClassInstance)right, eq, parameters);
+                ArrayPool<object>.Free(parameters);
+                return (bool)result;
+            }
+
+            // Only now check for null (no custom __Eq__ available)
             if (left == null || right == null)
                 return false;
-            if (left is CustomLogicClassInstance)
-            {
-                CustomLogicClassInstance leftInstance = (CustomLogicClassInstance)left;
-                if (leftInstance.HasVariable(eq))
-                {
-                    object[] parameters = ArrayPool<object>.New(2);
-                    parameters[0] = left;
-                    parameters[1] = right;
-                    var result = EvaluateMethod(leftInstance, eq, parameters);
-                    ArrayPool<object>.Free(parameters);
-                    return (bool)result;
-                }
-            }
-            else if (right is CustomLogicClassInstance)
-            {
-                CustomLogicClassInstance rightInstance = (CustomLogicClassInstance)right;
-                if (rightInstance.HasVariable(eq))
-                {
-                    object[] parameters = ArrayPool<object>.New(2);
-                    parameters[0] = left;
-                    parameters[1] = right;
-                    var result = EvaluateMethod(rightInstance, eq, parameters);
-                    ArrayPool<object>.Free(parameters);
-                    return (bool)result;
-                }
-            }
+
+            // Use value equality for all other types
             return left.Equals(right);
         }
+
+        // Keep for now for reference
+        //public bool CheckEqualsOld(object left, object right)
+        //{
+        //    // Handle null cases first
+        //    if (left == null && right == null)
+        //        return true;
+        //    if (left == null || right == null)
+        //    {
+        //        // Check if non-null side has custom __Eq__ that might handle null specially
+        //        if (left != null && left is CustomLogicClassInstance leftInstance && leftInstance.HasVariable(eq))
+        //        {
+        //            object[] parameters = ArrayPool<object>.New(2);
+        //            parameters[0] = left;
+        //            parameters[1] = right;
+        //            var result = EvaluateMethod(leftInstance, eq, parameters);
+        //            ArrayPool<object>.Free(parameters);
+        //            return (bool)result;
+        //        }
+        //        if (right != null && right is CustomLogicClassInstance rightInstance && rightInstance.HasVariable(eq))
+        //        {
+        //            object[] parameters = ArrayPool<object>.New(2);
+        //            parameters[0] = left;
+        //            parameters[1] = right;
+        //            var result = EvaluateMethod(rightInstance, eq, parameters);
+        //            ArrayPool<object>.Free(parameters);
+        //            return (bool)result;
+        //        }
+        //        return false;
+        //    }
+
+        //    // Both non-null - check for custom __Eq__ implementation
+        //    if (left is CustomLogicClassInstance leftInst && leftInst.HasVariable(eq))
+        //    {
+        //        object[] parameters = ArrayPool<object>.New(2);
+        //        parameters[0] = left;
+        //        parameters[1] = right;
+        //        var result = EvaluateMethod(leftInst, eq, parameters);
+        //        ArrayPool<object>.Free(parameters);
+        //        return (bool)result;
+        //    }
+        //    else if (right is CustomLogicClassInstance rightInst && rightInst.HasVariable(eq))
+        //    {
+        //        object[] parameters = ArrayPool<object>.New(2);
+        //        parameters[0] = left;
+        //        parameters[1] = right;
+        //        var result = EvaluateMethod(rightInst, eq, parameters);
+        //        ArrayPool<object>.Free(parameters);
+        //        return (bool)result;
+        //    }
+
+        //    // No custom __Eq__ - use default equality
+        //    return left.Equals(right);
+        //}
 
         public static T ConvertTo<T>(object obj)
         {

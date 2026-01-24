@@ -83,6 +83,13 @@ namespace CustomLogic
         public bool IsAI => Character.AI;
 
         /// <summary>
+        /// Is this character alive?
+        /// Value is set to false before despawn.
+        /// </summary>
+        [CLProperty]
+        public bool IsAlive => Character != null ? Character.Dead : false;
+
+        /// <summary>
         /// Network view ID of the character.
         /// </summary>
         [CLProperty]
@@ -603,14 +610,8 @@ namespace CustomLogic
 
         public override bool Equals(object other)
         {
-            if (other == null)
-                return Character == null;
-            if (!(other is CustomLogicCharacterBuiltin))
-                return false;
-            var otherCharacter = ((CustomLogicCharacterBuiltin)other).Character;
-            if (Character == null)
-                return otherCharacter == null;
-            return Character == otherCharacter;
+            // Delegate to __Eq__ for consistency
+            return __Eq__(this, other);
         }
 
         /// <summary>
@@ -622,7 +623,21 @@ namespace CustomLogic
         [CLMethod]
         public bool __Eq__(object self, object other)
         {
-            return self.Equals(other);
+            // Extract character wrappers
+            var selfChar = self as CustomLogicCharacterBuiltin;
+            var otherChar = other as CustomLogicCharacterBuiltin;
+
+            // Get underlying Character references (may be null if destroyed)
+            var selfCharacter = selfChar?.Character;
+            var otherCharacter = otherChar?.Character;
+
+            // Compare underlying Characters
+            if (selfCharacter == null && otherCharacter == null)
+                return true;
+            if (selfCharacter == null || otherCharacter == null)
+                return false;
+
+            return selfCharacter == otherCharacter;
         }
 
         /// <summary>
