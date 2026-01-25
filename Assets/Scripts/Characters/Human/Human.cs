@@ -1501,13 +1501,16 @@ namespace Characters
 
         protected override void FixedUpdate()
         {
+            if (IsMine())
+            {
+                FixedUpdateLookTitan();
+                FixedUpdateUseables();
+            }
             HookLeft.FixedUpdateMock();
             HookRight.FixedUpdateMock();
             base.FixedUpdate();
             if (IsMine())
             {
-                FixedUpdateLookTitan();
-                FixedUpdateUseables();
                 _isReelingOut = false;
                 if (State == HumanState.Grab || Dead)
                 {
