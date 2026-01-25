@@ -46,7 +46,7 @@ namespace Characters
         public float RightHandSeverTimeLeft = 0f;
         public float HandSeverWindow = 10f;
 
-        public float StunDuration = 5f;
+        public float StunDuration = 3f;
         public float StunTimeLeft = 0f;
 
         public float RecoveryDuration = 10f;

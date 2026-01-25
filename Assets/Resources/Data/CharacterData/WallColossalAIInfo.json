@@ -9,7 +9,8 @@
 		"WallAttackCooldown": 3.0,
 		"WarningSteamTime": 3.0,
 		"HandSeverWindow": 10.0,
-		"RecoveryDuration": 10.0
+		"RecoveryDuration": 10.0,
+		"StunDuration": 3.0
 	},
 	"Training": {
 		"WallAttackCooldown": 1000.0,
