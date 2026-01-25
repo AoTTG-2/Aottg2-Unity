@@ -1461,10 +1461,13 @@ component Civilians
 {
 	_health = 1000;
 	_maxHealth = 1000;
+	_isColliding = false;
+	_warning = null;
 
 	function Init()
 	{
 		self.MapObject.AddBoxCollider(CollideModeEnum.Region, CollideWithEnum.Titans, Vector3(), self.MapObject.Scale);
+		self._warning = TextWarning(20, "The civilians are under attack!", "Icons/Quests/Skull2Icon", Color(255,0,0));
 	}
 
 	function OnGameStart()
@@ -1501,10 +1504,20 @@ component Civilians
 
 	function OnCollisionStay(obj)
 	{
-		if (obj.Type == CharacterTypeEnum.Titan && !Game.IsEnding)
+		self._isColliding = true;
+	}
+
+	function OnTick()
+	{
+		if (self._isColliding && !Game.IsEnding)
 		{
-			UI.SetLabelForTime(UILabelEnum.MiddleCenter, "<size=30><color=red><b>The civilians are under attack!</b></color></size>", 0.5);
+			self._warning.Show();
 		}
+		else
+		{
+			self._warning.Hide();
+		}
+		self._isColliding = false;
 	}
 
 	function TakeDamage(damage)
@@ -1536,13 +1549,30 @@ component Civilians
 
 component TitanWarning
 {
+	_isColliding = false;
+	_warning = null;
+
+	function Init()
+	{
+		self._warning = TextWarning(80, "The titans are approaching the north gate!", "Icons/Game/DangerIcon", Color("#A8FF24"));
+	}
+
 	function OnCollisionStay(obj)
 	{
-		if (obj.Type == CharacterTypeEnum.Titan && !Game.IsEnding)
+		self._isColliding = true;
+	}
+
+	function OnTick()
+	{
+		if (self._isColliding && !Game.IsEnding && !Main._civilians._warning._isVisible)
 		{
-			text = "<color=#A8FF24><size=30><b>The titans are approaching the north gate!</b></size></color>" + String.Newline + String.Newline + String.Newline + String.Newline + String.Newline + String.Newline;
-			UI.SetLabelForTime(UILabelEnum.BottomCenter, text, 0.1);
+			self._warning.Show();
 		}
+		else
+		{
+			self._warning.Hide();
+		}
+		self._isColliding = false;
 	}
 }
 
@@ -2340,6 +2370,135 @@ class BossHealthBar
     }
 }
 
+class TextWarning
+{
+	_rootContainer = null;
+	_label = null;
+	_leftIcon = null;
+	_rightIcon = null;
+	_text = "";
+	_icon = "";
+	_color = Color();
+	_yPosition = 50;
+	_isVisible = false;
+	_defaultWidth = 45;
+
+	function Init(yPosition, text, icon, color)
+	{
+		self._yPosition = yPosition;
+		self._text = text;
+		self._icon = icon;
+		color.A = 100;
+		self._color = color;
+
+
+		self.CreateUI();
+	}
+
+	function DestroyUI()
+	{
+		if (self._rootContainer == null)
+		{
+			return;
+		}
+		root = UI.GetRootVisualElement();
+		root.Remove(self._rootContainer);
+	}
+
+	function CreateUI()
+	{
+		root = UI.GetRootVisualElement();
+
+		self._rootContainer = UI.VisualElement()
+			.Absolute(true)
+			.Width(0, true)
+			.Height(5, true)
+			.Top(self._yPosition, true)
+			.PaddingTop(0.5, true)
+			.PaddingBottom(0.5, true)
+			.BorderRadius(6)
+			.AlignSelf(AlignEnum.Center)
+			.FlexDirection(FlexDirectionEnum.Row)
+			.JustifyContent(JustifyEnum.Center)
+			.AlignItems(AlignEnum.Center)
+			.OverflowX(OverflowEnum.Hidden)
+			.TransitionDuration(500)
+			.BackgroundColor(self._color);
+		root.Add(self._rootContainer);
+
+
+		self._leftIcon = self.CreateIcon();
+		self._rootContainer.Add(self._leftIcon);
+
+		self._label = UI.Label(self._text)
+			.Color(Color(255, 255, 255))
+			.FlexGrow(3)
+			.FontSize(100, true, FontScaleModeEnum.Height)
+			.TextOverflow(TextOverflowEnum.Clip)
+			.FontStyle(FontStyleEnum.Bold)
+			.TextAlign(TextAlignEnum.MiddleCenter);
+		self._rootContainer.Add(self._label);d
+
+		self._rightIcon = self.CreateIcon();
+		self._rootContainer.Add(self._rightIcon);
+
+	}
+
+	function CreateIcon()
+	{
+		container = UI.Icon(self._icon)
+			.AspectRatio(1.0)
+			.Height(100, true)
+			.FlexDirection(FlexDirectionEnum.Column)
+			.AlignItems(AlignEnum.Center);
+
+		return container;
+	}
+
+	coroutine Show()
+	{
+		if (!self._isVisible)
+		{
+			self._isVisible = true;
+			self._rootContainer
+				.Width(self._defaultWidth, true)
+				.PaddingLeft(0.5, true)
+				.PaddingRight(0.5, true);
+		}
+	}
+
+	function Hide()
+	{
+		if (self._isVisible)
+		{
+			self._isVisible = false;
+			self._rootContainer
+				.Width(0, true)
+				.PaddingLeft(0, true)
+				.PaddingRight(0, true);
+		}
+	}
+
+	function SetIcon(icon)
+	{
+		self._icon = icon;
+		self._leftIcon.SetIcon(icon);
+		self._rightIcon.SetIcon(icon);
+	}
+
+	function SetText(text)
+	{
+		self._text = text;
+		self._label.Text = text;
+	}
+
+	function SetColor(color)
+	{
+		color.A = 100;
+		self._color = color;
+		self._rootContainer.BackgroundColor(self._color);
+	}
+}
 
 /// Weather
 {
