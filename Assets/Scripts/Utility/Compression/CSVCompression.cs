@@ -1,66 +1,101 @@
-﻿using SimpleJSONFixed;
-using System;
+﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
+using Map;
+using Utility;
 
 namespace Utility
 {
     class CSVCompression
     {
-        private static readonly char[] Alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789".ToCharArray();
-
-        public static object[] Compress(string source, int deltaRows, char containerDelimiter = ';', char rowDelimiter = ',')
+        public static byte[] Compress(string source, int totalColumns, char containerDelimiter = ';', char rowDelimiter = ',')
         {
-            List<string[]> list = new List<string[]>();
-            foreach (string row in source.Split(containerDelimiter))
-                list.Add(row.Trim().Split(rowDelimiter));
-            string[][] outputArr = list.ToArray();
-            Dictionary<string, string> symbolTable = new Dictionary<string, string>();
-            if (outputArr.Length > 0)
-            {
-                CompressDelta(outputArr, deltaRows);
-                // CompressSymbol(outputArr, symbolTable);
-            }
-            List<string> outputList = new List<string>();
-            foreach (string[] strArray in outputArr)
-                outputList.Add(string.Join(rowDelimiter.ToString(), strArray));
-            byte[] compressed = StringCompression.Compress(string.Join(containerDelimiter.ToString(), outputList.ToArray()));
-            JSONNode symbolTableAsJson = new JSONObject();
-            foreach (string key in symbolTable.Keys)
-                symbolTableAsJson.Add(key, symbolTable[key]);
-            return new object[] { compressed, symbolTableAsJson };
-        }
+            int listColumn = totalColumns - 1;
 
-        public static string Decompress(byte[] source, JSONNode symbolTable, int deltaRows, char containerDelimiter = ';', char rowDelimiter = ',')
+            List<string[]> list = new List<string[]>();
+            foreach (string line in source.Split(containerDelimiter))
+            {
+                string[] row = line.Trim().Split(rowDelimiter, totalColumns, StringSplitOptions.None);
+                row[listColumn] = row[listColumn].Replace(rowDelimiter, containerDelimiter);
+                list.Add(row);
+            }
+            
+            string[][] outputArr = list.ToArray();
+
+            int[] columnOrdering = new int[totalColumns];
+            HashSet<string>[] columnSets = new HashSet<string>[totalColumns];
+
+            for (int i = 0; i < totalColumns; i++)
+            {
+                columnOrdering[i] = i;
+                columnSets[i] = new HashSet<string>();
+                for (int j = 0; j < outputArr.Length; j++)
+                    columnSets[i].Add(outputArr[j][i]);
+            }
+
+            Array.Sort(columnOrdering, (a, b) => columnSets[a].Count - columnSets[b].Count);
+            Array.Sort(outputArr, (a, b) =>
+            {
+                for (int i = 0; i < totalColumns; i++)
+                {
+                    int cmp = String.Compare(a[columnOrdering[i]], b[columnOrdering[i]]);
+                    if (cmp != 0) return cmp;
+                }
+                return 0;
+            });
+            
+            CompressDelta(outputArr);
+            
+            list.Clear();
+            for (int i = 0; i < totalColumns; i++)
+                list.Add(outputArr.Select((row) => row[i]).ToArray());
+            IEnumerable<string> columns = list.Select(column => string.Join(rowDelimiter, column));
+
+            string csv = string.Join(containerDelimiter.ToString(), columns);
+
+            return StringCompression.Compress(csv);
+        }
+        
+        public static string Decompress(byte[] source, int totalColumns, char containerDelimiter = ';', char rowDelimiter = ',')
         {
             string uncompressed = StringCompression.Decompress(source);
             List<string[]> list = new List<string[]>();
-            foreach (string row in uncompressed.Split(containerDelimiter))
-                list.Add(row.Split(rowDelimiter));
+            foreach (string row in uncompressed.Split(containerDelimiter, totalColumns, StringSplitOptions.None))
+                list.Add(row.Split(rowDelimiter).Select(csvValue => csvValue.Replace(containerDelimiter, rowDelimiter)).ToArray());
             string[][] outputArr = list.ToArray();
-            if (outputArr.Length > 0)
-            {
-                // DecompressSymbol(outputArr, symbolTable);
-                DecompressDelta(outputArr, deltaRows);
-            }
-            List<string> outputList = new List<string>();
-            foreach (string[] strArray in outputArr)
-                outputList.Add(string.Join(rowDelimiter.ToString(), strArray));
-            return string.Join(containerDelimiter.ToString(), outputList.ToArray());
+
+            list.Clear();
+            for (int i = 0; i < totalColumns; i++)
+                list.Add(outputArr.Select((row) => row[i]).ToArray());
+            
+            outputArr = list.ToArray();
+            DecompressDelta(outputArr);
+
+            IEnumerable<string> rows = outputArr.Select(row => string.Join(rowDelimiter, row));
+
+            return string.Join(containerDelimiter, rows);
         }
 
-        private static void CompressDelta(string[][] outputArr, int deltaRows)
+        private static void CompressDelta(string[][] outputArr)
         {
-            string[] lastRow = new string[100];
-            for (int i = 0; i < outputArr[0].Length; i++)
-                lastRow[i] = outputArr[0][i];
+            if (outputArr.Length <= 0)
+                return;
+
+            string[] lastRow = (string[])outputArr[0].Clone();
+            int columnCount = lastRow.Length;
+
             for (int i = 1; i < outputArr.Length; i++)
             {
                 string[] row = outputArr[i];
-                for (int j = 0; j < deltaRows; j++)
+                for (int j = 0; j < columnCount; j++)
                 {
-                    if (row[j] == lastRow[j])
+                    if (row[j] == string.Empty)
+                    {
+                        row[j] = lastRow[j];
+                        lastRow[j] = string.Empty;
+                    }
+                    else if (row[j] == lastRow[j])
                         row[j] = string.Empty;
                     else
                         lastRow[j] = row[j];
@@ -68,95 +103,30 @@ namespace Utility
             }
         }
 
-        private static void CompressSymbol(string[][] outputArr, Dictionary<string, string> symbolTable)
+        private static void DecompressDelta(string[][] outputArr)
         {
-            int currentSymbolCount = 0;
-            string currentSymbol = ToBase62(currentSymbolCount);
-            int currentSize = 0;
-            Dictionary<string, int> itemCounter = new Dictionary<string, int>();
-            Dictionary<string, string> itemToSymbol = new Dictionary<string, string>();
-            foreach (string[] row in outputArr)
-            {
-                foreach (string item in row)
-                {
-                    if (itemCounter.ContainsKey(item))
-                        itemCounter[item] += 1;
-                    else
-                        itemCounter.Add(item, 1);
-                }
-            }
-            while (itemCounter.ContainsKey(currentSymbol))
-            {
-                currentSymbolCount += 1;
-                currentSymbol = ToBase62(currentSymbolCount);
-            }
-            foreach (KeyValuePair<string, int> pair in itemCounter.OrderByDescending(x => x.Value))
-            {
-                if (pair.Value < 3)
-                    break;
-                if (currentSize > 10000)
-                    break;
-                if (pair.Key.Length <= currentSymbol.Length)
-                    continue;
-                symbolTable.Add(currentSymbol, pair.Key);
-                itemToSymbol.Add(pair.Key, currentSymbol);
-                currentSymbolCount += 1;
-                currentSymbol = ToBase62(currentSymbolCount);
-                currentSize += currentSymbol.Length + pair.Key.Length + 6;
-            }
-            foreach (string[] row in outputArr)
-            {
-                for (int i = 0; i < row.Length; i++)
-                {
-                    if (itemToSymbol.ContainsKey(row[i]))
-                        row[i] = itemToSymbol[row[i]];
-                }
-            }
-        }
-
-        private static void DecompressDelta(string[][] outputArr, int deltaRows)
-        {
+            if (outputArr.Length <= 0)
+                return;
+            
             string[] lastRow = (string[])outputArr[0].Clone();
+            int columnCount = lastRow.Length;
+
             for (int i = 1; i < outputArr.Length; i++)
             {
                 string[] row = outputArr[i];
-                for (int j = 0; j < deltaRows; j++)
+                for (int j = 0; j < columnCount; j++)
                 {
-                    if (row[j] == string.Empty)
+                    if (row[j] == lastRow[j])
+                    {
+                        row[j] = string.Empty;
+                        lastRow[j] = string.Empty;
+                    }
+                    else if (row[j] == string.Empty)
                         row[j] = lastRow[j];
                     else
                         lastRow[j] = row[j];
                 }
             }
         }
-
-        private static void DecompressSymbol(string[][] outputArr, JSONNode symbolTable)
-        {
-            foreach (string[] row in outputArr)
-            {
-                for (int i = 0; i < row.Length; i++)
-                {
-                    if (symbolTable.HasKey(row[i]))
-                        row[i] = symbolTable[row[i]];
-                }
-            }
-        }
-
-        private static string ToBase62(int index)
-        {
-            if (index == 0)
-                return Alphabet[index].ToString();
-            List<string> list = new List<string>();
-            int alphabetLength = Alphabet.Length;
-            while (index > 0)
-            {
-                int remainder = index % alphabetLength;
-                index = index / alphabetLength;
-                list.Add(Alphabet[remainder].ToString());
-            }
-            list.Reverse();
-            return string.Join("", list.ToArray());
-        }
-
     }
 }
