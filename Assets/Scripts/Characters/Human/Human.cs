@@ -1501,16 +1501,40 @@ namespace Characters
 
         protected override void FixedUpdate()
         {
-            if (IsMine())
+            if (SettingsManager.GeneralSettings.HookOrder.Value == (int)HookUpdateOrder.BeforeAll)
             {
-                FixedUpdateLookTitan();
-                FixedUpdateUseables();
+                if (IsMine())
+                {
+                    FixedUpdateLookTitan();
+                    FixedUpdateUseables();
+                }
+                HookLeft.FixedUpdateMock();
+                HookRight.FixedUpdateMock();
             }
-            HookLeft.FixedUpdateMock();
-            HookRight.FixedUpdateMock();
+            else if (SettingsManager.GeneralSettings.HookOrder.Value == (int)HookUpdateOrder.LandBeforeReleaseAfter)
+            {
+                HookLeft.FixedUpdateMock();
+                HookRight.FixedUpdateMock();
+            }
+            //if (IsMine())
+            //{
+            //    FixedUpdateLookTitan();
+            //    FixedUpdateUseables();
+            //}
+            //HookLeft.FixedUpdateMock();
+            //HookRight.FixedUpdateMock();
             base.FixedUpdate();
             if (IsMine())
             {
+                if (SettingsManager.GeneralSettings.HookOrder.Value == (int)HookUpdateOrder.LandBeforeReleaseAfter ||
+                    SettingsManager.GeneralSettings.HookOrder.Value == (int)HookUpdateOrder.AfterAll)
+                {
+                    if (IsMine())
+                    {
+                        FixedUpdateLookTitan();
+                        FixedUpdateUseables();
+                    }
+                }
                 _isReelingOut = false;
                 if (State == HumanState.Grab || Dead)
                 {
@@ -1958,6 +1982,12 @@ namespace Characters
                 ReelInAxis = 0f;
             }
             EnableSmartTitans();
+
+            if (SettingsManager.GeneralSettings.HookOrder.Value == (int)HookUpdateOrder.AfterAll)
+            {
+                HookLeft.FixedUpdateMock();
+                HookRight.FixedUpdateMock();
+            }
         }
         private bool CanStockDueToBL()
         {

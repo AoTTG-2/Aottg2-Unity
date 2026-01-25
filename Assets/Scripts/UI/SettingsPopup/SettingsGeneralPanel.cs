@@ -47,6 +47,9 @@ namespace UI
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.SkipCutscenes, UIManager.GetLocale(cat, sub, "SkipCutscenes"));
             ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.OriginalCameraDeadzone, UIManager.GetLocale(cat, sub, "OriginalCameraDeadzone"));
             ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.OriginalCameraSpeed, UIManager.GetLocale(cat, sub, "OriginalCameraSpeed"));
+
+            ElementFactory.CreateDropdownSetting(DoublePanelRight, style, settings.HookOrder, "Hook Order",
+                 new string[] { HookUpdateOrder.BeforeAll.ToString(), HookUpdateOrder.LandBeforeReleaseAfter.ToString(), HookUpdateOrder.AfterAll.ToString() }, elementWidth: 200f);
         }
     }
 }

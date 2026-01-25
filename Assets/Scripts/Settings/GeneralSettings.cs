@@ -27,12 +27,20 @@ namespace Settings
         public FloatSetting FPSFOVMax = new FloatSetting(100f, minValue: 1f, maxValue: 120f);
         public FloatSetting OriginalCameraDeadzone = new FloatSetting(0.2f, minValue: 0.0f, maxValue: 0.99f);
         public FloatSetting OriginalCameraSpeed = new FloatSetting(60f, minValue: 0.1f, maxValue: 200f);
+        public IntSetting HookOrder = new IntSetting((int)HookUpdateOrder.BeforeAll);
 
         public override void Apply()
         {
             if (SceneLoader.CurrentCamera is InGameCamera)
                 ((InGameCamera)SceneLoader.CurrentCamera).ApplyGeneralSettings();
         }
+    }
+
+    public enum HookUpdateOrder
+    {
+        BeforeAll,
+        LandBeforeReleaseAfter,
+        AfterAll
     }
 
     public enum CameraInputMode
