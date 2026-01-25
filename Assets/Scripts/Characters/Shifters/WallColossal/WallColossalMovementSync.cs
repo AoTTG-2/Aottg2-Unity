@@ -16,8 +16,8 @@ namespace Characters
 
         protected override void SendCustomStream(PhotonStream stream)
         {
-            // Only sync steam state - hand health/state uses RPCs like other shifters (Annie, Eren)
             stream.SendNext((byte)_wallColossal.SteamState);
+            stream.SendNext((byte)_wallColossal.StunState);
         }
 
         protected override void ReceiveCustomStream(PhotonStream stream)
@@ -26,10 +26,19 @@ namespace Characters
             {
                 var receivedSteamState = (ColossalSteamState)stream.ReceiveNext();
                 
-                // Apply steam state if changed
                 if (_wallColossal.SteamState != receivedSteamState)
                 {
                     _wallColossal.ApplySteamState(receivedSteamState);
+                }
+            }
+            
+            if (stream.PeekNext() is byte)
+            {
+                var receivedStunState = (ColossalStunState)stream.ReceiveNext();
+                
+                if (_wallColossal.StunState != receivedStunState)
+                {
+                    _wallColossal.ApplyStunState(receivedStunState);
                 }
             }
         }

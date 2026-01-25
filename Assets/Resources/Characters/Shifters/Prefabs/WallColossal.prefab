@@ -2167,9 +2167,13 @@ MonoBehaviour:
   MaxRightHandHealth: 1000
   CurrentLeftHandHealth: 1000
   CurrentRightHandHealth: 1000
-  LeftHandRecoveryTimeLeft: 0
-  RightHandRecoveryTimeLeft: 0
-  HandRecoveryTime: 10
+  LeftHandSeverTimeLeft: 0
+  RightHandSeverTimeLeft: 0
+  HandSeverWindow: 10
+  StunDuration: 5
+  StunTimeLeft: 0
+  RecoveryDuration: 10
+  RecoveryTimeLeft: 0
   SteamBlowAwayForce: 30
   DefaultBlowAwayForce: 50
   BlowAwayMaxDistance: 60

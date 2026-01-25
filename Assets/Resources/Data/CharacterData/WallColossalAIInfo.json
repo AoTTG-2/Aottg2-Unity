@@ -5,34 +5,48 @@
 	"Default": {
 		"Name": "Colossal",
 		"Health": 1000,
-		"HandHealth": 100,
-		"WallAttackCooldown": 3.0, 
-		"IsCrawler": false,
-		"WarningSteamTime": 3.0
+		"HandHealth": 1000,
+		"WallAttackCooldown": 3.0,
+		"WarningSteamTime": 3.0,
+		"HandSeverWindow": 10.0,
+		"RecoveryDuration": 10.0,
+		"StunDuration": 3.0
 	},
 	"Training": {
-		"WallAttackCooldown": 1000.0
+		"WallAttackCooldown": 1000.0,
+		"HandHealth": 100,
+		"HandSeverWindow": 10.0,
+		"RecoveryDuration": 10.0
 	},
 	"Easy": {
 		"WallAttackCooldown": 5.0,
-		"WarningSteamTime": 4.0
+		"WarningSteamTime": 4.0,
+		"HandHealth": 500,
+		"HandSeverWindow": 15.0,
+		"RecoveryDuration": 12.0
 	},
 	"Normal": {
 		"Health": 2500,
-		"HandHealth": 800,
+		"HandHealth": 1000,
 		"WallAttackCooldown": 4.0,
-		"WarningSteamTime": 3.0
+		"WarningSteamTime": 3.0,
+		"HandSeverWindow": 10.0,
+		"RecoveryDuration": 5.0
 	},
 	"Hard": {
 		"Health": 5000,
 		"HandHealth": 1500,
 		"WallAttackCooldown": 3.0,
-		"WarningSteamTime": 2.0
+		"WarningSteamTime": 2.0,
+		"HandSeverWindow": 7.0,
+		"RecoveryDuration": 3.0
 	},
 	"Abnormal": {
 		"Health": 10000,
-		"HandHealth": 3000,
+		"HandHealth": 2000,
 		"WallAttackCooldown": 2.0,
-		"WarningSteamTime": 1.0
+		"WarningSteamTime": 1.0,
+		"HandSeverWindow": 5.0,
+		"RecoveryDuration": 2.0
 	}
 }

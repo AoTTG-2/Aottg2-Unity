@@ -14,6 +14,7 @@ namespace CustomLogic
         private readonly VisualElement _visualElement;
 
         private TextShadow _textShadow = new();
+        private readonly Dictionary<string,EventCallback<GeometryChangedEvent>> _onResize = new();
 
         public CustomLogicVisualElementBuiltin(VisualElement visualElement)
         {
@@ -393,6 +394,36 @@ namespace CustomLogic
             return this;
         }
 
+        /// <summary>
+        /// Set the height of the element.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="mode">Determines the direction of the aspect ratio. Acceptable values are: `Width` and `Height`</param>
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin AspectRatio(float value, [CLParam(Enum = new Type[] { typeof(CustomLogicAspectRatioEnum) })]int mode = 0)
+        {
+            if (!Enum.IsDefined(typeof(ElementAspectRatio), mode))
+               throw new System.Exception("Unknown aspect ratio mode");
+
+            if (_onResize.TryGetValue("AspectRatio", out var cb))
+                _visualElement.UnregisterCallback(cb);
+
+            if (value == 0)
+                return this;
+
+            EventCallback<GeometryChangedEvent> callback = (ElementAspectRatio)mode switch
+            {
+                ElementAspectRatio.Height => evt => { _visualElement.style.height = evt.newRect.width / value; },
+                ElementAspectRatio.Width => evt => { _visualElement.style.width = evt.newRect.height / value; },
+                _ => evt => {}
+            };
+
+            _onResize["AspectRatio"] = callback;
+            _visualElement.RegisterCallback(callback);
+
+            return this;
+        }
+
         #endregion
 
         #region Margin
@@ -542,15 +573,50 @@ namespace CustomLogic
             return this;
         }
 
+
+        // /// <param name="value">Acceptable values are: `Auto`, `FlexStart`, `Center`, `FlexEnd`, and `Stretch`.</param>
+        // [CLMethod]
+        // public CustomLogicVisualElementBuiltin AlignSelf([CLParam(Enum = new Type[] { typeof(CustomLogicAlignEnum) })] int value)
+        // {
+        //     if (!Enum.IsDefined(typeof(Align), value))
+
+
         /// <summary>
         /// Set the font size of the element.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <param name="percentage">If true, the `value` will be treated as percentage value.</param>
+        /// <param name="scaleMode">Determines the container dimension used for percentage calculations. Acceptable values are: `Width`, `Height`.</param>
         [CLMethod]
-        public CustomLogicVisualElementBuiltin FontSize(float value, bool percentage = false)
+        public CustomLogicVisualElementBuiltin FontSize(float value, bool percentage = false, [CLParam(Enum = new Type[] { typeof(CustomLogicFontScaleModeEnum) })] int scaleMode = 0)
         {
-            _visualElement.style.fontSize = GetLength(value, percentage);
+            if (!Enum.IsDefined(typeof(FontScaleMode), scaleMode))
+               throw new System.Exception("Unknown font scale mode");
+
+            if (_onResize.TryGetValue("FontScaleMode", out var cb))
+                _visualElement.UnregisterCallback(cb);
+
+            if (percentage)
+            {
+                EventCallback<GeometryChangedEvent> callback = evt =>
+                {
+                    float percent = value / 100f;
+                    float scale = (FontScaleMode)scaleMode switch
+                    {
+                        FontScaleMode.Height => evt.newRect.height,
+                        FontScaleMode.Width => evt.newRect.width,
+                        _ => 1
+                    };
+
+                    _visualElement.style.fontSize = scale * percent;
+                };
+                _onResize["FontScaleMode"] = callback;
+                _visualElement.RegisterCallback(callback);
+            }
+            else
+            {
+                _visualElement.style.fontSize = new Length(value);
+            }
             return this;
         }
 
