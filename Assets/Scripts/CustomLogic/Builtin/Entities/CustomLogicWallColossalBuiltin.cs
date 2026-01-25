@@ -120,6 +120,34 @@ namespace CustomLogic
         }
 
         /// <summary>
+        /// Can the left hand be damaged
+        /// </summary>
+        [CLProperty]
+        public bool CanDamageLeftHand
+        {
+            get => Shifter.CanDamageLeftHand;
+            set
+            {
+                if (Shifter.IsMine())
+                    Shifter.CanDamageLeftHand = value;
+            }
+        }
+
+        /// <summary>
+        /// Can the right hand be damaged
+        /// </summary>
+        [CLProperty]
+        public bool CanDamageRightHand
+        {
+            get => Shifter.CanDamageRightHand;
+            set
+            {
+                if (Shifter.IsMine())
+                    Shifter.CanDamageRightHand = value;
+            }
+        }
+
+        /// <summary>
         /// Colossal's left hand state.
         /// </summary>
         [CLProperty(Enum = new Type[] { typeof(CustomLogicHandStateEnum) })]

@@ -398,32 +398,29 @@ namespace CustomLogic
         /// Set the height of the element.
         /// </summary>
         /// <param name="value">The value.</param>
-        /// <param name="mode">Determines the direction of the aspect ratio.</param>
+        /// <param name="mode">Determines the direction of the aspect ratio. Acceptable values are: `Width` and `Height`</param>
         [CLMethod]
-        public CustomLogicVisualElementBuiltin AspectRatio(float value, string mode = "Width")
+        public CustomLogicVisualElementBuiltin AspectRatio(float value, [CLParam(Enum = new Type[] { typeof(CustomLogicAspectRatioEnum) })]int mode = 0)
         {
-            if (_onResize.TryGetValue("AspectRatio", out var evt))
-                _visualElement.UnregisterCallback(evt);
+            if (!Enum.IsDefined(typeof(ElementAspectRatio), mode))
+               throw new System.Exception("Unknown aspect ratio mode");
+
+            if (_onResize.TryGetValue("AspectRatio", out var cb))
+                _visualElement.UnregisterCallback(cb);
 
             if (value == 0)
                 return this;
 
-            if (mode != "Height" && mode != "Width") // need to convert to enum
-               throw new System.Exception("Unknown aspect ratio mode");
-
-            _visualElement.RegisterCallback<GeometryChangedEvent>(evt =>
+            EventCallback<GeometryChangedEvent> callback = (ElementAspectRatio)mode switch
             {
-                if (mode == "Height")
-                {
-                    float width = evt.newRect.width;
-                    _visualElement.style.height = width / value;
-                }
-                else if (mode == "Width")
-                {
-                    float height = evt.newRect.height;
-                    _visualElement.style.width = height / value;
-                }
-            });
+                ElementAspectRatio.Height => evt => { _visualElement.style.height = evt.newRect.width / value; },
+                ElementAspectRatio.Width => evt => { _visualElement.style.width = evt.newRect.height / value; },
+                _ => evt => {}
+            };
+
+            _onResize["AspectRatio"] = callback;
+            _visualElement.RegisterCallback(callback);
+
             return this;
         }
 
@@ -576,35 +573,45 @@ namespace CustomLogic
             return this;
         }
 
+
+        // /// <param name="value">Acceptable values are: `Auto`, `FlexStart`, `Center`, `FlexEnd`, and `Stretch`.</param>
+        // [CLMethod]
+        // public CustomLogicVisualElementBuiltin AlignSelf([CLParam(Enum = new Type[] { typeof(CustomLogicAlignEnum) })] int value)
+        // {
+        //     if (!Enum.IsDefined(typeof(Align), value))
+
+
         /// <summary>
         /// Set the font size of the element.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <param name="percentage">If true, the `value` will be treated as percentage value.</param>
-        /// <param name="scaleMode">Determines the container dimension used for percentage calculations.</param>
+        /// <param name="scaleMode">Determines the container dimension used for percentage calculations. Acceptable values are: `Width`, `Height`.</param>
         [CLMethod]
-        public CustomLogicVisualElementBuiltin FontSize(float value, bool percentage = false, string scaleMode = "Height")
+        public CustomLogicVisualElementBuiltin FontSize(float value, bool percentage = false, [CLParam(Enum = new Type[] { typeof(CustomLogicFontScaleModeEnum) })] int scaleMode = 0)
         {
-            if (_onResize.TryGetValue("FontScale", out var evt))
-                _visualElement.UnregisterCallback(evt);
-
-            if (scaleMode != "Height" && scaleMode != "Width") // need to convert to enum
+            if (!Enum.IsDefined(typeof(FontScaleMode), scaleMode))
                throw new System.Exception("Unknown font scale mode");
+
+            if (_onResize.TryGetValue("FontScaleMode", out var cb))
+                _visualElement.UnregisterCallback(cb);
 
             if (percentage)
             {
-                _visualElement.RegisterCallback<GeometryChangedEvent>(evt =>
+                EventCallback<GeometryChangedEvent> callback = evt =>
                 {
                     float percent = value / 100f;
-                    float scale = scaleMode switch
+                    float scale = (FontScaleMode)scaleMode switch
                     {
-                        "Height" => evt.newRect.height,
-                        "Width" => evt.newRect.width,
+                        FontScaleMode.Height => evt.newRect.height,
+                        FontScaleMode.Width => evt.newRect.width,
                         _ => 1
                     };
 
                     _visualElement.style.fontSize = scale * percent;
-                });
+                };
+                _onResize["FontScaleMode"] = callback;
+                _visualElement.RegisterCallback(callback);
             }
             else
             {

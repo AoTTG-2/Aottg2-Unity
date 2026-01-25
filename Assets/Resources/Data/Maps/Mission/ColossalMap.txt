@@ -1113,11 +1113,10 @@ class Main
 {
 	MaxTitans = 20;
 	MaxTitansTooltip = "Max number of titans to spawn at gate.";
-	TitanSpawnTime = 5.0;
-	TitanSpawnTimeTooltip = "Time between each titan spawn.";
 	CiviliansHealth = 1000;
 	_hasSpawned = false;
 	_hasSpawnedEnemy = false;
+	_titanSpawnTime = 10.0;
 	_titanSpawnTimeLeft = 10.0;
 	_colossal = null;
 	_handMode = false;
@@ -1136,25 +1135,30 @@ class Main
 	{
 		Game.SetPlaylist("Battle");
 		self._difficulty = Game.GetGeneralSetting("Difficulty");
-		if (self._difficulty == 0)
+		if (self._difficulty == 0) # Training
 		{
 			self._handCooldown = 1000.0;
+			self._titanSpawnTime = 99999;
 		}
-		elif (self._difficulty == 1)
+		elif (self._difficulty == 1) # Easy
 		{
 			self._handCooldown = 10.0;
+			self._titanSpawnTime = 15.0;
 		}
-		elif (self._difficulty == 2)
+		elif (self._difficulty == 2) # Normal
 		{
 			self._handCooldown = 7.0;
+			self._titanSpawnTime = 11.5;
 		}
-		elif (self._difficulty == 3)
+		elif (self._difficulty == 3) # Hard
 		{
 			self._handCooldown = 5.5;
+			self._titanSpawnTime = 8.0;
 		}
-		elif (self._difficulty == 4)
+		elif (self._difficulty == 4) # Abnormal
 		{
 			self._handCooldown = 4.0;
+			self._titanSpawnTime = 7.0;
 		}
 		self._bossHealthBar = BossHealthBar("Colossal Titan", 1000.0, "Top", true);
 		self._wallGateStart = Map.FindMapObjectByName("WallGateStart");
@@ -1209,10 +1213,12 @@ class Main
 	{
 		spawnPosition = Vector3(0, 8, 755);
 		startRotation = Vector3(0, 180, 0);
-		Game.SpawnEffect("ColossalSpawn", Vector3(0, 150, 765), Vector3(-90, 0, 0), 5.0);
+		Game.SpawnEffect(EffectNameEnum.ColossalSpawn, Vector3(0, 150, 765), Vector3(-90, 0, 0), 5.0);
 		wait 2.5;
-		colossal = Game.SpawnShifterAt("WallColossal", spawnPosition, -180);
+		colossal = Game.SpawnShifterAt(ShifterTypeEnum.WallColossal, spawnPosition, -180);
 		colossal.Size = 0.945;
+		colossal.CanDamageLeftHand = false;
+		colossal.CanDamageRightHand = false;
 		rb = colossal.Rigidbody;
 		rb.FreezeAllPositions = true;
 		rb.FreezeAllRotations = true;
@@ -1226,9 +1232,11 @@ class Main
 		position = Vector3(0, 50, 650);
 		velocity = Vector3(0, 200, -200);
 		gravity = Vector3(0, -9000, 0);
-		Game.SpawnUnscaledEffect("ColossalKick", position, Vector3(0,180,0));
-		Game.SpawnProjectile("Rock2", position, Vector3.Zero, velocity, gravity, 10000, "Titan", 15.0);
+		Game.SpawnUnscaledEffect(EffectNameEnum.ColossalKick, position, Vector3(0,180,0));
+		Game.SpawnProjectile(ProjectileNameEnum.Rock2, position, Vector3.Zero, velocity, gravity, 10000, TeamEnum.Titan, 15.0);
 		wait 3.5;
+		colossal.CanDamageLeftHand = true;
+		colossal.CanDamageRightHand = true;
 		if (self._hasSpawned)
 		{
 			colossal.WallAttackCooldownLeft = self._startAttackCooldown;
@@ -1323,9 +1331,9 @@ class Main
 						}
 					}
 				}
-				if (self._difficulty > 0 && self._titanSpawnTimeLeft <= 0 && titans < self.MaxTitans && self._colossal != null)
+				if (self._difficulty > 0 && self._titanSpawnTimeLeft <= 0 && titans < self.MaxTitans && aiShifters > 0)
 				{
-					self._titanSpawnTimeLeft = self.TitanSpawnTime;
+					self._titanSpawnTimeLeft = self._titanSpawnTime;
 					self.SpawnTitan();
 				}
 
@@ -1350,7 +1358,21 @@ class Main
 
 	function SpawnTitan()
 	{
-		titan = Game.SpawnTitan("Default");
+		type = TitanTypeEnum.Normal;
+		if (Random.RandomInt(0, 10) > 2)
+		{
+			if (Random.RandomInt(0, 5-self._difficulty) == 0)
+			{
+				list = List(TitanTypeEnum.Punk,TitanTypeEnum.Jumper,TitanTypeEnum.Thrower).Randomize();
+				type = list.Get(0);
+			}
+			else
+			{
+				type = TitanTypeEnum.Abnormal;
+			}
+		}
+
+		titan = Game.SpawnTitan(type);
 		titan.Rotation = Vector3(0, 180, 0);
 		titan.MoveTo(Vector3(0, 0, 400), 20, false);
 		titan.UsePathfinding = true;
@@ -1442,7 +1464,7 @@ component Civilians
 
 	function Init()
 	{
-		self.MapObject.AddBoxCollider("Region", "Titans", Vector3(), self.MapObject.Scale);
+		self.MapObject.AddBoxCollider(CollideModeEnum.Region, CollideWithEnum.Titans, Vector3(), self.MapObject.Scale);
 	}
 
 	function OnGameStart()
@@ -1452,10 +1474,10 @@ component Civilians
 
 	function OnGetHit(character, name, damage, type, position)
 	{
-		if (character.Type == "Titan" && Network.IsMasterClient)
+		if (character.Type == CharacterTypeEnum.Titan && Network.IsMasterClient)
 		{
 			Game.ShowKillFeedAll(name, "Civilians", damage, type);
-			Game.SpawnEffect("Blood2", position, Vector3(), 5.0);
+			Game.SpawnEffect(EffectNameEnum.Blood2, position, Vector3(), 5.0);
 
 			if (!Game.IsEnding)
 			{
@@ -1479,7 +1501,7 @@ component Civilians
 
 	function OnCollisionStay(obj)
 	{
-		if (obj.Type == "Titan" && !Game.IsEnding)
+		if (obj.Type == CharacterTypeEnum.Titan && !Game.IsEnding)
 		{
 			UI.SetLabelForTime(UILabelEnum.MiddleCenter, "<size=30><color=red><b>The civilians are under attack!</b></color></size>", 0.5);
 		}
@@ -1516,7 +1538,7 @@ component TitanWarning
 {
 	function OnCollisionStay(obj)
 	{
-		if (obj.Type == "Titan" && !Game.IsEnding)
+		if (obj.Type == CharacterTypeEnum.Titan && !Game.IsEnding)
 		{
 			text = "<color=#A8FF24><size=30><b>The titans are approaching the north gate!</b></size></color>" + String.Newline + String.Newline + String.Newline + String.Newline + String.Newline + String.Newline;
 			UI.SetLabelForTime(UILabelEnum.BottomCenter, text, 0.1);
@@ -1553,7 +1575,7 @@ class BossHealthBar
     _leftHandRecoveringIcon = null;
     _leftHandHealth = 100.0;
     _leftHandMaxHealth = 100.0;
-    _leftHandState = "Healthy";
+    _leftHandState = HandStateEnum.Healthy;
 
     # Right hand health bars and icons
     _rightHandContainer = null;
@@ -1564,7 +1586,7 @@ class BossHealthBar
     _rightHandRecoveringIcon = null;
     _rightHandHealth = 100.0;
     _rightHandMaxHealth = 100.0;
-    _rightHandState = "Healthy";
+    _rightHandState = HandStateEnum.Healthy;
 
     # Icon paths for hand states
     _leftHandHealthyIconPath = "Icons/Game/HealthyRightHandIcon";
@@ -1656,7 +1678,7 @@ class BossHealthBar
 
         self._nameLabel = UI.Label(self._bossName)
             .Height(55,true)
-            .FontSize(70, true)
+            .FontSize(70, true, FontScaleModeEnum.Height)
             .FontStyle(FontStyleEnum.Bold)
             .Color(Color(255, 255, 255))
             .AlignSelf(AlignEnum.Center);
@@ -1673,7 +1695,7 @@ class BossHealthBar
         self._healthLabel = UI.Label(self.GetHealthText())
             .Absolute(true)
             .Height(100,true)
-            .FontSize(75, true)
+            .FontSize(75, true, FontScaleModeEnum.Height)
             .FontStyle(FontStyleEnum.Bold)
             .Padding(0,true)
             .Margin(0,true)
@@ -1701,7 +1723,7 @@ class BossHealthBar
             .Width(100, true);
 
         self._nameLabel = UI.Label(self._bossName)
-            .FontSize(65, true)
+            .FontSize(65, true, FontScaleModeEnum.Height)
             .FontStyle(FontStyleEnum.Bold)
             .Color(Color(255, 255, 255))
             .FlexShrink(0)
@@ -1715,7 +1737,7 @@ class BossHealthBar
         self.CreateHealthBar();
 
         self._healthLabel = UI.Label(self.GetHealthText())
-            .FontSize(50, true)
+            .FontSize(50, true, FontScaleModeEnum.Height)
             .FontStyle(FontStyleEnum.Bold)
             .Color(Color(255, 255, 255))
             .AlignSelf(AlignEnum.Center)
@@ -1733,7 +1755,7 @@ class BossHealthBar
     function CreateVerticalHandBar(isLeftHand)
     {
         container = UI.VisualElement()
-            .AspectRatio(1,"Width")
+            .AspectRatio(1.0)
             .Height(100, true)
             .FlexDirection(FlexDirectionEnum.Column)
             .AlignItems(AlignEnum.Center)
@@ -1974,19 +1996,19 @@ class BossHealthBar
         self._leftHandSeveredIcon.Active(false);
         self._leftHandRecoveringIcon.Active(false);
 
-        if (self._leftHandState == "Healthy")
+        if (self._leftHandState == HandStateEnum.Healthy)
         {
             self._leftHandHealthyIcon.Active(true);
         }
-        elif (self._leftHandState == "Damaged")
+        elif (self._leftHandState == HandStateEnum.Damaged)
         {
             self._leftHandDamagedIcon.Active(true);
         }
-        elif (self._leftHandState == "Severed")
+        elif (self._leftHandState == HandStateEnum.Severed)
         {
             self._leftHandSeveredIcon.Active(true);
         }
-        elif (self._leftHandState == "Recovering")
+        elif (self._leftHandState == HandStateEnum.Recovering)
         {
             self._leftHandRecoveringIcon.Active(true);
         }
@@ -2008,19 +2030,19 @@ class BossHealthBar
         self._rightHandSeveredIcon.Active(false);
         self._rightHandRecoveringIcon.Active(false);
 
-        if (self._rightHandState == "Healthy")
+        if (self._rightHandState == HandStateEnum.Healthy)
         {
             self._rightHandHealthyIcon.Active(true);
         }
-        elif (self._rightHandState == "Damaged")
+        elif (self._rightHandState == HandStateEnum.Damaged)
         {
             self._rightHandDamagedIcon.Active(true);
         }
-        elif (self._rightHandState == "Severed")
+        elif (self._rightHandState == HandStateEnum.Severed)
         {
             self._rightHandSeveredIcon.Active(true);
         }
-        elif (self._rightHandState == "Recovering")
+        elif (self._rightHandState == HandStateEnum.Recovering)
         {
             self._rightHandRecoveringIcon.Active(true);
         }
@@ -2212,8 +2234,8 @@ class BossHealthBar
         self._currentHealth = self._maxHealth;
         self._leftHandHealth = self._leftHandMaxHealth;
         self._rightHandHealth = self._rightHandMaxHealth;
-        self._leftHandState = "Healthy";
-        self._rightHandState = "Healthy";
+        self._leftHandState = HandStateEnum.Healthy;
+        self._rightHandState = HandStateEnum.Healthy;
         self.UpdateHealthBar();
     }
 
