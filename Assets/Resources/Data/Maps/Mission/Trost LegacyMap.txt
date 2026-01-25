@@ -661,7 +661,7 @@ class Main
         self._start_scale = self._theRock.Scale.X;
 
         # Initialize UI elements
-        self._bossHealthBar = SimpleBossHealthBar("Eren Titan", 100.0, false);
+        self._bossHealthBar = SimpleBossHealthBar("Eren", 100.0, false);
         self._damageWarning = TextWarning(20, "Eren is under attack!", "Icons/Quests/Skull2Icon", Color(255, 100, 0));
 
         difficulty = Game.GetGeneralSetting("Difficulty");
