@@ -89,6 +89,10 @@ namespace ApplicationManagers
             if (ApplicationConfig.DevelopmentMode)
                 DebugTesting.RunLateTests();
             DiscordManager.Init();
+            if (SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.Null || Application.isBatchMode)
+            {
+                HeadlessManager.Init();
+            }
         }
     }
 }
