@@ -19,6 +19,7 @@ namespace UI
         protected override TextAnchor PanelAlignment => TextAnchor.MiddleCenter;
         protected StringSetting _enteredPassword = new StringSetting(string.Empty);
         protected string _actualPasswordHash;
+        protected string _passwordSalt;
         protected string _roomName;
         protected string _roomId;
         protected GameObject _incorrectPasswordLabel;
@@ -39,9 +40,10 @@ namespace UI
             _incorrectPasswordLabel.GetComponent<Text>().color = Color.red;
         }
 
-        public void Show(string actualPasswordHash, string roomId, string roomName)
+        public void Show(string actualPasswordHash, string passwordSalt, string roomId, string roomName)
         {
             _actualPasswordHash = actualPasswordHash;
+            _passwordSalt = passwordSalt;
             _roomName = roomName;
             _roomId = roomId;
             _incorrectPasswordLabel.SetActive(false);
@@ -54,7 +56,7 @@ namespace UI
             {
                 try
                 {
-                    if (Util.CreateMD5(_enteredPassword.Value) == _actualPasswordHash)
+                    if (Util.CreatePBKDF2(_enteredPassword.Value, _passwordSalt) == _actualPasswordHash)
                     {
                         SettingsManager.MultiplayerSettings.JoinRoom(_roomId, _roomName, _enteredPassword.Value);
                         Hide();
