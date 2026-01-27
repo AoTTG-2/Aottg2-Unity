@@ -2999,11 +2999,226 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Armature_VER2|STRETCH
-      takeName: Armature_VER2|STRETCH
-      internalID: 0
+      name: Armature_VER2|ColossalWalk1
+      takeName: Armature_VER2|ColossalWalk1
+      internalID: 8627162985690932359
       firstFrame: 0
-      lastFrame: 40
+      lastFrame: 120
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature_VER2
+        weight: 1
+      - path: Armature_VER2/Core
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/abs
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/abs/abs_end
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/breast.L
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/breast.L/breast.L_end
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/breast.R
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/breast.R/breast.R_end
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/neck
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/neck/head
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/neck/head/Bone
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/neck/head/Bone/Bone_end
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_L
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_L/upper_arm_L
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_L/upper_arm_L/forearm_L
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_L/upper_arm_L/forearm_L/hand_L
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_001.L
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_001.L/hand_L_001.001.L
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_001.L/hand_L_001.001.L/hand_L_001.002.L
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_001.L/hand_L_001.001.L/hand_L_001.002.L/hand_L_001.002.L_end
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_004.L
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_004.L/hand_L_004.001.L
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_004.L/hand_L_004.001.L/hand_L_004.002.L
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_004.L/hand_L_004.001.L/hand_L_004.002.L/hand_L_004.002.L_end
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_007.L
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_007.L/hand_L_007.001.L
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_007.L/hand_L_007.001.L/hand_L_007.002.L
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_007.L/hand_L_007.001.L/hand_L_007.002.L/hand_L_007.002.L_end
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_011.L
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_011.L/hand_L_011.001.L
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_011.L/hand_L_011.001.L/hand_L_011.002.L
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_011.L/hand_L_011.001.L/hand_L_011.002.L/hand_L_011.002.L_end
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_013.L
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_013.L/hand_L_013.001.L
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_013.L/hand_L_013.001.L/hand_L_013.002.L
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_013.L/hand_L_013.001.L/hand_L_013.002.L/hand_L_013.002.L_end
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_R
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_R/upper_arm_R
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_R/upper_arm_R/forearm_R
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_R/upper_arm_R/forearm_R/hand_R
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_L_001.R
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_L_001.R/hand_L_001.001.R
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_L_001.R/hand_L_001.001.R/hand_L_001.002.R
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_L_001.R/hand_L_001.001.R/hand_L_001.002.R/hand_L_001.002.R_end
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_L_004.R
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_L_004.R/hand_L_004.001.R
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_L_004.R/hand_L_004.001.R/hand_L_004.002.R
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_L_004.R/hand_L_004.001.R/hand_L_004.002.R/hand_L_004.002.R_end
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_L_007.R
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_L_007.R/hand_L_007.001.R
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_L_007.R/hand_L_007.001.R/hand_L_007.002.R
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_L_007.R/hand_L_007.001.R/hand_L_007.002.R/hand_L_007.002.R_end
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_L_011.R
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_L_011.R/hand_L_011.001.R
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_L_011.R/hand_L_011.001.R/hand_L_011.002.R
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_L_011.R/hand_L_011.001.R/hand_L_011.002.R/hand_L_011.002.R_end
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_L_013.R
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_L_013.R/hand_L_013.001.R
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_L_013.R/hand_L_013.001.R/hand_L_013.002.R
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_L_013.R/hand_L_013.001.R/hand_L_013.002.R/hand_L_013.002.R_end
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/thigh_L
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/thigh_L/shin_L
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/thigh_L/shin_L/foot_L
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/thigh_L/shin_L/foot_L/toe.L
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/thigh_L/shin_L/foot_L/toe.L/toe.L_end
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/thigh_R
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/thigh_R/shin_R
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/thigh_R/shin_R/foot_R
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/thigh_R/shin_R/foot_R/toe.R
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/thigh_R/shin_R/foot_R/toe.R/toe.R_end
+        weight: 1
+      - path: Armature_VER2/Core/IK.L
+        weight: 1
+      - path: Armature_VER2/Core/IK.L/knee.L
+        weight: 1
+      - path: Armature_VER2/Core/IK.L/knee.L/knee.L_end
+        weight: 1
+      - path: Armature_VER2/Core/IK.R
+        weight: 1
+      - path: Armature_VER2/Core/IK.R/knee.R
+        weight: 1
+      - path: Armature_VER2/Core/IK.R/knee.R/knee.R_end
+        weight: 1
+      - path: Armature_VER2/Core/IK_hand_L
+        weight: 1
+      - path: Armature_VER2/Core/IK_hand_L/IK_Elbow_L
+        weight: 1
+      - path: Armature_VER2/Core/IK_hand_L/IK_Elbow_L/IK_Elbow_L_end
+        weight: 1
+      - path: Armature_VER2/Core/IK_hand_L/IK_stable_L
+        weight: 1
+      - path: Armature_VER2/Core/IK_hand_L/IK_stable_L/IK_stable_L_end
+        weight: 1
+      - path: Armature_VER2/Core/IK_hand_R
+        weight: 1
+      - path: Armature_VER2/Core/IK_hand_R/IK_Elbow_R
+        weight: 1
+      - path: Armature_VER2/Core/IK_hand_R/IK_Elbow_R/IK_Elbow_R_end
+        weight: 1
+      - path: Armature_VER2/Core/IK_hand_R/IK_stable_R
+        weight: 1
+      - path: Armature_VER2/Core/IK_hand_R/IK_stable_R/IK_stable_R_end
+        weight: 1
+      - path: Colossal_VER2
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Armature_VER2|wall_colossal_stun
+      takeName: Armature_VER2|wall_colossal_stun
+      internalID: -3119721303527943678
+      firstFrame: 0
+      lastFrame: 174
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -3210,7 +3425,222 @@ ModelImporter:
         weight: 1
       - path: Colossal_VER2
         weight: 1
-      maskType: 0
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Armature_VER2|WallSlam1
+      takeName: Armature_VER2|WallSlam1
+      internalID: 4336490470826763671
+      firstFrame: 0
+      lastFrame: 80
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature_VER2
+        weight: 1
+      - path: Armature_VER2/Core
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/abs
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/abs/abs_end
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/breast.L
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/breast.L/breast.L_end
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/breast.R
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/breast.R/breast.R_end
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/neck
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/neck/head
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/neck/head/Bone
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/neck/head/Bone/Bone_end
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_L
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_L/upper_arm_L
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_L/upper_arm_L/forearm_L
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_L/upper_arm_L/forearm_L/hand_L
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_001.L
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_001.L/hand_L_001.001.L
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_001.L/hand_L_001.001.L/hand_L_001.002.L
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_001.L/hand_L_001.001.L/hand_L_001.002.L/hand_L_001.002.L_end
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_004.L
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_004.L/hand_L_004.001.L
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_004.L/hand_L_004.001.L/hand_L_004.002.L
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_004.L/hand_L_004.001.L/hand_L_004.002.L/hand_L_004.002.L_end
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_007.L
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_007.L/hand_L_007.001.L
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_007.L/hand_L_007.001.L/hand_L_007.002.L
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_007.L/hand_L_007.001.L/hand_L_007.002.L/hand_L_007.002.L_end
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_011.L
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_011.L/hand_L_011.001.L
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_011.L/hand_L_011.001.L/hand_L_011.002.L
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_011.L/hand_L_011.001.L/hand_L_011.002.L/hand_L_011.002.L_end
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_013.L
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_013.L/hand_L_013.001.L
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_013.L/hand_L_013.001.L/hand_L_013.002.L
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_013.L/hand_L_013.001.L/hand_L_013.002.L/hand_L_013.002.L_end
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_R
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_R/upper_arm_R
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_R/upper_arm_R/forearm_R
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_R/upper_arm_R/forearm_R/hand_R
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_L_001.R
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_L_001.R/hand_L_001.001.R
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_L_001.R/hand_L_001.001.R/hand_L_001.002.R
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_L_001.R/hand_L_001.001.R/hand_L_001.002.R/hand_L_001.002.R_end
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_L_004.R
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_L_004.R/hand_L_004.001.R
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_L_004.R/hand_L_004.001.R/hand_L_004.002.R
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_L_004.R/hand_L_004.001.R/hand_L_004.002.R/hand_L_004.002.R_end
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_L_007.R
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_L_007.R/hand_L_007.001.R
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_L_007.R/hand_L_007.001.R/hand_L_007.002.R
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_L_007.R/hand_L_007.001.R/hand_L_007.002.R/hand_L_007.002.R_end
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_L_011.R
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_L_011.R/hand_L_011.001.R
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_L_011.R/hand_L_011.001.R/hand_L_011.002.R
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_L_011.R/hand_L_011.001.R/hand_L_011.002.R/hand_L_011.002.R_end
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_L_013.R
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_L_013.R/hand_L_013.001.R
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_L_013.R/hand_L_013.001.R/hand_L_013.002.R
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/spine/chest/upperchest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_L_013.R/hand_L_013.001.R/hand_L_013.002.R/hand_L_013.002.R_end
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/thigh_L
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/thigh_L/shin_L
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/thigh_L/shin_L/foot_L
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/thigh_L/shin_L/foot_L/toe.L
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/thigh_L/shin_L/foot_L/toe.L/toe.L_end
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/thigh_R
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/thigh_R/shin_R
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/thigh_R/shin_R/foot_R
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/thigh_R/shin_R/foot_R/toe.R
+        weight: 1
+      - path: Armature_VER2/Core/Controller_Body/hip/thigh_R/shin_R/foot_R/toe.R/toe.R_end
+        weight: 1
+      - path: Armature_VER2/Core/IK.L
+        weight: 1
+      - path: Armature_VER2/Core/IK.L/knee.L
+        weight: 1
+      - path: Armature_VER2/Core/IK.L/knee.L/knee.L_end
+        weight: 1
+      - path: Armature_VER2/Core/IK.R
+        weight: 1
+      - path: Armature_VER2/Core/IK.R/knee.R
+        weight: 1
+      - path: Armature_VER2/Core/IK.R/knee.R/knee.R_end
+        weight: 1
+      - path: Armature_VER2/Core/IK_hand_L
+        weight: 1
+      - path: Armature_VER2/Core/IK_hand_L/IK_Elbow_L
+        weight: 1
+      - path: Armature_VER2/Core/IK_hand_L/IK_Elbow_L/IK_Elbow_L_end
+        weight: 1
+      - path: Armature_VER2/Core/IK_hand_L/IK_stable_L
+        weight: 1
+      - path: Armature_VER2/Core/IK_hand_L/IK_stable_L/IK_stable_L_end
+        weight: 1
+      - path: Armature_VER2/Core/IK_hand_R
+        weight: 1
+      - path: Armature_VER2/Core/IK_hand_R/IK_Elbow_R
+        weight: 1
+      - path: Armature_VER2/Core/IK_hand_R/IK_Elbow_R/IK_Elbow_R_end
+        weight: 1
+      - path: Armature_VER2/Core/IK_hand_R/IK_stable_R
+        weight: 1
+      - path: Armature_VER2/Core/IK_hand_R/IK_stable_R/IK_stable_R_end
+        weight: 1
+      - path: Colossal_VER2
+        weight: 1
+      maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     isReadable: 1

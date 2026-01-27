@@ -2167,6 +2167,8 @@ MonoBehaviour:
   MaxRightHandHealth: 1000
   CurrentLeftHandHealth: 1000
   CurrentRightHandHealth: 1000
+  CanDamageLeftHand: 1
+  CanDamageRightHand: 1
   LeftHandSeverTimeLeft: 0
   RightHandSeverTimeLeft: 0
   HandSeverWindow: 10
