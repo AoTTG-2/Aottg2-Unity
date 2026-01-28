@@ -52,7 +52,7 @@ component InteractActionTrigger
 
     function OnFrame()
     {
-        if (self._currentHuman != null && Input.GetKeyDown(InputCategoryEnum.Interaction + self.Key))
+        if (self._currentHuman != null && Input.GetKeyDown(InputCategoryEnum.Interaction + "/" + self.Key))
         {
             if (self._actionHandler != null)
             {
