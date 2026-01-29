@@ -227,7 +227,7 @@ namespace Characters
             
             float animationLength = Animation.GetTotalTime(ColossalAnimations.StunFallFaceAnim);
             StunTimeLeft = Mathf.Max(StunDuration, animationLength);
-            _stunAnimationTimeLeft = animationLength;
+            _stunAnimationTimeLeft = animationLength * 0.85f;
             
             if (IsMine())
             {
