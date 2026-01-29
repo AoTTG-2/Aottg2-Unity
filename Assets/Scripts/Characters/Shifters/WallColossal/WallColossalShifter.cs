@@ -27,8 +27,11 @@ namespace Characters
         protected WallColossalAnimations ColossalAnimations;
         protected float _steamTimeLeft;
         protected float _steamBlowAwayTimeLeft;
+        protected float _steamDamageTimeLeft;
         protected ColossalSteamState _steamState;
         public float WarningSteamTime = 3f;
+        public float SteamDamageInterval = 0.1f;
+        public int SteamDamagePerSecond = 100;
         protected override float SizeMultiplier => 22f;
 
         public int MaxLeftHandHealth = 1000;
@@ -48,6 +51,7 @@ namespace Characters
 
         public float StunDuration = 3f;
         public float StunTimeLeft = 0f;
+        protected float _stunAnimationTimeLeft = 0f;
 
         public float RecoveryDuration = 10f;
         public float RecoveryTimeLeft = 0f;
@@ -220,7 +224,11 @@ namespace Characters
 
             //DebugConsole.Log($"[WallColossal] Stun State: None -> Stunned (Duration: {StunDuration}s)", false);
             StopSteam();
-            StunTimeLeft = StunDuration;
+            
+            float animationLength = Animation.GetTotalTime(ColossalAnimations.StunFallFaceAnim);
+            StunTimeLeft = Mathf.Max(StunDuration, animationLength);
+            _stunAnimationTimeLeft = animationLength * 0.85f;
+            
             if (IsMine())
             {
                 photonView.RPC(nameof(SetStunStateRPC), RpcTarget.All, new object[] { (byte)ColossalStunState.Stunned });
@@ -488,11 +496,15 @@ namespace Characters
             switch (newState)
             {
                 case ColossalStunState.None:
+                    if (oldState == ColossalStunState.Stunned || oldState == ColossalStunState.Recovering)
+                    {
+                        SetAnimationSpeed(ColossalAnimations.StunFallFaceAnim, 1f);
+                    }
                     break;
 
                 case ColossalStunState.Stunned:
-                    // TODO: Play stun animation when available
-                    // StateAction(TitanState.Stun, ColossalAnimations.Stun);
+                    PlayAnimation(ColossalAnimations.StunFallFaceAnim, 0f);
+                    SetAnimationSpeed(ColossalAnimations.StunFallFaceAnim, 1f);
                     break;
 
                 case ColossalStunState.Recovering:
@@ -531,6 +543,7 @@ namespace Characters
             UpdateSteam();
             UpdateHandSeverWindows();
             UpdateStunRecovery();
+            UpdateStunAnimation();
         }
 
         protected void ToggleParticleSystem(ParticleSystem system, bool enabled)
@@ -559,6 +572,7 @@ namespace Characters
         {
             _steamTimeLeft = WarningSteamTime;
             _steamBlowAwayTimeLeft = BlowAwaySteamTime;
+            _steamDamageTimeLeft = SteamDamageInterval;
 
             if (IsMine())
             {
@@ -573,11 +587,18 @@ namespace Characters
 
             _steamTimeLeft -= Time.deltaTime;
             _steamBlowAwayTimeLeft -= Time.deltaTime;
+            _steamDamageTimeLeft -= Time.deltaTime;
 
             if (_steamBlowAwayTimeLeft <= 0f)
             {
                 // BlowAwayHumans(ColossalCache.NapeHurtbox.transform.position, SteamBlowAwayForce);
                 _steamBlowAwayTimeLeft = BlowAwaySteamTime;
+            }
+
+            if (_steamState == ColossalSteamState.Damage && _steamDamageTimeLeft <= 0f)
+            {
+                ApplySteamDamageToHumans();
+                _steamDamageTimeLeft = SteamDamageInterval;
             }
 
             if (_steamTimeLeft <= 0f && _steamState == ColossalSteamState.Warning)
@@ -656,6 +677,20 @@ namespace Characters
                     photonView.RPC(nameof(SetRightHandStateRPC), RpcTarget.All, new object[] { (byte)ColossalHandState.Healthy });
                     LeftHandSeverTimeLeft = 0f;
                     RightHandSeverTimeLeft = 0f;
+                }
+            }
+        }
+
+        protected void UpdateStunAnimation()
+        {
+            if (_stunState == ColossalStunState.Stunned && _stunAnimationTimeLeft > 0f)
+            {
+                _stunAnimationTimeLeft -= Time.deltaTime;
+                
+                if (_stunAnimationTimeLeft <= 0f)
+                {
+                    SetAnimationSpeed(ColossalAnimations.StunFallFaceAnim, 0f);
+                    _stunAnimationTimeLeft = 0f;
                 }
             }
         }
@@ -740,6 +775,27 @@ namespace Characters
             {
                 if (Vector3.Distance(human.Cache.Transform.position, source) < BlowAwayMaxDistance)
                     human.BlowAway(source, force, BlowAwayMaxDistance);
+            }
+        }
+
+        protected void ApplySteamDamageToHumans()
+        {
+            if (!IsMine() || ColossalCache?.SteamHitbox == null)
+                return;
+
+            Vector3 steamCenter = ColossalCache.NapeHurtbox.transform.position;
+            float steamRadius = BlowAwayMaxDistance;
+
+            foreach (var human in _inGameManager.Humans)
+            {
+                if (human.Dead)
+                    continue;
+
+                float distance = Vector3.Distance(human.Cache.Transform.position, steamCenter);
+                if (distance < steamRadius)
+                {
+                    human.GetHit(Name, SteamDamagePerSecond, "colossal", "steam");
+                }
             }
         }
 

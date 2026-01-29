@@ -344,7 +344,7 @@ Transform:
   m_GameObject: {fileID: 4417934651504078843}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -1, z: -0.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -369,8 +369,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 90, y: 40, z: 20}
-  m_Center: {x: 0, y: -10, z: -25}
+  m_Size: {x: 90, y: 40, z: 28}
+  m_Center: {x: 0, y: -18.6, z: -25}
 --- !u!1 &5500324693852859881
 GameObject:
   m_ObjectHideFlags: 0
@@ -424,6 +424,59 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 50, y: 70, z: 40}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &6232505152878630892
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7745120739025395095}
+  - component: {fileID: 8986816374315617709}
+  m_Layer: 12
+  m_Name: breastanglepushbox
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7745120739025395095
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6232505152878630892}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.3405961, y: 1.8118842e-13, z: -3.552159e-13, w: 0.9402097}
+  m_LocalPosition: {x: 0, y: -2.6, z: -1.4}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5719381906268660681}
+  m_LocalEulerAnglesHint: {x: 39.826, y: 0, z: 0}
+--- !u!65 &8986816374315617709
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6232505152878630892}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 90, y: 26.47, z: 15}
+  m_Center: {x: 0, y: -9, z: -24}
 --- !u!1 &6320213155287837688
 GameObject:
   m_ObjectHideFlags: 0
@@ -1302,6 +1355,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 12
       objectReference: {fileID: 0}
+    - target: {fileID: 100184, guid: 820e0d72f75c9b2479564c9073bc1bfb, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 400034, guid: 820e0d72f75c9b2479564c9073bc1bfb, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
@@ -1384,6 +1441,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 400184, guid: 820e0d72f75c9b2479564c9073bc1bfb, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7500362666038460278}
+    - targetCorrespondingSourceObject: {fileID: 400184, guid: 820e0d72f75c9b2479564c9073bc1bfb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7745120739025395095}
     - targetCorrespondingSourceObject: {fileID: 400184, guid: 820e0d72f75c9b2479564c9073bc1bfb, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6300669400908684006}
@@ -2167,6 +2227,8 @@ MonoBehaviour:
   MaxRightHandHealth: 1000
   CurrentLeftHandHealth: 1000
   CurrentRightHandHealth: 1000
+  CanDamageLeftHand: 1
+  CanDamageRightHand: 1
   LeftHandSeverTimeLeft: 0
   RightHandSeverTimeLeft: 0
   HandSeverWindow: 10

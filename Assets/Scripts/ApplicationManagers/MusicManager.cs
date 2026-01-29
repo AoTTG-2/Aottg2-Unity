@@ -227,7 +227,8 @@ namespace ApplicationManagers
                     volume = songInfo["Volume"];
                     _instance._currentSongName = songInfo["Name"];
                     if (SceneLoader.CurrentGameManager is InGameManager && SettingsManager.SoundSettings.Music.Value > 0 && SettingsManager.UISettings.ShowSongPopup.Value)
-                        ((InGameManager)(SceneLoader.CurrentGameManager)).OnSongChange();
+                        if (SceneLoader.CurrentGameManager != null)
+                            ((InGameManager)(SceneLoader.CurrentGameManager)).OnSongChange();
                 }
                 else
                 {

@@ -1405,7 +1405,7 @@ class Main
         }
         if (Network.IsMasterClient)
         {
-            UI.SetLabelForTimeAll("MiddleCenter", "You've successfully defended Eren and the hole has been plugged." + String.Newline + "This is the first time humanity has won against the Titans.", 5.0);
+            UI.SetLabelForTimeAll("MiddleCenter", "The hole's been plugged!" + String.Newline + "We’ve taken one step back from the Titans!", 8.0);
             Game.End(10);
             self._eren.GetKilled("Exhaustion");
         }
@@ -1847,11 +1847,9 @@ cutscene MainCutscene
         }
 
         # To Do: Add translations.
-        Cutscene.ShowDialogueForTime(ProfileIconEnum.Ian1, "Commander", "Defend him at all costs!", 2.0);
-        wait 2.0;
-        Cutscene.ShowDialogueForTime(ProfileIconEnum.Ian1, "Commander", "Protect Eren until he reaches the gates, even if it costs your lifes!", 4.0);
+        Cutscene.ShowDialogueForTime(ProfileIconEnum.Ian1, "Commander", "Protect Eren until he reaches the gate, even if it costs you your lives!", 4.0);
         wait 4.0;
-        Cutscene.ShowDialogueForTime(ProfileIconEnum.Ian1, "Commander", "Don't let titan near him!", 2.0);
+        Cutscene.ShowDialogueForTime(ProfileIconEnum.Ian1, "Commander", "Don't let any Titans near him!", 2.0);
         wait 2.0;
         return;
     }
