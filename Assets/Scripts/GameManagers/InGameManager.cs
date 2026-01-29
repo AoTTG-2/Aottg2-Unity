@@ -212,12 +212,14 @@ namespace GameManagers
             if (!info.Sender.IsMasterClient)
                 return;
             ((InGameManager)SceneLoader.CurrentGameManager).Restarting = true;
+            ChatManager.PreserveInputOnRestart = true;
             UIManager.CurrentMenu.gameObject.SetActive(false);
             UIManager.LoadingMenu.Show(immediate);
         }
 
         public static void LeaveRoom()
         {
+            ChatManager.PreserveInputOnRestart = false;
             ChatManager.ResetAllPMState();
             ResetPersistentPlayerProperties();
             if (PhotonNetwork.IsMasterClient)
