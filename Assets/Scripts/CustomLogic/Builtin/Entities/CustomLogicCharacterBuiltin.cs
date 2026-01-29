@@ -16,19 +16,19 @@ namespace CustomLogic
     ///         # Character is owned (network-wise) by the person running this script.
     ///         # Ex: If user is host, this could either be their actual player character or AI titans/shifters.
     ///     }
-    ///     
+    ///
     ///     if (character.IsMainCharacter)
     ///     {
     ///         # Character is the main character (the camera-followed player).
     ///     }
-    ///     
+    ///
     ///     if (character.IsAI)
     ///     {
     ///         # Character is AI and likely controlled via MasterClient.
-    ///         
+    ///
     ///         if (character.Player.ID == Network.MasterClient.ID)
     ///         {
-    ///             # Character is owned by masterclient, if we're not masterclient, we cannot modify props.    
+    ///             # Character is owned by masterclient, if we're not masterclient, we cannot modify props.
     ///         }
     ///     }
     /// }
@@ -223,7 +223,11 @@ namespace CustomLogic
         /// The character's target direction.
         /// </summary>
         [CLProperty]
-        public CustomLogicVector3Builtin TargetDirection => new CustomLogicVector3Builtin(Character.GetTargetDirection());
+        public CustomLogicVector3Builtin TargetDirection
+        {
+            get => new CustomLogicVector3Builtin(Character.GetTargetDirection());
+            set => Character.TargetAngle = Quaternion.LookRotation(value.Value).eulerAngles.y;
+        }
 
         /// <summary>
         /// Team character belongs to. Using enum is not mandatory, value can be any string.
@@ -517,8 +521,8 @@ namespace CustomLogic
         [CLMethod]
         public void FadeSound(
             [CLParam(Enum = new Type[] { typeof(CustomLogicHumanSoundEnum), typeof(CustomLogicTitanSoundEnum), typeof(CustomLogicShifterSoundEnum) })]
-            string sound, 
-            float volume, 
+            string sound,
+            float volume,
             float time)
         {
             if (Character.IsMine() && !Character.Dead)
