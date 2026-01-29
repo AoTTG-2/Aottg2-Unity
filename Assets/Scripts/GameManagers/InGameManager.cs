@@ -1137,7 +1137,8 @@ namespace GameManagers
         }
         public void OnSongChange()
         {
-            StartCoroutine(((SongPopup)_inGameMenu._songPopup).ShowNextSongPopup());
+            if (_inGameMenu != null && _inGameMenu._songPopup != null)
+                StartCoroutine(((SongPopup)_inGameMenu._songPopup).ShowNextSongPopup());
         }
         private void TakePreviewScreenshot()
         {
