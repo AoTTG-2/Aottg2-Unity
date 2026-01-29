@@ -391,8 +391,6 @@ Scene,Arenas/HQ1e,3227,0,1,1,1,0,HQ1e,0,10.09244,-35.7602,0,0,0,0.66,0.8,0.66,Ph
 Scene,Decor/Lantern3,3229,0,1,1,1,0,Lantern3,-20.14282,10.70968,-40.52946,0,270,0,1.2,1.2,1.5,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Fence1,1748,0,1,1,1,0,Fence1,-40.30188,10.3923,-42.96869,0,0,0,0.7,0.7,0.7,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Geometry/Sphere,1749,0,1,1,1,0,Sphere,0,8.525489,19.33145,0,0,0,1.5,0.5,1.5,Physical,Entities,Default,Basic|255/255/255/255|Brick/Brick6|1/1|0/0,;
-Scene,Decor/Lantern3,3184,0,1,1,1,0,Lantern3,19.51591,25.59702,-318.9729,0,180,0,1.2,1.2,1.5,None,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Lantern3,3187,0,1,1,1,0,Lantern3,-25.48948,25.59702,-319.6041,0,0,0,1.2,1.2,1.5,None,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Lantern3,3212,0,1,1,1,0,Lantern3,-610.9818,41.00599,-126.9541,0,0,0,1.2,1.2,1.5,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Lantern5,3222,0,1,1,1,0,Lantern5,-145,10.33425,-129,0,0,0,2,1.5,2,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Lantern5,3221,0,1,1,1,0,Lantern5,136,10.33425,-129,0,0,0,2,1.5,2,Physical,Entities,Default,Default|255/255/255/255,;
@@ -678,8 +676,6 @@ Scene,Decor/Lantern3,3286,0,1,1,1,0,Lantern3,-498.4291,25.59702,-510.1408,0,315,
 Scene,Decor/Lantern3,3287,0,1,1,1,0,Lantern3,-447.0175,41.00599,-101.8779,0,90,0,1.2,1.2,1.5,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Lantern3,3288,0,1,1,1,0,Lantern3,-447.0175,41.00599,-51.23034,0,270,0,1.2,1.2,1.5,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Lantern3,3289,0,1,1,1,0,Lantern3,-391.8122,41.00599,99.10932,0,90,0,1.2,1.2,1.5,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Lantern3,3182,0,1,1,1,0,Lantern3,19.51591,25.59702,-498.7387,0,180,0,1.2,1.2,1.5,None,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Lantern3,3185,0,1,1,1,0,Lantern3,-25.48948,25.59702,-498.7387,0,0,0,1.2,1.2,1.5,None,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House20,3338,0,1,1,1,0,House20,605.272,10.16118,223.8205,0,75,0,0.6,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Barrel4,3339,0,1,1,1,0,Barrel4,607.7386,12.80368,312.6742,334.838,298.7407,92.26942,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Box2,3340,0,1,1,1,0,Box2,615.4288,10.40578,133.505,0,83.18136,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
