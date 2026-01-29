@@ -160,48 +160,6 @@ namespace CustomLogic
         public int RightHandState => (int)Shifter.RightHandState;
 
         /// <summary>
-        /// Deprecated: Use HandSeverWindow instead. Time in seconds for a hand to fully recover from broken state (backward compatibility).
-        /// </summary>
-        [CLProperty]
-        public float HandRecoveryTime
-        {
-            get => Shifter.HandSeverWindow;
-            set
-            {
-                if (Shifter.IsMine())
-                    Shifter.HandSeverWindow = value;
-            }
-        }
-
-        /// <summary>
-        /// Deprecated: Use LeftHandSeverTimeLeft instead. Time remaining in seconds for left hand to recover (0 if not recovering).
-        /// </summary>
-        [CLProperty]
-        public float LeftHandRecoveryTimeLeft
-        {
-            get => Shifter.LeftHandSeverTimeLeft;
-            set
-            {
-                if (Shifter.IsMine())
-                    Shifter.LeftHandSeverTimeLeft = value;
-            }
-        }
-
-        /// <summary>
-        /// Deprecated: Use RightHandSeverTimeLeft instead. Time remaining in seconds for right hand to recover (0 if not recovering).
-        /// </summary>
-        [CLProperty]
-        public float RightHandRecoveryTimeLeft
-        {
-            get => Shifter.RightHandSeverTimeLeft;
-            set
-            {
-                if (Shifter.IsMine())
-                    Shifter.RightHandSeverTimeLeft = value;
-            }
-        }
-
-        /// <summary>
         /// Time window in seconds for both hands to be severed before they recover independently.
         /// </summary>
         [CLProperty]
