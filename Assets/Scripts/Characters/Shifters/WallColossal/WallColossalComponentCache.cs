@@ -50,7 +50,7 @@ namespace Characters
                 SteamWarningZone.transform.SetParent(SteamHitbox.transform.parent);
                 SteamWarningZone.transform.localPosition = SteamHitbox.transform.localPosition;
                 SteamWarningZone.transform.localRotation = SteamHitbox.transform.localRotation;
-                SteamWarningZone.layer = PhysicsLayer.Hitbox;
+                SteamWarningZone.layer = PhysicsLayer.CharacterDetection;
 
                 // Add the warning zone component
                 SteamWarningZoneComponent = SteamWarningZone.AddComponent<WallColossalSteamWarningZone>();
