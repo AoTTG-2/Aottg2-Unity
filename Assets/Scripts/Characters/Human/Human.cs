@@ -14,6 +14,7 @@ using SimpleJSONFixed;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UI;
 using UnityEngine;
 using Utility;
@@ -2010,7 +2011,9 @@ namespace Characters
             if (Setup == null || Setup.Weapon != HumanWeapon.Blade)
                 return;
             int rank = ((InGameMenu)UIManager.CurrentMenu).GetStylebarRank();
-            if (rank >= 6)
+            if (rank >= 7)
+                ToggleBladeFire(3);
+            else if (rank >= 6)
                 ToggleBladeFire(2);
             else if (rank >= 4)
                 ToggleBladeFire(1);
@@ -3676,31 +3679,34 @@ namespace Characters
                 return;
             if (Setup == null || Setup.Weapon != HumanWeapon.Blade || Setup._part_blade_l == null || Setup._part_blade_r == null)
                 return;
-            var leftFire1 = Setup._part_blade_l.transform.Find("Fire1");
-            var leftFire2 = Setup._part_blade_l.transform.Find("Fire2");
-            var rightFire1 = Setup._part_blade_r.transform.Find("Fire1");
-            var rightFire2 = Setup._part_blade_r.transform.Find("Fire2");
+
+            // Clear FX
+            foreach (var effect in Setup.TierEffects)
+            {
+                var left = Setup._part_blade_l.transform.Find(effect);
+                var right = Setup._part_blade_r.transform.Find(effect);
+                if (left != null)
+                    left.gameObject.SetActive(false);
+                if (right != null)
+                    right.gameObject.SetActive(false);
+            }
+
             if (state == 0 || !SettingsManager.GraphicsSettings.WeaponFireEffect.Value)
-            {
-                leftFire1.gameObject.SetActive(false);
-                rightFire1.gameObject.SetActive(false);
-                leftFire2.gameObject.SetActive(false);
-                rightFire2.gameObject.SetActive(false);
-            }
-            else if (state == 1)
-            {
-                leftFire1.gameObject.SetActive(true);
-                rightFire1.gameObject.SetActive(true);
-                leftFire2.gameObject.SetActive(false);
-                rightFire2.gameObject.SetActive(false);
-            }
-            else if (state == 2)
-            {
-                leftFire1.gameObject.SetActive(false);
-                rightFire1.gameObject.SetActive(false);
-                leftFire2.gameObject.SetActive(true);
-                rightFire2.gameObject.SetActive(true);
-            }
+                return;
+
+            int index = state - 1;
+            if (index < 0 || index >= Setup.TierEffects.Length)
+                return;
+
+            string targetEffect = Setup.TierEffects[index];
+            var leftEffect = Setup._part_blade_l.transform.Find(targetEffect);
+            var rightEffect = Setup._part_blade_r.transform.Find(targetEffect);
+
+            if (leftEffect != null)
+                leftEffect.gameObject.SetActive(true);
+
+            if (rightEffect != null)
+                rightEffect.gameObject.SetActive(true);
         }
 
         /// <summary>
