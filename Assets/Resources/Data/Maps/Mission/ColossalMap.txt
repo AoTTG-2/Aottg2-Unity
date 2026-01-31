@@ -1486,21 +1486,8 @@ component Civilians
 
 			if (!Game.IsEnding)
 			{
-				self.NetworkView.SendMessageAll("SetHealth " + Convert.ToString(damage));
-			}
-		}
-	}
-
-	function OnNetworkMessage(sender, message)
-	{
-		if (sender == Network.MasterClient)
-		{
-			if (String.StartsWith(message, "SetHealth "))
-			{
-				damage = Convert.ToInt(String.Substring(message, 10));
 				self.TakeDamage(damage);
 			}
-
 		}
 	}
 
