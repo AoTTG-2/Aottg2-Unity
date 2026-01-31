@@ -141,13 +141,13 @@ namespace CustomLogic.Editor
             LogInfo("Generating docs...");
             if (_runBuildCommand)
             {
-                LogInfo("Running `dotnet build ./Aottg2-Unity.sln`...");
+                LogInfo("Running `dotnet build -p:GenerateDocumentationFile=true ./Aottg2-Unity.sln`...");
                 _logsConcurrent.Clear();
                 var process = new Process()
                 {
                     StartInfo = {
                             FileName = "dotnet",
-                            Arguments = "build ./Aottg2-Unity.sln",
+                            Arguments = "build -p:GenerateDocumentationFile=true ./Aottg2-Unity.sln",
                             UseShellExecute = false,
                             RedirectStandardOutput = true,
                             RedirectStandardError = true,
