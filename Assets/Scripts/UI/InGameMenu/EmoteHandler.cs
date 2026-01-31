@@ -48,8 +48,10 @@ namespace UI
         {
             if (UIManager.CurrentMenu == null || !SettingsManager.UISettings.ShowEmotes.Value || InGameManager.MuteEmote.Contains(info.Sender.ActorNumber))
                 return;
-            EmoteHandler handler = UIManager.CurrentMenu.GetComponent<EmoteHandler>();
             BaseCharacter c = Util.FindCharacterByViewId(viewId);
+            if (info.Sender != c.Cache.PhotonView.Owner)
+                return;
+            EmoteHandler handler = UIManager.CurrentMenu.GetComponent<EmoteHandler>();
             if (c != null && handler != null)
                 handler.ShowEmoteText(SanitizeText(text), c);
         }
@@ -58,29 +60,33 @@ namespace UI
         {
             if (UIManager.CurrentMenu == null || !SettingsManager.UISettings.ShowEmotes.Value || InGameManager.MuteEmote.Contains(info.Sender.ActorNumber))
                 return;
-            EmoteHandler handler = UIManager.CurrentMenu.GetComponent<EmoteHandler>();
             BaseCharacter c = Util.FindCharacterByViewId(viewId);
+            if (info.Sender != c.Cache.PhotonView.Owner)
+                return;
+            EmoteHandler handler = UIManager.CurrentMenu.GetComponent<EmoteHandler>();
             if (c != null && handler != null)
                 handler.ShowEmoteEmoji(emoji, c);
         }
 
-        public static void OnEmoteVoiceRPC(int viewId, string emoji, PhotonMessageInfo info)
-        {
-            if (UIManager.CurrentMenu == null || !SettingsManager.UISettings.ShowEmotes.Value || InGameManager.MuteEmote.Contains(info.Sender.ActorNumber))
-                return;
-            EmoteHandler handler = UIManager.CurrentMenu.GetComponent<EmoteHandler>();
-            BaseCharacter c = Util.FindCharacterByViewId(viewId);
-            if (c != null && handler != null)
-                handler.ShowVoiceEmoji(emoji, c);
-        }
+        //public static void OnEmoteVoiceRPC(int viewId, string emoji, PhotonMessageInfo info)
+        //{
+        //    if (UIManager.CurrentMenu == null || !SettingsManager.UISettings.ShowEmotes.Value || InGameManager.MuteEmote.Contains(info.Sender.ActorNumber))
+        //        return;
+        //    BaseCharacter c = Util.FindCharacterByViewId(viewId);
+        //    if (info.Sender != c.Cache.PhotonView.Owner)
+        //        return;
+        //    EmoteHandler handler = UIManager.CurrentMenu.GetComponent<EmoteHandler>();
+        //    if (c != null && handler != null)
+        //        handler.ShowVoiceEmoji(emoji, c);
+        //}
 
-        public static void OnStopVoiceRPC(PhotonMessageInfo info)
-        {
-            if (UIManager.CurrentMenu == null || !SettingsManager.UISettings.ShowEmotes.Value || InGameManager.MuteEmote.Contains(info.Sender.ActorNumber))
-                return;
-            EmoteHandler handler = UIManager.CurrentMenu.GetComponent<EmoteHandler>();
-            handler.StopInfinitePopup();
-        }
+        //public static void OnStopVoiceRPC(PhotonMessageInfo info)
+        //{
+        //    if (UIManager.CurrentMenu == null || !SettingsManager.UISettings.ShowEmotes.Value || InGameManager.MuteEmote.Contains(info.Sender.ActorNumber))
+        //        return;
+        //    EmoteHandler handler = UIManager.CurrentMenu.GetComponent<EmoteHandler>();
+        //    handler.StopInfinitePopup();
+        //}
 
         private void ShowEmoteText(string text, BaseCharacter character)
         {
