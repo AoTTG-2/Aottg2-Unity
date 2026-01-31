@@ -397,7 +397,7 @@ namespace UI
             emojiModeRect.anchorMax = new Vector2(0.5f, 1f);
             emojiModeRect.pivot = new Vector2(1f, 1f);
             emojiModeRect.sizeDelta = new Vector2(80, navButtonHeight);
-            emojiModeRect.anchoredPosition = new Vector2(-32, -padding + 8);
+            emojiModeRect.anchoredPosition = new Vector2(-30, -padding + 8);
             var emojiModeText = emojiModeGo.GetComponent<TextMeshProUGUI>();
             emojiModeText.text = "Emoji";
             emojiModeText.fontSize = 14;
@@ -412,7 +412,7 @@ namespace UI
             stickerModeRect.anchorMax = new Vector2(0.5f, 1f);
             stickerModeRect.pivot = new Vector2(0f, 1f);
             stickerModeRect.sizeDelta = new Vector2(80, navButtonHeight);
-            stickerModeRect.anchoredPosition = new Vector2(32, -padding + 8);
+            stickerModeRect.anchoredPosition = new Vector2(30, -padding + 8);
             var stickerModeText = stickerModeGo.GetComponent<TextMeshProUGUI>();
             stickerModeText.text = "Sticker";
             stickerModeText.fontSize = 14;
@@ -538,15 +538,15 @@ namespace UI
             else
                 button.onClick.AddListener(() => InsertEmoji(spriteIndex));
             var tooltipTrigger = buttonGo.AddComponent<EventTrigger>();
-            var enterEntry = new EventTrigger.Entry { eventID = EventTriggerType.PointerEnter };
-            if (isSticker)
-                enterEntry.callback.AddListener((data) => { tooltipText.text = $":s{spriteIndex}:"; });
-            else
+            if (!isSticker)
+            {
+                var enterEntry = new EventTrigger.Entry { eventID = EventTriggerType.PointerEnter };
                 enterEntry.callback.AddListener((data) => { tooltipText.text = $":{spriteIndex}:"; });
-            tooltipTrigger.triggers.Add(enterEntry);
-            var exitEntry = new EventTrigger.Entry { eventID = EventTriggerType.PointerExit };
-            exitEntry.callback.AddListener((data) => { tooltipText.text = ""; });
-            tooltipTrigger.triggers.Add(exitEntry);
+                tooltipTrigger.triggers.Add(enterEntry);
+                var exitEntry = new EventTrigger.Entry { eventID = EventTriggerType.PointerExit };
+                exitEntry.callback.AddListener((data) => { tooltipText.text = ""; });
+                tooltipTrigger.triggers.Add(exitEntry);
+            }
         }
 
         private IEnumerator ShowTemporaryTooltip(TextMeshProUGUI tooltip, string message, float duration)
@@ -598,7 +598,6 @@ namespace UI
 
         private void InsertSticker(int spriteIndex)
         {
-            // Enforce sticker cooldown
             if (Time.unscaledTime - _lastStickerSentTime < STICKER_COOLDOWN)
             {
                 float remaining = STICKER_COOLDOWN - (Time.unscaledTime - _lastStickerSentTime);
