@@ -3341,7 +3341,6 @@ component CaptureDevice
             start = self._frontShotSizer.Position;
             end = start + self._frontShotSizer.Forward * 300;
             result = Physics.BoxCastAll(start, end, self._frontShotSizer.Scale, self._frontShotSizer.QuaternionRotation, collideWith);
-            Game.Print(result.Count);
             for (res in result)
             {
                 res.Collider.Cripple(self.ProjectileLiveTime);
