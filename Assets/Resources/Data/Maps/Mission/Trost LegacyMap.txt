@@ -612,7 +612,7 @@ class Main
 
     # @type MapObject
     _rockPickupLocation = null;
-    
+
     # @type MapObject
     _theRock = null;
 
@@ -721,7 +721,7 @@ class Main
             {
                 Game.Print("Must have at least 2 MapObjects with the name pattern 'Checkpoint*' in the map. (Ex: Checkpoint1, ..., CheckpointN)");
             }
-            
+
             if (self._erenSpawnPoint == null)
             {
                 Game.Print("Must have a MapObject called ErenSpawnPoint in the map.");
@@ -750,7 +750,7 @@ class Main
             # Calculate Path Distance for Game Progress Stat
             self._completion_distance = self.CalcCompletionDistance(self._checkpoints_copy.Get(self._checkpoints_copy.Count-1));
         }
-        
+
         # Look into why usermethod here isn't returned correctly.
         # _rpcs = Dict();
         # _rpcs.Set("StartMovingRockRPC", self.StartMovingRockRPC);
@@ -865,7 +865,7 @@ class Main
         self._checkpoints.RemoveAt(0);
     }
 
-    
+
     function MoveTowardsCheckpoint()
     {
         speed = self._runSpeed;
@@ -1063,7 +1063,7 @@ class Main
         if (self._eren != null && self._bossHealthBar != null)
         {
             self._bossHealthBar.SetCurrentHealth(self._eren.Health);
-            
+
             # Show warning if Eren just took damage, reset timer
             if (self._eren.Health < self._lastErenHealth)
             {
@@ -1105,7 +1105,7 @@ class Main
             {
                 self._eren.SetAnimationSpeed(ErenAnimationEnum.Die, 1, false);
             }
-            
+
             return;
         }
 
@@ -1122,7 +1122,7 @@ class Main
                 self.SyncPhase();
             }
         }
-        
+
         elif (self._phase == self._phase_1_wait_clear)
         {
             # Need this bounce logic to be rpc'd or handled by all players. (TG1 just let the born animation play for 20s which is what allowed it to look synced)
@@ -1271,7 +1271,7 @@ class Main
         {
             Network.SendMessage(target, message);
         }
-        
+
     }
 
     # @param sender Player
@@ -1343,7 +1343,7 @@ class Main
             pushForce = Math.Clamp(1 - distance / maxDistance, 0, 1) * force;
             if (distance < maxDistance)
             {
-                character.Velocity += (character.Position - position).Normalized * pushForce; 
+                character.Velocity += (character.Position - position).Normalized * pushForce;
             }
         }
     }
@@ -1441,24 +1441,28 @@ class Main
 
     function OnCharacterDie(victim, killer, killerName)
     {
-        if (victim.Type == "Shifter" && (victim.Name == "" || victim.Name == "Eren") && !Game.IsEnding)
+        if (victim.Type == "Shifter" && (victim.Name == "" || victim.Name == "Eren"))
         {
-            # Update health bar to show 0 health
-            if (self._bossHealthBar != null)
+            if (!Game.IsEnding)
             {
-                self._bossHealthBar.SetCurrentHealth(0);
-                self._bossHealthBar.Hide();
-            }
-            if (self._damageWarning != null)
-            {
-                self._damageWarning.Hide();
+                # Update health bar to show 0 health
+                if (self._bossHealthBar != null)
+                {
+                    self._bossHealthBar.SetCurrentHealth(0);
+                    self._bossHealthBar.Hide();
+                }
+                if (self._damageWarning != null)
+                {
+                    self._damageWarning.Hide();
+                }
+
+                if (Network.IsMasterClient)
+                {
+                    UI.SetLabelAll(UILabelEnum.MiddleCenter, "All hope is now lost ...");
+                    Game.End(10.0);
+                }
             }
 
-            if (Network.IsMasterClient)
-            {
-                UI.SetLabelAll(UILabelEnum.MiddleCenter, "All hope is now lost ...");
-                Game.End(10.0);
-            }
             if (self._isHoldingRock)
             {
                 self._isHoldingRock = false;

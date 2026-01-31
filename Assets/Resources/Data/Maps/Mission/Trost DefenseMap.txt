@@ -5979,7 +5979,7 @@ class Main
 
     _DefenseOnly = false; # For Debugging. Skips HQ part, also causes some issues with MP
 
-    /* 
+    /*
      * Once titans' capture progress of the HQ is over
      * this value, the game will show a warning dialogue for the human players.
      * Dialogue won't always be shown once the capture progress is exactly this value,
@@ -5988,7 +5988,7 @@ class Main
      */
     _ShowWarningDialogueProgress = 0.5;
     _ShowWarningDialogueRetryTime = 10;
-    
+
     _dialogueWasShown = false;
     _currentRetryTime = 0;
     _lastCaptureProgress = 0;
@@ -5999,7 +5999,7 @@ class Main
     {
         SupplyAndTpZones.Setup();
         SupplyAndTpZones.SetEnabled(false);
-        
+
         CaptureZones.Setup(self);
         CaptureZones.SetActiveCaptureZones(false);
 
@@ -6019,7 +6019,7 @@ class Main
             }
 
             TitanSpawnPoints.Setup();
-            
+
             Titans.Setup(self.MaxTitans, self.TitanSpawnRate);
             GameState.TimeLimit = self.TimeLimit;
 
@@ -6288,7 +6288,7 @@ extension GameState
 
     function End(win)
     {
-        if (self.Ended) 
+        if (self.Ended)
         {
             return;
         }
@@ -6422,7 +6422,7 @@ extension CaptureZones
 {
     _captureZones = null;
 
-    /* 
+    /*
      * Some empty map objects around the HQ.
      * Titans will target one of these instead of the HQ itself
      * for pathfinding reasons.
@@ -6448,7 +6448,7 @@ extension CaptureZones
             captureZoneOrderMap.Set(c.Order, c);
         }
 
-        keys = captureZoneOrderMap.Keys;
+        keys = captureZoneOrderMap.Keys.Copy();
         keys.Sort();
         for(key in keys)
         {
@@ -6529,7 +6529,7 @@ extension CaptureZones
         {
             return nearest.MapObject.Position;
         }
-        
+
         return self._NearestTitanTarget(position).Position;
     }
 
@@ -6665,7 +6665,7 @@ extension Titans
         {
             return;
         }
-        
+
         if (!self._spawning || self._titans.Count > self.MaxTitans)
         {
             return;

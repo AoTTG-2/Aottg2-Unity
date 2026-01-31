@@ -64,7 +64,7 @@ namespace CustomLogic
         /// </summary>
         /// <param name="speed">The playback speed multiplier (1.0 = normal speed).</param>
         [CLMethod]
-        public void SetAnimationSpeed(float speed) => Value.speed = speed;
+        public void SetSpeed(float speed) => Value.speed = speed;
 
         /// <summary>
         /// Gets the length of the specified animation.
@@ -78,21 +78,21 @@ namespace CustomLogic
         /// </summary>
         /// <param name="name">The name of the float parameter.</param>
         [CLMethod]
-        public float GetAnimatorFloat(string name) => Value.GetFloat(name);
+        public float GetFloat(string name) => Value.GetFloat(name);
 
         /// <summary>
         /// Gets an animation int parameter.
         /// </summary>
         /// <param name="name">The name of the int parameter.</param>
         [CLMethod]
-        public int GetAnimatorInt(string name) => Value.GetInteger(name);
+        public int GetInteger(string name) => Value.GetInteger(name);
 
         /// <summary>
         /// Gets an animation bool parameter.
         /// </summary>
         /// <param name="name">The name of the bool parameter.</param>
         [CLMethod]
-        public bool GetAnimatorBool(string name) => Value.GetBool(name);
+        public bool GetBool(string name) => Value.GetBool(name);
 
         /// <summary>
         /// Sets an animation float parameter.
@@ -100,7 +100,7 @@ namespace CustomLogic
         /// <param name="name">The name of the float parameter.</param>
         /// <param name="value">The value to set.</param>
         [CLMethod]
-        public void SetAnimatorFloat(string name, float value) => Value.SetFloat(name, value);
+        public void SetFloat(string name, float value) => Value.SetFloat(name, value);
 
         /// <summary>
         /// Sets an animation int parameter.
@@ -108,7 +108,7 @@ namespace CustomLogic
         /// <param name="name">The name of the int parameter.</param>
         /// <param name="value">The value to set.</param>
         [CLMethod]
-        public void SetAnimatorInt(string name, int value) => Value.SetInteger(name, value);
+        public void SetInteger(string name, int value) => Value.SetInteger(name, value);
 
         /// <summary>
         /// Sets an animation bool parameter.
@@ -116,21 +116,21 @@ namespace CustomLogic
         /// <param name="name">The name of the bool parameter.</param>
         /// <param name="value">The value to set.</param>
         [CLMethod]
-        public void SetAnimatorBool(string name, bool value) => Value.SetBool(name, value);
+        public void SetBool(string name, bool value) => Value.SetBool(name, value);
 
         /// <summary>
         /// Sets an animation trigger.
         /// </summary>
         /// <param name="name">The name of the trigger parameter.</param>
         [CLMethod]
-        public void SetAnimatorTrigger(string name) => Value.SetTrigger(name);
+        public void SetTrigger(string name) => Value.SetTrigger(name);
 
         /// <summary>
         /// Resets an animation trigger.
         /// </summary>
         /// <param name="name">The name of the trigger parameter to reset.</param>
         [CLMethod]
-        public void ResetAnimatorTrigger(string name) => Value.ResetTrigger(name);
+        public void ResetTrigger(string name) => Value.ResetTrigger(name);
 
         /// <summary>
         /// Sets the weight of the specified layer.

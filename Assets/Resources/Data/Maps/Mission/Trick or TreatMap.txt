@@ -1392,7 +1392,7 @@ _dieTimeLeft = 0.0;
 _livesLeft = 0;
 _finished = false;
 _hasSpawned = false;
-_SpawnPosition = Vector3(0,0,0);
+_SpawnPosition = Vector3(0, 26.5, -552);
 
 function OnGameStart()
 {

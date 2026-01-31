@@ -159,7 +159,7 @@ component Floater
         {
             # self._isInWater  = false;
             boundPoints = self.MapObject.GetCorners();
-            velocity = self._rb.GetVelocity();
+            velocity = self._rb.Velocity;
             gravity = Vector3(0, -20, 0);
             # rb.AddForceWithMode(gravity.Scale(-1), "Acceleration");
             gScale = 1.0 / boundPoints.Count;
@@ -267,7 +267,7 @@ component WaterPhysics
         }
         elif (other.Type == "MapObject")
         {
-            body = other.GetBuiltinComponent("Rigidbody");
+            body = other.Rigidbody;
             if (body == null)
             {
                 return Vector3(0, 0, 0);
@@ -285,7 +285,7 @@ component WaterPhysics
         }
         elif (other.Type == "MapObject")
         {
-            body = other.GetBuiltinComponent("Rigidbody");
+            body = other.Rigidbody;
             if (body == null)
             {
                 return 1;
@@ -303,7 +303,7 @@ component WaterPhysics
         }
         elif (other.Type == "MapObject")
         {
-            body = other.GetBuiltinComponent("Rigidbody");
+            body = other.Rigidbody;
             if (body != null)
             {
                 body.Velocity = velocity;
@@ -319,7 +319,7 @@ component WaterPhysics
         }
         elif (other.Type == "MapObject")
         {
-            body = other.GetBuiltinComponent("Rigidbody");
+            body = other.Rigidbody;
             if (body != null)
             {
                 return true;
@@ -657,12 +657,12 @@ component VelocityZone
         }
         elif (other.Type == "MapObject")
         {
-            body = other.GetComponent("Rigidbody");
+            body = other.Rigidbody;
             if (body == null)
             {
                 return;
             }
-            velocity = body.GetVelocity();
+            velocity = body.Velocity;
             appliedForce = self.CalculateForce(other, velocity);
         }
 
@@ -3163,7 +3163,7 @@ component Animal
         }
         else
         {
-            self._rigidbody.SetVelocity(Vector3.Up * self._rigidbody.GetVelocity().Y);
+            self._rigidbody.SetVelocity(Vector3.Up * self._rigidbody.Velocity.Y);
         }
         if (self._stateTimeLeft <= 0.0)
         {

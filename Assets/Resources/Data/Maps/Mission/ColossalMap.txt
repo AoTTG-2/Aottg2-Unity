@@ -391,8 +391,6 @@ Scene,Arenas/HQ1e,3227,0,1,1,1,0,HQ1e,0,10.09244,-35.7602,0,0,0,0.66,0.8,0.66,Ph
 Scene,Decor/Lantern3,3229,0,1,1,1,0,Lantern3,-20.14282,10.70968,-40.52946,0,270,0,1.2,1.2,1.5,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Fence1,1748,0,1,1,1,0,Fence1,-40.30188,10.3923,-42.96869,0,0,0,0.7,0.7,0.7,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Geometry/Sphere,1749,0,1,1,1,0,Sphere,0,8.525489,19.33145,0,0,0,1.5,0.5,1.5,Physical,Entities,Default,Basic|255/255/255/255|Brick/Brick6|1/1|0/0,;
-Scene,Decor/Lantern3,3184,0,1,1,1,0,Lantern3,19.51591,25.59702,-318.9729,0,180,0,1.2,1.2,1.5,None,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Lantern3,3187,0,1,1,1,0,Lantern3,-25.48948,25.59702,-319.6041,0,0,0,1.2,1.2,1.5,None,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Lantern3,3212,0,1,1,1,0,Lantern3,-610.9818,41.00599,-126.9541,0,0,0,1.2,1.2,1.5,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Lantern5,3222,0,1,1,1,0,Lantern5,-145,10.33425,-129,0,0,0,2,1.5,2,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Lantern5,3221,0,1,1,1,0,Lantern5,136,10.33425,-129,0,0,0,2,1.5,2,Physical,Entities,Default,Default|255/255/255/255,;
@@ -678,8 +676,6 @@ Scene,Decor/Lantern3,3286,0,1,1,1,0,Lantern3,-498.4291,25.59702,-510.1408,0,315,
 Scene,Decor/Lantern3,3287,0,1,1,1,0,Lantern3,-447.0175,41.00599,-101.8779,0,90,0,1.2,1.2,1.5,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Lantern3,3288,0,1,1,1,0,Lantern3,-447.0175,41.00599,-51.23034,0,270,0,1.2,1.2,1.5,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Lantern3,3289,0,1,1,1,0,Lantern3,-391.8122,41.00599,99.10932,0,90,0,1.2,1.2,1.5,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Lantern3,3182,0,1,1,1,0,Lantern3,19.51591,25.59702,-498.7387,0,180,0,1.2,1.2,1.5,None,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Lantern3,3185,0,1,1,1,0,Lantern3,-25.48948,25.59702,-498.7387,0,0,0,1.2,1.2,1.5,None,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House20,3338,0,1,1,1,0,House20,605.272,10.16118,223.8205,0,75,0,0.6,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Barrel4,3339,0,1,1,1,0,Barrel4,607.7386,12.80368,312.6742,334.838,298.7407,92.26942,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Box2,3340,0,1,1,1,0,Box2,615.4288,10.40578,133.505,0,83.18136,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
@@ -1348,6 +1344,8 @@ class Main
 			self._bossHealthBar.SetRightHandHealth(self._colossal.RightHandHealth);
 			self._bossHealthBar.SetLeftHandState(self._colossal.LeftHandState);
 			self._bossHealthBar.SetRightHandState(self._colossal.RightHandState);
+			self._bossHealthBar.SetLeftHandRegen(self._colossal.LeftHandSeverTimeLeft);
+			self._bossHealthBar.SetRightHandRegen(self._colossal.RightHandSeverTimeLeft);
 
 			if (self._bossHealthBar.IsDead())
 			{
@@ -1388,6 +1386,10 @@ class Main
 		self._bossHealthBar.SetLeftHandHealth(self._colossal.LeftHandHealth);
 		self._bossHealthBar.SetRightHandMaxHealth(self._colossal.MaxRightHandHealth);
 		self._bossHealthBar.SetRightHandHealth(self._colossal.RightHandHealth);
+		self._bossHealthBar.SetLeftHandRegen(self._colossal.LeftHandSeverTimeLeft);
+		self._bossHealthBar.SetRightHandRegen(self._colossal.RightHandSeverTimeLeft);
+		self._bossHealthBar.SetLeftHandMaxRegen(self._colossal.HandSeverWindow);
+		self._bossHealthBar.SetRightHandMaxRegen(self._colossal.HandSeverWindow);
 		self._bossHealthBar.Show();
 	}
 
@@ -1484,21 +1486,8 @@ component Civilians
 
 			if (!Game.IsEnding)
 			{
-				self.NetworkView.SendMessageAll("SetHealth " + Convert.ToString(damage));
-			}
-		}
-	}
-
-	function OnNetworkMessage(sender, message)
-	{
-		if (sender == Network.MasterClient)
-		{
-			if (String.StartsWith(message, "SetHealth "))
-			{
-				damage = Convert.ToInt(String.Substring(message, 10));
 				self.TakeDamage(damage);
 			}
-
 		}
 	}
 
@@ -1587,6 +1576,7 @@ class BossHealthBar
 
     # Color thresholds (percent -> color)
     _colorThresholds = null;
+    _regenColor = Color(255, 124, 0, 255);
 
     # UI Elements
     _rootContainer = null;
@@ -1605,6 +1595,8 @@ class BossHealthBar
     _leftHandRecoveringIcon = null;
     _leftHandHealth = 100.0;
     _leftHandMaxHealth = 100.0;
+    _leftHandRegen = 0.0;
+    _leftHandMaxRegen = 0.0;
     _leftHandState = HandStateEnum.Healthy;
 
     # Right hand health bars and icons
@@ -1616,18 +1608,15 @@ class BossHealthBar
     _rightHandRecoveringIcon = null;
     _rightHandHealth = 100.0;
     _rightHandMaxHealth = 100.0;
+    _rightHandRegen = 0.0;
+    _rightHandMaxRegen = 0.0;
     _rightHandState = HandStateEnum.Healthy;
 
     # Icon paths for hand states
-    _leftHandHealthyIconPath = "Icons/Game/HealthyRightHandIcon";
-    _leftHandDamagedIconPath = "Icons/Game/DamagedRightHandIcon";
-    _leftHandSeveredIconPath = "Icons/Game/SeveredRightHandIcon";
-    _leftHandRecoveringIconPath = "Icons/Game/SmokeRightHandIcon";
-
-    _rightHandHealthyIconPath = "Icons/Game/HealthyRightHandIcon";
-    _rightHandDamagedIconPath = "Icons/Game/DamagedRightHandIcon";
-    _rightHandSeveredIconPath = "Icons/Game/SeveredRightHandIcon";
-    _rightHandRecoveringIconPath = "Icons/Game/SmokeRightHandIcon";
+    _handHealthyIconPath = "Icons/Game/HandHealthyIcon";
+    _handDamagedIconPath = "Icons/Game/HandDamagedIcon";
+    _handSeveredIconPath = "Icons/Game/HandSeveredIcon";
+    _handRecoveringIconPath = "Icons/Game/HandSmokeIcon";
 
     function Init(bossName, maxHealth, labelPosition, showPercentage)
     {
@@ -1695,8 +1684,7 @@ class BossHealthBar
             .AlignItems(AlignEnum.Center)
             .JustifyContent(JustifyEnum.SpaceBetween);
 
-        self.CreateVerticalHandBar(true);
-        mainRow.Add(self._leftHandContainer);
+        self.CreateHandBar(false);
 
         centerContainer = UI.VisualElement()
             .FlexDirection(FlexDirectionEnum.Column)
@@ -1731,16 +1719,20 @@ class BossHealthBar
             .Margin(0,true)
             .Color(Color(255, 255, 255));
 
-        healthContainer.Add(self._healthLabel);
-        self._healthBarContainer.Add(healthContainer);
+        self.CreateHandBar(true);
 
         centerContainer.Add(self._nameLabel);
         centerContainer.Add(self._healthBarContainer);
 
-        mainRow.Add(centerContainer);
-
-        self.CreateVerticalHandBar(false);
         mainRow.Add(self._rightHandContainer);
+        mainRow.Add(centerContainer);
+        mainRow.Add(self._leftHandContainer);
+
+        healthContainer.Add(self._healthLabel);
+
+        self._healthBarContainer.Add(healthContainer);
+
+
 
         self._rootContainer.Add(mainRow);
     }
@@ -1782,7 +1774,7 @@ class BossHealthBar
         self._rootContainer.Add(container);
     }
 
-    function CreateVerticalHandBar(isLeftHand)
+    function CreateHandBar(isLeftHand)
     {
         container = UI.VisualElement()
             .AspectRatio(1.0)
@@ -1817,23 +1809,23 @@ class BossHealthBar
         {
             self._leftHandContainer = container;
             self._leftHandFill = fill;
-            
+
             self.CreateLeftHandIcons();
         }
         else
         {
             self._rightHandContainer = container;
             self._rightHandFill = fill;
-            
+
             self.CreateRightHandIcons();
         }
     }
 
     function CreateLeftHandIcons()
     {
-        handIconScale = 1;
+        handIconScale = -1;
 
-        self._leftHandHealthyIcon = UI.Icon(self._leftHandHealthyIconPath)
+        self._leftHandHealthyIcon = UI.Icon(self._handHealthyIconPath)
             .Width(100, true)
             .Height(100, true)
             .TransformScale(handIconScale, 1)
@@ -1843,7 +1835,7 @@ class BossHealthBar
             .Left(0, false)
             .Active(true);
 
-        self._leftHandDamagedIcon = UI.Icon(self._leftHandDamagedIconPath)
+        self._leftHandDamagedIcon = UI.Icon(self._handDamagedIconPath)
             .Width(100, true)
             .Height(100, true)
             .TransformScale(handIconScale, 1)
@@ -1853,7 +1845,7 @@ class BossHealthBar
             .Left(0, false)
             .Active(false);
 
-        self._leftHandSeveredIcon = UI.Icon(self._leftHandSeveredIconPath)
+        self._leftHandSeveredIcon = UI.Icon(self._handSeveredIconPath)
             .Width(100, true)
             .Height(100, true)
             .TransformScale(handIconScale, 1)
@@ -1863,7 +1855,7 @@ class BossHealthBar
             .Left(0, false)
             .Active(false);
 
-        self._leftHandRecoveringIcon = UI.Icon(self._leftHandRecoveringIconPath)
+        self._leftHandRecoveringIcon = UI.Icon(self._handRecoveringIconPath)
             .Width(100, true)
             .Height(100, true)
             .TransformScale(handIconScale, 1)
@@ -1881,9 +1873,9 @@ class BossHealthBar
 
     function CreateRightHandIcons()
     {
-        handIconScale = -1;
+        handIconScale = 1;
 
-        self._rightHandHealthyIcon = UI.Icon(self._rightHandHealthyIconPath)
+        self._rightHandHealthyIcon = UI.Icon(self._handHealthyIconPath)
             .Width(100, true)
             .Height(100, true)
             .TransformScale(handIconScale, 1)
@@ -1893,7 +1885,7 @@ class BossHealthBar
             .Left(0, false)
             .Active(true);
 
-        self._rightHandDamagedIcon = UI.Icon(self._rightHandDamagedIconPath)
+        self._rightHandDamagedIcon = UI.Icon(self._handDamagedIconPath)
             .Width(100, true)
             .Height(100, true)
             .TransformScale(handIconScale, 1)
@@ -1903,7 +1895,7 @@ class BossHealthBar
             .Left(0, false)
             .Active(false);
 
-        self._rightHandSeveredIcon = UI.Icon(self._rightHandSeveredIconPath)
+        self._rightHandSeveredIcon = UI.Icon(self._handSeveredIconPath)
             .Width(100, true)
             .Height(100, true)
             .TransformScale(handIconScale, 1)
@@ -1913,7 +1905,7 @@ class BossHealthBar
             .Left(0, false)
             .Active(false);
 
-        self._rightHandRecoveringIcon = UI.Icon(self._rightHandRecoveringIconPath)
+        self._rightHandRecoveringIcon = UI.Icon(self._handRecoveringIconPath)
             .Width(100, true)
             .Height(100, true)
             .TransformScale(handIconScale, 1)
@@ -1993,16 +1985,44 @@ class BossHealthBar
     {
         if (self._leftHandFill != null)
         {
-            leftPercentage = (Convert.ToFloat(self._leftHandHealth) / self._leftHandMaxHealth) * 100.0;
-            self._leftHandFill.Height(leftPercentage, true);
-            self.UpdateHandBarColor(self._leftHandFill, leftPercentage);
+            if (self._leftHandState == HandStateEnum.Healthy || self._leftHandState == HandStateEnum.Damaged)
+            {
+                leftPercentage = (Convert.ToFloat(self._leftHandHealth) / self._leftHandMaxHealth) * 100.0;
+                self._leftHandFill.Height(leftPercentage, true);
+                self.UpdateHandBarColor(self._leftHandFill, leftPercentage);
+            }
+            elif (self._leftHandState == HandStateEnum.Severed)
+            {
+                leftRegenPercentage = (1.0 - Convert.ToFloat(self._leftHandRegen) / self._leftHandMaxRegen) * 100.0;
+                self._leftHandFill.Height(leftRegenPercentage, true);
+                self._leftHandFill.BackgroundColor(self._regenColor);
+            }
+            else
+            {
+                self._leftHandFill.Height(0.0, true);
+                self._leftHandFill.BackgroundColor(self._regenColor);
+            }
         }
 
         if (self._rightHandFill != null)
         {
-            rightPercentage = (Convert.ToFloat(self._rightHandHealth) / self._rightHandMaxHealth) * 100.0;
-            self._rightHandFill.Height(rightPercentage, true);
-            self.UpdateHandBarColor(self._rightHandFill, rightPercentage);
+            if (self._rightHandState == HandStateEnum.Healthy || self._rightHandState == HandStateEnum.Damaged)
+            {
+                rightPercentage = (Convert.ToFloat(self._rightHandHealth) / self._rightHandMaxHealth) * 100.0;
+                self._rightHandFill.Height(rightPercentage, true);
+                self.UpdateHandBarColor(self._rightHandFill, rightPercentage);
+            }
+            elif (self._rightHandState == HandStateEnum.Severed)
+            {
+                rightRegenPercentage = (1.0 - Convert.ToFloat(self._rightHandRegen) / self._rightHandMaxRegen) * 100.0;
+                self._rightHandFill.Height(rightRegenPercentage, true);
+                self._rightHandFill.BackgroundColor(self._regenColor);
+            }
+            else
+            {
+                self._rightHandFill.Height(0.0, true);
+                self._rightHandFill.BackgroundColor(self._regenColor);
+            }
         }
 
         self.UpdateHandIcons();
@@ -2148,27 +2168,13 @@ class BossHealthBar
     function SetMaxHealth(maxHealth)
     {
         self._maxHealth = maxHealth;
-
-        if (self._currentHealth > self._maxHealth)
-        {
-            self._currentHealth = self._maxHealth;
-        }
-
+        self._currentHealth = Math.Min(self._currentHealth,self._maxHealth);
         self.UpdateHealthBar();
     }
 
     function SetCurrentHealth(currentHealth)
     {
-        if (currentHealth < 0.0)
-        {
-            currentHealth = 0.0;
-        }
-        if (currentHealth > self._maxHealth)
-        {
-            currentHealth = self._maxHealth;
-        }
-
-        self._currentHealth = currentHealth;
+        self._currentHealth = Math.Clamp(currentHealth, 0.0, self._maxHealth);
         self.UpdateHealthBar();
     }
 
@@ -2266,30 +2272,35 @@ class BossHealthBar
         self._rightHandHealth = self._rightHandMaxHealth;
         self._leftHandState = HandStateEnum.Healthy;
         self._rightHandState = HandStateEnum.Healthy;
+        self._leftHandRegen = 0.0;
+        self._rightHandRegen = 0.0;
         self.UpdateHealthBar();
     }
 
     function SetLeftHandMaxHealth(maxHealth)
     {
         self._leftHandMaxHealth = maxHealth;
-        if (self._leftHandHealth > self._leftHandMaxHealth)
-        {
-            self._leftHandHealth = self._leftHandMaxHealth;
-        }
+        self._leftHandHealth = Math.Min(self._leftHandHealth, self._leftHandMaxHealth);
         self.UpdateHandHealthBars();
     }
 
     function SetLeftHandHealth(health)
     {
-        if (health < 0.0)
-        {
-            health = 0.0;
-        }
-        if (health > self._leftHandMaxHealth)
-        {
-            health = self._leftHandMaxHealth;
-        }
-        self._leftHandHealth = health;
+        self._leftHandHealth = Math.Clamp(health, 0.0, self._leftHandMaxHealth);
+        self.UpdateHandHealthBars();
+    }
+
+    function SetLeftHandRegen(regenAmount)
+    {
+        regenAmount = Math.Clamp(regenAmount, 0.0, self._leftHandMaxRegen);
+        self._leftHandRegen = regenAmount;
+        self.UpdateHandHealthBars();
+    }
+
+    function SetLeftHandMaxRegen(regenAmount)
+    {
+        self._leftHandMaxRegen = regenAmount;
+        self._leftHandRegen = Math.Min(self._leftHandRegen, self._leftHandMaxRegen);
         self.UpdateHandHealthBars();
     }
 
@@ -2322,24 +2333,27 @@ class BossHealthBar
     function SetRightHandMaxHealth(maxHealth)
     {
         self._rightHandMaxHealth = maxHealth;
-        if (self._rightHandHealth > self._rightHandMaxHealth)
-        {
-            self._rightHandHealth = self._rightHandMaxHealth;
-        }
+        self._rightHandHealth = Math.Min(self._rightHandHealth, self._rightHandMaxHealth);
         self.UpdateHandHealthBars();
     }
 
     function SetRightHandHealth(health)
     {
-        if (health < 0.0)
-        {
-            health = 0.0;
-        }
-        if (health > self._rightHandMaxHealth)
-        {
-            health = self._rightHandMaxHealth;
-        }
-        self._rightHandHealth = health;
+        self._rightHandHealth = Math.Clamp(health, 0.0, self._rightHandMaxHealth);
+        self.UpdateHandHealthBars();
+    }
+
+    function SetRightHandRegen(regenAmount)
+    {
+        regenAmount = Math.Clamp(regenAmount, 0.0, self._rightHandMaxRegen);
+        self._rightHandRegen = regenAmount;
+        self.UpdateHandHealthBars();
+    }
+
+    function SetRightHandMaxRegen(regenAmount)
+    {
+        self._rightHandMaxRegen = regenAmount;
+        self._rightHandRegen = Math.Min(self._rightHandRegen, self._rightHandMaxRegen);
         self.UpdateHandHealthBars();
     }
 
