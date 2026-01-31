@@ -1493,7 +1493,10 @@ component Civilians
 
 	function OnCollisionStay(obj)
 	{
-		self._isColliding = true;
+		if (obj.Type == "Titan")
+		{
+			self._isColliding = true;
+		}
 	}
 
 	function OnTick()
@@ -1548,7 +1551,10 @@ component TitanWarning
 
 	function OnCollisionStay(obj)
 	{
-		self._isColliding = true;
+		if (obj.Type == "Titan")
+		{
+			self._isColliding = true;
+		}
 	}
 
 	function OnTick()

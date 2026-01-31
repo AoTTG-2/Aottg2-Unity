@@ -3134,7 +3134,7 @@ component CaptureDevice
         self._humanMount = self.MapObject.GetTransform("DevicePivot/HumanMount");
         self.MapObject.AddSphereCollider(CollideModeEnum.Region, CollideWithEnum.Characters, Vector3.Zero, 5.0);
         self._ammoLeft = self.MaxAmmo;
-        
+
         # Store initial Y position for triangle calculations
         self._baseYPosition = self._flatRotatorTransform.LocalPosition.Y;
 
@@ -3150,19 +3150,19 @@ component CaptureDevice
         frontPivotRotation = self._frontPivotTransform.LocalRotation;
         frontPivotRotation.X = -pitchAngle;  # Negative to tilt barrel up
         self._frontPivotTransform.LocalRotation = frontPivotRotation;
-        
+
         # Apply rear leg rotation (mirrors the front pivot angle)
         rearLegRotation = self._rearLegTransform.LocalRotation;
         rearLegRotation.X = pitchAngle;  # Opposite direction to front pivot
         self._rearLegTransform.LocalRotation = rearLegRotation;
-        
+
         # Calculate angle ratio (0 at min, 1 at max)
         angleRange = self._maxTilt - self._minTilt;
         angleRatio = (pitchAngle - self._minTilt) / angleRange;
-        
+
         # Move device up by 0.1 times the vertical scale based on angle ratio
         verticalOffset = (0.25 + angleRatio) * 0.25 * self.MapObject.Scale.Y;
-        
+
         devicePosition = self._heightTransform.LocalPosition;
         devicePosition.Y = self._baseYPosition - verticalOffset;
         self._heightTransform.LocalPosition = devicePosition;
@@ -3185,7 +3185,7 @@ component CaptureDevice
         self._ammoLeft = self.NetworkView.ReceiveStream();
         self._ropeTimeLeft = self.NetworkView.ReceiveStream();
         self._flatRotatorTransform.LocalRotation = rotation;
-        
+
         # Apply triangle geometry adjustments for networked clients
         self.AdjustTriangleGeometry(self._angle);
     }
@@ -3236,7 +3236,7 @@ component CaptureDevice
     function OnTick()
     {
         self._collidingHuman = null;
-        
+
         # Handle rope timer - owner is responsible for disabling FX when time expires
         if (self.NetworkView.Owner == Network.MyPlayer && self._ropeTimeLeft > 0)
         {
@@ -3282,10 +3282,10 @@ component CaptureDevice
             pitch = Math.Clamp(pitch, self._minTilt, self._maxTilt);
             self._angle = pitch;
             self._flatRotatorTransform.LocalRotation = baseRotation;
-            
+
             # Apply triangle geometry adjustments based on current pitch
             self.AdjustTriangleGeometry(pitch);
-            
+
             hasAmmo = self._ammoLeft > 0 || self.UnlimitedAmmo;
             if (self._cooldownLeft <= 0.0 && hasAmmo && Input.GetKeyHold(InputHumanEnum.AttackDefault))
             {
@@ -3428,7 +3428,7 @@ component Animal
         }
         else
         {
-            self._rigidbody.SetVelocity(Vector3.Up * self._rigidbody.Velocity.Y);
+            self._rigidbody.SetVelocity(Vector3.Up * self._rigidbody.GetVelocity().Y);
         }
         if (self._stateTimeLeft <= 0.0)
         {
