@@ -468,10 +468,9 @@ namespace CustomLogic
         }
 
         [CLMethod]
-        public CustomLogicListBuiltin SetActive(bool active)
+        public void SetActive(bool active)
         {
             Value.gameObject.SetActive(active);
-            return null;
         }
 
         public static implicit operator CustomLogicTransformBuiltin(Transform value) => new CustomLogicTransformBuiltin(value);
