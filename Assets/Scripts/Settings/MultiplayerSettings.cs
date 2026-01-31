@@ -122,8 +122,11 @@ namespace Settings
             int maxPlayers = settings.General.MaxPlayers.Value;
             string password = settings.General.Password.Value;
             string passwordHash = string.Empty;
-            if (password.Length > 0)
-                passwordHash = Util.CreateMD5(password);
+            string passwordSalt = string.Empty;
+            if (password.Length > 0) {
+                passwordSalt = Util.CreateSalt();
+                passwordHash = Util.CreatePBKDF2(password, passwordSalt);
+            }
             string roomId = UnityEngine.Random.Range(0, 100000).ToString();
             var properties = new ExitGames.Client.Photon.Hashtable
             {
@@ -131,10 +134,11 @@ namespace Settings
                 { RoomProperty.Map, mapName },
                 { RoomProperty.GameMode, gameMode },
                 { RoomProperty.Password, password },
+                { RoomProperty.PasswordSalt, passwordSalt },
                 { RoomProperty.PasswordHash, passwordHash }
             };
             string hash = GetHashKey(roomId + roomName);
-            string[] lobbyProperties = new string[] { RoomProperty.Name, RoomProperty.Map, RoomProperty.GameMode, RoomProperty.PasswordHash };
+            string[] lobbyProperties = new string[] { RoomProperty.Name, RoomProperty.Map, RoomProperty.GameMode, RoomProperty.PasswordHash, RoomProperty.PasswordSalt };
             var roomOptions = new RoomOptions();
             roomOptions.CustomRoomProperties = properties;
             roomOptions.CustomRoomPropertiesForLobby = lobbyProperties;

@@ -30,7 +30,7 @@ namespace Characters
         protected float _steamDamageTimeLeft;
         protected ColossalSteamState _steamState;
         public float WarningSteamTime = 3f;
-        public float SteamDamageInterval = 0.1f;
+        public float SteamDamageInterval = 0.2f;
         public int SteamDamagePerSecond = 100;
         protected override float SizeMultiplier => 22f;
 
@@ -56,10 +56,10 @@ namespace Characters
         public float RecoveryDuration = 10f;
         public float RecoveryTimeLeft = 0f;
 
-        public float SteamBlowAwayForce = 30f;
+        public float SteamBlowAwayForce = 50f;
         public float DefaultBlowAwayForce = 50f;
         public float BlowAwayMaxDistance = 60f;
-        public float BlowAwaySteamTime = 0.5f;
+        public float BlowAwaySteamTime = 0.3f;
 
         public override void OnPlayerEnteredRoom(Player player)
         {
@@ -591,13 +591,13 @@ namespace Characters
 
             if (_steamBlowAwayTimeLeft <= 0f)
             {
-                // BlowAwayHumans(ColossalCache.NapeHurtbox.transform.position, SteamBlowAwayForce);
+                BlowAwayHumans(ColossalCache.NapeHurtbox.transform, 100, SteamBlowAwayForce);
                 _steamBlowAwayTimeLeft = BlowAwaySteamTime;
             }
 
             if (_steamState == ColossalSteamState.Damage && _steamDamageTimeLeft <= 0f)
             {
-                ApplySteamDamageToHumans();
+                BlowAwayHumans(ColossalCache.NapeHurtbox.transform, 100, SteamBlowAwayForce);
                 _steamDamageTimeLeft = SteamDamageInterval;
             }
 
@@ -769,33 +769,30 @@ namespace Characters
             }
         }
 
+        protected void BlowAwayHumans(Transform source, float angle, float force)
+        {
+            foreach (var human in _inGameManager.Humans)
+            {
+                Vector3 directionToHuman = human.Cache.Transform.position - source.position;
+                float distance = directionToHuman.magnitude;
+                
+                if (distance < BlowAwayMaxDistance)
+                {
+                    float angleToHuman = Vector3.Angle(source.forward, directionToHuman);
+                    if (angleToHuman <= angle / 2f)
+                    {
+                        human.BlowAway(source.position, force, BlowAwayMaxDistance);
+                    }
+                }
+            }
+        }
+
         protected void BlowAwayHumans(Vector3 source, float force)
         {
             foreach (var human in _inGameManager.Humans)
             {
                 if (Vector3.Distance(human.Cache.Transform.position, source) < BlowAwayMaxDistance)
                     human.BlowAway(source, force, BlowAwayMaxDistance);
-            }
-        }
-
-        protected void ApplySteamDamageToHumans()
-        {
-            if (!IsMine() || ColossalCache?.SteamHitbox == null)
-                return;
-
-            Vector3 steamCenter = ColossalCache.NapeHurtbox.transform.position;
-            float steamRadius = BlowAwayMaxDistance;
-
-            foreach (var human in _inGameManager.Humans)
-            {
-                if (human.Dead)
-                    continue;
-
-                float distance = Vector3.Distance(human.Cache.Transform.position, steamCenter);
-                if (distance < steamRadius)
-                {
-                    human.GetHit(Name, SteamDamagePerSecond, "colossal", "steam");
-                }
             }
         }
 

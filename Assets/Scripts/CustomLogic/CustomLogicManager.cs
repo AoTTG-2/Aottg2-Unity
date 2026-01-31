@@ -170,7 +170,7 @@ namespace CustomLogic
 
         public static Dictionary<string, BaseSetting> GetModeSettings(string source)
         {
-            var evaluator = GetEditorEvaluator(source);
+            var evaluator = GetEditorEvaluator(source, false);
             return evaluator.GetModeSettings();
         }
 
@@ -183,12 +183,13 @@ namespace CustomLogic
             return "";
         }
 
-        public static CustomLogicEvaluator GetEditorEvaluator(string source)
+        public static CustomLogicEvaluator GetEditorEvaluator(string source, bool loadBaseLogic = true)
         {
             var compiler = new CustomLogicCompiler();
             
             // Add base logic
-            compiler.AddSourceFile(new CustomLogicSourceFile("BaseLogic.cl", BaseLogic, CustomLogicSourceType.BaseLogic));
+            if (loadBaseLogic)
+                compiler.AddSourceFile(new CustomLogicSourceFile("BaseLogic.cl", BaseLogic, CustomLogicSourceType.BaseLogic));
             
             // Add the user source
             compiler.AddSourceFile(new CustomLogicSourceFile("UserSource.cl", source, CustomLogicSourceType.ModeLogic));

@@ -167,6 +167,7 @@ namespace GameManagers
         public static string Map = "Map";
         public static string GameMode = "GameMode";
         public static string Password = "Password";
+        public static string PasswordSalt = "PS";
         public static string PasswordHash = "PH";
     }
 }

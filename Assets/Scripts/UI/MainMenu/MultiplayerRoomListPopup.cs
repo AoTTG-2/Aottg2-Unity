@@ -229,10 +229,11 @@ namespace UI
         private void OnRoomClick(RoomInfo room)
         {
             string passwordHash = GetPasswordHash(room);
+            string passwordSalt = room.GetStringProperty(RoomProperty.PasswordSalt);
             if (passwordHash != string.Empty)
             {
                 HideAllPopups();
-                _multiplayerPasswordPopup.Show(passwordHash, room.Name, room.GetStringProperty(RoomProperty.Name));
+                _multiplayerPasswordPopup.Show(passwordHash, passwordSalt, room.Name, room.GetStringProperty(RoomProperty.Name));
             }
             else
             {
