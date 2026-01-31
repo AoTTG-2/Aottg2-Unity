@@ -1017,6 +1017,7 @@
 			{"Name": "Cannon3", "Asset": "Interact/Cannon3", "Static": false, "Networked": true, "Components": ["Cannon|"]},
 			{"Name": "Cannon4", "Asset": "Interact/Cannon4", "Static": false, "Networked": true, "Components": ["Cannon|"]},
 			{"Name": "Cannon5", "Asset": "Interact/Cannon5", "Static": false, "Networked": true, "Components": ["Cannon|"]},
+			{"Name": "CaptureDevice1a", "Asset": "Interact/CaptureDevice1a", "Static": false, "Networked": true, "Components": ["CaptureDevice|"]},
 			{"Name": "Wagon2", "Asset": "Interact/Wagon2", "CollideWith": "All", "Static": false, "Networked": true, "Components": ["Rigidbody|Mass:20.0|Gravity:0.0/-300.0/0.0|FreezeRotation:false,Wagon|CanSupply:false"]},
 			{"Name": "Wagon2a", "Asset": "Interact/Wagon2a", "CollideWith": "All", "Static": false, "Networked": true, "Variant": "Wagon2", "Components": ["Rigidbody|Mass:20.0|Gravity:0.0/-300.0/0.0|FreezeRotation:false,Wagon|CanSupply:false"]},
 			{"Name": "Wagon2b", "Asset": "Interact/Wagon2b", "CollideWith": "All", "Static": false, "Networked": true, "Variant": "Wagon2", "Components": ["Rigidbody|Mass:20.0|Gravity:0.0/-300.0/0.0|FreezeRotation:false,Wagon|"]},
