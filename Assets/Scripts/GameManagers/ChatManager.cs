@@ -151,6 +151,7 @@ namespace GameManagers
         public static List<int> PMPartnerIDs = new List<int>();
         private static string _preservedInputText = string.Empty;
         private static int _preservedInputCaretPosition = 0;
+        public static bool PreserveInputOnRestart = false;
         private static readonly Dictionary<string, string> _conversationTexts = new Dictionary<string, string>();
         private static readonly Dictionary<string, int> _conversationCarets = new Dictionary<string, int>();
         public static void PreserveInputText(string text, int caretPosition)
@@ -165,6 +166,7 @@ namespace GameManagers
             int caretPos = _preservedInputCaretPosition;
             _preservedInputText = string.Empty;
             _preservedInputCaretPosition = 0;
+            PreserveInputOnRestart = false;
             return (text, caretPos);
         }
 
