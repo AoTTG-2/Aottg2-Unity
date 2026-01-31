@@ -1,14 +1,9 @@
 fileFormatVersion: 2
-guid: fc4e6d7b4db2dd848a6fca6383c19f9e
+guid: 319fa700a2fac70498fb68d505cd454c
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: FlyingBoat
-    second: {fileID: 2100000, guid: 3b3b31b43843baa4caab901edadaffda, type: 2}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -46,8 +41,8 @@ ModelImporter:
     importPhysicalCameras: 1
     importVisibility: 1
     importBlendShapes: 1
-    importCameras: 0
-    importLights: 0
+    importCameras: 1
+    importLights: 1
     nodeNameCollisionStrategy: 1
     fileIdsGeneration: 2
     swapUVChannels: 0
