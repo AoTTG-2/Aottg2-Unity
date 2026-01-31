@@ -912,6 +912,7 @@
 			{"Name": "AuroraFX1b", "Static": false, "CollideMode": "None", "Material": "DefaultNoTint|255/255/255/255|", "Variant": "AuroraFX1"},
 			{"Name": "BatsFX1", "Static": false, "CollideMode": "None", "Material": "DefaultNoTint|255/255/255/255|"},
 			{"Name": "BatsFX1b", "Variant": "BatsFX1", "Static": false, "CollideMode": "None", "Material": "DefaultNoTint|255/255/255/255|"},
+			{"Name": "BirdTitan"},
 			{"Name": "BGCannon1", "Static": false, "CollideMode": "None", "Material": "DefaultNoTint|255/255/255/255|"},
 			{"Name": "BirdsFX1", "Static": false, "CollideMode": "None", "Material": "DefaultNoTint|255/255/255/255|"},
 			{"Name": "BirdsFX1b", "Variant": "BirdsFX1", "Static": false, "CollideMode": "None", "Material": "DefaultNoTint|255/255/255/255|"},
