@@ -29,8 +29,6 @@ namespace GameManagers
         private static readonly List<string> HumanSpawnTags = new List<string> { MapTags.HumanSpawnPoint, MapTags.HumanSpawnPointBlue, MapTags.HumanSpawnPointRed };
         
         private SkyboxCustomSkinLoader _skyboxCustomSkinLoader;
-        //private ForestCustomSkinLoader _forestCustomSkinLoader;
-        //private CityCustomSkinLoader _cityCustomSkinLoader;
         private GeneralInputSettings _generalInputSettings;
         private InGameMenu _inGameMenu;
         public HashSet<Human> Humans = new HashSet<Human>();

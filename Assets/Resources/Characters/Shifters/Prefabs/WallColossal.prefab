@@ -2223,6 +2223,8 @@ MonoBehaviour:
   PreviousHumanGas: 0
   DeathAnimationLength: 2
   WarningSteamTime: 3
+  SteamDamageInterval: 0.1
+  SteamDamagePerSecond: 100
   MaxLeftHandHealth: 1000
   MaxRightHandHealth: 1000
   CurrentLeftHandHealth: 1000

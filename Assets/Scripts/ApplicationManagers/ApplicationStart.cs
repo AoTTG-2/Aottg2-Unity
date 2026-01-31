@@ -12,6 +12,7 @@ using Photon.Pun;
 using Settings;
 using System.Globalization;
 using System.Threading;
+using TMPro;
 using UI;
 using UnityEngine;
 using Utility;
@@ -57,6 +58,7 @@ namespace ApplicationManagers
             SettingsManager.Init();
             FullscreenHandler.Init();
             UIManager.Init();
+            PrewarmTextMeshPro();
             SnapshotManager.Init();
             CursorManager.Init();
             WeatherManager.Init();
@@ -89,6 +91,18 @@ namespace ApplicationManagers
             if (ApplicationConfig.DevelopmentMode)
                 DebugTesting.RunLateTests();
             DiscordManager.Init();
+        }
+
+        /// <summary>
+        /// Pre-warms TextMeshPro by creating a temporary component.
+        /// This forces TMP to load its resources during startup instead of on first use,
+        /// preventing the blocking Resources.Load call from happening during gameplay.
+        /// </summary>
+        private static void PrewarmTextMeshPro()
+        {
+            var tempGO = new GameObject("TMP_Prewarm");
+            var tmp = tempGO.AddComponent<TextMeshProUGUI>();
+            Object.Destroy(tempGO);
         }
     }
 }
