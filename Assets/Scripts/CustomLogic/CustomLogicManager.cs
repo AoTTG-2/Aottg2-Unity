@@ -37,6 +37,14 @@ namespace CustomLogic
         public static Dictionary<string, object> PersistentData = new Dictionary<string, object>();
         public static HashSet<string> GeneralComponents = new HashSet<string>();
         public static HashSet<string> InternalComponents = new HashSet<string>();
+        public static bool IsWaitingForRestart => _hasRestarted;
+        private static bool _hasRestarted = false;
+
+        public static void WaitForRestart()
+        {
+            _hasRestarted = false;
+            Evaluator = null;
+        }
 
         public override void OnJoinedRoom()
         {
@@ -74,6 +82,7 @@ namespace CustomLogic
         private static void OnPreLoadScene(SceneName sceneName)
         {
             _instance.StopAllCoroutines();
+            _hasRestarted = true;
             Evaluator = null;
             Compiler = null;
             LogicLoaded = false;

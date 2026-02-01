@@ -399,6 +399,7 @@ namespace GameManagers
         public override void OnMasterClientSwitched(Player newMasterClient)
         {
             ChatManager.AddLine("Master client has switched to " + newMasterClient.GetCustomProperty(PlayerProperty.Name) + ".", ChatTextColor.System);
+            CustomLogicManager.WaitForRestart();
             if (PhotonNetwork.IsMasterClient)
             {
                 RestartGame();

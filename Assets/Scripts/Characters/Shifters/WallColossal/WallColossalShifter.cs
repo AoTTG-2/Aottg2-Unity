@@ -70,6 +70,8 @@ namespace Characters
                 Cache.PhotonView.RPC(nameof(SetRightHandStateRPC), player, new object[] { (byte)_rightHandState });
                 Cache.PhotonView.RPC(nameof(SetSteamStateRPC), player, new object[] { (byte)_steamState });
                 Cache.PhotonView.RPC(nameof(SetStunStateRPC), player, new object[] { (byte)_stunState });
+                Cache.PhotonView.RPC(nameof(SetHandSeverTimesRPC), player, new object[] { LeftHandSeverTimeLeft, RightHandSeverTimeLeft });
+                Cache.PhotonView.RPC(nameof(SetStunRecoveryTimesRPC), player, new object[] { StunTimeLeft, RecoveryTimeLeft });
             }
         }
 
@@ -131,6 +133,7 @@ namespace Characters
                     //DebugConsole.Log($"[WallColossal] Left Hand: Healthy -> Severed (Health: {CurrentLeftHandHealth}/{MaxLeftHandHealth})", false);
                     LeftHandSeverTimeLeft = HandSeverWindow;
                     photonView.RPC(nameof(SetLeftHandStateRPC), RpcTarget.All, new object[] { (byte)ColossalHandState.Severed });
+                    photonView.RPC(nameof(SetHandSeverTimesRPC), RpcTarget.All, new object[] { LeftHandSeverTimeLeft, RightHandSeverTimeLeft });
                     CheckStunCondition();
                 }
             }
@@ -141,6 +144,7 @@ namespace Characters
                     //DebugConsole.Log($"[WallColossal] Left Hand: Damaged -> Severed (Health: {CurrentLeftHandHealth}/{MaxLeftHandHealth})", false);
                     LeftHandSeverTimeLeft = HandSeverWindow;
                     photonView.RPC(nameof(SetLeftHandStateRPC), RpcTarget.All, new object[] { (byte)ColossalHandState.Severed });
+                    photonView.RPC(nameof(SetHandSeverTimesRPC), RpcTarget.All, new object[] { LeftHandSeverTimeLeft, RightHandSeverTimeLeft });
                     CheckStunCondition();
                 }
             }
@@ -174,6 +178,7 @@ namespace Characters
                     //DebugConsole.Log($"[WallColossal] Right Hand: Healthy -> Severed (Health: {CurrentRightHandHealth}/{MaxRightHandHealth})", false);
                     RightHandSeverTimeLeft = HandSeverWindow;
                     photonView.RPC(nameof(SetRightHandStateRPC), RpcTarget.All, new object[] { (byte)ColossalHandState.Severed });
+                    photonView.RPC(nameof(SetHandSeverTimesRPC), RpcTarget.All, new object[] { LeftHandSeverTimeLeft, RightHandSeverTimeLeft });
                     CheckStunCondition();
                 }
             }
@@ -184,6 +189,7 @@ namespace Characters
                     //DebugConsole.Log($"[WallColossal] Right Hand: Damaged -> Severed (Health: {CurrentRightHandHealth}/{MaxRightHandHealth})", false);
                     RightHandSeverTimeLeft = HandSeverWindow;
                     photonView.RPC(nameof(SetRightHandStateRPC), RpcTarget.All, new object[] { (byte)ColossalHandState.Severed });
+                    photonView.RPC(nameof(SetHandSeverTimesRPC), RpcTarget.All, new object[] { LeftHandSeverTimeLeft, RightHandSeverTimeLeft });
                     CheckStunCondition();
                 }
             }
@@ -232,6 +238,7 @@ namespace Characters
             if (IsMine())
             {
                 photonView.RPC(nameof(SetStunStateRPC), RpcTarget.All, new object[] { (byte)ColossalStunState.Stunned });
+                photonView.RPC(nameof(SetStunRecoveryTimesRPC), RpcTarget.All, new object[] { StunTimeLeft, 0f });
             }
         }
 
@@ -290,6 +297,26 @@ namespace Characters
             if (info.Sender == photonView.Owner)
             {
                 ApplyStunState((ColossalStunState)state);
+            }
+        }
+
+        [PunRPC]
+        public void SetHandSeverTimesRPC(float leftTime, float rightTime, PhotonMessageInfo info)
+        {
+            if (info.Sender == photonView.Owner)
+            {
+                LeftHandSeverTimeLeft = leftTime;
+                RightHandSeverTimeLeft = rightTime;
+            }
+        }
+
+        [PunRPC]
+        public void SetStunRecoveryTimesRPC(float stunTime, float recoveryTime, PhotonMessageInfo info)
+        {
+            if (info.Sender == photonView.Owner)
+            {
+                StunTimeLeft = stunTime;
+                RecoveryTimeLeft = recoveryTime;
             }
         }
 
@@ -612,71 +639,85 @@ namespace Characters
 
         protected void UpdateHandSeverWindows()
         {
-            if (!IsMine())
-                return;
-
             if (_stunState != ColossalStunState.None)
                 return;
 
-            if (_leftHandState == ColossalHandState.Severed)
+            if (_leftHandState == ColossalHandState.Severed && LeftHandSeverTimeLeft > 0f)
             {
                 LeftHandSeverTimeLeft -= Time.deltaTime;
 
                 if (LeftHandSeverTimeLeft <= 0f)
                 {
-                    //DebugConsole.Log($"[WallColossal] Left Hand sever window expired - recovering independently", false);
-                    SetCurrentLeftHandHealth(MaxLeftHandHealth);
-                    photonView.RPC(nameof(SetLeftHandStateRPC), RpcTarget.All, new object[] { (byte)ColossalHandState.Healthy });
                     LeftHandSeverTimeLeft = 0f;
+                    
+                    if (IsMine())
+                    {
+                        //DebugConsole.Log($"[WallColossal] Left Hand sever window expired - recovering independently", false);
+                        SetCurrentLeftHandHealth(MaxLeftHandHealth);
+                        photonView.RPC(nameof(SetLeftHandStateRPC), RpcTarget.All, new object[] { (byte)ColossalHandState.Healthy });
+                    }
                 }
             }
 
-            if (_rightHandState == ColossalHandState.Severed)
+            if (_rightHandState == ColossalHandState.Severed && RightHandSeverTimeLeft > 0f)
             {
                 RightHandSeverTimeLeft -= Time.deltaTime;
 
                 if (RightHandSeverTimeLeft <= 0f)
                 {
-                    //DebugConsole.Log($"[WallColossal] Right Hand sever window expired - recovering independently", false);
-                    SetCurrentRightHandHealth(MaxRightHandHealth);
-                    photonView.RPC(nameof(SetRightHandStateRPC), RpcTarget.All, new object[] { (byte)ColossalHandState.Healthy });
                     RightHandSeverTimeLeft = 0f;
+                    
+                    if (IsMine())
+                    {
+                        //DebugConsole.Log($"[WallColossal] Right Hand sever window expired - recovering independently", false);
+                        SetCurrentRightHandHealth(MaxRightHandHealth);
+                        photonView.RPC(nameof(SetRightHandStateRPC), RpcTarget.All, new object[] { (byte)ColossalHandState.Healthy });
+                    }
                 }
             }
         }
 
         protected void UpdateStunRecovery()
         {
-            if (!IsMine())
-                return;
-
-            if (_stunState == ColossalStunState.Stunned)
+            if (_stunState == ColossalStunState.Stunned && StunTimeLeft > 0f)
             {
                 StunTimeLeft -= Time.deltaTime;
 
                 if (StunTimeLeft <= 0f)
                 {
-                    //DebugConsole.Log($"[WallColossal] Stun State: Stunned -> Recovering (Duration: {RecoveryDuration}s)", false);
-                    RecoveryTimeLeft = RecoveryDuration;
-                    photonView.RPC(nameof(SetStunStateRPC), RpcTarget.All, new object[] { (byte)ColossalStunState.Recovering });
-                    photonView.RPC(nameof(SetLeftHandStateRPC), RpcTarget.All, new object[] { (byte)ColossalHandState.Recovering });
-                    photonView.RPC(nameof(SetRightHandStateRPC), RpcTarget.All, new object[] { (byte)ColossalHandState.Recovering });
+                    StunTimeLeft = 0f;
+                    
+                    if (IsMine())
+                    {
+                        //DebugConsole.Log($"[WallColossal] Stun State: Stunned -> Recovering (Duration: {RecoveryDuration}s)", false);
+                        RecoveryTimeLeft = RecoveryDuration;
+                        photonView.RPC(nameof(SetStunStateRPC), RpcTarget.All, new object[] { (byte)ColossalStunState.Recovering });
+                        photonView.RPC(nameof(SetLeftHandStateRPC), RpcTarget.All, new object[] { (byte)ColossalHandState.Recovering });
+                        photonView.RPC(nameof(SetRightHandStateRPC), RpcTarget.All, new object[] { (byte)ColossalHandState.Recovering });
+                        photonView.RPC(nameof(SetStunRecoveryTimesRPC), RpcTarget.All, new object[] { 0f, RecoveryTimeLeft });
+                    }
                 }
             }
-            else if (_stunState == ColossalStunState.Recovering)
+            else if (_stunState == ColossalStunState.Recovering && RecoveryTimeLeft > 0f)
             {
                 RecoveryTimeLeft -= Time.deltaTime;
 
                 if (RecoveryTimeLeft <= 0f)
                 {
-                    //DebugConsole.Log($"[WallColossal] Recovery complete - returning to normal state", false);
-                    SetCurrentLeftHandHealth(MaxLeftHandHealth);
-                    SetCurrentRightHandHealth(MaxRightHandHealth);
-                    photonView.RPC(nameof(SetStunStateRPC), RpcTarget.All, new object[] { (byte)ColossalStunState.None });
-                    photonView.RPC(nameof(SetLeftHandStateRPC), RpcTarget.All, new object[] { (byte)ColossalHandState.Healthy });
-                    photonView.RPC(nameof(SetRightHandStateRPC), RpcTarget.All, new object[] { (byte)ColossalHandState.Healthy });
-                    LeftHandSeverTimeLeft = 0f;
-                    RightHandSeverTimeLeft = 0f;
+                    RecoveryTimeLeft = 0f;
+                    
+                    if (IsMine())
+                    {
+                        //DebugConsole.Log($"[WallColossal] Recovery complete - returning to normal state", false);
+                        SetCurrentLeftHandHealth(MaxLeftHandHealth);
+                        SetCurrentRightHandHealth(MaxRightHandHealth);
+                        photonView.RPC(nameof(SetStunStateRPC), RpcTarget.All, new object[] { (byte)ColossalStunState.None });
+                        photonView.RPC(nameof(SetLeftHandStateRPC), RpcTarget.All, new object[] { (byte)ColossalHandState.Healthy });
+                        photonView.RPC(nameof(SetRightHandStateRPC), RpcTarget.All, new object[] { (byte)ColossalHandState.Healthy });
+                        LeftHandSeverTimeLeft = 0f;
+                        RightHandSeverTimeLeft = 0f;
+                        photonView.RPC(nameof(SetHandSeverTimesRPC), RpcTarget.All, new object[] { 0f, 0f });
+                    }
                 }
             }
         }

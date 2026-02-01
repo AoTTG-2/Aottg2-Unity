@@ -152,6 +152,8 @@ MonoBehaviour:
   - ToggleFire1RPC
   - SetSteamStateRPC
   - SetStunStateRPC
+  - SetHandSeverTimesRPC
+  - SetStunRecoveryTimesRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
