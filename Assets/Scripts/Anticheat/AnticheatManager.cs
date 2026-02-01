@@ -68,38 +68,39 @@ namespace Anticheat
             }
         }
 
-        public static void IPBan(Player player)
-        {
-            if (!HasModPassword())
-                return;
-            if (player == PhotonNetwork.LocalPlayer)
-                return;
-            PhotonNetwork.DestroyPlayerObjects(player);
-            PhotonNetwork.IPBan(player);
-        }
+        // Not implemented...
+        //public static void IPBan(Player player)
+        //{
+        //    if (!HasModPassword())
+        //        return;
+        //    if (player == PhotonNetwork.LocalPlayer)
+        //        return;
+        //    PhotonNetwork.DestroyPlayerObjects(player);
+        //    PhotonNetwork.IPBan(player);
+        //}
 
-        public static void IPUnban(string ip)
-        {
-            if (!HasModPassword())
-                return;
-            PhotonNetwork.IPUnban(ip);
-        }
+        //public static void IPUnban(string ip)
+        //{
+        //    if (!HasModPassword())
+        //        return;
+        //    PhotonNetwork.IPUnban(ip);
+        //}
 
-        public static void Superban(Player player)
-        {
-            if (!HasModPassword())
-                return;
-            if (player == PhotonNetwork.LocalPlayer)
-                return;
-            PhotonNetwork.Superban(player);
-        }
+        //public static void Superban(Player player)
+        //{
+        //    if (!HasModPassword())
+        //        return;
+        //    if (player == PhotonNetwork.LocalPlayer)
+        //        return;
+        //    PhotonNetwork.Superban(player);
+        //}
 
-        public static void ClearSuperbans()
-        {
-            if (!HasModPassword())
-                return;
-            PhotonNetwork.ClearSuperbans();
-        }
+        //public static void ClearSuperbans()
+        //{
+        //    if (!HasModPassword())
+        //        return;
+        //    PhotonNetwork.ClearSuperbans();
+        //}
 
         public static BallotBox.Result TryVoteKickPlayer(Player voter, Player target)
         {
