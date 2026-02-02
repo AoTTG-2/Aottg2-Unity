@@ -1996,11 +1996,37 @@ component PointLight
         self._light.BounceIntensity = 0.0; # Point lights do not support bounce intensity
     }
 
-    function OnTick()
+    function SetColor(color)
     {
-        self._light.Color = self.Color;
-        self._light.Intensity = self.Intensity;
-        self._light.Range = self.Range;
+        self.Color = color;
+        self._light.Color = color;
+    }
+
+    function GetColor(color)
+    {
+        return self.Color;
+    }
+    
+    function SetIntensity(intensity)
+    {
+        self.Intensity = intensity;
+        self._light.Intensity = intensity;
+    }
+
+    function GetIntensity()
+    {
+        return self.Intensity;
+    }
+    
+    function SetRange(range)
+    {
+        self.Range = range;
+        self._light.Range = range;
+    }
+
+    function GetRange()
+    {
+        return self.Range;
     }
 }
 
