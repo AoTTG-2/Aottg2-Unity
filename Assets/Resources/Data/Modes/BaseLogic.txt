@@ -1995,6 +1995,13 @@ component PointLight
         self._light.ShadowType = self._light.ShadowTypeNone; # Point lights do not support shadows
         self._light.BounceIntensity = 0.0; # Point lights do not support bounce intensity
     }
+
+    function OnTick()
+    {
+        self._light.Color = self.Color;
+        self._light.Intensity = self.Intensity;
+        self._light.Range = self.Range;
+    }
 }
 
 # internal

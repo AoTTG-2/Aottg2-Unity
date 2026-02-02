@@ -92,9 +92,11 @@ namespace Map
             _instance.StartCoroutine(_instance.LoadObjectsCoroutine(customAssets, objects, editor));
         }
 
-        public static void RegisterMapLight(Light light, bool isDaylight)
+        public static MapLight RegisterMapLight(Light light, bool isDaylight)
         {
-            MapLights.Add(new MapLight(light, isDaylight));
+            MapLight mapLight = new MapLight(light, isDaylight);
+            MapLights.Add(mapLight);
+            return mapLight;
         }
 
         public static MapObject FindObjectFromCollider(Collider collider)
