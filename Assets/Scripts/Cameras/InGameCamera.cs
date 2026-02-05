@@ -337,6 +337,9 @@ namespace Cameras
             Cache.Transform.position += Vector3.up * GetHeightDistance() * SettingsManager.GeneralSettings.CameraHeight.Value;
             float height = cameraDistance == 0f ? 0.6f : cameraDistance;
             Cache.Transform.position -= Vector3.up * (0.6f - height) * 2f;
+
+            bool isNapeLocked = _napeLock && (_napeLockTitan != null);
+
             if (!ChatManager.IsChatActive() && !InGameMenu.InMenu() && !CustomLogicManager.CameraLocked)
             {
                 float sensitivity = SettingsManager.GeneralSettings.MouseSpeed.Value;
@@ -369,8 +372,9 @@ namespace Cameras
                     }
                     float rotationX = 0.5f * (280f * (Screen.height * 0.6f - inputY)) / Screen.height;
                     Cache.Transform.rotation = Quaternion.Euler(rotationX, Cache.Transform.rotation.eulerAngles.y, Cache.Transform.rotation.eulerAngles.z);
+                    Cache.Transform.position -= Cache.Transform.forward * DistanceMultiplier * _anchorDistance * offset;
                 }
-                if (!_napeLock || _napeLockTitan == null)
+                if (!isNapeLocked)
                 {
                     if (CurrentCameraMode == CameraInputMode.TPS || CurrentCameraMode == CameraInputMode.FPS)
                     {
@@ -383,14 +387,11 @@ namespace Cameras
                         bool rotateDown = inputY >= 0f || ((angleY <= 280f || sumY >= 280f) && (angleY <= 100f || sumY >= 100f));
                         if (rotateUp && rotateDown)
                             Cache.Transform.RotateAround(Cache.Transform.position, Cache.Transform.right, inputY);
+                        Cache.Transform.position -= Cache.Transform.forward * DistanceMultiplier * _anchorDistance * offset;
                     }
                 }
             }
-            if (CurrentCameraMode != CameraInputMode.Original || !_napeLock || _napeLockTitan == null)
-            {
-                Cache.Transform.position -= Cache.Transform.forward * DistanceMultiplier * _anchorDistance * offset;
-            }
-            if (_napeLock && (_napeLockTitan != null))
+            if (isNapeLocked)
             {
                 float z = Cache.Transform.eulerAngles.z;
                 Transform neck = _napeLockTitan.BaseTitanCache.Neck;
