@@ -66,10 +66,40 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 0e4a30d671b295e40a0875ddbaf6209f, type: 2}
     - target: {fileID: 919132149155446097, guid: f0fc69bee7323df4ba3eab350688bb86, type: 3}
       propertyPath: m_Name
-      value: BirdTitanMesh
+      value: BirdTitan
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f0fc69bee7323df4ba3eab350688bb86, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1077644447420465801}
   m_SourcePrefab: {fileID: 100100000, guid: f0fc69bee7323df4ba3eab350688bb86, type: 3}
+--- !u!1 &2229540061752732072 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: f0fc69bee7323df4ba3eab350688bb86, type: 3}
+  m_PrefabInstance: {fileID: 1310973063856854265}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &1077644447420465801
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2229540061752732072}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 7640203330144653433, guid: f0fc69bee7323df4ba3eab350688bb86, type: 3}
