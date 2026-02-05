@@ -2619,6 +2619,7 @@ component Wagon
             if (human != null && human.Type == "Human")
             {
                 human.MountTransform(self._horse, Vector3(0, 1.95, 0), Vector3.Zero, Game.GetMiscSetting("HorsebackCombat"));
+                human.HorseFollowEnabled = false;
                 self._human = human;
             }
         }
@@ -2766,6 +2767,7 @@ component Wagon
             {
                 self._delayUnmount = false;
                 self._human.Unmount(false);
+                self._human.HorseFollowEnabled = true;
             }
         }
         else
@@ -2834,6 +2836,7 @@ component Wagon
             if (Input.GetKeyDown(InputInteractionEnum.Interact))
             {
                 self._human.Unmount();
+                self._human.HorseFollowEnabled = true;
                 self._riding = false;
             }
             else
@@ -2851,6 +2854,7 @@ component Wagon
                     {
                         self._inUse = true;
                         self._collidingHuman.MountTransform(self._horse, Vector3(0, 1.95, 0), Vector3.Zero, Game.GetMiscSetting("HorsebackCombat"));
+                        self._collidingHuman.HorseFollowEnabled = false;
                         self._human = self._collidingHuman;
                     }
                     else
@@ -2875,6 +2879,7 @@ component Wagon
                     posA = self._leftSitTransform.LocalPosition;
                     posB = self._rightSitTransform.LocalPosition;
                     self._human.MountMapObject(self.MapObject, Random.RandomVector3(posA, posB), Vector3(0, 0, 0));
+                    self._human.HorseFollowEnabled = false;
                 }
             }
         }
@@ -2882,7 +2887,9 @@ component Wagon
 
     function UpdateHorse()
     {
-        if (self._rigidbody.Velocity.Magnitude > 1)
+        velocity = self._rigidbody.Velocity;
+        horizontalVelocity = Vector3(velocity.X, 0, velocity.Z);
+        if (horizontalVelocity.Magnitude > 1)
         {
             self._horse.PlayAnimation(HorseAnimationEnum.Run);
             self._dust.ToggleParticle(true);
