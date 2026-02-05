@@ -372,7 +372,7 @@ namespace Cameras
                     }
                     float rotationX = 0.5f * (280f * (Screen.height * 0.6f - inputY)) / Screen.height;
                     Cache.Transform.rotation = Quaternion.Euler(rotationX, Cache.Transform.rotation.eulerAngles.y, Cache.Transform.rotation.eulerAngles.z);
-                    Cache.Transform.position -= Cache.Transform.forward * DistanceMultiplier * _anchorDistance * offset;
+                    //Cache.Transform.position -= Cache.Transform.forward * DistanceMultiplier * _anchorDistance * offset;
                 }
                 if (!isNapeLocked)
                 {
@@ -387,24 +387,26 @@ namespace Cameras
                         bool rotateDown = inputY >= 0f || ((angleY <= 280f || sumY >= 280f) && (angleY <= 100f || sumY >= 100f));
                         if (rotateUp && rotateDown)
                             Cache.Transform.RotateAround(Cache.Transform.position, Cache.Transform.right, inputY);
-                        Cache.Transform.position -= Cache.Transform.forward * DistanceMultiplier * _anchorDistance * offset;
+                        //Cache.Transform.position -= Cache.Transform.forward * DistanceMultiplier * _anchorDistance * offset;
                     }
                 }
             }
+            Cache.Transform.position -= Cache.Transform.forward * DistanceMultiplier * _anchorDistance * offset;
             if (isNapeLocked)
             {
                 float z = Cache.Transform.eulerAngles.z;
                 Transform neck = _napeLockTitan.BaseTitanCache.Neck;
                 Cache.Transform.LookAt(_follow.GetCameraAnchor().position * 0.8f + neck.position * 0.2f);
                 Cache.Transform.localEulerAngles = new Vector3(Cache.Transform.eulerAngles.x, Cache.Transform.eulerAngles.y, z);
-                if (CurrentCameraMode != CameraInputMode.Original)
-                    Cache.Transform.position -= Cache.Transform.forward * DistanceMultiplier * _anchorDistance * offset;
+                //if (CurrentCameraMode != CameraInputMode.Original)
+                //    Cache.Transform.position -= Cache.Transform.forward * DistanceMultiplier * _anchorDistance * offset;
                 if (_napeLockTitan.Dead)
                 {
                     _napeLockTitan = null;
                     _napeLock = false;
                 }
             }
+            
             Cache.Transform.position += Cache.Transform.right * (SettingsManager.GeneralSettings.CameraSide.Value - 1f);
             UpdateShake();
         }
