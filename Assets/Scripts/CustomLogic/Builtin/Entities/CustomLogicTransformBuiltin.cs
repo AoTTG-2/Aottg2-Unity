@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Video;
 
 namespace CustomLogic
 {
@@ -20,6 +21,7 @@ namespace CustomLogic
         private readonly CustomLogicAnimationBuiltin _animation;
         private readonly CustomLogicAnimatorBuiltin _animator;
         private readonly CustomLogicAudioSourceBuiltin _audioSource;
+        private readonly CustomLogicVideoPlayerBuiltin _videoPlayer;
         private readonly ParticleSystem _particleSystem;
         // private readonly Renderer _renderer;
 
@@ -31,6 +33,8 @@ namespace CustomLogic
 
             if (Value.TryGetComponent<AudioSource>(out var audioSource))
                 _audioSource = new CustomLogicAudioSourceBuiltin(this, audioSource);
+            if(Value.TryGetComponent<VideoPlayer>(out var videoPlayer))
+                _videoPlayer = new CustomLogicVideoPlayerBuiltin(this, videoPlayer);
             if (Value.TryGetComponent<Animation>(out var animation))
                 _animation = new CustomLogicAnimationBuiltin(this, animation);
             else if (Value.TryGetComponent<Animator>(out var animator))
@@ -236,6 +240,15 @@ namespace CustomLogic
         public CustomLogicAudioSourceBuiltin AudioSource
         {
             get => _audioSource;
+        }
+
+        /// <summary>
+        /// The VideoPlayer attached to this transform, returns null if there is none.
+        /// </summary>
+        [CLProperty]
+        public CustomLogicVideoPlayerBuiltin VideoPlayer
+        {
+            get => _videoPlayer;
         }
 
         /// <summary>
