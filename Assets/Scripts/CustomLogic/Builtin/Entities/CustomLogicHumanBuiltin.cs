@@ -147,6 +147,24 @@ namespace CustomLogic
             set => Human.Stats.Speed = value;
         }
 
+        [CLProperty]
+        public bool HorseFollowEnabled
+        {
+            get
+            {
+                Horse horse = Human.Horse;
+                if (horse != null)
+                    return horse.FollowingEnabled;
+                return false;
+            }
+            set
+            {
+                Horse horse = Human.Horse;
+                if (horse != null)
+                    horse.FollowingEnabled = value;
+            }
+        }
+
         /// <summary>
         /// The transform of the horse belonging to this human. Returns null if horses are disabled.
         /// </summary>

@@ -30,6 +30,8 @@ namespace CustomLogic
         /// </summary>
         public int EndLine { get; internal set; }
 
+        public int MapLogicOffset { get; internal set; } = 0;
+
         public CustomLogicSourceFile(string name, string content, CustomLogicSourceType type)
         {
             Name = name;
@@ -37,6 +39,17 @@ namespace CustomLogic
             Type = type;
             StartLine = 0;
             EndLine = 0;
+            MapLogicOffset = 0;
+        }
+
+        public CustomLogicSourceFile(string name, string content, CustomLogicSourceType type, int mapLogicOffset)
+        {
+            Name = name;
+            Content = content;
+            Type = type;
+            StartLine = 0;
+            EndLine = 0;
+            MapLogicOffset = mapLogicOffset;
         }
 
         /// <summary>

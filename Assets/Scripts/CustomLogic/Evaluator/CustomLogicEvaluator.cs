@@ -57,6 +57,11 @@ namespace CustomLogic
         /// Stack of currently executing methods (used for error tracking).
         /// </summary>
         private Stack<(string className, string methodName, CustomLogicSourceType? ns)> _executionStack = new Stack<(string, string, CustomLogicSourceType?)>();
+        
+        /// <summary>
+        /// Current line number being executed (used for error tracking).
+        /// </summary>
+        private int _currentLineNumber = 0;
 
         public CustomLogicEvaluator(CustomLogicStartAst start, CustomLogicCompiler compiler = null)
         {
@@ -167,6 +172,9 @@ namespace CustomLogic
             ConditionalEvalState conditionalState = ConditionalEvalState.None;
             foreach (CustomLogicBaseAst statement in statements)
             {
+                // Update current line number for error tracking
+                _currentLineNumber = statement.Line;
+                
                 if (statement is CustomLogicAssignmentExpressionAst assignment)
                 {
                     EvaluateAssignmentExpression(classInstance, localVariables, assignment);
@@ -304,6 +312,9 @@ namespace CustomLogic
             result = null;
             foreach (CustomLogicBaseAst statement in statements)
             {
+                // Update current line number for error tracking
+                _currentLineNumber = statement.Line;
+                
                 if (statement is CustomLogicAssignmentExpressionAst assignment)
                 {
                     EvaluateAssignmentExpression(classInstance, localVariables, assignment);
@@ -461,7 +472,7 @@ namespace CustomLogic
                 if (value is CustomLogicClassInstance instance)
                 {
                     if (instance.HasVariable(copy))
-                        value = EvaluateMethod(instance, copy);
+                        value = EvaluateMethod(instance, copy, callerLineNumber: _currentLineNumber);
                 }
             }
 
@@ -531,8 +542,9 @@ namespace CustomLogic
             return _start.Classes[classInstance.ClassName].Methods.ContainsKey(methodName);
         }
 
-        public object EvaluateMethod(CustomLogicClassInstance classInstance, string methodName, object[] parameterValues = null)
+        public object EvaluateMethod(CustomLogicClassInstance classInstance, string methodName, object[] parameterValues = null, int callerLineNumber = 0)
         {
+            _currentLineNumber = callerLineNumber; // Reset here since we don't know the caller context.
             if (parameterValues == null)
                 parameterValues = EmptyArgs;
             try
@@ -589,6 +601,8 @@ namespace CustomLogic
                 }
                 else
                 {
+                    // Update current line number to method definition line
+                    _currentLineNumber = methodAst.Line;
 
                     // Push current method onto execution stack for error tracking
                     if (CaptureErrors)
@@ -613,6 +627,7 @@ namespace CustomLogic
             }
             catch (TargetInvocationException e)
             {
+                string lineInfo = GetLineNumberString(_currentLineNumber);
                 string errorMessage = "Custom logic runtime error at method " + methodName + " in class " + classInstance.ClassName + ": " + e.InnerException?.Message;
                 if (CaptureErrors)
                 {
@@ -620,8 +635,8 @@ namespace CustomLogic
                         e.InnerException?.Message ?? e.Message,
                         classInstance.ClassName,
                         methodName,
-                        0, // No line number for method-level errors
-                        "",
+                        _currentLineNumber,
+                        lineInfo,
                         classInstance.Namespace
                     ));
                 }
@@ -633,15 +648,16 @@ namespace CustomLogic
             }
             catch (Exception e)
             {
-                string errorMessage = "Custom logic runtime error at method " + methodName + " in class " + classInstance.ClassName + ": " + e.Message;
+                string lineInfo = GetLineNumberString(_currentLineNumber);
+                string errorMessage = "Custom logic runtime error at line " + lineInfo + " at method " + methodName + " in class " + classInstance.ClassName + ": " + e.Message;
                 if (CaptureErrors)
                 {
                     CapturedErrors.Add(new CustomLogicError(
                         e.Message,
                         classInstance.ClassName,
                         methodName,
-                        0,
-                        "",
+                        _currentLineNumber,
+                        lineInfo,
                         classInstance.Namespace
                     ));
                 }
@@ -666,6 +682,8 @@ namespace CustomLogic
             {
                 if (ast.Coroutine)
                 {
+                    // Update current line number to method definition line
+                    _currentLineNumber = ast.Line;
                     Dictionary<string, object> localVariables = new Dictionary<string, object>();
                     int maxValues = Math.Min(parameterValues.Length, ast.ParameterNames.Count);
                     for (int i = 0; i < maxValues; i++)
@@ -676,6 +694,9 @@ namespace CustomLogic
                 }
                 else
                 {
+                    // Update current line number to method definition line
+                    _currentLineNumber = ast.Line;
+                    
                     // Push current method onto execution stack for error tracking
                     if (CaptureErrors)
                         _executionStack.Push((classInstance.ClassName, methodName, classInstance.Namespace));
@@ -699,7 +720,7 @@ namespace CustomLogic
             }
             catch (TargetInvocationException e)
             {
-                string lineInfo = GetLineNumberString(userMethod.Ast.Line);
+                string lineInfo = GetLineNumberString(_currentLineNumber);
                 string errorMessage = "Custom logic runtime error at method " + methodName + " in class " + classInstance.ClassName + ": " + e.InnerException?.Message;
                 if (CaptureErrors)
                 {
@@ -707,7 +728,7 @@ namespace CustomLogic
                         e.InnerException?.Message ?? e.Message,
                         classInstance.ClassName,
                         methodName,
-                        userMethod.Ast.Line,
+                        _currentLineNumber,
                         lineInfo,
                         classInstance.Namespace
                     ));
@@ -720,7 +741,7 @@ namespace CustomLogic
             }
             catch (Exception e)
             {
-                string lineInfo = GetLineNumberString(userMethod.Ast.Line);
+                string lineInfo = GetLineNumberString(_currentLineNumber);
                 string errorMessage = "Custom logic runtime error at line " + lineInfo + " at method " + methodName + " in class " + classInstance.ClassName + ": " + e.Message;
                 if (CaptureErrors)
                 {
@@ -728,7 +749,7 @@ namespace CustomLogic
                         e.Message,
                         classInstance.ClassName,
                         methodName,
-                        userMethod.Ast.Line,
+                        _currentLineNumber,
                         lineInfo,
                         classInstance.Namespace
                     ));
@@ -743,6 +764,9 @@ namespace CustomLogic
 
         private object EvaluateExpression(CustomLogicClassInstance classInstance, Dictionary<string, object> localVariables, CustomLogicBaseExpressionAst expression)
         {
+            // Update current line number for error tracking
+            _currentLineNumber = expression.Line;
+            
             try
             {
                 if (expression.Type == CustomLogicAstType.PrimitiveExpression)
@@ -843,7 +867,7 @@ namespace CustomLogic
                         CustomLogicBaseExpressionAst parameterExpression = (CustomLogicBaseExpressionAst)methodCallExpression.Parameters[i];
                         parameters[i] = EvaluateExpression(classInstance, localVariables, parameterExpression);
                     }
-                    var result = EvaluateMethod(methodCallInstance, methodCallExpression.Name, parameters);
+                    var result = EvaluateMethod(methodCallInstance, methodCallExpression.Name, parameters, _currentLineNumber);
                     ArrayPool<object>.Free(parameters);
                     return result;
                 }
@@ -875,7 +899,7 @@ namespace CustomLogic
             }
             catch (Exception e)
             {
-                string lineInfo = GetLineNumberString(expression.Line);
+                string lineInfo = GetLineNumberString(_currentLineNumber);
                 string errorMessage = "Custom logic runtime error at line " + lineInfo + ": " + e.Message;
                 
                 if (CaptureErrors)
@@ -894,7 +918,7 @@ namespace CustomLogic
                         e.Message,
                         classInstance.ClassName,
                         currentMethod,
-                        expression.Line,
+                        _currentLineNumber,
                         lineInfo,
                         currentNamespace
                     ));
@@ -951,7 +975,7 @@ namespace CustomLogic
                 object[] parameters = ArrayPool<object>.New(2);
                 parameters[0] = left;
                 parameters[1] = right;
-                var result = EvaluateMethod(instance, method, parameters);
+                var result = EvaluateMethod(instance, method, parameters, _currentLineNumber);
                 ArrayPool<object>.Free(parameters);
                 return result;
             }
@@ -1047,7 +1071,7 @@ namespace CustomLogic
                 object[] parameters = ArrayPool<object>.New(2);
                 parameters[0] = left;
                 parameters[1] = right;
-                var result = EvaluateMethod((CustomLogicClassInstance)left, eq, parameters);
+                var result = EvaluateMethod((CustomLogicClassInstance)left, eq, parameters, _currentLineNumber);
                 ArrayPool<object>.Free(parameters);
                 return (bool)result;
             }
@@ -1056,7 +1080,7 @@ namespace CustomLogic
                 object[] parameters = ArrayPool<object>.New(2);
                 parameters[0] = left;
                 parameters[1] = right;
-                var result = EvaluateMethod((CustomLogicClassInstance)right, eq, parameters);
+                var result = EvaluateMethod((CustomLogicClassInstance)right, eq, parameters, _currentLineNumber);
                 ArrayPool<object>.Free(parameters);
                 return (bool)result;
             }
