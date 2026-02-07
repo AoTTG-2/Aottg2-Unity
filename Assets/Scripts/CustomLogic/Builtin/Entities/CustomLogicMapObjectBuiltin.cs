@@ -387,6 +387,17 @@ namespace CustomLogic
         }
 
         /// <summary>
+        /// Get a custom logic unity component from the object.
+        /// </summary>
+        /// <param name="name">The UnityComponentEnum to get.</param>
+        /// <returns>The component instance, or null if not found.</returns>
+        [CLMethod]
+        public BuiltinComponentInstance GetUnityComponent(string name)
+        {
+            return CustomLogicUnityComponentManager.GetUnityComponentByNameWithMapObjectOwner(this, name);
+        }
+
+        /// <summary>
         /// Set whether a component is enabled.
         /// </summary>
         /// <param name="name">The name of the component.</param>
