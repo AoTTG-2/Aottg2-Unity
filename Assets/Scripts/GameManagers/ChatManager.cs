@@ -285,22 +285,22 @@ namespace GameManagers
         public static void SendChatAll(string message, ChatTextColor color = ChatTextColor.Default)
         {
             string formattedMessage = GetColorString(message, color);
-            RPCManager.PhotonView.RPC(nameof(RPCManager.ChatRPC), RpcTarget.All, new object[] { formattedMessage });
+            RPCManager.PhotonView.RPC(nameof(RPCManager.ChatRPC), RpcTarget.All, new object[] { formattedMessage, DateTime.UtcNow.Ticks });
         }
 
         public static void SendChat(string message, Player player, ChatTextColor color = ChatTextColor.Default)
         {
             string formattedMessage = GetColorString(message, color);
-            RPCManager.PhotonView.RPC(nameof(RPCManager.ChatRPC), player, new object[] { formattedMessage });
+            RPCManager.PhotonView.RPC(nameof(RPCManager.ChatRPC), player, new object[] { formattedMessage, DateTime.UtcNow.Ticks });
         }
 
-        public static void OnChatRPC(string message, PhotonMessageInfo info)
+        public static void OnChatRPC(string message, long senderTimestamp, PhotonMessageInfo info)
         {
             if (InGameManager.MuteText.Contains(info.Sender.ActorNumber))
                 return;
             string clickableId = $"<link=\"{info.Sender.ActorNumber}\">{GetColorString($"[{info.Sender.ActorNumber}]", ChatTextColor.ID)}</link>";
             string formattedMessage = $"{clickableId} {message}";
-            DateTime timestamp = DateTime.UtcNow.AddSeconds(-Util.GetPhotonTimestampDifference(info.SentServerTime, PhotonNetwork.Time));
+            DateTime timestamp = new DateTime(senderTimestamp, DateTimeKind.Utc);
             AddLine(formattedMessage, ChatTextColor.Default, false, timestamp, info.Sender.ActorNumber);
         }
 
@@ -1640,15 +1640,16 @@ namespace GameManagers
                 AddLine("Invalid private message target.", ChatTextColor.Error);
                 return;
             }
-            RPCManager.PhotonView.RPC(nameof(RPCManager.PrivateChatRPC), PhotonNetwork.LocalPlayer, new object[] { message, target.ActorNumber });
-            RPCManager.PhotonView.RPC(nameof(RPCManager.PrivateChatRPC), target, new object[] { message, target.ActorNumber });
+            RPCManager.PhotonView.RPC(nameof(RPCManager.PrivateChatRPC), PhotonNetwork.LocalPlayer, new object[] { message, target.ActorNumber, DateTime.UtcNow.Ticks });
+            RPCManager.PhotonView.RPC(nameof(RPCManager.PrivateChatRPC), target, new object[] { message, target.ActorNumber, DateTime.UtcNow.Ticks });
         }
 
-        public static void OnPrivateChatRPC(string message, int targetID, PhotonMessageInfo info)
+        public static void OnPrivateChatRPC(string message, int targetID, long senderTimestamp, PhotonMessageInfo info)
         {
             int localID = PhotonNetwork.LocalPlayer.ActorNumber;
             int senderID = info.Sender.ActorNumber;
             string senderName = info.Sender.GetStringProperty(PlayerProperty.Name);
+            DateTime timestamp = new DateTime(senderTimestamp, DateTimeKind.Utc);
             if (localID == senderID)
             {
                 Player targetPlayer = PhotonNetwork.CurrentRoom.GetPlayer(targetID);
@@ -1656,7 +1657,7 @@ namespace GameManagers
                 {
                     string targetName = targetPlayer.GetStringProperty(PlayerProperty.Name);
                     AddLine($"{GetColorString("To ", ChatTextColor.System)}{targetName}{GetColorString(": ", ChatTextColor.System)}{message}",
-                        ChatTextColor.Default, false, DateTime.UtcNow.AddSeconds(-Util.GetPhotonTimestampDifference(info.SentServerTime, PhotonNetwork.Time)),
+                        ChatTextColor.Default, false, timestamp,
                         senderID, false, true, targetID);
                     var panel = GetChatPanel();
                     if (panel != null && !panel.IsInPMMode())
@@ -1668,7 +1669,7 @@ namespace GameManagers
             else if (localID == targetID)
             {
                 AddLine($"{GetColorString("From ", ChatTextColor.System)}{senderName}{GetColorString(": ", ChatTextColor.System)}{message}",
-                    ChatTextColor.Default, false, DateTime.UtcNow.AddSeconds(-Util.GetPhotonTimestampDifference(info.SentServerTime, PhotonNetwork.Time)),
+                    ChatTextColor.Default, false, timestamp,
                     senderID, false, true, senderID);
 
                 var panel = GetChatPanel();
