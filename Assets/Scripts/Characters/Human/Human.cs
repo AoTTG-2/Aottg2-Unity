@@ -87,6 +87,7 @@ namespace Characters
         public bool IsWalk;
         private const float MaxVelocityChange = 10f;
         private float _originalDashSpeed;
+        private Vector3 _originalDashDirection;
         public Quaternion _targetRotation;
         private float _wallRunTime = 0f;
         private bool _wallJump = false;
@@ -417,7 +418,8 @@ namespace Characters
                 Stats.UseDashGas();
                 TargetAngle = targetAngle;
                 Vector3 direction = GetTargetDirection();
-                _originalDashSpeed = Cache.Rigidbody.velocity.magnitude;
+                _originalDashDirection = direction;
+                _originalDashSpeed = Vector3.Project(Cache.Rigidbody.velocity, direction).magnitude;
                 _targetRotation = GetTargetRotation();
                 if (!_wallSlide)
                 {
@@ -431,9 +433,9 @@ namespace Characters
                     PlayAnimation(HumanAnimations.Dodge, 0.2f);
                 EffectSpawner.Spawn(EffectPrefabs.GasBurst, Cache.Transform.position, Cache.Transform.rotation);
                 PlaySound(HumanSounds.GasBurst);
-                _dashTimeLeft = 0.5f;
 
                 State = HumanState.AirDodge;
+                _dashTimeLeft = 0.5f;
                 FalseAttack();
                 Cache.Rigidbody.AddForce(direction * 40f, ForceMode.VelocityChange);
                 _dashCooldownLeft = 0.2f;
@@ -448,14 +450,15 @@ namespace Characters
             {
                 Stats.UseDashGas();
                 TargetAngle = targetAngle;
-                _originalDashSpeed = Cache.Rigidbody.velocity.magnitude;
+                _originalDashDirection = direction;
+                _originalDashSpeed = Vector3.Project(Cache.Rigidbody.velocity, direction).magnitude;
                 _targetRotation = Quaternion.LookRotation(direction);
                 Cache.Rigidbody.rotation = _targetRotation;
                 EffectSpawner.Spawn(EffectPrefabs.GasBurst, Cache.Transform.position, Cache.Transform.rotation);
                 PlaySound(HumanSounds.GasBurst);
-                _dashTimeLeft = 0.5f;
                 CrossFade(HumanAnimations.Dash, 0.1f, 0.1f);
                 State = HumanState.AirDodge;
+                _dashTimeLeft = 0.5f;
                 FalseAttack();
                 Cache.Rigidbody.AddForce(direction * 40f, ForceMode.VelocityChange);
                 _dashCooldownLeft = 0.2f;
@@ -1467,14 +1470,18 @@ namespace Characters
                 }
                 else if (State == HumanState.AirDodge)
                 {
-                    if (_dashTimeLeft > 0f)
+                    if (_dashTimeLeft <= 0f)
                     {
-                        _dashTimeLeft -= Time.deltaTime;
-                        if (Cache.Rigidbody.velocity.magnitude > _originalDashSpeed)
-                            Cache.Rigidbody.AddForce(-Cache.Rigidbody.velocity * Time.deltaTime * 1.7f, ForceMode.VelocityChange);
-                    }
-                    else
                         Idle();
+                    }
+                    //if (_dashTimeLeft > 0f)
+                    //{
+                    //    _dashTimeLeft -= Time.deltaTime;
+                    //    if (Cache.Rigidbody.velocity.magnitude > _originalDashSpeed)
+                    //        Cache.Rigidbody.AddForce(-Cache.Rigidbody.velocity * Time.deltaTime * 1.7f, ForceMode.VelocityChange);
+                    //}
+                    //else
+                    //    Idle();
                 }
                 if (CarryState == HumanCarryState.Carry)
                 {
@@ -1571,6 +1578,24 @@ namespace Characters
                 _currentVelocity = Cache.Rigidbody.velocity;
                 GameProgressManager.RegisterSpeed(_currentVelocity.magnitude);
                 CheckGround();
+
+                if (State == HumanState.AirDodge && _dashTimeLeft > 0.0)
+                {
+                    _dashTimeLeft -= Time.deltaTime;
+                    float speedInDashDirection = Vector3.Project(Cache.Rigidbody.velocity, _originalDashDirection).magnitude;
+                    float remainingDashSpeed = speedInDashDirection - _originalDashSpeed;
+                    if (remainingDashSpeed > 0f)
+                    {
+                        if (speedInDashDirection * 1.7f * Time.deltaTime <= remainingDashSpeed)
+                        {
+                            Cache.Rigidbody.AddForce(-Cache.Rigidbody.velocity * 1.7f, ForceMode.Acceleration);
+                        }
+                        else
+                        {
+                            Cache.Rigidbody.AddForce(-Cache.Rigidbody.velocity * (remainingDashSpeed / speedInDashDirection), ForceMode.VelocityChange);
+                        }
+                    }
+                }
 
                 float rotationSpeed = 6f;
                 if (Grounded)
