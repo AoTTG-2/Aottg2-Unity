@@ -162,7 +162,7 @@ namespace CustomLogic
         [CLProperty]
         public CustomLogicVector3Builtin Velocity
         {
-            get => new CustomLogicVector3Builtin(Character.Cache.Rigidbody.velocity);
+            get => new CustomLogicVector3Builtin(Character.GetVelocity());
             set
             {
                 if (!Character.IsMine()) return;
