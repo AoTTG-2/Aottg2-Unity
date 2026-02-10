@@ -17,7 +17,7 @@ namespace UI
 {
     class ChatPanel : BasePanel
     {
-        private int POOL_SIZE => SettingsManager.UISettings.ChatPoolSize.Value;
+        private int POOL_SIZE => ChatManager.MaxLines;
         private TMP_InputField _inputField;
         private GameObject _panel;
         private ChatScrollRect _scrollRect;
@@ -730,8 +730,7 @@ namespace UI
 
         private int GetEffectivePoolSize()
         {
-            int configuredSize = SettingsManager.UISettings.ChatPoolSize.Value;
-            return configuredSize == 0 ? _linesPool.Count : configuredSize;
+            return _linesPool.Count;
         }
 
         private void UpdateVisibleMessages(List<string> lines)
@@ -1536,17 +1535,7 @@ namespace UI
         public void RefreshPoolSize()
         {
             int currentPoolSize = _linesPool.Count;
-            int userDefinedPoolSize = SettingsManager.UISettings.ChatPoolSize.Value;
-            int targetPoolSize = userDefinedPoolSize;
-            
-            if (userDefinedPoolSize == 0)
-            {
-                float chatHeight = SettingsManager.UISettings.ChatHeight.Value;
-                float fontSize = SettingsManager.UISettings.ChatFontSize.Value;
-                float lineHeight = 30f * (fontSize / 18f);
-                targetPoolSize = Mathf.CeilToInt((chatHeight * 2f) / lineHeight);
-                targetPoolSize = Mathf.Max(targetPoolSize, 10);
-            }
+            int targetPoolSize = POOL_SIZE;
             
             if (currentPoolSize == targetPoolSize)
             {

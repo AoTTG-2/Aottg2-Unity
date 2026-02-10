@@ -117,7 +117,7 @@ namespace CustomLogic
         /// Position of the character.
         /// </summary>
         [CLProperty]
-        public CustomLogicVector3Builtin Position
+        public virtual CustomLogicVector3Builtin Position
         {
             get => new CustomLogicVector3Builtin(Character.Cache.Transform.position);
             set
@@ -162,7 +162,7 @@ namespace CustomLogic
         [CLProperty]
         public CustomLogicVector3Builtin Velocity
         {
-            get => new CustomLogicVector3Builtin(Character.Cache.Rigidbody.velocity);
+            get => new CustomLogicVector3Builtin(Character.GetVelocity());
             set
             {
                 if (!Character.IsMine()) return;

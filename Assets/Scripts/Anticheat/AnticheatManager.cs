@@ -16,6 +16,7 @@ namespace Anticheat
         private static AnticheatManager _instance;
         private static readonly Dictionary<int, Dictionary<PhotonEventType, BaseEventFilter>> _IdToEventFilters = new();
         private static BallotBox VoteKick = new BallotBox();
+        public static HashSet<string> BanList = new HashSet<string>();
 
         public static void Init()
         {
@@ -25,6 +26,7 @@ namespace Anticheat
 
         public static void Reset()
         {
+            BanList.Clear();
             VoteKick = new BallotBox();
         }
 
@@ -50,6 +52,30 @@ namespace Anticheat
 
         public static void KickPlayer(Player player, bool ban = false, string reason = "")
         {
+            if (!PhotonNetwork.IsMasterClient)
+                return;
+            if (PhotonNetwork.IsMasterClient && player == PhotonNetwork.LocalPlayer && reason != string.Empty)
+            {
+                DebugConsole.Log("Attempting to ban myself for: " + reason + ", please report this to the devs.", true);
+                return;
+            }
+            if (ban)
+            {
+                if (InGameManager.AllPlayerInfo.ContainsKey(player.ActorNumber))
+                {
+                    BanList.Add(InGameManager.AllPlayerInfo[player.ActorNumber].Profile.ID.Value);
+                }
+            }
+            PhotonNetwork.DestroyPlayerObjects(player);
+            PhotonNetwork.CloseConnection(player);
+            if (reason != string.Empty)
+            {
+                DebugConsole.Log("Player " + player.ActorNumber.ToString() + " was autobanned. Reason:" + reason, true);
+            }
+        }
+
+        /*public static void KickPlayer(Player player, bool ban = false, string reason = "")
+        {
             if (!PhotonNetwork.IsMasterClient && !HasModPassword())
                 return;
             if (player == PhotonNetwork.LocalPlayer && reason != string.Empty)
@@ -66,7 +92,7 @@ namespace Anticheat
             {
                 DebugConsole.Log("Player " + player.ActorNumber.ToString() + " was autobanned. Reason:" + reason, true);
             }
-        }
+        }*/
 
         // Not implemented...
         //public static void IPBan(Player player)

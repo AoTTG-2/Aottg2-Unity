@@ -63,11 +63,13 @@ namespace CustomLogic
         }
         public virtual void OnEnable()
         {
+            PhotonView.AddCallbackTarget(this);
             PhotonNetwork.AddCallbackTarget(this);
         }
 
         public virtual void OnDisable()
         {
+            PhotonView.AddCallbackTarget(this);
             PhotonNetwork.RemoveCallbackTarget(this);
         }
         public void OnPhotonInstantiate(PhotonMessageInfo info)

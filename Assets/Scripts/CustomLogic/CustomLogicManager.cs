@@ -262,7 +262,7 @@ namespace CustomLogic
                 if (!string.IsNullOrEmpty(mapLogic))
                 {
                     string mapName = settings.MapName.Value;
-                    Compiler.AddSourceFile(new CustomLogicSourceFile($"{mapName}.txt", mapLogic, CustomLogicSourceType.MapLogic));
+                    Compiler.AddSourceFile(new CustomLogicSourceFile($"{mapName}.txt", mapLogic, CustomLogicSourceType.MapLogic, MapManager.MapScript.LogicStart));
                 }
             }
             
