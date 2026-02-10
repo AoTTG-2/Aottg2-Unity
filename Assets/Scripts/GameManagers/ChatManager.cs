@@ -70,22 +70,15 @@ namespace GameManagers
         public static List<bool> SuggestionFlags = new List<bool>();
         public static List<bool> NotificationFlags = new List<bool>();
         public static List<string> FeedLines = new List<string>();
-        private static int MaxLines
+        public static int MaxLines
         {
             get
             {
-                int configuredSize = SettingsManager.UISettings.ChatPoolSize.Value;
-                if (configuredSize == 0)
-                {
-                    // Use a larger default size for message storage when auto-adjusting
-                    // (lines will be displayed based on the dynamic calculation in ChatPanel)
-                    float chatHeight = SettingsManager.UISettings.ChatHeight.Value;
-                    float fontSize = SettingsManager.UISettings.ChatFontSize.Value;
-                    float lineHeight = 30f * (fontSize / 18f);
-                    int calculatedSize = Mathf.CeilToInt((chatHeight * 2f) / lineHeight);
-                    return Mathf.Max(calculatedSize, 50); // Ensure ample buffer for scrolling
-                }
-                return configuredSize;
+                float chatHeight = SettingsManager.UISettings.ChatHeight.Value;
+                float fontSize = SettingsManager.UISettings.ChatFontSize.Value;
+                float lineHeight = 30f * (fontSize / 18f);
+                int calculatedSize = Mathf.CeilToInt((chatHeight * 5f) / lineHeight);
+                return Mathf.Clamp(calculatedSize, 10, 70);
             }
         }
         public static Dictionary<ChatTextColor, string> ColorTags = new Dictionary<ChatTextColor, string>();
