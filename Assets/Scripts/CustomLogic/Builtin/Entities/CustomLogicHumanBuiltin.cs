@@ -33,6 +33,23 @@ namespace CustomLogic
         }
 
         /// <summary>
+        /// Position of the character.
+        /// </summary>
+        [CLProperty]
+        public override CustomLogicVector3Builtin Position
+        {
+            get => base.Position;
+            set
+            {
+                if (Human.IsMine())
+                {
+                    Human.IsChangingPosition();
+                    base.Position = value;
+                }
+            }
+        }
+
+        /// <summary>
         /// The weapon the human is using.
         /// </summary>
         [CLProperty(Enum = new Type[] { typeof(CustomLogicWeaponEnum) })]
