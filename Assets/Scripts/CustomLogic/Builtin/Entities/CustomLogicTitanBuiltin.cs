@@ -1,4 +1,5 @@
-﻿using Characters;
+﻿using System;
+using Characters;
 using Controllers;
 using Map;
 
@@ -173,6 +174,12 @@ namespace CustomLogic
         public bool IsCrawler => Titan.IsCrawler;
 
         /// <summary>
+        /// State of the titan.
+        /// </summary>
+        [CLProperty]
+        public string State => Enum.GetName(typeof(TitanState), Titan.State);
+
+        /// <summary>
         /// (AI) titan's detect range.
         /// </summary>
         [CLProperty]
@@ -234,8 +241,8 @@ namespace CustomLogic
         [CLProperty]
         public float AttackSpeedMultiplier
         {
-            get => Titan.IsMine() && Titan.AI ? Titan.AttackSpeedMultiplier : 0;
-            set { if (Titan.IsMine() && Titan.AI) Titan.AttackSpeedMultiplier = value; }
+            get => Titan.IsMine() ? Titan.AttackSpeedMultiplier : 0;
+            set { if (Titan.IsMine()) Titan.AttackSpeedMultiplier = value; }
         }
 
         /// <summary>
