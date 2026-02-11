@@ -1227,7 +1227,7 @@ class Main
 		Network.SendMessageAll("DestroyGate");
 		position = Vector3(0, 50, 650);
 		velocity = Vector3(0, 200, -200);
-		gravity = Vector3(0, -9000, 0);
+		gravity = Vector3(0, -135000, 0);
 		Game.SpawnUnscaledEffect(EffectNameEnum.ColossalKick, position, Vector3(0,180,0));
 		Game.SpawnProjectile(ProjectileNameEnum.Rock2, position, Vector3.Zero, velocity, gravity, 10000, TeamEnum.Titan, 15.0);
 		wait 3.5;
@@ -1425,12 +1425,12 @@ cutscene MainCutscene
 		Camera.SetRotation(Vector3(0, -50, 0));
 		Camera.SetVelocity(velocity * -1.0);
 		wait 2.5;
+		Cutscene.ShowDialogue(ProfileIconEnum.Armin1, "Armin", "We can't get close to the Colossal titan with all the steam. Attack his hands first to distract him!");
 		Camera.SetPosition(Vector3(-150, 340, 630));
 		Camera.SetRotation(Vector3(0, 70, 0));
 		Camera.SetVelocity(Vector3.Zero);
+		wait 2.5;
 		Cutscene.HideDialogue();
-		wait 1.5;
-		Cutscene.ShowDialogue(ProfileIconEnum.Armin1, "Armin", "We can't get close to the Colossal titan with all the steam. Attack his hands first to distract him!");
 	}
 }
 
@@ -1493,7 +1493,7 @@ component Civilians
 
 	function OnCollisionStay(obj)
 	{
-		if (obj.Type == "Titan")
+		if (obj.Type == "Titan" && obj.IsAI)
 		{
 			self._isColliding = true;
 		}
@@ -1551,7 +1551,7 @@ component TitanWarning
 
 	function OnCollisionStay(obj)
 	{
-		if (obj.Type == "Titan")
+		if (obj.Type == "Titan" && obj.IsAI)
 		{
 			self._isColliding = true;
 		}
