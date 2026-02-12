@@ -317,6 +317,21 @@ namespace CustomLogic
             return this;
         }
 
+        /// <summary>
+        /// Set the wrap property.
+        /// </summary>
+        /// <param name="value">Acceptable values are: `NoWrap`, `Wrap`, `WrapReverse`.</param>
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin FlexWrap([CLParam(Enum = new Type[] { typeof(CustomLogicWrapEnum) })] int value)
+        {
+            if (!Enum.IsDefined(typeof(Wrap), value))
+            {
+                throw new ArgumentException($"Unknown wrap value: {value}");
+            }
+            _visualElement.style.flexWrap = (Wrap)value;
+            return this;
+        }
+
         #endregion
 
         #region Align
@@ -391,6 +406,54 @@ namespace CustomLogic
         public CustomLogicVisualElementBuiltin Height(float value, bool percentage = false)
         {
             _visualElement.style.height = GetLength(value, percentage);
+            return this;
+        }
+
+        /// <summary>
+        /// Set the minimum width of the element.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="percentage">If true, the `value` will be treated as percentage value.</param>
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin MinWidth(float value, bool percentage = false)
+        {
+            _visualElement.style.minWidth = GetLength(value, percentage);
+            return this;
+        }
+
+        /// <summary>
+        /// Set the minimum height of the element.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="percentage">If true, the `value` will be treated as percentage value.</param>
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin MinHeight(float value, bool percentage = false)
+        {
+            _visualElement.style.minHeight = GetLength(value, percentage);
+            return this;
+        }
+
+        /// <summary>
+        /// Set the maximum width of the element.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="percentage">If true, the `value` will be treated as percentage value.</param>
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin MaxWidth(float value, bool percentage = false)
+        {
+            _visualElement.style.maxWidth = GetLength(value, percentage);
+            return this;
+        }
+
+        /// <summary>
+        /// Set the maximum height of the element.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="percentage">If true, the `value` will be treated as percentage value.</param>
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin MaxHeight(float value, bool percentage = false)
+        {
+            _visualElement.style.maxHeight = GetLength(value, percentage);
             return this;
         }
 
