@@ -10,6 +10,7 @@ using UnityEditor;
 
 namespace CustomLogic.Editor
 {
+#if UNITY_EDITOR
     class CLTypeProvider
     {
         private const BindingFlags MemberFlags = BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance | BindingFlags.DeclaredOnly;
@@ -609,4 +610,5 @@ namespace CustomLogic.Editor
             return _resolvedTypes.Values.Append(ObjectType).Append(ComponentType).ToArray();
         }
     }
+#endif
 }

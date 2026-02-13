@@ -375,6 +375,6 @@ namespace CustomLogic
                 Titan.Cripple(time);
         }
 
-        private bool IsAlive() => Titan.IsMine() && Titan.Dead == false;
+        private new bool IsAlive() => Titan.IsMine() && Titan.Dead == false;
     }
 }

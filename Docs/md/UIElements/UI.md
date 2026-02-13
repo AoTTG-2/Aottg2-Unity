@@ -179,15 +179,15 @@ If set to empty string, will use the default "Kills / Deaths..." display.
 > **Parameters**:
 > - `active`: Whether the bottom HUD should be active.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function GetRootVisualElement() -> <a data-footnote-ref href="#user-content-fn-110">VisualElement</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function GetRootVisualElement() -> <a data-footnote-ref href="#user-content-fn-113">VisualElement</a></code></pre>
 > Returns the root `VisualElement` which you can add other elements to.
 > 
 > **Returns**: The root `VisualElement`.
-<pre class="language-typescript"><code class="lang-typescript">function VisualElement() -> <a data-footnote-ref href="#user-content-fn-110">VisualElement</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function VisualElement() -> <a data-footnote-ref href="#user-content-fn-113">VisualElement</a></code></pre>
 > Creates a new `VisualElement`.
 > 
 > **Returns**: A new VisualElement.
-<pre class="language-typescript"><code class="lang-typescript">function Button(text: string = "", clickEvent: function = null) -> <a data-footnote-ref href="#user-content-fn-99">Button</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function Button(text: string = "", clickEvent: function = null) -> <a data-footnote-ref href="#user-content-fn-102">Button</a></code></pre>
 > Creates a new `Button` with optional text and click event.
 > 
 > **Parameters**:
@@ -195,21 +195,21 @@ If set to empty string, will use the default "Kills / Deaths..." display.
 > - `clickEvent`: The function that will be called when button is clicked.
 > 
 > **Returns**: A new Button.
-<pre class="language-typescript"><code class="lang-typescript">function Label(text: string = "") -> <a data-footnote-ref href="#user-content-fn-103">Label</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function Label(text: string = "") -> <a data-footnote-ref href="#user-content-fn-106">Label</a></code></pre>
 > Creates a new `Label` with optional text.
 > 
 > **Parameters**:
 > - `text`: The text to be displayed.
 > 
 > **Returns**: A new Label.
-<pre class="language-typescript"><code class="lang-typescript">function TextField(label: string = "") -> <a data-footnote-ref href="#user-content-fn-107">TextField</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function TextField(label: string = "") -> <a data-footnote-ref href="#user-content-fn-110">TextField</a></code></pre>
 > Creates a new `TextField` with optional label.
 > 
 > **Parameters**:
 > - `label`: The label text displayed next to the TextField (default: empty).
 > 
 > **Returns**: A new TextField.
-<pre class="language-typescript"><code class="lang-typescript">function Toggle(label: string = "", valueChangedEvent: function = null) -> <a data-footnote-ref href="#user-content-fn-108">Toggle</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function Toggle(label: string = "", valueChangedEvent: function = null) -> <a data-footnote-ref href="#user-content-fn-111">Toggle</a></code></pre>
 > Creates a new `Toggle` with optional label and value changed event.
 > 
 > **Parameters**:
@@ -217,7 +217,7 @@ If set to empty string, will use the default "Kills / Deaths..." display.
 > - `valueChangedEvent`: The function that will be called when toggle value changes.
 > 
 > **Returns**: A new Toggle.
-<pre class="language-typescript"><code class="lang-typescript">function Slider(lowValue: float = 0, highValue: float = 100, tickInterval: float = 0, label: string = "", valueChangedEvent: function = null) -> <a data-footnote-ref href="#user-content-fn-106">Slider</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function Slider(lowValue: float = 0, highValue: float = 100, tickInterval: float = 0, label: string = "", valueChangedEvent: function = null) -> <a data-footnote-ref href="#user-content-fn-109">Slider</a></code></pre>
 > Creates a new `Slider` for floating-point values with optional range, tick interval, and value changed event.
 The slider will snap to values at multiples of the tick interval.
 > 
@@ -229,7 +229,7 @@ The slider will snap to values at multiples of the tick interval.
 > - `valueChangedEvent`: The function that will be called when slider value changes.
 > 
 > **Returns**: A new Slider.
-<pre class="language-typescript"><code class="lang-typescript">function SliderInt(lowValue: int = 0, highValue: int = 100, tickInterval: int = 1, label: string = "", valueChangedEvent: function = null) -> <a data-footnote-ref href="#user-content-fn-106">Slider</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function SliderInt(lowValue: int = 0, highValue: int = 100, tickInterval: int = 1, label: string = "", valueChangedEvent: function = null) -> <a data-footnote-ref href="#user-content-fn-109">Slider</a></code></pre>
 > Creates a new `Slider` for integer values with optional range, tick interval, and value changed event.
 The slider will snap to values at multiples of the tick interval.
 > 
@@ -241,7 +241,7 @@ The slider will snap to values at multiples of the tick interval.
 > - `valueChangedEvent`: The function that will be called when slider value changes.
 > 
 > **Returns**: A new SliderInt.
-<pre class="language-typescript"><code class="lang-typescript">function Dropdown(choices: <a data-footnote-ref href="#user-content-fn-4">List</a><string>, defaultIndex: int = 0, label: string = "", valueChangedEvent: function = null) -> <a data-footnote-ref href="#user-content-fn-100">Dropdown</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function Dropdown(choices: <a data-footnote-ref href="#user-content-fn-4">List</a><string>, defaultIndex: int = 0, label: string = "", valueChangedEvent: function = null) -> <a data-footnote-ref href="#user-content-fn-103">Dropdown</a></code></pre>
 > Creates a new `Dropdown` with a list of choices and optional label and value changed event.
 > 
 > **Parameters**:
@@ -251,7 +251,7 @@ The slider will snap to values at multiples of the tick interval.
 > - `valueChangedEvent`: The function that will be called when dropdown value changes.
 > 
 > **Returns**: A new Dropdown.
-<pre class="language-typescript"><code class="lang-typescript">function ProgressBar(lowValue: float = 0, highValue: float = 100, title: string = "", valueChangedEvent: function = null) -> <a data-footnote-ref href="#user-content-fn-104">ProgressBar</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function ProgressBar(lowValue: float = 0, highValue: float = 100, title: string = "", valueChangedEvent: function = null) -> <a data-footnote-ref href="#user-content-fn-107">ProgressBar</a></code></pre>
 > Creates a new `ProgressBar` with optional range, title, and value changed event.
 > 
 > **Parameters**:
@@ -261,18 +261,18 @@ The slider will snap to values at multiples of the tick interval.
 > - `valueChangedEvent`: The function that will be called when progress bar value changes.
 > 
 > **Returns**: A new ProgressBar.
-<pre class="language-typescript"><code class="lang-typescript">function ScrollView() -> <a data-footnote-ref href="#user-content-fn-105">ScrollView</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function ScrollView() -> <a data-footnote-ref href="#user-content-fn-108">ScrollView</a></code></pre>
 > Creates a new `ScrollView` for scrollable content.
 > 
 > **Returns**: A new ScrollView.
-<pre class="language-typescript"><code class="lang-typescript">function Icon(iconPath: string = "") -> <a data-footnote-ref href="#user-content-fn-101">Icon</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function Icon(iconPath: string = "") -> <a data-footnote-ref href="#user-content-fn-104">Icon</a></code></pre>
 > Creates a new `Icon` element for displaying images/icons.
 > 
 > **Parameters**:
 > - `iconPath`: Path to the icon resource (e.g., "Icons/Game/BladeIcon").
 > 
 > **Returns**: A new Icon.
-<pre class="language-typescript"><code class="lang-typescript">function Image(iconPath: string = "") -> <a data-footnote-ref href="#user-content-fn-102">Image</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function Image(iconPath: string = "") -> <a data-footnote-ref href="#user-content-fn-105">Image</a></code></pre>
 > Creates a new `Image` element for displaying images/icons.
 > 
 > **Parameters**:
@@ -314,87 +314,90 @@ The slider will snap to values at multiples of the tick interval.
 [^31]: [AlignEnum](../Enums/AlignEnum.md)
 [^32]: [AngleUnitEnum](../Enums/AngleUnitEnum.md)
 [^33]: [AnnieAnimationEnum](../Enums/AnnieAnimationEnum.md)
-[^34]: [CameraModeEnum](../Enums/CameraModeEnum.md)
-[^35]: [CharacterTypeEnum](../Enums/CharacterTypeEnum.md)
-[^36]: [CollideModeEnum](../Enums/CollideModeEnum.md)
-[^37]: [CollideWithEnum](../Enums/CollideWithEnum.md)
-[^38]: [CollisionDetectionModeEnum](../Enums/CollisionDetectionModeEnum.md)
-[^39]: [DummyAnimationEnum](../Enums/DummyAnimationEnum.md)
-[^40]: [EffectNameEnum](../Enums/EffectNameEnum.md)
-[^41]: [ErenAnimationEnum](../Enums/ErenAnimationEnum.md)
-[^42]: [FlexDirectionEnum](../Enums/FlexDirectionEnum.md)
-[^43]: [FontStyleEnum](../Enums/FontStyleEnum.md)
-[^44]: [ForceModeEnum](../Enums/ForceModeEnum.md)
-[^45]: [GradientModeEnum](../Enums/GradientModeEnum.md)
-[^46]: [HandStateEnum](../Enums/HandStateEnum.md)
-[^47]: [HorseAnimationEnum](../Enums/HorseAnimationEnum.md)
-[^48]: [HumanAnimationEnum](../Enums/HumanAnimationEnum.md)
-[^49]: [HumanParticleEffectEnum](../Enums/HumanParticleEffectEnum.md)
-[^50]: [HumanSoundEnum](../Enums/HumanSoundEnum.md)
-[^51]: [HumanStateEnum](../Enums/HumanStateEnum.md)
-[^52]: [InputAnnieShifterEnum](../Enums/InputAnnieShifterEnum.md)
-[^53]: [InputCategoryEnum](../Enums/InputCategoryEnum.md)
-[^54]: [InputErenShifterEnum](../Enums/InputErenShifterEnum.md)
-[^55]: [InputGeneralEnum](../Enums/InputGeneralEnum.md)
-[^56]: [InputHumanEnum](../Enums/InputHumanEnum.md)
-[^57]: [InputInteractionEnum](../Enums/InputInteractionEnum.md)
-[^58]: [InputTitanEnum](../Enums/InputTitanEnum.md)
-[^59]: [JustifyEnum](../Enums/JustifyEnum.md)
-[^60]: [LanguageEnum](../Enums/LanguageEnum.md)
-[^61]: [LineAlignmentEnum](../Enums/LineAlignmentEnum.md)
-[^62]: [LineTextureModeEnum](../Enums/LineTextureModeEnum.md)
-[^63]: [LoadoutEnum](../Enums/LoadoutEnum.md)
-[^64]: [OutlineModeEnum](../Enums/OutlineModeEnum.md)
-[^65]: [OverflowEnum](../Enums/OverflowEnum.md)
-[^66]: [PhysicMaterialCombineEnum](../Enums/PhysicMaterialCombineEnum.md)
-[^67]: [PlayerStatusEnum](../Enums/PlayerStatusEnum.md)
-[^68]: [ProfileIconEnum](../Enums/ProfileIconEnum.md)
-[^69]: [ProjectileNameEnum](../Enums/ProjectileNameEnum.md)
-[^70]: [ScaleModeEnum](../Enums/ScaleModeEnum.md)
-[^71]: [ScrollElasticityEnum](../Enums/ScrollElasticityEnum.md)
-[^72]: [ShadowCastingModeEnum](../Enums/ShadowCastingModeEnum.md)
-[^73]: [ShifterSoundEnum](../Enums/ShifterSoundEnum.md)
-[^74]: [ShifterTypeEnum](../Enums/ShifterTypeEnum.md)
-[^75]: [SliderDirectionEnum](../Enums/SliderDirectionEnum.md)
-[^76]: [SpecialEnum](../Enums/SpecialEnum.md)
-[^77]: [SteamStateEnum](../Enums/SteamStateEnum.md)
-[^78]: [TeamEnum](../Enums/TeamEnum.md)
-[^79]: [TextAlignEnum](../Enums/TextAlignEnum.md)
-[^80]: [TextOverflowEnum](../Enums/TextOverflowEnum.md)
-[^81]: [TitanAnimationEnum](../Enums/TitanAnimationEnum.md)
-[^82]: [TitanSoundEnum](../Enums/TitanSoundEnum.md)
-[^83]: [TitanTypeEnum](../Enums/TitanTypeEnum.md)
-[^84]: [TSKillSoundEnum](../Enums/TSKillSoundEnum.md)
-[^85]: [UILabelEnum](../Enums/UILabelEnum.md)
-[^86]: [WallColossalAnimationEnum](../Enums/WallColossalAnimationEnum.md)
-[^87]: [WeaponEnum](../Enums/WeaponEnum.md)
-[^88]: [Camera](../Game/Camera.md)
-[^89]: [Cutscene](../Game/Cutscene.md)
-[^90]: [Game](../Game/Game.md)
-[^91]: [Input](../Game/Input.md)
-[^92]: [Locale](../Game/Locale.md)
-[^93]: [Map](../Game/Map.md)
-[^94]: [Network](../Game/Network.md)
-[^95]: [PersistentData](../Game/PersistentData.md)
-[^96]: [Physics](../Game/Physics.md)
-[^97]: [RoomData](../Game/RoomData.md)
-[^98]: [Time](../Game/Time.md)
-[^99]: [Button](../UIElements/Button.md)
-[^100]: [Dropdown](../UIElements/Dropdown.md)
-[^101]: [Icon](../UIElements/Icon.md)
-[^102]: [Image](../UIElements/Image.md)
-[^103]: [Label](../UIElements/Label.md)
-[^104]: [ProgressBar](../UIElements/ProgressBar.md)
-[^105]: [ScrollView](../UIElements/ScrollView.md)
-[^106]: [Slider](../UIElements/Slider.md)
-[^107]: [TextField](../UIElements/TextField.md)
-[^108]: [Toggle](../UIElements/Toggle.md)
-[^109]: [UI](../UIElements/UI.md)
-[^110]: [VisualElement](../UIElements/VisualElement.md)
-[^111]: [Convert](../Utility/Convert.md)
-[^112]: [Json](../Utility/Json.md)
-[^113]: [Math](../Utility/Math.md)
-[^114]: [Random](../Utility/Random.md)
-[^115]: [String](../Utility/String.md)
-[^116]: [Object](../objects/Object.md)
-[^117]: [Component](../objects/Component.md)
+[^34]: [AspectRatioEnum](../Enums/AspectRatioEnum.md)
+[^35]: [CameraModeEnum](../Enums/CameraModeEnum.md)
+[^36]: [CharacterTypeEnum](../Enums/CharacterTypeEnum.md)
+[^37]: [CollideModeEnum](../Enums/CollideModeEnum.md)
+[^38]: [CollideWithEnum](../Enums/CollideWithEnum.md)
+[^39]: [CollisionDetectionModeEnum](../Enums/CollisionDetectionModeEnum.md)
+[^40]: [DummyAnimationEnum](../Enums/DummyAnimationEnum.md)
+[^41]: [EffectNameEnum](../Enums/EffectNameEnum.md)
+[^42]: [ErenAnimationEnum](../Enums/ErenAnimationEnum.md)
+[^43]: [FlexDirectionEnum](../Enums/FlexDirectionEnum.md)
+[^44]: [FontScaleModeEnum](../Enums/FontScaleModeEnum.md)
+[^45]: [FontStyleEnum](../Enums/FontStyleEnum.md)
+[^46]: [ForceModeEnum](../Enums/ForceModeEnum.md)
+[^47]: [GradientModeEnum](../Enums/GradientModeEnum.md)
+[^48]: [HandStateEnum](../Enums/HandStateEnum.md)
+[^49]: [HorseAnimationEnum](../Enums/HorseAnimationEnum.md)
+[^50]: [HumanAnimationEnum](../Enums/HumanAnimationEnum.md)
+[^51]: [HumanParticleEffectEnum](../Enums/HumanParticleEffectEnum.md)
+[^52]: [HumanSoundEnum](../Enums/HumanSoundEnum.md)
+[^53]: [HumanStateEnum](../Enums/HumanStateEnum.md)
+[^54]: [InputAnnieShifterEnum](../Enums/InputAnnieShifterEnum.md)
+[^55]: [InputCategoryEnum](../Enums/InputCategoryEnum.md)
+[^56]: [InputErenShifterEnum](../Enums/InputErenShifterEnum.md)
+[^57]: [InputGeneralEnum](../Enums/InputGeneralEnum.md)
+[^58]: [InputHumanEnum](../Enums/InputHumanEnum.md)
+[^59]: [InputInteractionEnum](../Enums/InputInteractionEnum.md)
+[^60]: [InputTitanEnum](../Enums/InputTitanEnum.md)
+[^61]: [JustifyEnum](../Enums/JustifyEnum.md)
+[^62]: [LanguageEnum](../Enums/LanguageEnum.md)
+[^63]: [LineAlignmentEnum](../Enums/LineAlignmentEnum.md)
+[^64]: [LineTextureModeEnum](../Enums/LineTextureModeEnum.md)
+[^65]: [LoadoutEnum](../Enums/LoadoutEnum.md)
+[^66]: [OutlineModeEnum](../Enums/OutlineModeEnum.md)
+[^67]: [OverflowEnum](../Enums/OverflowEnum.md)
+[^68]: [PhysicMaterialCombineEnum](../Enums/PhysicMaterialCombineEnum.md)
+[^69]: [PlayerStatusEnum](../Enums/PlayerStatusEnum.md)
+[^70]: [ProfileIconEnum](../Enums/ProfileIconEnum.md)
+[^71]: [ProjectileNameEnum](../Enums/ProjectileNameEnum.md)
+[^72]: [ScaleModeEnum](../Enums/ScaleModeEnum.md)
+[^73]: [ScrollElasticityEnum](../Enums/ScrollElasticityEnum.md)
+[^74]: [ShadowCastingModeEnum](../Enums/ShadowCastingModeEnum.md)
+[^75]: [ShifterSoundEnum](../Enums/ShifterSoundEnum.md)
+[^76]: [ShifterTypeEnum](../Enums/ShifterTypeEnum.md)
+[^77]: [SliderDirectionEnum](../Enums/SliderDirectionEnum.md)
+[^78]: [SpecialEnum](../Enums/SpecialEnum.md)
+[^79]: [SteamStateEnum](../Enums/SteamStateEnum.md)
+[^80]: [StunStateEnum](../Enums/StunStateEnum.md)
+[^81]: [TeamEnum](../Enums/TeamEnum.md)
+[^82]: [TextAlignEnum](../Enums/TextAlignEnum.md)
+[^83]: [TextOverflowEnum](../Enums/TextOverflowEnum.md)
+[^84]: [TitanAnimationEnum](../Enums/TitanAnimationEnum.md)
+[^85]: [TitanSoundEnum](../Enums/TitanSoundEnum.md)
+[^86]: [TitanTypeEnum](../Enums/TitanTypeEnum.md)
+[^87]: [TSKillSoundEnum](../Enums/TSKillSoundEnum.md)
+[^88]: [UILabelEnum](../Enums/UILabelEnum.md)
+[^89]: [WallColossalAnimationEnum](../Enums/WallColossalAnimationEnum.md)
+[^90]: [WeaponEnum](../Enums/WeaponEnum.md)
+[^91]: [Camera](../Game/Camera.md)
+[^92]: [Cutscene](../Game/Cutscene.md)
+[^93]: [Game](../Game/Game.md)
+[^94]: [Input](../Game/Input.md)
+[^95]: [Locale](../Game/Locale.md)
+[^96]: [Map](../Game/Map.md)
+[^97]: [Network](../Game/Network.md)
+[^98]: [PersistentData](../Game/PersistentData.md)
+[^99]: [Physics](../Game/Physics.md)
+[^100]: [RoomData](../Game/RoomData.md)
+[^101]: [Time](../Game/Time.md)
+[^102]: [Button](../UIElements/Button.md)
+[^103]: [Dropdown](../UIElements/Dropdown.md)
+[^104]: [Icon](../UIElements/Icon.md)
+[^105]: [Image](../UIElements/Image.md)
+[^106]: [Label](../UIElements/Label.md)
+[^107]: [ProgressBar](../UIElements/ProgressBar.md)
+[^108]: [ScrollView](../UIElements/ScrollView.md)
+[^109]: [Slider](../UIElements/Slider.md)
+[^110]: [TextField](../UIElements/TextField.md)
+[^111]: [Toggle](../UIElements/Toggle.md)
+[^112]: [UI](../UIElements/UI.md)
+[^113]: [VisualElement](../UIElements/VisualElement.md)
+[^114]: [Convert](../Utility/Convert.md)
+[^115]: [Json](../Utility/Json.md)
+[^116]: [Math](../Utility/Math.md)
+[^117]: [Random](../Utility/Random.md)
+[^118]: [String](../Utility/String.md)
+[^119]: [Object](../objects/Object.md)
+[^120]: [Component](../objects/Component.md)

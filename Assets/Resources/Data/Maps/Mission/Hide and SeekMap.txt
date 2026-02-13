@@ -1805,7 +1805,7 @@ class Main
 
         # ResetUI
         UI.SetLabelAll(UILabelEnum.MiddleCenter, "");
-        
+
         # Pick a random player and announce it to the other players
         for(p in Network.Players)
         {
@@ -1824,8 +1824,8 @@ class Main
             Network.SendMessage(self._seekerPlayer, "SetSeeker");
 
             self.SeekerFound.RemoveAt(r);
-            Game.Print("Removed ->" + r " ( " + self._seekerPlayer.Name + " )");
-            Game.Print("Possible seekers: " + self.SeekerFound.Count);
+            # Game.Print("Removed ->" + r " ( " + self._seekerPlayer.Name + " )");
+            # Game.Print("Possible seekers: " + self.SeekerFound.Count);
         }
     }
 
@@ -1860,8 +1860,8 @@ class Main
             character.MaxBlade = 0;
             character.CurrentBlade = 0;
             character.CurrentBladeDurability = 0;
-            Game.Print("<color=cyan>Press</color> " + "<color=lightgreen>"+Input.GetKeyName(InputInteractionEnum.Interact) + "</color> <color=cyan> to Taunt</color>");
-            
+            Game.Print("<color=cyan>Press</color> <color=lime>"+Input.GetKeyName(InputInteractionEnum.Interact) + "</color> <color=cyan> to Taunt</color>");
+
         }
     }
 
@@ -1898,7 +1898,7 @@ class Main
             _Character.MaxGas = self.HiderGas;
             _Character.CurrentGas = self.HiderGas;
         }
-        
+
         if(message == "SetSeeker")
         {
             _Character = Network.MyPlayer.Character;
@@ -1941,7 +1941,7 @@ class Main
         {
             Camera.FollowDistance = 0.0;
         }
-        if (self._HidingTimeStart == true && self._stopallUI == false) 
+        if (self._HidingTimeStart == true && self._stopallUI == false)
         {
             UI.SetLabelAll(UILabelEnum.MiddleCenter, "Hiding time : " + String.FormatFloat(self._seekerTimer - Time.GameTime, 2));
             if (self._seekerTimer - Time.GameTime <= 0)

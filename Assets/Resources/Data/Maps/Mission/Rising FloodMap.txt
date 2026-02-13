@@ -517,8 +517,8 @@ function OnNetworkMessage(sender, message)
 if (sender == Network.MasterClient)
 {
 pair = String.Split(message, ",");
-self.FloodSpeed = Convert.ToFloat(pair.get(0));
-height = Convert.ToFloat(pair.get(1));
+self.FloodSpeed = Convert.ToFloat(pair.Get(0));
+height = Convert.ToFloat(pair.Get(1));
 scale = self._water.Scale;
 scale.Y = height;
 self._water.Scale = scale;

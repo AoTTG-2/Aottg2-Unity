@@ -3,6 +3,7 @@
         "Category": "Lead Developers",
         "Names": [
             "Ricecake",
+            "Thyme",
             "Lithrun",
             "Mr.Titan"
         ]
@@ -21,7 +22,6 @@
         "Names": [
             "BLuR (Simen Løvland)",
             "Dakros (Davin Chilly)",
-            "Thyme",
             "Koro Sensei",
             "gisketch (Ghegi Jimenez)"
         ]
@@ -83,7 +83,11 @@
             "Myles backshall",
             "沟地gd",
             "温特Winter",
-            "全蛋"
+            "全蛋",
+            "Yatsukki",
+            "ShizoCatto",
+            "岚芯",
+            "言愛"
         ]
     },
     {
@@ -134,10 +138,12 @@
             "FINDKL",
             "Gabzloaded",
             "PoleDark",
-            "TheTrashCat",
+            "Sarah (TheTrashCat)",
             "Callis3D (Sean Crowley)",
             "Kiwiwi (Pierre G.)",
-            "帅的被人砍"
+            "帅的被人砍",
+            "clarinet (阎王)",
+            "Marisa"
         ]
     },
     {
@@ -171,39 +177,52 @@
             "Kiwiwi (Pierre G.)",
             "~L~",
             "帅的被人砍",
-            "想和你一起养花"
+            "想和你一起养花",
+            "Nyx",
+            "Creepy Doll",
+            "四季季",
+            "pleom",
+            "Souperpie"
         ]
     },
     {
         "Category": "Custom Logic",
         "Names": [
             "Thyme",
+            "oryxoik",
+            "Hex",
+            "Jagerente (Danial L'Jäger)",
+            "hongyao (虹幺)",
             "BLuR (Simen Løvland)",
             "antigasp",
-            "oryxoik",
             "DesertFalcon",
             "MC_Steve (Sam)",
-            "Jagerente (Danial L'Jäger)"
+            "Hikari (光)",
+            "OrangeCat 橘猫",
+            "☩ Levi ☩",
+            "Lyn"
         ]
     },
     {
         "Category": "Development",
         "Names": [
             "Thyme",
+            "gisketch (Ghegi Jimenez)",
+            "oryxoik",
             "DesertFalcon",
+            "Jagerente (Danial L'Jäger)",
+            "Nathan Orgera",
+            "hongyao (虹幺)",
+            "winnpixie (Hannah Leonardis)",
             "BLuR (Simen Løvland)",
             "Wagner",
-            "gisketch (Ghegi Jimenez)",
             "NotXuan",
-            "oryxoik",
             "dark3art (Rinus Van Linden)",
             "NinfarZ",
             "Godinho",
-            "winnpixie (Hannah Leonardis)",
             "Picadi0 (Melih Altun)",
             "Kyoff (Emre Aslan)",
-            "ramen (river)",
-            "Jagerente (Danial L'Jäger)"
+            "ramen (river)"
         ]
     },
     {
@@ -231,7 +250,8 @@
             "Raivaru",
             "Eravis",
             "Syeo",
-            "Ice King"
+            "Ice King",
+            "Queen"
         ]
     },
     {
@@ -273,7 +293,10 @@
             "Budeco",
             "gisketch (Ghegi Jimenez)",
             "Mr.Creeper",
-            "Shingogui"
+            "Shingogui",
+            "OrangeCat 橘猫",
+            "言愛",
+            "X伦"
         ]
     },
     {
@@ -370,7 +393,9 @@
             "miekl_ (Mikel Principal)",
             "hunto_ (ᛃLeviᛃ)",
             "Hyuckie",
-            "Mr.Creeper"
+            "Mr.Creeper",
+            "Terami",
+            "Kiwimaker (eloix2)"
         ]
     }
 ]

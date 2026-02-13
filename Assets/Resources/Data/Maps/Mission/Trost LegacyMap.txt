@@ -576,6 +576,13 @@ class Main
     _isHoldingRock = false;
     _phase = 0;
 
+    # UI State
+    _bossHealthBar = null;
+    _damageWarning = null;
+    _lastErenHealth = 0;
+    _damageWarningTimer = 0.0;
+    _damageWarningDuration = 3.0;
+
     # Masterclient State
     # @type Shifter
     _eren = null;
@@ -605,7 +612,7 @@ class Main
 
     # @type MapObject
     _rockPickupLocation = null;
-    
+
     # @type MapObject
     _theRock = null;
 
@@ -613,8 +620,8 @@ class Main
     _rpcs = Dict();
 
     _rock_t_path = "ErenRig_VER2/Core/Rock";
-    _sound_footstep1 = HumanSoundEnum.Footstep1;
-    _sound_footstep2 = HumanSoundEnum.Footstep2;
+    _sound_footstep1 = "Footstep1";
+    _sound_footstep2 = "Footstep2";
     _soundPhase = 1;
     _runSpeed = 25;
     _rockSpeed = 10;
@@ -652,6 +659,10 @@ class Main
         self._goal = Map.FindMapObjectByName("TheGoal");
 
         self._start_scale = self._theRock.Scale.X;
+
+        # Initialize UI elements
+        self._bossHealthBar = SimpleBossHealthBar("Eren", 100.0, false);
+        self._damageWarning = TextWarning(20, "Eren is under attack!", "Icons/Quests/Skull2Icon", Color(255, 100, 0));
 
         difficulty = Game.GetGeneralSetting("Difficulty");
         if (difficulty == 0) # Training
@@ -710,7 +721,7 @@ class Main
             {
                 Game.Print("Must have at least 2 MapObjects with the name pattern 'Checkpoint*' in the map. (Ex: Checkpoint1, ..., CheckpointN)");
             }
-            
+
             if (self._erenSpawnPoint == null)
             {
                 Game.Print("Must have a MapObject called ErenSpawnPoint in the map.");
@@ -739,7 +750,7 @@ class Main
             # Calculate Path Distance for Game Progress Stat
             self._completion_distance = self.CalcCompletionDistance(self._checkpoints_copy.Get(self._checkpoints_copy.Count-1));
         }
-        
+
         # Look into why usermethod here isn't returned correctly.
         # _rpcs = Dict();
         # _rpcs.Set("StartMovingRockRPC", self.StartMovingRockRPC);
@@ -805,6 +816,15 @@ class Main
         }
 
         Cutscene.Start("MainCutscene", true);
+
+        # Setup health bar after eren is spawned
+        if (Network.IsMasterClient && self._eren != null)
+        {
+            self._bossHealthBar.SetMaxHealth(self._eren.MaxHealth);
+            self._bossHealthBar.SetCurrentHealth(self._eren.Health);
+            self._lastErenHealth = self._eren.Health;
+            self._bossHealthBar.Show();
+        }
     }
 
     function OnCharacterSpawn(character)
@@ -822,6 +842,15 @@ class Main
             {
                 self.StartMovingRockRPC(null, null);
             }
+
+            # Setup health bar for clients who join late
+            if (self._bossHealthBar != null)
+            {
+                self._bossHealthBar.SetMaxHealth(self._eren.MaxHealth);
+                self._bossHealthBar.SetCurrentHealth(self._eren.Health);
+                self._lastErenHealth = self._eren.Health;
+                self._bossHealthBar.Show();
+            }
         }
     }
 
@@ -836,7 +865,7 @@ class Main
         self._checkpoints.RemoveAt(0);
     }
 
-    
+
     function MoveTowardsCheckpoint()
     {
         speed = self._runSpeed;
@@ -924,7 +953,7 @@ class Main
         return filteredZones;
     }
 
-    function SpawnTitansAroundEren(count, min, max, targetsEren, detectRange)
+    function SpawnTitansAroundEren(count, min, max, targetsEren, detectRange, titanType, outline)
     {
         zones = self.GetSpawnZones(self._eren.Position, min, max);
 
@@ -933,7 +962,11 @@ class Main
             for (i in Range(count))
             {
                 position = self._eren.Position + self._eren.Transform.Forward * 100 + Vector3(0, 80, 0);
-                titan = Game.SpawnTitanAt(TitanTypeEnum.Default, position);
+                titan = Game.SpawnTitanAt(titanType, position);
+                if (outline)
+                {
+                    titan.AddOutline(null, OutlineModeEnum.OutlineAll);
+                }
                 if (targetsEren && !titan.IsCrawler && titan.Name != "Thrower")
                 {
                     titan.Target(self._eren, 100000.0);
@@ -947,7 +980,11 @@ class Main
         for (i in Range(count))
         {
             zone = Random.RandomInt(0, zones.Count);
-            titan = Game.SpawnTitanAt(TitanTypeEnum.Default, zones.Get(zone).Position);
+            titan = Game.SpawnTitanAt(titanType, zones.Get(zone).Position);
+            if (outline)
+            {
+                titan.AddOutline(null, OutlineModeEnum.OutlineAll);
+            }
             if (targetsEren && !titan.IsCrawler && titan.Name != "Thrower")
             {
                 titan.Target(self._eren, 100000.0);
@@ -991,8 +1028,8 @@ class Main
             aggro_count = Math.Floor(self._wave_titans_base + (self._max_aggro_titans * progress_ratio));
             non_aggro_count = Math.Floor(self._wave_titans_base + (self._max_non_aggro_titans * progress_ratio));
 
-            self.SpawnTitansAroundEren(aggro_count, 100, 300, true, 10000);
-            self.SpawnTitansAroundEren(non_aggro_count, 100, 400, false, 300);
+            self.SpawnTitansAroundEren(aggro_count, 100, 300, true, 10000, TitanTypeEnum.Default, false);
+            self.SpawnTitansAroundEren(non_aggro_count, 100, 400, false, 300, TitanTypeEnum.Default, false);
         }
     }
 
@@ -1007,16 +1044,7 @@ class Main
         {
             UI.SetLabelForTimeAll("TopCenter", "Clear out the titans around eren!", 1);
         }
-        elif (self._eren != null && self._phase > self._phase_1_wait_clear)
-        {
-            healthLeft = Math.Floor(100 * self._eren.Health / self._eren.MaxHealth);
-            label = "Eren Health: " + Convert.ToString(healthLeft) + "%";
-            if (healthLeft < 0.3)
-            {
-                label = UI.WrapStyleTag(label, "color", "red");
-            }
-            UI.SetLabelForTimeAll("TopCenter", label, 1);
-        }
+        # Health is now shown in the boss health bar UI
     }
 
     function SyncPhase()
@@ -1029,6 +1057,35 @@ class Main
         if (Game.IsEnding)
         {
             return;
+        }
+
+        # Update health bar and check for damage
+        if (self._eren != null && self._bossHealthBar != null)
+        {
+            self._bossHealthBar.SetCurrentHealth(self._eren.Health);
+
+            # Show warning if Eren just took damage, reset timer
+            if (self._eren.Health < self._lastErenHealth)
+            {
+                self._damageWarningTimer = self._damageWarningDuration;
+                self._damageWarning.Show();
+            }
+            self._lastErenHealth = self._eren.Health;
+
+            # Count down warning timer and hide when expired
+            if (self._damageWarningTimer > 0)
+            {
+                self._damageWarningTimer -= Time.TickTime;
+                if (self._damageWarningTimer <= 0)
+                {
+                    self._damageWarning.Hide();
+                }
+            }
+
+            if (self._bossHealthBar.IsDead())
+            {
+                self._bossHealthBar.Hide();
+            }
         }
         if (Network.IsMasterClient == false) {
             # Sync animation loop locally due to low duration of loop.
@@ -1048,7 +1105,7 @@ class Main
             {
                 self._eren.SetAnimationSpeed(ErenAnimationEnum.Die, 1, false);
             }
-            
+
             return;
         }
 
@@ -1059,13 +1116,13 @@ class Main
             self._bs_state_timer_garbage_thx = self._bs_state_timer_garbage_thx - Time.TickTime;
             if (self._bs_state_timer_garbage_thx <= 0)
             {
-                self.SpawnTitansAroundEren(self._start_titans, 80, 200, true, 100000);
+                self.SpawnTitansAroundEren(self._start_titans, 150, 300, false, 100000, TitanTypeEnum.Normal, true);
                 self._eren.ForceAnimation(ErenAnimationEnum.Die, 1);
                 self._phase = self._phase_1_wait_clear;
                 self.SyncPhase();
             }
         }
-        
+
         elif (self._phase == self._phase_1_wait_clear)
         {
             # Need this bounce logic to be rpc'd or handled by all players. (TG1 just let the born animation play for 20s which is what allowed it to look synced)
@@ -1214,7 +1271,7 @@ class Main
         {
             Network.SendMessage(target, message);
         }
-        
+
     }
 
     # @param sender Player
@@ -1286,7 +1343,7 @@ class Main
             pushForce = Math.Clamp(1 - distance / maxDistance, 0, 1) * force;
             if (distance < maxDistance)
             {
-                character.Velocity += (character.Position - position).Normalized * pushForce; 
+                character.Velocity += (character.Position - position).Normalized * pushForce;
             }
         }
     }
@@ -1348,7 +1405,7 @@ class Main
         }
         if (Network.IsMasterClient)
         {
-            UI.SetLabelForTimeAll("MiddleCenter", "You've successfully defended Eren and the hole has been plugged." + String.Newline + "This is the first time humanity has won against the Titans.", 5.0);
+            UI.SetLabelForTimeAll("MiddleCenter", "The hole's been plugged!" + String.Newline + "We’ve taken one step back from the Titans!", 8.0);
             Game.End(10);
             self._eren.GetKilled("Exhaustion");
         }
@@ -1384,13 +1441,28 @@ class Main
 
     function OnCharacterDie(victim, killer, killerName)
     {
-        if (victim.Type == "Shifter" && (victim.Name == "" || victim.Name == "Eren") && !Game.IsEnding)
+        if (victim.Type == "Shifter" && (victim.Name == "" || victim.Name == "Eren"))
         {
-            if (Network.IsMasterClient)
+            if (!Game.IsEnding)
             {
-                UI.SetLabelAll(UILabelEnum.MiddleCenter, "All hope is now lost ...");
-                Game.End(10.0);
+                # Update health bar to show 0 health
+                if (self._bossHealthBar != null)
+                {
+                    self._bossHealthBar.SetCurrentHealth(0);
+                    self._bossHealthBar.Hide();
+                }
+                if (self._damageWarning != null)
+                {
+                    self._damageWarning.Hide();
+                }
+
+                if (Network.IsMasterClient)
+                {
+                    UI.SetLabelAll(UILabelEnum.MiddleCenter, "All hope is now lost ...");
+                    Game.End(10.0);
+                }
             }
+
             if (self._isHoldingRock)
             {
                 self._isHoldingRock = false;
@@ -1410,6 +1482,357 @@ class Main
     }
 }
 
+class SimpleBossHealthBar
+{
+    # Configuration
+    _bossName = "Boss";
+    _maxHealth = 100.0;
+    _currentHealth = 100.0;
+    _showPercentage = true;
+
+    # Color thresholds
+    _colorThresholds = null;
+
+    # UI Elements
+    _rootContainer = null;
+    _healthBarContainer = null;
+    _healthBarFill = null;
+    _nameLabel = null;
+    _healthLabel = null;
+    _isVisible = true;
+
+    function Init(bossName, maxHealth, showPercentage)
+    {
+        self._bossName = bossName;
+        self._maxHealth = maxHealth;
+        self._currentHealth = maxHealth;
+        self._showPercentage = showPercentage;
+
+        self._colorThresholds = List();
+        self.AddColorThreshold(75.0, Color(100, 200, 100));
+        self.AddColorThreshold(50.0, Color(200, 200, 100));
+        self.AddColorThreshold(25.0, Color(200, 150, 50));
+        self.AddColorThreshold(0.0, Color(200, 50, 50));
+
+        self.CreateUI();
+    }
+
+    function CreateUI()
+    {
+        root = UI.GetRootVisualElement();
+
+        self._rootContainer = UI.VisualElement()
+            .Absolute(true)
+            .Width(40, true)
+            .Height(8, true)
+            .Top(4, true)
+            .Left(30, true)
+            .Right(30, true)
+            .Padding(0.5, true)
+            .BorderRadius(3)
+            .BackgroundColor(Color(20, 20, 20, 200));
+
+        self.CreateTopLabelLayout();
+        root.Add(self._rootContainer);
+        self.Hide();
+    }
+
+    function CreateTopLabelLayout()
+    {
+        centerContainer = UI.VisualElement()
+            .FlexDirection(FlexDirectionEnum.Column)
+            .FlexGrow(1)
+            .FlexShrink(1)
+            .Height(100, true);
+
+        self._nameLabel = UI.Label(self._bossName)
+            .Height(55, true)
+            .FontSize(70, true, FontScaleModeEnum.Height)
+            .FontStyle(FontStyleEnum.Bold)
+            .Color(Color(255, 255, 255))
+            .AlignSelf(AlignEnum.Center);
+
+        self.CreateHealthBar();
+
+        healthContainer = UI.VisualElement()
+            .Width(100, true)
+            .Height(100, true)
+            .Absolute(true)
+            .AlignItems(AlignEnum.Center)
+            .JustifyContent(JustifyEnum.SpaceBetween);
+
+        self._healthLabel = UI.Label(self.GetHealthText())
+            .Absolute(true)
+            .Height(100, true)
+            .FontSize(75, true, FontScaleModeEnum.Height)
+            .FontStyle(FontStyleEnum.Bold)
+            .Padding(0, true)
+            .Margin(0, true)
+            .Color(Color(255, 255, 255));
+
+        healthContainer.Add(self._healthLabel);
+        self._healthBarContainer.Add(healthContainer);
+
+        centerContainer.Add(self._nameLabel);
+        centerContainer.Add(self._healthBarContainer);
+
+        self._rootContainer.Add(centerContainer);
+    }
+
+    function CreateHealthBar()
+    {
+        self._healthBarContainer = UI.VisualElement()
+            .BackgroundColor(Color(40, 40, 40, 255))
+            .Height(25)
+            .BorderRadius(4, false)
+            .BorderWidth(2, false)
+            .BorderColor(Color(80, 80, 80, 255))
+            .FlexDirection(FlexDirectionEnum.Row);
+
+        self._healthBarFill = UI.VisualElement()
+            .Width(100, true)
+            .Height(100, true)
+            .BackgroundColor(Color(100, 200, 100, 255))
+            .BorderRadius(4, false)
+            .TransitionDuration(300, false);
+
+        self._healthBarContainer.Add(self._healthBarFill);
+    }
+
+    function GetHealthText()
+    {
+        healthText = Convert.ToString(Convert.ToInt(self._currentHealth)) + " / " + Convert.ToString(Convert.ToInt(self._maxHealth));
+
+        if (self._showPercentage)
+        {
+            percentage = self.GetHealthPercentage();
+            healthText = healthText + " (" + Convert.ToString(Convert.ToInt(percentage)) + "%)";
+        }
+
+        return healthText;
+    }
+
+    function GetHealthPercentage()
+    {
+        if (self._maxHealth <= 0.0)
+        {
+            return 0.0;
+        }
+        return (self._currentHealth / self._maxHealth) * 100.0;
+    }
+
+    function UpdateHealthBar()
+    {
+        if (self._healthBarFill == null || self._healthLabel == null)
+        {
+            return;
+        }
+
+        percentage = self.GetHealthPercentage();
+        self.UpdateBarColor(percentage);
+        self._healthBarFill.Width(percentage, true);
+        self._healthLabel.Text = self.GetHealthText();
+    }
+
+    function UpdateBarColor(percentage)
+    {
+        color = Color(200, 200, 200);
+
+        if (self._colorThresholds != null && self._colorThresholds.Count > 0)
+        {
+            i = 0;
+            while (i < self._colorThresholds.Count)
+            {
+                threshold = self._colorThresholds.Get(i);
+                if (percentage >= threshold.Get("Percent"))
+                {
+                    color = threshold.Get("Color");
+                    break;
+                }
+                i = i + 1;
+            }
+        }
+
+        self._healthBarFill.BackgroundColor(color);
+    }
+
+    function Show()
+    {
+        if (!self._isVisible)
+        {
+            self._isVisible = true;
+            self._rootContainer.Active(true);
+        }
+    }
+
+    function Hide()
+    {
+        if (self._isVisible)
+        {
+            self._isVisible = false;
+            self._rootContainer.Active(false);
+        }
+    }
+
+    function SetMaxHealth(maxHealth)
+    {
+        self._maxHealth = maxHealth;
+        if (self._currentHealth > self._maxHealth)
+        {
+            self._currentHealth = self._maxHealth;
+        }
+        self.UpdateHealthBar();
+    }
+
+    function SetCurrentHealth(currentHealth)
+    {
+        if (currentHealth < 0.0)
+        {
+            currentHealth = 0.0;
+        }
+        if (currentHealth > self._maxHealth)
+        {
+            currentHealth = self._maxHealth;
+        }
+        self._currentHealth = currentHealth;
+        self.UpdateHealthBar();
+    }
+
+    function AddColorThreshold(percent, color)
+    {
+        threshold = Dict();
+        threshold.Set("Percent", percent);
+        threshold.Set("Color", color);
+        self._colorThresholds.Add(threshold);
+        self.SortThresholds();
+    }
+
+    function SortThresholds()
+    {
+        n = self._colorThresholds.Count;
+        i = 0;
+        while (i < n - 1)
+        {
+            j = 0;
+            while (j < n - i - 1)
+            {
+                current = self._colorThresholds.Get(j);
+                next = self._colorThresholds.Get(j + 1);
+
+                if (current.Get("Percent") < next.Get("Percent"))
+                {
+                    temp = self._colorThresholds.Get(j);
+                    self._colorThresholds.Set(j, self._colorThresholds.Get(j + 1));
+                    self._colorThresholds.Set(j + 1, temp);
+                }
+                j = j + 1;
+            }
+            i = i + 1;
+        }
+    }
+
+    function IsDead()
+    {
+        return self._currentHealth <= 0.0;
+    }
+}
+
+class TextWarning
+{
+    _rootContainer = null;
+    _label = null;
+    _leftIcon = null;
+    _rightIcon = null;
+    _text = "";
+    _icon = "";
+    _color = Color();
+    _yPosition = 50;
+    _isVisible = false;
+    _defaultWidth = 45;
+
+    function Init(yPosition, text, icon, color)
+    {
+        self._yPosition = yPosition;
+        self._text = text;
+        self._icon = icon;
+        color.A = 100;
+        self._color = color;
+        self.CreateUI();
+    }
+
+    function CreateUI()
+    {
+        root = UI.GetRootVisualElement();
+
+        self._rootContainer = UI.VisualElement()
+            .Absolute(true)
+            .Width(0, true)
+            .Height(5, true)
+            .Top(self._yPosition, true)
+            .PaddingTop(0.5, true)
+            .PaddingBottom(0.5, true)
+            .BorderRadius(6)
+            .AlignSelf(AlignEnum.Center)
+            .FlexDirection(FlexDirectionEnum.Row)
+            .JustifyContent(JustifyEnum.Center)
+            .AlignItems(AlignEnum.Center)
+            .OverflowX(OverflowEnum.Hidden)
+            .TransitionDuration(500)
+            .BackgroundColor(self._color);
+        root.Add(self._rootContainer);
+
+        self._leftIcon = self.CreateIcon();
+        self._rootContainer.Add(self._leftIcon);
+
+        self._label = UI.Label(self._text)
+            .Color(Color(255, 255, 255))
+            .FlexGrow(3)
+            .FontSize(100, true, FontScaleModeEnum.Height)
+            .TextOverflow(TextOverflowEnum.Clip)
+            .FontStyle(FontStyleEnum.Bold)
+            .TextAlign(TextAlignEnum.MiddleCenter);
+        self._rootContainer.Add(self._label);
+
+        self._rightIcon = self.CreateIcon();
+        self._rootContainer.Add(self._rightIcon);
+    }
+
+    function CreateIcon()
+    {
+        container = UI.Icon(self._icon)
+            .AspectRatio(1.0)
+            .Height(100, true)
+            .FlexDirection(FlexDirectionEnum.Column)
+            .AlignItems(AlignEnum.Center);
+
+        return container;
+    }
+
+    coroutine Show()
+    {
+        if (!self._isVisible)
+        {
+            self._isVisible = true;
+            self._rootContainer
+                .Width(self._defaultWidth, true)
+                .PaddingLeft(0.5, true)
+                .PaddingRight(0.5, true);
+        }
+    }
+
+    function Hide()
+    {
+        if (self._isVisible)
+        {
+            self._isVisible = false;
+            self._rootContainer
+                .Width(0, true)
+                .PaddingLeft(0, true)
+                .PaddingRight(0, true);
+        }
+    }
+}
+
 cutscene MainCutscene
 {
     coroutine Start()
@@ -1424,11 +1847,9 @@ cutscene MainCutscene
         }
 
         # To Do: Add translations.
-        Cutscene.ShowDialogueForTime(ProfileIconEnum.Ian1, "Commander", "Defend him at all costs!", 2.0);
-        wait 2.0;
-        Cutscene.ShowDialogueForTime(ProfileIconEnum.Ian1, "Commander", "Protect Eren until he reaches the gates, even if it costs your lifes!", 4.0);
+        Cutscene.ShowDialogueForTime(ProfileIconEnum.Ian1, "Commander", "Protect Eren until he reaches the gate, even if it costs you your lives!", 4.0);
         wait 4.0;
-        Cutscene.ShowDialogueForTime(ProfileIconEnum.Ian1, "Commander", "Don't let titan near him!", 2.0);
+        Cutscene.ShowDialogueForTime(ProfileIconEnum.Ian1, "Commander", "Don't let any Titans near him!", 2.0);
         wait 2.0;
         return;
     }

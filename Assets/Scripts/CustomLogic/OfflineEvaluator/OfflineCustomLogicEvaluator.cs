@@ -294,6 +294,16 @@ namespace CustomLogic.OfflineEvaluator
             var instance = _evaluator.CreateClassInstance(className, CustomLogicEvaluator.EmptyArgs, init: true);
             return _evaluator.EvaluateMethod(instance, methodName, parameters);
         }
+        
+        /// <summary>
+        /// Create a new instance of the specified class.
+        /// </summary>
+        /// <param name="className">Name of the class to instantiate</param>
+        /// <param name="init">Whether to call Init() on the instance</param>
+        public CustomLogicClassInstance CreateClassInstance(string className, bool init = true)
+        {
+            return _evaluator.CreateClassInstance(className, CustomLogicEvaluator.EmptyArgs, init, null);
+        }
 
         public object EvaluateMainMethod(string methodName, params object[] parameters)
         {

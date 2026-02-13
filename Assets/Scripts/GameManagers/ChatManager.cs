@@ -70,22 +70,15 @@ namespace GameManagers
         public static List<bool> SuggestionFlags = new List<bool>();
         public static List<bool> NotificationFlags = new List<bool>();
         public static List<string> FeedLines = new List<string>();
-        private static int MaxLines
+        public static int MaxLines
         {
             get
             {
-                int configuredSize = SettingsManager.UISettings.ChatPoolSize.Value;
-                if (configuredSize == 0)
-                {
-                    // Use a larger default size for message storage when auto-adjusting
-                    // (lines will be displayed based on the dynamic calculation in ChatPanel)
-                    float chatHeight = SettingsManager.UISettings.ChatHeight.Value;
-                    float fontSize = SettingsManager.UISettings.ChatFontSize.Value;
-                    float lineHeight = 30f * (fontSize / 18f);
-                    int calculatedSize = Mathf.CeilToInt((chatHeight * 2f) / lineHeight);
-                    return Mathf.Max(calculatedSize, 50); // Ensure ample buffer for scrolling
-                }
-                return configuredSize;
+                float chatHeight = SettingsManager.UISettings.ChatHeight.Value;
+                float fontSize = SettingsManager.UISettings.ChatFontSize.Value;
+                float lineHeight = 30f * (fontSize / 18f);
+                int calculatedSize = Mathf.CeilToInt((chatHeight * 5f) / lineHeight);
+                return Mathf.Clamp(calculatedSize, 10, 70);
             }
         }
         public static Dictionary<ChatTextColor, string> ColorTags = new Dictionary<ChatTextColor, string>();
@@ -151,6 +144,7 @@ namespace GameManagers
         public static List<int> PMPartnerIDs = new List<int>();
         private static string _preservedInputText = string.Empty;
         private static int _preservedInputCaretPosition = 0;
+        public static bool PreserveInputOnRestart = false;
         private static readonly Dictionary<string, string> _conversationTexts = new Dictionary<string, string>();
         private static readonly Dictionary<string, int> _conversationCarets = new Dictionary<string, int>();
         public static void PreserveInputText(string text, int caretPosition)
@@ -165,6 +159,7 @@ namespace GameManagers
             int caretPos = _preservedInputCaretPosition;
             _preservedInputText = string.Empty;
             _preservedInputCaretPosition = 0;
+            PreserveInputOnRestart = false;
             return (text, caretPos);
         }
 
@@ -283,22 +278,22 @@ namespace GameManagers
         public static void SendChatAll(string message, ChatTextColor color = ChatTextColor.Default)
         {
             string formattedMessage = GetColorString(message, color);
-            RPCManager.PhotonView.RPC(nameof(RPCManager.ChatRPC), RpcTarget.All, new object[] { formattedMessage });
+            RPCManager.PhotonView.RPC(nameof(RPCManager.ChatRPC), RpcTarget.All, new object[] { formattedMessage, DateTime.UtcNow.Ticks });
         }
 
         public static void SendChat(string message, Player player, ChatTextColor color = ChatTextColor.Default)
         {
             string formattedMessage = GetColorString(message, color);
-            RPCManager.PhotonView.RPC(nameof(RPCManager.ChatRPC), player, new object[] { formattedMessage });
+            RPCManager.PhotonView.RPC(nameof(RPCManager.ChatRPC), player, new object[] { formattedMessage, DateTime.UtcNow.Ticks });
         }
 
-        public static void OnChatRPC(string message, PhotonMessageInfo info)
+        public static void OnChatRPC(string message, long senderTimestamp, PhotonMessageInfo info)
         {
             if (InGameManager.MuteText.Contains(info.Sender.ActorNumber))
                 return;
             string clickableId = $"<link=\"{info.Sender.ActorNumber}\">{GetColorString($"[{info.Sender.ActorNumber}]", ChatTextColor.ID)}</link>";
             string formattedMessage = $"{clickableId} {message}";
-            DateTime timestamp = DateTime.UtcNow.AddSeconds(-Util.GetPhotonTimestampDifference(info.SentServerTime, PhotonNetwork.Time));
+            DateTime timestamp = new DateTime(senderTimestamp, DateTimeKind.Utc);
             AddLine(formattedMessage, ChatTextColor.Default, false, timestamp, info.Sender.ActorNumber);
         }
 
@@ -631,36 +626,37 @@ namespace GameManagers
                 KickPlayer(player, ban: true);
         }
 
-        [CommandAttribute("ipban", "/ipban [ID]: IP ban the player with ID (mod only)", AutofillType.PlayerID, excludeFromHelp: true)]
-        private static void IPBan(string[] args)
-        {
-            var player = GetPlayer(args);
-            if (player == null) return;
-            AnticheatManager.IPBan(player);
-        }
+        // Not implemented...
+        //[CommandAttribute("ipban", "/ipban [ID]: IP ban the player with ID (mod only)", AutofillType.PlayerID, excludeFromHelp: true)]
+        //private static void IPBan(string[] args)
+        //{
+        //    var player = GetPlayer(args);
+        //    if (player == null) return;
+        //    AnticheatManager.IPBan(player);
+        //}
 
-        [CommandAttribute("ipunban", "/ipunban [IP]: Unban the given IP address (mod only)", AutofillType.None, excludeFromHelp: true)]
-        private static void IPUnban(string[] args)
-        {
-            if (args.Length > 0)
-            {
-                AnticheatManager.IPUnban(args[0]);
-            }
-        }
+        //[CommandAttribute("ipunban", "/ipunban [IP]: Unban the given IP address (mod only)", AutofillType.None, excludeFromHelp: true)]
+        //private static void IPUnban(string[] args)
+        //{
+        //    if (args.Length > 0)
+        //    {
+        //        AnticheatManager.IPUnban(args[0]);
+        //    }
+        //}
 
-        [CommandAttribute("superban", "/superban [ID]: IP and hardware ban the player with ID (mod only). Cannot be undone!", AutofillType.PlayerID, excludeFromHelp: true)]
-        private static void Superban(string[] args)
-        {
-            var player = GetPlayer(args);
-            if (player == null) return;
-            AnticheatManager.Superban(player);
-        }
+        //[CommandAttribute("superban", "/superban [ID]: IP and hardware ban the player with ID (mod only). Cannot be undone!", AutofillType.PlayerID, excludeFromHelp: true)]
+        //private static void Superban(string[] args)
+        //{
+        //    var player = GetPlayer(args);
+        //    if (player == null) return;
+        //    AnticheatManager.Superban(player);
+        //}
 
-        [CommandAttribute("removesuperbans", "/removesuperbans: Clear all superbans on the region.", AutofillType.None, excludeFromHelp: true)]
-        private static void Removesuperbans(string[] args)
-        {
-            AnticheatManager.ClearSuperbans();
-        }
+        //[CommandAttribute("removesuperbans", "/removesuperbans: Clear all superbans on the region.", AutofillType.None, excludeFromHelp: true)]
+        //private static void Removesuperbans(string[] args)
+        //{
+        //    AnticheatManager.ClearSuperbans();
+        //}
 
         private static bool CanVoteKick(Player player)
         {
@@ -1637,15 +1633,16 @@ namespace GameManagers
                 AddLine("Invalid private message target.", ChatTextColor.Error);
                 return;
             }
-            RPCManager.PhotonView.RPC(nameof(RPCManager.PrivateChatRPC), PhotonNetwork.LocalPlayer, new object[] { message, target.ActorNumber });
-            RPCManager.PhotonView.RPC(nameof(RPCManager.PrivateChatRPC), target, new object[] { message, target.ActorNumber });
+            RPCManager.PhotonView.RPC(nameof(RPCManager.PrivateChatRPC), PhotonNetwork.LocalPlayer, new object[] { message, target.ActorNumber, DateTime.UtcNow.Ticks });
+            RPCManager.PhotonView.RPC(nameof(RPCManager.PrivateChatRPC), target, new object[] { message, target.ActorNumber, DateTime.UtcNow.Ticks });
         }
 
-        public static void OnPrivateChatRPC(string message, int targetID, PhotonMessageInfo info)
+        public static void OnPrivateChatRPC(string message, int targetID, long senderTimestamp, PhotonMessageInfo info)
         {
             int localID = PhotonNetwork.LocalPlayer.ActorNumber;
             int senderID = info.Sender.ActorNumber;
             string senderName = info.Sender.GetStringProperty(PlayerProperty.Name);
+            DateTime timestamp = new DateTime(senderTimestamp, DateTimeKind.Utc);
             if (localID == senderID)
             {
                 Player targetPlayer = PhotonNetwork.CurrentRoom.GetPlayer(targetID);
@@ -1653,7 +1650,7 @@ namespace GameManagers
                 {
                     string targetName = targetPlayer.GetStringProperty(PlayerProperty.Name);
                     AddLine($"{GetColorString("To ", ChatTextColor.System)}{targetName}{GetColorString(": ", ChatTextColor.System)}{message}",
-                        ChatTextColor.Default, false, DateTime.UtcNow.AddSeconds(-Util.GetPhotonTimestampDifference(info.SentServerTime, PhotonNetwork.Time)),
+                        ChatTextColor.Default, false, timestamp,
                         senderID, false, true, targetID);
                     var panel = GetChatPanel();
                     if (panel != null && !panel.IsInPMMode())
@@ -1665,7 +1662,7 @@ namespace GameManagers
             else if (localID == targetID)
             {
                 AddLine($"{GetColorString("From ", ChatTextColor.System)}{senderName}{GetColorString(": ", ChatTextColor.System)}{message}",
-                    ChatTextColor.Default, false, DateTime.UtcNow.AddSeconds(-Util.GetPhotonTimestampDifference(info.SentServerTime, PhotonNetwork.Time)),
+                    ChatTextColor.Default, false, timestamp,
                     senderID, false, true, senderID);
 
                 var panel = GetChatPanel();

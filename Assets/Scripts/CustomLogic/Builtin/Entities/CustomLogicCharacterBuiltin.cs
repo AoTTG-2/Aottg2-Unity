@@ -16,19 +16,19 @@ namespace CustomLogic
     ///         # Character is owned (network-wise) by the person running this script.
     ///         # Ex: If user is host, this could either be their actual player character or AI titans/shifters.
     ///     }
-    ///     
+    ///
     ///     if (character.IsMainCharacter)
     ///     {
     ///         # Character is the main character (the camera-followed player).
     ///     }
-    ///     
+    ///
     ///     if (character.IsAI)
     ///     {
     ///         # Character is AI and likely controlled via MasterClient.
-    ///         
+    ///
     ///         if (character.Player.ID == Network.MasterClient.ID)
     ///         {
-    ///             # Character is owned by masterclient, if we're not masterclient, we cannot modify props.    
+    ///             # Character is owned by masterclient, if we're not masterclient, we cannot modify props.
     ///         }
     ///     }
     /// }
@@ -83,6 +83,13 @@ namespace CustomLogic
         public bool IsAI => Character.AI;
 
         /// <summary>
+        /// Is this character alive?
+        /// Value is set to false before despawn.
+        /// </summary>
+        [CLProperty]
+        public bool IsAlive => Character != null ? Character.Dead : false;
+
+        /// <summary>
         /// Network view ID of the character.
         /// </summary>
         [CLProperty]
@@ -110,7 +117,7 @@ namespace CustomLogic
         /// Position of the character.
         /// </summary>
         [CLProperty]
-        public CustomLogicVector3Builtin Position
+        public virtual CustomLogicVector3Builtin Position
         {
             get => new CustomLogicVector3Builtin(Character.Cache.Transform.position);
             set
@@ -155,7 +162,7 @@ namespace CustomLogic
         [CLProperty]
         public CustomLogicVector3Builtin Velocity
         {
-            get => new CustomLogicVector3Builtin(Character.Cache.Rigidbody.velocity);
+            get => new CustomLogicVector3Builtin(Character.GetVelocity());
             set
             {
                 if (!Character.IsMine()) return;
@@ -216,7 +223,11 @@ namespace CustomLogic
         /// The character's target direction.
         /// </summary>
         [CLProperty]
-        public CustomLogicVector3Builtin TargetDirection => new CustomLogicVector3Builtin(Character.GetTargetDirection());
+        public CustomLogicVector3Builtin TargetDirection
+        {
+            get => new CustomLogicVector3Builtin(Character.GetTargetDirection());
+            set => Character.TargetAngle = Quaternion.LookRotation(value.Value).eulerAngles.y;
+        }
 
         /// <summary>
         /// Team character belongs to. Using enum is not mandatory, value can be any string.
@@ -510,8 +521,8 @@ namespace CustomLogic
         [CLMethod]
         public void FadeSound(
             [CLParam(Enum = new Type[] { typeof(CustomLogicHumanSoundEnum), typeof(CustomLogicTitanSoundEnum), typeof(CustomLogicShifterSoundEnum) })]
-            string sound, 
-            float volume, 
+            string sound,
+            float volume,
             float time)
         {
             if (Character.IsMine() && !Character.Dead)
@@ -603,14 +614,8 @@ namespace CustomLogic
 
         public override bool Equals(object other)
         {
-            if (other == null)
-                return Character == null;
-            if (!(other is CustomLogicCharacterBuiltin))
-                return false;
-            var otherCharacter = ((CustomLogicCharacterBuiltin)other).Character;
-            if (Character == null)
-                return otherCharacter == null;
-            return Character == otherCharacter;
+            // Delegate to __Eq__ for consistency
+            return __Eq__(this, other);
         }
 
         /// <summary>
@@ -622,7 +627,21 @@ namespace CustomLogic
         [CLMethod]
         public bool __Eq__(object self, object other)
         {
-            return self.Equals(other);
+            // Extract character wrappers
+            var selfChar = self as CustomLogicCharacterBuiltin;
+            var otherChar = other as CustomLogicCharacterBuiltin;
+
+            // Get underlying Character references (may be null if destroyed)
+            var selfCharacter = selfChar?.Character;
+            var otherCharacter = otherChar?.Character;
+
+            // Compare underlying Characters
+            if (selfCharacter == null && otherCharacter == null)
+                return true;
+            if (selfCharacter == null || otherCharacter == null)
+                return false;
+
+            return selfCharacter == otherCharacter;
         }
 
         /// <summary>

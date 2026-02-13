@@ -10,7 +10,8 @@
         public const string AttackSteamValue = "Armature_VER2|wall_attack_steam";
         public const string AttackSweepValue = "Armature_VER2|wall_attack_sweep";
         public const string AttackKickValue = "Armature_VER2|wall_colossal_kick";
-        
+        public const string StunFallFace = "Armature_VER2|wall_colossal_stun";
+
         public override string Idle => IdleValue;
         public string AttackWallSlap1L = AttackWallSlap1LValue;
         public string AttackWallSlap1R = AttackWallSlap1RValue;
@@ -19,5 +20,6 @@
         public string AttackSteam = AttackSteamValue;
         public string AttackSweep = AttackSweepValue;
         public string AttackKick = AttackKickValue;
+        public string StunFallFaceAnim = StunFallFace;
     }
 }

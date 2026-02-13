@@ -37,6 +37,14 @@ namespace CustomLogic
         public static Dictionary<string, object> PersistentData = new Dictionary<string, object>();
         public static HashSet<string> GeneralComponents = new HashSet<string>();
         public static HashSet<string> InternalComponents = new HashSet<string>();
+        public static bool IsWaitingForRestart => _hasRestarted;
+        private static bool _hasRestarted = false;
+
+        public static void WaitForRestart()
+        {
+            _hasRestarted = false;
+            Evaluator = null;
+        }
 
         public override void OnJoinedRoom()
         {
@@ -74,6 +82,7 @@ namespace CustomLogic
         private static void OnPreLoadScene(SceneName sceneName)
         {
             _instance.StopAllCoroutines();
+            _hasRestarted = true;
             Evaluator = null;
             Compiler = null;
             LogicLoaded = false;
@@ -170,7 +179,7 @@ namespace CustomLogic
 
         public static Dictionary<string, BaseSetting> GetModeSettings(string source)
         {
-            var evaluator = GetEditorEvaluator(source);
+            var evaluator = GetEditorEvaluator(source, false);
             return evaluator.GetModeSettings();
         }
 
@@ -183,12 +192,13 @@ namespace CustomLogic
             return "";
         }
 
-        public static CustomLogicEvaluator GetEditorEvaluator(string source)
+        public static CustomLogicEvaluator GetEditorEvaluator(string source, bool loadBaseLogic = true)
         {
             var compiler = new CustomLogicCompiler();
             
             // Add base logic
-            compiler.AddSourceFile(new CustomLogicSourceFile("BaseLogic.cl", BaseLogic, CustomLogicSourceType.BaseLogic));
+            if (loadBaseLogic)
+                compiler.AddSourceFile(new CustomLogicSourceFile("BaseLogic.cl", BaseLogic, CustomLogicSourceType.BaseLogic));
             
             // Add the user source
             compiler.AddSourceFile(new CustomLogicSourceFile("UserSource.cl", source, CustomLogicSourceType.ModeLogic));
@@ -252,7 +262,7 @@ namespace CustomLogic
                 if (!string.IsNullOrEmpty(mapLogic))
                 {
                     string mapName = settings.MapName.Value;
-                    Compiler.AddSourceFile(new CustomLogicSourceFile($"{mapName}.txt", mapLogic, CustomLogicSourceType.MapLogic));
+                    Compiler.AddSourceFile(new CustomLogicSourceFile($"{mapName}.txt", mapLogic, CustomLogicSourceType.MapLogic, MapManager.MapScript.LogicStart));
                 }
             }
             

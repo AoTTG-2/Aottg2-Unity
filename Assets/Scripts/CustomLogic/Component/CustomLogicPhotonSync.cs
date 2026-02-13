@@ -38,6 +38,19 @@ namespace CustomLogic
         protected bool _syncTransforms = true;
         protected bool _syncVelocity = true;
 
+        protected Rigidbody Rigidbody
+        {
+            get
+            {
+                if (_rigidbody == null && MapObject != null && MapObject.GameObject != null)
+                {
+                    _rigidbody = MapObject.GameObject.GetComponent<Rigidbody>();
+                }
+                return _rigidbody;
+            }
+        }
+        private Rigidbody _rigidbody = null;
+
         public int ObjectId;
         public PhotonView PhotonView;
         public MapObject MapObject { get; protected set; }
@@ -63,11 +76,13 @@ namespace CustomLogic
         }
         public virtual void OnEnable()
         {
+            PhotonView.AddCallbackTarget(this);
             PhotonNetwork.AddCallbackTarget(this);
         }
 
         public virtual void OnDisable()
         {
+            PhotonView.RemoveCallbackTarget(this);
             PhotonNetwork.RemoveCallbackTarget(this);
         }
         public void OnPhotonInstantiate(PhotonMessageInfo info)
@@ -322,14 +337,15 @@ namespace CustomLogic
         {
             if (!PhotonView.IsMine && _inited)
             {
-                if (MapObject.GameObject == null || !_syncVelocity)
+                if (MapObject.GameObject == null || !_syncTransforms)
                     return;
                 var transform = MapObject.GameObject.transform;
                 transform.position = Vector3.Lerp(transform.position, _correctPosition, Time.deltaTime * SmoothingDelay);
                 transform.rotation = Quaternion.Lerp(transform.rotation, _correctRotation, Time.deltaTime * SmoothingDelay);
                 if (_syncVelocity)
                 {
-                    MapObject.GameObject.GetComponent<Rigidbody>().velocity = _correctVelocity;
+                    if (Rigidbody != null)
+                        Rigidbody.velocity = _correctVelocity;
                 }
             }
         }

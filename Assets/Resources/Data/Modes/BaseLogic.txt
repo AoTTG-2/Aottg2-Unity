@@ -52,7 +52,7 @@ component InteractActionTrigger
 
     function OnFrame()
     {
-        if (self._currentHuman != null && Input.GetKeyDown(InputCategoryEnum.Interaction + self.Key))
+        if (self._currentHuman != null && Input.GetKeyDown(InputCategoryEnum.Interaction + "/" + self.Key))
         {
             if (self._actionHandler != null)
             {
@@ -159,7 +159,7 @@ component Floater
         {
             # self._isInWater  = false;
             boundPoints = self.MapObject.GetCorners();
-            velocity = self._rb.GetVelocity();
+            velocity = self._rb.Velocity;
             gravity = Vector3(0, -20, 0);
             # rb.AddForceWithMode(gravity.Scale(-1), "Acceleration");
             gScale = 1.0 / boundPoints.Count;
@@ -267,7 +267,7 @@ component WaterPhysics
         }
         elif (other.Type == "MapObject")
         {
-            body = other.GetBuiltinComponent("Rigidbody");
+            body = other.Rigidbody;
             if (body == null)
             {
                 return Vector3(0, 0, 0);
@@ -285,7 +285,7 @@ component WaterPhysics
         }
         elif (other.Type == "MapObject")
         {
-            body = other.GetBuiltinComponent("Rigidbody");
+            body = other.Rigidbody;
             if (body == null)
             {
                 return 1;
@@ -303,7 +303,7 @@ component WaterPhysics
         }
         elif (other.Type == "MapObject")
         {
-            body = other.GetBuiltinComponent("Rigidbody");
+            body = other.Rigidbody;
             if (body != null)
             {
                 body.Velocity = velocity;
@@ -319,7 +319,7 @@ component WaterPhysics
         }
         elif (other.Type == "MapObject")
         {
-            body = other.GetBuiltinComponent("Rigidbody");
+            body = other.Rigidbody;
             if (body != null)
             {
                 return true;
@@ -657,12 +657,12 @@ component VelocityZone
         }
         elif (other.Type == "MapObject")
         {
-            body = other.GetComponent("Rigidbody");
+            body = other.Rigidbody;
             if (body == null)
             {
                 return;
             }
-            velocity = body.GetVelocity();
+            velocity = body.Velocity;
             appliedForce = self.CalculateForce(other, velocity);
         }
 
@@ -1964,11 +1964,7 @@ component Daylight
 
     function ParseEnum(value)
     {
-        if (value == "None")
-        {
-            return self._light.ShadowTypeNone;
-        }
-        elif (value == "Soft")
+        if (value == "Soft")
         {
             return self._light.ShadowTypeSoft;
         }
@@ -1976,6 +1972,7 @@ component Daylight
         {
             return self._light.ShadowTypeHard;
         }
+        return self._light.ShadowTypeNone;
     }
 }
 
@@ -1997,6 +1994,39 @@ component PointLight
         self._light.Range = self.Range;
         self._light.ShadowType = self._light.ShadowTypeNone; # Point lights do not support shadows
         self._light.BounceIntensity = 0.0; # Point lights do not support bounce intensity
+    }
+
+    function SetColor(color)
+    {
+        self.Color = color;
+        self._light.Color = color;
+    }
+
+    function GetColor(color)
+    {
+        return self.Color;
+    }
+    
+    function SetIntensity(intensity)
+    {
+        self.Intensity = intensity;
+        self._light.Intensity = intensity;
+    }
+
+    function GetIntensity()
+    {
+        return self.Intensity;
+    }
+    
+    function SetRange(range)
+    {
+        self.Range = range;
+        self._light.Range = range;
+    }
+
+    function GetRange()
+    {
+        return self.Range;
     }
 }
 
@@ -2589,6 +2619,7 @@ component Wagon
             if (human != null && human.Type == "Human")
             {
                 human.MountTransform(self._horse, Vector3(0, 1.95, 0), Vector3.Zero, Game.GetMiscSetting("HorsebackCombat"));
+                human.HorseFollowEnabled = false;
                 self._human = human;
             }
         }
@@ -2736,6 +2767,7 @@ component Wagon
             {
                 self._delayUnmount = false;
                 self._human.Unmount(false);
+                self._human.HorseFollowEnabled = true;
             }
         }
         else
@@ -2804,6 +2836,7 @@ component Wagon
             if (Input.GetKeyDown(InputInteractionEnum.Interact))
             {
                 self._human.Unmount();
+                self._human.HorseFollowEnabled = true;
                 self._riding = false;
             }
             else
@@ -2821,6 +2854,7 @@ component Wagon
                     {
                         self._inUse = true;
                         self._collidingHuman.MountTransform(self._horse, Vector3(0, 1.95, 0), Vector3.Zero, Game.GetMiscSetting("HorsebackCombat"));
+                        self._collidingHuman.HorseFollowEnabled = false;
                         self._human = self._collidingHuman;
                     }
                     else
@@ -2845,6 +2879,7 @@ component Wagon
                     posA = self._leftSitTransform.LocalPosition;
                     posB = self._rightSitTransform.LocalPosition;
                     self._human.MountMapObject(self.MapObject, Random.RandomVector3(posA, posB), Vector3(0, 0, 0));
+                    self._human.HorseFollowEnabled = false;
                 }
             }
         }
@@ -2852,7 +2887,9 @@ component Wagon
 
     function UpdateHorse()
     {
-        if (self._rigidbody.Velocity.Magnitude > 1)
+        velocity = self._rigidbody.Velocity;
+        horizontalVelocity = Vector3(velocity.X, 0, velocity.Z);
+        if (horizontalVelocity.Magnitude > 1)
         {
             self._horse.PlayAnimation(HorseAnimationEnum.Run);
             self._dust.ToggleParticle(true);
@@ -3083,6 +3120,271 @@ component Cannon
             Game.SpawnEffect(EffectNameEnum.Boom2, self._barrelEnd.Position, self.MapObject.Rotation, 0.5);
             Game.SpawnProjectileWithOwner(ProjectileNameEnum.CannonBall, self._barrelEnd.Position, Vector3.Zero, self._barrel.Forward.Normalized * self._ballSpeed,
             Vector3(0, -20, 0), self.ProjectileLiveTime, self._human);
+        }
+    }
+}
+
+# internal
+component CaptureDevice
+{
+    UnlimitedAmmo = true;
+    MaxAmmo = 0;
+    Cooldown = 30.0;
+    ProjectileLiveTime = 5.0;
+    HookDistance = 300;
+
+    _maxTilt = 45;
+    _minTilt = 25;
+
+    _rotateSpeed = 20;
+    _ropeFXTransform = null;
+    _rearLegTransform = null;
+    _frontPivotTransform = null;
+    _flatRotatorTransform = null;
+    _frontShotSizer = null;
+    _heightTransform = null;
+    _angle = 25;
+
+    # Triangle geometry constants
+    _frontLegLength = 2;      # Length of front leg (pivot to device)
+    _rearLegLength = 2;       # Length of rear leg (support)
+    _baseLegDistance = 2.0;     # Horizontal distance between pivot points
+    _baseYPosition = 2.0;       # Initial Y position of device
+
+
+
+    _humanMount = null;
+    _inUse = false;
+    _cooldownLeft = 0.0;
+    _ammoLeft = 0;
+    _human = null;
+    _collidingHuman = null;
+    _ropeTimeLeft = 0.0;
+
+    function Init()
+    {
+        self._ropeFXTransform = self.MapObject.GetTransform("DevicePivot/Height/MovingPart/CaptureDeviceFX");
+
+        self._rearLegTransform = self.MapObject.GetTransform("DevicePivot/Height/SupportFixture");
+        self._frontPivotTransform = self.MapObject.GetTransform("DevicePivot/Height/MovingPart");
+        self._flatRotatorTransform = self.MapObject.GetTransform("DevicePivot");
+        self._frontShotSizer = self.MapObject.GetTransform("DevicePivot/Height/MovingPart/ColliderSizer");
+        self._heightTransform = self.MapObject.GetTransform("DevicePivot/Height");
+
+        self._humanMount = self.MapObject.GetTransform("DevicePivot/HumanMount");
+        self.MapObject.AddSphereCollider(CollideModeEnum.Region, CollideWithEnum.Characters, Vector3.Zero, 5.0);
+        self._ammoLeft = self.MaxAmmo;
+
+        # Store initial Y position for triangle calculations
+        self._baseYPosition = self._flatRotatorTransform.LocalPosition.Y;
+
+        self._ropeFXTransform.Scale = self.MapObject.Scale;
+    }
+
+    # Adjusts rear leg and front pivot based on pitch angle
+    # Rear leg rotation mirrors the front pivot rotation
+    # Device moves up based on angle ratio
+    function AdjustTriangleGeometry(pitchAngle)
+    {
+        # Apply front pivot rotation (tilts upward with pitch)
+        frontPivotRotation = self._frontPivotTransform.LocalRotation;
+        frontPivotRotation.X = -pitchAngle;  # Negative to tilt barrel up
+        self._frontPivotTransform.LocalRotation = frontPivotRotation;
+
+        # Apply rear leg rotation (mirrors the front pivot angle)
+        rearLegRotation = self._rearLegTransform.LocalRotation;
+        rearLegRotation.X = pitchAngle;  # Opposite direction to front pivot
+        self._rearLegTransform.LocalRotation = rearLegRotation;
+
+        # Calculate angle ratio (0 at min, 1 at max)
+        angleRange = self._maxTilt - self._minTilt;
+        angleRatio = (pitchAngle - self._minTilt) / angleRange;
+
+        # Move device up by 0.1 times the vertical scale based on angle ratio
+        verticalOffset = (0.25 + angleRatio) * 0.25 * self.MapObject.Scale.Y;
+
+        devicePosition = self._heightTransform.LocalPosition;
+        devicePosition.Y = self._baseYPosition - verticalOffset;
+        self._heightTransform.LocalPosition = devicePosition;
+    }
+
+    function SendNetworkStream()
+    {
+        self.NetworkView.SendStream(self._flatRotatorTransform.LocalRotation);
+        self.NetworkView.SendStream(self._angle);
+        self.NetworkView.SendStream(self._inUse);
+        self.NetworkView.SendStream(self._ammoLeft);
+        self.NetworkView.SendStream(self._ropeTimeLeft);
+    }
+
+    function OnNetworkStream()
+    {
+        rotation = self.NetworkView.ReceiveStream();
+        self._angle = self.NetworkView.ReceiveStream();
+        self._inUse = self.NetworkView.ReceiveStream();
+        self._ammoLeft = self.NetworkView.ReceiveStream();
+        self._ropeTimeLeft = self.NetworkView.ReceiveStream();
+        self._flatRotatorTransform.LocalRotation = rotation;
+
+        # Apply triangle geometry adjustments for networked clients
+        self.AdjustTriangleGeometry(self._angle);
+    }
+
+    function OnNetworkMessage(sender, message)
+    {
+        if (Network.IsMasterClient && self.NetworkView.Owner == Network.MyPlayer && !self._inUse && message == "request")
+        {
+            self.NetworkView.Transfer(sender);
+        }
+        elif (message == "rope_on")
+        {
+            self._ropeFXTransform.SetActive(true);
+        }
+        elif (message == "rope_off")
+        {
+            self._ropeFXTransform.SetActive(false);
+        }
+    }
+
+    function OnNetworkTransfer(oldOwner, newOwner)
+    {
+        if (newOwner == Network.MasterClient && Network.IsMasterClient)
+        {
+            self._inUse = false;
+        }
+        elif (newOwner == Network.MyPlayer)
+        {
+            self._inUse = true;
+            human = Network.MyPlayer.Character;
+            if (human != null && human.Type == "Human")
+            {
+                human.MountTransform(self._humanMount, Vector3.Zero, Vector3.Zero);
+                self._human = human;
+            }
+        }
+    }
+
+    function OnCollisionStay(other)
+    {
+        if (other.Type == "Human" && other.IsMine && !self._inUse)
+        {
+            UI.SetLabelForTime(UILabelEnum.MiddleCenter, "Press " + Input.GetKeyName(InputInteractionEnum.Interact) + " to use capture device.", 0.1);
+            self._collidingHuman = other;
+        }
+    }
+
+    function OnTick()
+    {
+        self._collidingHuman = null;
+
+        # Handle rope timer - owner is responsible for disabling FX when time expires
+        if (self.NetworkView.Owner == Network.MyPlayer && self._ropeTimeLeft > 0)
+        {
+            self._ropeTimeLeft = self._ropeTimeLeft - Time.TickTime;
+            if (self._ropeTimeLeft <= 0)
+            {
+                self._ropeTimeLeft = 0;
+                self._ropeFXTransform.SetActive(false);
+                self.NetworkView.SendMessageOthers("rope_off");
+            }
+        }
+    }
+
+    function OnFrame()
+    {
+        if (self._inUse && self.NetworkView.Owner == Network.MyPlayer)
+        {
+            self._cooldownLeft = self._cooldownLeft - Time.FrameTime;
+            message = "Cooldown: " + Convert.ToString(Convert.ToInt(Math.Clamp(self._cooldownLeft, 0.0, self.Cooldown)));
+            if (!self.UnlimitedAmmo)
+            {
+                message = message + " Ammo: " + Convert.ToString(self._ammoLeft);
+            }
+            UI.SetLabelForTime(UILabelEnum.MiddleCenter, message, 0.1);
+            pitch = self._angle;
+            baseRotation = self._flatRotatorTransform.LocalRotation;
+            if (Input.GetKeyHold(InputGeneralEnum.Left))
+            {
+                baseRotation.Y = baseRotation.Y - self._rotateSpeed * Time.FrameTime;
+            }
+            elif (Input.GetKeyHold(InputGeneralEnum.Right))
+            {
+                baseRotation.Y = baseRotation.Y + self._rotateSpeed * Time.FrameTime;
+            }
+            if (Input.GetKeyHold(InputGeneralEnum.Forward))
+            {
+                pitch = pitch - self._rotateSpeed * Time.FrameTime;
+            }
+            elif (Input.GetKeyHold(InputGeneralEnum.Back))
+            {
+                pitch = pitch + self._rotateSpeed * Time.FrameTime;
+            }
+            pitch = Math.Clamp(pitch, self._minTilt, self._maxTilt);
+            self._angle = pitch;
+            self._flatRotatorTransform.LocalRotation = baseRotation;
+
+            # Apply triangle geometry adjustments based on current pitch
+            self.AdjustTriangleGeometry(pitch);
+
+            hasAmmo = self._ammoLeft > 0 || self.UnlimitedAmmo;
+            if (self._cooldownLeft <= 0.0 && hasAmmo && Input.GetKeyHold(InputHumanEnum.AttackDefault))
+            {
+                self.Fire();
+            }
+            if (Input.GetKeyDown(InputInteractionEnum.Interact))
+            {
+                self._human.Unmount();
+                self.NetworkView.Transfer(Network.MasterClient);
+                self._inUse = false;
+                return;
+            }
+        }
+        if (self.NetworkView.Owner == Network.MyPlayer && self._inUse)
+        {
+            if (self.NetworkView.Owner.Character == null || self.NetworkView.Owner.Character.Type != "Human" || self.NetworkView.Owner.Character.MountedTransform != self._humanMount)
+            {
+                self.NetworkView.Transfer(Network.MasterClient);
+                self._inUse = false;
+                return;
+            }
+        }
+        if (!self._inUse && self._collidingHuman != null)
+        {
+            if (Input.GetKeyDown(InputInteractionEnum.Interact))
+            {
+                if (self.NetworkView.Owner == Network.MyPlayer)
+                {
+                    self._inUse = true;
+                    self._collidingHuman.MountTransform(self._humanMount, Vector3.Zero, Vector3.Zero);
+                    self._human = self._collidingHuman;
+                }
+                else
+                {
+                    self.NetworkView.SendMessage(self.NetworkView.Owner, "request");
+                }
+            }
+        }
+    }
+
+    function Fire()
+    {
+        self._cooldownLeft = self.Cooldown;
+        self._ammoLeft = self._ammoLeft - 1;
+        if (self._human != null)
+        {
+            self._ropeFXTransform.SetActive(true);
+            self._ropeTimeLeft = self.ProjectileLiveTime;
+            self.NetworkView.SendMessageOthers("rope_on");
+            scale = self._frontShotSizer.Scale;
+            scale.Z = self.HookDistance;
+            collideWith = CollideWithEnum.Titans;
+            start = self._frontShotSizer.Position;
+            end = start + self._frontShotSizer.Forward * 300;
+            result = Physics.BoxCastAll(start, end, self._frontShotSizer.Scale, self._frontShotSizer.QuaternionRotation, collideWith);
+            for (res in result)
+            {
+                res.Collider.Cripple(self.ProjectileLiveTime);
+            }
         }
     }
 }

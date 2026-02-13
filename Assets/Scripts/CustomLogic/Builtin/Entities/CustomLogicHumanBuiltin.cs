@@ -33,6 +33,23 @@ namespace CustomLogic
         }
 
         /// <summary>
+        /// Position of the character.
+        /// </summary>
+        [CLProperty]
+        public override CustomLogicVector3Builtin Position
+        {
+            get => base.Position;
+            set
+            {
+                if (Human.IsMine())
+                {
+                    Human.IsChangingPosition();
+                    base.Position = value;
+                }
+            }
+        }
+
+        /// <summary>
         /// The weapon the human is using.
         /// </summary>
         [CLProperty(Enum = new Type[] { typeof(CustomLogicWeaponEnum) })]
@@ -145,6 +162,24 @@ namespace CustomLogic
         {
             get => Human.Stats.Speed;
             set => Human.Stats.Speed = value;
+        }
+
+        [CLProperty]
+        public bool HorseFollowEnabled
+        {
+            get
+            {
+                Horse horse = Human.Horse;
+                if (horse != null)
+                    return horse.FollowingEnabled;
+                return false;
+            }
+            set
+            {
+                Horse horse = Human.Horse;
+                if (horse != null)
+                    horse.FollowingEnabled = value;
+            }
         }
 
         /// <summary>

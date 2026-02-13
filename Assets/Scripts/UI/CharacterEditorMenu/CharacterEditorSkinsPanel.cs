@@ -63,11 +63,12 @@ namespace UI
             ElementFactory.CreateTextButton(BottomBar, style, UIManager.GetLocaleCommon("Edit") + " " + UIManager.GetLocale("CharacterPopup", "General", "Character"), onClick: () => OnButtonClick("EditCustomSkins"));
             ElementFactory.CreateTextButton(BottomBar, style, UIManager.GetLocaleCommon("Edit") + " " + UIManager.GetLocale("SettingsPopup", "Skins.Human", "Global"), onClick: () => OnButtonClick("EditGlobalSkin"));
             float dropdownWidth = 160f;
+            float dropdownHeight = 180f;
             string[] globalSetNames = GetFilteredGlobalSetNames();
             int currentGlobalIndex = GetFilteredGlobalSetIndex();
             _globalSetDropdownSetting = new IntSetting(currentGlobalIndex);
             GameObject globalSetsDropdown = ElementFactory.CreateDropdownSetting(SinglePanel, style, _globalSetDropdownSetting, UIManager.GetLocale("SettingsPopup", "Skins.Human", "Global"), globalSetNames,
-                elementWidth: dropdownWidth, onDropdownOptionSelect: () => OnGlobalSkinSetSelected(_globalSetDropdownSetting.Value));
+                elementWidth: dropdownWidth, maxScrollHeight: dropdownHeight, onDropdownOptionSelect: () => OnGlobalSkinSetSelected(_globalSetDropdownSetting.Value));
             Text globalSetsLabel = globalSetsDropdown.transform.Find("Label").GetComponent<Text>();
             GameObject globalToggle = ElementFactory.CreateToggleSetting(SinglePanel, style, _globalSkinPreview, UIManager.GetLocale("SettingsPopup", "Skins.Human", "GlobalSkins"), onValueChanged: () => OnSkinPreviewToggle());
             GameObject customToggle = ElementFactory.CreateToggleSetting(SinglePanel, style, _customSkinPreview, UIManager.GetLocale("SettingsPopup", "Skins.Human", "CharacterSkins"), onValueChanged: () => OnSkinPreviewToggle());

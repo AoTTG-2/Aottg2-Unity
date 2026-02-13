@@ -489,6 +489,7 @@
 		"Skins.Common.RandomizedPairs": "Randomized pairs",
 		"Skins.Common.RandomizedPairsTooltip": "Create random pairs of skins for each object.",
 		"Skins.Common.Ground": "Ground",
+		"Skins.Human.EditGlobal": "Global Skin",
 		"Skins.Human.GasEnabled": "Show gas skins",
 		"Skins.Human.HookEnabled": "Show hook skins",
 		"Skins.Human.SetSpecificSkinsEnabled": "My character skins",
