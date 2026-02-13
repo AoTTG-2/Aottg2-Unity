@@ -26,9 +26,18 @@ namespace CustomLogic
             Value = MapLoader.RegisterMapLight((Light)Component, type == LightType.Directional);
             Value.MaxIntensity = 1f;
             Value.Light.type = type;
-            Value.Light.shadowBias = 0.2f;
-            Value.Light.shadows = LightShadows.Soft;
-            Value.Light.shadowStrength = 0.8f;
+            if (type == LightType.Directional)
+            {
+                Value.Light.shadows = LightShadows.Soft;
+                Value.Light.shadowStrength = 0.8f;
+                Value.Light.shadowBias = 0.2f;
+            }
+            else
+            {
+                Value.Light.shadows = LightShadows.None;
+                Value.Light.renderMode = LightRenderMode.ForcePixel;
+                Value.Light.bounceIntensity = 0f;
+            }
         }
 
         /// <summary>
