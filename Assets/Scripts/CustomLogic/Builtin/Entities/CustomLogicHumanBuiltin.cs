@@ -224,12 +224,21 @@ namespace CustomLogic
                 if (Human.Weapon is BladeWeapon bladeWeapon)
                 {
                     bool bladeWasEnabled = bladeWeapon.CurrentDurability > 0f;
-                    bladeWeapon.CurrentDurability = Mathf.Max(Mathf.Min(bladeWeapon.MaxDurability, value.UnboxToFloat()), 0);
-                    if (bladeWeapon.CurrentDurability >= 0f)
+                    float NewCurrentDurability = Mathf.Clamp(value, 0f, bladeWeapon.MaxDurability);
+
+                    bladeWeapon.CurrentDurability = NewCurrentDurability;
+
+                    if (bladeWasEnabled && NewCurrentDurability <= 0f)
                     {
+                        // Only break blade if CurrentDurability > 0 and then be set to 0
                         Human.ToggleBlades(false);
-                        if (bladeWasEnabled)
-                            Human.PlaySound(HumanSounds.BladeBreak);
+                        Human.PlaySound(HumanSounds.BladeBreak);
+                    }
+                    else if(!bladeWasEnabled && NewCurrentDurability > 0f)
+                    {
+                        // Only enable blade if CurrentDurability <= 0 and then be set to greater 0
+                        Human.ToggleBlades(true);
+                        Human.PlaySound(HumanSounds.BladeReloadGround);
                     }
                 }
             }
