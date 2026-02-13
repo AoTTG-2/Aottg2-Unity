@@ -141,7 +141,11 @@ namespace CustomLogic
         public float MaxGas
         {
             get => Human.Stats.MaxGas;
-            set => Human.Stats.MaxGas = value;
+            set
+            {
+                Human.Stats.MaxGas = value;
+                Human.Stats.UpdateStats();
+            }
         }
 
         /// <summary>
@@ -151,7 +155,11 @@ namespace CustomLogic
         public int Acceleration
         {
             get => Human.Stats.Acceleration;
-            set => Human.Stats.Acceleration = value;
+            set
+            {
+                Human.Stats.Acceleration = value;
+                Human.Stats.UpdateStats();
+            }
         }
 
         /// <summary>
@@ -161,7 +169,11 @@ namespace CustomLogic
         public int Speed
         {
             get => Human.Stats.Speed;
-            set => Human.Stats.Speed = value;
+            set
+            {
+                Human.Stats.Speed = value;
+                Human.Stats.UpdateStats();
+            }
         }
 
         [CLProperty]
