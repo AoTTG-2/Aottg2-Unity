@@ -31,6 +31,15 @@ namespace Characters
                     Activate();
                     OnUse();
                 }
+
+                // Can Attack While No Blade
+                else if(!IsActive && !CanUse() && CanPlayNoBladeAttackAnim())
+                {
+                    IsActive = true;
+                    _activeTimeLeft = ActiveTime;
+                    Activate();
+                    OnUse();                    
+                }
             }
             else if (IsActive)
             {
@@ -42,6 +51,17 @@ namespace Characters
         public override void ReadInput(KeybindSetting keybind)
         {
             SetInput(keybind.GetKey());
+        }
+
+        /// <summary>
+        /// Can Attack While No Blade
+        /// </summary>
+        /// <returns></returns>
+        public virtual bool CanPlayNoBladeAttackAnim()
+        {
+            bool isCooldown = (Time.time - _lastUseTime) >= Cooldown;
+
+            return  isCooldown && ((Human)_owner).State == HumanState.Idle;
         }
     }
 }
