@@ -446,13 +446,12 @@ namespace Controllers
                     {
                         if (_human.Stats.OmniDashPerk.CanUse() && _human.Stats.OmniDashPerk.PerkEnabled)
                         {
-                            _human.Stats.OmniDashPerk.OnUse();
                             Vector3 direction = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(CursorManager.GetInGameMousePosition()).direction.normalized;
-                            _human.DashVertical(GetTargetAngle(direction), direction);
+                            _human.DashVertical(GetTargetAngle(direction), direction, _human.Stats.OmniDashPerk.GetPowerRatio());
+                            _human.Stats.OmniDashPerk.OnUse();
                         }
                         else if (_human.Stats.VerticalDashPerk.CanUse() && _human.Stats.VerticalDashPerk.PerkEnabled && !_human.Stats.OmniDashPerk.PerkEnabled)
                         {
-                            _human.Stats.VerticalDashPerk.OnUse();
                             float angle = SceneLoader.CurrentCamera.Cache.Transform.rotation.eulerAngles.x;
                             if (angle < 0)
                                 angle += 360f;
@@ -460,9 +459,10 @@ namespace Controllers
                                 angle -= 360f;
                             Vector3 direction = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(CursorManager.GetInGameMousePosition()).direction.normalized;
                             if (angle > 0f && angle < 180f)
-                                _human.DashVertical(GetTargetAngle(direction), Vector3.down);
+                                _human.DashVertical(GetTargetAngle(direction), Vector3.down, _human.Stats.VerticalDashPerk.GetPowerRatio());
                             else
-                                _human.DashVertical(GetTargetAngle(direction), Vector3.up);
+                                _human.DashVertical(GetTargetAngle(direction), Vector3.up, _human.Stats.VerticalDashPerk.GetPowerRatio());
+                            _human.Stats.VerticalDashPerk.OnUse();
                         }
                     }
                 }

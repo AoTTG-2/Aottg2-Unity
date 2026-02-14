@@ -441,7 +441,7 @@ namespace Characters
             }
         }
 
-        public void DashVertical(float targetAngle, Vector3 direction)
+        public void DashVertical(float targetAngle, Vector3 direction, float percentPower = 1.0f)
         {
             if (_dashTimeLeft <= 0f && Stats.CurrentGas > 0 && MountState == HumanMountState.None &&
                 State != HumanState.Grab && CarryState != HumanCarryState.Carry && _dashCooldownLeft <= 0f)
@@ -457,7 +457,7 @@ namespace Characters
                 CrossFade(HumanAnimations.Dash, 0.1f, 0.1f);
                 State = HumanState.AirDodge;
                 FalseAttack();
-                Cache.Rigidbody.AddForce(direction * 40f, ForceMode.VelocityChange);
+                Cache.Rigidbody.AddForce(direction * 40f * percentPower, ForceMode.VelocityChange);
                 _dashCooldownLeft = 0.2f;
                 ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.ShakeGas();
             }
@@ -3127,6 +3127,10 @@ namespace Characters
             // If reel in holding is disabled, when the user launches a new hook, reset the wait for release flag.
             if (!SettingsManager.InputSettings.Human.ReelInHolding.Value)
                 _reelInWaitForRelease = false;
+            if (Stats.OmniDashPerk.PerkEnabled)
+                Stats.OmniDashPerk.Reset();
+            else if (Stats.VerticalDashPerk.PerkEnabled)
+                Stats.VerticalDashPerk.Reset();
             if (left)
             {
                 _launchLeft = true;
