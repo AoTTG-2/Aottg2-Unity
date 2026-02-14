@@ -575,10 +575,10 @@ namespace ApplicationManagers
                     GUI.FocusControl(string.Empty);
                 }
             }
-            else if (IsEnterUp())
+            /*else if (IsEnterUp())
             {
                 GUI.FocusControl(InputControlName);
-            }
+            }*/
         }
 
         static bool IsEnterUp()
