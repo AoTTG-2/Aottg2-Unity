@@ -178,7 +178,6 @@ namespace UI
             _inputField.textViewport = textAreaRect;
             _inputField.textComponent = tmpText;
 
-            // Placeholder text
             var placeholderGo = new GameObject("Placeholder", typeof(RectTransform), typeof(TextMeshProUGUI), typeof(CanvasGroup));
             placeholderGo.transform.SetParent(textArea.transform, false);
             var placeholderRect = placeholderGo.GetComponent<RectTransform>();
@@ -345,7 +344,7 @@ namespace UI
             chatModeLabelRect.anchorMax = new Vector2(0f, 0.5f);
             chatModeLabelRect.pivot = new Vector2(0f, 0.5f);
             chatModeLabelRect.sizeDelta = new Vector2(40, 26);
-            chatModeLabelRect.anchoredPosition = new Vector2(-4, 0); // Position it to the left of the text area
+            chatModeLabelRect.anchoredPosition = new Vector2(-4, 0); 
 
             _chatModeLabel = chatModeLabelGo.GetComponent<TextMeshProUGUI>();
             _chatModeLabel.fontSize = 18;
@@ -356,11 +355,10 @@ namespace UI
             _chatModeLabel.raycastTarget = false;
             UpdateChatModeLabel();
 
-            // Start hidden; UpdateChatModeElements will show when PM partners exist
             _chatModeLabel.gameObject.SetActive(false);
             var textArea = _inputField.textViewport.gameObject;
             var textAreaRect = textArea.GetComponent<RectTransform>();
-            textAreaRect.offsetMin = new Vector2(5, 4); // default with no label
+            textAreaRect.offsetMin = new Vector2(5, 4);
         }
 
         private void UpdateChatModeElements()
@@ -374,13 +372,12 @@ namespace UI
             if (_notificationBadge != null)
                 _notificationBadge.SetActive(hasNotification);
 
-            // Measure label width dynamically based on text content
             float labelWidth = 40f;
             float labelX = -4f;
             if (_chatModeLabel != null && hasPMPartners)
             {
                 _chatModeLabel.ForceMeshUpdate();
-                float preferredWidth = _chatModeLabel.preferredWidth + 8f; // 8px padding
+                float preferredWidth = _chatModeLabel.preferredWidth + 8f;
                 if (_inPMMode)
                 {
                     labelWidth = Mathf.Min(preferredWidth, 62f);
@@ -396,21 +393,19 @@ namespace UI
                 labelRect.anchoredPosition = new Vector2(labelX, 0);
             }
 
-            // Badge overlaps the left edge of the label
             if (_notificationBadge != null && hasNotification && _chatModeLabel != null)
             {
                 var badgeRect = _notificationBadge.GetComponent<RectTransform>();
                 badgeRect.anchoredPosition = new Vector2(labelX - 10f, 10f);
             }
 
-            // Adjust text area offset based on actual label width
             var textArea = _inputField.textViewport.gameObject;
             var textAreaRect = textArea.GetComponent<RectTransform>();
             float leftOffset;
             if (!hasPMPartners)
                 leftOffset = 5f;
             else
-                leftOffset = labelX + labelWidth; // 2px gap after label
+                leftOffset = labelX + labelWidth;
             textAreaRect.offsetMin = new Vector2(leftOffset, textAreaRect.offsetMin.y);
         }
 
@@ -445,7 +440,6 @@ namespace UI
             var bgImage = badgeGo.GetComponent<Image>();
             bgImage.color = new Color(0, 0, 0, 0);
 
-            // Red circle behind the exclamation mark
             var circleGo = new GameObject("BadgeCircle", typeof(RectTransform), typeof(Image));
             circleGo.transform.SetParent(badgeGo.transform, false);
             var circleRect = circleGo.GetComponent<RectTransform>();

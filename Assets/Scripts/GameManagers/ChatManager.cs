@@ -1750,11 +1750,9 @@ namespace GameManagers
             if (senderPlayer == null) return;
             int senderID = senderPlayer.ActorNumber;
 
-            // Always activate the badge
             if (!ActivePMNotifications.Contains(senderID))
                 ActivePMNotifications.Add(senderID);
 
-            // Only show the text notification once per player per session
             if (!NotifiedPMs.Contains(senderID))
             {
                 NotifiedPMs.Add(senderID);
@@ -1823,6 +1821,7 @@ namespace GameManagers
             {
                 ActivePMNotifications.Remove(playerID);
             }
+            ClearPMNotificationFromChat(playerID);
         }
 
         public static bool HasActivePMNotification(int playerID)
