@@ -1791,7 +1791,10 @@ component CaptureZone
 
     function OnPlayerLeave(player)
     {
-        self.RemoveTeamCharacter(player.Character);
+        if (player.Character != null)
+        {
+            self.RemoveTeamCharacter(player.Character);
+        }
     }
 }
 
