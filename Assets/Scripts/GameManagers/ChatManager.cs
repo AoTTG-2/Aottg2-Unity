@@ -1254,7 +1254,7 @@ namespace GameManagers
                                              .StripRichText()
                                              .ToLower();
                                 if (string.IsNullOrEmpty(partial) ||
-                                    name.StartsWith(partialLower))
+                                    name.Contains(partialLower))
                                 {
                                     players.Add(p);
                                 }
@@ -1354,7 +1354,7 @@ namespace GameManagers
                                          .FilterSizeTag()
                                          .StripRichText()
                                          .ToLower();
-                            if (name.StartsWith(partialLower))
+                            if (name.Contains(partialLower))
                                 players.Add(p);
                         }
                     }
@@ -1649,7 +1649,7 @@ namespace GameManagers
                 if (targetPlayer != null)
                 {
                     string targetName = targetPlayer.GetStringProperty(PlayerProperty.Name);
-                    AddLine($"{GetColorString("To ", ChatTextColor.System)}{targetName}{GetColorString(": ", ChatTextColor.System)}{message}",
+                    AddLine($"{GetColorString($"[{senderID}]", ChatTextColor.ID)} {senderName}: {GetColorString(message, ChatTextColor.PrivateMessage)}",
                         ChatTextColor.Default, false, timestamp,
                         senderID, false, true, targetID);
                     var panel = GetChatPanel();
@@ -1661,7 +1661,7 @@ namespace GameManagers
             }
             else if (localID == targetID)
             {
-                AddLine($"{GetColorString("From ", ChatTextColor.System)}{senderName}{GetColorString(": ", ChatTextColor.System)}{message}",
+                AddLine($"{GetColorString($"[{senderID}]", ChatTextColor.ID)} {senderName}: {GetColorString(message, ChatTextColor.PrivateMessage)}",
                     ChatTextColor.Default, false, timestamp,
                     senderID, false, true, senderID);
 
@@ -1749,17 +1749,20 @@ namespace GameManagers
         {
             if (senderPlayer == null) return;
             int senderID = senderPlayer.ActorNumber;
-            if (NotifiedPMs.Contains(senderID))
-                return;
-            NotifiedPMs.Add(senderID);
-            if (ActivePMNotifications.Contains(senderID))
-                return;
-            ActivePMNotifications.Add(senderID);
-            DateTime currentTime = DateTime.UtcNow;
-            var chatPanel = GetChatPanel();
-            string prompt = " (Tab)";
-            string notificationText = $"{GetColorString("New message from ", ChatTextColor.System)}{GetPlayerIdentifier(senderPlayer)}{GetColorString(prompt, ChatTextColor.System)}";
-            AddLine(notificationText, ChatTextColor.MyPlayer, true, currentTime, senderID, false, false, -1, true);
+
+            // Always activate the badge
+            if (!ActivePMNotifications.Contains(senderID))
+                ActivePMNotifications.Add(senderID);
+
+            // Only show the text notification once per player per session
+            if (!NotifiedPMs.Contains(senderID))
+            {
+                NotifiedPMs.Add(senderID);
+                DateTime currentTime = DateTime.UtcNow;
+                string prompt = " (Tab)";
+                string notificationText = $"{GetColorString("New message from ", ChatTextColor.System)}{GetPlayerIdentifier(senderPlayer)}{GetColorString(prompt, ChatTextColor.System)}";
+                AddLine(notificationText, ChatTextColor.Default, true, currentTime, senderID, false, false, -1, true);
+            }
         }
 
         public static bool HasActivePlayerSuggestions()
@@ -1827,6 +1830,11 @@ namespace GameManagers
             return ActivePMNotifications.Contains(playerID);
         }
 
+        public static bool HasAnyActivePMNotification()
+        {
+            return ActivePMNotifications.Count > 0;
+        }
+
         private static void UpdatePartialTextAfterCompletion(string newText, string chosen)
         {
             switch (SuggestionState.Type)
@@ -1860,7 +1868,8 @@ namespace GameManagers
         System,
         Error,
         TeamRed,
-        TeamBlue
+        TeamBlue,
+        PrivateMessage
     }
 
     public enum AutofillType

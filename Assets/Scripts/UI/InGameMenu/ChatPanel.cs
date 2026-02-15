@@ -69,6 +69,12 @@ namespace UI
         private float _lastStickerSentTime = -Mathf.Infinity;
         private const float STICKER_COOLDOWN = 15f;
         private Coroutine _tooltipCoroutine;
+        private TextMeshProUGUI _chatModeLabel;
+        private TextMeshProUGUI _placeholderText;
+        private CanvasGroup _placeholderCanvasGroup;
+        private GameObject _notificationBadge;
+        private bool _lastNotificationBadgeState = false;
+        private static Sprite _cachedCircleSprite;
 
         private int _actualPoolSize = 0;
         static ChatPanel()
@@ -171,6 +177,26 @@ namespace UI
             tmpText.fontSize = 20.0f;
             _inputField.textViewport = textAreaRect;
             _inputField.textComponent = tmpText;
+
+            // Placeholder text
+            var placeholderGo = new GameObject("Placeholder", typeof(RectTransform), typeof(TextMeshProUGUI), typeof(CanvasGroup));
+            placeholderGo.transform.SetParent(textArea.transform, false);
+            var placeholderRect = placeholderGo.GetComponent<RectTransform>();
+            placeholderRect.anchorMin = UIAnchors.FullStretchStart;
+            placeholderRect.anchorMax = UIAnchors.FullStretch;
+            placeholderRect.offsetMin = new Vector2(0, -2);
+            placeholderRect.offsetMax = Vector2.zero;
+            _placeholderText = placeholderGo.GetComponent<TextMeshProUGUI>();
+            _placeholderText.text = "Press Tab to cycle channels";
+            _placeholderText.fontSize = 18f;
+            _placeholderText.enableWordWrapping = false;
+            _placeholderText.horizontalAlignment = HorizontalAlignmentOptions.Left;
+            _placeholderText.verticalAlignment = VerticalAlignmentOptions.Middle;
+            _placeholderText.color = new Color(1f, 1f, 1f, 0.3f);
+            _placeholderCanvasGroup = placeholderGo.GetComponent<CanvasGroup>();
+            _placeholderCanvasGroup.alpha = 0f;
+            _placeholderCanvasGroup.blocksRaycasts = false;
+
             _inputField.lineType = TMP_InputField.LineType.SingleLine;
             _inputField.richText = false;
             _inputField.inputType = TMP_InputField.InputType.Standard;
@@ -233,6 +259,8 @@ namespace UI
                     _desiredCaretPosition = preservedCaret;
                 }
             }
+            SetupChatModeLabel();
+            SetupNotificationBadge();
             SetupEmojiButton();
             var fontAsset = Resources.Load<TMP_FontAsset>("UI/Fonts/Vegur-Regular-SDF");
             foreach (var lineObj in _linesPool)
@@ -308,6 +336,191 @@ namespace UI
             var panelRect = _panel.GetComponent<RectTransform>();
         }
 
+        private void SetupChatModeLabel()
+        {
+            var chatModeLabelGo = new GameObject("ChatModeLabel", typeof(RectTransform), typeof(TextMeshProUGUI));
+            chatModeLabelGo.transform.SetParent(_inputField.transform, false);
+            var chatModeLabelRect = chatModeLabelGo.GetComponent<RectTransform>();
+            chatModeLabelRect.anchorMin = new Vector2(0f, 0.5f);
+            chatModeLabelRect.anchorMax = new Vector2(0f, 0.5f);
+            chatModeLabelRect.pivot = new Vector2(0f, 0.5f);
+            chatModeLabelRect.sizeDelta = new Vector2(40, 26);
+            chatModeLabelRect.anchoredPosition = new Vector2(-4, 0); // Position it to the left of the text area
+
+            _chatModeLabel = chatModeLabelGo.GetComponent<TextMeshProUGUI>();
+            _chatModeLabel.fontSize = 18;
+            _chatModeLabel.alignment = TextAlignmentOptions.Center;
+            _chatModeLabel.verticalAlignment = VerticalAlignmentOptions.Middle;
+            _chatModeLabel.horizontalAlignment = HorizontalAlignmentOptions.Center;
+            _chatModeLabel.color = new Color(1f, 1f, 1f, 0.5f);
+            _chatModeLabel.raycastTarget = false;
+            UpdateChatModeLabel();
+
+            // Start hidden; UpdateChatModeElements will show when PM partners exist
+            _chatModeLabel.gameObject.SetActive(false);
+            var textArea = _inputField.textViewport.gameObject;
+            var textAreaRect = textArea.GetComponent<RectTransform>();
+            textAreaRect.offsetMin = new Vector2(5, 4); // default with no label
+        }
+
+        private void UpdateChatModeElements()
+        {
+            bool hasPMPartners = _pmPartners.Count > 0;
+            bool hasNotification = hasPMPartners && ChatManager.HasAnyActivePMNotification();
+
+            if (_chatModeLabel != null)
+                _chatModeLabel.gameObject.SetActive(hasPMPartners);
+
+            if (_notificationBadge != null)
+                _notificationBadge.SetActive(hasNotification);
+
+            // Measure label width dynamically based on text content
+            float labelWidth = 40f;
+            float labelX = -4f;
+            if (_chatModeLabel != null && hasPMPartners)
+            {
+                _chatModeLabel.ForceMeshUpdate();
+                float preferredWidth = _chatModeLabel.preferredWidth + 8f; // 8px padding
+                if (_inPMMode)
+                {
+                    labelWidth = Mathf.Min(preferredWidth, 62f);
+                    labelX = 0f;
+                }
+                else
+                {
+                    labelWidth = Mathf.Min(preferredWidth, 40f);
+                    labelX = 0f;
+                }
+                var labelRect = _chatModeLabel.GetComponent<RectTransform>();
+                labelRect.sizeDelta = new Vector2(labelWidth, 26);
+                labelRect.anchoredPosition = new Vector2(labelX, 0);
+            }
+
+            // Badge overlaps the left edge of the label
+            if (_notificationBadge != null && hasNotification && _chatModeLabel != null)
+            {
+                var badgeRect = _notificationBadge.GetComponent<RectTransform>();
+                badgeRect.anchoredPosition = new Vector2(labelX - 10f, 10f);
+            }
+
+            // Adjust text area offset based on actual label width
+            var textArea = _inputField.textViewport.gameObject;
+            var textAreaRect = textArea.GetComponent<RectTransform>();
+            float leftOffset;
+            if (!hasPMPartners)
+                leftOffset = 5f;
+            else
+                leftOffset = labelX + labelWidth; // 2px gap after label
+            textAreaRect.offsetMin = new Vector2(leftOffset, textAreaRect.offsetMin.y);
+        }
+
+        private void UpdateChatModeLabel()
+        {
+            if (_chatModeLabel == null)
+                return;
+            if (_inPMMode && _currentPMTarget != null)
+            {
+                string name = _currentPMTarget.GetStringProperty(PlayerProperty.Name).StripRichText();
+                if (name.Length > 4)
+                    _chatModeLabel.text = name.Substring(0, 4) + "..";
+                else
+                    _chatModeLabel.text = name + ":";
+            }
+            else
+                _chatModeLabel.text = "All:";
+        }
+
+        private void SetupNotificationBadge()
+        {
+            var badgeGo = new GameObject("NotificationBadge", typeof(RectTransform), typeof(Image), typeof(Button));
+            badgeGo.transform.SetParent(_inputField.transform, false);
+
+            var badgeRect = badgeGo.GetComponent<RectTransform>();
+            badgeRect.anchorMin = new Vector2(0f, 0.5f);
+            badgeRect.anchorMax = new Vector2(0f, 0.5f);
+            badgeRect.pivot = new Vector2(0f, 0.5f);
+            badgeRect.sizeDelta = new Vector2(18, 24);
+            badgeRect.anchoredPosition = new Vector2(0, 0);
+
+            var bgImage = badgeGo.GetComponent<Image>();
+            bgImage.color = new Color(0, 0, 0, 0);
+
+            // Red circle behind the exclamation mark
+            var circleGo = new GameObject("BadgeCircle", typeof(RectTransform), typeof(Image));
+            circleGo.transform.SetParent(badgeGo.transform, false);
+            var circleRect = circleGo.GetComponent<RectTransform>();
+            circleRect.anchorMin = new Vector2(0.5f, 0.5f);
+            circleRect.anchorMax = new Vector2(0.5f, 0.5f);
+            circleRect.pivot = new Vector2(0.5f, 0.5f);
+            circleRect.sizeDelta = new Vector2(18, 18);
+            circleRect.anchoredPosition = Vector2.zero;
+            var circleImage = circleGo.GetComponent<Image>();
+            circleImage.sprite = GetCircleSprite();
+            circleImage.type = Image.Type.Simple;
+            circleImage.color = new Color(0.8f, 0.15f, 0.15f, 1f);
+            circleImage.raycastTarget = false;
+
+            var textGo = new GameObject("BadgeText", typeof(RectTransform), typeof(TextMeshProUGUI));
+            textGo.transform.SetParent(badgeGo.transform, false);
+            var textRect = textGo.GetComponent<RectTransform>();
+            textRect.anchorMin = Vector2.zero;
+            textRect.anchorMax = Vector2.one;
+            textRect.sizeDelta = Vector2.zero;
+
+            var badgeText = textGo.GetComponent<TextMeshProUGUI>();
+            badgeText.text = "!";
+            badgeText.fontSize = 16;
+            badgeText.alignment = TextAlignmentOptions.Center;
+            badgeText.color = new Color(1f, 0.8f, 0.2f, 1f);
+            badgeText.raycastTarget = false;
+
+            var button = badgeGo.GetComponent<Button>();
+            button.transition = Selectable.Transition.None;
+            button.onClick.AddListener(OnNotificationBadgeClicked);
+
+            _notificationBadge = badgeGo;
+            _notificationBadge.SetActive(false);
+        }
+
+        private void OnNotificationBadgeClicked()
+        {
+            var notifiedPartner = _pmPartners.Find(p => ChatManager.HasActivePMNotification(p.ActorNumber));
+            if (notifiedPartner != null)
+            {
+                EnterPMMode(notifiedPartner);
+                if (!IsInputActive())
+                    Activate();
+            }
+        }
+
+        private static Sprite GetCircleSprite()
+        {
+            if (_cachedCircleSprite != null)
+                return _cachedCircleSprite;
+            int size = 64;
+            var tex = new Texture2D(size, size, TextureFormat.RGBA32, false);
+            float radius = size * 0.5f;
+            float radiusSq = radius * radius;
+            var pixels = new Color32[size * size];
+            for (int y = 0; y < size; y++)
+            {
+                for (int x = 0; x < size; x++)
+                {
+                    float dx = x - radius + 0.5f;
+                    float dy = y - radius + 0.5f;
+                    float distSq = dx * dx + dy * dy;
+                    if (distSq <= radiusSq)
+                        pixels[y * size + x] = new Color32(255, 255, 255, 255);
+                    else
+                        pixels[y * size + x] = new Color32(0, 0, 0, 0);
+                }
+            }
+            tex.SetPixels32(pixels);
+            tex.Apply();
+            _cachedCircleSprite = Sprite.Create(tex, new Rect(0, 0, size, size), new Vector2(0.5f, 0.5f));
+            return _cachedCircleSprite;
+        }
+
         private void SetupEmojiButton()
         {
             var emojiButtonGo = new GameObject("EmojiButton", typeof(RectTransform), typeof(TextMeshProUGUI), typeof(Button));
@@ -331,7 +544,6 @@ namespace UI
             _emojiButton.onClick.AddListener(ToggleEmojiPanel);
             var textArea = _inputField.textViewport.gameObject;
             var textAreaRect = textArea.GetComponent<RectTransform>();
-            textAreaRect.offsetMin = new Vector2(5, 2);
             textAreaRect.offsetMax = new Vector2(-33, -2);
         }
 
@@ -822,6 +1034,7 @@ namespace UI
         {
             _inputField.Select();
             _inputField.ActivateInputField();
+            UpdatePlaceholderVisibility(true);
             if (_desiredCaretPosition > 0 && !string.IsNullOrEmpty(_inputField.text))
             {
                 int clampedCaretPos = Mathf.Clamp(_desiredCaretPosition, 0, _inputField.text.Length);
@@ -844,6 +1057,7 @@ namespace UI
 
         public void OnEndEdit(string text)
         {
+            UpdatePlaceholderVisibility(false);
             if (!Input.GetKey(KeyCode.Return) && !Input.GetKey(KeyCode.KeypadEnter))
             {
                 Vector2 mousePosition = Input.mousePosition;
@@ -1031,6 +1245,26 @@ namespace UI
             UpdateChatInteractionState();
         }
 
+        private void LateUpdate()
+        {
+            UpdatePlaceholderVisibility(IsInputActive() || _isInteractingWithChatUI);
+
+            bool hasNotification = _pmPartners.Count > 0 && ChatManager.HasAnyActivePMNotification();
+            if (hasNotification != _lastNotificationBadgeState)
+            {
+                _lastNotificationBadgeState = hasNotification;
+                UpdateChatModeElements();
+            }
+        }
+
+        private void UpdatePlaceholderVisibility(bool isChatActive)
+        {
+            if (_placeholderCanvasGroup == null)
+                return;
+            bool show = isChatActive && string.IsNullOrEmpty(_inputField.text) && _pmPartners.Count > 0;
+            _placeholderCanvasGroup.alpha = show ? 1f : 0f;
+        }
+
         public bool IsPointerOverChatUI()
         {
             if (EventSystem.current == null)
@@ -1105,6 +1339,10 @@ namespace UI
             if (IsInputActive() || _emojiPanelActive)
             {
                 _isInteractingWithChatUI = true;
+            }
+            else if (CursorManager.State != CursorState.Pointer)
+            {
+                _isInteractingWithChatUI = false;
             }
         }
 
@@ -1235,6 +1473,7 @@ namespace UI
             if (text == null)
                 text = string.Empty;
             ChatManager.HandleTyping(text);
+            UpdatePlaceholderVisibility(IsInputActive());
         }
 
         public string GetInputText()
@@ -1263,6 +1502,8 @@ namespace UI
             AddPMPartner(target);
             _currentPMIndex = _pmPartners.FindIndex(p => p.ActorNumber == target.ActorNumber);
             ChatManager.ClearPMNotification(target.ActorNumber);
+            UpdateChatModeLabel();
+            UpdateChatModeElements();
             var (text, caretPos) = ChatManager.GetConversation($"PM_{target.ActorNumber}");
             SetTextAndCaretPosition(text, caretPos);
             Sync();
@@ -1278,6 +1519,8 @@ namespace UI
             if (_pmToggleCoroutine != null)
                 StopCoroutine(_pmToggleCoroutine);
             _pmToggleCoroutine = StartCoroutine(ResetPMToggleActive());
+            UpdateChatModeLabel();
+            UpdateChatModeElements();
             
             var (text, caretPos) = ChatManager.GetConversation("PUBLIC");
             SetTextAndCaretPosition(text, caretPos);
@@ -1293,6 +1536,7 @@ namespace UI
             if (index == -1)
                 return;
             _pmPartners.RemoveAt(index);
+            UpdateChatModeElements();
             if (_pmPartners.Count == 0)
             {
                 ExitPMMode();
@@ -1332,6 +1576,7 @@ namespace UI
                 ExitPMMode();
             }
             _currentPMIndex = Math.Min(_currentPMIndex, _pmPartners.Count - 1);
+            UpdateChatModeElements();
         }
 
         public bool IsTogglingPM()
@@ -1464,6 +1709,7 @@ namespace UI
                 }
             }
             _pmPartners.Add(player);
+            UpdateChatModeElements();
         }
 
         public Player GetCurrentPMTarget()
@@ -1480,6 +1726,7 @@ namespace UI
             _pmToggleActive = false;
             if (_pmToggleCoroutine != null)
                 StopCoroutine(_pmToggleCoroutine);
+            UpdateChatModeElements();
         }
 
         public void CloseEmojiPanel()
@@ -1660,6 +1907,7 @@ namespace UI
             {
                 _currentPMIndex = _pmPartners.Count - 1;
             }
+            UpdateChatModeElements();
         }
     }
 }
