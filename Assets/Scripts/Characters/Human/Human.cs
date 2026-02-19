@@ -504,10 +504,8 @@ namespace Characters
         {
             if (notifyTitan && Grabber != null)
             {
-                if (breakArm) Grabber.DisableArm(Grabber.HoldHumanLeft);
-                else Grabber.Cache.PhotonView.RPC(nameof(Grabber.UngrabRPC), RpcTarget.All, new object[] { Cache.PhotonView.ViewID });
+                Grabber.Cache.PhotonView.RPC(nameof(Grabber.UngrabRPC), RpcTarget.All, new object[] { Cache.PhotonView.ViewID });
             }
-
             Grabber = null;
             GrabHand = null;
             SetTriggerCollider(false);
