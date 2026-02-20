@@ -1302,7 +1302,7 @@
 			{"Name": "Momo_Crystal2", "Variant": "Momo_Crystal1"},
 			{"Name": "Momo_MinecartFBX"},
 			{"Name": "Momo_Decor_Shiganshina1PF"},
-			{"Name": "Momo_WoodpikesPF"},
+			{"Name": "Momo_WoodpikesPF"}
 		]
 	},
 	"MomoModels_Arenas": {
@@ -1331,7 +1331,7 @@
 			{"Name": "Momo_Boulder3PF", "Variant": "Momo_Boulder1PF"},
 			{"Name": "Momo_Cave_Column1PF"},
 			{"Name": "Momo_Cave_Formation1PF", "Variant": "Momo_Cave_Column1PF"},
-			{"Name": "Momo_Cave_Stalagmite1PF", "Variant": "Momo_Cave_Column1PF"},
+			{"Name": "Momo_Cave_Stalagmite1PF", "Variant": "Momo_Cave_Column1PF"}
 		]
 	}
 }
