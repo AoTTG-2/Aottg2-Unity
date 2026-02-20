@@ -797,7 +797,7 @@ GameObject:
   - component: {fileID: 8150797279777120062}
   - component: {fileID: 3622738390117291985}
   m_Layer: 0
-  m_Name: Wall_Gate_ShiganshinaPF
+  m_Name: Momo_Wall_Gate_ShiganshinaPF
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1645915048412769344
+--- !u!1 &1682780014009205525
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,40 +8,37 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4237409673190370454}
-  - component: {fileID: 1086142182568772545}
-  - component: {fileID: 427499813396795889}
+  - component: {fileID: 5455567476440433656}
+  - component: {fileID: 5587352174789627004}
   m_Layer: 23
-  m_Name: Momo_Crystal1
+  m_Name: Body_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
   m_IsActive: 1
---- !u!4 &4237409673190370454
+--- !u!4 &5455567476440433656
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1645915048412769344}
+  m_GameObject: {fileID: 1682780014009205525}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -277.73, y: 0.58343506, z: -47.26438}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.02, y: 14.99, z: 0.020000458}
+  m_LocalScale: {x: 10.478986, y: 7.78125, z: 10.47899}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 279585656412215386}
-  - {fileID: 791989582476241099}
-  m_Father: {fileID: 0}
+  m_Children: []
+  m_Father: {fileID: 6142571520377842846}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &1086142182568772545
+--- !u!136 &5587352174789627004
 CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1645915048412769344}
+  m_GameObject: {fileID: 1682780014009205525}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -54,31 +51,11 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 2.1
-  m_Height: 6.75
+  m_Radius: 0.5
+  m_Height: 2
   m_Direction: 1
-  m_Center: {x: 0, y: 2.35, z: 0}
---- !u!205 &427499813396795889
-LODGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1645915048412769344}
-  serializedVersion: 2
-  m_LocalReferencePoint: {x: 0.084139585, y: 2.820448, z: 0.0051534176}
-  m_Size: 5.842454
-  m_FadeMode: 0
-  m_AnimateCrossFading: 0
-  m_LastLODIsBillboard: 0
-  m_LODs:
-  - screenRelativeHeight: 0.052648447
-    fadeTransitionWidth: 0
-    renderers:
-    - renderer: {fileID: 8204772777522302839}
-    - renderer: {fileID: 4854048853737286438}
-  m_Enabled: 1
---- !u!1 &3434287405309494925
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &2690224393012466256
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -86,46 +63,104 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 791989582476241099}
-  - component: {fileID: 2797028129212024442}
-  - component: {fileID: 4854048853737286438}
+  - component: {fileID: 8954365727977313523}
+  - component: {fileID: 8944045227918849982}
   m_Layer: 23
-  m_Name: Crystals.001
+  m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
   m_IsActive: 1
---- !u!4 &791989582476241099
+--- !u!4 &8954365727977313523
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3434287405309494925}
+  m_GameObject: {fileID: 2690224393012466256}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.02, y: 5.09, z: 0.02}
+  m_LocalScale: {x: 11.4057, y: 10.375, z: 11.4057}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 4237409673190370454}
+  m_Father: {fileID: 6142571520377842846}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &2797028129212024442
+--- !u!136 &8944045227918849982
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2690224393012466256}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &4238776805147381441
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6142571520377842846}
+  - component: {fileID: 7256880189491026884}
+  - component: {fileID: 6039614405691599413}
+  m_Layer: 23
+  m_Name: Momo_Tower_Village1PF
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 2147483647
+  m_IsActive: 1
+--- !u!4 &6142571520377842846
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4238776805147381441}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -697.82, y: 0, z: -18.418434}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1563277937154812150}
+  - {fileID: 8954365727977313523}
+  - {fileID: 5455567476440433656}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &7256880189491026884
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3434287405309494925}
-  m_Mesh: {fileID: -5914550087446131045, guid: 848ceecf451f74f4082771cd926a38e3, type: 3}
---- !u!23 &4854048853737286438
+  m_GameObject: {fileID: 4238776805147381441}
+  m_Mesh: {fileID: 7094065360324169309, guid: c1fb2c9f40c62ab4b8b46df593e4178d, type: 3}
+--- !u!23 &6039614405691599413
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3434287405309494925}
+  m_GameObject: {fileID: 4238776805147381441}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -139,7 +174,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b477766f3a767f1468bd38dfd6cd0798, type: 2}
+  - {fileID: 2100000, guid: a3a507ac41bf05046b8bf1a39a94afd4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -161,7 +196,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &4611558421843342534
+--- !u!1 &7865317190370098312
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -169,78 +204,49 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 279585656412215386}
-  - component: {fileID: 1539423403842777028}
-  - component: {fileID: 8204772777522302839}
+  - component: {fileID: 1563277937154812150}
+  - component: {fileID: 387529278079027147}
   m_Layer: 23
-  m_Name: Crystals
+  m_Name: Momo_Tower_Village1RoofCollision
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
   m_IsActive: 1
---- !u!4 &279585656412215386
+--- !u!4 &1563277937154812150
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4611558421843342534}
+  m_GameObject: {fileID: 7865317190370098312}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 4237409673190370454}
+  m_Father: {fileID: 6142571520377842846}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &1539423403842777028
-MeshFilter:
+--- !u!64 &387529278079027147
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4611558421843342534}
-  m_Mesh: {fileID: -170736958184299430, guid: 848ceecf451f74f4082771cd926a38e3, type: 3}
---- !u!23 &8204772777522302839
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4611558421843342534}
+  m_GameObject: {fileID: 7865317190370098312}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 0fa6e948a9ce7d4498a24932c6db7e5d, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -7771059267429556161, guid: c1fb2c9f40c62ab4b8b46df593e4178d, type: 3}

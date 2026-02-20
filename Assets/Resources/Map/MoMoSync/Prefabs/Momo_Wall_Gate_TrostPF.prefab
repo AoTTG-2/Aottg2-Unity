@@ -276,7 +276,7 @@ GameObject:
   - component: {fileID: 7891914668421736312}
   - component: {fileID: 2882992513623123135}
   m_Layer: 23
-  m_Name: Wall_Gate_TrostPF
+  m_Name: Momo_Wall_Gate_TrostPF
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

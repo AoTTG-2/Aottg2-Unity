@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2081582521422881581}
   - component: {fileID: 9116990781471956471}
   m_Layer: 23
-  m_Name: WallSegment_MainPF
+  m_Name: Momo_WallSegment_MainPF
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

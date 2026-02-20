@@ -103,6 +103,6 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _Object_Space: {r: 0, g: 0, b: 0, a: 0}
-    - _Parent_Scale: {r: 2, g: 2, b: 2, a: 0}
-    - _Parent_World_Position: {r: -3.199997, g: 81, b: -227.6001, a: 0}
+    - _Parent_Scale: {r: 1, g: 1, b: 1, a: 0}
+    - _Parent_World_Position: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []

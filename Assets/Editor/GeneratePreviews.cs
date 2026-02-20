@@ -32,12 +32,20 @@ public class GeneratePreviews
         }
     }
 
-    static void GeneratePrefabs(string assetPath, string previewPath)
+    static int GeneratePrefabs(string assetPath, string previewPath)
     {
         string[] prefabs = Directory.GetFiles(assetPath, "*.prefab", SearchOption.TopDirectoryOnly);
+        int generated = 0;
+        
         foreach (string prefab in prefabs)
         {
             var asset = AssetDatabase.LoadAssetAtPath(prefab, typeof(GameObject));
+            if (asset == null)
+            {
+                Debug.LogWarning($"Could not load prefab: {prefab}");
+                continue;
+            }
+            
             string filePath = previewPath + "/" + asset.name + "Preview.png";
             if (File.Exists(filePath))
                 continue;
@@ -56,12 +64,16 @@ public class GeneratePreviews
             if (tex != null)
             {
                 File.WriteAllBytes(filePath, tex.EncodeToPNG());
+                generated++;
+                Debug.Log($"Generated preview: {asset.name}");
             }
             else
             {
                 Debug.LogWarning("Failed to generate preview for prefab: " + prefab + " (timeout after 10 seconds)");
             }
         }
+        
+        return generated;
     }
 
     static void GenerateTextures(string assetPath, string previewPath)
