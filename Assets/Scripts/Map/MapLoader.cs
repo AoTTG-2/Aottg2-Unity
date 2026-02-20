@@ -1,5 +1,6 @@
 ﻿using ApplicationManagers;
 using Events;
+using MapEditor;
 using Photon.Pun;
 using Settings;
 using System.Collections;
@@ -581,12 +582,73 @@ namespace Map
             if (editor)
             {
                 int colliderCount = SetPhysics(go, MapObjectCollideMode.Physical, MapObjectCollideWith.MapEditor, obj.PhysicsMaterial);
-                if (colliderCount == 0) go.AddComponent<MeshCollider>();
+                // if (colliderCount == 0) go.AddComponent<MeshCollider>();
+                if (colliderCount == 0)
+                {
+                    // Try to add appropriate collider based on what components exist
+                    if (!TryAddEditorCollider(go))
+                    {
+                        // Fallback: add a small sphere collider as a selection handle
+                        var sphere = go.AddComponent<SphereCollider>();
+                        sphere.radius = 0.5f;
+                    }
+                }
             }
             else
                 SetPhysics(go, obj.CollideMode, obj.CollideWith, obj.PhysicsMaterial);
             SetMaterial(go, obj.Asset, obj.Material, obj.Visible, editor);
             return go;
+        }
+
+        private static bool TryAddEditorCollider(GameObject go)
+        {
+            // Check for mesh filters that might have failed to add collider
+            var meshFilters = go.GetComponentsInChildren<MeshFilter>();
+            foreach (var filter in meshFilters)
+            {
+                if (filter.sharedMesh != null && filter.sharedMesh.vertexCount > 0)
+                {
+                    var meshCollider = filter.gameObject.AddComponent<MeshCollider>();
+                    meshCollider.sharedMesh = filter.sharedMesh;
+                    return true;
+                }
+            }
+
+            // Check for renderers without mesh filters
+            var renderers = go.GetComponentsInChildren<Renderer>();
+            if (renderers.Length > 0)
+            {
+                // Calculate combined bounds
+                Bounds combinedBounds = renderers[0].bounds;
+                for (int i = 1; i < renderers.Length; i++)
+                {
+                    combinedBounds.Encapsulate(renderers[i].bounds);
+                }
+
+                var box = go.AddComponent<BoxCollider>();
+                box.center = go.transform.InverseTransformPoint(combinedBounds.center);
+                box.size = combinedBounds.size;
+                return true;
+            }
+
+            // Check for particle systems
+            var particleSystem = go.GetComponentInChildren<ParticleSystem>();
+            if (particleSystem != null)
+            {
+                var renderer = particleSystem.GetComponent<ParticleSystemRenderer>();
+                if (renderer != null)
+                {
+                    var bounds = renderer.bounds;
+                    var box = go.AddComponent<BoxCollider>();
+                    box.center = go.transform.InverseTransformPoint(bounds.center);
+                    box.size = bounds.size;
+                    return true;
+                }
+            }
+
+            var gizmo = go.AddComponent<EditorGizmoIcon>();
+            gizmo.Setup();
+            return true;
         }
 
         private static void SetTransform(MapObject mapObject)

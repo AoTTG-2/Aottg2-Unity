@@ -26,11 +26,18 @@ namespace Map
         public static void Init()
         {
             _prefabList = JSON.Parse(((TextAsset)ResourceManager.LoadAsset(ResourcePaths.Info, "MapPrefabList")).text);
-            foreach (string category in _prefabList.Keys)
+            foreach (string key in _prefabList.Keys)
             {
-                JSONNode categoryNode = _prefabList[category];
+                JSONNode categoryNode = _prefabList[key];
                 JSONNode info = categoryNode["Info"];
-                PrefabCategories.Add(category, new List<MapScriptBaseObject>());
+                
+                // Get the actual category name for editor organization (defaults to JSON key)
+                string category = info.HasKey("Category") ? info["Category"].Value : key;
+                
+                // Create category list if it doesn't exist yet
+                if (!PrefabCategories.ContainsKey(category))
+                    PrefabCategories.Add(category, new List<MapScriptBaseObject>());
+                
                 foreach (JSONNode prefabNode in categoryNode["Prefabs"])
                 {
                     MapScriptSceneObject sceneObject = new MapScriptSceneObject();
@@ -43,8 +50,24 @@ namespace Map
                         asset = prefabNode["Asset"].Value;
                     if (asset == string.Empty || asset == "None")
                         asset = "None";
-                    else if (info.HasKey("AssetPrefix"))
-                        asset = info["AssetPrefix"].Value + asset;
+                    else
+                    {
+                        // Build the asset path based on available Info fields
+                        string basePath = "";
+                        if (info.HasKey("AssetBasePath"))
+                        {
+                            // Use custom base path (e.g., "MomoModels/")
+                            basePath = info["AssetBasePath"].Value;
+                            if (!basePath.EndsWith("/"))
+                                basePath += "/";
+                        }
+                        else if (info.HasKey("AssetPrefix"))
+                        {
+                            // Use asset prefix (existing behavior, e.g., "Buildings/")
+                            basePath = info["AssetPrefix"].Value;
+                        }
+                        asset = basePath + asset;
+                    }
                     sceneObject.Asset = asset;
                     if (prefabNode.HasKey("Static"))
                         sceneObject.Static = prefabNode["Static"].AsBool;
