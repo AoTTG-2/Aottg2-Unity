@@ -51,6 +51,7 @@ namespace UI
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.AllowStock, UIManager.GetLocale(cat, sub, "AllowStock"));
             ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.InvincibilityTime, UIManager.GetLocale(cat, sub, "InvincibilityTime"), elementWidth: inputWidth);
             ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.Motd, UIManager.GetLocale(cat, sub, "MOTD"), elementWidth: inputWidth);
+            ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.ServicesEnabled, "Enable Services");
         }
     }
 }
