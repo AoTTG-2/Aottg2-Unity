@@ -215,7 +215,7 @@ public class MapObjectPrefabMarkerEditor : Editor
                     EditorGUILayout.PrefixLabel("Texture");
                     if (GUILayout.Button(_marker.MaterialTexture, EditorStyles.popup))
                     {
-                        ShowTexturePicker();
+                        TexturePickerWindow.Show(_marker, ApplyMaterialPreview);
                     }
                     EditorGUILayout.EndHorizontal();
                 }
@@ -474,32 +474,6 @@ public class MapObjectPrefabMarkerEditor : Editor
                 marker.ReflectColor = new Color(r / 255f, g / 255f, b / 255f, a / 255f);
             }
         }
-    }
-
-    void ShowTexturePicker()
-    {
-        if (_textureCategories == null)
-            LoadTextureList();
-
-        GenericMenu menu = new GenericMenu();
-
-        foreach (var kvp in _textureCategories)
-        {
-            string category = kvp.Key;
-            foreach (var tex in kvp.Value)
-            {
-                string texPath = tex.Path;
-                menu.AddItem(new GUIContent(category + "/" + tex.Name), texPath == _marker.MaterialTexture, () =>
-                {
-                    Undo.RecordObject(_marker, "Change Texture");
-                    _marker.MaterialTexture = texPath;
-                    EditorUtility.SetDirty(_marker);
-                    ApplyMaterialPreview();
-                });
-            }
-        }
-
-        menu.ShowAsContext();
     }
 
     void ApplyMaterialPreview()

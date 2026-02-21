@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEditor;
 using System.IO;
 using System.Collections.Generic;
@@ -6,15 +7,16 @@ using Map;
 using Utility;
 using MapEditor;
 using UnityEngine.SceneManagement;
+using SimpleJSONFixed;
 
 public class ImportMapScriptToScene : EditorWindow
 {
     private string _importFilePath = "";
-    private Vector2 _scrollPos;
-    private List<string> _importLog = new List<string>();
     private bool _addMarkers = true;
     private bool _preserveExisting = false;
     private bool _createParentHierarchy = true;
+
+    private static Dictionary<string, Vector2> _textureTilingCache;
 
     [MenuItem("Tools/Import MapScript to Scene")]
     static void ShowWindow()
@@ -59,30 +61,10 @@ public class ImportMapScriptToScene : EditorWindow
         }
         EditorGUI.EndDisabledGroup();
 
-        if (GUILayout.Button("Clear Import Log"))
-        {
-            _importLog.Clear();
-            Repaint();
-        }
-
-        EditorGUILayout.Space();
-
-        if (_importLog.Count > 0)
-        {
-            GUILayout.Label($"Import Log ({_importLog.Count} entries):", EditorStyles.boldLabel);
-            _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos, GUILayout.Height(300));
-            foreach (var log in _importLog)
-            {
-                EditorGUILayout.LabelField(log, EditorStyles.wordWrappedLabel);
-            }
-            EditorGUILayout.EndScrollView();
-        }
     }
 
     void ImportMap()
     {
-        _importLog.Clear();
-
         if (!File.Exists(_importFilePath))
         {
             EditorUtility.DisplayDialog("Error", "File does not exist: " + _importFilePath, "OK");
@@ -95,13 +77,11 @@ public class ImportMapScriptToScene : EditorWindow
         try
         {
             mapScript.Deserialize(mapScriptContent);
-            _importLog.Add($"Successfully parsed MapScript with {mapScript.Objects.Objects.Count} objects");
         }
         catch (System.Exception e)
         {
             EditorUtility.DisplayDialog("Error", "Failed to parse MapScript:\n" + e.Message, "OK");
             Debug.LogError("MapScript parse error: " + e);
-            _importLog.Add($"ERROR: Failed to parse MapScript - {e.Message}");
             return;
         }
 
@@ -121,7 +101,6 @@ public class ImportMapScriptToScene : EditorWindow
                     cleared++;
                 }
             }
-            _importLog.Add($"Cleared {cleared} existing objects from scene");
         }
 
         // Track created objects by ID
@@ -146,7 +125,9 @@ public class ImportMapScriptToScene : EditorWindow
                 // Add marker component if requested
                 if (_addMarkers)
                 {
-                    var marker = go.AddComponent<MapObjectPrefabMarker>();
+                    var marker = go.GetComponent<MapObjectPrefabMarker>();
+                    if (marker == null)
+                        marker = go.AddComponent<MapObjectPrefabMarker>();
                     marker.PrefabName = sceneObj.Name;
                     marker.ObjectId = sceneObj.Id;
                     
@@ -167,6 +148,9 @@ public class ImportMapScriptToScene : EditorWindow
                     // Add material info
                     marker.OverrideMaterial = true;
                     ApplyMaterialToMarker(sceneObj.Material, marker);
+
+                    // Apply material to scene renderers
+                    ApplyMaterialPreview(go, marker);
                     
                     // Add components
                     foreach (var comp in sceneObj.Components)
@@ -176,18 +160,23 @@ public class ImportMapScriptToScene : EditorWindow
                         compData.Parameters = new List<string>(comp.Parameters);
                         marker.CustomComponents.Add(compData);
                     }
+
+                    // Configure Unity components in the editor from marker data
+                    ApplyEditorComponents(go, marker);
                 }
 #endif
+
+        // Apply visual overrides for non-active / non-visible objects
+        ApplyVisualOverrides(go, sceneObj);
                 
-                created++;
-                _importLog.Add($"? Created: {sceneObj.Name} (ID: {sceneObj.Id})");
-            }
-            else
-            {
-                failed++;
-                _importLog.Add($"? Failed: {sceneObj.Name} (ID: {sceneObj.Id}, Asset: {sceneObj.Asset})");
-            }
-        }
+        created++;
+    }
+    else
+    {
+        failed++;
+        Debug.LogWarning($"Failed to create: {sceneObj.Name} (ID: {sceneObj.Id}, Asset: {sceneObj.Asset})");
+    }
+}
 
         // Second pass: set parents
         if (_createParentHierarchy)
@@ -206,22 +195,15 @@ public class ImportMapScriptToScene : EditorWindow
                 }
                 else if (sceneObj.Parent > 0)
                 {
-                    _importLog.Add($"Warning: Object {sceneObj.Name} (ID: {sceneObj.Id}) has invalid parent ID {sceneObj.Parent}");
+                    Debug.LogWarning($"Object {sceneObj.Name} (ID: {sceneObj.Id}) has invalid parent ID {sceneObj.Parent}");
                 }
             }
-            _importLog.Add($"Set {parented} parent relationships");
         }
 
         EditorUtility.DisplayDialog("Import Complete", 
             $"Successfully imported {created} objects from MapScript.\n" +
-            (failed > 0 ? $"{failed} objects failed to import." : ""), 
+            (failed > 0 ? $"{failed} objects failed to import. Check console for details." : ""), 
             "OK");
-        
-        _importLog.Add($"\n=== Import Summary ===");
-        _importLog.Add($"Created: {created}");
-        _importLog.Add($"Failed: {failed}");
-        
-        Repaint();
     }
 
     GameObject CreateGameObjectFromScript(MapScriptSceneObject sceneObj)
@@ -260,7 +242,7 @@ public class ImportMapScriptToScene : EditorWindow
                     
                     if (go == null)
                     {
-                        _importLog.Add($"Warning: Could not load asset '{sceneObj.Asset}' for {sceneObj.Name}");
+                        Debug.LogWarning($"Could not load asset '{sceneObj.Asset}' for {sceneObj.Name}");
                     }
                 }
             }
@@ -274,13 +256,20 @@ public class ImportMapScriptToScene : EditorWindow
 
         // Set properties
         go.name = sceneObj.Name;
-        go.SetActive(sceneObj.Active);
         go.isStatic = sceneObj.Static;
 
         // Set transform (use world space for now, will be adjusted when parenting)
+        // MapScript stores scale as a multiplier relative to the prefab's native
+        // localScale (BaseScale). Capture it before overwriting so we can recover
+        // the correct scene scale: finalScale = BaseScale * MapScriptScale.
+        Vector3 baseScale = go.transform.localScale;
+        Vector3 mapScale = sceneObj.GetScale();
         go.transform.position = sceneObj.GetPosition();
         go.transform.rotation = Quaternion.Euler(sceneObj.GetRotation());
-        go.transform.localScale = sceneObj.GetScale();
+        go.transform.localScale = new Vector3(
+            mapScale.x * baseScale.x,
+            mapScale.y * baseScale.y,
+            mapScale.z * baseScale.z);
 
         // Set layer based on CollideWith
         SetLayerFromCollideWith(go, sceneObj.CollideWith);
@@ -344,6 +333,256 @@ public class ImportMapScriptToScene : EditorWindow
                 collider.enabled = true;
             }
         }
+    }
+
+    void ApplyMaterialPreview(GameObject go, MapObjectPrefabMarker marker)
+    {
+        var renderers = go.GetComponentsInChildren<Renderer>();
+        if (renderers.Length == 0)
+            return;
+
+        if (_textureTilingCache == null)
+            LoadTextureTilingCache();
+
+        string shader = marker.MaterialShader;
+
+        foreach (Renderer renderer in renderers)
+        {
+            if (renderer.name == "OutlineGizmo")
+                continue;
+
+            if (renderer.sharedMaterial == null)
+                continue;
+
+            Material mat;
+
+            if (shader == MapObjectShader.Default || shader == MapObjectShader.DefaultNoTint || shader == MapObjectShader.DefaultTiled)
+            {
+                mat = new Material(renderer.sharedMaterial);
+                if (shader != MapObjectShader.DefaultNoTint)
+                    mat.color = marker.MaterialColor;
+                if (shader == MapObjectShader.DefaultTiled)
+                    mat.mainTextureScale = marker.MaterialTiling;
+            }
+            else
+            {
+                Material template = Resources.Load<Material>("Map/Materials/" + shader + "Material");
+                if (template != null)
+                    mat = new Material(template);
+                else
+                    mat = new Material(renderer.sharedMaterial);
+
+                mat.color = marker.MaterialColor;
+
+                string texturePath = marker.MaterialTexture;
+                if (!string.IsNullOrEmpty(texturePath) && texturePath != "Misc/None" && texturePath != "None")
+                {
+                    string[] texParts = texturePath.Split('/');
+                    if (texParts.Length == 2)
+                    {
+                        string texCategory = texParts[0];
+                        string texName = texParts[1];
+
+                        if (texCategory != "Legacy")
+                        {
+                            Texture2D texture = Resources.Load<Texture2D>("Map/Textures/" + texCategory + "/" + texName + "Texture");
+                            if (texture != null)
+                            {
+                                mat.mainTexture = texture;
+
+                                float refTilingX = 1f, refTilingY = 1f;
+                                if (_textureTilingCache.TryGetValue(texName, out Vector2 refTiling))
+                                {
+                                    refTilingX = refTiling.x;
+                                    refTilingY = refTiling.y;
+                                }
+                                mat.mainTextureScale = new Vector2(
+                                    marker.MaterialTiling.x * refTilingX,
+                                    marker.MaterialTiling.y * refTilingY);
+                                mat.mainTextureOffset = marker.MaterialOffset;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    mat.mainTextureScale = marker.MaterialTiling;
+                    mat.mainTextureOffset = marker.MaterialOffset;
+                }
+
+                if (shader == MapObjectShader.Reflective && mat.HasProperty("_SpecularMap"))
+                {
+                    mat.SetColor("_SpecularMap", marker.ReflectColor);
+                }
+            }
+
+            renderer.material = mat;
+        }
+    }
+
+    static void LoadTextureTilingCache()
+    {
+        _textureTilingCache = new Dictionary<string, Vector2>();
+
+        var textureListAsset = Resources.Load<TextAsset>("Data/Info/MapTextureList");
+        if (textureListAsset == null)
+            return;
+
+        var textureList = JSON.Parse(textureListAsset.text);
+        foreach (string category in textureList.Keys)
+        {
+            foreach (JSONNode textureNode in textureList[category])
+            {
+                string name = textureNode["Name"].Value;
+                float tilingX = textureNode.HasKey("TilingX") ? textureNode["TilingX"].AsFloat : 1f;
+                float tilingY = textureNode.HasKey("TilingY") ? textureNode["TilingY"].AsFloat : 1f;
+                if (!_textureTilingCache.ContainsKey(name))
+                    _textureTilingCache[name] = new Vector2(tilingX, tilingY);
+            }
+        }
+    }
+
+    void ApplyEditorComponents(GameObject go, MapObjectPrefabMarker marker)
+    {
+        foreach (var compData in marker.CustomComponents)
+        {
+            if (compData.ComponentName == "Daylight")
+            {
+                ApplyLightComponent(go, compData, LightType.Directional);
+            }
+            else if (compData.ComponentName == "PointLight")
+            {
+                ApplyLightComponent(go, compData, LightType.Point);
+            }
+            else if (compData.ComponentName == "SpotLight")
+            {
+                ApplyLightComponent(go, compData, LightType.Spot);
+            }
+        }
+    }
+
+    void ApplyLightComponent(GameObject go, MapObjectPrefabMarker.ComponentData compData, LightType type)
+    {
+        var light = go.GetComponent<Light>();
+        if (light == null)
+            light = go.AddComponent<Light>();
+
+        light.type = type;
+
+        var paramDict = ParseComponentParameters(compData.Parameters);
+
+        if (paramDict.TryGetValue("Color", out string colorStr))
+            light.color = ParseColor255(colorStr);
+
+        if (paramDict.TryGetValue("Intensity", out string intensityStr) && float.TryParse(intensityStr, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float intensity))
+            light.intensity = intensity;
+
+        if (paramDict.TryGetValue("Range", out string rangeStr) && float.TryParse(rangeStr, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float range))
+            light.range = range;
+
+        if (paramDict.TryGetValue("Angle", out string angleStr) && float.TryParse(angleStr, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float angle))
+            light.spotAngle = angle;
+
+        if (type == LightType.Directional)
+        {
+            light.shadows = LightShadows.Soft;
+            light.shadowStrength = 0.8f;
+            light.shadowBias = 0.2f;
+
+            if (paramDict.TryGetValue("ShadowType", out string shadowTypeStr))
+            {
+                if (shadowTypeStr == "None")
+                    light.shadows = LightShadows.None;
+                else if (shadowTypeStr == "Hard")
+                    light.shadows = LightShadows.Hard;
+                else
+                    light.shadows = LightShadows.Soft;
+            }
+
+            if (paramDict.TryGetValue("ShadowStrength", out string shadowStrStr) && float.TryParse(shadowStrStr, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float shadowStr))
+                light.shadowStrength = shadowStr;
+        }
+        else
+        {
+            light.shadows = LightShadows.None;
+            light.renderMode = LightRenderMode.ForcePixel;
+            light.bounceIntensity = 0f;
+        }
+    }
+
+    Dictionary<string, string> ParseComponentParameters(List<string> parameters)
+    {
+        var dict = new Dictionary<string, string>();
+        foreach (var param in parameters)
+        {
+            int colonIndex = param.IndexOf(':');
+            if (colonIndex > 0 && colonIndex < param.Length - 1)
+            {
+                string key = param.Substring(0, colonIndex);
+                string value = param.Substring(colonIndex + 1);
+                dict[key] = value;
+            }
+        }
+        return dict;
+    }
+
+    Color ParseColor255(string colorStr)
+    {
+        string[] parts = colorStr.Split('/');
+        if (parts.Length >= 3)
+        {
+            int.TryParse(parts[0], out int r);
+            int.TryParse(parts[1], out int g);
+            int.TryParse(parts[2], out int b);
+            int a = 255;
+            if (parts.Length >= 4)
+                int.TryParse(parts[3], out a);
+            return new Color(r / 255f, g / 255f, b / 255f, a / 255f);
+        }
+        return Color.white;
+    }
+
+    void ApplyVisualOverrides(GameObject go, MapScriptSceneObject sceneObj)
+    {
+        Material overrideMat = null;
+
+        if (!sceneObj.Active)
+        {
+            overrideMat = new Material(Shader.Find("Standard"));
+            overrideMat.name = "InactiveOverride";
+            SetMaterialTransparent(overrideMat, new Color(1f, 0.5f, 0f, 0.1f));
+        }
+        else if (!sceneObj.Visible)
+        {
+            overrideMat = new Material(Shader.Find("Standard"));
+            overrideMat.name = "NotVisibleOverride";
+            SetMaterialTransparent(overrideMat, new Color(0.5f, 0.8f, 1f, 0.25f));
+        }
+
+        if (overrideMat != null)
+        {
+            var renderers = go.GetComponentsInChildren<Renderer>(true);
+            foreach (var renderer in renderers)
+            {
+                var mats = new Material[renderer.sharedMaterials.Length];
+                for (int i = 0; i < mats.Length; i++)
+                    mats[i] = overrideMat;
+                renderer.sharedMaterials = mats;
+            }
+        }
+    }
+
+    void SetMaterialTransparent(Material mat, Color color)
+    {
+        mat.SetFloat("_Mode", 3);
+        mat.SetInt("_SrcBlend", (int)BlendMode.SrcAlpha);
+        mat.SetInt("_DstBlend", (int)BlendMode.OneMinusSrcAlpha);
+        mat.SetInt("_ZWrite", 0);
+        mat.DisableKeyword("_ALPHATEST_ON");
+        mat.EnableKeyword("_ALPHABLEND_ON");
+        mat.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+        mat.renderQueue = 3000;
+        mat.color = color;
     }
 
     void ApplyMaterialToMarker(MapScriptBaseMaterial material, MapObjectPrefabMarker marker)

@@ -18,6 +18,7 @@ public class ExportSceneToMapScript : EditorWindow
     private bool _preserveIds = false;
     private Vector2 _scrollPos;
     private List<string> _warnings = new List<string>();
+    private string _warningsText = "";
     private Dictionary<string, MapScriptBaseObject> _prefabDatabase = new Dictionary<string, MapScriptBaseObject>();
     private Dictionary<GameObject, string> _prefabNameCache = new Dictionary<GameObject, string>();
     private Dictionary<string, string> _assetToPrefabName = new Dictionary<string, string>();
@@ -150,11 +151,10 @@ public class ExportSceneToMapScript : EditorWindow
         if (_warnings.Count > 0)
         {
             GUILayout.Label($"Warnings ({_warnings.Count}):", EditorStyles.boldLabel);
-            _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
-            foreach (var warning in _warnings)
-            {
-                EditorGUILayout.HelpBox(warning, MessageType.Warning);
-            }
+            _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos, GUILayout.Height(300));
+            GUI.enabled = false;
+            EditorGUILayout.TextArea(_warningsText, EditorStyles.wordWrappedLabel);
+            GUI.enabled = true;
             EditorGUILayout.EndScrollView();
         }
     }
@@ -360,6 +360,7 @@ public class ExportSceneToMapScript : EditorWindow
             }
         }
 
+        _warningsText = string.Join("\n", _warnings);
         Repaint();
     }
 
