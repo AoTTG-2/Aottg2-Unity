@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Map
 {
-    class MapScriptObjects: BaseCSVContainer
+    public class MapScriptObjects: BaseCSVContainer
     {
         public List<MapScriptBaseObject> Objects = new List<MapScriptBaseObject>();
 

@@ -8,7 +8,7 @@ using System.Globalization;
 
 namespace Utility
 {
-    class BaseCSVObject
+    public class BaseCSVObject
     {
         public virtual char Delimiter => ',';
         protected virtual char ParamDelimiter => ':';

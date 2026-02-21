@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace Utility
 {
-    class BaseCSVContainer: BaseCSVObject
+    public class BaseCSVContainer: BaseCSVObject
     {
         public override char Delimiter => ';';
         protected virtual bool UseNewlines => true;

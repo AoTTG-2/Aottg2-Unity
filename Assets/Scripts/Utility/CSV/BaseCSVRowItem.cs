@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace Utility
 {
-    class BaseCSVRowItem: BaseCSVObject
+    public class BaseCSVRowItem: BaseCSVObject
     {
         public override char Delimiter => '|';
     }

@@ -896,7 +896,7 @@ namespace Map
         }
     }
 
-    static class MapObjectShader
+    public static class MapObjectShader
     {
         public static string Default = "Default";
         public static string DefaultNoTint = "DefaultNoTint";
@@ -916,14 +916,14 @@ namespace Map
         }
     }
 
-    static class MapObjectCollideMode
+    public static class MapObjectCollideMode
     {
         public static string Physical = "Physical";
         public static string Region = "Region";
         public static string None = "None";
     }
 
-    static class MapObjectCollideWith
+    public static class MapObjectCollideWith
     {
         public static string All = "All";
         public static string MapObjects = "MapObjects";
@@ -936,7 +936,7 @@ namespace Map
         public static string MapEditor = "MapEditor";
     }
 
-    static class MapObjectPhysicsMaterial
+    public static class MapObjectPhysicsMaterial
     {
         public static string Default = "Default";
         public static string Ice = "IceMaterial";

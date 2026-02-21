@@ -6,7 +6,7 @@ using Utility;
 
 namespace Map
 {
-    class MapScriptDefaultTiledMaterial: MapScriptBaseMaterial
+    public class MapScriptDefaultTiledMaterial: MapScriptBaseMaterial
     {
         [Order(3)] public Vector2 Tiling = Vector2.one;
     }

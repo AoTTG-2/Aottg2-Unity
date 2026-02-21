@@ -4,7 +4,7 @@ using Utility;
 
 namespace Map
 {
-    class MapScriptBaseMaterial: BaseCSVRowItem
+    public class MapScriptBaseMaterial: BaseCSVRowItem
     {
         [Order(1)] public string Shader = "Default";
         [Order(2)] public Color255 Color = new Color255();
