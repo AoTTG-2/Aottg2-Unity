@@ -276,5 +276,6 @@ Marker Settings:
 ## ?? Reference
 
 - **Full docs**: `Assets/Editor/README_MapScriptTools.md`
-- **Prefab list**: `Assets/Resources/Info/MapPrefabList.json`
+- **Prefab list**: `Assets/Resources/Data/Info/MapPrefabList.json`
+- **Component definitions**: `Assets/Resources/Data/Modes/BaseLogic.txt`
 - **MapScript format**: `Assets/Scripts/Map/MapScript/`

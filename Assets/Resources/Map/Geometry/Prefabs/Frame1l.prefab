@@ -88,6 +88,9 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 100002, guid: a0c17bad45a40754eae55863955ff590, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8830234532567413393}
     - targetCorrespondingSourceObject: {fileID: 100000, guid: a0c17bad45a40754eae55863955ff590, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6346927737586814161}
@@ -119,3 +122,43 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: a0c17bad45a40754eae55863955ff590, type: 3}
+--- !u!1 &4855639579276824406 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100002, guid: a0c17bad45a40754eae55863955ff590, type: 3}
+  m_PrefabInstance: {fileID: 4855639579276790260}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8830234532567413393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4855639579276824406}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c4da18ef7051ce4da103fa2dbb2fe94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PrefabName: Frame1l
+  CustomAsset: 
+  ObjectId: 0
+  OverrideActive: 0
+  Active: 1
+  OverrideStatic: 0
+  Static: 1
+  OverrideVisible: 0
+  Visible: 1
+  OverrideNetworked: 0
+  Networked: 0
+  OverridePhysics: 0
+  CollideMode: Physical
+  CollideWith: Entities
+  PhysicsMaterial: Default
+  OverrideMaterial: 0
+  MaterialShader: Default
+  MaterialColor: {r: 1, g: 1, b: 1, a: 1}
+  MaterialTexture: Misc/None
+  MaterialTiling: {x: 1, y: 1}
+  MaterialOffset: {x: 0, y: 0}
+  ReflectColor: {r: 1, g: 1, b: 1, a: 1}
+  CustomComponents: []

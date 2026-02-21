@@ -1062,7 +1062,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 118648752923d01488834fcc535b5438, type: 3}
       propertyPath: m_Name
-      value: Utgard3
+      value: Utgard1b
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 118648752923d01488834fcc535b5438, type: 3}
       propertyPath: m_Layer
@@ -1991,5 +1991,48 @@ PrefabInstance:
     - {fileID: 3444723031282018877, guid: 118648752923d01488834fcc535b5438, type: 3}
     - {fileID: 4503742309709161206, guid: 118648752923d01488834fcc535b5438, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 118648752923d01488834fcc535b5438, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -6096216975332828765}
   m_SourcePrefab: {fileID: 100100000, guid: 118648752923d01488834fcc535b5438, type: 3}
+--- !u!1 &6012528730360423591 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 118648752923d01488834fcc535b5438, type: 3}
+  m_PrefabInstance: {fileID: 6895471551517006326}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &-6096216975332828765
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6012528730360423591}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c4da18ef7051ce4da103fa2dbb2fe94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PrefabName: Utgard1b
+  CustomAsset: 
+  ObjectId: 0
+  OverrideActive: 0
+  Active: 1
+  OverrideStatic: 0
+  Static: 1
+  OverrideVisible: 0
+  Visible: 1
+  OverrideNetworked: 0
+  Networked: 0
+  OverridePhysics: 0
+  CollideMode: Physical
+  CollideWith: Entities
+  PhysicsMaterial: Default
+  OverrideMaterial: 0
+  MaterialShader: Default
+  MaterialColor: {r: 1, g: 1, b: 1, a: 1}
+  MaterialTexture: Misc/None
+  MaterialTiling: {x: 1, y: 1}
+  MaterialOffset: {x: 0, y: 0}
+  ReflectColor: {r: 1, g: 1, b: 1, a: 1}
+  CustomComponents: []

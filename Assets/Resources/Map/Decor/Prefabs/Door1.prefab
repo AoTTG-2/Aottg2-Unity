@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7945021812843261766}
   - component: {fileID: 639031024586529565}
+  - component: {fileID: -3500222842792931200}
   m_Layer: 25
   m_Name: Door1
   m_TagString: Untagged
@@ -55,6 +56,41 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!114 &-3500222842792931200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5186208465380072702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c4da18ef7051ce4da103fa2dbb2fe94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PrefabName: Door1
+  CustomAsset: 
+  ObjectId: 0
+  OverrideActive: 0
+  Active: 1
+  OverrideStatic: 0
+  Static: 1
+  OverrideVisible: 0
+  Visible: 1
+  OverrideNetworked: 0
+  Networked: 0
+  OverridePhysics: 0
+  CollideMode: Physical
+  CollideWith: Entities
+  PhysicsMaterial: Default
+  OverrideMaterial: 0
+  MaterialShader: Default
+  MaterialColor: {r: 1, g: 1, b: 1, a: 1}
+  MaterialTexture: Misc/None
+  MaterialTiling: {x: 1, y: 1}
+  MaterialOffset: {x: 0, y: 0}
+  ReflectColor: {r: 1, g: 1, b: 1, a: 1}
+  CustomComponents: []
 --- !u!1001 &5304816881853385377
 PrefabInstance:
   m_ObjectHideFlags: 0

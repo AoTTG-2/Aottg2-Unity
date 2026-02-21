@@ -83,5 +83,48 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 29bd554532f7bf745a29c1cbae78b5e0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6623402386815754521}
   m_SourcePrefab: {fileID: 100100000, guid: 29bd554532f7bf745a29c1cbae78b5e0, type: 3}
+--- !u!1 &6789056982492733561 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 29bd554532f7bf745a29c1cbae78b5e0, type: 3}
+  m_PrefabInstance: {fileID: 5978241029974809896}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6623402386815754521
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6789056982492733561}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c4da18ef7051ce4da103fa2dbb2fe94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PrefabName: WavingFlag1f
+  CustomAsset: 
+  ObjectId: 0
+  OverrideActive: 0
+  Active: 1
+  OverrideStatic: 1
+  Static: 0
+  OverrideVisible: 0
+  Visible: 1
+  OverrideNetworked: 0
+  Networked: 0
+  OverridePhysics: 1
+  CollideMode: None
+  CollideWith: Entities
+  PhysicsMaterial: Default
+  OverrideMaterial: 1
+  MaterialShader: DefaultNoTint
+  MaterialColor: {r: 1, g: 1, b: 1, a: 1}
+  MaterialTexture: 
+  MaterialTiling: {x: 1, y: 1}
+  MaterialOffset: {x: 0, y: 0}
+  ReflectColor: {r: 1, g: 1, b: 1, a: 1}
+  CustomComponents: []

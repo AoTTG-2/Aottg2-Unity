@@ -3,8 +3,8 @@
 --- !u!1 &2304432804838012001
 GameObject:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 6560277511645729285, guid: 01ab81410b87e4242850be794590de46, type: 3}
-  m_PrefabInstance: {fileID: 187149993886865509}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
@@ -22,8 +22,8 @@ GameObject:
 --- !u!4 &1228197340429331229
 Transform:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 8248634250542096475, guid: 01ab81410b87e4242850be794590de46, type: 3}
-  m_PrefabInstance: {fileID: 187149993886865509}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2304432804838012001}
   serializedVersion: 2
@@ -37,16 +37,16 @@ Transform:
 --- !u!33 &434357868891920883
 MeshFilter:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 6693523446246522175, guid: 01ab81410b87e4242850be794590de46, type: 3}
-  m_PrefabInstance: {fileID: 187149993886865509}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2304432804838012001}
   m_Mesh: {fileID: 4068373912626513877, guid: 118648752923d01488834fcc535b5438, type: 3}
 --- !u!23 &8792158670058774436
 MeshRenderer:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 8597272267997019993, guid: 01ab81410b87e4242850be794590de46, type: 3}
-  m_PrefabInstance: {fileID: 187149993886865509}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2304432804838012001}
   m_Enabled: 1
@@ -87,8 +87,8 @@ MeshRenderer:
 --- !u!64 &9128857930767729807
 MeshCollider:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 3332151220016169308, guid: 01ab81410b87e4242850be794590de46, type: 3}
-  m_PrefabInstance: {fileID: 187149993886865509}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2304432804838012001}
   m_Material: {fileID: 0}
@@ -115,6 +115,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3734306181844737432}
+  - component: {fileID: -7227947460437558022}
   m_Layer: 0
   m_Name: Utgard1d
   m_TagString: Untagged
@@ -138,64 +139,38 @@ Transform:
   - {fileID: 1228197340429331229}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &187149993886865509
-PrefabInstance:
+--- !u!114 &-7227947460437558022
+MonoBehaviour:
   m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 3734306181844737432}
-    m_Modifications:
-    - target: {fileID: 0}
-      propertyPath: m_Name
-      value: UtgardBridge1
-      objectReference: {fileID: 0}
-    - target: {fileID: 0}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 0}
-      propertyPath: m_LocalPosition.x
-      value: -125
-      objectReference: {fileID: 0}
-    - target: {fileID: 0}
-      propertyPath: m_LocalPosition.y
-      value: -89.22
-      objectReference: {fileID: 0}
-    - target: {fileID: 0}
-      propertyPath: m_LocalPosition.z
-      value: 111.56
-      objectReference: {fileID: 0}
-    - target: {fileID: 0}
-      propertyPath: m_LocalRotation.w
-      value: 0.9775275
-      objectReference: {fileID: 0}
-    - target: {fileID: 0}
-      propertyPath: m_LocalRotation.x
-      value: 2.7783003e-14
-      objectReference: {fileID: 0}
-    - target: {fileID: 0}
-      propertyPath: m_LocalRotation.y
-      value: -0.21080807
-      objectReference: {fileID: 0}
-    - target: {fileID: 0}
-      propertyPath: m_LocalRotation.z
-      value: 5.9915257e-15
-      objectReference: {fileID: 0}
-    - target: {fileID: 0}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 0}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: -24.339
-      objectReference: {fileID: 0}
-    - target: {fileID: 0}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8304907147634811417}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c4da18ef7051ce4da103fa2dbb2fe94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PrefabName: Utgard1d
+  CustomAsset: 
+  ObjectId: 0
+  OverrideActive: 0
+  Active: 1
+  OverrideStatic: 0
+  Static: 1
+  OverrideVisible: 0
+  Visible: 1
+  OverrideNetworked: 0
+  Networked: 0
+  OverridePhysics: 0
+  CollideMode: Physical
+  CollideWith: Entities
+  PhysicsMaterial: Default
+  OverrideMaterial: 0
+  MaterialShader: Default
+  MaterialColor: {r: 1, g: 1, b: 1, a: 1}
+  MaterialTexture: Misc/None
+  MaterialTiling: {x: 1, y: 1}
+  MaterialOffset: {x: 0, y: 0}
+  ReflectColor: {r: 1, g: 1, b: 1, a: 1}
+  CustomComponents: []

@@ -16,24 +16,29 @@ public class MapObjectPrefabMarkerEditor : Editor
     private List<string> _availableShaders = new List<string>();
     private List<string> _availableCollideModes = new List<string>();
     private List<string> _availableCollideWith = new List<string>();
-    private int _selectedPrefabIndex = 0;
     private bool _showComponents = true;
     private bool _showPhysics = true;
     private bool _showMaterial = true;
+
+    // Texture list loaded from MapTextureList.json
+    private static Dictionary<string, List<TextureEntry>> _textureCategories;
+    private static Dictionary<string, TextureEntry> _allTextures;
+
+    private struct TextureEntry
+    {
+        public string Name;
+        public string Category;
+        public string Path; // "Category/Name"
+        public float TilingX;
+        public float TilingY;
+    }
 
     void OnEnable()
     {
         _marker = (MapObjectPrefabMarker)target;
         LoadAvailablePrefabs();
         LoadAvailableOptions();
-        
-        // Find current prefab index
-        if (!string.IsNullOrEmpty(_marker.PrefabName))
-        {
-            _selectedPrefabIndex = _availablePrefabs.IndexOf(_marker.PrefabName);
-            if (_selectedPrefabIndex < 0)
-                _selectedPrefabIndex = 0;
-        }
+        LoadTextureList();
     }
 
     public override void OnInspectorGUI()
@@ -48,13 +53,34 @@ public class MapObjectPrefabMarkerEditor : Editor
         // === PREFAB IDENTITY ===
         EditorGUILayout.LabelField("Prefab Identity", EditorStyles.boldLabel);
         
+        // Show PrefabName as an editable text field so the value is always visible,
+        // with an optional dropdown to pick from the prefab database.
+        EditorGUILayout.BeginHorizontal();
         EditorGUI.BeginChangeCheck();
-        _selectedPrefabIndex = EditorGUILayout.Popup("Prefab Name", _selectedPrefabIndex, _availablePrefabs.ToArray());
+        string newName = EditorGUILayout.TextField("Prefab Name", _marker.PrefabName);
         if (EditorGUI.EndChangeCheck())
         {
-            _marker.PrefabName = _availablePrefabs[_selectedPrefabIndex];
+            Undo.RecordObject(_marker, "Change Prefab Name");
+            _marker.PrefabName = newName;
             EditorUtility.SetDirty(_marker);
         }
+
+        if (GUILayout.Button("Pick", GUILayout.Width(40)))
+        {
+            GenericMenu menu = new GenericMenu();
+            foreach (string prefab in _availablePrefabs)
+            {
+                string p = prefab;
+                menu.AddItem(new GUIContent(p), p == _marker.PrefabName, () =>
+                {
+                    Undo.RecordObject(_marker, "Pick Prefab Name");
+                    _marker.PrefabName = p;
+                    EditorUtility.SetDirty(_marker);
+                });
+            }
+            menu.ShowAsContext();
+        }
+        EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.PropertyField(serializedObject.FindProperty("CustomAsset"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("ObjectId"));
@@ -151,6 +177,7 @@ public class MapObjectPrefabMarkerEditor : Editor
             
             if (overrideMaterial.boolValue)
             {
+                // Shader dropdown — mirrors in-game editor
                 var shaderIndex = _availableShaders.IndexOf(_marker.MaterialShader);
                 if (shaderIndex < 0) shaderIndex = 0;
                 
@@ -158,30 +185,95 @@ public class MapObjectPrefabMarkerEditor : Editor
                 shaderIndex = EditorGUILayout.Popup("Shader", shaderIndex, _availableShaders.ToArray());
                 if (EditorGUI.EndChangeCheck())
                 {
+                    Undo.RecordObject(_marker, "Change Shader");
                     _marker.MaterialShader = _availableShaders[shaderIndex];
                     EditorUtility.SetDirty(_marker);
+                    ApplyMaterialPreview();
                 }
 
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("MaterialColor"));
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("MaterialTexture"));
-                
-                // Show tiling/offset for textured materials
-                if (_marker.MaterialShader == "Basic" || _marker.MaterialShader == "Transparent" || 
-                    _marker.MaterialShader == "Reflective" || _marker.MaterialShader == "DefaultTiled")
+                // Color — hidden for DefaultNoTint (same as in-game)
+                if (_marker.MaterialShader != MapObjectShader.DefaultNoTint)
                 {
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("MaterialTiling"));
-                    
-                    if (_marker.MaterialShader != "DefaultTiled")
+                    EditorGUI.BeginChangeCheck();
+                    Color newColor = EditorGUILayout.ColorField("Color", _marker.MaterialColor);
+                    if (EditorGUI.EndChangeCheck())
                     {
-                        EditorGUILayout.PropertyField(serializedObject.FindProperty("MaterialOffset"));
+                        Undo.RecordObject(_marker, "Change Material Color");
+                        _marker.MaterialColor = newColor;
+                        EditorUtility.SetDirty(_marker);
+                        ApplyMaterialPreview();
                     }
                 }
 
-                // Show reflect color for reflective
-                if (_marker.MaterialShader == "Reflective")
+                // Texture picker — only for shaders that support textures
+                bool showTexture = _marker.MaterialShader == MapObjectShader.Basic ||
+                                   _marker.MaterialShader == MapObjectShader.Transparent ||
+                                   _marker.MaterialShader == MapObjectShader.Reflective;
+                if (showTexture)
                 {
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("ReflectColor"));
+                    EditorGUILayout.BeginHorizontal();
+                    EditorGUILayout.PrefixLabel("Texture");
+                    if (GUILayout.Button(_marker.MaterialTexture, EditorStyles.popup))
+                    {
+                        ShowTexturePicker();
+                    }
+                    EditorGUILayout.EndHorizontal();
                 }
+
+                // Tiling — for Basic, Transparent, Reflective, DefaultTiled
+                bool showTiling = showTexture || _marker.MaterialShader == MapObjectShader.DefaultTiled;
+                if (showTiling)
+                {
+                    EditorGUI.BeginChangeCheck();
+                    Vector2 newTiling = EditorGUILayout.Vector2Field("Tiling", _marker.MaterialTiling);
+                    if (EditorGUI.EndChangeCheck())
+                    {
+                        Undo.RecordObject(_marker, "Change Tiling");
+                        _marker.MaterialTiling = newTiling;
+                        EditorUtility.SetDirty(_marker);
+                        ApplyMaterialPreview();
+                    }
+                }
+
+                // Offset — for textured shaders but not DefaultTiled
+                if (showTexture && _marker.MaterialShader != MapObjectShader.DefaultTiled)
+                {
+                    EditorGUI.BeginChangeCheck();
+                    Vector2 newOffset = EditorGUILayout.Vector2Field("Offset", _marker.MaterialOffset);
+                    if (EditorGUI.EndChangeCheck())
+                    {
+                        Undo.RecordObject(_marker, "Change Offset");
+                        _marker.MaterialOffset = newOffset;
+                        EditorUtility.SetDirty(_marker);
+                        ApplyMaterialPreview();
+                    }
+                }
+
+                // Reflect color — only for Reflective shader
+                if (_marker.MaterialShader == MapObjectShader.Reflective)
+                {
+                    EditorGUI.BeginChangeCheck();
+                    Color newReflect = EditorGUILayout.ColorField("Reflect Color", _marker.ReflectColor);
+                    if (EditorGUI.EndChangeCheck())
+                    {
+                        Undo.RecordObject(_marker, "Change Reflect Color");
+                        _marker.ReflectColor = newReflect;
+                        EditorUtility.SetDirty(_marker);
+                        ApplyMaterialPreview();
+                    }
+                }
+
+                EditorGUILayout.Space(3);
+                EditorGUILayout.BeginHorizontal();
+                if (GUILayout.Button("Apply Preview"))
+                {
+                    ApplyMaterialPreview();
+                }
+                if (GUILayout.Button("Reset Preview"))
+                {
+                    ResetMaterialPreview();
+                }
+                EditorGUILayout.EndHorizontal();
             }
             EditorGUI.indentLevel--;
         }
@@ -243,9 +335,12 @@ public class MapObjectPrefabMarkerEditor : Editor
             return;
         }
 
-        var prefabListAsset = Resources.Load<TextAsset>("Info/MapPrefabList");
+        var prefabListAsset = Resources.Load<TextAsset>("Data/Info/MapPrefabList");
         if (prefabListAsset == null)
+        {
+            EditorUtility.DisplayDialog("Error", "Could not load Data/Info/MapPrefabList", "OK");
             return;
+        }
 
         var prefabList = JSON.Parse(prefabListAsset.text);
         
@@ -381,12 +476,196 @@ public class MapObjectPrefabMarkerEditor : Editor
         }
     }
 
+    void ShowTexturePicker()
+    {
+        if (_textureCategories == null)
+            LoadTextureList();
+
+        GenericMenu menu = new GenericMenu();
+
+        foreach (var kvp in _textureCategories)
+        {
+            string category = kvp.Key;
+            foreach (var tex in kvp.Value)
+            {
+                string texPath = tex.Path;
+                menu.AddItem(new GUIContent(category + "/" + tex.Name), texPath == _marker.MaterialTexture, () =>
+                {
+                    Undo.RecordObject(_marker, "Change Texture");
+                    _marker.MaterialTexture = texPath;
+                    EditorUtility.SetDirty(_marker);
+                    ApplyMaterialPreview();
+                });
+            }
+        }
+
+        menu.ShowAsContext();
+    }
+
+    void ApplyMaterialPreview()
+    {
+        if (_marker == null)
+            return;
+
+        GameObject go = _marker.gameObject;
+        var renderers = go.GetComponentsInChildren<Renderer>();
+        if (renderers.Length == 0)
+            return;
+
+        string shader = _marker.MaterialShader;
+
+        foreach (Renderer renderer in renderers)
+        {
+            if (renderer.name == "OutlineGizmo")
+                continue;
+
+            // Create a new instance so we never modify the shared asset material
+            Material mat;
+
+            if (shader == MapObjectShader.Default || shader == MapObjectShader.DefaultNoTint || shader == MapObjectShader.DefaultTiled)
+            {
+                // Start from the prefab's original material
+                mat = new Material(renderer.sharedMaterial);
+                if (shader != MapObjectShader.DefaultNoTint)
+                    mat.color = _marker.MaterialColor;
+                if (shader == MapObjectShader.DefaultTiled)
+                {
+                    mat.mainTextureScale = _marker.MaterialTiling;
+                }
+            }
+            else
+            {
+                // Load the MapScript material template
+                Material template = Resources.Load<Material>("Map/Materials/" + shader + "Material");
+                if (template != null)
+                    mat = new Material(template);
+                else
+                    mat = new Material(renderer.sharedMaterial);
+
+                mat.color = _marker.MaterialColor;
+
+                // Apply texture
+                string texturePath = _marker.MaterialTexture;
+                if (!string.IsNullOrEmpty(texturePath) && texturePath != "Misc/None" && texturePath != "None")
+                {
+                    string[] texParts = texturePath.Split('/');
+                    if (texParts.Length == 2)
+                    {
+                        string texCategory = texParts[0];
+                        string texName = texParts[1];
+
+                        Texture2D texture = null;
+                        if (texCategory == "Legacy" && _allTextures.ContainsKey(texName))
+                        {
+                            // Legacy textures have their own path format; skip for editor preview
+                        }
+                        else
+                        {
+                            texture = Resources.Load<Texture2D>("Map/Textures/" + texCategory + "/" + texName + "Texture");
+                        }
+
+                        if (texture != null)
+                        {
+                            mat.mainTexture = texture;
+
+                            // Apply tiling with texture reference tiling multiplied in
+                            float refTilingX = 1f, refTilingY = 1f;
+                            if (_allTextures != null && _allTextures.ContainsKey(texName))
+                            {
+                                refTilingX = _allTextures[texName].TilingX;
+                                refTilingY = _allTextures[texName].TilingY;
+                            }
+                            mat.mainTextureScale = new Vector2(
+                                _marker.MaterialTiling.x * refTilingX,
+                                _marker.MaterialTiling.y * refTilingY);
+                            mat.mainTextureOffset = _marker.MaterialOffset;
+                        }
+                    }
+                }
+                else
+                {
+                    mat.mainTextureScale = _marker.MaterialTiling;
+                    mat.mainTextureOffset = _marker.MaterialOffset;
+                }
+
+                if (shader == MapObjectShader.Reflective && mat.HasProperty("_SpecularMap"))
+                {
+                    mat.SetColor("_SpecularMap", _marker.ReflectColor);
+                }
+            }
+
+            renderer.material = mat;
+        }
+    }
+
+    void ResetMaterialPreview()
+    {
+        if (_marker == null)
+            return;
+
+        // Revert to the prefab's original shared materials
+        GameObject go = _marker.gameObject;
+        if (PrefabUtility.IsPartOfPrefabInstance(go))
+        {
+            // Revert renderer material overrides
+            var renderers = go.GetComponentsInChildren<Renderer>();
+            foreach (var renderer in renderers)
+            {
+                var prefabRenderer = PrefabUtility.GetCorrespondingObjectFromSource(renderer);
+                if (prefabRenderer != null)
+                {
+                    renderer.sharedMaterials = prefabRenderer.sharedMaterials;
+                }
+            }
+        }
+    }
+
+    static void LoadTextureList()
+    {
+        if (_textureCategories != null)
+            return;
+
+        _textureCategories = new Dictionary<string, List<TextureEntry>>();
+        _allTextures = new Dictionary<string, TextureEntry>();
+
+        var textureListAsset = Resources.Load<TextAsset>("Data/Info/MapTextureList");
+        if (textureListAsset == null)
+        {
+            Debug.LogWarning("Could not load Data/Info/MapTextureList");
+            return;
+        }
+
+        var textureList = JSON.Parse(textureListAsset.text);
+
+        foreach (string category in textureList.Keys)
+        {
+            var entries = new List<TextureEntry>();
+
+            foreach (JSONNode textureNode in textureList[category])
+            {
+                var entry = new TextureEntry();
+                entry.Name = textureNode["Name"].Value;
+                entry.Category = category;
+                entry.Path = category + "/" + entry.Name;
+                entry.TilingX = textureNode.HasKey("TilingX") ? textureNode["TilingX"].AsFloat : 1f;
+                entry.TilingY = textureNode.HasKey("TilingY") ? textureNode["TilingY"].AsFloat : 1f;
+
+                entries.Add(entry);
+
+                if (!_allTextures.ContainsKey(entry.Name))
+                    _allTextures[entry.Name] = entry;
+            }
+
+            _textureCategories[category] = entries;
+        }
+    }
+
     void LoadAvailablePrefabs()
     {
         _availablePrefabs.Clear();
         _availablePrefabs.Add("(None)");
 
-        var prefabListAsset = Resources.Load<TextAsset>("Info/MapPrefabList");
+        var prefabListAsset = Resources.Load<TextAsset>("Data/Info/MapPrefabList");
         if (prefabListAsset == null)
             return;
 

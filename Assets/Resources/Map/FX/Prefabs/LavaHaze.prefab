@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8335901496727363222}
   - component: {fileID: 8792883879258252559}
   - component: {fileID: 2722351336408098397}
+  - component: {fileID: -3412722564741733065}
   m_Layer: 0
   m_Name: LavaHaze
   m_TagString: Untagged
@@ -105,3 +106,38 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-3412722564741733065
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3282861797793468844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c4da18ef7051ce4da103fa2dbb2fe94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PrefabName: LavaHaze
+  CustomAsset: 
+  ObjectId: 0
+  OverrideActive: 0
+  Active: 1
+  OverrideStatic: 1
+  Static: 0
+  OverrideVisible: 0
+  Visible: 1
+  OverrideNetworked: 0
+  Networked: 0
+  OverridePhysics: 1
+  CollideMode: Region
+  CollideWith: Characters
+  PhysicsMaterial: Default
+  OverrideMaterial: 1
+  MaterialShader: DefaultTiled
+  MaterialColor: {r: 1, g: 1, b: 1, a: 1}
+  MaterialTexture: 1/1
+  MaterialTiling: {x: 1, y: 1}
+  MaterialOffset: {x: 0, y: 0}
+  ReflectColor: {r: 1, g: 1, b: 1, a: 1}
+  CustomComponents: []

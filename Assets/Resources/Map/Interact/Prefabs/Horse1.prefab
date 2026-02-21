@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 13615476}
   - component: {fileID: 5872550283316745095}
   - component: {fileID: 175379302141460408}
+  - component: {fileID: 2182629413526341964}
   m_Layer: 20
   m_Name: Horse1
   m_TagString: Untagged
@@ -127,6 +128,50 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &2182629413526341964
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 156616}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c4da18ef7051ce4da103fa2dbb2fe94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PrefabName: Horse1
+  CustomAsset: 
+  ObjectId: 0
+  OverrideActive: 0
+  Active: 1
+  OverrideStatic: 1
+  Static: 0
+  OverrideVisible: 0
+  Visible: 1
+  OverrideNetworked: 0
+  Networked: 0
+  OverridePhysics: 1
+  CollideMode: Physical
+  CollideWith: All
+  PhysicsMaterial: Default
+  OverrideMaterial: 0
+  MaterialShader: Default
+  MaterialColor: {r: 1, g: 1, b: 1, a: 1}
+  MaterialTexture: Misc/None
+  MaterialTiling: {x: 1, y: 1}
+  MaterialOffset: {x: 0, y: 0}
+  ReflectColor: {r: 1, g: 1, b: 1, a: 1}
+  CustomComponents:
+  - ComponentName: Animal
+    Parameters:
+    - WalkAnimation:horse_WALK
+    - IdleAnimations:horse_idle0
+    - ActionAnimations:horse_idle1/horse_idle2/horse_idle3/horse_crazy
+    - ActionSounds:None/Idle2Sound/Idle3Sound/CrazySound,Rigidbody
+    - Mass:5.0
+    - Gravity:0.0/-20.0/0.0
+    - FreezeRotation:true
 --- !u!1 &156618
 GameObject:
   m_ObjectHideFlags: 0

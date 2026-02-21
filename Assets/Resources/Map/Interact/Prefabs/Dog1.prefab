@@ -1703,6 +1703,7 @@ GameObject:
   - component: {fileID: 5253331432906944209}
   - component: {fileID: 8685066251692779380}
   - component: {fileID: 1442626320143956646}
+  - component: {fileID: 2361149272550012416}
   m_Layer: 20
   m_Name: Dog1
   m_TagString: Untagged
@@ -1873,3 +1874,46 @@ CapsuleCollider:
   m_Height: 0.62
   m_Direction: 2
   m_Center: {x: 0, y: 0.39, z: -0.21}
+--- !u!114 &2361149272550012416
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 193726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c4da18ef7051ce4da103fa2dbb2fe94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PrefabName: Dog1
+  CustomAsset: 
+  ObjectId: 0
+  OverrideActive: 0
+  Active: 1
+  OverrideStatic: 1
+  Static: 0
+  OverrideVisible: 0
+  Visible: 1
+  OverrideNetworked: 0
+  Networked: 0
+  OverridePhysics: 1
+  CollideMode: Physical
+  CollideWith: All
+  PhysicsMaterial: Default
+  OverrideMaterial: 0
+  MaterialShader: Default
+  MaterialColor: {r: 1, g: 1, b: 1, a: 1}
+  MaterialTexture: Misc/None
+  MaterialTiling: {x: 1, y: 1}
+  MaterialOffset: {x: 0, y: 0}
+  ReflectColor: {r: 1, g: 1, b: 1, a: 1}
+  CustomComponents:
+  - ComponentName: Animal
+    Parameters:
+    - WalkAnimation:Walk
+    - IdleAnimations:Idle0/Lie1/Lie2/Lie3/Sit1/Sit2/Sleep/Stand
+    - ActionAnimations:Itch/Stretch/Shake,Rigidbody
+    - Mass:5.0
+    - Gravity:0.0/-20.0/0.0
+    - FreezeRotation:true

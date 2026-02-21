@@ -304,8 +304,56 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: cf361ad24836ff34aa50b3940f0c9313, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5481024542737121176}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cf361ad24836ff34aa50b3940f0c9313, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2725567504551579112}
   m_SourcePrefab: {fileID: 100100000, guid: cf361ad24836ff34aa50b3940f0c9313, type: 3}
+--- !u!1 &4731847030752635333 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: cf361ad24836ff34aa50b3940f0c9313, type: 3}
+  m_PrefabInstance: {fileID: 5578706616178594964}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2725567504551579112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4731847030752635333}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c4da18ef7051ce4da103fa2dbb2fe94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PrefabName: WaterBoat1
+  CustomAsset: 
+  ObjectId: 0
+  OverrideActive: 0
+  Active: 1
+  OverrideStatic: 1
+  Static: 0
+  OverrideVisible: 0
+  Visible: 1
+  OverrideNetworked: 1
+  Networked: 1
+  OverridePhysics: 1
+  CollideMode: Physical
+  CollideWith: All
+  PhysicsMaterial: Default
+  OverrideMaterial: 0
+  MaterialShader: Default
+  MaterialColor: {r: 1, g: 1, b: 1, a: 1}
+  MaterialTexture: Misc/None
+  MaterialTiling: {x: 1, y: 1}
+  MaterialOffset: {x: 0, y: 0}
+  ReflectColor: {r: 1, g: 1, b: 1, a: 1}
+  CustomComponents:
+  - ComponentName: Rigidbody
+    Parameters:
+    - Mass:1.0
+    - Gravity:0.0/-20.0/0.0
+    - FreezeRotation:false,Floater
 --- !u!4 &5395652520600089471 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: cf361ad24836ff34aa50b3940f0c9313, type: 3}

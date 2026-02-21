@@ -104,5 +104,5 @@ Material:
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _Object_Space: {r: 0, g: 0, b: 0, a: 0}
     - _Parent_Scale: {r: 1, g: 1, b: 1, a: 0}
-    - _Parent_World_Position: {r: 0, g: 0, b: 0, a: 0}
+    - _Parent_World_Position: {r: 1, g: 18, b: -628, a: 0}
   m_BuildTextureStacks: []

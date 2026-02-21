@@ -100,7 +100,7 @@ public class MapPrefabMarkerSync : EditorWindow
         _categories.Clear();
         _categories.Add("(All)");
 
-        var prefabListAsset = Resources.Load<TextAsset>("Info/MapPrefabList");
+        var prefabListAsset = Resources.Load<TextAsset>("Data/Info/MapPrefabList");
         if (prefabListAsset == null)
             return;
 
@@ -115,10 +115,10 @@ public class MapPrefabMarkerSync : EditorWindow
     {
         _syncLog.Clear();
         
-        var prefabListAsset = Resources.Load<TextAsset>("Info/MapPrefabList");
+        var prefabListAsset = Resources.Load<TextAsset>("Data/Info/MapPrefabList");
         if (prefabListAsset == null)
         {
-            EditorUtility.DisplayDialog("Error", "Could not load Info/MapPrefabList", "OK");
+            EditorUtility.DisplayDialog("Error", "Could not load Data/Info/MapPrefabList", "OK");
             return;
         }
 

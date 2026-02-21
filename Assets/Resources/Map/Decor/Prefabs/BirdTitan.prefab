@@ -75,6 +75,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f0fc69bee7323df4ba3eab350688bb86, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1077644447420465801}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f0fc69bee7323df4ba3eab350688bb86, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -1784006594074828963}
   m_SourcePrefab: {fileID: 100100000, guid: f0fc69bee7323df4ba3eab350688bb86, type: 3}
 --- !u!1 &2229540061752732072 stripped
 GameObject:
@@ -103,3 +106,38 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 7640203330144653433, guid: f0fc69bee7323df4ba3eab350688bb86, type: 3}
+--- !u!114 &-1784006594074828963
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2229540061752732072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c4da18ef7051ce4da103fa2dbb2fe94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PrefabName: BirdTitan
+  CustomAsset: 
+  ObjectId: 0
+  OverrideActive: 0
+  Active: 1
+  OverrideStatic: 0
+  Static: 1
+  OverrideVisible: 0
+  Visible: 1
+  OverrideNetworked: 0
+  Networked: 0
+  OverridePhysics: 0
+  CollideMode: Physical
+  CollideWith: Entities
+  PhysicsMaterial: Default
+  OverrideMaterial: 0
+  MaterialShader: Default
+  MaterialColor: {r: 1, g: 1, b: 1, a: 1}
+  MaterialTexture: Misc/None
+  MaterialTiling: {x: 1, y: 1}
+  MaterialOffset: {x: 0, y: 0}
+  ReflectColor: {r: 1, g: 1, b: 1, a: 1}
+  CustomComponents: []

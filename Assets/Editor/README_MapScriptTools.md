@@ -7,6 +7,46 @@ These tools allow developers to create maps using Unity's editor and export them
 
 **See `QUICKSTART_MapScript.md` for the fastest way to get started!**
 
+## Menu Commands
+
+### Window Menu
+- **Window > Map Prefab Browser** - Dockable prefab browser with categories, search, and drag-drop support
+
+### Tools > MapScript Menu
+- **Sync Markers on Map Prefabs** - Synchronize prefab markers with JSON definitions
+- **Add Prefab Marker to Selected** - Manually add markers to selected objects
+- **Remove Prefab Marker from Selected** - Remove markers from selected objects
+
+### Tools Menu
+- **Export Scene to MapScript** - Export current scene to MapScript format
+- **Import MapScript to Scene** - Import MapScript file into current scene
+
+## Map Prefab Browser
+
+A dockable editor window for browsing and adding Map prefabs to scenes, similar to the in-game add object menu.
+
+**Features:**
+- **Category Organization**: Browse by General, Geometry, Buildings, Nature, etc.
+- **Search**: Filter prefabs by name, category, or asset path
+- **Variants**: Shows prefab variants grouped under base prefabs
+- **Preview Icons**: Visual thumbnails for quick identification
+- **Drag & Drop**: Drag prefabs directly into Scene View
+- **Context Menu**: Right-click for options (Add Multiple, Show Info, Ping Asset, Copy Name/Path)
+- **Visual Indicators**: Color-coded for networked (blue) and invisible (yellow) objects
+- **Resizable**: Adjust category panel width to your preference
+
+**Usage:**
+1. Open: **Window > Map Prefab Browser**
+2. Dock it next to Project window or Hierarchy
+3. Select category or search for prefabs
+4. Click to add to scene, or drag into Scene View
+5. Right-click for more options
+
+**Keyboard Shortcuts:**
+- Click + Drag = Move prefab into scene at mouse position
+- Right Click = Context menu
+- Double-click Info (?) = Show detailed properties
+
 ## Files Created
 - **Assets/Editor/ExportSceneToMapScript.cs** - Export Unity scenes to MapScript format
 - **Assets/Editor/ImportMapScriptToScene.cs** - Import MapScript files into Unity scenes
@@ -312,4 +352,6 @@ var exporter = CreateInstance<ExportSceneToMapScript>();
 - `Assets/Scripts/Map/BuiltinMapPrefabs.cs` - Prefab database loading
 - `Assets/Scripts/Map/MapLoader.cs` - Runtime MapScript loading
 - `Assets/Scripts/Map/MapScript/` - MapScript data structures
-- `Info/MapPrefabList.json` - Prefab definitions (this is in Resources at runtime)
+- `Assets/Resources/Data/Info/MapPrefabList.json` - Prefab definitions
+- `Assets/Resources/Data/Modes/BaseLogic.txt` - Component definitions
+- `Assets/Resources/Map/` - Map prefab storage

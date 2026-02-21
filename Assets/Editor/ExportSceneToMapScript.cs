@@ -21,6 +21,7 @@ public class ExportSceneToMapScript : EditorWindow
     private Dictionary<string, MapScriptBaseObject> _prefabDatabase = new Dictionary<string, MapScriptBaseObject>();
     private Dictionary<GameObject, string> _prefabNameCache = new Dictionary<GameObject, string>();
     private Dictionary<string, string> _assetToPrefabName = new Dictionary<string, string>();
+    private Dictionary<string, Vector3> _baseScaleCache = new Dictionary<string, Vector3>();
 
     [MenuItem("Tools/Export Scene to MapScript")]
     static void ShowWindow()
@@ -88,8 +89,33 @@ public class ExportSceneToMapScript : EditorWindow
 
         foreach (Transform child in obj.transform)
         {
+            // Skip children that are internal parts of a prefab
+            if (IsInternalPrefabChild(child.gameObject))
+                continue;
             AddMarkersRecursive(child.gameObject, ref count);
         }
+    }
+
+    /// <summary>
+    /// Returns true if the given object is an internal part of a prefab instance
+    /// (i.e. not the root of its prefab). These should never be exported as separate
+    /// MapScript objects since the prefab itself already contains them.
+    /// </summary>
+    static bool IsInternalPrefabChild(GameObject obj)
+    {
+        // If the object is not part of a prefab at all, it's a scene object (not internal)
+        if (!PrefabUtility.IsPartOfPrefabInstance(obj))
+            return false;
+
+        // Get the outermost prefab instance root for this object
+        GameObject prefabRoot = PrefabUtility.GetOutermostPrefabInstanceRoot(obj);
+
+        // If this object IS the prefab root, it's not an internal child
+        if (prefabRoot == obj)
+            return false;
+
+        // This object is inside a prefab instance but is not its root — skip it
+        return true;
     }
 
     void OnEnable()
@@ -138,11 +164,12 @@ public class ExportSceneToMapScript : EditorWindow
         _prefabDatabase.Clear();
         _assetToPrefabName.Clear();
 
+
         // Load the MapPrefabList JSON
-        var prefabListAsset = Resources.Load<TextAsset>("Info/MapPrefabList");
+        var prefabListAsset = Resources.Load<TextAsset>("Data/Info/MapPrefabList");
         if (prefabListAsset == null)
         {
-            Debug.LogError("Could not load Info/MapPrefabList");
+            Debug.LogError("Could not load Data/Info/MapPrefabList");
             return;
         }
 
@@ -223,6 +250,7 @@ public class ExportSceneToMapScript : EditorWindow
     {
         _warnings.Clear();
         _prefabNameCache.Clear();
+        _baseScaleCache.Clear();
 
         // Create MapScript
         MapScript mapScript = new MapScript();
@@ -337,12 +365,16 @@ public class ExportSceneToMapScript : EditorWindow
 
     void CollectObjects(GameObject obj, List<GameObject> collection)
     {
-        // Only collect root objects or objects that are direct children (not deep hierarchy yet)
-        // We'll handle hierarchy in parent assignment
         collection.Add(obj);
         
         foreach (Transform child in obj.transform)
         {
+            // Skip children that are internal parts of a prefab instance.
+            // The prefab's internal hierarchy is baked into the asset;
+            // only the root transform matters in MapScript.
+            if (IsInternalPrefabChild(child.gameObject))
+                continue;
+
             CollectObjects(child.gameObject, collection);
         }
     }
@@ -445,8 +477,12 @@ public class ExportSceneToMapScript : EditorWindow
     {
         MapScriptSceneObject scriptObject = new MapScriptSceneObject();
 
-        // Copy base prefab properties if it exists
-        if (_prefabDatabase.ContainsKey(prefabName))
+        // Copy base prefab properties if it exists in the database.
+        // These are the canonical defaults from MapPrefabList.json and should
+        // only be overwritten by explicit marker overrides, never by extracting
+        // from the Unity renderer (which doesn't map cleanly to MapScript materials).
+        bool hasDbEntry = _prefabDatabase.ContainsKey(prefabName);
+        if (hasDbEntry)
         {
             scriptObject.Copy(_prefabDatabase[prefabName]);
         }
@@ -473,14 +509,20 @@ public class ExportSceneToMapScript : EditorWindow
             scriptObject.Id = goToId[obj];
         }
 
-        // Set parent
-        if (obj.transform.parent != null && goToId.ContainsKey(obj.transform.parent.gameObject))
+        // Set parent — walk up the hierarchy to find the nearest exported ancestor.
+        // This correctly handles the case where a prefab instance is parented under
+        // another prefab instance (the immediate Unity parent may be an internal child
+        // of that prefab, which isn't in goToId).
+        scriptObject.Parent = 0;
+        Transform parentTransform = obj.transform.parent;
+        while (parentTransform != null)
         {
-            scriptObject.Parent = goToId[obj.transform.parent.gameObject];
-        }
-        else
-        {
-            scriptObject.Parent = 0;
+            if (goToId.ContainsKey(parentTransform.gameObject))
+            {
+                scriptObject.Parent = goToId[parentTransform.gameObject];
+                break;
+            }
+            parentTransform = parentTransform.parent;
         }
 
         // Override name with actual GameObject name (sanitized)
@@ -518,46 +560,45 @@ public class ExportSceneToMapScript : EditorWindow
                 scriptObject.CollideWith = marker.CollideWith;
                 scriptObject.PhysicsMaterial = marker.PhysicsMaterial;
             }
-            else
+            else if (!hasDbEntry)
             {
+                // No database entry and no marker override — try to infer from scene
                 ExtractPhysicsInfo(obj, scriptObject);
             }
+            // else: keep the database defaults already set by Copy()
 
             if (marker.OverrideMaterial)
             {
                 ApplyMarkerMaterial(marker, scriptObject);
             }
-            else
-            {
-                ExtractMaterialInfo(obj, scriptObject);
-            }
+            // else: keep the database defaults already set by Copy()
 
             // Always use marker components if present
             ExtractComponents(obj, scriptObject, marker);
         }
         else
         {
-            // No marker - extract from scene
+            // No marker — use database defaults if available, otherwise extract from scene
             scriptObject.Active = obj.activeSelf;
             scriptObject.Static = obj.isStatic;
-            ExtractMaterialInfo(obj, scriptObject);
-            ExtractPhysicsInfo(obj, scriptObject);
+            if (!hasDbEntry)
+            {
+                ExtractPhysicsInfo(obj, scriptObject);
+            }
             ExtractComponents(obj, scriptObject, null);
         }
 
-        // Set transform - use local if has parent, world if root
-        if (obj.transform.parent != null)
-        {
-            scriptObject.SetPosition(obj.transform.localPosition);
-            scriptObject.SetRotation(obj.transform.localRotation);
-            scriptObject.SetScale(obj.transform.localScale);
-        }
-        else
-        {
-            scriptObject.SetPosition(obj.transform.position);
-            scriptObject.SetRotation(obj.transform.rotation);
-            scriptObject.SetScale(obj.transform.localScale);
-        }
+        // Set transform.
+        // MapScript always stores world-space position and rotation, regardless of
+        // parenting. The runtime sets transform.position (world) first, then parents
+        // afterward — so the stored values must always be world-space.
+        // Scale is stored as a multiplier relative to the prefab's native localScale
+        // (BaseScale): finalScale = BaseScale * MapScriptScale.
+        Vector3 baseScale = GetBaseScale(scriptObject.Asset);
+
+        scriptObject.SetPosition(obj.transform.position);
+        scriptObject.SetRotation(obj.transform.rotation);
+        scriptObject.SetScale(DivideScale(obj.transform.localScale, baseScale));
 
         return scriptObject;
     }
@@ -604,54 +645,6 @@ public class ExportSceneToMapScript : EditorWindow
         }
     }
 
-    void ExtractMaterialInfo(GameObject obj, MapScriptSceneObject scriptObject)
-    {
-        var renderer = obj.GetComponent<Renderer>();
-        if (renderer == null)
-            renderer = obj.GetComponentInChildren<Renderer>();
-
-        if (renderer != null && renderer.sharedMaterial != null)
-        {
-            var mat = renderer.sharedMaterial;
-            
-            // Try to detect shader type
-            string shaderName = mat.shader.name.ToLower();
-            
-            if (shaderName.Contains("transparent"))
-            {
-                scriptObject.Material = new MapScriptBasicMaterial();
-                scriptObject.Material.Shader = MapObjectShader.Transparent;
-                ((MapScriptBasicMaterial)scriptObject.Material).Texture = "Misc/None";
-            }
-            else if (shaderName.Contains("reflective"))
-            {
-                scriptObject.Material = new MapScriptReflectiveMaterial();
-                scriptObject.Material.Shader = MapObjectShader.Reflective;
-            }
-            else if (mat.mainTexture != null)
-            {
-                scriptObject.Material = new MapScriptBasicMaterial();
-                scriptObject.Material.Shader = MapObjectShader.Basic;
-                ((MapScriptBasicMaterial)scriptObject.Material).Texture = "Misc/None"; // Would need texture lookup
-                ((MapScriptBasicMaterial)scriptObject.Material).Tiling = mat.mainTextureScale;
-                ((MapScriptBasicMaterial)scriptObject.Material).Offset = mat.mainTextureOffset;
-            }
-
-            // Extract color
-            if (mat.HasProperty("_Color"))
-            {
-                Color color = mat.GetColor("_Color");
-                scriptObject.Material.Color = new Color255(color);
-            }
-            else if (mat.HasProperty("_TintColor"))
-            {
-                Color color = mat.GetColor("_TintColor");
-                scriptObject.Material.Color = new Color255(color);
-            }
-
-            scriptObject.Visible = renderer.enabled;
-        }
-    }
 
     void ExtractPhysicsInfo(GameObject obj, MapScriptSceneObject scriptObject)
     {
@@ -778,6 +771,55 @@ public class ExportSceneToMapScript : EditorWindow
         component.ComponentName = "Tag";
         component.Parameters = new List<string> { "Name:" + tagName };
         scriptObject.Components.Add(component);
+    }
+
+    /// <summary>
+    /// Gets the prefab asset's native localScale (BaseScale). The runtime uses this as a
+    /// multiplier base: finalScale = BaseScale * MapScriptScale. We need to divide by it
+    /// when exporting so that the MapScript stores the correct multiplier.
+    /// </summary>
+    Vector3 GetBaseScale(string asset)
+    {
+        if (asset == "None" || string.IsNullOrEmpty(asset))
+            return Vector3.one;
+
+        if (_baseScaleCache.ContainsKey(asset))
+            return _baseScaleCache[asset];
+
+        Vector3 baseScale = Vector3.one;
+
+        string[] parts = asset.Split('/');
+        if (parts.Length >= 2)
+        {
+            string category = parts[0];
+            string assetName = parts[parts.Length - 1];
+
+            string resourcePath = "Map/" + category + "/Prefabs/" + assetName;
+            GameObject prefab = Resources.Load<GameObject>(resourcePath);
+
+            if (prefab == null)
+            {
+                resourcePath = "Map/" + category + "/" + assetName;
+                prefab = Resources.Load<GameObject>(resourcePath);
+            }
+
+            if (prefab != null)
+            {
+                baseScale = prefab.transform.localScale;
+            }
+        }
+
+        _baseScaleCache[asset] = baseScale;
+        return baseScale;
+    }
+
+    static Vector3 DivideScale(Vector3 sceneScale, Vector3 baseScale)
+    {
+        return new Vector3(
+            baseScale.x != 0f ? sceneScale.x / baseScale.x : sceneScale.x,
+            baseScale.y != 0f ? sceneScale.y / baseScale.y : sceneScale.y,
+            baseScale.z != 0f ? sceneScale.z / baseScale.z : sceneScale.z
+        );
     }
 
     string SanitizeName(string name)

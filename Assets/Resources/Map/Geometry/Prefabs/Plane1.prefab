@@ -91,6 +91,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 8ad542a70c70fb5469a408beb9ed8944, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1013212972093737121}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 8ad542a70c70fb5469a408beb9ed8944, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2345991941045671746}
   m_SourcePrefab: {fileID: 100100000, guid: 8ad542a70c70fb5469a408beb9ed8944, type: 3}
 --- !u!1 &5310879453257600383 stripped
 GameObject:
@@ -118,3 +121,38 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 0.0002000437, z: 1}
   m_Center: {x: 0, y: -0.00014999999, z: 0}
+--- !u!114 &2345991941045671746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5310879453257600383}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c4da18ef7051ce4da103fa2dbb2fe94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PrefabName: Plane1
+  CustomAsset: 
+  ObjectId: 0
+  OverrideActive: 0
+  Active: 1
+  OverrideStatic: 0
+  Static: 1
+  OverrideVisible: 0
+  Visible: 1
+  OverrideNetworked: 0
+  Networked: 0
+  OverridePhysics: 0
+  CollideMode: Physical
+  CollideWith: Entities
+  PhysicsMaterial: Default
+  OverrideMaterial: 0
+  MaterialShader: Default
+  MaterialColor: {r: 1, g: 1, b: 1, a: 1}
+  MaterialTexture: Misc/None
+  MaterialTiling: {x: 1, y: 1}
+  MaterialOffset: {x: 0, y: 0}
+  ReflectColor: {r: 1, g: 1, b: 1, a: 1}
+  CustomComponents: []
