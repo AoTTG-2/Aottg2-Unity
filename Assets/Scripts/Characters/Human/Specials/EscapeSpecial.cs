@@ -1,4 +1,5 @@
 ﻿using Effects;
+using Photon.Pun;
 using UnityEngine;
 
 namespace Characters
@@ -49,7 +50,16 @@ namespace Characters
             var human = (Human)_owner;
             if (!human.Dead && human.Grabber != null && human.State == HumanState.Grab)
             {
-                human.Ungrab(true, false, breakArm: true);
+                string hurtbox;
+                if (human.Grabber.HoldHumanLeft)
+                {
+                    hurtbox = "ForearmRHurtbox";
+                }
+                else
+                {
+                    hurtbox = "ForearmLHurtbox";
+                }
+                human.Grabber.Cache.PhotonView.RPC(nameof(human.Grabber.GetHitRPC), RpcTarget.All, new object[] { human.Cache.PhotonView.ViewID, "", 0, "", hurtbox });
                 if (human.Weapon is BladeWeapon)
                 {
                     EffectSpawner.Spawn(EffectPrefabs.Blood1, human.HumanCache.BladeHitLeft.transform.position, Quaternion.Euler(270f, 0f, 0f));
