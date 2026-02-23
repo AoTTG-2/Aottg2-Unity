@@ -97,7 +97,15 @@ namespace Assets.Scripts.Characters.Human.Perks
             _lastUseTime = Time.time;
             _lastUpdateTime = Time.time;
         }
-        
+
+        public virtual void OnUse(float percent)
+        {
+            UpdatePower();
+            _currentPower = Mathf.Clamp(_currentPower - (MaxPower * percent), MinPower, MaxPower);
+            _lastUseTime = Time.time;
+            _lastUpdateTime = Time.time;
+        }
+
         public void SetCooldownLeft(float cooldownLeft)
         {
             _lastUseTime = Time.time - Cooldown + cooldownLeft;

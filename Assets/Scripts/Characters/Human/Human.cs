@@ -441,7 +441,7 @@ namespace Characters
             }
         }
 
-        public void DashVertical(float targetAngle, Vector3 direction, float percentPower = 1.0f)
+        public bool DashVertical(float targetAngle, Vector3 direction, Vector3? percentPower = null)
         {
             if (_dashTimeLeft <= 0f && Stats.CurrentGas > 0 && MountState == HumanMountState.None &&
                 State != HumanState.Grab && CarryState != HumanCarryState.Carry && _dashCooldownLeft <= 0f)
@@ -457,10 +457,21 @@ namespace Characters
                 CrossFade(HumanAnimations.Dash, 0.1f, 0.1f);
                 State = HumanState.AirDodge;
                 FalseAttack();
-                Cache.Rigidbody.AddForce(direction * 40f * percentPower, ForceMode.VelocityChange);
+                Vector3 force = direction * 40f;
+                if (percentPower != null)
+                {
+                    force.x *= percentPower.Value.x;
+                    force.y *= percentPower.Value.y;
+                    force.z *= percentPower.Value.x;
+                }
+                    
+                Cache.Rigidbody.AddForce(force, ForceMode.VelocityChange);
                 _dashCooldownLeft = 0.2f;
                 ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.ShakeGas();
+
+                return true;
             }
+            return false;
         }
 
         public void Idle()
@@ -1584,6 +1595,8 @@ namespace Characters
                 bool pivot = pivotLeft || pivotRight;
                 if (Grounded)
                 {
+                    ClearDashPerkCDs();
+
                     Vector3 newVelocity = Vector3.zero;
                     if (JustGrounded)
                     {
@@ -1804,6 +1817,8 @@ namespace Characters
                     }
                     else if (Animation.IsPlaying(HumanAnimations.WallRun))
                     {
+                        ClearDashPerkCDs();
+
                         Cache.Rigidbody.AddForce(Vector3.up * Stats.RunSpeed - Cache.Rigidbody.velocity, ForceMode.VelocityChange);
                         _wallRunTime += Time.deltaTime;
                         if (!HasDirection)
@@ -3120,15 +3135,20 @@ namespace Characters
                 Setup._part_blade_r.SetActive(hasRight);
         }
 
+        public void ClearDashPerkCDs()
+        {
+            if (Stats.OmniDashPerk.PerkEnabled)
+                Stats.OmniDashPerk.Reset();
+            else if (Stats.VerticalDashPerk.PerkEnabled)
+                Stats.VerticalDashPerk.Reset();
+        }
+
         public void OnHooked(bool left, Vector3 position)
         {
             // If reel in holding is disabled, when the user launches a new hook, reset the wait for release flag.
             if (!SettingsManager.InputSettings.Human.ReelInHolding.Value)
                 _reelInWaitForRelease = false;
-            if (Stats.OmniDashPerk.PerkEnabled)
-                Stats.OmniDashPerk.Reset();
-            else if (Stats.VerticalDashPerk.PerkEnabled)
-                Stats.VerticalDashPerk.Reset();
+            ClearDashPerkCDs();
             if (left)
             {
                 _launchLeft = true;
