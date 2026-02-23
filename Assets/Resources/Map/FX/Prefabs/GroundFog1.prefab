@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 2639247117049570578}
   - component: {fileID: 7183908516427834872}
   - component: {fileID: 8320576760648664370}
-  - component: {fileID: 2511968300611452533}
   m_Layer: 0
   m_Name: GroundFog1
   m_TagString: Untagged
@@ -4849,38 +4848,3 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &2511968300611452533
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6122136772381960130}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c4da18ef7051ce4da103fa2dbb2fe94, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PrefabName: GroundFog1
-  CustomAsset: 
-  ObjectId: 0
-  OverrideActive: 0
-  Active: 1
-  OverrideStatic: 1
-  Static: 0
-  OverrideVisible: 0
-  Visible: 1
-  OverrideNetworked: 0
-  Networked: 0
-  OverridePhysics: 1
-  CollideMode: None
-  CollideWith: Entities
-  PhysicsMaterial: Default
-  OverrideMaterial: 1
-  MaterialShader: DefaultNoTint
-  MaterialColor: {r: 1, g: 1, b: 1, a: 1}
-  MaterialTexture: 
-  MaterialTiling: {x: 1, y: 1}
-  MaterialOffset: {x: 0, y: 0}
-  ReflectColor: {r: 1, g: 1, b: 1, a: 1}
-  CustomComponents: []

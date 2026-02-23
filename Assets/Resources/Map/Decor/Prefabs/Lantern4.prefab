@@ -83,9 +83,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 689fb23f9516af240bb3becc35794eb5, type: 3}
       insertIndex: -1
       addedObject: {fileID: -7724281891562377319}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 689fb23f9516af240bb3becc35794eb5, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: -3497104405161884392}
   m_SourcePrefab: {fileID: 100100000, guid: 689fb23f9516af240bb3becc35794eb5, type: 3}
 --- !u!1 &347394617309855209 stripped
 GameObject:
@@ -114,38 +111,3 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 2031463771052465295, guid: 689fb23f9516af240bb3becc35794eb5, type: 3}
---- !u!114 &-3497104405161884392
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 347394617309855209}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c4da18ef7051ce4da103fa2dbb2fe94, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PrefabName: Lantern4
-  CustomAsset: 
-  ObjectId: 0
-  OverrideActive: 0
-  Active: 1
-  OverrideStatic: 0
-  Static: 1
-  OverrideVisible: 0
-  Visible: 1
-  OverrideNetworked: 0
-  Networked: 0
-  OverridePhysics: 0
-  CollideMode: Physical
-  CollideWith: Entities
-  PhysicsMaterial: Default
-  OverrideMaterial: 0
-  MaterialShader: Default
-  MaterialColor: {r: 1, g: 1, b: 1, a: 1}
-  MaterialTexture: Misc/None
-  MaterialTiling: {x: 1, y: 1}
-  MaterialOffset: {x: 0, y: 0}
-  ReflectColor: {r: 1, g: 1, b: 1, a: 1}
-  CustomComponents: []

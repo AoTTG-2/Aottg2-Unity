@@ -88,53 +88,10 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 100002, guid: bc3a1432fc2b03f4798444a05f27b2bd, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: -107921516611195345}
     - targetCorrespondingSourceObject: {fileID: 100000, guid: bc3a1432fc2b03f4798444a05f27b2bd, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7732983016326823549}
   m_SourcePrefab: {fileID: 100100000, guid: bc3a1432fc2b03f4798444a05f27b2bd, type: 3}
---- !u!1 &8331325359632446660 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 100002, guid: bc3a1432fc2b03f4798444a05f27b2bd, type: 3}
-  m_PrefabInstance: {fileID: 8331325359632544358}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &-107921516611195345
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8331325359632446660}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c4da18ef7051ce4da103fa2dbb2fe94, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PrefabName: GeoBarrel1a
-  CustomAsset: 
-  ObjectId: 0
-  OverrideActive: 0
-  Active: 1
-  OverrideStatic: 0
-  Static: 1
-  OverrideVisible: 0
-  Visible: 1
-  OverrideNetworked: 0
-  Networked: 0
-  OverridePhysics: 0
-  CollideMode: Physical
-  CollideWith: Entities
-  PhysicsMaterial: Default
-  OverrideMaterial: 0
-  MaterialShader: Default
-  MaterialColor: {r: 1, g: 1, b: 1, a: 1}
-  MaterialTexture: Misc/None
-  MaterialTiling: {x: 1, y: 1}
-  MaterialOffset: {x: 0, y: 0}
-  ReflectColor: {r: 1, g: 1, b: 1, a: 1}
-  CustomComponents: []
 --- !u!1 &8331325359632446662 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100000, guid: bc3a1432fc2b03f4798444a05f27b2bd, type: 3}

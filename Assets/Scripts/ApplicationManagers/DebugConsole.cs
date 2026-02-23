@@ -2,6 +2,7 @@
 using GameManagers;
 using Settings;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 using Utility;
 
@@ -26,14 +27,21 @@ namespace ApplicationManagers
             public bool IsCustomLogic;
             public string StackTrace;
             public int Count;
+            private string _cachedFormatted;
+            private bool _lastShowStackTraces;
+            private int _lastCount;
 
-            public LogMessage(string message, LogType type, string stackTrace = "", bool isCustomLogic = false)
+            public void Initialize(string message, LogType type, string stackTrace = "", bool isCustomLogic = false)
             {
-                Message = message;
+                // Message and stackTrace should already be truncated by AddMessageBuffer
+                Message = message ?? string.Empty;
+                StackTrace = stackTrace ?? string.Empty;
                 Type = type;
                 IsCustomLogic = isCustomLogic;
-                StackTrace = stackTrace;
                 Count = 1;
+                _cachedFormatted = null;
+                _lastShowStackTraces = false;
+                _lastCount = 0;
 
                 // Set prefix with UTF-8 icons and rich text colors
                 switch (type)
@@ -59,26 +67,82 @@ namespace ApplicationManagers
                 }
             }
 
-            public string GetFormattedMessage(bool showStackTraces)
+            public void Reset()
             {
-                string countSuffix = Count > 1 ? $" (x{Count})" : "";
-                string result = Prefix + Message + countSuffix;
-
-                if (showStackTraces && !string.IsNullOrEmpty(StackTrace))
-                {
-                    result += "\n" + StackTrace;
-                }
-
-                return result;
+                Message = null;
+                StackTrace = null;
+                Prefix = null;
+                _cachedFormatted = null;
+                Count = 1;
             }
 
-            public bool IsDuplicateOf(LogMessage other)
+            public string GetFormattedMessage(bool showStackTraces)
             {
-                return other != null &&
-                       Message == other.Message &&
-                       Type == other.Type &&
-                       IsCustomLogic == other.IsCustomLogic &&
-                       StackTrace == other.StackTrace;
+                // Cache the formatted string to avoid allocations
+                if (_cachedFormatted == null || _lastShowStackTraces != showStackTraces || _lastCount != Count)
+                {
+                    _lastShowStackTraces = showStackTraces;
+                    _lastCount = Count;
+                    
+                    string countSuffix = Count > 1 ? $" (x{Count})" : "";
+                    string result = Prefix + Message + countSuffix;
+
+                    if (showStackTraces && !string.IsNullOrEmpty(StackTrace))
+                    {
+                        result += "\n" + StackTrace;
+                    }
+                    _cachedFormatted = result;
+                }
+
+                return _cachedFormatted;
+            }
+
+            public bool IsDuplicateOf(string message, LogType type, bool isCustomLogic, string stackTrace)
+            {
+                return Message == message &&
+                       Type == type &&
+                       IsCustomLogic == isCustomLogic &&
+                       StackTrace == stackTrace;
+            }
+        }
+
+        // Object pool for LogMessage
+        static class LogMessagePool
+        {
+            private static readonly Stack<LogMessage> _pool = new Stack<LogMessage>(PoolSize);
+            private const int PoolSize = 512;
+
+            static LogMessagePool()
+            {
+                for (int i = 0; i < PoolSize; i++)
+                {
+                    _pool.Push(new LogMessage());
+                }
+            }
+
+            public static LogMessage Get(string message, LogType type, string stackTrace = "", bool isCustomLogic = false)
+            {
+                LogMessage logMessage;
+                if (_pool.Count > 0)
+                {
+                    logMessage = _pool.Pop();
+                }
+                else
+                {
+                    logMessage = new LogMessage();
+                }
+                logMessage.Initialize(message, type, stackTrace, isCustomLogic);
+                return logMessage;
+            }
+
+            public static void Return(LogMessage logMessage)
+            {
+                if (logMessage == null) return;
+                logMessage.Reset();
+                if (_pool.Count < PoolSize)
+                {
+                    _pool.Push(logMessage);
+                }
             }
         }
 
@@ -89,6 +153,19 @@ namespace ApplicationManagers
         static Vector2 _scrollPosition = Vector2.zero;
         static string _inputLine = string.Empty;
         static bool _needResetScroll;
+
+        // Virtualized rendering cache
+        static List<LogMessage> _filteredMessages = new List<LogMessage>(MaxMessages);
+        static bool _filterDirty = true;
+        static LogTab _lastFilterTab;
+        static StringBuilder _displayBuilder = new StringBuilder(8192);
+        static string _cachedDisplayText = "";
+        static bool _displayDirty = true;
+        static int _lastFilteredCount = 0;
+        static bool _lastShowStackTraces = false;
+
+        // Throttling for buffer processing
+        const int MaxBufferProcessPerFrame = 50;
 
         // Window position and size
         static float _windowX = 20;
@@ -117,8 +194,9 @@ namespace ApplicationManagers
         static bool _solidBackground = true;
         static bool _wordWrap = true;
 
-        const int MaxMessages = 256;
+        const int MaxMessages = 1024;
         const int MaxChars = 500000;
+        const int MaxMessageLength = 1024;
         const int InputHeight = 25;
         const int Padding = 10;
         const int TabHeight = 25;
@@ -142,6 +220,7 @@ namespace ApplicationManagers
 #else
             _currentTab = Debug.isDebugBuild ? LogTab.All : LogTab.CustomLogic;
 #endif
+            _lastFilterTab = _currentTab;
         }
 
         public static void Log(string message, bool showInChat = false)
@@ -183,31 +262,46 @@ namespace ApplicationManagers
 
         static void AddMessageBuffer(string message, LogType type, string stackTrace = "", bool isCustomLogic = false)
         {
-            // Check if this is a duplicate of the last message
+            // Null safety
+            message = message ?? string.Empty;
+            stackTrace = stackTrace ?? string.Empty;
+            
+            // Truncate message and stack trace before duplicate check and storage
+            string truncatedMessage = message.Length > MaxMessageLength 
+                ? message.Substring(0, MaxMessageLength) + "..." 
+                : message;
+            int remainingLen = MaxMessageLength - Mathf.Min(message.Length, MaxMessageLength);
+            string truncatedStackTrace = stackTrace.Length > remainingLen 
+                ? stackTrace.Substring(0, Mathf.Max(0, remainingLen)) + "..." 
+                : stackTrace;
+
+            // Check if this is a duplicate of the last message (using truncated versions)
             if (_messageBuffer.Count > 0)
             {
                 var lastMessage = _messageBuffer.Last.Value;
-                var tempMessage = new LogMessage(message, type, stackTrace, isCustomLogic);
-
-                if (lastMessage.IsDuplicateOf(tempMessage))
+                if (lastMessage.IsDuplicateOf(truncatedMessage, type, isCustomLogic, truncatedStackTrace))
                 {
                     lastMessage.Count++;
                     _needResetScroll = true;
+                    _displayDirty = true;
                     return;
                 }
             }
 
-            var logMessage = new LogMessage(message, type, stackTrace, isCustomLogic);
+            var logMessage = LogMessagePool.Get(truncatedMessage, type, truncatedStackTrace, isCustomLogic);
             _messageBuffer.AddLast(logMessage);
-            _currentCharCountBuffer += message.Length + stackTrace.Length;
+            _currentCharCountBuffer += truncatedMessage.Length + truncatedStackTrace.Length;
 
             while (_messageBuffer.Count > MaxMessages || _currentCharCountBuffer > MaxChars)
             {
                 var first = _messageBuffer.First.Value;
                 _currentCharCountBuffer -= first.Message.Length + first.StackTrace.Length;
                 _messageBuffer.RemoveFirst();
+                LogMessagePool.Return(first);
             }
             _needResetScroll = true;
+            _filterDirty = true;
+            _displayDirty = true;
         }
 
         static void AddMessage(string message, LogType type, string stackTrace = "", bool isCustomLogic = false)
@@ -219,16 +313,15 @@ namespace ApplicationManagers
             if (_messages.Count > 0)
             {
                 var lastMessage = _messages.Last.Value;
-                var tempMessage = new LogMessage(message, type, stackTrace, isCustomLogic);
-
-                if (lastMessage.IsDuplicateOf(tempMessage))
+                if (lastMessage.IsDuplicateOf(message, type, isCustomLogic, stackTrace))
                 {
                     lastMessage.Count++;
+                    _displayDirty = true;
                     return;
                 }
             }
 
-            var logMessage = new LogMessage(message, type, stackTrace, isCustomLogic);
+            var logMessage = LogMessagePool.Get(message, type, stackTrace, isCustomLogic);
             _messages.AddLast(logMessage);
             _currentCharCount += message.Length + stackTrace.Length;
 
@@ -237,7 +330,122 @@ namespace ApplicationManagers
                 var first = _messages.First.Value;
                 _currentCharCount -= first.Message.Length + first.StackTrace.Length;
                 _messages.RemoveFirst();
+                LogMessagePool.Return(first);
             }
+            _filterDirty = true;
+            _displayDirty = true;
+        }
+
+        static void ProcessMessageBuffer()
+        {
+            int processed = 0;
+            while (_messageBuffer.Count > 0 && processed < MaxBufferProcessPerFrame)
+            {
+                var logMessage = _messageBuffer.First.Value;
+                _messageBuffer.RemoveFirst();
+                
+                // Transfer to main messages - reuse the pooled object
+                if (_messages.Count > 0)
+                {
+                    var lastMessage = _messages.Last.Value;
+                    if (lastMessage.IsDuplicateOf(logMessage.Message, logMessage.Type, logMessage.IsCustomLogic, logMessage.StackTrace))
+                    {
+                        lastMessage.Count += logMessage.Count;
+                        _currentCharCountBuffer -= logMessage.Message.Length + logMessage.StackTrace.Length;
+                        LogMessagePool.Return(logMessage);
+                        processed++;
+                        continue;
+                    }
+                }
+
+                _currentCharCountBuffer -= logMessage.Message.Length + logMessage.StackTrace.Length;
+                _currentCharCount += logMessage.Message.Length + logMessage.StackTrace.Length;
+                _messages.AddLast(logMessage);
+
+                while (_messages.Count > MaxMessages || _currentCharCount > MaxChars)
+                {
+                    var first = _messages.First.Value;
+                    _currentCharCount -= first.Message.Length + first.StackTrace.Length;
+                    _messages.RemoveFirst();
+                    LogMessagePool.Return(first);
+                }
+                processed++;
+            }
+
+            if (processed > 0)
+            {
+                _filterDirty = true;
+                _displayDirty = true;
+            }
+        }
+
+        static void UpdateFilteredMessages()
+        {
+            if (!_filterDirty && _lastFilterTab == _currentTab)
+                return;
+
+            _filteredMessages.Clear();
+            foreach (var logMessage in _messages)
+            {
+                bool includeMessage = false;
+
+                switch (_currentTab)
+                {
+                    case LogTab.All:
+                        includeMessage = true;
+                        break;
+                    case LogTab.Info:
+                        includeMessage = logMessage.Type == LogType.Log && !logMessage.IsCustomLogic;
+                        break;
+                    case LogTab.Warning:
+                        includeMessage = logMessage.Type == LogType.Warning && !logMessage.IsCustomLogic;
+                        break;
+                    case LogTab.Error:
+                        includeMessage = !logMessage.IsCustomLogic &&
+                                       (logMessage.Type == LogType.Error ||
+                                        logMessage.Type == LogType.Exception ||
+                                        logMessage.Type == LogType.Assert);
+                        break;
+                    case LogTab.CustomLogic:
+                        includeMessage = logMessage.IsCustomLogic;
+                        break;
+                }
+
+                if (includeMessage)
+                {
+                    _filteredMessages.Add(logMessage);
+                }
+            }
+
+            _filterDirty = false;
+            _lastFilterTab = _currentTab;
+            _displayDirty = true;
+        }
+
+        static string GetDisplayText()
+        {
+            // Check if we need to rebuild the display text
+            if (!_displayDirty && 
+                _lastFilteredCount == _filteredMessages.Count && 
+                _lastShowStackTraces == _showStackTraces)
+            {
+                return _cachedDisplayText;
+            }
+
+            _displayBuilder.Clear();
+            for (int i = 0; i < _filteredMessages.Count; i++)
+            {
+                if (i > 0)
+                    _displayBuilder.Append('\n');
+                _displayBuilder.Append(_filteredMessages[i].GetFormattedMessage(_showStackTraces));
+            }
+
+            _cachedDisplayText = _displayBuilder.ToString();
+            _lastFilteredCount = _filteredMessages.Count;
+            _lastShowStackTraces = _showStackTraces;
+            _displayDirty = false;
+
+            return _cachedDisplayText;
         }
 
         void Update()
@@ -372,10 +580,20 @@ namespace ApplicationManagers
             // Clear button
             if (GUI.Button(new Rect(buttonX, positionY, buttonWidth, InputHeight), "Clear"))
             {
+                // Return all messages to the pool
+                foreach (var msg in _messages)
+                    LogMessagePool.Return(msg);
+                foreach (var msg in _messageBuffer)
+                    LogMessagePool.Return(msg);
+                    
                 _messages.Clear();
                 _messageBuffer.Clear();
+                _filteredMessages.Clear();
                 _currentCharCount = 0;
                 _currentCharCountBuffer = 0;
+                _filterDirty = true;
+                _displayDirty = true;
+                _cachedDisplayText = "";
             }
             buttonX += buttonWidth + buttonSpacing;
 
@@ -384,6 +602,7 @@ namespace ApplicationManagers
             if (GUI.Button(new Rect(buttonX, positionY, buttonWidth, InputHeight), toggleLabel))
             {
                 _showStackTraces = !_showStackTraces;
+                _displayDirty = true;
             }
             buttonX += buttonWidth + buttonSpacing;
 
@@ -414,6 +633,7 @@ namespace ApplicationManagers
             {
                 _currentTab = LogTab.All;
                 _needResetScroll = true;
+                _filterDirty = true;
             }
             tabX += tabWidth + Padding;
 
@@ -422,6 +642,7 @@ namespace ApplicationManagers
             {
                 _currentTab = LogTab.Info;
                 _needResetScroll = true;
+                _filterDirty = true;
             }
             tabX += tabWidth + Padding;
 
@@ -430,6 +651,7 @@ namespace ApplicationManagers
             {
                 _currentTab = LogTab.Warning;
                 _needResetScroll = true;
+                _filterDirty = true;
             }
             tabX += tabWidth + Padding;
 
@@ -438,6 +660,7 @@ namespace ApplicationManagers
             {
                 _currentTab = LogTab.Error;
                 _needResetScroll = true;
+                _filterDirty = true;
             }
             tabX += tabWidth + Padding;
 
@@ -446,6 +669,7 @@ namespace ApplicationManagers
             {
                 _currentTab = LogTab.CustomLogic;
                 _needResetScroll = true;
+                _filterDirty = true;
             }
 
             // Highlight current tab
@@ -462,52 +686,17 @@ namespace ApplicationManagers
             style.wordWrap = _wordWrap;
             style.richText = true; // Enable rich text for colored icons
 
-            if (_needResetScroll)
+            // Process buffer with throttling
+            if (_needResetScroll || _messageBuffer.Count > 0)
             {
-                while (_messageBuffer.Count > 0)
-                {
-                    var logMessage = _messageBuffer.First.Value;
-                    AddMessage(logMessage.Message, logMessage.Type, logMessage.StackTrace, logMessage.IsCustomLogic);
-                    var first = _messageBuffer.First.Value;
-                    _currentCharCountBuffer -= first.Message.Length + first.StackTrace.Length;
-                    _messageBuffer.RemoveFirst();
-                }
+                ProcessMessageBuffer();
             }
 
-            // Filter messages based on current tab
-            string text = "";
-            foreach (var logMessage in _messages)
-            {
-                bool includeMessage = false;
+            // Update filtered messages list
+            UpdateFilteredMessages();
 
-                switch (_currentTab)
-                {
-                    case LogTab.All:
-                        includeMessage = true;
-                        break;
-                    case LogTab.Info:
-                        includeMessage = logMessage.Type == LogType.Log && !logMessage.IsCustomLogic;
-                        break;
-                    case LogTab.Warning:
-                        includeMessage = logMessage.Type == LogType.Warning && !logMessage.IsCustomLogic;
-                        break;
-                    case LogTab.Error:
-                        includeMessage = !logMessage.IsCustomLogic &&
-                                       (logMessage.Type == LogType.Error ||
-                                        logMessage.Type == LogType.Exception ||
-                                        logMessage.Type == LogType.Assert);
-                        break;
-                    case LogTab.CustomLogic:
-                        includeMessage = logMessage.IsCustomLogic;
-                        break;
-                }
-
-                if (includeMessage)
-                {
-                    text += logMessage.GetFormattedMessage(_showStackTraces) + "\n";
-                }
-            }
-            text = text.Trim();
+            // Get cached display text
+            string text = GetDisplayText();
 
             int textWidth = width - Padding * 2;
             int textHeight;
@@ -534,16 +723,18 @@ namespace ApplicationManagers
                 textHeight = (int)style.CalcHeight(new GUIContent(text), contentWidth) + Padding;
             }
 
+            // Content rect should use (0,0) as origin for scroll view internal coordinates
             _scrollPosition = GUI.BeginScrollView(new Rect(positionX, positionY, width, scrollViewHeight), _scrollPosition,
-                new Rect(positionX, positionY, contentWidth, textHeight));
+                new Rect(0, 0, contentWidth, textHeight));
 
-            // Use TextArea instead of Label to allow text selection
-            GUI.TextArea(new Rect(positionX, positionY, contentWidth, textHeight), text, style);
+            // Draw TextArea at (0,0) relative to scroll view content
+            GUI.TextArea(new Rect(0, 0, contentWidth, textHeight), text, style);
 
             if (_needResetScroll)
             {
                 _needResetScroll = false;
-                _scrollPosition = new Vector2(0f, textHeight);
+                // Scroll to bottom: max scroll = content height - visible height
+                _scrollPosition = new Vector2(0f, Mathf.Max(0, textHeight - scrollViewHeight));
             }
             GUI.EndScrollView();
         }

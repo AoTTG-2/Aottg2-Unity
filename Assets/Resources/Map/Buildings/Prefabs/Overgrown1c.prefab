@@ -64,53 +64,10 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 43a1b0f30e546a34ab3e7186fb47d897, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: -1456539161339542174}
     - targetCorrespondingSourceObject: {fileID: -4856597496393095366, guid: 43a1b0f30e546a34ab3e7186fb47d897, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6166579087316748069}
   m_SourcePrefab: {fileID: 100100000, guid: 43a1b0f30e546a34ab3e7186fb47d897, type: 3}
---- !u!1 &4716554209363613094 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 43a1b0f30e546a34ab3e7186fb47d897, type: 3}
-  m_PrefabInstance: {fileID: 5599655221680728311}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &-1456539161339542174
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4716554209363613094}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c4da18ef7051ce4da103fa2dbb2fe94, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PrefabName: Overgrown1c
-  CustomAsset: 
-  ObjectId: 0
-  OverrideActive: 0
-  Active: 1
-  OverrideStatic: 0
-  Static: 1
-  OverrideVisible: 0
-  Visible: 1
-  OverrideNetworked: 0
-  Networked: 0
-  OverridePhysics: 0
-  CollideMode: Physical
-  CollideWith: Entities
-  PhysicsMaterial: Default
-  OverrideMaterial: 0
-  MaterialShader: Default
-  MaterialColor: {r: 1, g: 1, b: 1, a: 1}
-  MaterialTexture: Misc/None
-  MaterialTiling: {x: 1, y: 1}
-  MaterialOffset: {x: 0, y: 0}
-  ReflectColor: {r: 1, g: 1, b: 1, a: 1}
-  CustomComponents: []
 --- !u!1 &8154926626711326669 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -4856597496393095366, guid: 43a1b0f30e546a34ab3e7186fb47d897, type: 3}

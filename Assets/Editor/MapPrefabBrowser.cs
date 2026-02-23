@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SimpleJSONFixed;
 using Map;
+using MapEditor;
 
 public class MapPrefabBrowser : EditorWindow
 {
@@ -108,6 +109,8 @@ public class MapPrefabBrowser : EditorWindow
 
         GameObject instance = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
         instance.transform.position = spawnPos;
+        
+        AddMarkerToInstance(instance, prefabInfo);
         
         Selection.activeGameObject = instance;
         Undo.RegisterCreatedObjectUndo(instance, "Add Map Prefab");
@@ -829,12 +832,141 @@ public class MapPrefabBrowser : EditorWindow
             instance.transform.position = Vector3.zero;
         }
 
+        AddMarkerToInstance(instance, prefabInfo);
+
         Selection.activeGameObject = instance;
         
         if (SceneView.lastActiveSceneView != null)
             SceneView.lastActiveSceneView.FrameSelected();
 
         Undo.RegisterCreatedObjectUndo(instance, "Add Map Prefab");
+    }
+
+    void AddMarkerToInstance(GameObject instance, PrefabInfo prefabInfo)
+    {
+        var marker = instance.GetComponent<MapObjectPrefabMarker>();
+        if (marker == null)
+        {
+            marker = instance.AddComponent<MapObjectPrefabMarker>();
+        }
+
+        marker.PrefabName = prefabInfo.Name;
+        marker.CustomAsset = "";
+        marker.OverrideActive = false;
+        marker.Active = true;
+
+        JSONNode prefabNode = prefabInfo.RawNode;
+        JSONNode info = prefabInfo.CategoryInfo;
+
+        if (prefabNode == null)
+            return;
+
+        if (prefabNode.HasKey("Static"))
+        {
+            marker.OverrideStatic = true;
+            marker.Static = prefabNode["Static"].AsBool;
+        }
+
+        if (prefabNode.HasKey("Visible"))
+        {
+            marker.OverrideVisible = true;
+            marker.Visible = prefabNode["Visible"].AsBool;
+        }
+
+        if (prefabNode.HasKey("Networked"))
+        {
+            marker.OverrideNetworked = true;
+            marker.Networked = prefabNode["Networked"].AsBool;
+        }
+
+        if (prefabNode.HasKey("CollideMode") || prefabNode.HasKey("CollideWith") || prefabNode.HasKey("PhysicsMaterial"))
+        {
+            marker.OverridePhysics = true;
+            marker.CollideMode = prefabNode.HasKey("CollideMode") ? prefabNode["CollideMode"].Value : "Physical";
+            marker.CollideWith = prefabNode.HasKey("CollideWith") ? prefabNode["CollideWith"].Value : "Entities";
+            marker.PhysicsMaterial = prefabNode.HasKey("PhysicsMaterial") ? prefabNode["PhysicsMaterial"].Value : "Default";
+        }
+
+        if (prefabNode.HasKey("Material"))
+        {
+            marker.OverrideMaterial = true;
+            ParseMaterialString(marker, prefabNode["Material"].Value);
+        }
+
+        marker.CustomComponents.Clear();
+        if (prefabNode.HasKey("Components"))
+        {
+            foreach (JSONNode componentNode in prefabNode["Components"])
+            {
+                var compData = new MapObjectPrefabMarker.ComponentData();
+                string componentString = componentNode.Value;
+                string[] parts = componentString.Split('|');
+
+                if (parts.Length > 0)
+                {
+                    compData.ComponentName = parts[0];
+                    compData.Parameters = new List<string>();
+                    for (int i = 1; i < parts.Length; i++)
+                    {
+                        if (!string.IsNullOrEmpty(parts[i]))
+                            compData.Parameters.Add(parts[i]);
+                    }
+                    marker.CustomComponents.Add(compData);
+                }
+            }
+        }
+    }
+
+    void ParseMaterialString(MapObjectPrefabMarker marker, string materialString)
+    {
+        string[] parts = materialString.Split('|');
+        if (parts.Length == 0)
+            return;
+
+        marker.MaterialShader = parts[0];
+
+        if (parts.Length > 1)
+        {
+            string[] colorParts = parts[1].Split('/');
+            if (colorParts.Length >= 4)
+            {
+                int r = int.Parse(colorParts[0]);
+                int g = int.Parse(colorParts[1]);
+                int b = int.Parse(colorParts[2]);
+                int a = int.Parse(colorParts[3]);
+                marker.MaterialColor = new Color(r / 255f, g / 255f, b / 255f, a / 255f);
+            }
+        }
+
+        if (parts.Length > 2)
+            marker.MaterialTexture = parts[2];
+
+        if (parts.Length > 3)
+        {
+            string[] tilingParts = parts[3].Split('/');
+            if (tilingParts.Length >= 2)
+                marker.MaterialTiling = new Vector2(float.Parse(tilingParts[0]), float.Parse(tilingParts[1]));
+        }
+
+        if (parts.Length > 4)
+        {
+            string[] offsetParts = parts[4].Split('/');
+            if (offsetParts.Length >= 2)
+                marker.MaterialOffset = new Vector2(float.Parse(offsetParts[0]), float.Parse(offsetParts[1]));
+        }
+
+        if (parts.Length > 5 && marker.MaterialShader == "Reflective")
+        {
+            string[] reflectParts = parts[5].Split('/');
+            if (reflectParts.Length >= 4)
+            {
+                int r = int.Parse(reflectParts[0]);
+                int g = int.Parse(reflectParts[1]);
+                int b = int.Parse(reflectParts[2]);
+                int a = int.Parse(reflectParts[3]);
+                marker.ReflectColor = new Color(r / 255f, g / 255f, b / 255f, a / 255f);
+            }
+        }
     }
 
     void ShowPrefabInfo(PrefabInfo prefabInfo)
@@ -931,6 +1063,8 @@ public class MapPrefabBrowser : EditorWindow
                 prefabInfo.Category = displayCategory;
                 prefabInfo.Type = info["Type"].Value;
                 prefabInfo.Asset = BuildAssetPath(prefabNode, info);
+                prefabInfo.RawNode = prefabNode;
+                prefabInfo.CategoryInfo = info;
 
                 if (prefabNode.HasKey("Static"))
                     prefabInfo.Static = prefabNode["Static"].AsBool;
@@ -1085,5 +1219,7 @@ public class MapPrefabBrowser : EditorWindow
         public List<string> Components = new List<string>();
         public bool IsVariant;
         public string BaseName;
+        public JSONNode RawNode;
+        public JSONNode CategoryInfo;
     }
 }

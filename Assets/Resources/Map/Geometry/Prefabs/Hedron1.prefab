@@ -88,53 +88,10 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 100002, guid: e538e65e716fc384e98b27cc69c8d6c1, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: -7149407077478279233}
     - targetCorrespondingSourceObject: {fileID: 100000, guid: e538e65e716fc384e98b27cc69c8d6c1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1575114249230959492}
   m_SourcePrefab: {fileID: 100100000, guid: e538e65e716fc384e98b27cc69c8d6c1, type: 3}
---- !u!1 &7834375465979942217 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 100002, guid: e538e65e716fc384e98b27cc69c8d6c1, type: 3}
-  m_PrefabInstance: {fileID: 7834375465979909099}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &-7149407077478279233
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7834375465979942217}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c4da18ef7051ce4da103fa2dbb2fe94, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PrefabName: Hedron1
-  CustomAsset: 
-  ObjectId: 0
-  OverrideActive: 0
-  Active: 1
-  OverrideStatic: 0
-  Static: 1
-  OverrideVisible: 0
-  Visible: 1
-  OverrideNetworked: 0
-  Networked: 0
-  OverridePhysics: 0
-  CollideMode: Physical
-  CollideWith: Entities
-  PhysicsMaterial: Default
-  OverrideMaterial: 0
-  MaterialShader: Default
-  MaterialColor: {r: 1, g: 1, b: 1, a: 1}
-  MaterialTexture: Misc/None
-  MaterialTiling: {x: 1, y: 1}
-  MaterialOffset: {x: 0, y: 0}
-  ReflectColor: {r: 1, g: 1, b: 1, a: 1}
-  CustomComponents: []
 --- !u!1 &7834375465979942219 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100000, guid: e538e65e716fc384e98b27cc69c8d6c1, type: 3}

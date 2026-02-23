@@ -32,6 +32,41 @@ Transform:
   - {fileID: 1065412613175321330}
   m_Father: {fileID: 4105022700588570591}
   m_LocalEulerAnglesHint: {x: 245, y: 0, z: -90}
+--- !u!114 &1349277348528178630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 7654066445862606506}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c4da18ef7051ce4da103fa2dbb2fe94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PrefabName: WavingFlag1e
+  CustomAsset: 
+  ObjectId: 0
+  OverrideActive: 0
+  Active: 1
+  OverrideStatic: 1
+  Static: 0
+  OverrideVisible: 0
+  Visible: 1
+  OverrideNetworked: 0
+  Networked: 0
+  OverridePhysics: 1
+  CollideMode: None
+  CollideWith: Entities
+  PhysicsMaterial: Default
+  OverrideMaterial: 1
+  MaterialShader: DefaultNoTint
+  MaterialColor: {r: 1, g: 1, b: 1, a: 1}
+  MaterialTexture: 
+  MaterialTiling: {x: 1, y: 1}
+  MaterialOffset: {x: 0, y: 0}
+  ReflectColor: {r: 1, g: 1, b: 1, a: 1}
+  CustomComponents: []
 --- !u!1 &427632839187939423
 GameObject:
   m_ObjectHideFlags: 0
@@ -41,7 +76,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6158335833444240319}
-  - component: {fileID: 2210819835635018592}
   m_Layer: 0
   m_Name: FlagPole2h
   m_TagString: Untagged
@@ -65,37 +99,37 @@ Transform:
   - {fileID: 4105022700588570591}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2210819835635018592
+--- !u!114 &414695480574457871
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_PrefabInstance: {fileID: 9025327104945417059}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 427632839187939423}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9c4da18ef7051ce4da103fa2dbb2fe94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PrefabName: FlagPole2h
+  PrefabName: WavingFlag1e
   CustomAsset: 
   ObjectId: 0
   OverrideActive: 0
   Active: 1
-  OverrideStatic: 0
-  Static: 1
+  OverrideStatic: 1
+  Static: 0
   OverrideVisible: 0
   Visible: 1
   OverrideNetworked: 0
   Networked: 0
-  OverridePhysics: 0
-  CollideMode: Physical
+  OverridePhysics: 1
+  CollideMode: None
   CollideWith: Entities
   PhysicsMaterial: Default
-  OverrideMaterial: 0
-  MaterialShader: Default
+  OverrideMaterial: 1
+  MaterialShader: DefaultNoTint
   MaterialColor: {r: 1, g: 1, b: 1, a: 1}
-  MaterialTexture: Misc/None
+  MaterialTexture: 
   MaterialTiling: {x: 1, y: 1}
   MaterialOffset: {x: 0, y: 0}
   ReflectColor: {r: 1, g: 1, b: 1, a: 1}

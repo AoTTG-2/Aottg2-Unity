@@ -64,6 +64,76 @@ Transform:
   - {fileID: 7077552364997666130}
   m_Father: {fileID: 5247308454921223550}
   m_LocalEulerAnglesHint: {x: 245, y: 0, z: -90}
+--- !u!114 &619604033102411470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 3704731894121872525}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c4da18ef7051ce4da103fa2dbb2fe94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PrefabName: WavingFlag1c
+  CustomAsset: 
+  ObjectId: 0
+  OverrideActive: 0
+  Active: 1
+  OverrideStatic: 1
+  Static: 0
+  OverrideVisible: 0
+  Visible: 1
+  OverrideNetworked: 0
+  Networked: 0
+  OverridePhysics: 1
+  CollideMode: None
+  CollideWith: Entities
+  PhysicsMaterial: Default
+  OverrideMaterial: 1
+  MaterialShader: DefaultNoTint
+  MaterialColor: {r: 1, g: 1, b: 1, a: 1}
+  MaterialTexture: 
+  MaterialTiling: {x: 1, y: 1}
+  MaterialOffset: {x: 0, y: 0}
+  ReflectColor: {r: 1, g: 1, b: 1, a: 1}
+  CustomComponents: []
+--- !u!114 &4112374215725738883
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 207880390919627200}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c4da18ef7051ce4da103fa2dbb2fe94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PrefabName: WavingFlag1c
+  CustomAsset: 
+  ObjectId: 0
+  OverrideActive: 0
+  Active: 1
+  OverrideStatic: 1
+  Static: 0
+  OverrideVisible: 0
+  Visible: 1
+  OverrideNetworked: 0
+  Networked: 0
+  OverridePhysics: 1
+  CollideMode: None
+  CollideWith: Entities
+  PhysicsMaterial: Default
+  OverrideMaterial: 1
+  MaterialShader: DefaultNoTint
+  MaterialColor: {r: 1, g: 1, b: 1, a: 1}
+  MaterialTexture: 
+  MaterialTiling: {x: 1, y: 1}
+  MaterialOffset: {x: 0, y: 0}
+  ReflectColor: {r: 1, g: 1, b: 1, a: 1}
+  CustomComponents: []
 --- !u!1 &7946725584277658312
 GameObject:
   m_ObjectHideFlags: 0
@@ -73,7 +143,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3364800021668706617}
-  - component: {fileID: -5919077702248229095}
   m_Layer: 0
   m_Name: FlagPole2f
   m_TagString: Untagged
@@ -97,41 +166,6 @@ Transform:
   - {fileID: 5247308454921223550}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-5919077702248229095
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7946725584277658312}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c4da18ef7051ce4da103fa2dbb2fe94, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PrefabName: FlagPole2f
-  CustomAsset: 
-  ObjectId: 0
-  OverrideActive: 0
-  Active: 1
-  OverrideStatic: 0
-  Static: 1
-  OverrideVisible: 0
-  Visible: 1
-  OverrideNetworked: 0
-  Networked: 0
-  OverridePhysics: 0
-  CollideMode: Physical
-  CollideWith: Entities
-  PhysicsMaterial: Default
-  OverrideMaterial: 0
-  MaterialShader: Default
-  MaterialColor: {r: 1, g: 1, b: 1, a: 1}
-  MaterialTexture: Misc/None
-  MaterialTiling: {x: 1, y: 1}
-  MaterialOffset: {x: 0, y: 0}
-  ReflectColor: {r: 1, g: 1, b: 1, a: 1}
-  CustomComponents: []
 --- !u!1001 &207880390919627200
 PrefabInstance:
   m_ObjectHideFlags: 0

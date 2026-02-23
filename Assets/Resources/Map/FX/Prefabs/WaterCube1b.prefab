@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 8151400615095254890}
   - component: {fileID: 6364413630763083929}
   - component: {fileID: 3235486502639630157}
-  - component: {fileID: 2765800336328088013}
   m_Layer: 0
   m_Name: WaterCube1b
   m_TagString: Untagged
@@ -122,41 +121,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PostProcessingVolume: {fileID: 4501655945592992269}
---- !u!114 &2765800336328088013
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3650395061504796972}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c4da18ef7051ce4da103fa2dbb2fe94, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PrefabName: WaterCube1b
-  CustomAsset: 
-  ObjectId: 0
-  OverrideActive: 0
-  Active: 1
-  OverrideStatic: 1
-  Static: 0
-  OverrideVisible: 0
-  Visible: 1
-  OverrideNetworked: 0
-  Networked: 0
-  OverridePhysics: 1
-  CollideMode: Region
-  CollideWith: Characters
-  PhysicsMaterial: Default
-  OverrideMaterial: 1
-  MaterialShader: DefaultTiled
-  MaterialColor: {r: 1, g: 1, b: 1, a: 1}
-  MaterialTexture: 1/1
-  MaterialTiling: {x: 1, y: 1}
-  MaterialOffset: {x: 0, y: 0}
-  ReflectColor: {r: 1, g: 1, b: 1, a: 1}
-  CustomComponents: []
 --- !u!1 &4501655945592992269
 GameObject:
   m_ObjectHideFlags: 0

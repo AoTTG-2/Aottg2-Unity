@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3690576064183119254}
-  - component: {fileID: 6425339800191764251}
   m_Layer: 0
   m_Name: FlagPole1i
   m_TagString: Untagged
@@ -34,41 +33,6 @@ Transform:
   - {fileID: 8488051548569555864}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6425339800191764251
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 454871987425027039}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c4da18ef7051ce4da103fa2dbb2fe94, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PrefabName: FlagPole1i
-  CustomAsset: 
-  ObjectId: 0
-  OverrideActive: 0
-  Active: 1
-  OverrideStatic: 0
-  Static: 1
-  OverrideVisible: 0
-  Visible: 1
-  OverrideNetworked: 0
-  Networked: 0
-  OverridePhysics: 0
-  CollideMode: Physical
-  CollideWith: Entities
-  PhysicsMaterial: Default
-  OverrideMaterial: 0
-  MaterialShader: Default
-  MaterialColor: {r: 1, g: 1, b: 1, a: 1}
-  MaterialTexture: Misc/None
-  MaterialTiling: {x: 1, y: 1}
-  MaterialOffset: {x: 0, y: 0}
-  ReflectColor: {r: 1, g: 1, b: 1, a: 1}
-  CustomComponents: []
 --- !u!1 &6575419635766358638
 GameObject:
   m_ObjectHideFlags: 0
@@ -101,6 +65,41 @@ Transform:
   - {fileID: 8066216358566865184}
   m_Father: {fileID: 3690576064183119254}
   m_LocalEulerAnglesHint: {x: 25, y: -90, z: 90}
+--- !u!114 &7018784831167214330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 4218948148921340899}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c4da18ef7051ce4da103fa2dbb2fe94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PrefabName: WavingFlag1f
+  CustomAsset: 
+  ObjectId: 0
+  OverrideActive: 0
+  Active: 1
+  OverrideStatic: 1
+  Static: 0
+  OverrideVisible: 0
+  Visible: 1
+  OverrideNetworked: 0
+  Networked: 0
+  OverridePhysics: 1
+  CollideMode: None
+  CollideWith: Entities
+  PhysicsMaterial: Default
+  OverrideMaterial: 1
+  MaterialShader: DefaultNoTint
+  MaterialColor: {r: 1, g: 1, b: 1, a: 1}
+  MaterialTexture: 
+  MaterialTiling: {x: 1, y: 1}
+  MaterialOffset: {x: 0, y: 0}
+  ReflectColor: {r: 1, g: 1, b: 1, a: 1}
+  CustomComponents: []
 --- !u!1001 &3475252419847738981
 PrefabInstance:
   m_ObjectHideFlags: 0

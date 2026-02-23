@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 400000}
-  - component: {fileID: 702962132861628294}
   m_Layer: 23
   m_Name: EditorDaylight
   m_TagString: Untagged
@@ -33,43 +32,41 @@ Transform:
   - {fileID: 2398627701050561957}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &702962132861628294
+--- !u!114 &7007884521606587399
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_PrefabInstance: {fileID: 2398627701050167077}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 100000}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9c4da18ef7051ce4da103fa2dbb2fe94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PrefabName: Daylight
+  PrefabName: CheckpointCone
   CustomAsset: 
   ObjectId: 0
   OverrideActive: 0
   Active: 1
-  OverrideStatic: 0
-  Static: 1
-  OverrideVisible: 1
-  Visible: 0
+  OverrideStatic: 1
+  Static: 0
+  OverrideVisible: 0
+  Visible: 1
   OverrideNetworked: 0
   Networked: 0
   OverridePhysics: 1
   CollideMode: None
-  CollideWith: Entities
+  CollideWith: Characters
   PhysicsMaterial: Default
   OverrideMaterial: 1
-  MaterialShader: DefaultNoTint
-  MaterialColor: {r: 1, g: 1, b: 1, a: 1}
-  MaterialTexture: 
+  MaterialShader: Transparent
+  MaterialColor: {r: 0.2, g: 1, b: 0, a: 0.50980395}
+  MaterialTexture: Misc/None
   MaterialTiling: {x: 1, y: 1}
   MaterialOffset: {x: 0, y: 0}
   ReflectColor: {r: 1, g: 1, b: 1, a: 1}
-  CustomComponents:
-  - ComponentName: Daylight
-    Parameters: []
+  CustomComponents: []
 --- !u!1001 &2398627701050167077
 PrefabInstance:
   m_ObjectHideFlags: 0

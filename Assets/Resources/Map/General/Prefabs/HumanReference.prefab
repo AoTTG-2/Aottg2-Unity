@@ -333,9 +333,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 37a41c0531a8f4249ae9642f66996b84, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3325669162115630025}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 37a41c0531a8f4249ae9642f66996b84, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 6461859430277772129}
   m_SourcePrefab: {fileID: 100100000, guid: 37a41c0531a8f4249ae9642f66996b84, type: 3}
 --- !u!1 &5120767270532237180 stripped
 GameObject:
@@ -363,41 +360,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1.8, z: 1}
   m_Center: {x: 0, y: 0.9, z: 0}
---- !u!114 &6461859430277772129
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5120767270532237180}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c4da18ef7051ce4da103fa2dbb2fe94, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PrefabName: Human Reference
-  CustomAsset: 
-  ObjectId: 0
-  OverrideActive: 0
-  Active: 1
-  OverrideStatic: 0
-  Static: 1
-  OverrideVisible: 1
-  Visible: 1
-  OverrideNetworked: 0
-  Networked: 0
-  OverridePhysics: 1
-  CollideMode: None
-  CollideWith: Entities
-  PhysicsMaterial: Default
-  OverrideMaterial: 0
-  MaterialShader: Default
-  MaterialColor: {r: 1, g: 1, b: 1, a: 1}
-  MaterialTexture: Misc/None
-  MaterialTiling: {x: 1, y: 1}
-  MaterialOffset: {x: 0, y: 0}
-  ReflectColor: {r: 1, g: 1, b: 1, a: 1}
-  CustomComponents: []
 --- !u!4 &5502077264867958214 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 37a41c0531a8f4249ae9642f66996b84, type: 3}

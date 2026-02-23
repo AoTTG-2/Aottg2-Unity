@@ -128,6 +128,8 @@ public class MapPrefabMarkerSync : EditorWindow
         int skipped = 0;
         int failed = 0;
 
+        // Collect all prefab work items first for progress tracking
+        var workItems = new List<(string categoryKey, JSONNode prefabNode, JSONNode info)>();
         foreach (string categoryKey in prefabList.Keys)
         {
             if (_filterCategory != "(All)" && _filterCategory != categoryKey)
@@ -138,8 +140,26 @@ public class MapPrefabMarkerSync : EditorWindow
 
             foreach (JSONNode prefabNode in categoryNode["Prefabs"])
             {
+                workItems.Add((categoryKey, prefabNode, info));
+            }
+        }
+
+        int totalItems = workItems.Count;
+        var prefabsToSave = new List<GameObject>();
+
+        // Batch asset editing for better performance
+        AssetDatabase.StartAssetEditing();
+        try
+        {
+            for (int i = 0; i < workItems.Count; i++)
+            {
+                var (categoryKey, prefabNode, info) = workItems[i];
                 processed++;
-                
+
+                EditorUtility.DisplayProgressBar("Applying Markers",
+                    $"Processing {processed}/{totalItems}",
+                    (float)processed / totalItems);
+
                 // Skip hidden prefabs unless requested
                 if (!_includeHiddenPrefabs && prefabNode.HasKey("Hidden") && prefabNode["Hidden"].AsBool)
                 {
@@ -148,10 +168,10 @@ public class MapPrefabMarkerSync : EditorWindow
                 }
 
                 string prefabName = prefabNode["Name"].Value;
-                
+
                 // Build asset path
                 string asset = BuildAssetPath(prefabNode, info);
-                
+
                 if (asset == "None" || string.IsNullOrEmpty(asset))
                 {
                     _syncLog.Add($"? Skipped: {prefabName} (no asset)");
@@ -161,7 +181,7 @@ public class MapPrefabMarkerSync : EditorWindow
 
                 // Find the prefab in Resources
                 GameObject prefab = LoadPrefabFromAsset(asset);
-                
+
                 if (prefab == null)
                 {
                     _syncLog.Add($"? Failed: {prefabName} - Could not load asset '{asset}'");
@@ -187,14 +207,25 @@ public class MapPrefabMarkerSync : EditorWindow
                 // Populate marker from JSON
                 PopulateMarkerFromJson(marker, prefabNode, info, prefabName, asset);
 
-                // Save the prefab
-                PrefabUtility.SavePrefabAsset(prefab);
-                EditorUtility.SetDirty(prefab);
-                
+                // Queue for batch save
+                prefabsToSave.Add(prefab);
                 updated++;
                 _syncLog.Add($"? Updated: {prefabName} ? {asset}");
             }
         }
+        finally
+        {
+            AssetDatabase.StopAssetEditing();
+            EditorUtility.ClearProgressBar();
+        }
+
+        // Batch save all modified prefabs
+        EditorUtility.DisplayProgressBar("Saving Prefabs", "Saving modified prefabs...", 0.5f);
+        foreach (var prefab in prefabsToSave)
+        {
+            PrefabUtility.SavePrefabAsset(prefab);
+        }
+        EditorUtility.ClearProgressBar();
 
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
@@ -222,32 +253,48 @@ public class MapPrefabMarkerSync : EditorWindow
         string[] prefabGuids = AssetDatabase.FindAssets("t:Prefab", new[] { "Assets/Resources/Map" });
         int removed = 0;
         int total = prefabGuids.Length;
+        var prefabsToSave = new List<GameObject>();
 
-        EditorUtility.DisplayProgressBar("Removing Markers", "Processing prefabs...", 0);
-
-        for (int i = 0; i < prefabGuids.Length; i++)
+        // Batch asset editing for better performance
+        AssetDatabase.StartAssetEditing();
+        try
         {
-            string path = AssetDatabase.GUIDToAssetPath(prefabGuids[i]);
-            GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
-            
-            if (prefab != null)
+            for (int i = 0; i < prefabGuids.Length; i++)
             {
-                var marker = prefab.GetComponent<MapObjectPrefabMarker>();
-                if (marker != null)
+                EditorUtility.DisplayProgressBar("Removing Markers",
+                    $"Processing {i + 1}/{total}",
+                    (float)(i + 1) / total);
+
+                string path = AssetDatabase.GUIDToAssetPath(prefabGuids[i]);
+                GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+
+                if (prefab != null)
                 {
-                    DestroyImmediate(marker, true);
-                    PrefabUtility.SavePrefabAsset(prefab);
-                    removed++;
-                    _syncLog.Add($"Removed marker from: {prefab.name}");
+                    var marker = prefab.GetComponent<MapObjectPrefabMarker>();
+                    if (marker != null)
+                    {
+                        DestroyImmediate(marker, true);
+                        prefabsToSave.Add(prefab);
+                        removed++;
+                        _syncLog.Add($"Removed marker from: {prefab.name}");
+                    }
                 }
             }
-
-            EditorUtility.DisplayProgressBar("Removing Markers", 
-                $"Processing {i + 1}/{total}", 
-                (float)(i + 1) / total);
+        }
+        finally
+        {
+            AssetDatabase.StopAssetEditing();
+            EditorUtility.ClearProgressBar();
         }
 
+        // Batch save all modified prefabs
+        EditorUtility.DisplayProgressBar("Saving Prefabs", "Saving modified prefabs...", 0.5f);
+        foreach (var prefab in prefabsToSave)
+        {
+            PrefabUtility.SavePrefabAsset(prefab);
+        }
         EditorUtility.ClearProgressBar();
+
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
 
@@ -373,7 +420,7 @@ public class MapPrefabMarkerSync : EditorWindow
         {
             foreach (JSONNode componentNode in prefabNode["Components"])
             {
-                MapObjectPrefabMarker.ComponentData compData = new MapObjectPrefabMarker.ComponentData();
+                var compData = new MapObjectPrefabMarker.ComponentData();
                 
                 string componentString = componentNode.Value;
                 string[] parts = componentString.Split('|');

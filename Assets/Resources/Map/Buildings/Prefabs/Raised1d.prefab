@@ -85,53 +85,10 @@ PrefabInstance:
     - {fileID: 7648002267601056822, guid: d73a6218b155aba4fbdc1bf42e454e23, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d73a6218b155aba4fbdc1bf42e454e23, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 5711473140657319188}
     - targetCorrespondingSourceObject: {fileID: 2541782610130881842, guid: d73a6218b155aba4fbdc1bf42e454e23, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4708222519071782331}
   m_SourcePrefab: {fileID: 100100000, guid: d73a6218b155aba4fbdc1bf42e454e23, type: 3}
---- !u!1 &5909453949621711184 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: d73a6218b155aba4fbdc1bf42e454e23, type: 3}
-  m_PrefabInstance: {fileID: 6828566302197943297}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &5711473140657319188
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5909453949621711184}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c4da18ef7051ce4da103fa2dbb2fe94, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PrefabName: Raised1d
-  CustomAsset: 
-  ObjectId: 0
-  OverrideActive: 0
-  Active: 1
-  OverrideStatic: 0
-  Static: 1
-  OverrideVisible: 0
-  Visible: 1
-  OverrideNetworked: 0
-  Networked: 0
-  OverridePhysics: 0
-  CollideMode: Physical
-  CollideWith: Entities
-  PhysicsMaterial: Default
-  OverrideMaterial: 0
-  MaterialShader: Default
-  MaterialColor: {r: 1, g: 1, b: 1, a: 1}
-  MaterialTexture: Misc/None
-  MaterialTiling: {x: 1, y: 1}
-  MaterialOffset: {x: 0, y: 0}
-  ReflectColor: {r: 1, g: 1, b: 1, a: 1}
-  CustomComponents: []
 --- !u!1 &9044856490668310835 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2541782610130881842, guid: d73a6218b155aba4fbdc1bf42e454e23, type: 3}
