@@ -1041,6 +1041,9 @@ namespace Characters
                 Cache.AudioSources[HumanSounds.GasStart].spatialBlend = 0;
                 Cache.AudioSources[HumanSounds.GasLoop].spatialBlend = 0;
                 Cache.AudioSources[HumanSounds.GasEnd].spatialBlend = 0;
+
+                Physics.defaultMaxDepenetrationVelocity = SettingsManager.GeneralSettings.MaxDepenetration.Value;
+
             }
         }
 
@@ -2163,6 +2166,189 @@ namespace Characters
             }
         }
 
+        protected void CollisionFixNone(Collision collision)
+        {
+            if (_lastVelocity.magnitude <= 0f)
+                return;
+            var velocity = Cache.Rigidbody.velocity;
+            float angle = Mathf.Abs(Vector3.Angle(velocity, _lastVelocity));
+            float speedMultiplier = Mathf.Max(1f - (angle * 1.5f * 0.01f), 0f);
+            float speed = _lastVelocity.magnitude * speedMultiplier;
+            Cache.Rigidbody.velocity = velocity.normalized * speed;
+            float speedDiff = _lastVelocity.magnitude - Cache.Rigidbody.velocity.magnitude;
+            if (SettingsManager.InGameCurrent.Misc.RealismMode.Value && speedDiff > SettingsManager.InGameCurrent.Misc.RealismImpactThreshold.Value)
+                GetHit("Impact", (int)speedDiff, "Impact", "");
+        }
+
+        public void CollisionFixCurrent(Collision collision)
+        {
+            if (_lastVelocity.magnitude <= 0f)
+                return;
+            var velocity = Cache.Rigidbody.velocity;
+            bool hitTitan = collision.transform.root.gameObject.layer == PhysicsLayer.TitanMovebox;
+
+            // Get the contact point normal
+            ContactPoint theContact = collision.contacts[0];
+            Vector3 collisionNormal = theContact.normal;
+
+            // Calculate the angle between the velocity and the collision normal
+            float hitAngle = Vector3.Angle(_lastVelocity, -collisionNormal);
+            float angleThreshold = 45;
+            float frictionThreshold = 25;
+
+            if (hitTitan)
+            {
+                bool intervalFinished = Time.time - _collisionTimer >= _collisionInterval;
+                bool sameCollider = collision.collider == _lastHit;
+                bool canResolve = intervalFinished || !sameCollider;
+                _collisionTimer = Time.time;
+                _lastHit = collision.collider;
+                float maxAngle = 0;
+                float minAngle = 0;
+                float newAngle = 0;
+                foreach (ContactPoint contact in collision.contacts)
+                {
+                    newAngle = Vector3.Angle(_lastVelocity, -contact.normal);
+                    newAngle = Mathf.Abs(newAngle - 90f);
+
+                    maxAngle = Mathf.Max(maxAngle, newAngle);
+                    minAngle = Mathf.Min(minAngle, newAngle);
+                    Vector3 projected = Vector3.ProjectOnPlane(_lastVelocity, contact.normal);
+                    if (newAngle < angleThreshold)
+                    {
+                        // Project velocity along the surface to preserve momentum
+                        bool isAligned = Vector3.Angle(projected, _lastVelocity) < 45f;
+                        if (isAligned || canResolve)
+                        {
+                            Cache.Rigidbody.velocity = Vector3.Lerp(_lastVelocity, projected, 0.5f);
+                        }
+                    }
+                }
+
+                // Testing optional friction under 1k it should apply the max friction possible and reduce it to nothing towards the upper limit.
+                float angle = Mathf.Abs(Vector3.Angle(velocity, _lastVelocity));
+                float speedFactor = Util.ClampedLinearMap(Cache.Rigidbody.velocity.magnitude, 0, 250, 0, 1);
+                float speedMultiplier = Mathf.Max(1f - (angle * 0.005f), 0f);    // Friction value 1-0.5
+                float speedMultiplierMax = Mathf.Max(1f - (angle * 1.5f * 0.01f), 0f);
+                float appliedMultiplier = Mathf.Lerp(speedMultiplier, speedMultiplierMax, speedFactor);
+                float speed = _lastVelocity.magnitude * appliedMultiplier;
+                Cache.Rigidbody.velocity = velocity.normalized * speed;
+            }
+            else
+            {
+                float angle = Mathf.Abs(Vector3.Angle(velocity, _lastVelocity));
+                float speedMultiplier = Mathf.Max(1f - (angle * 1.5f * 0.01f), 0f);
+                float speed = _lastVelocity.magnitude * speedMultiplier;
+                Cache.Rigidbody.velocity = velocity.normalized * speed;
+            }
+
+            float speedDiff = _lastVelocity.magnitude - Cache.Rigidbody.velocity.magnitude;
+            if (SettingsManager.InGameCurrent.Misc.RealismMode.Value && speedDiff > SettingsManager.InGameCurrent.Misc.RealismImpactThreshold.Value)
+                GetHit("Impact", (int)speedDiff, "Impact", "");
+        }
+
+        protected void CollisionFixCurrentTuned(Collision collision)
+        {
+            if (_lastVelocity.magnitude <= 0f)
+                return;
+
+            bool hitTitan = collision.transform.root.gameObject.layer == PhysicsLayer.TitanMovebox;
+
+            ContactPoint primaryContact = collision.contacts[0];
+            Vector3 collisionNormal = primaryContact.normal;
+
+            // Decompose last velocity into horizontal and vertical
+            Vector3 lastHorizontal = new Vector3(_lastVelocity.x, 0f, _lastVelocity.z);
+            float lastVerticalSpeed = _lastVelocity.y;
+
+            // Flatten collision normal to horizontal plane
+            Vector3 horizontalNormal = new Vector3(collisionNormal.x, 0f, collisionNormal.z);
+            bool isFloorCeiling = horizontalNormal.sqrMagnitude < 0.01f;
+
+            if (!isFloorCeiling)
+                horizontalNormal.Normalize();
+
+            // How vertical the approach is (0 = fully horizontal, 1 = fully vertical)
+            float totalSpeed = lastHorizontal.magnitude + Mathf.Abs(lastVerticalSpeed);
+            float verticalRatio = totalSpeed > 0.01f ? Mathf.Abs(lastVerticalSpeed) / totalSpeed : 0f;
+
+            Vector3 resolvedHorizontal;
+            float resolvedVertical;
+
+            if (isFloorCeiling)
+            {
+                // Pure floor/ceiling hit: preserve horizontal entirely, damp vertical
+                resolvedHorizontal = lastHorizontal;
+                resolvedVertical = lastVerticalSpeed * 0.1f;
+            }
+            else
+            {
+                // Wall-like hit: resolve in the horizontal plane, preserve vertical
+                Vector3 projected = Vector3.ProjectOnPlane(lastHorizontal, horizontalNormal);
+
+                // Horizontal approach angle (0 = head-on, 90 = parallel/glancing)
+                float horizontalAngle = lastHorizontal.magnitude > 0.1f
+                    ? Vector3.Angle(lastHorizontal, -horizontalNormal)
+                    : 90f;
+
+                // Glancing hits blend toward original direction, head-on uses projection
+                float blendFactor = Mathf.Clamp01(horizontalAngle / 90f);
+                resolvedHorizontal = Vector3.Lerp(projected, lastHorizontal, blendFactor * 0.5f);
+
+                // Friction: head-on loses more speed, glancing preserves it
+                float frictionMultiplier = Mathf.Lerp(0.4f, 0.95f, blendFactor);
+
+                // Penalize slippery movement when approach is more vertical than horizontal
+                frictionMultiplier *= Mathf.Lerp(1f, 0.5f, verticalRatio);
+
+                resolvedHorizontal *= frictionMultiplier;
+
+                // Preserve vertical velocity through wall hits
+                resolvedVertical = lastVerticalSpeed;
+            }
+
+            // Titan-specific multi-contact resolution (horizontal only)
+            if (hitTitan && !isFloorCeiling)
+            {
+                bool intervalFinished = Time.time - _collisionTimer >= _collisionInterval;
+                bool sameCollider = collision.collider == _lastHit;
+                bool canResolve = intervalFinished || !sameCollider;
+                _collisionTimer = Time.time;
+                _lastHit = collision.collider;
+
+                if (canResolve)
+                {
+                    foreach (ContactPoint contact in collision.contacts)
+                    {
+                        Vector3 contactHorizNormal = new Vector3(contact.normal.x, 0f, contact.normal.z);
+                        if (contactHorizNormal.sqrMagnitude < 0.01f)
+                            continue;
+                        contactHorizNormal.Normalize();
+
+                        float dot = Vector3.Dot(lastHorizontal.normalized, -contactHorizNormal);
+                        if (dot > 0.2f)
+                        {
+                            Vector3 contactProjected = Vector3.ProjectOnPlane(resolvedHorizontal, contactHorizNormal);
+                            resolvedHorizontal = Vector3.Lerp(resolvedHorizontal, contactProjected, 0.4f);
+                        }
+                    }
+                }
+            }
+
+            Vector3 finalVelocity = new Vector3(resolvedHorizontal.x, resolvedVertical, resolvedHorizontal.z);
+
+            // Never exceed original speed
+            if (finalVelocity.magnitude > _lastVelocity.magnitude)
+                finalVelocity = finalVelocity.normalized * _lastVelocity.magnitude;
+
+            Cache.Rigidbody.velocity = finalVelocity;
+
+            float speedDiff = _lastVelocity.magnitude - Cache.Rigidbody.velocity.magnitude;
+            if (SettingsManager.InGameCurrent.Misc.RealismMode.Value && speedDiff > SettingsManager.InGameCurrent.Misc.RealismImpactThreshold.Value)
+                GetHit("Impact", (int)speedDiff, "Impact", "");
+
+        }
+
 
         private Collider _lastHit = null;
         private Vector3 _lastDirection = Vector3.zero;
@@ -2179,73 +2365,22 @@ namespace Characters
                     return;
             }
             bool hitTitan = collision.transform.root.gameObject.layer == PhysicsLayer.TitanMovebox;
-            if (_lastVelocity.magnitude > 0f)
+
+            CollisionFixes fix = (CollisionFixes)SettingsManager.GeneralSettings.CollisionFix.Value;
+
+            switch (fix)
             {
-                // Get the contact point normal
-                ContactPoint theContact = collision.contacts[0];
-                Vector3 collisionNormal = theContact.normal;
-
-                // Calculate the angle between the velocity and the collision normal
-                float hitAngle = Vector3.Angle(_lastVelocity, -collisionNormal);
-                float angleThreshold = 45;
-                float frictionThreshold = 25;
-
-                if (hitTitan)
-                {
-                    bool intervalFinished = Time.time - _collisionTimer >= _collisionInterval;
-                    bool sameCollider = collision.collider == _lastHit;
-                    bool canResolve = intervalFinished || !sameCollider;
-                    _collisionTimer = Time.time;
-                    _lastHit = collision.collider;
-                    float maxAngle = 0;
-                    float minAngle = 0;
-                    float newAngle = 0;
-                    foreach (ContactPoint contact in collision.contacts)
-                    {
-                        newAngle = Vector3.Angle(_lastVelocity, -contact.normal);
-                        newAngle = Mathf.Abs(newAngle - 90f);
-
-                        maxAngle = Mathf.Max(maxAngle, newAngle);
-                        minAngle = Mathf.Min(minAngle, newAngle);
-                        Vector3 projected = Vector3.ProjectOnPlane(_lastVelocity, contact.normal);
-                        if (newAngle < angleThreshold)
-                        {
-                            // Project velocity along the surface to preserve momentum
-                            bool isAligned = Vector3.Angle(projected, _lastVelocity) < 45f;
-                            if (isAligned || canResolve)
-                            {
-                                Cache.Rigidbody.velocity = Vector3.Lerp(_lastVelocity, projected, 0.5f);
-                            }
-                        }
-                    }
-
-                    //// Map velocity on a scale from 0-500 into 0-1
-                    //if (minAngle > frictionThreshold)
-                    //{
-
-                    //}
-
-                    // Testing optional friction under 1k it should apply the max friction possible and reduce it to nothing towards the upper limit.
-                    float angle = Mathf.Abs(Vector3.Angle(velocity, _lastVelocity));
-                    float speedFactor = Util.ClampedLinearMap(Cache.Rigidbody.velocity.magnitude, 0, 250, 0, 1);
-                    float speedMultiplier = Mathf.Max(1f - (angle * 0.005f), 0f);    // Friction value 1-0.5
-                    float speedMultiplierMax = Mathf.Max(1f - (angle * 1.5f * 0.01f), 0f);
-                    float appliedMultiplier = Mathf.Lerp(speedMultiplier, speedMultiplierMax, speedFactor);
-                    float speed = _lastVelocity.magnitude * appliedMultiplier;
-                    Cache.Rigidbody.velocity = velocity.normalized * speed;
-                }
-                else
-                {
-                    float angle = Mathf.Abs(Vector3.Angle(velocity, _lastVelocity));
-                    float speedMultiplier = Mathf.Max(1f - (angle * 1.5f * 0.01f), 0f);
-                    float speed = _lastVelocity.magnitude * speedMultiplier;
-                    Cache.Rigidbody.velocity = velocity.normalized * speed;
-                }
-
-                float speedDiff = _lastVelocity.magnitude - Cache.Rigidbody.velocity.magnitude;
-                if (SettingsManager.InGameCurrent.Misc.RealismMode.Value && speedDiff > SettingsManager.InGameCurrent.Misc.RealismImpactThreshold.Value)
-                    GetHit("Impact", (int)speedDiff, "Impact", "");
+                case CollisionFixes.None:
+                    CollisionFixNone(collision);
+                    break;
+                case CollisionFixes.CurrentUpdate:
+                    CollisionFixCurrent(collision);
+                    break;
+                case CollisionFixes.CurrentUpdateTuned:
+                    CollisionFixCurrentTuned(collision);
+                    break;
             }
+
             if (hitTitan)
             {
                 var titan = collision.transform.root.GetComponent<BaseTitan>();

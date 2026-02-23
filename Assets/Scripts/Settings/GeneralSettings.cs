@@ -28,11 +28,24 @@ namespace Settings
         public FloatSetting OriginalCameraDeadzone = new FloatSetting(0.2f, minValue: 0.0f, maxValue: 0.99f);
         public FloatSetting OriginalCameraSpeed = new FloatSetting(60f, minValue: 0.1f, maxValue: 200f);
 
+        // Testing
+        public BoolSetting DebugDetection = new BoolSetting(false);
+        public BoolSetting AnimationCullingFix = new BoolSetting(false);
+        public IntSetting MaxDepenetration = new IntSetting(10);
+        public IntSetting CollisionFix = new IntSetting((int)CollisionFixes.CurrentUpdate);
+
         public override void Apply()
         {
             if (SceneLoader.CurrentCamera is InGameCamera)
                 ((InGameCamera)SceneLoader.CurrentCamera).ApplyGeneralSettings();
         }
+    }
+
+    public enum CollisionFixes
+    {
+        None,
+        CurrentUpdate,
+        CurrentUpdateTuned
     }
 
     public enum CameraInputMode

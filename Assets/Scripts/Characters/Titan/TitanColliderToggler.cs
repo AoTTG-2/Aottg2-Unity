@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using Utility;
+using Settings;
 
 namespace Characters
 {
@@ -43,11 +44,38 @@ namespace Characters
             if (_enabled)
             {
                 if (!_look && !_projectile.Detect && NearbyCharacters.Count == 0)
-                    SetColliders(false);
+                    ToggleComponents(false);
             }
             else if (_look || _projectile.Detect || NearbyCharacters.Count > 0)
-                SetColliders(true);
+                ToggleComponents(true);
             _look = false;
+        }
+
+        protected void ToggleComponents(bool enable)
+        {
+            if (SettingsManager.GeneralSettings.AnimationCullingFix.Value)
+            {
+                ForceAnimationCulling(enable);
+            }
+            
+            SetColliders(enable);
+            if (SettingsManager.GeneralSettings.DebugDetection.Value)
+            {
+                if (enable)
+                {
+                    Owner.AddOutline();
+                }
+                else
+                {
+                    Owner.RemoveOutline();
+                }
+            }
+            
+        }
+
+        protected void ForceAnimationCulling(bool forcedOn)
+        {
+            Owner.Animation.OverrideCulling(forcedOn);
         }
 
         protected void SetColliders(bool enable)

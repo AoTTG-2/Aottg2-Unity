@@ -18,6 +18,7 @@ namespace Characters
         private bool _isLegacy;
         private Dictionary<string, AnimationClip> _animatorClips = new Dictionary<string, AnimationClip>();
         private Dictionary<string, string> _animatorStateNames = new Dictionary<string, string>();
+        private bool _overrideCulling = false;
 
         public AnimationHandler(GameObject owner)
         {
@@ -171,21 +172,45 @@ namespace Characters
             }
         }
 
+        public void OverrideCulling(bool alwaysAnimate)
+        {
+            _overrideCulling = alwaysAnimate;   // When hooked, we should force the animator to always update to avoid frustum culling
+            SetCullingType(alwaysAnimate);
+        }
+
         public void SetCullingType(bool alwaysAnimate)
         {
             if (_isLegacy)
             {
-                if (alwaysAnimate)
+                if (alwaysAnimate || _overrideCulling)
                     Animation.cullingType = AnimationCullingType.AlwaysAnimate;
                 else
                     Animation.cullingType = AnimationCullingType.BasedOnRenderers;
             }
             else
             {
-                if (alwaysAnimate)
+                if (alwaysAnimate || _overrideCulling)
                     Animator.cullingMode = AnimatorCullingMode.AlwaysAnimate;
                 else
                     Animator.cullingMode = AnimatorCullingMode.CullCompletely;
+            }
+        }
+
+        public void SetUpdateMode(bool animatePhysics)
+        {
+            if (_isLegacy)
+            {
+                if (animatePhysics)
+                    Animation.updateMode = AnimationUpdateMode.Fixed;
+                else
+                    Animation.updateMode = AnimationUpdateMode.Normal;
+            }
+            else
+            {
+                if (animatePhysics)
+                    Animator.updateMode = AnimatorUpdateMode.Fixed;
+                else
+                    Animator.updateMode = AnimatorUpdateMode.Normal;
             }
         }
 

@@ -47,6 +47,16 @@ namespace UI
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.SkipCutscenes, UIManager.GetLocale(cat, sub, "SkipCutscenes"));
             ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.OriginalCameraDeadzone, UIManager.GetLocale(cat, sub, "OriginalCameraDeadzone"));
             ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.OriginalCameraSpeed, UIManager.GetLocale(cat, sub, "OriginalCameraSpeed"));
+
+            // Testing
+            ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.DebugDetection, "DebugDetection");
+            ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.AnimationCullingFix, "AnimationCullingFix");
+            ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.MaxDepenetration, "MaxDepentration", tooltip: "Default is 10, try 3 or lower.");
+
+            ElementFactory.CreateDropdownSetting(DoublePanelLeft, style, settings.CollisionFix, "CollisionFix",
+                new string[] { CollisionFixes.None.ToString(), CollisionFixes.CurrentUpdate.ToString(), CollisionFixes.CurrentUpdateTuned.ToString() },
+                elementWidth: 160f, tooltip: UIManager.GetLocaleCommon("RequireRestart"));
+
         }
     }
 }
