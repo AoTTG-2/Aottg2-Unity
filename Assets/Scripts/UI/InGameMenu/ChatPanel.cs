@@ -75,6 +75,7 @@ namespace UI
         private GameObject _notificationBadge;
         private bool _lastNotificationBadgeState = false;
         private static Sprite _cachedCircleSprite;
+        private bool _isDestroyed = false;
 
         private int _actualPoolSize = 0;
         static ChatPanel()
@@ -1026,6 +1027,8 @@ namespace UI
 
         public void Activate()
         {
+            if (_isDestroyed || _inputField == null)
+                return;
             _inputField.Select();
             _inputField.ActivateInputField();
             UpdatePlaceholderVisibility(true);
@@ -1046,11 +1049,13 @@ namespace UI
 
         public bool IsInputActive()
         {
-            return _inputField.isFocused;
+            return !_isDestroyed && _inputField != null && _inputField.isFocused;
         }
 
         public void OnEndEdit(string text)
         {
+            if (_isDestroyed || _inputField == null)
+                return;
             UpdatePlaceholderVisibility(false);
             if (!Input.GetKey(KeyCode.Return) && !Input.GetKey(KeyCode.KeypadEnter))
             {
@@ -1168,6 +1173,8 @@ namespace UI
 
         private void OnGUI()
         {
+            if (_isDestroyed || _inputField == null)
+                return;
             Event e = Event.current;
             if (e.type == EventType.KeyDown)
             {
@@ -1207,13 +1214,16 @@ namespace UI
 
         private void Update()
         {
-            if (!_caretInitialized && _inputField != null)
+            if (_isDestroyed || _inputField == null)
+                return;
+            if (!_caretInitialized)
             {
                 InitializeCaret();
                 return;
             }
             bool isInputActive = IsInputActive();
-            GameObject newSelectedObject = EventSystem.current.currentSelectedGameObject;
+            var eventSystem = EventSystem.current;
+            GameObject newSelectedObject = eventSystem != null ? eventSystem.currentSelectedGameObject : null;
             if (_emojiPanelActive && CursorManager.State != CursorState.Pointer)
             {
                 CloseEmojiPanel();
@@ -1231,7 +1241,7 @@ namespace UI
                 _requestCanvasUpdate = false;
                 Canvas.ForceUpdateCanvases();
             }
-            if (Input.GetMouseButtonDown(0) && !_wasChatUIClicked && EventSystem.current.IsPointerOverGameObject())
+            if (Input.GetMouseButtonDown(0) && !_wasChatUIClicked && eventSystem != null && eventSystem.IsPointerOverGameObject())
             {
                 _isInteractingWithChatUI = false;
                 ChatManager.ClearLastSuggestions();
@@ -1241,6 +1251,8 @@ namespace UI
 
         private void LateUpdate()
         {
+            if (_isDestroyed || _inputField == null)
+                return;
             UpdatePlaceholderVisibility(IsInputActive() || _isInteractingWithChatUI);
 
             bool hasNotification = _pmPartners.Count > 0 && ChatManager.HasAnyActivePMNotification();
@@ -1253,7 +1265,7 @@ namespace UI
 
         private void UpdatePlaceholderVisibility(bool isChatActive)
         {
-            if (_placeholderCanvasGroup == null)
+            if (_placeholderCanvasGroup == null || _isDestroyed || _inputField == null)
                 return;
             bool show = isChatActive && string.IsNullOrEmpty(_inputField.text) && _pmPartners.Count > 0;
             _placeholderCanvasGroup.alpha = show ? 1f : 0f;
@@ -1446,8 +1458,16 @@ namespace UI
 
         private void OnDestroy()
         {
+            _isDestroyed = true;
             if (_inputField != null)
             {
+                _inputField.onValueChanged.RemoveListener(OnValueChanged);
+                _inputField.onEndEdit.RemoveListener(OnEndEdit);
+                try
+                {
+                    _inputField.DeactivateInputField();
+                }
+                catch (Exception) { }
                 if (_inPMMode)
                 {
                     SaveCurrentConversation();
@@ -1463,6 +1483,8 @@ namespace UI
 
         private void OnValueChanged(string text)
         {
+            if (_isDestroyed || _inputField == null)
+                return;
             _lastTypeTime = Time.unscaledTime;
             if (text == null)
                 text = string.Empty;
@@ -1472,6 +1494,8 @@ namespace UI
 
         public string GetInputText()
         {
+            if (_isDestroyed || _inputField == null)
+                return string.Empty;
             return _inputField.text;
         }
 
