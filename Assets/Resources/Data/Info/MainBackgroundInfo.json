@@ -75,9 +75,10 @@
 	],
 	"AllBackgrounds": 57,
 	"Tips": [
-		"You can attack a titan's legs to cripple them.",
-		"You can blind a titan by attacking the eyes.",
-		"Use the N key to emote.",
-		"Use the F key to use items such as flares."
+		"Tip1",
+		"Tip2",
+		"Tip3",
+		"Tip4",
+		"Tip5"
 	]
 }

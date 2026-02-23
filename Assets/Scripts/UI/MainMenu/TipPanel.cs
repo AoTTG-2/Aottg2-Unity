@@ -25,7 +25,8 @@ namespace UI
             while (tipIndex == currentTipIndex)
                 tipIndex = Random.Range(0, tips.Count);
             currentTipIndex = tipIndex;
-            _label.text = "Tip: " + tips[tipIndex].Value;
+
+            _label.text = UIManager.GetLocale("Notifications", "Tips", "Title") + ": " + UIManager.GetLocale("Notifications", "Tips", tips[tipIndex].Value);
         }
 
         public void SetPressAnyKey()

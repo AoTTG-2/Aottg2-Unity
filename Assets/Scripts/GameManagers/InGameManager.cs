@@ -254,12 +254,13 @@ namespace GameManagers
             
             // Add this line to sync PM state
             ChatManager.SyncPMPartnersOnJoin();
-            
-            if (PhotonNetwork.OfflineMode)
-                ChatManager.AddLine("Welcome to single player. \nType /help for a list of commands.", ChatTextColor.System);
-            else
-                ChatManager.AddLine("Welcome to " + PhotonNetwork.CurrentRoom.GetStringProperty(RoomProperty.Name).Trim().HexColor() + ". \nType /help for a list of commands.",
-                    ChatTextColor.System);
+            string roomName = "single player";
+            if (!PhotonNetwork.OfflineMode)
+                roomName = PhotonNetwork.CurrentRoom.GetStringProperty(RoomProperty.Name).Trim().HexColor();
+
+            string message = UIManager.GetLocaleFormatted("InGame", "Chat", "Motd", roomName);
+            message += "\n" + UIManager.GetLocaleFormatted("InGame", "Chat", "Help", roomName);
+            ChatManager.AddLine(message, ChatTextColor.System);
             SceneLoader.LoadScene(SceneName.InGame);
         }
 
@@ -398,7 +399,8 @@ namespace GameManagers
 
         public override void OnMasterClientSwitched(Player newMasterClient)
         {
-            ChatManager.AddLine("Master client has switched to " + newMasterClient.GetCustomProperty(PlayerProperty.Name) + ".", ChatTextColor.System);
+            var message = UIManager.GetLocaleFormatted("InGame", "Chat", "MasterclientChangeTo", newMasterClient.GetCustomProperty(PlayerProperty.Name));
+            ChatManager.AddLine(message, ChatTextColor.System);
             CustomLogicManager.WaitForRestart();
             if (PhotonNetwork.IsMasterClient)
             {

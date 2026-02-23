@@ -87,7 +87,7 @@ namespace CustomLogic
         /// Value is set to false before despawn.
         /// </summary>
         [CLProperty]
-        public bool IsAlive => Character != null ? Character.Dead : false;
+        public bool IsAlive => Character != null ? !Character.Dead : false;
 
         /// <summary>
         /// Network view ID of the character.

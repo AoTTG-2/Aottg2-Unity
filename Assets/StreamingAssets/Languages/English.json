@@ -111,6 +111,11 @@
 		"AboutPopup.Changelog": "Changelog",
 		"AboutPopup.Help": "Help"
 	},
+	"InGame": {
+		"Chat.Motd": "Welcome to {0}.",
+		"Chat.Help": "Type /help for a list of commands.",
+		"Chat.MasterclientChangeTo": "Master client has switched to {0}."
+	},
 	"CreateGamePopup": {
 		"Top.GeneralButton": "General",
 		"Top.ModeButton": "Mode",
@@ -197,6 +202,13 @@
 		"Custom.CustomMap": "Custom map",
 		"Custom.CustomLogic": "Custom logic",
 		"Custom.File": "File",
+		"Custom.MapLocation": "Custom maps can be found in Documents/Aottg2/CustomMap.",
+		"Custom.AddingMaps": "To use a custom map, select the Custom map category under the General section.",
+		"Custom.CustomLogicLocation": "Custom logic can be found in Documents/Aottg2/CustomLogic",
+		"Custom.AddingCustomLogic": "To use a custom script, select it in the Game mode dropdown under the General section.",
+		"Custom.WarningEmptyName": "Name cannot be empty.",
+		"Custom.WarningAlreadyExists": "File name already exists.",
+		"Custom.WarningInvalid": "Error importing: {0}",
 		"Mode.PointMode": "Point mode",
 		"Mode.MaxPoints": "Max points",
 		"Mode.RespawnDelay": "Respawn delay",
@@ -689,6 +701,14 @@
 		"HitDamage": "Hit {Damage} damage[ with {Weapon}]",
 		"DealDamage": "Deal damage[ with {Weapon}]",
 		"ReachSpeed": "Reach {Speed} speed"
+	},
+	"Notifications": {
+		"Tips.Title": "Tip",
+		"Tips.Tip1": "You can attack a titan's legs to cripple them.",
+		"Tips.Tip2": "You can blind a titan by attacking the eyes.",
+		"Tips.Tip3": "Use the N key to emote.",
+		"Tips.Tip4": "Use the F key to use items such as flares.",
+		"Tips.Tip5": "Use directional keys while using gas/hooks to control your movement in the air."
 	},
 	"BasicTutorialMap": {
 		"Name.Game": "AOTTG 2",

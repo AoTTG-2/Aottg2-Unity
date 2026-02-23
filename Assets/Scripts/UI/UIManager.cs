@@ -147,6 +147,12 @@ namespace UI
             return icon + "Icon";
         }
 
+        public static string GetLocaleFormatted(string category, string subCategory, string item = "", params object[] args)
+        {
+            string localized = GetLocale(category, subCategory, item);
+            return string.Format(localized, args);
+        }
+
         public static string GetLocale(string category, string subCategory, string item = "", string forcedLanguage = "", string defaultValue = "")
         {
             JSONObject language = null;
