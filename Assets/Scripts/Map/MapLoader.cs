@@ -618,17 +618,32 @@ namespace Map
             var renderers = go.GetComponentsInChildren<Renderer>();
             if (renderers.Length > 0)
             {
-                // Calculate combined bounds
-                Bounds combinedBounds = renderers[0].bounds;
-                for (int i = 1; i < renderers.Length; i++)
+                // Calculate combined bounds, skipping renderers with invalid bounds
+                bool hasBounds = false;
+                Bounds combinedBounds = default;
+                for (int i = 0; i < renderers.Length; i++)
                 {
-                    combinedBounds.Encapsulate(renderers[i].bounds);
+                    Bounds b = renderers[i].bounds;
+                    if (b.extents.sqrMagnitude <= 0f || float.IsNaN(b.extents.x) || float.IsInfinity(b.extents.x))
+                        continue;
+                    if (!hasBounds)
+                    {
+                        combinedBounds = b;
+                        hasBounds = true;
+                    }
+                    else
+                    {
+                        combinedBounds.Encapsulate(b);
+                    }
                 }
 
-                var box = go.AddComponent<BoxCollider>();
-                box.center = go.transform.InverseTransformPoint(combinedBounds.center);
-                box.size = combinedBounds.size;
-                return true;
+                if (hasBounds)
+                {
+                    var box = go.AddComponent<BoxCollider>();
+                    box.center = go.transform.InverseTransformPoint(combinedBounds.center);
+                    box.size = combinedBounds.size;
+                    return true;
+                }
             }
 
             // Check for particle systems

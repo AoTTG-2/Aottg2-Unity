@@ -500,7 +500,7 @@ namespace GameManagers
             }
         }
 
-        public void SetLayerVisibility(MapEditorTopPanel.LayerOption index)
+        public void SetLayerVisibility(HashSetSetting<int> selectedLayers)
         {
             foreach (var obj in MapLoader.IdToMapObject.Values)
             {
@@ -508,25 +508,43 @@ namespace GameManagers
                     continue;
 
                 var sceneObject = (MapScriptSceneObject)obj.ScriptObject;
-                bool matchesFilter = index switch
+                bool matchesFilter = false;
+
+                // If "All" is selected, show everything
+                if (selectedLayers.Contains((int)LayerOption.All))
                 {
-                    LayerOption.All => true,
-                    LayerOption.Visible => sceneObject.Visible,
-                    LayerOption.Invisible => !sceneObject.Visible,
-                    LayerOption.Active => sceneObject.Active,
-                    LayerOption.Inactive => !sceneObject.Active,
-                    LayerOption.Static => sceneObject.Static,
-                    LayerOption.NonStatic => !sceneObject.Static,
-                    LayerOption.Networked => sceneObject.Networked,
-                    LayerOption.NonNetworked => !sceneObject.Networked,
-                    LayerOption.Triggers => sceneObject.CollideMode == "Region",
-                    LayerOption.Colliders => sceneObject.CollideMode == "Physical",
-                    LayerOption.NoColliders => sceneObject.CollideMode == "None",
-                    _ => true,
-                };
+                    matchesFilter = true;
+                }
+                else
+                {
+                    // Check each selected filter - object matches if it passes ANY selected filter
+                    foreach (int layerIndex in selectedLayers.Value)
+                    {
+                        LayerOption option = (LayerOption)layerIndex;
+                        bool matches = option switch
+                        {
+                            LayerOption.Visible => sceneObject.Visible,
+                            LayerOption.Invisible => !sceneObject.Visible,
+                            LayerOption.Active => sceneObject.Active,
+                            LayerOption.Inactive => !sceneObject.Active,
+                            LayerOption.Static => sceneObject.Static,
+                            LayerOption.NonStatic => !sceneObject.Static,
+                            LayerOption.Networked => sceneObject.Networked,
+                            LayerOption.NonNetworked => !sceneObject.Networked,
+                            LayerOption.Triggers => sceneObject.CollideMode == "Region",
+                            LayerOption.Colliders => sceneObject.CollideMode == "Physical",
+                            LayerOption.NoColliders => sceneObject.CollideMode == "None",
+                            _ => false,
+                        };
+                        if (matches)
+                        {
+                            matchesFilter = true;
+                            break;
+                        }
+                    }
+                }
 
                 obj.GameObject.SetActive(matchesFilter);
-
             }
         }
     }

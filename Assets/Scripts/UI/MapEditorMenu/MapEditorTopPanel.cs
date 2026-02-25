@@ -44,10 +44,12 @@ namespace UI
         protected override int VerticalPadding => 10;
 
         private IntSetting _dropdownSelection = new IntSetting(0);
+        private HashSetSetting<int> _layerSelection = new HashSetSetting<int>(new HashSet<int> { 0 });
         private MapEditorMenu _menu;
         private MapEditorGameManager _gameManager;
         private StringSetting _currentMap;
         private List<DropdownSelectElement> _dropdowns = new List<DropdownSelectElement>();
+        private MultiSelectDropdownElement _layerDropdown;
         private GameObject _gizmoButton;
         private GameObject _gizmoOrientationButton;
         private GameObject _snapButton;
@@ -107,13 +109,19 @@ namespace UI
             // lights
             ElementFactory.CreateDefaultButton(group, style, "Light", elementHeight: dropdownHeight, onClick: () => OnButtonClick("Light"));
 
-            // layers
-            var layerDropdown = ElementFactory.CreateDropdownSelect(group, style, _dropdownSelection, UIManager.GetLocaleCommon("Layers"),
-               Enum.GetNames(typeof(LayerOption)), elementWidth: dropdownWidth, optionsWidth: 180f, maxScrollHeight: 500f, onDropdownOptionSelect: () => OnLayersClick());
-            _dropdowns.Add(layerDropdown.GetComponent<DropdownSelectElement>());
+            // layers (multi-select)
+            var layerDropdownObj = ElementFactory.CreateMultiSelectDropdown(group, style, _layerSelection, UIManager.GetLocaleCommon("Layers"),
+               Enum.GetNames(typeof(LayerOption)), elementWidth: dropdownWidth, optionsWidth: 180f, maxScrollHeight: 500f, onSelectionChanged: () => OnLayersChanged());
+            _layerDropdown = layerDropdownObj.GetComponent<MultiSelectDropdownElement>();
 
             // tutorial
             ElementFactory.CreateDefaultButton(group, style, UIManager.GetLocale("MainMenu", "Intro", "TutorialButton"), elementHeight: dropdownHeight, onClick: () => OnButtonClick("Tutorial"));
+
+            // map name (floated right)
+            var spacer = new GameObject("Spacer", typeof(RectTransform), typeof(LayoutElement));
+            spacer.transform.SetParent(group, false);
+            spacer.GetComponent<LayoutElement>().flexibleWidth = 1f;
+            ElementFactory.CreateDefaultLabel(group, style, _currentMap.Value + ".txt");
         }
 
         public bool IsDropdownOpen()
@@ -123,6 +131,8 @@ namespace UI
                 if (element.IsOpen())
                     return true;
             }
+            if (_layerDropdown != null && _layerDropdown.IsOpen())
+                return true;
             return false;
         }
 
@@ -289,12 +299,11 @@ namespace UI
             _gameManager.ToggleLights();
         }
 
-        public void OnLayersClick()
+        public void OnLayersChanged()
         {
             if (_menu.IsPopupActive())
                 return;
-            LayerOption index = (LayerOption)_dropdownSelection.Value;
-            _gameManager.SetLayerVisibility(index);
+            _gameManager.SetLayerVisibility(_layerSelection);
         }
 
         public void NextGizmoOrientation()

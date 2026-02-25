@@ -705,10 +705,13 @@
 	"Notifications": {
 		"Tips.Title": "Tip",
 		"Tips.Tip1": "You can attack a titan's legs to cripple them.",
-		"Tips.Tip2": "You can blind a titan by attacking the eyes.",
+		"Tips.Tip2": "You can blind a titan by attacking the peyes.",
 		"Tips.Tip3": "Use the N key to emote.",
 		"Tips.Tip4": "Use the F key to use items such as flares.",
-		"Tips.Tip5": "Use directional keys while using gas/hooks to control your movement in the air."
+		"Tips.Tip5": "Use directional keys to control your movement in the air.",
+		"Tips.Tip6": "You can hold and release the attack button with blades to make timing hits easier.",
+		"Tips.Tip7": "In the wise words of @swag, high damage is 'luck, nothing more'.",
+		"Tips.Tip8": "Touching the ground in forest1 when getting gas does not count as 'touching grass'."
 	},
 	"BasicTutorialMap": {
 		"Name.Game": "AOTTG 2",
