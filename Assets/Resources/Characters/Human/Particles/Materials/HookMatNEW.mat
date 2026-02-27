@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: HookMatNEW
+  m_Shader: {fileID: -6465566751694194690, guid: ffda6a89d76d12e45a62dd462bb618f1, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _SampleTexture2D_83a71bfbf4274853a2f157228b76e91a_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: d9fc37a3aa645344f9b2e8e7e05b6691, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_8683c0c80b014332b9d79d730d1f124c_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: b3948fa23491049449536297374286c1, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_ade08e7896674365840322d7557ce454_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: 731973195307e5144b90493e7f210abf, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _BUILTIN_QueueControl: 0
+    - _BUILTIN_QueueOffset: 0
+    - _Distance_Fade: 82.9
+    - _Float: 0.8
+    - _Float_1: 0
+    - _Mult: 1000
+    m_Colors:
+    - _GlintTile: {r: 1.96, g: 0.32, b: 0, a: 0}
+    - _Tiling: {r: 250, g: 1, b: 0, a: 0}
+  m_BuildTextureStacks: []
+--- !u!114 &3931715840237211651
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 639247ca83abc874e893eb93af2b5e44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 0
