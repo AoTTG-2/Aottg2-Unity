@@ -380,13 +380,16 @@ namespace Cameras
                     {
                         float inputX = Input.GetAxis("Mouse X") * 10f * sensitivity;
                         float inputY = -Input.GetAxis("Mouse Y") * 10f * sensitivity * invertY;
+                        float angleY = Vector3.SignedAngle(Vector3.up, Cache.Transform.up, Cache.Transform.right);
+                        float nextY = angleY + inputY;
+                        float limit = 10f;
+
                         Cache.Transform.RotateAround(Cache.Transform.position, Vector3.up, inputX);
-                        float angleY = Cache.Transform.rotation.eulerAngles.x % 360f;
-                        float sumY = inputY + angleY;
-                        bool rotateUp = inputY <= 0f || ((angleY >= 260f || sumY <= 260f) && (angleY >= 80f || sumY <= 80f));
-                        bool rotateDown = inputY >= 0f || ((angleY <= 280f || sumY >= 280f) && (angleY <= 100f || sumY >= 100f));
-                        if (rotateUp && rotateDown)
+
+                        if (nextY <= 90f - limit && nextY >= -90f + limit)
                             Cache.Transform.RotateAround(Cache.Transform.position, Cache.Transform.right, inputY);
+                        else
+                            Cache.Transform.RotateAround(Cache.Transform.position, Cache.Transform.right, Mathf.Sign(angleY) * (90f - limit) - angleY);
                         //Cache.Transform.position -= Cache.Transform.forward * DistanceMultiplier * _anchorDistance * offset;
                     }
                 }
