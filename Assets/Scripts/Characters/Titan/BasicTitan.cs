@@ -12,6 +12,7 @@ using CustomLogic;
 using Photon.Pun;
 using Projectiles;
 using Spawnables;
+using System.Linq;
 
 namespace Characters
 {
@@ -224,7 +225,7 @@ namespace Characters
             if (left && !LeftArmDisabled)
             {
                 Cache.PhotonView.RPC(nameof(DisableArmRPC), RpcTarget.All, new object[] { left });
-                if (HoldHuman != null && HoldHumanLeft)
+                if (IsHoldingHuman() && HoldHumanLeft)
                 {
                     Ungrab();
                 }
@@ -238,7 +239,7 @@ namespace Characters
             else if (!left && !RightArmDisabled)
             {
                 Cache.PhotonView.RPC(nameof(DisableArmRPC), RpcTarget.All, new object[] { left });
-                if (HoldHuman != null && !HoldHumanLeft)
+                if (IsHoldingHuman() && !HoldHumanLeft)
                 {
                     Ungrab();
                 }
@@ -386,7 +387,7 @@ namespace Characters
 
         public override void Eat()
         {
-            if (HoldHuman == null)
+            if (!IsHoldingHuman())
                 return;
             if (HoldHumanLeft)
                 StateAction(TitanState.Eat, BasicAnimations.AttackEatL);
@@ -969,24 +970,23 @@ namespace Characters
 
         protected override void UpdateEat()
         {
-            if (State != TitanState.HumanThrow && HoldHuman == null && _stateTimeLeft > 4.72f)
+            if (State != TitanState.HumanThrow && !IsHoldingHuman() && _stateTimeLeft > 4.72f)
             {
                 IdleWait(0.5f);
                 return;
             }
             if (State != TitanState.HumanThrow && _stateTimeLeft <= 4.72f)
             {
-                if (HoldHuman != null)
+                if (IsHoldingHuman())
                 {
                     int damage = 100;
                     if (CustomDamageEnabled)
                         damage = CustomDamage;
-                    var tempHoldHuman = HoldHuman;
                     Ungrab();
-                    tempHoldHuman.GetHit(this, damage, "TitanEat", "");
+                    HeldHumans.ForEach(human => human.GetHit(this, damage, "TitanEat", ""));
                 }
             }
-            if (!AI && HoldHuman && !HoldHuman.Dead && !HoldHumanLeft && (Input.anyKeyDown || State == TitanState.HumanThrow))
+            if (!AI && IsHoldingHuman() && HeldHumans.Any(h => !h.Dead) && !HoldHumanLeft && (Input.anyKeyDown || State == TitanState.HumanThrow))
                 UpdateThrowHuman();
         }
 
@@ -1000,12 +1000,14 @@ namespace Characters
             Cache.Transform.rotation = Quaternion.Lerp(Cache.Transform.rotation, Quaternion.LookRotation(forward), Time.deltaTime * 5f);
             if (GetAnimationTime() > 0.61f)
             {
-                Human temp = HoldHuman;
                 Vector3 hand = BasicCache.HandRHitbox.transform.position;
                 Vector3 pos = (GetAimPoint() - hand).normalized * 150;
                 Ungrab();
-                if (temp.photonView.gameObject != null)
-                    temp.photonView.RPC(nameof(temp.BlowAwayRPC), temp.photonView.Owner, new object[] { pos });
+                foreach (var human in HeldHumans)
+                {
+                    if (human.photonView.gameObject != null)
+                        human.photonView.RPC(nameof(human.BlowAwayRPC), human.photonView.Owner, new object[] { pos });
+                }
             }
         }
 
@@ -1074,10 +1076,9 @@ namespace Characters
                 return;
             }
             var victimChar = (BaseCharacter)victim;
-            if (State == TitanState.Attack && IsGrabAttack() && victim is Human)
+            if (State == TitanState.Attack && IsGrabAttack() && victim is Human human)
             {
-                var human = (Human)victim;
-                if (HoldHuman == null && firstHit && !human.Dead)
+                if (!IsHoldingHuman() && firstHit && !human.Dead)
                 {
                     HoldHumanLeft = hitbox == BasicCache.HandLHitbox;
                     if (HoldHumanLeft)
