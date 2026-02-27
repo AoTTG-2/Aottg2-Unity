@@ -19,6 +19,8 @@ namespace Controllers
         protected InGameManager _gameManager;
         protected bool _autorun;
         public bool HideCursor;
+        protected int _lastRightInput;
+        protected int _lastForwardInput;
 
         protected virtual void Awake()
         {
@@ -75,14 +77,35 @@ namespace Controllers
             int right = 0;
             if (_generalInput.Autorun.GetKeyDown())
                 _autorun = !_autorun;
-            if (_generalInput.Forward.GetKey())
-                forward = 1;
-            else if (_generalInput.Back.GetKey())
-                forward = -1;
-            if (_generalInput.Left.GetKey())
+
+            bool isRightHeld = _generalInput.Right.GetKey();
+            bool isLeftHeld = _generalInput.Left.GetKey();
+            bool isForwardHeld = _generalInput.Forward.GetKey();
+            bool isBackHeld = _generalInput.Back.GetKey();
+
+            if (_generalInput.Forward.GetKeyDown())
+                _lastForwardInput = 1;
+            else if (_generalInput.Back.GetKeyDown())
+                _lastForwardInput = -1;
+
+            if (_generalInput.Left.GetKeyDown())
+                _lastRightInput = -1;
+            else if (_generalInput.Right.GetKeyDown())
+                _lastRightInput = 1;
+
+            if (isRightHeld && isLeftHeld)
+                right = _lastRightInput;
+            else if (isLeftHeld)
                 right = -1;
-            else if (_generalInput.Right.GetKey())
+            else if (isRightHeld)
                 right = 1;
+            
+            if (isForwardHeld &&  isBackHeld)
+                forward = _lastForwardInput;
+            else if (isForwardHeld)
+                forward = 1;
+            else if (isBackHeld)
+                forward = -1;
             if (forward != 0 || right != 0)
                 _autorun = false;
             if (_autorun)
