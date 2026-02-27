@@ -404,20 +404,23 @@ namespace Characters
                     SetHookState(HookState.DisablingHooked);
 
                 // Hook timer for titan death
-                if (HookParent != null && HookCharacter != null && HookCharacter is BasicTitan titan)
+                if (SettingsManager.GeneralSettings.DeathAnimationEnabled.Value)
                 {
-                    if (titan.Dead)
+                    if (HookParent != null && HookCharacter != null && HookCharacter is BasicTitan titan)
                     {
-                        float timer = titan.DeathTimeElapsed();
-                        if (timer >= 0 && timer < _deathTimerOffset)
+                        if (titan.Dead)
                         {
-                            if (_firstDeathFrame)
+                            float timer = titan.DeathTimeElapsed();
+                            if (timer >= 0 && timer < _deathTimerOffset)
                             {
-                                _lastGoodHookPoint = HookParent.TransformPoint(_hookPosition);
-                                _lastWorldHookPosition = _lastGoodHookPoint;
-                                _firstDeathFrame = false;
+                                if (_firstDeathFrame)
+                                {
+                                    _lastGoodHookPoint = HookParent.TransformPoint(_hookPosition);
+                                    _lastWorldHookPosition = _lastGoodHookPoint;
+                                    _firstDeathFrame = false;
+                                }
+                                _usingDeathTimer = true;
                             }
-                            _usingDeathTimer = true;
                         }
                     }
                 }
@@ -455,7 +458,7 @@ namespace Characters
             if (_hasHookParent)
             {
                 if (HookParent != null)
-                    if (_usingDeathTimer)
+                    if (_usingDeathTimer && SettingsManager.GeneralSettings.DeathAnimationEnabled.Value)
                         _lastWorldHookPosition = _lastGoodHookPoint;
                     else
                         _lastWorldHookPosition = HookParent.TransformPoint(_hookPosition);

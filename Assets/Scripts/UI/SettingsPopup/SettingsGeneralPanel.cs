@@ -50,6 +50,7 @@ namespace UI
 
             // Testing
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.DebugDetection, "DebugDetection");
+            ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.DeathAnimationEnabled, "DeathAnimationEnabled");
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.AnimationCullingFix, "AnimationCullingFix");
             ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.MaxDepenetration, "MaxDepentration", tooltip: "Default is 10, try 3 or lower.");
 

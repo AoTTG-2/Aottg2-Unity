@@ -33,6 +33,7 @@ namespace Settings
         public BoolSetting AnimationCullingFix = new BoolSetting(false);
         public IntSetting MaxDepenetration = new IntSetting(10);
         public IntSetting CollisionFix = new IntSetting((int)CollisionFixes.CurrentUpdate);
+        public BoolSetting DeathAnimationEnabled = new BoolSetting(false);
 
         public override void Apply()
         {
