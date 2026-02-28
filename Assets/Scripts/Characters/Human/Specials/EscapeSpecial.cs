@@ -53,11 +53,11 @@ namespace Characters
                 string hurtbox;
                 if (human.Grabber.HoldHumanLeft)
                 {
-                    hurtbox = "ForearmRHurtbox";
+                    hurtbox = "ForearmLHurtbox";
                 }
                 else
                 {
-                    hurtbox = "ForearmLHurtbox";
+                    hurtbox = "ForearmRHurtbox";
                 }
                 human.Grabber.Cache.PhotonView.RPC(nameof(human.Grabber.GetHitRPC), RpcTarget.All, new object[] { human.Cache.PhotonView.ViewID, "", 0, "", hurtbox });
                 if (human.Weapon is BladeWeapon)
