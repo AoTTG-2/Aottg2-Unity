@@ -26,8 +26,7 @@ namespace Map
         private static readonly byte MsgMapBody = 1;
         private static readonly byte MsgLogicBody = 2;
         private static readonly byte MsgMapEnd = 3;
-        private static int CompressDeltaRows = 22;
-        private static JSONNode _mapScriptSymbolTable;
+        private static int CompressTotalColumns = 23;
         public static List<byte> _mapScriptCompressed;
         private static List<byte[][]> _mapTransferData;
         public static List<byte> _logicScriptCompressed;
@@ -70,15 +69,13 @@ namespace Map
             MapHash = Util.CreateMD5(serialize);
             if (logic.Trim() != string.Empty)
                 MapHash += Util.CreateMD5(logic);
-            object[] compress = CSVCompression.Compress(serialize, CompressDeltaRows);
-            _mapScriptCompressed = new List<byte>((byte[])compress[0]);
-            _mapScriptSymbolTable = (JSONNode)compress[1];
+            byte[] compress = CSVCompression.Compress(serialize, CompressTotalColumns);
+            _mapScriptCompressed = new List<byte>(compress);
             _mapTransferData = new List<byte[][]>();
             _mapTransferData.Add(new byte[][] { new byte[] { MsgMapStart }, 
                 StringCompression.Compress(MapManager.MapScript.Options.Serialize()),
                 StringCompression.Compress(MapManager.MapScript.CustomAssets.Serialize()),
-                StringCompression.Compress(MapManager.MapScript.Weather.SerializeToJsonString()),
-                StringCompression.Compress(_mapScriptSymbolTable.ToString())
+                StringCompression.Compress(MapManager.MapScript.Weather.SerializeToJsonString())
             });
             int chunkSize = 10000;
             int totalSize = _mapScriptCompressed.Count;
@@ -126,7 +123,6 @@ namespace Map
                 MapManager.MapScript.Options.Deserialize(StringCompression.Decompress(byteArr[1]));
                 MapManager.MapScript.CustomAssets.Deserialize(StringCompression.Decompress(byteArr[2]));
                 MapManager.MapScript.Weather.DeserializeFromJsonString(StringCompression.Decompress(byteArr[3]));
-                _mapScriptSymbolTable = JSON.Parse(StringCompression.Decompress(byteArr[4]));
                 _mapScriptCompressed = new List<byte>();
                 _logicScriptCompressed = new List<byte>();
             }
@@ -142,7 +138,7 @@ namespace Map
             {
                 if (_mapScriptCompressed.Count > 0)
                 {
-                    string decompress = CSVCompression.Decompress(_mapScriptCompressed.ToArray(), _mapScriptSymbolTable, CompressDeltaRows);
+                    string decompress = CSVCompression.Decompress(_mapScriptCompressed.ToArray(), CompressTotalColumns);
                     MapManager.MapScript.Objects.Deserialize(decompress);
                 }
                 if (_logicScriptCompressed.Count > 0)
