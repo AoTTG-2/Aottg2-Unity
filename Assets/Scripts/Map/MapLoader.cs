@@ -520,22 +520,31 @@ namespace Map
         void CombineMeshes(GameObject obj)
         {
             MeshFilter[] meshFilters = obj.GetComponentsInChildren<MeshFilter>();
-            CombineInstance[] combine = new CombineInstance[meshFilters.Length];
             if (meshFilters.Length == 0)
                 return;
-            bool rendererEnabled = meshFilters[0].GetComponent<Renderer>().enabled;
-            for (int i = 0; i < meshFilters.Length; i++)
+            var validFilters = new List<MeshFilter>();
+            foreach (var filter in meshFilters)
             {
-                combine[i].mesh = meshFilters[i].sharedMesh;
-                combine[i].transform = meshFilters[i].transform.localToWorldMatrix;
-                meshFilters[i].GetComponent<Renderer>().enabled = false;
+                var renderer = filter.GetComponent<Renderer>();
+                if (renderer != null)
+                    validFilters.Add(filter);
+            }
+            if (validFilters.Count == 0)
+                return;
+            CombineInstance[] combine = new CombineInstance[validFilters.Count];
+            bool rendererEnabled = validFilters[0].GetComponent<Renderer>().enabled;
+            for (int i = 0; i < validFilters.Count; i++)
+            {
+                combine[i].mesh = validFilters[i].sharedMesh;
+                combine[i].transform = validFilters[i].transform.localToWorldMatrix;
+                validFilters[i].GetComponent<Renderer>().enabled = false;
             }
             var meshFilter = obj.AddComponent<MeshFilter>();
             obj.AddComponent<MeshRenderer>();
             meshFilter.mesh = new Mesh();
             meshFilter.mesh.CombineMeshes(combine, true, true);
             if (rendererEnabled)
-                obj.GetComponent<Renderer>().material = meshFilters[0].GetComponent<Renderer>().sharedMaterial;
+                obj.GetComponent<Renderer>().material = validFilters[0].GetComponent<Renderer>().sharedMaterial;
             else
                 obj.GetComponent<Renderer>().enabled = false;
         }
