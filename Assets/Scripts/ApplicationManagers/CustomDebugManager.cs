@@ -213,7 +213,7 @@ namespace Utility
             Renderer renderer = obj.GetComponent<Renderer>();
             if (renderer != null)
             {
-                renderer.material = new Material(Shader.Find("Standard"));
+                renderer.material = new Material(Shader.Find("Universal Render Pipeline/Lit"));
                 renderer.material.color = color;
             }
 

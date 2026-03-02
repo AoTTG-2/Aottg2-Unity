@@ -130,7 +130,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3313822067380550200}
-  - component: {fileID: 7627274448810623214}
+  - component: {fileID: 902709434833064878}
   m_Layer: 28
   m_Name: PPLayer
   m_TagString: Untagged
@@ -153,7 +153,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3367989072485042288}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7627274448810623214
+--- !u!114 &902709434833064878
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -162,14 +162,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 5217637648974196966}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b9a305e18de0c04dbd257a21cd47087, type: 3}
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sharedProfile: {fileID: 11400000, guid: 6546683e0d5f24d44b6ad9f51857440e, type: 2}
-  isGlobal: 1
+  m_IsGlobal: 1
+  priority: 1
   blendDistance: 0
   weight: 1
-  priority: 1
+  sharedProfile: {fileID: 11400000, guid: 65cf1d5becc2eb741a957c62ff6dfc4d, type: 2}
 --- !u!1 &8647237998765497511
 GameObject:
   m_ObjectHideFlags: 0
