@@ -30,7 +30,7 @@ namespace UI
                 UIManager.GetLocale(cat, "Keybinds.Human", "WallSlideDash"), tooltip: UIManager.GetLocale(cat, "Keybinds.Human", "WallSlideDashTooltip"));
 
                 ElementFactory.CreateDropdownSetting(DoublePanelLeft, style, SettingsManager.InputSettings.Human.WallSlideAttach, UIManager.GetLocale(cat, "Keybinds.Human", "WallSlideAttach"),
-                UIManager.GetLocaleArray(cat, "Keybinds.Human", "WallSlideAttachOptions"), tooltip: UIManager.GetLocale(cat, sub, "WallSlideAttachTooltip"), elementWidth: 160f);
+                UIManager.GetLocaleArray(cat, "Keybinds.Human", "WallSlideAttachOptions"), tooltip: UIManager.GetLocale(cat, "Keybinds.Human", "WallSlideAttachTooltip"), elementWidth: 160f);
 
                 ElementFactory.CreateToggleSetting(DoublePanelRight, style, SettingsManager.InputSettings.Human.AutoUseGas,
                 UIManager.GetLocale(cat, "Keybinds.Human", "AutoUseGas"), tooltip: UIManager.GetLocale(cat, "Keybinds.Human", "AutoUseGasTooltip"));

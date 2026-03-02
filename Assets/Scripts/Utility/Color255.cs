@@ -2,7 +2,7 @@
 
 namespace Utility
 {
-    class Color255
+    public class Color255
     {
         public int R;
         public int G;

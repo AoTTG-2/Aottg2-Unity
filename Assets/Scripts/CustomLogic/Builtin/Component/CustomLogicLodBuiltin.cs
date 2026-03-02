@@ -7,7 +7,7 @@ namespace CustomLogic
     /// <summary>
     /// WIP feature to support LOD (Level of Detail) for map objects, currently only supports a single LOD level with a distance threshold.
     /// </summary>
-    [CLType(Name = "LodBuiltin", Static = true, Abstract = true, Description = "", IsComponent = true)]
+    [CLType(Name = "LodBuiltin", Static = true, Abstract = true, IsComponent = true)]
     partial class CustomLogicLodBuiltin : BuiltinComponentInstance
     {
         public LODGroup Value;
@@ -24,7 +24,10 @@ namespace CustomLogic
             SetupSingleLod(1.0f);
         }
 
-        [CLProperty(description: "Configures the distance threshold.")]
+        /// <summary>
+        /// Configures the distance threshold.
+        /// </summary>
+        [CLProperty]
         public float DistanceThreshold
         {
             get => Value.GetLODs()[0].screenRelativeTransitionHeight;
@@ -41,7 +44,10 @@ namespace CustomLogic
         }
 
         private float _detailPriority = 1;
-        [CLProperty(description: "Configures the distance threshold.")]
+        /// <summary>
+        /// Configures the detail priority.
+        /// </summary>
+        [CLProperty]
         public float DetailPriority
         {
             get

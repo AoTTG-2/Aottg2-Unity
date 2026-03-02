@@ -3,6 +3,7 @@ using GameManagers;
 using Settings;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 
@@ -33,7 +34,7 @@ namespace CustomLogic
                 else
                 {
                     // Show simplified notification in chat
-                    ChatManager.AddException($"CL Runtime Exception, press {SettingsManager.InputSettings.General.DebugWindow.GetKey()} to view in debug console");
+                    ChatManager.AddException($"CL Runtime Exception, press {SettingsManager.InputSettings.General.DebugWindow.ToString()} to view in debug console");
                 }
             }
         }

@@ -14,6 +14,7 @@ using SimpleJSONFixed;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UI;
 using UnityEngine;
 using Utility;
@@ -74,6 +75,9 @@ namespace Characters
         private float _grabIFrames = 0f;
         private bool _bladeTrailActive;
         private int _bladeFireState;
+        private bool _buff1Active;
+        private bool _buff2Active;
+        private bool _fire1Active;
 
         // physics
         public float ReelInAxis = 0f;
@@ -437,7 +441,7 @@ namespace Characters
             }
         }
 
-        public void DashVertical(float targetAngle, Vector3 direction)
+        public bool DashVertical(float targetAngle, Vector3 direction, Vector3? percentPower = null)
         {
             if (_dashTimeLeft <= 0f && Stats.CurrentGas > 0 && MountState == HumanMountState.None &&
                 State != HumanState.Grab && CarryState != HumanCarryState.Carry && _dashCooldownLeft <= 0f)
@@ -453,10 +457,21 @@ namespace Characters
                 CrossFade(HumanAnimations.Dash, 0.1f, 0.1f);
                 State = HumanState.AirDodge;
                 FalseAttack();
-                Cache.Rigidbody.AddForce(direction * 40f, ForceMode.VelocityChange);
+                Vector3 force = direction * 40f;
+                if (percentPower != null)
+                {
+                    force.x *= percentPower.Value.x;
+                    force.y *= percentPower.Value.y;
+                    force.z *= percentPower.Value.x;
+                }
+                    
+                Cache.Rigidbody.AddForce(force, ForceMode.VelocityChange);
                 _dashCooldownLeft = 0.2f;
                 ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.ShakeGas();
+
+                return true;
             }
+            return false;
         }
 
         public void Idle()
@@ -500,10 +515,8 @@ namespace Characters
         {
             if (notifyTitan && Grabber != null)
             {
-                if (breakArm) Grabber.DisableArm(Grabber.HoldHumanLeft);
-                else Grabber.Cache.PhotonView.RPC(nameof(Grabber.UngrabRPC), RpcTarget.All, new object[] { Cache.PhotonView.ViewID });
+                Grabber.Cache.PhotonView.RPC(nameof(Grabber.UngrabRPC), RpcTarget.All, new object[] { Cache.PhotonView.ViewID });
             }
-
             Grabber = null;
             GrabHand = null;
             SetTriggerCollider(false);
@@ -966,6 +979,8 @@ namespace Characters
 
         protected override IEnumerator WaitAndDie()
         {
+            DisableAllCustomParticleEffects();
+
             if (State == HumanState.Grab)
                 PlaySound(HumanSounds.Death5);
             else
@@ -974,6 +989,7 @@ namespace Characters
                 MusicManager.PlayDeathSong();
             }
             EffectSpawner.Spawn(EffectPrefabs.Blood2, Cache.Transform.position, Cache.Transform.rotation);
+
             yield return new WaitForSeconds(2f);
             PhotonNetwork.Destroy(gameObject);
         }
@@ -1113,6 +1129,16 @@ namespace Characters
             else
                 base.GetHitRPC(viewId, name, damage, type, collider);
         }
+
+        [PunRPC]
+        public override void GetDamagedRPC(string name, int damage)
+        {
+            if (Dead || IsInvincible)
+                return;
+
+            base.GetDamagedRPC(name, damage);
+        }
+
         public override void OnHit(BaseHitbox hitbox, object victim, Collider collider, string type, bool firstHit)
         {
             if (hitbox != null)
@@ -1485,13 +1511,16 @@ namespace Characters
 
         protected override void FixedUpdate()
         {
+            if (IsMine())
+            {
+                FixedUpdateLookTitan();
+                FixedUpdateUseables();
+            }
             HookLeft.FixedUpdateMock();
             HookRight.FixedUpdateMock();
             base.FixedUpdate();
             if (IsMine())
             {
-                FixedUpdateLookTitan();
-                FixedUpdateUseables();
                 _isReelingOut = false;
                 if (State == HumanState.Grab || Dead)
                 {
@@ -1566,6 +1595,8 @@ namespace Characters
                 bool pivot = pivotLeft || pivotRight;
                 if (Grounded)
                 {
+                    ClearDashPerkCDs();
+
                     Vector3 newVelocity = Vector3.zero;
                     if (JustGrounded)
                     {
@@ -1786,6 +1817,8 @@ namespace Characters
                     }
                     else if (Animation.IsPlaying(HumanAnimations.WallRun))
                     {
+                        ClearDashPerkCDs();
+
                         Cache.Rigidbody.AddForce(Vector3.up * Stats.RunSpeed - Cache.Rigidbody.velocity, ForceMode.VelocityChange);
                         _wallRunTime += Time.deltaTime;
                         if (!HasDirection)
@@ -1991,7 +2024,9 @@ namespace Characters
             if (Setup == null || Setup.Weapon != HumanWeapon.Blade)
                 return;
             int rank = ((InGameMenu)UIManager.CurrentMenu).GetStylebarRank();
-            if (rank >= 6)
+            if (rank >= 7)
+                ToggleBladeFire(3);
+            else if (rank >= 6)
                 ToggleBladeFire(2);
             else if (rank >= 4)
                 ToggleBladeFire(1);
@@ -3019,6 +3054,8 @@ namespace Characters
         [PunRPC]
         public void SetHookStateRPC(bool left, int hookId, int state, PhotonMessageInfo info)
         {
+            if (info.Sender != photonView.Owner)
+                return;
             if (!FinishSetup)
                 return;
             if (left)
@@ -3030,6 +3067,8 @@ namespace Characters
         [PunRPC]
         public void SetHookingRPC(bool left, int hookId, Vector3 baseVelocity, Vector3 relativeVelocity, PhotonMessageInfo info)
         {
+            if (info.Sender != photonView.Owner)
+                return;
             if (!FinishSetup)
                 return;
             if (left)
@@ -3041,6 +3080,8 @@ namespace Characters
         [PunRPC]
         public void SetHookedRPC(bool left, int hookId, Vector3 position, int viewId, int objectId, PhotonMessageInfo info)
         {
+            if (info.Sender != photonView.Owner)
+                return;
             if (!FinishSetup)
                 return;
             if (left)
@@ -3094,11 +3135,20 @@ namespace Characters
                 Setup._part_blade_r.SetActive(hasRight);
         }
 
+        public void ClearDashPerkCDs()
+        {
+            if (Stats.OmniDashPerk.PerkEnabled)
+                Stats.OmniDashPerk.Reset();
+            else if (Stats.VerticalDashPerk.PerkEnabled)
+                Stats.VerticalDashPerk.Reset();
+        }
+
         public void OnHooked(bool left, Vector3 position)
         {
             // If reel in holding is disabled, when the user launches a new hook, reset the wait for release flag.
             if (!SettingsManager.InputSettings.Human.ReelInHolding.Value)
                 _reelInWaitForRelease = false;
+            ClearDashPerkCDs();
             if (left)
             {
                 _launchLeft = true;
@@ -3651,30 +3701,155 @@ namespace Characters
                 return;
             if (Setup == null || Setup.Weapon != HumanWeapon.Blade || Setup._part_blade_l == null || Setup._part_blade_r == null)
                 return;
-            var leftFire1 = Setup._part_blade_l.transform.Find("Fire1");
-            var leftFire2 = Setup._part_blade_l.transform.Find("Fire2");
-            var rightFire1 = Setup._part_blade_r.transform.Find("Fire1");
-            var rightFire2 = Setup._part_blade_r.transform.Find("Fire2");
+
+            // Clear FX
+            foreach (var effect in Setup.TierEffects)
+            {
+                var left = Setup._part_blade_l.transform.Find(effect);
+                var right = Setup._part_blade_r.transform.Find(effect);
+                if (left != null)
+                    left.gameObject.SetActive(false);
+                if (right != null)
+                    right.gameObject.SetActive(false);
+            }
+
             if (state == 0 || !SettingsManager.GraphicsSettings.WeaponFireEffect.Value)
+                return;
+
+            int index = state - 1;
+            if (index < 0 || index >= Setup.TierEffects.Length)
+                return;
+
+            string targetEffect = Setup.TierEffects[index];
+            var leftEffect = Setup._part_blade_l.transform.Find(targetEffect);
+            var rightEffect = Setup._part_blade_r.transform.Find(targetEffect);
+
+            if (leftEffect != null)
+                leftEffect.gameObject.SetActive(true);
+
+            if (rightEffect != null)
+                rightEffect.gameObject.SetActive(true);
+        }
+
+        /// <summary>
+        /// Toggles the Buff1 particle effect
+        /// </summary>
+        /// <param name="toggle">True to enable, false to disable</param>
+        public void ToggleBuff1(bool toggle)
+        {
+            if (IsMine())
             {
-                leftFire1.gameObject.SetActive(false);
-                rightFire1.gameObject.SetActive(false);
-                leftFire2.gameObject.SetActive(false);
-                rightFire2.gameObject.SetActive(false);
+                if (toggle != _buff1Active)
+                    Cache.PhotonView.RPC(nameof(ToggleBuff1RPC), RpcTarget.All, new object[] { toggle });
+                _buff1Active = toggle;
             }
-            else if (state == 1)
+        }
+
+        [PunRPC]
+        protected void ToggleBuff1RPC(bool toggle, PhotonMessageInfo info)
+        {
+            if (info.Sender != null && info.Sender != Cache.PhotonView.Owner)
+                return;
+            if (!FinishSetup || HumanCache.Buff1 == null)
+                return;
+
+            SetParticleSystemsActive(HumanCache.Buff1, toggle);
+        }
+
+        /// <summary>
+        /// Toggles the Buff2 particle effect
+        /// </summary>
+        /// <param name="toggle">True to enable, false to disable</param>
+        public void ToggleBuff2(bool toggle)
+        {
+            if (IsMine())
             {
-                leftFire1.gameObject.SetActive(true);
-                rightFire1.gameObject.SetActive(true);
-                leftFire2.gameObject.SetActive(false);
-                rightFire2.gameObject.SetActive(false);
+                if (toggle != _buff2Active)
+                    Cache.PhotonView.RPC(nameof(ToggleBuff2RPC), RpcTarget.All, new object[] { toggle });
+                _buff2Active = toggle;
             }
-            else if (state == 2)
+        }
+
+        [PunRPC]
+        protected void ToggleBuff2RPC(bool toggle, PhotonMessageInfo info)
+        {
+            if (info.Sender != null && info.Sender != Cache.PhotonView.Owner)
+                return;
+            if (!FinishSetup || HumanCache.Buff2 == null)
+                return;
+
+            SetParticleSystemsActive(HumanCache.Buff2, toggle);
+        }
+
+        /// <summary>
+        /// Toggles the Fire1 particle effect
+        /// </summary>
+        /// <param name="toggle">True to enable, false to disable</param>
+        public void ToggleFire1(bool toggle)
+        {
+            if (IsMine())
             {
-                leftFire1.gameObject.SetActive(false);
-                rightFire1.gameObject.SetActive(false);
-                leftFire2.gameObject.SetActive(true);
-                rightFire2.gameObject.SetActive(true);
+                if (toggle != _fire1Active)
+                    Cache.PhotonView.RPC(nameof(ToggleFire1RPC), RpcTarget.All, new object[] { toggle });
+                _fire1Active = toggle;
+            }
+        }
+
+        [PunRPC]
+        protected void ToggleFire1RPC(bool toggle, PhotonMessageInfo info)
+        {
+            if (info.Sender != null && info.Sender != Cache.PhotonView.Owner)
+                return;
+            if (!FinishSetup || HumanCache.Fire1 == null)
+                return;
+            SetParticleSystemsActive(HumanCache.Fire1, toggle);
+        }
+
+        /// <summary>
+        /// Helper method to enable/disable all particle systems in a transform hierarchy
+        /// </summary>
+        /// <param name="parent">Parent transform containing particle systems</param>
+        /// <param name="active">True to enable, false to disable</param>
+        private void SetParticleSystemsActive(Transform parent, bool active)
+        {
+            if (parent == null)
+                return;
+
+            // Get all particle systems including in children
+            ParticleSystem[] particleSystems = parent.GetComponentsInChildren<ParticleSystem>(true);
+
+            foreach (ParticleSystem ps in particleSystems)
+            {
+                if (ps != null)
+                {
+                    var emission = ps.emission;
+                    emission.enabled = active;
+
+                    if (active)
+                    {
+                        if (!ps.isPlaying)
+                            ps.Play();
+                    }
+                    else
+                    {
+                        if (ps.isPlaying)
+                            ps.Stop();
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Disables all custom particle effects (Buff1, Buff2, Fire1)
+        /// Should be called on death
+        /// </summary>
+        private void DisableAllCustomParticleEffects()
+        {
+            if (IsMine())
+            {
+                ToggleBuff1(false);
+                ToggleBuff2(false);
+                ToggleFire1(false);
             }
         }
 

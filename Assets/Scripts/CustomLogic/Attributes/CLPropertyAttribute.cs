@@ -14,10 +14,15 @@ namespace CustomLogic
         /// </summary>
         public string[] TypeArguments { get; set; }
 
-        public CLPropertyAttribute(string description = "", bool readOnly = false)
+        /// <summary>
+        /// Types of the enum classes to reference (e.g., typeof(CustomLogicEffectNameEnum)).
+        /// The enum names will be retrieved from the CLType attribute of the specified types.
+        /// </summary>
+        public Type[] Enum { get; set; }
+
+        public CLPropertyAttribute(bool readOnly = false)
         {
             ReadOnly = readOnly;
-            Description = description;
         }
     }
 }

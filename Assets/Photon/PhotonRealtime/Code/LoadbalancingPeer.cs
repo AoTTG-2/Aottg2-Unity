@@ -1098,8 +1098,8 @@ namespace Photon.Realtime
         /// <summary>The custom player properties that describe this client / user. Keys must be strings.</summary>
         public Hashtable PlayerProperties;
         public string Password;
-        public string SessionID;
-        public string ModID;
+        //public string SessionID;
+        //public string ModID;
         public string Hash;
         /// <summary>Internally used value to skip some values when the operation is sent to the Master Server.</summary>
         protected internal bool OnGameServer = true; // defaults to true! better send more parameter than too few (GS needs all)
@@ -1632,8 +1632,8 @@ namespace Photon.Realtime
         public const byte RoomOptionFlags = 191;
         public const byte Password = 10;
         public const byte Hash = 11;
-        public const byte SessionID = 12;
-        public const byte ModID = 13;
+        //public const byte SessionID = 12;
+        //public const byte ModID = 13;
     }
 
 

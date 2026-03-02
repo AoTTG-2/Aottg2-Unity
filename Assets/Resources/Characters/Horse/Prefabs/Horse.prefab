@@ -77,6 +77,7 @@ MonoBehaviour:
   TargetAngle: 0
   HasDirection: 0
   State: 0
+  FollowingEnabled: 1
 --- !u!54 &5456738
 Rigidbody:
   m_ObjectHideFlags: 0

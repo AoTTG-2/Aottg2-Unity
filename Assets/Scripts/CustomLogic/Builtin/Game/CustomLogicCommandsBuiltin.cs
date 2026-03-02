@@ -1,8 +1,5 @@
 ﻿namespace CustomLogic
 {
-    /// <summary>
-    /// References the main game camera.
-    /// </summary>
     //[CLType(Name = "Commands", Abstract = true, Static = true)]
     //partial class CustomLogicCommandsBuiltin : BuiltinClassInstance
     //{

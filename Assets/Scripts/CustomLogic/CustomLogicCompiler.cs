@@ -20,6 +20,7 @@ namespace CustomLogic
             public int StartLine { get; set; }
             public int EndLine { get; set; }
             public int LineCount { get; set; }
+            public int MapLogicOffset { get; set; } = 0;
         }
 
         private List<CustomLogicSourceFile> _sourceFiles = new List<CustomLogicSourceFile>();
@@ -70,7 +71,8 @@ namespace CustomLogic
                     Type = file.Type,
                     StartLine = currentLine,
                     EndLine = currentLine + lineCount - 1,
-                    LineCount = lineCount
+                    LineCount = lineCount,
+                    MapLogicOffset = file.MapLogicOffset
                 };
                 _fileRanges.Add(range);
                 
@@ -122,6 +124,11 @@ namespace CustomLogic
                     return $"{globalLine} (Internal C# Bindings)";
                 }
                 
+                if (range.Type == CustomLogicSourceType.MapLogic)
+                {
+                    return $"{globalLine} ({range.Name}:{localLine + range.MapLogicOffset})";
+                }
+
                 return $"{globalLine} ({range.Name}:{localLine})";
             }
 

@@ -3,7 +3,7 @@ using UnityEngine.UIElements;
 namespace CustomLogic
 {
     /// <summary>
-    /// A UI element that represents a clickable button
+    /// A UI element that represents a clickable button.
     /// </summary>
     [CLType(Name = "Button", Abstract = true)]
     partial class CustomLogicButtonBuiltin : CustomLogicVisualElementBuiltin
@@ -27,7 +27,7 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// The text displayed by the Button
+        /// The text displayed by the Button.
         /// </summary>
         [CLProperty]
         public string Text
@@ -37,7 +37,7 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// When false, rich text tags will not be parsed
+        /// When false, rich text tags will not be parsed.
         /// </summary>
         [CLProperty]
         public bool EnableRichText
@@ -47,8 +47,9 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// Sets the method to be called when the Button is clicked
+        /// Sets the method to be called when the Button is clicked.
         /// </summary>
+        /// <param name="clickEvent">The method to call when the button is clicked.</param>
         [CLMethod]
         public CustomLogicButtonBuiltin OnClick(UserMethod clickEvent)
         {

@@ -3,7 +3,7 @@ using UnityEngine.UIElements;
 namespace CustomLogic
 {
     /// <summary>
-    /// A UI element that represents a progress bar for displaying progress from 0% to 100%
+    /// A UI element that represents a progress bar for displaying progress from 0% to 100%.
     /// </summary>
     [CLType(Name = "ProgressBar", Abstract = true)]
     partial class CustomLogicProgressBarBuiltin : CustomLogicVisualElementBuiltin
@@ -27,7 +27,7 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// The title text displayed on the progress bar
+        /// The title text displayed on the progress bar.
         /// </summary>
         [CLProperty]
         public string Title
@@ -37,7 +37,7 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// The current value of the progress bar (0-100)
+        /// The current value of the progress bar (0-100).
         /// </summary>
         [CLProperty]
         public float Value
@@ -47,7 +47,7 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// The minimum value of the progress bar (default: 0)
+        /// The minimum value of the progress bar (default: 0).
         /// </summary>
         [CLProperty]
         public float LowValue
@@ -57,7 +57,7 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// The maximum value of the progress bar (default: 100)
+        /// The maximum value of the progress bar (default: 100).
         /// </summary>
         [CLProperty]
         public float HighValue
@@ -67,9 +67,9 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// Sets the method to be called when the progress bar value changes
+        /// Sets the method to be called when the progress bar value changes.
         /// </summary>
-        /// <param name="valueChangedEvent">Method that will be called with the new value as parameter</param>
+        /// <param name="valueChangedEvent">Method that will be called with the new value as parameter.</param>
         [CLMethod]
         public CustomLogicProgressBarBuiltin OnValueChanged(UserMethod valueChangedEvent)
         {
@@ -78,8 +78,9 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// Sets the value of the progress bar without triggering any change events
+        /// Sets the value of the progress bar without triggering any change events.
         /// </summary>
+        /// <param name="value">The value to set.</param>
         [CLMethod]
         public void SetValueWithoutNotify(float value)
         {
@@ -87,7 +88,7 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// Gets the current progress as a percentage (0-100)
+        /// Gets the current progress as a percentage (0-100).
         /// </summary>
         [CLMethod]
         public float GetPercentage()
@@ -98,8 +99,9 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// Sets the progress by percentage (0-100)
+        /// Sets the progress by percentage (0-100).
         /// </summary>
+        /// <param name="percentage">The percentage value (0-100).</param>
         [CLMethod]
         public CustomLogicProgressBarBuiltin SetPercentage(float percentage)
         {

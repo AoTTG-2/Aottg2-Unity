@@ -3,7 +3,7 @@ using UnityEngine.UIElements;
 namespace CustomLogic
 {
     /// <summary>
-    /// A UI element that lets the user input and edit text
+    /// A UI element that lets the user input and edit text.
     /// </summary>
     [CLType(Name = "TextField", Abstract = true)]
     partial class CustomLogicTextFieldBuiltin : CustomLogicVisualElementBuiltin
@@ -16,7 +16,7 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// If true, the value property isn't updated until either the Enter key is pressed or the TextField loses focus
+        /// If true, the value property isn't updated until either the Enter key is pressed or the TextField loses focus.
         /// </summary>
         [CLProperty]
         public bool IsDelayed
@@ -26,7 +26,7 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// If true, the TextField supports multiple lines of text
+        /// If true, the TextField supports multiple lines of text.
         /// </summary>
         [CLProperty]
         public bool Multiline
@@ -36,7 +36,7 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// The label text displayed next to the TextField
+        /// The label text displayed next to the TextField.
         /// </summary>
         [CLProperty]
         public string Label
@@ -46,7 +46,7 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// The value of the TextField
+        /// The value of the TextField.
         /// </summary>
         [CLProperty]
         public string Value
@@ -56,7 +56,7 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// Color used to highlight selected text inside the field
+        /// Color used to highlight selected text inside the field.
         /// </summary>
         [CLProperty]
         public CustomLogicColorBuiltin SelectionColor
@@ -66,7 +66,7 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// Color of the text cursor (caret)
+        /// Color of the text cursor (caret).
         /// </summary>
         [CLProperty]
         public CustomLogicColorBuiltin CursorColor
@@ -76,8 +76,9 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// Registers a callback to be invoked when the value of the TextField changes
+        /// Registers a callback to be invoked when the value of the TextField changes.
         /// </summary>
+        /// <param name="changeEvent">The method to call when the value changes. It will receive (newValue, previousValue) as parameters.</param>
         [CLMethod]
         public CustomLogicTextFieldBuiltin RegisterValueChangedEventCallback(UserMethod changeEvent)
         {
@@ -89,8 +90,9 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// Sets the value of the TextField without triggering any change events
+        /// Sets the value of the TextField without triggering any change events.
         /// </summary>
+        /// <param name="value">The value to set.</param>
         [CLMethod]
         public void SetValueWithoutNotify(string value)
         {

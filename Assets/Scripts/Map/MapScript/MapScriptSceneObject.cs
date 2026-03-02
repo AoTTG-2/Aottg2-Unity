@@ -5,7 +5,7 @@ using Utility;
 
 namespace Map
 {
-    class MapScriptSceneObject: MapScriptBaseObject
+    public class MapScriptSceneObject: MapScriptBaseObject
     {
         // physics
         [Order(19)] public string CollideMode = MapObjectCollideMode.Physical;

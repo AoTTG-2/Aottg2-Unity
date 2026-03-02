@@ -175,7 +175,7 @@ namespace Characters
 
         public override void Emote(string emote)
         {
-            if (CanAction())
+            if (CanEmote())
             {
                 string anim = string.Empty;
                 if (emote == "Laugh")

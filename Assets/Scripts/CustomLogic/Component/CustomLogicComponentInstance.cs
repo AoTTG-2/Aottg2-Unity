@@ -13,7 +13,7 @@ namespace CustomLogic
         public CustomLogicComponentInstance(string name, MapObject obj, MapScriptComponent script,
             CustomLogicNetworkViewBuiltin networkView) : base(name)
         {
-            MapObject = new CustomLogicMapObjectBuiltin(obj);
+            MapObject = CustomLogicManager.Evaluator.GetOrCreateMapObjectBuiltin(obj);
             _script = script;
             NetworkView = networkView;
         }

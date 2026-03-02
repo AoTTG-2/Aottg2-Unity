@@ -34,3 +34,9 @@ Contributing: join our discord server for more details on how to contribute. We 
 ### Building and testing
 1. You can test the game by opening Scenes/Startup and using Unity play mode
 2. You can build the game by clicking File -> Build Settings -> Build. Only build to the Aottg2-Unity/Aottg2 folder
+
+> [!NOTE]
+> If you need to test multiplayer changes, you can build a version of the game
+> on the branch you want to test, and also run the game in the Unity play mode.
+> Create a lobby and it'll show up only available to clients on that version.
+> Connect both of them and you can test your changes.

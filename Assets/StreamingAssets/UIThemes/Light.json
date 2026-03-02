@@ -179,7 +179,8 @@
 			"System": [255, 200, 0, 255],
 			"Error": [200, 0, 0, 255],
 			"TeamRed": [240, 100, 100, 255],
-			"TeamBlue": [98, 183, 240, 255]
+			"TeamBlue": [98, 183, 240, 255],
+			"PrivateMessage": [200, 162, 200, 255]
 		}
 	},
 	"VoiceChatPanel": {

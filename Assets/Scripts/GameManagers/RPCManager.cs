@@ -54,10 +54,11 @@ namespace GameManagers
         [PunRPC]
         public void LoadSkyboxRPC(string urls, PhotonMessageInfo info)
         {
+            if (info.Sender != PhotonNetwork.MasterClient)
+                return;
             var manager = (InGameManager)SceneLoader.CurrentGameManager;
             string[] urlArr = urls.Split(',');
-            if (info.Sender == PhotonNetwork.MasterClient)
-                manager.StartCoroutine(manager.OnLoadSkyboxRPC(urlArr));
+            manager.StartCoroutine(manager.OnLoadSkyboxRPC(urlArr));
         }
 
         [PunRPC]
@@ -132,17 +133,17 @@ namespace GameManagers
             EmoteHandler.OnEmoteEmojiRPC(viewId, emoji, info);
         }
 
-        [PunRPC]
-        public void EmoteVoiceRPC(int viewId, string emoji, PhotonMessageInfo info)
-        {
-            EmoteHandler.OnEmoteVoiceRPC(viewId, emoji, info);
-        }
+        //[PunRPC]
+        //public void EmoteVoiceRPC(int viewId, string emoji, PhotonMessageInfo info)
+        //{
+        //    EmoteHandler.OnEmoteVoiceRPC(viewId, emoji, info);
+        //}
 
-        [PunRPC]
-        public void StopVoiceRPC(PhotonMessageInfo Info)
-        {
-            EmoteHandler.OnStopVoiceRPC(Info);
-        }
+        //[PunRPC]
+        //public void StopVoiceRPC(PhotonMessageInfo Info)
+        //{
+        //    EmoteHandler.OnStopVoiceRPC(Info);
+        //}
 
         [PunRPC]
         public void EmoteTextRPC(int viewId, string text, PhotonMessageInfo info)
@@ -229,14 +230,16 @@ namespace GameManagers
         }
 
         [PunRPC]
-        public void ChatRPC(string message, PhotonMessageInfo info)
+        public void ChatRPC(string message, long senderTimestamp, PhotonMessageInfo info)
         {
-            ChatManager.OnChatRPC(message, info);
+            ChatManager.OnChatRPC(message, senderTimestamp, info);
         }
 
         [PunRPC]
         public void AnnounceRPC(string message, PhotonMessageInfo info)
         {
+            if (info.Sender != null && info.Sender != PhotonNetwork.MasterClient)
+                return;
             ChatManager.OnAnnounceRPC(message);
         }
 
@@ -255,9 +258,9 @@ namespace GameManagers
         }
 
         [PunRPC]
-        public void PrivateChatRPC(string message, int targetID, PhotonMessageInfo info)
+        public void PrivateChatRPC(string message, int targetID, long senderTimestamp, PhotonMessageInfo info)
         {
-            ChatManager.OnPrivateChatRPC(message, targetID, info);
+            ChatManager.OnPrivateChatRPC(message, targetID, senderTimestamp, info);
         }
 
         void Awake()

@@ -29,6 +29,7 @@ namespace UI
             ElementFactory.CreateToggleSetting(DoublePanelLeft, style, SettingsManager.UISettings.JoinNotifications, UIManager.GetLocale(cat, sub, "JoinNotifications"), tooltip: UIManager.GetLocale(cat, sub, "JoinNotificationsTooltip"));
             ElementFactory.CreateToggleSetting(DoublePanelLeft, style, SettingsManager.UISettings.ShowPing, UIManager.GetLocale(cat, sub, "ShowPing"));
             ElementFactory.CreateToggleSetting(DoublePanelLeft, style, SettingsManager.UISettings.ShowGameTime, UIManager.GetLocale(cat, sub, "ShowGameTime"));
+            ElementFactory.CreateToggleSetting(DoublePanelLeft, style, SettingsManager.UISettings.ShowSongPopup, UIManager.GetLocale(cat, sub, "ShowSongPopup"));
             ElementFactory.CreateToggleSetting(DoublePanelLeft, style, SettingsManager.UISettings.ShowEmotes, UIManager.GetLocale(cat, sub, "ShowEmotes"));
 
             // Name Visibility
@@ -73,8 +74,6 @@ namespace UI
             ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.ChatWidth, UIManager.GetLocale(cat, sub, "ChatWidth"), elementWidth: 100f);
             ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.ChatHeight, UIManager.GetLocale(cat, sub, "ChatHeight"), elementWidth: 100f);
             ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.ChatFontSize, UIManager.GetLocale(cat, sub, "ChatFontSize"), elementWidth: 100f);
-            ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.ChatPoolSize, UIManager.GetLocale(cat, sub, "ChatPoolSize"),
-                tooltip: UIManager.GetLocale(cat, sub, "ChatPoolSizeTooltip"), elementWidth: 100f);
             ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.ChatScrollSensitivity, UIManager.GetLocale(cat, sub, "ChatScrollSensitivity"));
             ElementFactory.CreateColorSetting(DoublePanelRight, style, SettingsManager.UISettings.ChatBackgroundColor, UIManager.GetLocale(cat, sub, "ChatBackgroundColor"), UIManager.CurrentMenu.ColorPickPopup);
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, SettingsManager.UISettings.ChatCLErrors, UIManager.GetLocale(cat, sub, "ChatCLErrors"), tooltip: UIManager.GetLocale(cat, sub, "ChatCLErrorsTooltip"));

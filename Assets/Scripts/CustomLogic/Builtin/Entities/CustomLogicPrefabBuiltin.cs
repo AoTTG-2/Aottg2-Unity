@@ -3,20 +3,27 @@
 namespace CustomLogic
 {
     /// <summary>
-    /// Will expand this further later, currently only handles single elements, not children.
-    /// Should be able to take in a serialized CSV describing the object and populate a child array/parent object when done.
+    /// Represents a prefab object that can be instantiated in the map. Currently handles single elements, not children.
     /// </summary>
-    [CLType(Name = "Prefab", Static = false, Description = "")]
+    [CLType(Name = "Prefab", Static = false)]
     partial class CustomLogicPrefabBuiltin : BuiltinClassInstance, ICustomLogicToString
     {
         public MapScriptSceneObject Value;
 
+        /// <summary>
+        /// Creates a new empty Prefab instance.
+        /// </summary>
         [CLConstructor]
         public CustomLogicPrefabBuiltin()
         {
             Value = new MapScriptSceneObject();
         }
 
+        /// <summary>
+        /// Creates a new Prefab instance from a serialized CSV string.
+        /// </summary>
+        /// <param name="prefabCSV">The serialized CSV string describing the prefab.</param>
+        /// <param name="clearComponents">If true, clears all components from the prefab.</param>
         [CLConstructor]
         public CustomLogicPrefabBuiltin(string prefabCSV, bool clearComponents = false)
         {
@@ -30,16 +37,23 @@ namespace CustomLogic
             }
         }
 
+        /// <summary>
+        /// The type of the prefab asset.
+        /// </summary>
         [CLProperty]
-        public string Type
+        public string AssetType
         {
-            get => Value.Type; set
+            get => Value.Type;
+            set
             {
                 Value.Type = value;
                 Refresh();
             }
         }
 
+        /// <summary>
+        /// The asset path/name of the prefab.
+        /// </summary>
         [CLProperty]
         public string Asset
         {
@@ -50,6 +64,9 @@ namespace CustomLogic
             }
         }
 
+        /// <summary>
+        /// Whether the prefab is active.
+        /// </summary>
         [CLProperty]
         public bool Active
         {
@@ -60,6 +77,9 @@ namespace CustomLogic
             }
         }
 
+        /// <summary>
+        /// Whether the prefab is marked as static.
+        /// </summary>
         [CLProperty]
         public bool Static
         {
@@ -70,6 +90,9 @@ namespace CustomLogic
             }
         }
 
+        /// <summary>
+        /// Whether the prefab is visible.
+        /// </summary>
         [CLProperty]
         public bool Visible
         {
@@ -80,6 +103,9 @@ namespace CustomLogic
             }
         }
 
+        /// <summary>
+        /// The name of the prefab.
+        /// </summary>
         [CLProperty]
         public string Name
         {
@@ -90,6 +116,9 @@ namespace CustomLogic
             }
         }
 
+        /// <summary>
+        /// The position of the prefab in world space.
+        /// </summary>
         [CLProperty]
         public CustomLogicVector3Builtin Position
         {
@@ -101,6 +130,9 @@ namespace CustomLogic
             }
         }
 
+        /// <summary>
+        /// The rotation of the prefab in euler angles.
+        /// </summary>
         [CLProperty]
         public CustomLogicVector3Builtin Rotation
         {
@@ -112,6 +144,9 @@ namespace CustomLogic
             }
         }
 
+        /// <summary>
+        /// The scale of the prefab.
+        /// </summary>
         [CLProperty]
         public CustomLogicVector3Builtin Scale
         {
@@ -123,6 +158,9 @@ namespace CustomLogic
             }
         }
 
+        /// <summary>
+        /// The collision mode of the prefab.
+        /// </summary>
         [CLProperty]
         public string CollideMode
         {
@@ -133,6 +171,9 @@ namespace CustomLogic
             }
         }
 
+        /// <summary>
+        /// The layers that this prefab can collide with.
+        /// </summary>
         [CLProperty]
         public string CollideWith
         {
@@ -143,6 +184,9 @@ namespace CustomLogic
             }
         }
 
+        /// <summary>
+        /// The name of the physics material applied to the prefab.
+        /// </summary>
         [CLProperty]
         public string PhysicsMaterial
         {
@@ -154,11 +198,15 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// If true and this prefab is spawned at runtime with networking, the ownership will transfer to host if the player who spawned it leaves.
+        /// If true and this prefab is spawned at runtime with networking, the ownership will transfer to host
+        /// if the player who spawned it leaves.
         /// </summary>
         [CLProperty]
         public bool PersistsOwnership = false;
 
+        /// <summary>
+        /// Clears all components from the prefab.
+        /// </summary>
         [CLMethod]
         public void ClearComponents()
         {

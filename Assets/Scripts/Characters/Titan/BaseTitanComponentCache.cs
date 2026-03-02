@@ -83,7 +83,7 @@ namespace Characters
                 else if (name == "FootRHitbox")
                     FootRHitbox = BaseHitbox.Create(character, go, c);
                 else if (name == "SteamHitbox")
-                    SteamHitbox = BaseHitbox.Create(character, go, c);
+                    SteamHitbox = ContinuousDamageHitbox.CreateContinuous(character, go, c, 2000, 0.1f);
                 else if (name == "SitPushbox")
                     SitPushbox = c;
             }

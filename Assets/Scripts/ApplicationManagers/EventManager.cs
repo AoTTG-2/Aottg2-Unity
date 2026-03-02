@@ -1,8 +1,9 @@
-﻿using UnityEngine;
-using Utility;
+﻿using ApplicationManagers;
 using Settings;
-using ApplicationManagers;
 using System.Collections;
+using Unity.Profiling;
+using UnityEngine;
+using Utility;
 
 namespace Events
 {

@@ -413,11 +413,11 @@ namespace UI
             }
             else if (_human.Stats.OmniDashPerk.PerkEnabled)
             {
-                ratio = _human.Stats.OmniDashPerk.GetCooldownRatio();
+                ratio = _human.Stats.OmniDashPerk.GetPowerRatio();
             }
             else if (_human.Stats.VerticalDashPerk.PerkEnabled)
             {
-                ratio = _human.Stats.VerticalDashPerk.GetCooldownRatio();
+                ratio = _human.Stats.VerticalDashPerk.GetPowerRatio();
             }
 
             if (ratio <= 0f || ratio == 1f)

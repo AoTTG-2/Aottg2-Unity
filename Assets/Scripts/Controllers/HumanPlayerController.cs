@@ -1,11 +1,11 @@
-using UnityEngine;
 using ApplicationManagers;
-using Settings;
 using Characters;
-using UI;
-using System.Collections.Generic;
-using Utility;
 using Photon.Pun;
+using Settings;
+using System.Collections.Generic;
+using UI;
+using UnityEngine;
+using Utility;
 
 namespace Controllers
 {
@@ -446,23 +446,49 @@ namespace Controllers
                     {
                         if (_human.Stats.OmniDashPerk.CanUse() && _human.Stats.OmniDashPerk.PerkEnabled)
                         {
-                            _human.Stats.OmniDashPerk.OnUse();
                             Vector3 direction = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(CursorManager.GetInGameMousePosition()).direction.normalized;
-                            _human.DashVertical(GetTargetAngle(direction), direction);
+
+                            // Remove horizontal component (project onto forward/up plane)
+                            Vector3 projectedDir = Vector3.ProjectOnPlane(direction, _human.Cache.Transform.right).normalized;
+
+                            // Compute signed vertical angle
+                            float angle = Vector3.SignedAngle(_human.Cache.Transform.forward, projectedDir, -_human.Cache.Transform.right);
+
+                            float upwardPitch = Mathf.Clamp01(angle / 90.0f);
+                            Vector3 modifier = Vector3.one;
+                            if (upwardPitch > 0)
+                            {
+                                modifier.y = _human.Stats.OmniDashPerk.GetPowerRatio();
+                            }
+
+
+                            bool used = _human.DashVertical(GetTargetAngle(direction), direction, modifier);
+                            if (used)
+                                _human.Stats.OmniDashPerk.OnUse(upwardPitch);
                         }
                         else if (_human.Stats.VerticalDashPerk.CanUse() && _human.Stats.VerticalDashPerk.PerkEnabled && !_human.Stats.OmniDashPerk.PerkEnabled)
                         {
-                            _human.Stats.VerticalDashPerk.OnUse();
                             float angle = SceneLoader.CurrentCamera.Cache.Transform.rotation.eulerAngles.x;
                             if (angle < 0)
                                 angle += 360f;
                             if (angle >= 360f)
                                 angle -= 360f;
                             Vector3 direction = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(CursorManager.GetInGameMousePosition()).direction.normalized;
+                            Vector3 modifier = Vector3.one;
+                            float usage = 0;
+                            if (angle <= 0f || angle >= 180f)
+                            {
+                                modifier.y = _human.Stats.OmniDashPerk.GetPowerRatio();
+                                usage = 1f;
+                            }
+                            bool used = false;
                             if (angle > 0f && angle < 180f)
-                                _human.DashVertical(GetTargetAngle(direction), Vector3.down);
+                                used = _human.DashVertical(GetTargetAngle(direction), Vector3.down, modifier);
                             else
-                                _human.DashVertical(GetTargetAngle(direction), Vector3.up);
+                                used = _human.DashVertical(GetTargetAngle(direction), Vector3.up, modifier);
+
+                            if (used)
+                                _human.Stats.VerticalDashPerk.OnUse(usage);
                         }
                     }
                 }

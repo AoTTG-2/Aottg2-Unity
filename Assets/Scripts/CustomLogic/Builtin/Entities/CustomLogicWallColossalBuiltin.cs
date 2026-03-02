@@ -1,10 +1,11 @@
-﻿using Characters;
+﻿using System;
+using Characters;
 using Controllers;
 
 namespace CustomLogic
 {
     /// <summary>
-    /// Only character owner can modify fields and call functions unless otherwise specified.
+    /// Represents a WallColossal character. Only character owner can modify fields and call functions unless otherwise specified.
     /// </summary>
     /// <code>
     /// function OnCharacterSpawn(character) {
@@ -27,29 +28,245 @@ namespace CustomLogic
             Shifter = shifter;
             Controller = shifter.GetComponent<WallColossalAIController>();
         }
-        [CLProperty(Description = "Colossal's current hand health.")]
+
+        /// <summary>
+        /// Colossal's current hand health (applies to both hands for backward compatibility).
+        /// </summary>
+        [CLProperty]
         public int HandHealth
         {
-            get => Shifter.CurrentHandHealth;
+            get => (Shifter.CurrentLeftHandHealth + Shifter.CurrentRightHandHealth) / 2;
             set
             {
                 if (Shifter.IsMine())
-                    Shifter.SetCurrentHandHealth(value);
+                {
+                    Shifter.SetCurrentLeftHandHealth(value);
+                    Shifter.SetCurrentRightHandHealth(value);
+                }
             }
         }
 
-        [CLProperty(Description = "Colossal's maximum hand health.")]
+        /// <summary>
+        /// Colossal's maximum hand health (applies to both hands for backward compatibility).
+        /// </summary>
+        [CLProperty]
         public int MaxHandHealth
         {
-            get => Shifter.MaxHandHealth;
+            get => (Shifter.MaxLeftHandHealth + Shifter.MaxRightHandHealth) / 2;
             set
             {
                 if (Shifter.IsMine())
-                    Shifter.SetMaxHandHealth(value);
+                {
+                    Shifter.SetMaxLeftHandHealth(value);
+                    Shifter.SetMaxRightHandHealth(value);
+                }
             }
         }
 
-        [CLProperty(Description = "Colossal's (AI) wall attack cooldown per attack.")]
+        /// <summary>
+        /// Colossal's current left hand health.
+        /// </summary>
+        [CLProperty]
+        public int LeftHandHealth
+        {
+            get => Shifter.CurrentLeftHandHealth;
+            set
+            {
+                if (Shifter.IsMine())
+                    Shifter.SetCurrentLeftHandHealth(value);
+            }
+        }
+
+        /// <summary>
+        /// Colossal's maximum left hand health.
+        /// </summary>
+        [CLProperty]
+        public int MaxLeftHandHealth
+        {
+            get => Shifter.MaxLeftHandHealth;
+            set
+            {
+                if (Shifter.IsMine())
+                    Shifter.SetMaxLeftHandHealth(value);
+            }
+        }
+
+        /// <summary>
+        /// Colossal's current right hand health.
+        /// </summary>
+        [CLProperty]
+        public int RightHandHealth
+        {
+            get => Shifter.CurrentRightHandHealth;
+            set
+            {
+                if (Shifter.IsMine())
+                    Shifter.SetCurrentRightHandHealth(value);
+            }
+        }
+
+        /// <summary>
+        /// Colossal's maximum right hand health.
+        /// </summary>
+        [CLProperty]
+        public int MaxRightHandHealth
+        {
+            get => Shifter.MaxRightHandHealth;
+            set
+            {
+                if (Shifter.IsMine())
+                    Shifter.SetMaxRightHandHealth(value);
+            }
+        }
+
+        /// <summary>
+        /// Can the left hand be damaged
+        /// </summary>
+        [CLProperty]
+        public bool CanDamageLeftHand
+        {
+            get => Shifter.CanDamageLeftHand;
+            set
+            {
+                if (Shifter.IsMine())
+                    Shifter.CanDamageLeftHand = value;
+            }
+        }
+
+        /// <summary>
+        /// Can the right hand be damaged
+        /// </summary>
+        [CLProperty]
+        public bool CanDamageRightHand
+        {
+            get => Shifter.CanDamageRightHand;
+            set
+            {
+                if (Shifter.IsMine())
+                    Shifter.CanDamageRightHand = value;
+            }
+        }
+
+        /// <summary>
+        /// Colossal's left hand state.
+        /// </summary>
+        [CLProperty(Enum = new Type[] { typeof(CustomLogicHandStateEnum) })]
+        public int LeftHandState => (int)Shifter.LeftHandState;
+
+        /// <summary>
+        /// Colossal's right hand state.
+        /// </summary>
+        [CLProperty(Enum = new Type[] { typeof(CustomLogicHandStateEnum) })]
+        public int RightHandState => (int)Shifter.RightHandState;
+
+        /// <summary>
+        /// Time window in seconds for both hands to be severed before they recover independently.
+        /// </summary>
+        [CLProperty]
+        public float HandSeverWindow
+        {
+            get => Shifter.HandSeverWindow;
+            set
+            {
+                if (Shifter.IsMine())
+                    Shifter.HandSeverWindow = value;
+            }
+        }
+
+        /// <summary>
+        /// Time remaining in seconds for left hand to recover from severed state (0 if not severed).
+        /// </summary>
+        [CLProperty]
+        public float LeftHandSeverTimeLeft
+        {
+            get => Shifter.LeftHandSeverTimeLeft;
+            set
+            {
+                if (Shifter.IsMine())
+                    Shifter.LeftHandSeverTimeLeft = value;
+            }
+        }
+
+        /// <summary>
+        /// Time remaining in seconds for right hand to recover from severed state (0 if not severed).
+        /// </summary>
+        [CLProperty]
+        public float RightHandSeverTimeLeft
+        {
+            get => Shifter.RightHandSeverTimeLeft;
+            set
+            {
+                if (Shifter.IsMine())
+                    Shifter.RightHandSeverTimeLeft = value;
+            }
+        }
+
+        /// <summary>
+        /// Duration in seconds that the colossal remains stunned after both hands are severed.
+        /// </summary>
+        [CLProperty]
+        public float StunDuration
+        {
+            get => Shifter.StunDuration;
+            set
+            {
+                if (Shifter.IsMine())
+                    Shifter.StunDuration = value;
+            }
+        }
+
+        /// <summary>
+        /// Time remaining in seconds for the stun phase (0 if not stunned).
+        /// </summary>
+        [CLProperty]
+        public float StunTimeLeft
+        {
+            get => Shifter.StunTimeLeft;
+            set
+            {
+                if (Shifter.IsMine())
+                    Shifter.StunTimeLeft = value;
+            }
+        }
+
+        /// <summary>
+        /// Duration in seconds for the recovery phase after being stunned.
+        /// </summary>
+        [CLProperty]
+        public float RecoveryDuration
+        {
+            get => Shifter.RecoveryDuration;
+            set
+            {
+                if (Shifter.IsMine())
+                    Shifter.RecoveryDuration = value;
+            }
+        }
+
+        /// <summary>
+        /// Time remaining in seconds for the recovery phase (0 if not recovering).
+        /// </summary>
+        [CLProperty]
+        public float RecoveryTimeLeft
+        {
+            get => Shifter.RecoveryTimeLeft;
+            set
+            {
+                if (Shifter.IsMine())
+                    Shifter.RecoveryTimeLeft = value;
+            }
+        }
+
+        /// <summary>
+        /// Colossal's current stun state.
+        /// </summary>
+        [CLProperty(Enum = new Type[] { typeof(CustomLogicStunStateEnum) })]
+        public string StunState => Shifter.StunState.ToString();
+
+        /// <summary>
+        /// Colossal's (AI) wall attack cooldown per attack.
+        /// </summary>
+        [CLProperty]
         public float WallAttackCooldown
         {
             get => Controller.WallAttackCooldown;
@@ -59,7 +276,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(Description = "Colossal's (AI) wall attack cooldown remaining.")]
+        /// <summary>
+        /// Colossal's (AI) wall attack cooldown remaining.
+        /// </summary>
+        [CLProperty]
         public float WallAttackCooldownLeft
         {
             get => Controller.WallAttackCooldownLeft;
@@ -69,25 +289,37 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(Description = "Colossal's current steam state (Off, Warning, or Damage).")]
-        public string SteamState => Shifter._steamState.ToString();
+        /// <summary>
+        /// Colossal's current steam state.
+        /// </summary>
+        [CLProperty(Enum = new Type[] { typeof(CustomLogicSteamStateEnum) })]
+        public int SteamState => (int)Shifter.SteamState;
 
 
-        [CLMethod("Causes the colossal to perform steam attack.")]
+        /// <summary>
+        /// Causes the colossal to perform steam attack.
+        /// </summary>
+        [CLMethod]
         public void AttackSteam()
         {
             if (Shifter.IsMine() && !Shifter.Dead)
                 Shifter.SteamAttack();
         }
 
-        [CLMethod("Causes the colossal to stop steam attack.")]
+        /// <summary>
+        /// Causes the colossal to stop steam attack.
+        /// </summary>
+        [CLMethod]
         public void StopSteam()
         {
             if (Shifter.IsMine() && !Shifter.Dead)
                 Shifter.StopSteam();
         }
 
-        [CLMethod("Causes the (AI) colossal to perform a random wall attack.")]
+        /// <summary>
+        /// Causes the (AI) colossal to perform a random wall attack.
+        /// </summary>
+        [CLMethod]
         public void WallAttack()
         {
             if (Shifter.IsMine() && !Shifter.Dead && Shifter.AI)

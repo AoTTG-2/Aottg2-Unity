@@ -70,7 +70,7 @@ namespace UI
             if (miscSettings.PVP.Value == (int)PVPMode.Team)
             {
                 ElementFactory.CreateDropdownSetting(DoublePanelRight, new ElementStyle(titleWidth: 100f, themePanel: ThemePanel), charSettings.Team, UIManager.GetLocaleCommon("Team"),
-               new string[] { "Blue", "Red" }, elementWidth: 180f, optionsWidth: 180f);
+               new string[] { TeamInfo.Blue, TeamInfo.Red }, elementWidth: 180f, optionsWidth: 180f);
             }
             SyncStatBars();
         }

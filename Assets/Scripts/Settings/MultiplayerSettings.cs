@@ -122,8 +122,11 @@ namespace Settings
             int maxPlayers = settings.General.MaxPlayers.Value;
             string password = settings.General.Password.Value;
             string passwordHash = string.Empty;
-            if (password.Length > 0)
-                passwordHash = Util.CreateMD5(password);
+            string passwordSalt = string.Empty;
+            if (password.Length > 0) {
+                passwordSalt = Util.CreateSalt();
+                passwordHash = Util.CreatePBKDF2(password, passwordSalt);
+            }
             string roomId = UnityEngine.Random.Range(0, 100000).ToString();
             var properties = new ExitGames.Client.Photon.Hashtable
             {
@@ -131,10 +134,12 @@ namespace Settings
                 { RoomProperty.Map, mapName },
                 { RoomProperty.GameMode, gameMode },
                 { RoomProperty.Password, password },
-                { RoomProperty.PasswordHash, passwordHash }
+                { RoomProperty.PasswordSalt, passwordSalt },
+                { RoomProperty.PasswordHash, passwordHash },
+                { "HashKey", GetHashKey(roomId + roomName) },
             };
-            string hash = GetHashKey(roomId + roomName);
-            string[] lobbyProperties = new string[] { RoomProperty.Name, RoomProperty.Map, RoomProperty.GameMode, RoomProperty.PasswordHash };
+            /*string hash = GetHashKey(roomId + roomName);*/
+            string[] lobbyProperties = new string[] { RoomProperty.Name, RoomProperty.Map, RoomProperty.GameMode, RoomProperty.PasswordHash, RoomProperty.PasswordSalt };
             var roomOptions = new RoomOptions();
             roomOptions.CustomRoomProperties = properties;
             roomOptions.CustomRoomPropertiesForLobby = lobbyProperties;
@@ -142,7 +147,7 @@ namespace Settings
             roomOptions.IsOpen = true;
             roomOptions.MaxPlayers = maxPlayers;
             roomOptions.BroadcastPropsChangeToAll = false;
-            PhotonNetwork.CreateRoom(roomId, roomOptions, hash: hash, sessionID: ApplicationVersion.GetSessionID(), modID: ModPassword.Value);
+            PhotonNetwork.CreateRoom(roomId, roomOptions/*, hash: hash, sessionID: ApplicationVersion.GetSessionID(), modID: ModPassword.Value*/);
             if (!PhotonNetwork.OfflineMode)
             {
                 var vcRoomOptions = new RoomOptions();
@@ -153,16 +158,16 @@ namespace Settings
                 vcRoomOptions.MaxPlayers = 255;
                 vcRoomOptions.BroadcastPropsChangeToAll = false;
                 vcRoomOptions.EmptyRoomTtl = 10;
-                VoiceChatManager.Client.CreateRoom(roomId + VoiceRoomSuffix, vcRoomOptions, hash: hash, sessionID: ApplicationVersion.GetSessionID());
+                VoiceChatManager.Client.CreateRoom(roomId + VoiceRoomSuffix, vcRoomOptions/*, hash: hash, sessionID: ApplicationVersion.GetSessionID()*/);
             }
         }
 
         public void JoinRoom(string roomId, string roomName, string password)
         {
-            PhotonNetwork.JoinRoom(roomId, password: password, hash: GetHashCode(roomId + roomName), sessionID: ApplicationVersion.GetSessionID(),
-                modID: ModPassword.Value);
+            PhotonNetwork.JoinRoom(roomId, password: password, hash: GetHashCode(roomId + roomName)/*, sessionID: ApplicationVersion.GetSessionID(),
+                modID: ModPassword.Value*/);
             if (!PhotonNetwork.OfflineMode)
-                VoiceChatManager.Client.JoinRoom(roomId + VoiceRoomSuffix, password: password, hash: GetHashCode(roomId + roomName), sessionID: ApplicationVersion.GetSessionID());
+                VoiceChatManager.Client.JoinRoom(roomId + VoiceRoomSuffix, password: password, hash: GetHashCode(roomId + roomName)/*, sessionID: ApplicationVersion.GetSessionID()*/);
         }
 
         public string GetHashKey(string str)

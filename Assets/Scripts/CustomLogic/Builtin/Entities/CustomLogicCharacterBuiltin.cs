@@ -16,19 +16,19 @@ namespace CustomLogic
     ///         # Character is owned (network-wise) by the person running this script.
     ///         # Ex: If user is host, this could either be their actual player character or AI titans/shifters.
     ///     }
-    ///     
+    ///
     ///     if (character.IsMainCharacter)
     ///     {
     ///         # Character is the main character (the camera-followed player).
     ///     }
-    ///     
+    ///
     ///     if (character.IsAI)
     ///     {
     ///         # Character is AI and likely controlled via MasterClient.
-    ///         
+    ///
     ///         if (character.Player.ID == Network.MasterClient.ID)
     ///         {
-    ///             # Character is owned by masterclient, if we're not masterclient, we cannot modify props.    
+    ///             # Character is owned by masterclient, if we're not masterclient, we cannot modify props.
     ///         }
     ///     }
     /// }
@@ -44,7 +44,10 @@ namespace CustomLogic
             Variables["IsCharacter"] = true;
         }
 
-        [CLProperty(Description = "Character's name.")]
+        /// <summary>
+        /// Character's name.
+        /// </summary>
+        [CLProperty]
         public string Name
         {
             get => Character.Name;
@@ -54,7 +57,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(Description = "Character's guild.")]
+        /// <summary>
+        /// Character's guild.
+        /// </summary>
+        [CLProperty]
         public string Guild
         {
             get => Character.Guild;
@@ -64,26 +70,54 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(Description = "Player who owns this character.")]
+        /// <summary>
+        /// Player who owns this character.
+        /// </summary>
+        [CLProperty]
         public CustomLogicPlayerBuiltin Player => new CustomLogicPlayerBuiltin(Character.Cache.PhotonView.Owner);
 
-        [CLProperty(Description = "Is this character AI?")]
+        /// <summary>
+        /// Is this character AI?
+        /// </summary>
+        [CLProperty]
         public bool IsAI => Character.AI;
 
-        [CLProperty(Description = "Network view ID of the character.")]
+        /// <summary>
+        /// Is this character alive?
+        /// Value is set to false before despawn.
+        /// </summary>
+        [CLProperty]
+        public bool IsAlive => Character != null ? !Character.Dead : false;
+
+        /// <summary>
+        /// Network view ID of the character.
+        /// </summary>
+        [CLProperty]
         public int ViewID => Character.Cache.PhotonView.ViewID;
 
-        [CLProperty(Description = "Is this character mine?")]
+        /// <summary>
+        /// Is this character mine?
+        /// </summary>
+        [CLProperty]
         public bool IsMine => Character.IsMine();
 
-        [CLProperty(Description = "Character belongs to my player and is the main character (the camera-followed player).")]
+        /// <summary>
+        /// Character belongs to my player and is the main character (the camera-followed player).
+        /// </summary>
+        [CLProperty]
         public bool IsMainCharacter => Character.IsMainCharacter();
 
-        [CLProperty(Description = "Unity transform of the character.")]
+        /// <summary>
+        /// Unity transform of the character.
+        /// </summary>
+        [CLProperty]
         public CustomLogicTransformBuiltin Transform => new CustomLogicTransformBuiltin(Character.Cache.Transform);
 
-        [CLProperty(Description = "Position of the character.")]
-        public CustomLogicVector3Builtin Position
+        /// <summary>
+        /// Position of the character.
+        /// </summary>
+        [CLProperty]
+        public virtual CustomLogicVector3Builtin Position
         {
             get => new CustomLogicVector3Builtin(Character.Cache.Transform.position);
             set
@@ -93,7 +127,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(Description = "Rotation of the character.")]
+        /// <summary>
+        /// Rotation of the character.
+        /// </summary>
+        [CLProperty]
         public CustomLogicVector3Builtin Rotation
         {
             get => new CustomLogicVector3Builtin(Character.Cache.Transform.rotation.eulerAngles);
@@ -105,7 +142,10 @@ namespace CustomLogic
 
         }
 
-        [CLProperty(Description = "Quaternion rotation of the character.")]
+        /// <summary>
+        /// Quaternion rotation of the character.
+        /// </summary>
+        [CLProperty]
         public CustomLogicQuaternionBuiltin QuaternionRotation
         {
             get => new CustomLogicQuaternionBuiltin(Character.Cache.Transform.rotation);
@@ -116,10 +156,13 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(Description = "Velocity of the character.")]
+        /// <summary>
+        /// Velocity of the character.
+        /// </summary>
+        [CLProperty]
         public CustomLogicVector3Builtin Velocity
         {
-            get => new CustomLogicVector3Builtin(Character.Cache.Rigidbody.velocity);
+            get => new CustomLogicVector3Builtin(Character.GetVelocity());
             set
             {
                 if (!Character.IsMine()) return;
@@ -128,7 +171,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(Description = "Forward direction of the character.")]
+        /// <summary>
+        /// Forward direction of the character.
+        /// </summary>
+        [CLProperty]
         public CustomLogicVector3Builtin Forward
         {
             get => new CustomLogicVector3Builtin(Character.Cache.Transform.forward);
@@ -139,7 +185,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(Description = "Right direction of the character.")]
+        /// <summary>
+        /// Right direction of the character.
+        /// </summary>
+        [CLProperty]
         public CustomLogicVector3Builtin Right
         {
             get => new CustomLogicVector3Builtin(Character.Cache.Transform.right);
@@ -150,7 +199,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(Description = "Up direction of the character.")]
+        /// <summary>
+        /// Up direction of the character.
+        /// </summary>
+        [CLProperty]
         public CustomLogicVector3Builtin Up
         {
             get => new CustomLogicVector3Builtin(Character.Cache.Transform.up);
@@ -161,13 +213,26 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(Description = "If the character has a target direction it is turning towards.")]
+        /// <summary>
+        /// If the character has a target direction it is turning towards.
+        /// </summary>
+        [CLProperty]
         public bool HasTargetDirection => Character.HasDirection;
 
-        [CLProperty(Description = "The character's target direction.")]
-        public CustomLogicVector3Builtin TargetDirection => new CustomLogicVector3Builtin(Character.GetTargetDirection());
+        /// <summary>
+        /// The character's target direction.
+        /// </summary>
+        [CLProperty]
+        public CustomLogicVector3Builtin TargetDirection
+        {
+            get => new CustomLogicVector3Builtin(Character.GetTargetDirection());
+            set => Character.TargetAngle = Quaternion.LookRotation(value.Value).eulerAngles.y;
+        }
 
-        [CLProperty(Description = "Team character belongs to.")]
+        /// <summary>
+        /// Team character belongs to. Using enum is not mandatory, value can be any string.
+        /// </summary>
+        [CLProperty(Enum = new Type[] { typeof(CustomLogicTeamEnum) })]
         public string Team
         {
             get => Character.Team;
@@ -178,7 +243,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(Description = "Character's current health.")]
+        /// <summary>
+        /// Character's current health.
+        /// </summary>
+        [CLProperty]
         public float Health
         {
             get => Character.CurrentHealth;
@@ -189,7 +257,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(Description = "Character's maximum health.")]
+        /// <summary>
+        /// Character's maximum health.
+        /// </summary>
+        [CLProperty]
         public float MaxHealth
         {
             get => Character.MaxHealth;
@@ -200,7 +271,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(Description = "Is custom damage dealing enabled.")]
+        /// <summary>
+        /// Is custom damage dealing enabled.
+        /// </summary>
+        [CLProperty]
         public bool CustomDamageEnabled
         {
             get => Character.CustomDamageEnabled;
@@ -211,7 +285,10 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(Description = "Amount of custom damage to deal per attack.")]
+        /// <summary>
+        /// Amount of custom damage to deal per attack.
+        /// </summary>
+        [CLProperty]
         public int CustomDamage
         {
             get => Character.CustomDamage;
@@ -222,33 +299,43 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(Description = "Character's current playing animation.")]
+        /// <summary>
+        /// Character's current playing animation.
+        /// </summary>
+        [CLProperty]
         public string CurrentAnimation => Character.GetCurrentAnimation();
 
-        [CLProperty(Description = "Character's grounded status.")]
+        /// <summary>
+        /// Character's grounded status.
+        /// </summary>
+        [CLProperty]
         public bool Grounded => Character.Grounded;
 
-        [CLProperty(Description = "Character's rigidbody component (if available).")]
+        /// <summary>
+        /// Character's rigidbody component (if available).
+        /// </summary>
+        [CLProperty]
         public CustomLogicRigidbodyBuiltin Rigidbody => new CustomLogicRigidbodyBuiltin(this, Character.Cache.Rigidbody);
 
         /// <summary>
-        /// Kills the character. Callable by non-owners.
+        /// Kills the character.
         /// </summary>
-        /// <param name="killer">Killer name</param>
+        /// <param name="killer">Killer name.</param>
         [CLMethod]
         public void GetKilled(string killer) => Character.GetKilled(killer);
 
         /// <summary>
-        /// Damages the character and kills it if its health reaches 0. Callable by non-owners.
+        /// Damages the character.
         /// </summary>
-        /// <param name="killer">Killer name</param>
-        /// <param name="damage">Damage amount</param>
+        /// <param name="killer">Killer name.</param>
+        /// <param name="damage">Damage amount.</param>
         [CLMethod]
         public void GetDamaged(string killer, int damage) => Character.GetDamaged(killer, damage);
 
         /// <summary>
         /// Causes the character to emote. The list of available emotes is the same as those shown in the in-game emote menu.
         /// </summary>
+        /// <param name="emote">Name of the emote to play.</param>
         [CLMethod]
         public void Emote(string emote)
         {
@@ -257,25 +344,27 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// Causes the character to play an animation.
+        /// Causes the character to play an animation. Available animations can be found here: Human, Titan, Annie, Eren.
+        /// Use the right-hand string value for the animation. Note that shifters also have all titan animations.
         /// </summary>
-        /// <param name="animation">Name of the animation.
-        /// Available animations can be found here: [Human](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/d631c1648d1432de6f95f07c2f158ff710cdd76d/Assets/Scripts/Characters/Human/HumanAnimations.cs), [Titan](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/d631c1648d1432de6f95f07c2f158ff710cdd76d/Assets/Scripts/Characters/Titan/BasicTitanAnimations.cs), [Annie](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/d631c1648d1432de6f95f07c2f158ff710cdd76d/Assets/Scripts/Characters/Shifters/Annie/AnnieAnimations.cs), [Eren](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/d631c1648d1432de6f95f07c2f158ff710cdd76d/Assets/Scripts/Characters/Shifters/Eren/ErenAnimations.cs)
-        /// 
-        /// Use the right-hand string value for the animation.
-        /// 
-        /// Note that shifters also have all titan animations.
-        /// </param>
-        /// <param name="fade">Fade time. If provided, will crossfade the animation by this timestep</param>
+        /// <param name="animation">Name of the animation.</param>
+        /// <param name="fade">Fade time. If provided, will crossfade the animation by this timestep.</param>
         [CLMethod]
-        public void PlayAnimation(string animation, float fade = 0.1f)
+        public void PlayAnimation([CLParam(Enum = new Type[] { typeof(CustomLogicHumanAnimationEnum), typeof(CustomLogicTitanAnimationEnum), typeof(CustomLogicAnnieAnimationEnum), typeof(CustomLogicErenAnimationEnum), typeof(CustomLogicWallColossalAnimationEnum), typeof(CustomLogicDummyAnimationEnum), typeof(CustomLogicHorseAnimationEnum) })] string animation, float fade = 0.1f)
         {
             if (Character.IsMine() && !Character.Dead)
                 Character.CrossFadeIfNotPlaying(animation, fade);
         }
 
-        [CLMethod(Description = "Causes the character to play an animation at a specific time.")]
-        public void PlayAnimationAt(string animation, float t, float fade = 0.1f, bool force = false)
+        /// <summary>
+        /// Causes the character to play an animation at a specific time.
+        /// </summary>
+        /// <param name="animation">Name of the animation.</param>
+        /// <param name="t">Time in the animation to start playing.</param>
+        /// <param name="fade">Fade time.</param>
+        /// <param name="force">Whether to force the animation even if it's already playing.</param>
+        [CLMethod]
+        public void PlayAnimationAt([CLParam(Enum = new Type[] { typeof(CustomLogicHumanAnimationEnum), typeof(CustomLogicTitanAnimationEnum), typeof(CustomLogicAnnieAnimationEnum), typeof(CustomLogicErenAnimationEnum), typeof(CustomLogicWallColossalAnimationEnum), typeof(CustomLogicDummyAnimationEnum), typeof(CustomLogicHorseAnimationEnum) })] string animation, float t, float fade = 0.1f, bool force = false)
         {
             if (Character.IsMine() && !Character.Dead)
             {
@@ -286,15 +375,27 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod(Description = "Gets the animation speed of a given animation.")]
-        public void GetAnimationSpeed(string animation)
+        /// <summary>
+        /// Gets the animation speed of a given animation.
+        /// </summary>
+        /// <param name="animation">Name of the animation.</param>
+        /// <returns>1.0 if the character is not owned by the player or is dead, otherwise the animation speed.</returns>
+        [CLMethod]
+        public float GetAnimationSpeed([CLParam(Enum = new Type[] { typeof(CustomLogicHumanAnimationEnum), typeof(CustomLogicTitanAnimationEnum), typeof(CustomLogicAnnieAnimationEnum), typeof(CustomLogicErenAnimationEnum), typeof(CustomLogicWallColossalAnimationEnum), typeof(CustomLogicDummyAnimationEnum), typeof(CustomLogicHorseAnimationEnum) })] string animation)
         {
             if (Character.IsMine() && !Character.Dead)
-                Character.GetAnimationSpeed(animation);
+                return Character.GetAnimationSpeed(animation);
+            return 1.0f;
         }
 
-        [CLMethod(Description = "Sets the animation speed of a given animation.")]
-        public void SetAnimationSpeed(string animation, float speed, bool synced = true)
+        /// <summary>
+        /// Sets the animation speed of a given animation.
+        /// </summary>
+        /// <param name="animation">Name of the animation.</param>
+        /// <param name="speed">The animation speed multiplier.</param>
+        /// <param name="synced">Whether to sync the speed across the network.</param>
+        [CLMethod]
+        public void SetAnimationSpeed([CLParam(Enum = new Type[] { typeof(CustomLogicHumanAnimationEnum), typeof(CustomLogicTitanAnimationEnum), typeof(CustomLogicAnnieAnimationEnum), typeof(CustomLogicErenAnimationEnum), typeof(CustomLogicWallColossalAnimationEnum), typeof(CustomLogicDummyAnimationEnum), typeof(CustomLogicHorseAnimationEnum) })] string animation, float speed, bool synced = true)
         {
             if (Character.IsMine() && !Character.Dead)
             {
@@ -324,14 +425,24 @@ namespace CustomLogic
         //        Character.ContinueAnimations();
         //}
 
-        [CLMethod(Description = "Returns true if the animation is playing.")]
-        public bool IsPlayingAnimation(string animation)
+        /// <summary>
+        /// Returns true if the animation is playing.
+        /// </summary>
+        /// <param name="animation">Name of the animation.</param>
+        /// <returns>True if the animation is playing, false otherwise.</returns>
+        [CLMethod]
+        public bool IsPlayingAnimation([CLParam(Enum = new Type[] { typeof(CustomLogicHumanAnimationEnum), typeof(CustomLogicTitanAnimationEnum), typeof(CustomLogicAnnieAnimationEnum), typeof(CustomLogicErenAnimationEnum), typeof(CustomLogicWallColossalAnimationEnum), typeof(CustomLogicDummyAnimationEnum), typeof(CustomLogicHorseAnimationEnum) })] string animation)
         {
             return Character.Animation.IsPlaying(animation);
         }
 
-        [CLMethod(Description = "Returns true if the animation is playing.")]
-        public float GetAnimationNormalizedTime(string animation)
+        /// <summary>
+        /// Gets the normalized time of the currently playing animation.
+        /// </summary>
+        /// <param name="animation">Name of the animation.</param>
+        /// <returns>The normalized time (0-1) of the animation.</returns>
+        [CLMethod]
+        public float GetAnimationNormalizedTime([CLParam(Enum = new Type[] { typeof(CustomLogicHumanAnimationEnum), typeof(CustomLogicTitanAnimationEnum), typeof(CustomLogicAnnieAnimationEnum), typeof(CustomLogicErenAnimationEnum), typeof(CustomLogicWallColossalAnimationEnum), typeof(CustomLogicDummyAnimationEnum), typeof(CustomLogicHorseAnimationEnum) })] string animation)
         {
             if (!Character.Animation.IsPlaying(animation))
                 return 1f;
@@ -339,68 +450,90 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// Forces the character to play an animation.
+        /// Forces the character to play an animation, even if it's already playing.
+        /// Available animations can be found here: Human, Titan, Annie, Eren.
+        /// Use the right-hand string value for the animation. Note that shifters also have all titan animations.
         /// </summary>
-        /// <param name="animation">Name of the animation.
-        /// Available animations can be found here: [Human](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/d631c1648d1432de6f95f07c2f158ff710cdd76d/Assets/Scripts/Characters/Human/HumanAnimations.cs), [Titan](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/d631c1648d1432de6f95f07c2f158ff710cdd76d/Assets/Scripts/Characters/Titan/BasicTitanAnimations.cs), [Annie](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/d631c1648d1432de6f95f07c2f158ff710cdd76d/Assets/Scripts/Characters/Shifters/Annie/AnnieAnimations.cs), [Eren](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/d631c1648d1432de6f95f07c2f158ff710cdd76d/Assets/Scripts/Characters/Shifters/Eren/ErenAnimations.cs)
-        /// 
-        /// Use the right-hand string value for the animation.
-        /// 
-        /// Note that shifters also have all titan animations.
-        /// </param>
-        /// <param name="fade">Fade time. If provided, will crossfade the animation by this timestep</param>
+        /// <param name="animation">Name of the animation.</param>
+        /// <param name="fade">Fade time. If provided, will crossfade the animation by this timestep.</param>
         [CLMethod]
-        public void ForceAnimation(string animation, float fade = 0.1f)
+        public void ForceAnimation([CLParam(Enum = new Type[] { typeof(CustomLogicHumanAnimationEnum), typeof(CustomLogicTitanAnimationEnum), typeof(CustomLogicAnnieAnimationEnum), typeof(CustomLogicErenAnimationEnum), typeof(CustomLogicWallColossalAnimationEnum), typeof(CustomLogicDummyAnimationEnum), typeof(CustomLogicHorseAnimationEnum) })] string animation, float fade = 0.1f)
         {
             if (Character.IsMine() && !Character.Dead)
                 Character.ForceAnimation(animation, fade);
         }
 
-        [CLMethod(Description = "Gets the length of animation.")]
-        public float GetAnimationLength(string animation)
+        /// <summary>
+        /// Gets the length of animation.
+        /// </summary>
+        /// <param name="animation">Name of the animation.</param>
+        /// <returns>The length of the animation in seconds.</returns>
+        [CLMethod]
+        public float GetAnimationLength([CLParam(Enum = new Type[] { typeof(CustomLogicHumanAnimationEnum), typeof(CustomLogicTitanAnimationEnum), typeof(CustomLogicAnnieAnimationEnum), typeof(CustomLogicErenAnimationEnum), typeof(CustomLogicWallColossalAnimationEnum), typeof(CustomLogicDummyAnimationEnum), typeof(CustomLogicHorseAnimationEnum) })] string animation)
         {
             return Character.Animation.GetLength(animation);
         }
 
-        [CLMethod(Description = "Returns true if the character is playing a sound. Available sound names can be found here: Humans, Shifters, Titans. Note that shifters also have all titan sounds.")]
-        public bool IsPlayingSound(string sound)
+        /// <summary>
+        /// Returns true if the character is playing a sound.
+        /// Available sound names can be found here: Humans, Shifters, Titans.
+        /// Note that shifters also have all titan sounds.
+        /// </summary>
+        /// <param name="sound">Name of the sound.</param>
+        /// <returns>True if the sound is playing, false otherwise.</returns>
+        [CLMethod]
+        public bool IsPlayingSound([CLParam(Enum = new Type[] { typeof(CustomLogicHumanSoundEnum), typeof(CustomLogicTitanSoundEnum), typeof(CustomLogicShifterSoundEnum) })] string sound)
         {
             return Character.IsPlayingSound(sound);
         }
 
         /// <summary>
-        /// Plays a sound if present in the character.
+        /// Plays a sound for the character.
+        /// Available sound names can be found here: Human, Shifters, Titans.
+        /// Note that shifters also have all titan sounds.
         /// </summary>
-        /// <param name="sound">Name of the sound to play. 
-        /// Available sound names can be found here: [Human](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/refs/heads/main/Assets/Scripts/Characters/Human/HumanSounds.cs), [Shifters](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/refs/heads/main/Assets/Scripts/Characters/Shifters/ShifterSounds.cs), [Titans](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/refs/heads/main/Assets/Scripts/Characters/Titan/TitanSounds.cs).
-        /// 
-        /// Note that shifters also have all titan sounds</param>
+        /// <param name="sound">Name of the sound to play.</param>
         [CLMethod]
-        public void PlaySound(string sound)
+        public void PlaySound([CLParam(Enum = new Type[] { typeof(CustomLogicHumanSoundEnum), typeof(CustomLogicTitanSoundEnum), typeof(CustomLogicShifterSoundEnum) })] string sound)
         {
             if (Character.IsMine() && !Character.Dead && !Character.IsPlayingSound(sound))
                 Character.PlaySound(sound);
         }
 
         /// <summary>
-        /// Stops a sound if present in the character.
+        /// Stops a sound for the character.
         /// </summary>
         /// <param name="sound">Name of the sound to stop.</param>
         [CLMethod]
-        public void StopSound(string sound)
+        public void StopSound([CLParam(Enum = new Type[] { typeof(CustomLogicHumanSoundEnum), typeof(CustomLogicTitanSoundEnum), typeof(CustomLogicShifterSoundEnum) })] string sound)
         {
             if (Character.IsMine() && !Character.Dead && Character.IsPlayingSound(sound))
                 Character.StopSound(sound);
         }
 
-        [CLMethod(Description = "Fades the sound volume to a specific volume between 0.0 and 1.0 over [time] seconds. Does not play or stop the sound.")]
-        public void FadeSound(string sound, float volume, float time)
+        /// <summary>
+        /// Fades the sound volume to a specific volume between 0.0 and 1.0 over [time] seconds.
+        /// Does not play or stop the sound.
+        /// </summary>
+        /// <param name="sound">Name of the sound.</param>
+        /// <param name="volume">Target volume (0.0 to 1.0).</param>
+        /// <param name="time">Time in seconds to fade over.</param>
+        [CLMethod]
+        public void FadeSound(
+            [CLParam(Enum = new Type[] { typeof(CustomLogicHumanSoundEnum), typeof(CustomLogicTitanSoundEnum), typeof(CustomLogicShifterSoundEnum) })]
+            string sound,
+            float volume,
+            float time)
         {
             if (Character.IsMine() && !Character.Dead)
                 Character.FadeSound(sound, volume, time);
         }
 
-        [CLMethod(Description = "Rotates the character such that it is looking towards a world position.")]
+        /// <summary>
+        /// Rotates the character such that it is looking towards a world position.
+        /// </summary>
+        /// <param name="position">The world position to look at.</param>
+        [CLMethod]
         public void LookAt(CustomLogicVector3Builtin position)
         {
             if (Character.IsMine() && !Character.Dead)
@@ -410,18 +543,40 @@ namespace CustomLogic
         /// <summary>
         /// Adds a force to the character with given force vector and optional mode.
         /// </summary>
-        /// <param name="force">Force vector</param>
-        /// <param name="mode">Force mode. Valid modes are Force, Acceleration, Impulse, VelocityChange</param>
+        /// <param name="force">Force vector.</param>
+        /// <param name="mode">Force mode. Default is Acceleration.</param>
         [CLMethod]
-        public void AddForce(CustomLogicVector3Builtin force, string mode = "Acceleration")
+        public void AddForce(
+            CustomLogicVector3Builtin force,
+            // TODO: Migrate to int on the next update when CL developers will migrate to the new enum.
+            [CLParam(Enum = new Type[] { typeof(CustomLogicForceModeEnum) }, Type = "int")] object mode)
         {
             if (!Character.IsMine()) return;
+
             Character.SetKinematic(false, 1f);
-            var useForceMode = Enum.TryParse(mode, out ForceMode forceMode) ? forceMode : ForceMode.Acceleration;
-            Character.Cache.Rigidbody.AddForce(force.Value, useForceMode);
+            if (mode is int forceModeInt)
+            {
+                if (!Enum.IsDefined(typeof(ForceMode), forceModeInt))
+                    throw new ArgumentException($"Unknown force mode: {forceModeInt}");
+                Character.Cache.Rigidbody.AddForce(force.Value, (ForceMode)forceModeInt);
+            }
+            else if (mode is string forceModeString)
+            {
+                if (!Enum.TryParse<ForceMode>(forceModeString, out var forceMode))
+                    throw new ArgumentException($"Unknown force mode: {forceModeString}");
+                Character.Cache.Rigidbody.AddForce(force.Value, forceMode);
+            }
+            else
+            {
+                throw new ArgumentException($"Invalid force mode: {mode}");
+            }
         }
 
-        [CLMethod(description: "Reveal the titan for a set number of seconds.")]
+        /// <summary>
+        /// Reveal the titan for a set number of seconds.
+        /// </summary>
+        /// <param name="delay">Delay in seconds before revealing.</param>
+        [CLMethod]
         public void Reveal(float delay)
         {
             Character.Reveal(0, delay);
@@ -430,21 +585,28 @@ namespace CustomLogic
         /// <summary>
         /// Adds an outline effect with the given color and mode.
         /// </summary>
-        /// <param name="color">Outline color</param>
-        /// <param name="mode">Outline mode. Valid modes are: OutlineAll, OutlineVisible, OutlineHidden, OutlineAndSilhouette, SilhouetteOnly, OutlineAndLightenColor</param>
+        /// <param name="color">Outline color.</param>
+        /// <param name="mode">Outline mode. Default is OutlineAll.</param>
         [CLMethod]
-        public void AddOutline(CustomLogicColorBuiltin color = null, string mode = "OutlineAll")
+        public void AddOutline(
+            CustomLogicColorBuiltin color = null,
+            [CLParam(Enum = new Type[] { typeof(CustomLogicOutlineModeEnum) })] string mode = "OutlineAll")
         {
             Color outlineColor = Color.white;
             if (color != null)
                 outlineColor = color.Value.ToColor();
 
-            Outline.Mode outlineMode = (Outline.Mode)Enum.Parse(typeof(Outline.Mode), mode);
+            // TODO: Migrate from string to int on the next update when CL developers will migrate to the new enum.
+            if (!Enum.TryParse<Outline.Mode>(mode, out var outlineMode))
+                throw new ArgumentException($"Unknown outline mode: {mode}");
 
             Character.AddOutlineWithColor(outlineColor, outlineMode);
         }
 
-        [CLMethod(Description = "Removes the outline effect from the character.")]
+        /// <summary>
+        /// Removes the outline effect from the character.
+        /// </summary>
+        [CLMethod]
         public void RemoveOutline()
         {
             Character.RemoveOutline();
@@ -452,19 +614,40 @@ namespace CustomLogic
 
         public override bool Equals(object other)
         {
-            if (other == null)
-                return Character == null;
-            if (!(other is CustomLogicCharacterBuiltin))
-                return false;
-            return Character == ((CustomLogicCharacterBuiltin)other).Character;
+            // Delegate to __Eq__ for consistency
+            return __Eq__(this, other);
         }
 
+        /// <summary>
+        /// Checks if two characters are equal.
+        /// </summary>
+        /// <param name="self">The first character.</param>
+        /// <param name="other">The second character.</param>
+        /// <returns>True if the characters are equal, false otherwise.</returns>
         [CLMethod]
         public bool __Eq__(object self, object other)
         {
-            return self.Equals(other);
+            // Extract character wrappers
+            var selfChar = self as CustomLogicCharacterBuiltin;
+            var otherChar = other as CustomLogicCharacterBuiltin;
+
+            // Get underlying Character references (may be null if destroyed)
+            var selfCharacter = selfChar?.Character;
+            var otherCharacter = otherChar?.Character;
+
+            // Compare underlying Characters
+            if (selfCharacter == null && otherCharacter == null)
+                return true;
+            if (selfCharacter == null || otherCharacter == null)
+                return false;
+
+            return selfCharacter == otherCharacter;
         }
 
+        /// <summary>
+        /// Gets the hash code of the character.
+        /// </summary>
+        /// <returns>The hash code.</returns>
         [CLMethod]
         public int __Hash__()
         {

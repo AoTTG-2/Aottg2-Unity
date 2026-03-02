@@ -151,6 +151,18 @@ namespace CustomLogic
             return IdToMapObjectBuiltin[obj.ScriptObject.Id];
         }
 
+        public CustomLogicMapObjectBuiltin GetOrCreateMapObjectBuiltin(MapObject obj)
+        {
+            if (obj == null)
+                return null;
+            
+            if (!IdToMapObjectBuiltin.ContainsKey(obj.ScriptObject.Id))
+            {
+                IdToMapObjectBuiltin.Add(obj.ScriptObject.Id, new CustomLogicMapObjectBuiltin(obj));
+            }
+            return IdToMapObjectBuiltin[obj.ScriptObject.Id];
+        }
+
         public CustomLogicPhotonSync SetupNetworking(MapObject obj)
         {
             if (obj.ScriptObject.Networked)

@@ -3,7 +3,7 @@ using UnityEngine.UIElements;
 namespace CustomLogic
 {
     /// <summary>
-    /// UI element for displaying text
+    /// UI element for displaying text.
     /// </summary>
     [CLType(Name = "Label", Abstract = true)]
     partial class CustomLogicLabelBuiltin : CustomLogicVisualElementBuiltin
@@ -16,7 +16,7 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// The text displayed by the Label
+        /// The text displayed by the Label.
         /// </summary>
         [CLProperty]
         public string Text
@@ -26,7 +26,7 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// When false, rich text tags will not be parsed
+        /// When false, rich text tags will not be parsed.
         /// </summary>
         [CLProperty]
         public bool EnableRichText

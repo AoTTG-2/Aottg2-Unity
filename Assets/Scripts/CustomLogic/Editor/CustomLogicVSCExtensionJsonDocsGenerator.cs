@@ -94,6 +94,7 @@ namespace CustomLogic.Editor
                 Name = clType.Name,
                 Description = NormalizeDescription(clType.Info?.Summary),
                 TypeParameters = typeParameters.Count > 0 ? typeParameters : null,
+                Deprecated = clType.ObsoleteMessage,
                 StaticFields = ConvertFields(clType.StaticProperties),
                 StaticMethods = ConvertMethods(clType.StaticMethods),
                 InstanceFields = ConvertFields(clType.InstanceProperties),
@@ -109,13 +110,32 @@ namespace CustomLogic.Editor
             if (properties == null || properties.Length == 0)
                 return new List<Field>();
 
-            return properties.Select(p => new Field
+            return properties.Select(p =>
             {
-                Label = p.Name,
-                Type = ConvertTypeReference(p.Type),
-                Description = NormalizeDescription(p.Info?.Summary),
-                Readonly = p.IsReadonly,
-                Private = false
+                var description = NormalizeDescription(p.Info?.Summary);
+                if (p.EnumNames != null && p.EnumNames.Length > 0)
+                {
+                    if (!string.IsNullOrEmpty(description))
+                        description += " ";
+                    if (p.EnumNames.Length == 1)
+                    {
+                        description += $"Refer to {p.EnumNames[0]}";
+                    }
+                    else
+                    {
+                        description += $"Refer to {string.Join(", ", p.EnumNames)}";
+                    }
+                }
+                
+                return new Field
+                {
+                    Label = p.Name,
+                    Type = ConvertTypeReference(p.Type),
+                    Description = description,
+                    Readonly = p.IsReadonly,
+                    Private = false,
+                    Deprecated = p.ObsoleteMessage
+                };
             }).ToList();
         }
 
@@ -133,7 +153,8 @@ namespace CustomLogic.Editor
                     ReturnType = ConvertTypeReference(m.ReturnType),
                     Description = NormalizeDescription(m.Info?.Summary),
                     Parameters = ConvertParameters(m.Parameters),
-                    Kind = "function"
+                    Kind = "function",
+                    Deprecated = m.ObsoleteMessage
                 }).ToList();
         }
 
@@ -145,7 +166,8 @@ namespace CustomLogic.Editor
             return constructors.Select(c => new Constructor
             {
                 Parameters = ConvertParameters(c.Parameters),
-                Description = NormalizeDescription(c.Info?.Summary)
+                Description = NormalizeDescription(c.Info?.Summary),
+                Deprecated = c.ObsoleteMessage
             }).ToList();
         }
 
@@ -154,13 +176,31 @@ namespace CustomLogic.Editor
             if (parameters == null || parameters.Length == 0)
                 return new List<Parameter>();
 
-            return parameters.Select(p => new Parameter
+            return parameters.Select(p =>
             {
-                Name = p.Name,
-                Type = ConvertTypeReference(p.Type),
-                Description = NormalizeDescription(p.Info?.Summary),
-                IsOptional = p.IsOptional,
-                IsVariadic = p.IsVariadic
+                var description = NormalizeDescription(p.Description);
+                if (p.EnumNames != null && p.EnumNames.Length > 0)
+                {
+                    if (!string.IsNullOrEmpty(description))
+                        description += " ";
+                    if (p.EnumNames.Length == 1)
+                    {
+                        description += $"Refer to {p.EnumNames[0]}";
+                    }
+                    else
+                    {
+                        description += $"Refer to {string.Join(", ", p.EnumNames)}";
+                    }
+                }
+                
+                return new Parameter
+                {
+                    Name = p.Name,
+                    Type = ConvertTypeReference(p.Type),
+                    Description = description,
+                    IsOptional = p.IsOptional,
+                    IsVariadic = p.IsVariadic
+                };
             }).ToList();
         }
 
@@ -213,6 +253,7 @@ namespace CustomLogic.Editor
             public string Description { get; set; }
             public List<string> TypeParameters { get; set; }
             public List<string> Extends { get; set; }
+            public string Deprecated { get; set; }
             public List<Field> InstanceFields { get; set; }
             public List<Method> InstanceMethods { get; set; }
             public List<Field> StaticFields { get; set; }
@@ -228,6 +269,7 @@ namespace CustomLogic.Editor
             public string Description { get; set; }
             public bool Readonly { get; set; }
             public bool Private { get; set; }
+            public string Deprecated { get; set; }
         }
 
         private class Method
@@ -237,12 +279,14 @@ namespace CustomLogic.Editor
             public string Description { get; set; }
             public List<Parameter> Parameters { get; set; }
             public string Kind { get; set; }
+            public string Deprecated { get; set; }
         }
 
         private class Constructor
         {
             public List<Parameter> Parameters { get; set; }
             public string Description { get; set; }
+            public string Deprecated { get; set; }
         }
 
         private class Parameter

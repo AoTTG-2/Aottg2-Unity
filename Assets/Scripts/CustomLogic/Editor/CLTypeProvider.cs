@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Xml;
@@ -9,12 +10,10 @@ using UnityEditor;
 
 namespace CustomLogic.Editor
 {
+#if UNITY_EDITOR
     class CLTypeProvider
     {
         private const BindingFlags MemberFlags = BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance | BindingFlags.DeclaredOnly;
-
-        // TODO: Generic types
-        // TODO: Optional and variadic params
 
         private static readonly Dictionary<string, string> _typeNameMap = new()
         {
@@ -119,6 +118,22 @@ namespace CustomLogic.Editor
             return type.Name;
         }
 
+        private string[] ResolveEnumNames(Type[] enumTypes)
+        {
+            if (enumTypes == null || enumTypes.Length == 0)
+                return null;
+
+            var enumNames = new List<string>();
+            foreach (var enumType in enumTypes)
+            {
+                var enumClTypeAttribute = CustomLogicReflectionUtils.GetAttribute<CLTypeAttribute>(enumType);
+                var enumName = enumClTypeAttribute != null ? enumClTypeAttribute.Name : enumType.Name;
+                enumNames.Add(enumName);
+            }
+
+            return enumNames.Count > 0 ? enumNames.ToArray() : null;
+        }
+
         /// <summary>
         /// Parses a type reference string that may contain generic type arguments.
         /// Examples: "K", "List&lt;string&gt;", "List&lt;K&gt;", "Dict&lt;K,V&gt;"
@@ -200,6 +215,56 @@ namespace CustomLogic.Editor
             return arguments.ToArray();
         }
 
+        private string ExtractCategoryFromType(Type type)
+        {
+            var typeName = type.Name;
+            var typeNameWithoutSuffix = typeName.Replace("Builtin", "").Replace("Instance", "");
+            
+            // Search for the source file in the project
+            var scriptPath = FindScriptPath(typeName);
+            if (!string.IsNullOrEmpty(scriptPath))
+            {
+                // Extract the parent folder name from the path
+                // Example: Assets\Scripts\CustomLogic\Builtin\Collections\CustomLogicDictBuiltin.cs
+                // Should extract "Collections"
+                var normalizedPath = scriptPath.Replace('\\', '/');
+                var builtinIndex = normalizedPath.IndexOf("Builtin/");
+                
+                if (builtinIndex >= 0)
+                {
+                    var afterBuiltin = normalizedPath.Substring(builtinIndex + "Builtin/".Length);
+                    var parts = afterBuiltin.Split('/');
+                    
+                    if (parts.Length > 1)
+                    {
+                        // Return the folder name immediately after "Builtin"
+                        return parts[0];
+                    }
+                }
+            }
+            
+            return null;
+        }
+
+        private string FindScriptPath(string typeName)
+        {
+            // Search for .cs files matching the type name
+            var guids = AssetDatabase.FindAssets($"{typeName} t:MonoScript");
+            
+            foreach (var guid in guids)
+            {
+                var path = AssetDatabase.GUIDToAssetPath(guid);
+                var fileName = Path.GetFileNameWithoutExtension(path);
+                
+                if (fileName == typeName)
+                {
+                    return path;
+                }
+            }
+            
+            return null;
+        }
+
         private void ResolveCLType(Type type, XmlDocument xmlDocument)
         {
             var clTypeAttribute = CustomLogicReflectionUtils.GetAttribute<CLTypeAttribute>(type);
@@ -215,6 +280,9 @@ namespace CustomLogic.Editor
                 typeParameters = clTypeAttribute.TypeParameters;
             }
 
+            var typeXmlInfo = XmlInfo.FromTypeXml(xmlDocument, type);
+            var category = ExtractCategoryFromType(type);
+
             var clType = new CLType
             {
                 Name = className,
@@ -223,7 +291,8 @@ namespace CustomLogic.Editor
                 InheritBaseMembers = inheritBaseMembers,
                 IsComponent = isComponent,
                 TypeParameters = typeParameters,
-                Info = XmlInfo.FromTypeXml(xmlDocument, type, clTypeAttribute),
+                Category = category,
+                Info = typeXmlInfo,
                 ObsoleteMessage = CustomLogicReflectionUtils.GetObsoleteMessage(type),
             };
 
@@ -262,18 +331,42 @@ namespace CustomLogic.Editor
                     var clParameters = new List<CLParameter>(parameterNames.Count);
                     for (int j = 0; j < parameterNames.Count; j++)
                     {
+                        var parameterType = parameterTypes[j];
+                        var parameterInfo = parameters[j];
+                        
+                        var clParamAttribute = parameterInfo.GetCustomAttribute<CLParamAttribute>();
+                        
+                        if (clParamAttribute != null && !string.IsNullOrEmpty(clParamAttribute.Type))
+                        {
+                            parameterType = ParseTypeReferenceString(clParamAttribute.Type);
+                        }
+                        
+                        string[] enumNames = null;
+                        if (clParamAttribute != null && clParamAttribute.Enum != null && clParamAttribute.Enum.Length > 0)
+                        {
+                            enumNames = ResolveEnumNames(clParamAttribute.Enum);
+                        }
+                        
+                        string parameterDescription = XmlDocumentUtils.GetParameterNodeText(xmlDocument, type, ctor, parameterInfo);
+                        
                         clParameters.Add(new CLParameter
                         {
                             Name = parameterNames[j],
-                            Type = parameterTypes[j],
+                            Description = parameterDescription,
+                            Type = parameterType,
                             DefaultValue = parameterValues[j],
-                            IsVariadic = CustomLogicReflectionUtils.IsVariadicParameter(parameters[j])
+                            IsOptional = parameterInfo.IsOptional,
+                            IsVariadic = CustomLogicReflectionUtils.IsVariadicParameter(parameters[j]),
+                            EnumNames = enumNames
                         });
                     }
 
+                    var ctorAttribute = ctor.GetCustomAttribute<CLConstructorAttribute>();
+                    var ctorXmlInfo = XmlInfo.FromConstructorXml(xmlDocument, type, ctor);
+
                     output[i] = new CLConstructor
                     {
-                        Info = XmlInfo.FromConstructorXml(xmlDocument, type, ctor),
+                        Info = ctorXmlInfo,
                         Parameters = clParameters.ToArray(),
                         ObsoleteMessage = CustomLogicReflectionUtils.GetObsoleteMessage(ctor),
                     };
@@ -330,13 +423,22 @@ namespace CustomLogic.Editor
                     typeRef.Arguments = clPropertyAttribute.TypeArguments.Select(arg => new TypeReference(arg)).ToArray();
                 }
 
+                var propertyXmlInfo = XmlInfo.FromPropertyXml(xmlDocument, type, property);
+
+                string[] enumNames = null;
+                if (clPropertyAttribute != null && clPropertyAttribute.Enum != null && clPropertyAttribute.Enum.Length > 0)
+                {
+                    enumNames = ResolveEnumNames(clPropertyAttribute.Enum);
+                }
+
                 var cLProperty = new CLProperty
                 {
                     Name = property.Name,
                     Type = typeRef,
                     IsReadonly = clPropertyAttribute.ReadOnly || !property.CanWrite,
-                    Info = XmlInfo.FromPropertyXml(xmlDocument, type, property, clPropertyAttribute),
+                    Info = propertyXmlInfo,
                     ObsoleteMessage = CustomLogicReflectionUtils.GetObsoleteMessage(property),
+                    EnumNames = enumNames
                 };
 
                 if (isHybrid || isStatic)
@@ -356,13 +458,22 @@ namespace CustomLogic.Editor
                     typeRef.Arguments = clPropertyAttribute.TypeArguments.Select(arg => new TypeReference(arg)).ToArray();
                 }
 
+                var fieldXmlInfo = XmlInfo.FromFieldXml(xmlDocument, type, field);
+
+                string[] enumNames = null;
+                if (clPropertyAttribute != null && clPropertyAttribute.Enum != null && clPropertyAttribute.Enum.Length > 0)
+                {
+                    enumNames = ResolveEnumNames(clPropertyAttribute.Enum);
+                }
+
                 var cLProperty = new CLProperty
                 {
                     Name = field.Name,
                     Type = typeRef,
                     IsReadonly = clPropertyAttribute.ReadOnly,
-                    Info = XmlInfo.FromFieldXml(xmlDocument, type, field, clPropertyAttribute),
+                    Info = fieldXmlInfo,
                     ObsoleteMessage = CustomLogicReflectionUtils.GetObsoleteMessage(field),
+                    EnumNames = enumNames
                 };
 
                 var isStatic = field.IsStatic || clPropertyAttribute.Static;
@@ -406,40 +517,40 @@ namespace CustomLogic.Editor
                 }).ToList();
                 var parameterValues = parameters.Select(x => CustomLogicReflectionUtils.GetDefaultValueAsString(x)).ToList();
 
+                var info = XmlInfo.FromMethodXml(xmlDocument, type, method);
+
                 var clParameters = new List<CLParameter>(parameterNames.Count);
                 for (int j = 0; j < parameterNames.Count; j++)
                 {
                     var parameterType = parameterTypes[j];
+                    var parameterInfo = parameters[j];
                     
-                    // Apply parameter type arguments from attribute if specified
-                    if (clMethodAttribute?.ParameterTypeArguments != null && 
-                        j < clMethodAttribute.ParameterTypeArguments.Length &&
-                        !string.IsNullOrEmpty(clMethodAttribute.ParameterTypeArguments[j]))
+                    var clParamAttribute = parameterInfo.GetCustomAttribute<CLParamAttribute>();
+                    
+                    // Apply parameter type arguments from CLParamAttribute if specified
+                    if (clParamAttribute != null && !string.IsNullOrEmpty(clParamAttribute.Type))
                     {
-                        parameterType = ParseTypeReferenceString(clMethodAttribute.ParameterTypeArguments[j]);
+                        parameterType = ParseTypeReferenceString(clParamAttribute.Type);
                     }
+                    
+                    string[] enumNames = null;
+                    if (clParamAttribute != null && clParamAttribute.Enum != null && clParamAttribute.Enum.Length > 0)
+                    {
+                        enumNames = ResolveEnumNames(clParamAttribute.Enum);
+                    }
+                    
+                    string parameterDescription = XmlDocumentUtils.GetParameterNodeText(xmlDocument, type, method, parameterInfo);
                     
                     clParameters.Add(new CLParameter
                     {
                         Name = parameterNames[j],
+                        Description = parameterDescription,
                         Type = parameterType,
                         DefaultValue = parameterValues[j],
-                        IsOptional = parameters[j].IsOptional,
-                        IsVariadic = CustomLogicReflectionUtils.IsVariadicParameter(parameters[j])
+                        IsOptional = parameterInfo.IsOptional,
+                        IsVariadic = CustomLogicReflectionUtils.IsVariadicParameter(parameterInfo),
+                        EnumNames = enumNames
                     });
-                }
-
-                var info = XmlInfo.FromMethodXml(xmlDocument, type, method, clMethodAttribute);
-                if (info.Parameters.Count > 0)
-                {
-                    foreach (var parameter in clParameters)
-                    {
-                        if (info.Parameters.ContainsKey(parameter.Name))
-                        {
-                            parameter.Info ??= new XmlInfo();
-                            parameter.Info.Summary = info.Parameters[parameter.Name];
-                        }
-                    }
                 }
 
                 var returnTypeRef = new TypeReference(ResolveTypeName(method.ReturnType));
@@ -499,4 +610,5 @@ namespace CustomLogic.Editor
             return _resolvedTypes.Values.Append(ObjectType).Append(ComponentType).ToArray();
         }
     }
+#endif
 }

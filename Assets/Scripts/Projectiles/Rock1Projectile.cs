@@ -48,13 +48,14 @@ namespace Projectiles
                 var character = collision.collider.gameObject.transform.root.GetComponent<BaseCharacter>();
                 var handler = collision.collider.gameObject.GetComponent<CustomLogicCollisionHandler>();
                 var damage = CalculateDamage();
+                string name = GetName();
                 if (handler != null)
                 {
-                    handler.GetHit(_owner, _owner.Name, damage, "Rock", transform.position);
+                    handler.GetHit(_owner, name, damage, "Rock", transform.position);
                 }
                 if (character != null && !TeamInfo.SameTeam(character, _team))
                 {
-                    character.GetHit(_owner.Name + "'s Rock", damage, "Rock", collision.collider.name);
+                    character.GetHit(name, damage, "Rock", collision.collider.name);
                 }
                 KillPlayersInRadius(_size * 2f, damage, character);
                 EffectSpawner.Spawn(EffectPrefabs.Boom7, transform.position, transform.rotation, _size);
@@ -69,12 +70,13 @@ namespace Projectiles
         {
             var gameManager = (InGameManager)SceneLoader.CurrentGameManager;
             var position = transform.position;
+            string name = GetName();
             foreach (Human human in gameManager.Humans)
             {
                 if (human == null || human.Dead || human == damagedHuman)
                     continue;
                 if (Vector3.Distance(human.Cache.Transform.position, position) < radius && !TeamInfo.SameTeam(human, _team))
-                    human.GetHit(_owner.Name + "'s Rock", damage, "Rock", "");
+                    human.GetHit(name, damage, "Rock", "");
             }
         }
 
@@ -89,6 +91,13 @@ namespace Projectiles
             }
 
             return damage;
+        }
+
+        private string GetName()
+        {
+            if (_owner == null)
+                return "Rock";
+            return _owner.Name + "'s Rock";
         }
     }
 }
