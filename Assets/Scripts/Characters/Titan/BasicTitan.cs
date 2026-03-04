@@ -1174,9 +1174,11 @@ namespace Characters
             LateUpdateHeadRotation = BasicCache.Head.rotation;
         }
 
-
+        private Quaternion targetHeadRotation;
+        private Quaternion oldHeadRotation;
         protected void LateUpdateHead(BaseCharacter target)
         {
+            this.targetHeadRotation = BasicCache.Head.rotation;
             if (target != null)
             {
                 Vector3 targetPosition = target.Cache.Transform.position;
@@ -1186,17 +1188,18 @@ namespace Characters
                 float angle = -Mathf.Atan2(vector.z, vector.x) * Mathf.Rad2Deg;
                 float num = -Mathf.DeltaAngle(angle, Cache.Transform.rotation.eulerAngles.y - 90f);
                 num = Mathf.Clamp(num, -40f, 40f);
+
                 float y = (BasicCache.Neck.position.y + (Size * 2f)) - targetPosition.y;
                 float distance = Util.DistanceIgnoreY(target.Cache.Transform.position, BasicCache.Transform.position);
                 float num2 = Mathf.Atan2(y, distance) * Mathf.Rad2Deg;
                 num2 = Mathf.Clamp(num2, -40f, 30f);
-                BasicCache.Head.rotation = Quaternion.Euler(BasicCache.Head.rotation.eulerAngles.x + num2,
+                targetHeadRotation = Quaternion.Euler(BasicCache.Head.rotation.eulerAngles.x + num2,
                     BasicCache.Head.rotation.eulerAngles.y + num, BasicCache.Head.rotation.eulerAngles.z);
-                BasicCache.Head.localRotation = Quaternion.Lerp(_oldHeadRotation, BasicCache.Head.localRotation, Time.deltaTime * 10f);
+                // BasicCache.Head.localRotation = Quaternion.Lerp(_oldHeadRotation, BasicCache.Head.localRotation, Time.deltaTime * 10f);
             }
-            else
-                BasicCache.Head.localRotation = Quaternion.Lerp(_oldHeadRotation, BasicCache.Head.localRotation, Time.deltaTime * 10f);
-            _oldHeadRotation = BasicCache.Head.localRotation;
+            oldHeadRotation = Quaternion.Lerp(oldHeadRotation, targetHeadRotation, Time.deltaTime * 10f);
+            this.BasicCache.Head.rotation = this.oldHeadRotation;
+            // _oldHeadRotation = BasicCache.Head.rotation;
         }
 
         protected override void LateUpdate()

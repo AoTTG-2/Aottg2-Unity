@@ -121,7 +121,7 @@ public class ExportSceneToMapScript : EditorWindow
 
     void OnEnable()
     {
-        LoadPrefabDatabase();
+        // LoadPrefabDatabase();
     }
 
     void OnGUI()
