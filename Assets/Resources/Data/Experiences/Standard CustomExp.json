@@ -1,0 +1,26 @@
+{
+  "Category": "General",
+  "SubCategory": "Custom",
+  "Name": "Standard Custom",
+  "Description": "Fully customizable sandbox mode.",
+
+  "UIRules": [
+    "general.GameMode=Waves{Waves,Survive,Endless,Cranked}",
+    "general.MapName=Forest1",
+    "general.Difficulty=normal{training,easy,normal,hard,abnormal}",
+
+    "+misc.EndlessRespawnEnabled",
+    "+misc.EndlessRespawnTime",
+    "+misc.AllowPlayerTitans",
+    "+misc.AllowShifters",
+    "+misc.AllowShifterSpecials",
+    "+misc.Horses",
+    "+misc.HorsebackCombat",
+    "+misc.RealismMode",
+
+    "+titan.TitanSpawnEnabled",
+    "+titan.TitanSizeEnabled",
+    "+titan.TitanHealthMode",
+    "+titan.TitanArmorEnabled"
+  ]
+}

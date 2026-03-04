@@ -85,5 +85,44 @@ namespace Settings
         {
             return true;
         }
+
+        public void ApplyVisibilityRules(List<UIRule> rules, string prefix)
+        {
+            if (rules == null)
+            {
+                ClearVisibilityRules();
+                return;
+            }
+            foreach (string name in Settings.Keys)
+            {
+                string ruleId = prefix + "." + name;
+                bool hidden = false;
+                foreach (var rule in rules)
+                {
+                    if (rule.SettingId == ruleId && (rule.Type == UIRuleType.Hide || rule.DisableEditing))
+                    {
+                        hidden = true;
+                        break;
+                    }
+                }
+                ((BaseSetting)Settings[name]).IsHidden = hidden;
+            }
+        }
+
+        public void ClearVisibilityRules()
+        {
+            foreach (BaseSetting setting in Settings.Values)
+                setting.IsHidden = false;
+        }
+
+        public bool HasAnyVisibleSettings()
+        {
+            foreach (BaseSetting setting in Settings.Values)
+            {
+                if (!setting.IsHidden)
+                    return true;
+            }
+            return false;
+        }
     }
 }

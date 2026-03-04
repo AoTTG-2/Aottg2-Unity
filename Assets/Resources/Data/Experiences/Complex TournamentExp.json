@@ -1,0 +1,43 @@
+{
+  "Category": "Ranking",
+  "SubCategory": "Tournament",
+  "Name": "Complex Tournament",
+  "Description": "Highly customized tournament mode with strict settings.",
+
+  "UIRules": [
+    "!general.GameMode=Blade PVP",
+    "general.MapName=City1{City1,City2,City3}",
+    "!general.Difficulty=abnormal",
+    "general.MaxPlayers=16[8-32]",
+
+    "!misc.PVP=1",
+    "!misc.AllowPlayerTitans=false",
+    "!misc.AllowShifters=false",
+    "!misc.AllowShifterSpecials=false",
+    "misc.InvincibilityTime=5[1-10]",
+    "misc.AllowSpawnTime=30[10-60]",
+    "!misc.AllowBlades=true",
+    "!misc.AllowAHSS=false",
+    "!misc.AllowAPG=false",
+    "!misc.AllowThunderspears=false",
+    "misc.ClearKDROnRestart=true",
+    "misc.AllowVoteKicking=true",
+    "+misc.Motd",
+    "misc.HumanHealth=100[50-200]",
+    "-misc.RealismMode",
+    "-misc.RealismImpactThreshold",
+    "-misc.RealismMaxReel",
+    "-misc.RealismMaxSpeed",
+
+    "!titan.TitanSpawnEnabled=false",
+    "-titan.TitanSpawnNormal",
+    "-titan.TitanSpawnAbnormal",
+    "-titan.TitanSpawnJumper",
+    "-titan.TitanSpawnCrawler",
+    "-titan.TitanSpawnThrower",
+    "-titan.TitanSpawnPunk",
+    "-titan.TitanSizeEnabled",
+    "-titan.TitanHealthMode",
+    "-titan.TitanArmorEnabled"
+  ]
+}

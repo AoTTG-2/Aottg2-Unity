@@ -37,7 +37,8 @@ namespace UI
 
         protected virtual List<string> GetItems(string category)
         {
-            return BuiltinLevels.GetMapNames(category).ToList();
+            var popup = (CreateGameSelectMapPopup)Parent;
+            return popup.GetFilteredMaps(category);
         }
 
         protected void CreateRow(List<string> items)
@@ -73,10 +74,13 @@ namespace UI
             string category = popup.GetCurrentCategoryName();
             SettingsManager.InGameUI.General.MapCategory.Value = category;
             SettingsManager.InGameUI.General.MapName.Value = name;
+            BasePopup createGamePopup;
             if (SceneLoader.SceneName == SceneName.InGame)
-                ((InGameMenu)UIManager.CurrentMenu)._createGamePopup.RebuildCategoryPanel();
+                createGamePopup = (BasePopup)((InGameMenu)UIManager.CurrentMenu)._createGamePopup;
             else
-                ((MainMenu)UIManager.CurrentMenu)._createGamePopup.RebuildCategoryPanel();
+                createGamePopup = (BasePopup)((MainMenu)UIManager.CurrentMenu)._createGamePopup;
+            if (createGamePopup != null && createGamePopup.gameObject.activeSelf)
+                createGamePopup.RebuildCategoryPanel();
             Parent.Hide();
         }
     }

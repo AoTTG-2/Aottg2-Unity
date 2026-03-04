@@ -8,6 +8,7 @@ using Settings;
 using System.Collections;
 using ApplicationManagers;
 using GameManagers;
+using Map;
 using Utility;
 
 namespace UI
@@ -21,6 +22,8 @@ namespace UI
         protected override bool CategoryButtons => true;
         protected override string DefaultCategoryPanel => "General";
 
+        public UIRule ActiveMapRule;
+
         public override void Setup(BasePanel parent = null)
         {
             base.Setup(parent);
@@ -30,9 +33,36 @@ namespace UI
             gameObject.AddComponent<IgnoreScaler>();
         }
 
+        public override void Show()
+        {
+            base.Show();
+            UpdateTabVisibility();
+            RebuildCategoryPanel();
+        }
+
+        public override void Hide()
+        {
+            base.Hide();
+            ActiveMapRule = null;
+        }
+
+        private void UpdateTabVisibility()
+        {
+            foreach (var kvp in _topButtons)
+                kvp.Value.gameObject.SetActive(GetFilteredMaps(kvp.Key).Count > 0);
+        }
+
         protected virtual string[] GetCategories()
         {
             return new string[] { "General", "Mission", "PVP", "Cage Fight", "Racing Basic", "Racing Hard", "Custom" };
+        }
+
+        public List<string> GetFilteredMaps(string category)
+        {
+            var maps = BuiltinLevels.GetMapNames(category).ToList();
+            if (ActiveMapRule != null && ActiveMapRule.AllowedValues != null && ActiveMapRule.AllowedValues.Count > 0)
+                maps = maps.Where(m => ActiveMapRule.MatchesAllowedValues(m)).ToList();
+            return maps;
         }
 
         protected override void SetupTopButtons()

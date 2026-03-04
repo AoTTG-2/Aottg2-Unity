@@ -17,13 +17,11 @@ namespace UI
             ElementFactory.CreateToggleGroupSetting(DoublePanelLeft, style, settings.PVP, UIManager.GetLocale(cat, sub, "PVP"), UIManager.GetLocaleArray(cat, sub, "PVPOptions"));
             ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.CustomStats, UIManager.GetLocale(cat, sub, "CustomStats"), UIManager.GetLocale(cat, sub, "CustomStatsTooltip"));
             ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.CustomPerks, UIManager.GetLocale(cat, sub, "CustomPerks"), UIManager.GetLocale(cat, sub, "CustomPerksTooltip"));
-
             ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.RealismMode, UIManager.GetLocale(cat, sub, "RealismMode"), UIManager.GetLocale(cat, sub, "RealismModeTooltip"));
             ElementFactory.CreateInputSetting(DoublePanelLeft, style, settings.RealismImpactThreshold, UIManager.GetLocale(cat, sub, "RealismImpact"), UIManager.GetLocale(cat, sub, "RealismImpactTooltip"));
             ElementFactory.CreateInputSetting(DoublePanelLeft, style, settings.RealismMaxReel, UIManager.GetLocale(cat, sub, "RealismHookLength"), UIManager.GetLocale(cat, sub, "RealismHookLengthTooltip"));
             ElementFactory.CreateInputSetting(DoublePanelLeft, style, settings.RealismMaxSpeed, UIManager.GetLocale(cat, sub, "RealismMaxSpeed"), UIManager.GetLocale(cat, sub, "RealismMaxSpeedTooltip"));
             ElementFactory.CreateInputSetting(DoublePanelLeft, style, settings.HookDamageMultiplier, UIManager.GetLocale(cat, sub, "HookDamageMultiplier"), UIManager.GetLocale(cat, sub, "HookDamageMultiplierTooltip"));
-
             ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.Horses, UIManager.GetLocale(cat, sub, "Horses"));
             ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.HorsebackCombat, UIManager.GetLocale(cat, sub, "HorsebackCombat"));
             ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.EndlessRespawnEnabled, UIManager.GetLocale(cat, sub, "EndlessRespawnEnabled"));
@@ -44,13 +42,14 @@ namespace UI
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.ClearKDROnRestart, UIManager.GetLocale(cat, sub, "ClearKDROnRestart"));
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.GlobalMinimapDisable, UIManager.GetLocale(cat, sub, "GlobalMinimapDisable"));
             ElementFactory.CreateDropdownSetting(DoublePanelRight, style, settings.VoiceChat, UIManager.GetLocale(cat, sub, "VoiceChat"),
-                               UIManager.GetLocaleArray(cat, sub, "VoiceChatOptions"), elementWidth: inputWidth);
+                                   UIManager.GetLocaleArray(cat, sub, "VoiceChatOptions"), elementWidth: inputWidth);
             ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.ProximityMinDistance, UIManager.GetLocale(cat, sub, "ProximityMinDistance"), elementWidth: inputWidth);
             ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.ProximityMaxDistance, UIManager.GetLocale(cat, sub, "ProximityMaxDistance"), elementWidth: inputWidth);
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.GunsAirReload, UIManager.GetLocale(cat, sub, "GunsAirReload"));
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.AllowStock, UIManager.GetLocale(cat, sub, "AllowStock"));
             ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.InvincibilityTime, UIManager.GetLocale(cat, sub, "InvincibilityTime"), elementWidth: inputWidth);
             ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.Motd, UIManager.GetLocale(cat, sub, "MOTD"), elementWidth: inputWidth);
+            ApplySettingVisibility();
         }
     }
 }

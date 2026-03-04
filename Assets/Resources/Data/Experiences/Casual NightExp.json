@@ -1,0 +1,17 @@
+{
+  "Category": "General",
+  "SubCategory": "Casual",
+  "Name": "Casual Night",
+  "Description": "Nighttime titan encounters with low visibility.",
+
+  "UIRules": [
+    "general.GameMode=Waves{Waves,Survive}",
+    "general.MapName=Cave1{Cave1,Utgard1,Utgard2}",
+    "general.Difficulty=normal{easy,normal,hard}",
+    "general.WeatherIndex=2",
+
+    "titan.TitanSizeEnabled=true",
+    "titan.TitanSizeMin=1.5[1-2]",
+    "titan.TitanSizeMax=2.5[2-4]"
+  ]
+}

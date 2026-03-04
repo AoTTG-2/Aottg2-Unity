@@ -165,6 +165,19 @@ namespace Map
             return categories.ToArray();
         }
 
+        public static string FindMapCategory(string mapName)
+        {
+            foreach (JSONNode mapCategory in _info["MapCategories"])
+            {
+                foreach (JSONNode map in mapCategory["Maps"])
+                {
+                    if (map["Name"] == mapName)
+                        return mapCategory["Name"];
+                }
+            }
+            return "General";
+        }
+
         public static string[] GetMapNames(string category)
         {
             if (category == "Custom")
@@ -196,7 +209,7 @@ namespace Map
             {
                 foreach (JSONNode map in mapCategory["Maps"])
                 {
-                    if (query.MatchesAllowedValues(map["Name"]) || query.AllowedValues.Count == 0)
+                    if (query == null || query.AllowedValues == null || query.AllowedValues.Count == 0 || query.MatchesAllowedValues(map["Name"]))
                         mapNames.Add(map["Name"]);
                 }
 
@@ -209,7 +222,7 @@ namespace Map
             HashSet<string> modeNames = new HashSet<string>();
             foreach (JSONNode mode in _info["GameModes"])
             {
-                if (query.MatchesAllowedValues(mode["Name"]) || query.AllowedValues.Count == 0)
+                if (query == null || query.AllowedValues == null || query.AllowedValues.Count == 0 || query.MatchesAllowedValues(mode["Name"]))
                     modeNames.Add(mode["Name"]);
 
             }

@@ -1,0 +1,19 @@
+{
+  "Category": "General",
+  "SubCategory": "Challenge",
+  "Name": "Standard Challenge",
+  "Description": "Test your skills against harder titans.",
+
+  "UIRules": [
+    "general.GameMode=Waves{Waves,Survive,Cranked}",
+    "general.MapName=Forest1{Forest1,Forest2,City1}",
+    "general.Difficulty=hard{normal,hard,abnormal}",
+
+    "titan.TitanSpawnEnabled=true",
+    "titan.TitanSpawnAbnormal=40[20-60]",
+    "titan.TitanSpawnJumper=30[10-40]",
+    "titan.TitanHealthMode=1",
+    "titan.TitanHealthMin=300[100-500]",
+    "titan.TitanHealthMax=600[300-1000]"
+  ]
+}

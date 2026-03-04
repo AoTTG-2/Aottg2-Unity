@@ -5,6 +5,8 @@ namespace Settings
 {
     abstract class BaseSetting
     {
+        public bool IsHidden;
+
         public abstract void SetDefault();
         public abstract JSONNode SerializeToJsonObject();
         public abstract void DeserializeFromJsonObject(JSONNode json);

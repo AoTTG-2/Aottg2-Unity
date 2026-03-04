@@ -5,15 +5,12 @@
   "Description": "A basic racing experience.",
   
   "UIRules": [
-    "general.modes=Racing",
-    "general.maps=Akina{Akina,Another Brick in the Wall,Future Trax 10}",
+    "!general.GameMode=Racing",
+    "general.MapName=Akina{Akina,Another Brick in the Wall,Future Trax 10}",
 
-    "!misc.allow_player_titans=false",
-    "!misc.allow_shifter_specials=false",
+    "!misc.AllowPlayerTitans=false",
+    "!misc.AllowShifterSpecials=false",
     
-    "titan.min_size=2.5[0-3.0]",
-    "titan.max_size=3.0[0-3.0]",
-
-    "general.difficulty=normal{easy,normal,hard,abnormal}"
+    "general.Difficulty=normal{easy,normal,hard,abnormal}"
   ]
 }

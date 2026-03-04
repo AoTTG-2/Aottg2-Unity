@@ -1,0 +1,24 @@
+{
+  "Category": "General",
+  "SubCategory": "Survival",
+  "Name": "Medium Survival",
+  "Description": "Balanced survival mode with titan customization.",
+
+  "UIRules": [
+    "general.GameMode=Survive{Survive,Endless}",
+    "general.MapName=City1{City1,City2,Forest1,Forest2}",
+    "general.Difficulty=normal{normal,hard,abnormal}",
+
+    "misc.EndlessRespawnEnabled=true",
+    "misc.EndlessRespawnTime=10[5-30]",
+    "misc.AllowPlayerTitans=false",
+    "misc.Horses=true",
+
+    "titan.TitanSizeEnabled=true",
+    "titan.TitanSizeMin=1.5[1-2]",
+    "titan.TitanSizeMax=4[2-5]",
+    "titan.TitanHealthMode=1",
+    "titan.TitanHealthMin=200[100-500]",
+    "titan.TitanHealthMax=500[200-1000]"
+  ]
+}

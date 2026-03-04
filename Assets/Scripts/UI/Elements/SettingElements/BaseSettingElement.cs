@@ -12,6 +12,7 @@ namespace UI
         protected SettingType _settingType;
         protected ElementStyle _style;
         protected virtual HashSet<SettingType> SupportedSettingTypes => new HashSet<SettingType>();
+        public BaseSetting Setting => _setting;
 
         public virtual void Setup(BaseSetting setting, ElementStyle style, string title, string tooltip)
         {

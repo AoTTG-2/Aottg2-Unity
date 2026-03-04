@@ -1,0 +1,16 @@
+{
+  "Category": "General",
+  "SubCategory": "Casual",
+  "Name": "Casual Horses",
+  "Description": "Mounted combat in open terrain.",
+
+  "UIRules": [
+    "general.GameMode=Waves{Waves,Endless}",
+    "general.MapName=Lake{Lake,Plaza,Rocky Mountain}",
+    "general.Difficulty=normal{easy,normal,hard}",
+
+    "misc.Horses=true",
+    "misc.HorsebackCombat=true",
+    "misc.AllowPlayerTitans=false"
+  ]
+}

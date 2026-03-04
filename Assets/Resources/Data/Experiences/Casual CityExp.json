@@ -1,0 +1,16 @@
+{
+  "Category": "General",
+  "SubCategory": "Casual",
+  "Name": "Casual City",
+  "Description": "Urban titan hunting for beginners.",
+
+  "UIRules": [
+    "general.GameMode=Waves{Waves,Endless}",
+    "general.MapName=City1{City1,City2,Trost1,Trost2}",
+    "general.Difficulty=easy{easy,normal}",
+
+    "titan.TitanSizeEnabled=true",
+    "titan.TitanSizeMin=1[1-2]",
+    "titan.TitanSizeMax=2[1-3]"
+  ]
+}

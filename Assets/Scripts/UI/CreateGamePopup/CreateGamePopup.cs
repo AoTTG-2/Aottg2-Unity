@@ -23,6 +23,7 @@ namespace UI
         protected override string DefaultCategoryPanel => "General";
         public string LocaleCategory = "CreateGamePopup";
         public bool IsMultiplayer = false;
+        public PresetDefinition ActivePreset;
 
         protected FileWatcherExtension _watcher;
         private string _cachedLogicSource;
@@ -86,11 +87,56 @@ namespace UI
 
         public void Show(bool isMultiplayer)
         {
+            ActivePreset = null;
+            ClearVisibilityRules();
             base.Show();
-            if (IsMultiplayer != isMultiplayer)
+            IsMultiplayer = isMultiplayer;
+            UpdateTabVisibility();
+            SetCategoryPanel("General");
+        }
+
+        public void ShowWithPreset(PresetDefinition preset)
+        {
+            ActivePreset = preset;
+            ApplyVisibilityRules();
+            base.Show();
+            UpdateTabVisibility();
+            SetCategoryPanel("Mode");
+        }
+
+        private void ApplyVisibilityRules()
+        {
+            InGameSet settings = SettingsManager.InGameUI;
+            var rules = ActivePreset?.UIRulesObject;
+            settings.Titan.ApplyVisibilityRules(rules, "titan");
+            settings.Misc.ApplyVisibilityRules(rules, "misc");
+            settings.General.ApplyVisibilityRules(rules, "general");
+        }
+
+        private void ClearVisibilityRules()
+        {
+            InGameSet settings = SettingsManager.InGameUI;
+            settings.Titan.ClearVisibilityRules();
+            settings.Misc.ClearVisibilityRules();
+            settings.General.ClearVisibilityRules();
+        }
+
+        private void UpdateTabVisibility()
+        {
+            InGameSet settings = SettingsManager.InGameUI;
+            var categoryContainers = new Dictionary<string, BaseSettingsContainer>
             {
-                IsMultiplayer = isMultiplayer;
-                StartCoroutine(WaitAndRebuildCategoryPanel(0.2f));
+                { "Titans", settings.Titan },
+                { "Misc", settings.Misc },
+            };
+            foreach (var kvp in _topButtons)
+            {
+                if (kvp.Key == "General")
+                    kvp.Value.gameObject.SetActive(ActivePreset == null);
+                else if (categoryContainers.TryGetValue(kvp.Key, out var container))
+                    kvp.Value.gameObject.SetActive(container.HasAnyVisibleSettings());
+                else
+                    kvp.Value.gameObject.SetActive(true);
             }
         }
 

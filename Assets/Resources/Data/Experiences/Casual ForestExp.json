@@ -1,0 +1,12 @@
+{
+  "Category": "General",
+  "SubCategory": "Casual",
+  "Name": "Casual Forest",
+  "Description": "Relaxed forest gameplay with default settings.",
+
+  "UIRules": [
+    "general.GameMode=Waves{Waves,Endless}",
+    "general.MapName=Forest1{Forest1,Forest2,Forest3}",
+    "general.Difficulty=easy{easy,normal}"
+  ]
+}

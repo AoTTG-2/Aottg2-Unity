@@ -1,0 +1,21 @@
+{
+  "Category": "General",
+  "SubCategory": "Training",
+  "Name": "Standard Training",
+  "Description": "Practice mode with invincibility and respawns.",
+
+  "UIRules": [
+    "general.GameMode=Endless",
+    "general.MapName=Forest1{Forest1,City1,Plaza}",
+    "general.Difficulty=training",
+
+    "misc.EndlessRespawnEnabled=true",
+    "misc.EndlessRespawnTime=3[1-10]",
+    "misc.InvincibilityTime=10[5-30]",
+    "misc.AllowPlayerTitans=false",
+
+    "titan.TitanSizeEnabled=true",
+    "titan.TitanSizeMin=2[1-3]",
+    "titan.TitanSizeMax=2[1-3]"
+  ]
+}

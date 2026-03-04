@@ -1,0 +1,16 @@
+{
+  "Category": "General",
+  "SubCategory": "Casual",
+  "Name": "Casual Coop",
+  "Description": "Team-friendly casual mode with respawns enabled.",
+
+  "UIRules": [
+    "general.GameMode=Endless{Waves,Endless}",
+    "general.MapName=Forest1{Forest1,Forest2,City1,City2}",
+    "general.Difficulty=normal{easy,normal}",
+
+    "misc.EndlessRespawnEnabled=true",
+    "misc.EndlessRespawnTime=5[3-15]",
+    "misc.AllowPlayerTitans=false"
+  ]
+}

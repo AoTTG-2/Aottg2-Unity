@@ -1,0 +1,26 @@
+{
+  "Category": "General",
+  "SubCategory": "Hardcore",
+  "Name": "Standard Hardcore",
+  "Description": "Realistic mode with no respawns and tough titans.",
+
+  "UIRules": [
+    "!general.GameMode=Survive",
+    "general.MapName=Forest1{Forest1,Forest2,City1,Cave1}",
+    "!general.Difficulty=abnormal",
+
+    "!misc.EndlessRespawnEnabled=false",
+    "misc.RealismMode=true",
+    "misc.RealismImpactThreshold=100[80-150]",
+    "misc.AllowPlayerTitans=false",
+    "misc.AllowShifters=false",
+
+    "titan.TitanSpawnEnabled=true",
+    "titan.TitanSpawnAbnormal=50[30-70]",
+    "titan.TitanHealthMode=1",
+    "titan.TitanHealthMin=500[300-800]",
+    "titan.TitanHealthMax=1000[500-1500]",
+    "titan.TitanArmorEnabled=true",
+    "titan.TitanArmor=500[200-1000]"
+  ]
+}

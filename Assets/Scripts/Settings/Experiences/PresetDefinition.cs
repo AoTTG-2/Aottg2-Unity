@@ -41,7 +41,7 @@ namespace Settings
                 {
                     foreach (var rule in UIRulesObject)
                     {
-                        if (rule.SettingId == "general.maps")
+                        if (rule.SettingId == "general.MapName")
                             _mapRule = rule;
                     }
                 }
@@ -57,7 +57,7 @@ namespace Settings
                 {
                     foreach (var rule in UIRulesObject)
                     {
-                        if (rule.SettingId == "general.modes")
+                        if (rule.SettingId == "general.GameMode")
                             _modeRule = rule;
                     }
                 }

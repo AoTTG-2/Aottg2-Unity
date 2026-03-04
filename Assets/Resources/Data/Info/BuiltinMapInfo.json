@@ -492,7 +492,79 @@
             "Name" : "Vs Titans",
             "Category" : "General",
             "SubCategory" : "Casual",
-            "Description" : "1k minimum damage required to kill titans."
+            "Description" : "Classic titan fighting gameplay."
+        },
+        {
+            "Name" : "Simple Casual",
+            "Category" : "General",
+            "SubCategory" : "Casual",
+            "Description" : "A minimal experience for casual play."
+        },
+        {
+            "Name" : "Casual Forest",
+            "Category" : "General",
+            "SubCategory" : "Casual",
+            "Description" : "Relaxed forest gameplay with default settings."
+        },
+        {
+            "Name" : "Casual City",
+            "Category" : "General",
+            "SubCategory" : "Casual",
+            "Description" : "Urban titan hunting for beginners."
+        },
+        {
+            "Name" : "Casual Night",
+            "Category" : "General",
+            "SubCategory" : "Casual",
+            "Description" : "Nighttime titan encounters with low visibility."
+        },
+        {
+            "Name" : "Casual Coop",
+            "Category" : "General",
+            "SubCategory" : "Casual",
+            "Description" : "Team-friendly casual mode with respawns enabled."
+        },
+        {
+            "Name" : "Casual Horses",
+            "Category" : "General",
+            "SubCategory" : "Casual",
+            "Description" : "Mounted combat in open terrain."
+        },
+        {
+            "Name" : "Medium Survival",
+            "Category" : "General",
+            "SubCategory" : "Survival",
+            "Description" : "Balanced survival mode with titan customization."
+        },
+        {
+            "Name" : "Standard Challenge",
+            "Category" : "General",
+            "SubCategory" : "Challenge",
+            "Description" : "Test your skills against harder titans."
+        },
+        {
+            "Name" : "Standard Training",
+            "Category" : "General",
+            "SubCategory" : "Training",
+            "Description" : "Practice mode with invincibility and respawns."
+        },
+        {
+            "Name" : "Standard Hardcore",
+            "Category" : "General",
+            "SubCategory" : "Hardcore",
+            "Description" : "Realistic mode with no respawns and tough titans."
+        },
+        {
+            "Name" : "Standard Custom",
+            "Category" : "General",
+            "SubCategory" : "Custom",
+            "Description" : "Fully customizable sandbox mode."
+        },
+        {
+            "Name" : "Complex Tournament",
+            "Category" : "Ranking",
+            "SubCategory" : "Tournament",
+            "Description" : "Highly customized tournament mode with strict settings."
         }
     ],
 	"Duels": [

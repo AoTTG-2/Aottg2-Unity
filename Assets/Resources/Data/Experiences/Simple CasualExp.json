@@ -1,0 +1,12 @@
+{
+  "Category": "General",
+  "SubCategory": "Casual",
+  "Name": "Simple Casual",
+  "Description": "A minimal experience for casual play.",
+
+  "UIRules": [
+    "general.GameMode=Waves",
+    "general.MapName=Forest1",
+    "general.Difficulty=easy"
+  ]
+}

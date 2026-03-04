@@ -5,9 +5,9 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-namespace Editor
+namespace Assets.Scripts.Editor
 {
-    class ModifyDataFiles : EditorWindow
+    /*class ModifyDataFiles : EditorWindow
     {
         [MenuItem("AoTTG2/Editor/UpdateDataFiles")]
         public static void ShowWindow()
@@ -73,5 +73,5 @@ namespace Editor
             AssetDatabase.Refresh();
             Debug.Log($"Experiences summary written to: {path}");
         }
-    }
+    }*/
 }

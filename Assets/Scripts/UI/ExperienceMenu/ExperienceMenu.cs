@@ -23,6 +23,7 @@ namespace UI
         public Button settingsButton;
         public Button backButton;
         public Button sandboxButton;
+        public PresetDefinition SelectedPreset = null;
         public bool IsMultiplayer = false;
 
         public override void Setup(BasePanel parent = null)
@@ -118,18 +119,30 @@ namespace UI
             if (SceneLoader.SceneName == SceneName.InGame)
             {
                 ((InGameMenu)UIManager.CurrentMenu).SkipAHSSInput = true;
-                ((CreateGamePopup)((InGameMenu)UIManager.CurrentMenu)._createGamePopup).Show();
+                var popup = (CreateGamePopup)((InGameMenu)UIManager.CurrentMenu)._createGamePopup;
+                if (preset != null)
+                    popup.ShowWithPreset(preset);
+                else
+                    popup.Show(IsMultiplayer);
                 HideNoDisconnect();
             }
             else if (IsMultiplayer)
             {
                 HideNoDisconnect();
-                ((CreateGamePopup)((MainMenu)UIManager.CurrentMenu)._createGamePopup).Show();
+                var popup = (CreateGamePopup)((MainMenu)UIManager.CurrentMenu)._createGamePopup;
+                if (preset != null)
+                    popup.ShowWithPreset(preset);
+                else
+                    popup.Show(IsMultiplayer);
             }
             else
             {
                 Hide();
-                ((CreateGamePopup)((MainMenu)UIManager.CurrentMenu)._createGamePopup).Show();
+                var popup = (CreateGamePopup)((MainMenu)UIManager.CurrentMenu)._createGamePopup;
+                if (preset != null)
+                    popup.ShowWithPreset(preset);
+                else
+                    popup.Show(IsMultiplayer);
             }
         }
 
@@ -152,6 +165,10 @@ namespace UI
                     break;
 
                 case "Settings":
+                    OpenSettings(SelectedPreset);
+                    break;
+
+                case "Sandbox":
                     OpenSettings();
                     break;
 

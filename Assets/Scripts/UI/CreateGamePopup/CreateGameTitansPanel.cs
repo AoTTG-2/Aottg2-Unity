@@ -45,6 +45,7 @@ namespace UI
                 tooltip: UIManager.GetLocale(cat, sub, "StandardModelsTooltip"));
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.TitanSmartMovement, UIManager.GetLocale(cat, sub, "SmartMovement"),
                 tooltip: UIManager.GetLocale(cat, sub, "SmartMovementTooltip"));
+            ApplySettingVisibility();
         }
     }
 }

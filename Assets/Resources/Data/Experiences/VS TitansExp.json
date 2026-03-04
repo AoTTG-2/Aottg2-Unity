@@ -2,18 +2,18 @@
   "Category": "General",
   "SubCategory": "Casual",
   "Name": "Vs Titans",
-  "Description": "1k minimum damage required to kill titans.",
+  "Description": "Classic titan fighting gameplay.",
 
   "UIRules": [
-    "general.modes=Waves{Waves,Survive,Endless,Cranked}",
-    "general.maps=Forest1{Forest1,Forest2}",
+    "general.GameMode=Waves{Waves,Survive,Endless,Cranked}",
+    "general.MapName=Forest1{Forest1,Forest2,City1,City2}",
+    "general.Difficulty=normal{easy,normal,hard,abnormal}",
 
-    "!misc.allow_player_titans=false",
-    "!misc.allow_shifter_specials=false",
+    "misc.AllowPlayerTitans=false",
+    "misc.AllowShifterSpecials=false",
     
-    "titan.min_size=2.5[0-3.0]",
-    "titan.max_size=3.0[0-3.0]",
-
-    "general.difficulty=normal{easy,normal,hard,abnormal}"
+    "titan.TitanSizeEnabled=true",
+    "titan.TitanSizeMin=1[1-3]",
+    "titan.TitanSizeMax=3[1-5]"
   ]
 }
