@@ -219,6 +219,7 @@ MonoBehaviour:
   - {fileID: 1736856603352312394}
   - {fileID: 8541236173919928976}
   - {fileID: -3603671717885856348}
+  - {fileID: 6098060857290421348}
 --- !u!114 &160011179311096334
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -551,6 +552,64 @@ MonoBehaviour:
   intensity:
     m_OverrideState: 1
     m_Value: 0.1
+--- !u!114 &6098060857290421348
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fd03cbbfa7b7fe4dbc3d7709b42d662, type: 3}
+  m_Name: ScreenSpaceGlobalIlluminationVolume
+  m_EditorClassIdentifier: 
+  active: 0
+  enable:
+    m_OverrideState: 1
+    m_Value: 1
+  thicknessMode:
+    m_OverrideState: 1
+    m_Value: 1
+  depthBufferThickness:
+    m_OverrideState: 1
+    m_Value: 0.253
+  quality:
+    m_OverrideState: 1
+    m_Value: 3
+  fullResolutionSS:
+    m_OverrideState: 1
+    m_Value: 1
+  resolutionScaleSS:
+    m_OverrideState: 0
+    m_Value: 0.5
+  sampleCount:
+    m_OverrideState: 1
+    m_Value: 1
+  maxRaySteps:
+    m_OverrideState: 1
+    m_Value: 16
+  denoiseSS:
+    m_OverrideState: 1
+    m_Value: 1
+  denoiserAlgorithmSS:
+    m_OverrideState: 1
+    m_Value: 1
+  denoiseIntensitySS:
+    m_OverrideState: 0
+    m_Value: 0.95
+  denoiserRadiusSS:
+    m_OverrideState: 0
+    m_Value: 0.64
+  secondDenoiserPassSS:
+    m_OverrideState: 1
+    m_Value: 1
+  rayMiss:
+    m_OverrideState: 1
+    m_Value: 3
+  indirectDiffuseLightingMultiplier:
+    m_OverrideState: 0
+    m_Value: 1
 --- !u!114 &8541236173919928976
 MonoBehaviour:
   m_ObjectHideFlags: 3

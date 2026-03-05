@@ -1,5 +1,13 @@
 {
   "dependencies": {
+    "com.jiaozi158.unityssgiurp": {
+      "version": "file:C:/Users/Tony/Desktop/UnitySSGIURP-main",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.unity.render-pipelines.universal": "14.0.11"
+      }
+    },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
       "depth": 0,
@@ -21,6 +29,15 @@
       "source": "registry",
       "dependencies": {
         "com.unity.mathematics": "1.2.1"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.cinemachine": {
+      "version": "2.10.0",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.test-framework": "1.1.31"
       },
       "url": "https://packages.unity.com"
     },
@@ -154,7 +171,7 @@
       "source": "builtin",
       "dependencies": {
         "com.unity.mathematics": "1.2.1",
-        "com.unity.burst": "1.8.4",
+        "com.unity.burst": "1.8.9",
         "com.unity.render-pipelines.core": "15.0.7",
         "com.unity.shadergraph": "15.0.7"
       }

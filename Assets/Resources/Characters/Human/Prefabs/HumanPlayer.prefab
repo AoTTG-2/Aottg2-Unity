@@ -16336,6 +16336,7 @@ GameObject:
   - component: {fileID: 11414282}
   - component: {fileID: 11414280}
   - component: {fileID: 3902152229338984631}
+  - component: {fileID: 5037658090737394534}
   m_Layer: 0
   m_Name: HumanPlayer
   m_TagString: Untagged
@@ -16645,6 +16646,18 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &5037658090737394534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 101914}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b139ac3861f6dd840a60c27d106d0401, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4310715724008364727
 GameObject:
   m_ObjectHideFlags: 0
