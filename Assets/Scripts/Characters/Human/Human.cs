@@ -2254,94 +2254,106 @@ namespace Characters
 
             bool hitTitan = collision.transform.root.gameObject.layer == PhysicsLayer.TitanMovebox;
 
-            ContactPoint primaryContact = collision.contacts[0];
-            Vector3 collisionNormal = primaryContact.normal;
-
-            // Decompose last velocity into horizontal and vertical
-            Vector3 lastHorizontal = new Vector3(_lastVelocity.x, 0f, _lastVelocity.z);
-            float lastVerticalSpeed = _lastVelocity.y;
-
-            // Flatten collision normal to horizontal plane
-            Vector3 horizontalNormal = new Vector3(collisionNormal.x, 0f, collisionNormal.z);
-            bool isFloorCeiling = horizontalNormal.sqrMagnitude < 0.01f;
-
-            if (!isFloorCeiling)
-                horizontalNormal.Normalize();
-
-            // How vertical the approach is (0 = fully horizontal, 1 = fully vertical)
-            float totalSpeed = lastHorizontal.magnitude + Mathf.Abs(lastVerticalSpeed);
-            float verticalRatio = totalSpeed > 0.01f ? Mathf.Abs(lastVerticalSpeed) / totalSpeed : 0f;
-
-            Vector3 resolvedHorizontal;
-            float resolvedVertical;
-
-            if (isFloorCeiling)
+            if (hitTitan)
             {
-                // Pure floor/ceiling hit: preserve horizontal entirely, damp vertical
-                resolvedHorizontal = lastHorizontal;
-                resolvedVertical = lastVerticalSpeed * 0.1f;
-            }
-            else
-            {
-                // Wall-like hit: resolve in the horizontal plane, preserve vertical
-                Vector3 projected = Vector3.ProjectOnPlane(lastHorizontal, horizontalNormal);
+                ContactPoint primaryContact = collision.contacts[0];
+                Vector3 collisionNormal = primaryContact.normal;
 
-                // Horizontal approach angle (0 = head-on, 90 = parallel/glancing)
-                float horizontalAngle = lastHorizontal.magnitude > 0.1f
-                    ? Vector3.Angle(lastHorizontal, -horizontalNormal)
-                    : 90f;
+                // Decompose last velocity into horizontal and vertical
+                Vector3 lastHorizontal = new Vector3(_lastVelocity.x, 0f, _lastVelocity.z);
+                float lastVerticalSpeed = _lastVelocity.y;
 
-                // Glancing hits blend toward original direction, head-on uses projection
-                float blendFactor = Mathf.Clamp01(horizontalAngle / 90f);
-                resolvedHorizontal = Vector3.Lerp(projected, lastHorizontal, blendFactor * 0.5f);
+                // Flatten collision normal to horizontal plane
+                Vector3 horizontalNormal = new Vector3(collisionNormal.x, 0f, collisionNormal.z);
+                bool isFloorCeiling = horizontalNormal.sqrMagnitude < 0.01f;
 
-                // Friction: head-on loses more speed, glancing preserves it
-                float frictionMultiplier = Mathf.Lerp(0.4f, 0.95f, blendFactor);
+                if (!isFloorCeiling)
+                    horizontalNormal.Normalize();
 
-                // Penalize slippery movement when approach is more vertical than horizontal
-                frictionMultiplier *= Mathf.Lerp(1f, 0.5f, verticalRatio);
+                // How vertical the approach is (0 = fully horizontal, 1 = fully vertical)
+                float totalSpeed = lastHorizontal.magnitude + Mathf.Abs(lastVerticalSpeed);
+                float verticalRatio = totalSpeed > 0.01f ? Mathf.Abs(lastVerticalSpeed) / totalSpeed : 0f;
 
-                resolvedHorizontal *= frictionMultiplier;
+                Vector3 resolvedHorizontal;
+                float resolvedVertical;
 
-                // Preserve vertical velocity through wall hits
-                resolvedVertical = lastVerticalSpeed;
-            }
-
-            // Titan-specific multi-contact resolution (horizontal only)
-            if (hitTitan && !isFloorCeiling)
-            {
-                bool intervalFinished = Time.time - _collisionTimer >= _collisionInterval;
-                bool sameCollider = collision.collider == _lastHit;
-                bool canResolve = intervalFinished || !sameCollider;
-                _collisionTimer = Time.time;
-                _lastHit = collision.collider;
-
-                if (canResolve)
+                if (isFloorCeiling)
                 {
-                    foreach (ContactPoint contact in collision.contacts)
-                    {
-                        Vector3 contactHorizNormal = new Vector3(contact.normal.x, 0f, contact.normal.z);
-                        if (contactHorizNormal.sqrMagnitude < 0.01f)
-                            continue;
-                        contactHorizNormal.Normalize();
+                    // Pure floor/ceiling hit: preserve horizontal entirely, damp vertical
+                    resolvedHorizontal = lastHorizontal;
+                    resolvedVertical = lastVerticalSpeed * 0.1f;
+                }
+                else
+                {
+                    // Wall-like hit: resolve in the horizontal plane, preserve vertical
+                    Vector3 projected = Vector3.ProjectOnPlane(lastHorizontal, horizontalNormal);
 
-                        float dot = Vector3.Dot(lastHorizontal.normalized, -contactHorizNormal);
-                        if (dot > 0.2f)
+                    // Horizontal approach angle (0 = head-on, 90 = parallel/glancing)
+                    float horizontalAngle = lastHorizontal.magnitude > 0.1f
+                        ? Vector3.Angle(lastHorizontal, -horizontalNormal)
+                        : 90f;
+
+                    // Glancing hits blend toward original direction, head-on uses projection
+                    float blendFactor = Mathf.Clamp01(horizontalAngle / 90f);
+                    resolvedHorizontal = Vector3.Lerp(projected, lastHorizontal, blendFactor * 0.5f);
+
+                    // Friction: head-on loses more speed, glancing preserves it
+                    float frictionMultiplier = Mathf.Lerp(0.4f, 0.95f, blendFactor);
+
+                    // Penalize slippery movement when approach is more vertical than horizontal
+                    frictionMultiplier *= Mathf.Lerp(1f, 0.5f, verticalRatio);
+
+                    resolvedHorizontal *= frictionMultiplier;
+
+                    // Preserve vertical velocity through wall hits
+                    resolvedVertical = lastVerticalSpeed;
+                }
+
+                // Titan-specific multi-contact resolution (horizontal only)
+                if (hitTitan && !isFloorCeiling)
+                {
+                    bool intervalFinished = Time.time - _collisionTimer >= _collisionInterval;
+                    bool sameCollider = collision.collider == _lastHit;
+                    bool canResolve = intervalFinished || !sameCollider;
+                    _collisionTimer = Time.time;
+                    _lastHit = collision.collider;
+
+                    if (canResolve)
+                    {
+                        foreach (ContactPoint contact in collision.contacts)
                         {
-                            Vector3 contactProjected = Vector3.ProjectOnPlane(resolvedHorizontal, contactHorizNormal);
-                            resolvedHorizontal = Vector3.Lerp(resolvedHorizontal, contactProjected, 0.4f);
+                            Vector3 contactHorizNormal = new Vector3(contact.normal.x, 0f, contact.normal.z);
+                            if (contactHorizNormal.sqrMagnitude < 0.01f)
+                                continue;
+                            contactHorizNormal.Normalize();
+
+                            float dot = Vector3.Dot(lastHorizontal.normalized, -contactHorizNormal);
+                            if (dot > 0.2f)
+                            {
+                                Vector3 contactProjected = Vector3.ProjectOnPlane(resolvedHorizontal, contactHorizNormal);
+                                resolvedHorizontal = Vector3.Lerp(resolvedHorizontal, contactProjected, 0.4f);
+                            }
                         }
                     }
                 }
+
+                Vector3 finalVelocity = new Vector3(resolvedHorizontal.x, resolvedVertical, resolvedHorizontal.z);
+
+                // Never exceed original speed
+                if (finalVelocity.magnitude > (_lastVelocity.magnitude + 50))
+                    finalVelocity = finalVelocity.normalized * _lastVelocity.magnitude;
+
+                Cache.Rigidbody.velocity = finalVelocity;
+            }
+            else
+            {
+                var velocity = Cache.Rigidbody.velocity;
+                float angle = Mathf.Abs(Vector3.Angle(velocity, _lastVelocity));
+                float speedMultiplier = Mathf.Max(1f - (angle * 1.5f * 0.01f), 0f);
+                float speed = _lastVelocity.magnitude * speedMultiplier;
+                Cache.Rigidbody.velocity = velocity.normalized * speed;
             }
 
-            Vector3 finalVelocity = new Vector3(resolvedHorizontal.x, resolvedVertical, resolvedHorizontal.z);
-
-            // Never exceed original speed
-            if (finalVelocity.magnitude > _lastVelocity.magnitude)
-                finalVelocity = finalVelocity.normalized * _lastVelocity.magnitude;
-
-            Cache.Rigidbody.velocity = finalVelocity;
 
             float speedDiff = _lastVelocity.magnitude - Cache.Rigidbody.velocity.magnitude;
             if (SettingsManager.InGameCurrent.Misc.RealismMode.Value && speedDiff > SettingsManager.InGameCurrent.Misc.RealismImpactThreshold.Value)
