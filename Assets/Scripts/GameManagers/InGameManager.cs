@@ -631,18 +631,18 @@ namespace GameManagers
                 if (forced != string.Empty)
                 {
                     settings.Loadout.Value = forced;
-                    switch (forced)
-                    {
-                        case TitanLoadout.Small:
-                            titan.SetSize(smallSize);
-                            break;
-                        case TitanLoadout.Medium:
-                            titan.SetSize(mediumSize);
-                            break;
-                        case TitanLoadout.Large:
-                            titan.SetSize(largeSize);
-                            break;
-                    }
+                }
+                switch (settings.Loadout.Value)
+                {
+                    case TitanLoadout.Small:
+                        titan.SetSize(smallSize);
+                        break;
+                    case TitanLoadout.Medium:
+                        titan.SetSize(mediumSize);
+                        break;
+                    case TitanLoadout.Large:
+                        titan.SetSize(largeSize);
+                        break;
                 }
                 CurrentCharacter = titan;
             }
