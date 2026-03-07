@@ -615,6 +615,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: de6d54cbe52572144bcfda101e107db1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2767080267070775775}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: de6d54cbe52572144bcfda101e107db1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7326944770717895277}
     - targetCorrespondingSourceObject: {fileID: -1524027702623695569, guid: de6d54cbe52572144bcfda101e107db1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8380399170526124323}
@@ -846,6 +849,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 1614392729699649543}
+  - {fileID: 7326944770717895277}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -876,6 +880,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f85064de1bdcc84789e96032e30ec45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  FootstepsEnabled: 1
+  SoundsEnabled: 1
+  MaxFootstepDistance: 200
+  MaxSoundDistance: 500
   RichTextName: 
   VisibleName: 
   Guild: 
@@ -889,6 +897,11 @@ MonoBehaviour:
   CurrentHealth: 0
   Team: 
   MovementSync: {fileID: 0}
+  CurrentSpeed: 0
+  SyncAnimationId: 0
+  SyncAnimationSeq: 0
+  SyncAnimationFadeTime: 0
+  SyncAnimationStartTime: 0
   Grounded: 0
   JustGrounded: 0
   TargetAngle: 0
@@ -901,6 +914,7 @@ MonoBehaviour:
   HoldHuman: {fileID: 0}
   HoldHumanLeft: 0
   Size: 1
+  ClimbCooldown: 0.5
   StunTime: 0.3
   ActionPause: 0.2
   AttackPause: 0.2
@@ -919,11 +933,26 @@ MonoBehaviour:
   JumpForce: 0
   RotateSpeed: 0
   TurnSpeed: 0
+  LeftArmDisabled: 0
+  RightArmDisabled: 0
   _jumpDirection: {x: 0, y: 0, z: 0}
   _stateTimeLeft: 0
+  EnableAI: 1
   TransformingToHuman: 0
   PreviousHumanGas: 0
   DeathAnimationLength: 2
+--- !u!114 &7326944770717895277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2957345096030717427}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c34555eb8230d2f4db0308c1d70b762a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &2966318119998481425 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8295196210911060813, guid: de6d54cbe52572144bcfda101e107db1, type: 3}

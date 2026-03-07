@@ -118,6 +118,7 @@ GameObject:
   - component: {fileID: 13601006}
   - component: {fileID: 11401008}
   - component: {fileID: 11401006}
+  - component: {fileID: 7171858699670979094}
   - component: {fileID: 5405542}
   - component: {fileID: 7580768216817431424}
   - component: {fileID: 4806116717347376359}
@@ -200,6 +201,9 @@ MonoBehaviour:
   MovementSync: {fileID: 0}
   CurrentSpeed: 0
   SyncAnimationId: 0
+  SyncAnimationSeq: 0
+  SyncAnimationFadeTime: 0
+  SyncAnimationStartTime: 0
   Grounded: 0
   JustGrounded: 0
   TargetAngle: 0
@@ -259,6 +263,18 @@ MonoBehaviour:
   Disabled: 0
   _correctVelocity: {x: 0, y: 0, z: 0}
   _correctCamera: {x: 0, y: 0, z: 0, w: 1}
+--- !u!114 &7171858699670979094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 101010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c34555eb8230d2f4db0308c1d70b762a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!54 &5405542
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -306,6 +322,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 11401006}
+  - {fileID: 7171858699670979094}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0

@@ -3625,6 +3625,7 @@ GameObject:
   - component: {fileID: 5461908}
   - component: {fileID: 6474221309491181676}
   - component: {fileID: 4393293558520945965}
+  - component: {fileID: 2528671624448111667}
   m_Layer: 11
   m_Name: BasicTitan1
   m_TagString: Untagged
@@ -3703,6 +3704,10 @@ MonoBehaviour:
   Team: 
   MovementSync: {fileID: 0}
   CurrentSpeed: 0
+  SyncAnimationId: 0
+  SyncAnimationSeq: 0
+  SyncAnimationFadeTime: 0
+  SyncAnimationStartTime: 0
   Grounded: 0
   JustGrounded: 0
   TargetAngle: 0
@@ -3809,6 +3814,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 11461908}
+  - {fileID: 2528671624448111667}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -3834,6 +3840,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &2528671624448111667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 161892}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c34555eb8230d2f4db0308c1d70b762a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &161894
 GameObject:
   m_ObjectHideFlags: 0
