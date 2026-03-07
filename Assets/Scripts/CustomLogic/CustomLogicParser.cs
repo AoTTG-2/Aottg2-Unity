@@ -1,24 +1,27 @@
 ﻿using ApplicationManagers;
+using Settings;
 using System;
 using System.Collections.Generic;
 
 namespace CustomLogic
 {
-    class CustomLogicParser
+    internal class CustomLogicParser
     {
         protected List<CustomLogicToken> _tokens = new List<CustomLogicToken>();
         public string Error = "";
-        private int _baseLogicOffset = 0;
+        public CustomLogicCompiler Compiler { get; private set; }
 
-        public CustomLogicParser(List<CustomLogicToken> tokens, int baseLogicOffset = 0)
+        public CustomLogicParser(List<CustomLogicToken> tokens, CustomLogicCompiler compiler = null)
         {
             _tokens = tokens;
-            _baseLogicOffset = baseLogicOffset;
+            Compiler = compiler;
         }
 
         public string GetLineNumberString(int line)
         {
-            return CustomLogicManager.GetLineNumberString(line, _baseLogicOffset);
+            if (Compiler != null)
+                return Compiler.FormatLineNumber(line);
+            return line.ToString();
         }
 
         public CustomLogicStartAst GetStartAst()
@@ -33,7 +36,8 @@ namespace CustomLogic
             catch (Exception e)
             {
                 Error = e.Message;
-                DebugConsole.Log("Custom logic parsing error: " + e.Message, true);
+                bool showInChat = SettingsManager.UISettings != null && SettingsManager.UISettings.ChatCLErrors.Value;
+                DebugConsole.LogCustomLogic("Custom logic parsing error: " + e.Message, showInChat);
                 start = new CustomLogicStartAst();
                 start.AddEmptyMain();
                 return start;
@@ -88,6 +92,17 @@ namespace CustomLogic
                 notExpressionAst.Next = right;
                 return notExpressionAst;
             }
+            // Added unary minus and plus (not sure if we need plus but others will matter like ~)
+            else if (IsSymbolValue(currToken, (int)CustomLogicSymbol.Minus) || IsSymbolValue(currToken, (int)CustomLogicSymbol.Plus))
+            {
+                // Handle unary + and -
+                // Make sure this is a prefix, not a binary operator (no left-hand side)
+                var unaryAst = new CustomLogicUnaryExpressionAst(currToken, currToken.Line);
+                var operand = ParseExpression(null, startIndex + 1, endIndex);
+                unaryAst.Next = operand;
+                return unaryAst;
+            }
+            // End added unary minus and plus
             else if (IsSymbolValue(currToken, (int)CustomLogicSymbol.Dot))
             {
                 AssertTokenType(nextToken, CustomLogicTokenType.Name);
@@ -174,6 +189,17 @@ namespace CustomLogic
                 if (IsSymbolIn(currToken, CustomLogicSymbols.ClassSymbols))
                 {
                     CustomLogicClassDefinitionAst classAst = new CustomLogicClassDefinitionAst(currToken, currToken.Line);
+                    
+                    // Set the namespace based on the source file type
+                    if (Compiler != null)
+                    {
+                        var fileType = Compiler.GetFileTypeForLine(currToken.Line);
+                        if (fileType.HasValue)
+                        {
+                            classAst.Namespace = fileType.Value;
+                        }
+                    }
+                    
                     AssertSymbolValue(_tokens[startIndex + 2], (int)CustomLogicSymbol.LeftCurly);
                     startIndex = ParseAst(startIndex + 3, classAst);
                     ((CustomLogicStartAst)prev).AddClass((string)nextToken.Value, classAst);
@@ -334,6 +360,20 @@ namespace CustomLogic
                     parenCount--;
                 if (parenCount > 0)
                     continue;
+
+                // account for unary minus
+                if (IsSymbolValue(token, (int)CustomLogicSymbol.Minus) || IsSymbolValue(token, (int)CustomLogicSymbol.Plus))
+                {
+                    if (i == startIndex) // first token in expression
+                        continue;
+                    var prev = _tokens[i - 1];
+                    // skip if previous token is an operator or '('
+                    if (prev.Type == CustomLogicTokenType.Symbol &&
+                        !IsSymbolValue(prev, (int)CustomLogicSymbol.RightParen))
+                        continue;
+                }
+                // end account for unary minus
+
                 if (IsSymbolBinop(token))
                 {
                     int priority = CustomLogicSymbols.BinopSymbolPriorities[(int)token.Value];

@@ -16,7 +16,7 @@ namespace Characters
 
         public static void Init()
         {
-            foreach (string name in new string[] {"Titan", "Annie", "Eren", "WallColossal"})
+            foreach (string name in new string[] {GameManagers.ShifterType.Titan, GameManagers.ShifterType.Annie, GameManagers.ShifterType.Eren, GameManagers.ShifterType.WallColossal})
             {
                 TitanAIInfos.Add(name, JSON.Parse(ResourceManager.TryLoadText(ResourcePaths.CharacterData, name + "AIInfo")));
                 TitanAttackInfos.Add(name, LoadTitanAttackInfos(TitanAIInfos[name], name + "Keyframes"));

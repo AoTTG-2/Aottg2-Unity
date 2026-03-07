@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Map
 {
-    class MapScriptCustomAssets: BaseCSVContainer
+    public class MapScriptCustomAssets: BaseCSVContainer
     {
         public List<string> CustomAssets = new List<string>();
     }

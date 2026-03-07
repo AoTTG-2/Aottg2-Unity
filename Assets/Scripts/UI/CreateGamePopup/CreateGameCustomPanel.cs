@@ -50,9 +50,9 @@ namespace UI
             }
             CreateHorizontalDivider(DoublePanelLeft);
             ElementFactory.CreateDefaultLabel(DoublePanelLeft, new ElementStyle(fontSize: 20, themePanel: ThemePanel),
-                "Custom maps can be found in Documents/Aottg2/CustomMap. ", alignment: TextAnchor.MiddleLeft);
+                UIManager.GetLocale("CreateGamePopup", "Custom", "MapLocation"), alignment: TextAnchor.MiddleLeft);
             ElementFactory.CreateDefaultLabel(DoublePanelLeft, new ElementStyle(fontSize: 20, themePanel: ThemePanel),
-               "To use a custom map, select the Custom map category under the General section.", alignment: TextAnchor.MiddleLeft);
+               UIManager.GetLocale("CreateGamePopup", "Custom", "AddingMaps"), alignment: TextAnchor.MiddleLeft);
             var logics = BuiltinLevels.GetCustomModes();
             ElementFactory.CreateDefaultLabel(DoublePanelRight, style, UIManager.GetLocale(cat, sub, "CustomLogic"), FontStyle.Bold, alignment: TextAnchor.MiddleLeft);
             CreateHorizontalDivider(DoublePanelRight);
@@ -81,9 +81,9 @@ namespace UI
             }
             CreateHorizontalDivider(DoublePanelRight);
             ElementFactory.CreateDefaultLabel(DoublePanelRight, new ElementStyle(fontSize: 20, themePanel: ThemePanel),
-                "Custom logic can be found in Documents/Aottg2/CustomLogic", alignment: TextAnchor.MiddleLeft);
+                UIManager.GetLocale("CreateGamePopup", "Custom", "CustomLogicLocation"), alignment: TextAnchor.MiddleLeft);
             ElementFactory.CreateDefaultLabel(DoublePanelRight, new ElementStyle(fontSize: 20, themePanel: ThemePanel),
-                "To use a custom script, select it in the Game mode dropdown under the General section.", alignment: TextAnchor.MiddleLeft);
+                UIManager.GetLocale("CreateGamePopup", "Custom", "AddingCustomLogic"), alignment: TextAnchor.MiddleLeft);
         }
 
         private void OnCustomButtonClick(string name, bool isMap)
@@ -117,11 +117,11 @@ namespace UI
                     var newImportPopup = UIManager.CurrentMenu.NewImportPopup;
                     string fileName = newImportPopup.FileName.Value;
                     if (fileName == "")
-                        newImportPopup.ShowError("Name cannot be empty.");
+                        newImportPopup.ShowError(UIManager.GetLocale("CreateGamePopup", "Custom", "WarningEmptyName"));
                     else if (isMap)
                     {
                         if (CurrentMapNames.Contains(fileName))
-                            newImportPopup.ShowError("File name already exists.");
+                            newImportPopup.ShowError(UIManager.GetLocale("CreateGamePopup", "Custom", "WarningAlreadyExists"));
                         else
                         {
                             MapScript script = new MapScript();
@@ -133,14 +133,14 @@ namespace UI
                             }
                             catch (Exception e)
                             {
-                                newImportPopup.ShowError("Error importing: " + e.Message);
+                                newImportPopup.ShowError(UIManager.GetLocaleFormatted("CreateGamePopup", "Custom", "WarningInvalid", e.Message));
                             }
                         }
                     }
                     else
                     {
                         if (CurrentLogicNames.Contains(fileName))
-                            newImportPopup.ShowError("File name already exists.");
+                            newImportPopup.ShowError(UIManager.GetLocale("CreateGamePopup", "Custom", "WarningAlreadyExists"));
                         else
                         {
                             string logic = UIManager.CurrentMenu.NewImportPopup.ImportSetting.Value;
@@ -176,7 +176,7 @@ namespace UI
                         }
                         catch (Exception e)
                         {
-                            importPopup.ShowError("Error importing: " + e.Message);
+                            importPopup.ShowError(UIManager.GetLocaleFormatted("CreateGamePopup", "Custom", "WarningInvalid", e.Message));
                         }
                     }
                     else

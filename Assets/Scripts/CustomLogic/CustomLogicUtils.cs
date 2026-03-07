@@ -66,6 +66,17 @@ namespace CustomLogic
         {
             if (ast is CustomLogicPrimitiveExpressionAst primitiveAst)
                 return Convert.ToSingle(primitiveAst.Value);
+            else if (ast is CustomLogicUnaryExpressionAst unaryAst)
+            {
+                // Handle unary expressions (e.g., negative values)
+                CustomLogicSymbol symbol = (CustomLogicSymbol)unaryAst.Token.Value;
+                float operand = BaseAstToFloat(unaryAst.Next);
+                
+                if (symbol == CustomLogicSymbol.Minus)
+                    return -operand;
+                else if (symbol == CustomLogicSymbol.Plus)
+                    return operand;
+            }
 
             return 0;
         }
@@ -74,6 +85,17 @@ namespace CustomLogic
         {
             if (ast is CustomLogicPrimitiveExpressionAst primitiveAst)
                 return Convert.ToInt32(primitiveAst.Value);
+            else if (ast is CustomLogicUnaryExpressionAst unaryAst)
+            {
+                // Handle unary expressions (e.g., negative values)
+                CustomLogicSymbol symbol = (CustomLogicSymbol)unaryAst.Token.Value;
+                int operand = BaseAstToInt(unaryAst.Next);
+                
+                if (symbol == CustomLogicSymbol.Minus)
+                    return -operand;
+                else if (symbol == CustomLogicSymbol.Plus)
+                    return operand;
+            }
 
             return 0;
         }

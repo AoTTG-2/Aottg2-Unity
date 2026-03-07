@@ -141,7 +141,7 @@ namespace Map
                 else
                 {
                     MapTransfer.MapTransferReady = true;
-                    RPCManager.PhotonView.RPC("LoadBuiltinMapRPC", RpcTarget.All, new object[] { settings.MapCategory.Value, settings.MapName.Value });
+                    RPCManager.PhotonView.RPC(nameof(RPCManager.LoadBuiltinMapRPC), RpcTarget.All, new object[] { settings.MapCategory.Value, settings.MapName.Value });
                 }
             }
         }
@@ -204,7 +204,7 @@ namespace Map
                 if (settings.MapCategory.Value == "Custom")
                     MapTransfer.Transfer(player);
                 else
-                    RPCManager.PhotonView.RPC("LoadBuiltinMapRPC", player, new object[] { settings.MapCategory.Value, settings.MapName.Value });
+                    RPCManager.PhotonView.RPC(nameof(RPCManager.LoadBuiltinMapRPC), player, new object[] { settings.MapCategory.Value, settings.MapName.Value });
             }
         }
     }

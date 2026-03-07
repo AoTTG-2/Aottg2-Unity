@@ -2598,11 +2598,11 @@ class Main
             }
             if (humans == 0 && playerShifters == 0 && self._hasSpawned)
             {
-                UI.SetLabelAll("MiddleCenter", "Humanity failed!");
+                UI.SetLabelAll(UILabelEnum.MiddleCenter, "Humanity failed!");
                 Game.End(10.0);
                 return;
             }
-            UI.SetLabelAll("TopCenter", "Titans Left: " + Convert.ToString(titans) + "  " + "Wave: " + Convert.ToString(self._currentWave));
+            UI.SetLabelAll(UILabelEnum.TopCenter, "Titans Left: " + Convert.ToString(titans) + "  " + "Wave: " + Convert.ToString(self._currentWave));
         }
     }
 
@@ -2611,18 +2611,18 @@ class Main
         self._currentWave = self._currentWave + 1;
         if (self._currentWave > self.MaxWaves)
         {
-            UI.SetLabelAll("MiddleCenter", "All waves cleared, humanity wins!");
+            UI.SetLabelAll(UILabelEnum.MiddleCenter, "All waves cleared, humanity wins!");
             Game.End(10.0);
             return;
         }
         amount = self.AddTitansPerWave * (self._currentWave - 1) + self.StartTitans;
         if (self.GradualSpawn)
         {
-            Game.SpawnTitansAsync("Default", amount);
+            Game.SpawnTitansAsync(TitanTypeEnum.Default, amount);
         }
         else
         {
-            Game.SpawnTitans("Default", amount);
+            Game.SpawnTitans(TitanTypeEnum.Default, amount);
         }
         if (self.RespawnOnWave)
         {

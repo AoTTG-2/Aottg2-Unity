@@ -88,7 +88,6 @@ class Main
             StageController.OnStart();
         }
 
-        # CharacterState.Restore();
         self._initialized = true;
     }
 }
@@ -98,21 +97,7 @@ extension CharacterState
     BladeDurability = 0;
     LeftHookEnabled = false;
     RightHookEnabled = false;
-    Special = "None";
-
-    function Restore()
-    {
-        if (Main.Character == null)
-        {
-            return;
-        }
-
-        Main.Character.CurrentGas = self.Gas;
-        Main.Character.CurrentBladeDurability = self.BladeDurability;
-        Main.Character.LeftHookEnabled = self.LeftHookEnabled;
-        Main.Character.RightHookEnabled = self.RightHookEnabled;
-        Main.Character.SetSpecial(self.Special);
-    }
+    Special = SpecialEnum.None;
 
     function SetGas(value)
     {
@@ -180,7 +165,7 @@ class IntroductionStage
     function OnTick() { }
     function OnFrame()
     {
-        if (Input.GetKeyDown("Interaction/Interact3"))
+        if (Input.GetKeyDown(InputInteractionEnum.Interact3))
         {
             StageController.ToStage(MovementStage(), 0.3);
         }
@@ -208,7 +193,7 @@ class MovementStage
         CharacterState.SetBladeDurability(0);
         CharacterState.SetLeftHookEnabled(false);
         CharacterState.SetRightHookEnabled(false);
-        CharacterState.SetSpecial("None");
+        CharacterState.SetSpecial(SpecialEnum.None);
 
         str = TextStyle.Line(Locale.Get("Movement.Text"));
         str += TextStyle.ContinueNextStage("Stage.Camera");
@@ -220,12 +205,12 @@ class MovementStage
     function OnTick() { }
     function OnFrame()
     {
-        if (Input.GetKeyDown("Interaction/Interact3"))
+        if (Input.GetKeyDown(InputInteractionEnum.Interact3))
         {
             StageController.ToStage(CameraSwitchStage(), 0.3);
         }
 
-        # if (!self._started && (Input.GetKeyDown("Interaction/Interact3") || Input.GetKeyDown("General/Forward") || Input.GetKeyDown("General/Back") || Input.GetKeyDown("General/Left") || Input.GetKeyDown("General/Right")))
+        # if (!self._started && (Input.GetKeyDown(InputInteractionEnum.Interact3) || Input.GetKeyDown(InputGeneralEnum.Forward) || Input.GetKeyDown(InputGeneralEnum.Back) || Input.GetKeyDown(InputGeneralEnum.Left) || Input.GetKeyDown(InputGeneralEnum.Right)))
         # {
         #     str = Locale.Get("Movement.Forward");
         #     str = String.Replace(str, "{0}", TextStyle.KeyName("General/Forward"));
@@ -238,7 +223,7 @@ class MovementStage
         #     return;
         # }
 
-        # if (Input.GetKeyHold("General/Forward") && !self._forwardCompleted)
+        # if (Input.GetKeyHold(InputGeneralEnum.Forward) && !self._forwardCompleted)
         # {
         #     self._currentTime += Time.FrameTime;
         #     if (self._currentTime >= self.RequiredMoveTime)
@@ -251,7 +236,7 @@ class MovementStage
         #         self._currentTime = 0;
         #     }
         # }
-        # elif (Input.GetKeyHold("General/Left") && !self._leftCompleted && self._forwardCompleted)
+        # elif (Input.GetKeyHold(InputGeneralEnum.Left) && !self._leftCompleted && self._forwardCompleted)
         # {
         #     self._currentTime += Time.FrameTime;
         #     if (self._currentTime >= self.RequiredMoveTime)
@@ -264,7 +249,7 @@ class MovementStage
         #         self._currentTime = 0;
         #     }
         # }
-        # elif (Input.GetKeyHold("General/Back") && !self._backCompleted && self._leftCompleted && self._forwardCompleted)
+        # elif (Input.GetKeyHold(InputGeneralEnum.Back) && !self._backCompleted && self._leftCompleted && self._forwardCompleted)
         # {
         #     self._currentTime += Time.FrameTime;
         #     if (self._currentTime >= self.RequiredMoveTime)
@@ -277,7 +262,7 @@ class MovementStage
         #         self._currentTime = 0;
         #     }
         # }
-        # elif (Input.GetKeyHold("General/Right") && !self._rightCompleted && self._backCompleted && self._leftCompleted && self._forwardCompleted)
+        # elif (Input.GetKeyHold(InputGeneralEnum.Right) && !self._rightCompleted && self._backCompleted && self._leftCompleted && self._forwardCompleted)
         # {
         #     self._currentTime += Time.FrameTime;
         #     if (self._currentTime >= self.RequiredMoveTime)
@@ -305,7 +290,7 @@ class CameraSwitchStage
     function OnTick() { }
     function OnFrame()
     {
-        if (Input.GetKeyDown("Interaction/Interact3"))
+        if (Input.GetKeyDown(InputInteractionEnum.Interact3))
         {
             StageController.ToStage(SupplyStationStage(), 0.3);
         }
@@ -464,7 +449,7 @@ class WallRunningStage
     function OnTick() { }
     function OnFrame()
     {
-        if (self._cleared && Input.GetKeyDown("Interaction/Interact3"))
+        if (self._cleared && Input.GetKeyDown(InputInteractionEnum.Interact3))
         {
             StageController.ToStage(HookStage(), 0.3);
         }
@@ -621,7 +606,7 @@ class HookHorizontalStage
     function OnTick() { }
     function OnFrame()
     {
-        if (self._completed && Input.GetKeyDown("Interaction/Interact3"))
+        if (self._completed && Input.GetKeyDown(InputInteractionEnum.Interact3))
         {
             StageController.ToStage(DashStage(), 0.3);
         }
@@ -698,7 +683,7 @@ class DashStage
 
             self._completed = true;
         }
-        if (self._completed && Input.GetKeyDown("Interaction/Interact3"))
+        if (self._completed && Input.GetKeyDown(InputInteractionEnum.Interact3))
         {
             StageController.ToStage(AttackStage(), 0.3);
         }
@@ -729,13 +714,13 @@ class AttackStage
 
         CharacterState.SetLeftHookEnabled(true);
         CharacterState.SetRightHookEnabled(true);
-        CharacterState.SetSpecial("Spin2");
+        CharacterState.SetSpecial(SpecialEnum.Spin2);
     }
 
     function OnTick() { }
     function OnFrame()
     {
-        if (Input.GetKeyDown("Interaction/Interact3"))
+        if (Input.GetKeyDown(InputInteractionEnum.Interact3))
         {
             StageController.ToStage(NapeAttackStage(), 0.3);
         }
@@ -756,7 +741,7 @@ class NapeAttackStage
         Tween.PlayerPosition(self.SpawnPoint).Start();
         Tween.Scale(MapUtils.DummyTitan, Vector3.Zero).SetDuration(1.4).SetEasing("InOutElastic").Start();
 
-        self._titan = Game.SpawnTitanAt("Normal", Vector3(0, 5, 20));
+        self._titan = Game.SpawnTitanAt(TitanTypeEnum.Normal, Vector3(0, 5, 20));
         self._titan.Size = 1;
         self._titan.DetectRange = 0;
         self._titan.FocusRange = 0;
@@ -831,7 +816,7 @@ class CrippleStage
         Dialogue.Show("Stage.Attack", str);
 
         wait 0.9;
-        self._titan = Game.SpawnTitanAt("Normal", Vector3(0, 5, 20));
+        self._titan = Game.SpawnTitanAt(TitanTypeEnum.Normal, Vector3(0, 5, 20));
         self._titan.Size = 1;
         self._titan.DetectRange = 0;
         self._titan.FocusRange = 0;
@@ -928,7 +913,7 @@ class BlindStage
         Dialogue.Show("Stage.Attack", str);
 
         wait 0.9;
-        self._titan = Game.SpawnTitanAt("Normal", Vector3(0, 5, 20));
+        self._titan = Game.SpawnTitanAt(TitanTypeEnum.Normal, Vector3(0, 5, 20));
         self._titan.Size = 1;
         self._titan.DetectRange = 0;
         self._titan.FocusRange = 0;
@@ -1017,7 +1002,7 @@ class ArmCutStage
         Dialogue.Show("Stage.Attack", str);
 
         wait 0.9;
-        self._titan = Game.SpawnTitanAt("Normal", Vector3(0, 5, 20));
+        self._titan = Game.SpawnTitanAt(TitanTypeEnum.Normal, Vector3(0, 5, 20));
         self._titan.Size = 1;
         self._titan.DetectRange = 0;
         self._titan.FocusRange = 0;
@@ -1115,7 +1100,7 @@ class FightStage
         MapUtils.ObstacleB.TextureTilingX = 2;
         MapUtils.ObstacleB.TextureTilingY = 20;
         
-        self._titan = Game.SpawnTitanAt("Normal", Vector3(0, 5, 20));
+        self._titan = Game.SpawnTitanAt(TitanTypeEnum.Normal, Vector3(0, 5, 20));
         self._titan.Size = Random.RandomFloat(1, 2);
 
         str = TextStyle.Instruction(Locale.Get("Attack.Instruction5"));
@@ -1381,7 +1366,7 @@ extension TextStyle
     function Continue()
     {
         str = Locale.Get("Stage.Continue");
-        str = String.Replace(str, "{0}", self.KeyName("Interaction/Interact3"));
+        str = String.Replace(str, "{0}", self.KeyName(InputInteractionEnum.Interact3));
         return self.Instruction(str);
     }
 
@@ -1389,7 +1374,7 @@ extension TextStyle
     {
         str = Locale.Get("Stage.Continue");
         str += "...({1})";
-        str = String.Replace(str, "{0}", self.KeyName("Interaction/Interact3"));
+        str = String.Replace(str, "{0}", self.KeyName(InputInteractionEnum.Interact3));
         str = String.Replace(str, "{1}", Locale.Get(stageNameSubKey));
         return self.Instruction(str);
     }
@@ -1399,15 +1384,15 @@ extension Dialogue
     function Init()
     {
         profiles = List();
-        profiles.Add(Profile("Eren", "Eren1"));
-        profiles.Add(Profile("Eren", "Eren2"));
-        profiles.Add(Profile("Jean", "Jean1"));
-        profiles.Add(Profile("Erwin", "Erwin3"));
-        profiles.Add(Profile("Erwin", "Erwin4"));
-        profiles.Add(Profile("Levi", "Levi4"));
-        profiles.Add(Profile("Levi", "Levi5"));
-        profiles.Add(Profile("Hange", "Hange1"));
-        profiles.Add(Profile("Keith", "Keith1"));
+        profiles.Add(Profile("Eren", ProfileIconEnum.Eren1));
+        profiles.Add(Profile("Eren", ProfileIconEnum.Eren2));
+        profiles.Add(Profile("Jean", ProfileIconEnum.Jean1));
+        profiles.Add(Profile("Erwin", ProfileIconEnum.Erwin3));
+        profiles.Add(Profile("Erwin", ProfileIconEnum.Erwin4));
+        profiles.Add(Profile("Levi", ProfileIconEnum.Levi4));
+        profiles.Add(Profile("Levi", ProfileIconEnum.Levi5));
+        profiles.Add(Profile("Hange", ProfileIconEnum.Hange1));
+        profiles.Add(Profile("Keith", ProfileIconEnum.Keith1));
 
         r = Random.RandomFloat(0, 1);
         if (r <= 0.5)
@@ -1418,7 +1403,7 @@ extension Dialogue
         {
             if (r > 0.995)
             {
-                self.Profile = Profile("ricecake", "Ricecake1");
+                self.Profile = Profile("ricecake", ProfileIconEnum.Ricecake1);
             }
             else
             {
@@ -1442,7 +1427,7 @@ extension Dialogue
         icon = self.Profile.Icon;
         if (Random.RandomFloat(0, 1) > 0.995)
         {
-            icon = "Titan8";
+            icon = ProfileIconEnum.Titan8;
         }
         Cutscene.ShowDialogue(icon, header, text);
     }

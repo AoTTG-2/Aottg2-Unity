@@ -157,6 +157,39 @@ namespace CustomLogic.Editor
             yield break;
         }
 
+        public static IEnumerable<KeyValuePair<string, string>> GetConstructorParamTexts(XmlDocument xmlDocument, Type type, ConstructorInfo ctorInfo)
+        {
+            var parameters = ctorInfo.GetParameters().Select(x => x.ParameterType.FullName).ToArray();
+            var signature = parameters.Length > 0 ? $"({string.Join(",", parameters)})" : string.Empty;
+            var path = $"{type.FullName}.#ctor{signature}";
+            XmlNode ctorNode = xmlDocument.SelectSingleNode($"//member[@name=\"M:{path}\"]");
+
+            if (ctorNode != null)
+            {
+                foreach (XmlNode p in ctorNode.SelectNodes("param"))
+                {
+                    var name = p.Attributes["name"].Value;
+                    yield return new KeyValuePair<string, string>(name, p.InnerText);
+                }
+            }
+
+            yield break;
+        }
+
+        public static string GetParameterNodeText(XmlDocument xmlDocument, Type type, MethodInfo methodInfo, ParameterInfo parameterInfo, string defaultText = "")
+        {
+            var paramTexts = GetMethodParamTexts(xmlDocument, type, methodInfo);
+            var paramText = paramTexts.FirstOrDefault(p => p.Key == parameterInfo.Name);
+            return paramText.Value ?? defaultText;
+        }
+
+        public static string GetParameterNodeText(XmlDocument xmlDocument, Type type, ConstructorInfo ctorInfo, ParameterInfo parameterInfo, string defaultText = "")
+        {
+            var paramTexts = GetConstructorParamTexts(xmlDocument, type, ctorInfo);
+            var paramText = paramTexts.FirstOrDefault(p => p.Key == parameterInfo.Name);
+            return paramText.Value ?? defaultText;
+        }
+
         public static string GetPropertyNodeText(XmlDocument xmlDocument, Type type, PropertyInfo property, string nodeType, string defaultText = "")
         {
             var propertyName = property.Name;

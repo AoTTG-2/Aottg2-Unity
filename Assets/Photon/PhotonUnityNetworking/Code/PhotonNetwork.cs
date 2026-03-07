@@ -1819,8 +1819,8 @@ namespace Photon.Pun
         /// <param name="typedLobby">If null, the room is automatically created in the currently used lobby (which is "default" when you didn't join one explicitly).</param>
         /// <param name="expectedUsers">Optional list of users (by UserId) who are expected to join this game and who you want to block a slot for.</param>
         /// <returns>If the operation got queued and will be sent.</returns>
-        public static bool CreateRoom(string roomName, RoomOptions roomOptions = null, TypedLobby typedLobby = null, string[] expectedUsers = null,
-            string hash = null, string sessionID = null, string modID = null)
+        public static bool CreateRoom(string roomName, RoomOptions roomOptions = null, TypedLobby typedLobby = null, string[] expectedUsers = null/*,
+            string hash = null, string sessionID = null, string modID = null*/)
         {
             if (OfflineMode)
             {
@@ -1845,9 +1845,9 @@ namespace Photon.Pun
             opParams.RoomOptions = roomOptions;
             opParams.Lobby = typedLobby;
             opParams.ExpectedUsers = expectedUsers;
-            opParams.Hash = hash;
+            /*opParams.Hash = hash;
             opParams.SessionID = sessionID;
-            opParams.ModID = modID;
+            opParams.ModID = modID;*/
             return NetworkingClient.OpCreateRoom(opParams);
         }
 
@@ -1985,8 +1985,8 @@ namespace Photon.Pun
             opParams.ExpectedUsers = expectedUsers;
             opParams.Password = password;
             opParams.Hash = hash;
-            opParams.SessionID = sessionID;
-            opParams.ModID = modID;
+            /*opParams.SessionID = sessionID;
+            opParams.ModID = modID;*/
             return NetworkingClient.OpJoinRoom(opParams);
         }
 

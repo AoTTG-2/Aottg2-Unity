@@ -166,6 +166,13 @@ namespace Characters
             return EnableAI && !Dead && (State == TitanState.Idle && _stateTimeLeft <= 0f) || State == TitanState.Run || State == TitanState.Walk || State == TitanState.Sprint;
         }
 
+        public virtual bool CanEmote()
+        {
+            if (!AI)
+                return EnableAI && !Dead && (State == TitanState.Idle && _stateTimeLeft <= 0f) || State == TitanState.Run || State == TitanState.Walk || State == TitanState.Sprint;
+            return EnableAI && !Dead && State != TitanState.Dead;
+        }
+
         public virtual bool CanStun()
         {
             return State != TitanState.Stun && !Dead && EnableAI;
@@ -403,7 +410,7 @@ namespace Characters
         {
             if (HoldHuman != null)
             {
-                HoldHuman.Cache.PhotonView.RPC("UngrabRPC", RpcTarget.All, new object[0]);
+                HoldHuman.Cache.PhotonView.RPC(nameof(HoldHuman.UngrabRPC), RpcTarget.All, new object[0]);
                 HoldHuman.GrabHand = null;
                 HoldHuman = null;
             }
@@ -422,7 +429,7 @@ namespace Characters
 
         public virtual void Confuse()
         {
-            Cache.PhotonView.RPC("DecreaseAttackSpeedRPC", Cache.PhotonView.Owner, new object[0]);
+            Cache.PhotonView.RPC(nameof(DecreaseAttackSpeedRPC), Cache.PhotonView.Owner, new object[0]);
         }
 
         protected void ResetAttackSpeed()
@@ -437,7 +444,7 @@ namespace Characters
         {
             base.OnPlayerEnteredRoom(player);
             if (Cache.PhotonView.IsMine)
-                Cache.PhotonView.RPC("SetSizeRPC", player, new object[] { Size });
+                Cache.PhotonView.RPC(nameof(SetSizeRPC), player, new object[] { Size });
         }
 
         protected void StateAction(TitanState state, string animation, float fade = 0.1f, bool deactivateHitboxes = true)
@@ -968,7 +975,7 @@ namespace Characters
 
         public void SetSize(float size)
         {
-            Cache.PhotonView.RPC("SetSizeRPC", RpcTarget.All, new object[] { size });
+            Cache.PhotonView.RPC(nameof(SetSizeRPC), RpcTarget.All, new object[] { size });
         }
 
         protected virtual float GetAnimationTime()

@@ -36,6 +36,8 @@ namespace GameManagers
             public string[] Parameters { get; private set; }
             public AutofillType AutofillType { get; set; } = AutofillType.None;
 
+            public bool ExcludeFromHelp { get; set; } = false;
+
             public CommandAttribute(CommandAttribute commandAttribute)
             {
                 Name = commandAttribute.Name;
@@ -43,9 +45,10 @@ namespace GameManagers
                 Alias = commandAttribute.Alias;
                 Command = commandAttribute.Command;
                 AutofillType = commandAttribute.AutofillType;
+                ExcludeFromHelp = commandAttribute.ExcludeFromHelp;
             }
 
-            public CommandAttribute(string name, string description, AutofillType autofillType = AutofillType.None)
+            public CommandAttribute(string name, string description, AutofillType autofillType = AutofillType.None, bool excludeFromHelp = false)
             {
                 Name = name;
                 Description = description;
@@ -54,6 +57,7 @@ namespace GameManagers
                                      .Cast<Match>()
                                      .Select(m => m.Groups[1].Value)
                                      .ToArray();
+                ExcludeFromHelp = excludeFromHelp;
             }
         }
 
@@ -66,22 +70,15 @@ namespace GameManagers
         public static List<bool> SuggestionFlags = new List<bool>();
         public static List<bool> NotificationFlags = new List<bool>();
         public static List<string> FeedLines = new List<string>();
-        private static int MaxLines
+        public static int MaxLines
         {
             get
             {
-                int configuredSize = SettingsManager.UISettings.ChatPoolSize.Value;
-                if (configuredSize == 0)
-                {
-                    // Use a larger default size for message storage when auto-adjusting
-                    // (lines will be displayed based on the dynamic calculation in ChatPanel)
-                    float chatHeight = SettingsManager.UISettings.ChatHeight.Value;
-                    float fontSize = SettingsManager.UISettings.ChatFontSize.Value;
-                    float lineHeight = 30f * (fontSize / 18f);
-                    int calculatedSize = Mathf.CeilToInt((chatHeight * 2f) / lineHeight);
-                    return Mathf.Max(calculatedSize, 50); // Ensure ample buffer for scrolling
-                }
-                return configuredSize;
+                float chatHeight = SettingsManager.UISettings.ChatHeight.Value;
+                float fontSize = SettingsManager.UISettings.ChatFontSize.Value;
+                float lineHeight = 30f * (fontSize / 18f);
+                int calculatedSize = Mathf.CeilToInt((chatHeight * 5f) / lineHeight);
+                return Mathf.Clamp(calculatedSize, 10, 70);
             }
         }
         public static Dictionary<ChatTextColor, string> ColorTags = new Dictionary<ChatTextColor, string>();
@@ -147,6 +144,7 @@ namespace GameManagers
         public static List<int> PMPartnerIDs = new List<int>();
         private static string _preservedInputText = string.Empty;
         private static int _preservedInputCaretPosition = 0;
+        public static bool PreserveInputOnRestart = false;
         private static readonly Dictionary<string, string> _conversationTexts = new Dictionary<string, string>();
         private static readonly Dictionary<string, int> _conversationCarets = new Dictionary<string, int>();
         public static void PreserveInputText(string text, int caretPosition)
@@ -161,6 +159,7 @@ namespace GameManagers
             int caretPos = _preservedInputCaretPosition;
             _preservedInputText = string.Empty;
             _preservedInputCaretPosition = 0;
+            PreserveInputOnRestart = false;
             return (text, caretPos);
         }
 
@@ -279,22 +278,22 @@ namespace GameManagers
         public static void SendChatAll(string message, ChatTextColor color = ChatTextColor.Default)
         {
             string formattedMessage = GetColorString(message, color);
-            RPCManager.PhotonView.RPC("ChatRPC", RpcTarget.All, new object[] { formattedMessage });
+            RPCManager.PhotonView.RPC(nameof(RPCManager.ChatRPC), RpcTarget.All, new object[] { formattedMessage, DateTime.UtcNow.Ticks });
         }
 
         public static void SendChat(string message, Player player, ChatTextColor color = ChatTextColor.Default)
         {
             string formattedMessage = GetColorString(message, color);
-            RPCManager.PhotonView.RPC("ChatRPC", player, new object[] { formattedMessage });
+            RPCManager.PhotonView.RPC(nameof(RPCManager.ChatRPC), player, new object[] { formattedMessage, DateTime.UtcNow.Ticks });
         }
 
-        public static void OnChatRPC(string message, PhotonMessageInfo info)
+        public static void OnChatRPC(string message, long senderTimestamp, PhotonMessageInfo info)
         {
             if (InGameManager.MuteText.Contains(info.Sender.ActorNumber))
                 return;
             string clickableId = $"<link=\"{info.Sender.ActorNumber}\">{GetColorString($"[{info.Sender.ActorNumber}]", ChatTextColor.ID)}</link>";
             string formattedMessage = $"{clickableId} {message}";
-            DateTime timestamp = DateTime.UtcNow.AddSeconds(-Util.GetPhotonTimestampDifference(info.SentServerTime, PhotonNetwork.Time));
+            DateTime timestamp = new DateTime(senderTimestamp, DateTimeKind.Utc);
             AddLine(formattedMessage, ChatTextColor.Default, false, timestamp, info.Sender.ActorNumber);
         }
 
@@ -340,7 +339,14 @@ namespace GameManagers
 
         public static void AddException(string line)
         {
-            if (line == LastException)
+            bool canReplace = false;
+            if (RawMessages.Count > 0)
+            {
+                int lastIndex = RawMessages.Count - 1;
+                canReplace = RawMessages[lastIndex].Contains(LastException) && LastException == line;
+            }
+
+            if (canReplace)
             {
                 LastExceptionCount++;
                 MessageBuilder.Clear();
@@ -580,7 +586,7 @@ namespace GameManagers
         {
             if (CheckMC())
             {
-                RPCManager.PhotonView.RPC("SpawnPlayerRPC", RpcTarget.All, new object[] { false });
+                RPCManager.PhotonView.RPC(nameof(RPCManager.SpawnPlayerRPC), RpcTarget.All, new object[] { false });
                 SendChatAll("All players have been revived by master client.", ChatTextColor.System);
             }
         }
@@ -593,7 +599,7 @@ namespace GameManagers
                 var player = GetPlayer(args);
                 if (player != null)
                 {
-                    RPCManager.PhotonView.RPC("SpawnPlayerRPC", player, new object[] { false });
+                    RPCManager.PhotonView.RPC(nameof(RPCManager.SpawnPlayerRPC), player, new object[] { false });
                     SendChat("You have been revived by master client.", player, ChatTextColor.System);
                     AddLine(player.GetStringProperty(PlayerProperty.Name) + " has been revived.", ChatTextColor.System);
                 }
@@ -620,36 +626,37 @@ namespace GameManagers
                 KickPlayer(player, ban: true);
         }
 
-        [CommandAttribute("ipban", "/ipban [ID]: IP ban the player with ID (mod only)", AutofillType.PlayerID)]
-        private static void IPBan(string[] args)
-        {
-            var player = GetPlayer(args);
-            if (player == null) return;
-            AnticheatManager.IPBan(player);
-        }
+        // Not implemented...
+        //[CommandAttribute("ipban", "/ipban [ID]: IP ban the player with ID (mod only)", AutofillType.PlayerID, excludeFromHelp: true)]
+        //private static void IPBan(string[] args)
+        //{
+        //    var player = GetPlayer(args);
+        //    if (player == null) return;
+        //    AnticheatManager.IPBan(player);
+        //}
 
-        [CommandAttribute("ipunban", "/ipunban [IP]: Unban the given IP address (mod only)", AutofillType.None)]
-        private static void IPUnban(string[] args)
-        {
-            if (args.Length > 0)
-            {
-                AnticheatManager.IPUnban(args[0]);
-            }
-        }
+        //[CommandAttribute("ipunban", "/ipunban [IP]: Unban the given IP address (mod only)", AutofillType.None, excludeFromHelp: true)]
+        //private static void IPUnban(string[] args)
+        //{
+        //    if (args.Length > 0)
+        //    {
+        //        AnticheatManager.IPUnban(args[0]);
+        //    }
+        //}
 
-        [CommandAttribute("superban", "/superban [ID]: IP and hardware ban the player with ID (mod only). Cannot be undone!", AutofillType.PlayerID)]
-        private static void Superban(string[] args)
-        {
-            var player = GetPlayer(args);
-            if (player == null) return;
-            AnticheatManager.Superban(player);
-        }
+        //[CommandAttribute("superban", "/superban [ID]: IP and hardware ban the player with ID (mod only). Cannot be undone!", AutofillType.PlayerID, excludeFromHelp: true)]
+        //private static void Superban(string[] args)
+        //{
+        //    var player = GetPlayer(args);
+        //    if (player == null) return;
+        //    AnticheatManager.Superban(player);
+        //}
 
-        [CommandAttribute("removesuperbans", "/removesuperbans: Clear all superbans on the region.", AutofillType.None)]
-        private static void Removesuperbans(string[] args)
-        {
-            AnticheatManager.ClearSuperbans();
-        }
+        //[CommandAttribute("removesuperbans", "/removesuperbans: Clear all superbans on the region.", AutofillType.None, excludeFromHelp: true)]
+        //private static void Removesuperbans(string[] args)
+        //{
+        //    AnticheatManager.ClearSuperbans();
+        //}
 
         private static bool CanVoteKick(Player player)
         {
@@ -740,7 +747,7 @@ namespace GameManagers
         [CommandAttribute("resetkdall", "/resetkdall: Reset all player stats.")]
         private static void Resetkdall(string[] args)
         {
-            RPCManager.PhotonView.RPC("ResetKDRPC", RpcTarget.All);
+            RPCManager.PhotonView.RPC(nameof(RPCManager.ResetKDRPC), RpcTarget.All);
         }
 
 
@@ -757,13 +764,18 @@ namespace GameManagers
                     displayPage = 1;
                 }
             }
-            int totalPages = (int)Math.Ceiling((double)CommandsCache.Count / elementsPerPage);
+
+            Dictionary<string, CommandAttribute> filteredCommands = CommandsCache
+                .Where(kv => !kv.Value.ExcludeFromHelp)
+                .ToDictionary(kv => kv.Key, kv => kv.Value);
+
+            int totalPages = (int)Math.Ceiling((double)filteredCommands.Count / elementsPerPage);
             if (displayPage < 1 || displayPage > totalPages)
             {
                 AddLine($"Page {displayPage} does not exist.", ChatTextColor.Error);
                 return;
             }
-            List<CommandAttribute> pageElements = Util.PaginateDictionary(CommandsCache, displayPage, elementsPerPage);
+            List<CommandAttribute> pageElements = Util.PaginateDictionary(filteredCommands, displayPage, elementsPerPage);
             string help = "----Command list----" + "\n";
             foreach (CommandAttribute element in pageElements)
             {
@@ -1223,12 +1235,29 @@ namespace GameManagers
                         SuggestionState.IsTabCompleting = false;
                         SuggestionState.SetOriginalContext(partial, spaceIndex + 1, input.Length);
                         var players = new List<Player>();
+                        string partialLower = partial.ToLower();
+                        bool isNumeric = partial.All(char.IsDigit);
                         foreach (var p in PhotonNetwork.PlayerList)
                         {
-                            if (string.IsNullOrEmpty(partial) ||
-                                p.ActorNumber.ToString().StartsWith(partial))
+                            if (isNumeric)
                             {
-                                players.Add(p);
+                                if (string.IsNullOrEmpty(partial) ||
+                                    p.ActorNumber.ToString().StartsWith(partial))
+                                {
+                                    players.Add(p);
+                                }
+                            }
+                            else
+                            {
+                                string name = p.GetStringProperty(PlayerProperty.Name)
+                                             .FilterSizeTag()
+                                             .StripRichText()
+                                             .ToLower();
+                                if (string.IsNullOrEmpty(partial) ||
+                                    name.Contains(partialLower))
+                                {
+                                    players.Add(p);
+                                }
                             }
                         }
                         players.Sort((a, b) => a.ActorNumber.CompareTo(b.ActorNumber));
@@ -1325,7 +1354,7 @@ namespace GameManagers
                                          .FilterSizeTag()
                                          .StripRichText()
                                          .ToLower();
-                            if (name.StartsWith(partialLower))
+                            if (name.Contains(partialLower))
                                 players.Add(p);
                         }
                     }
@@ -1604,23 +1633,24 @@ namespace GameManagers
                 AddLine("Invalid private message target.", ChatTextColor.Error);
                 return;
             }
-            RPCManager.PhotonView.RPC("PrivateChatRPC", PhotonNetwork.LocalPlayer, new object[] { message, target.ActorNumber });
-            RPCManager.PhotonView.RPC("PrivateChatRPC", target, new object[] { message, target.ActorNumber });
+            RPCManager.PhotonView.RPC(nameof(RPCManager.PrivateChatRPC), PhotonNetwork.LocalPlayer, new object[] { message, target.ActorNumber, DateTime.UtcNow.Ticks });
+            RPCManager.PhotonView.RPC(nameof(RPCManager.PrivateChatRPC), target, new object[] { message, target.ActorNumber, DateTime.UtcNow.Ticks });
         }
 
-        public static void OnPrivateChatRPC(string message, int targetID, PhotonMessageInfo info)
+        public static void OnPrivateChatRPC(string message, int targetID, long senderTimestamp, PhotonMessageInfo info)
         {
             int localID = PhotonNetwork.LocalPlayer.ActorNumber;
             int senderID = info.Sender.ActorNumber;
             string senderName = info.Sender.GetStringProperty(PlayerProperty.Name);
+            DateTime timestamp = new DateTime(senderTimestamp, DateTimeKind.Utc);
             if (localID == senderID)
             {
                 Player targetPlayer = PhotonNetwork.CurrentRoom.GetPlayer(targetID);
                 if (targetPlayer != null)
                 {
                     string targetName = targetPlayer.GetStringProperty(PlayerProperty.Name);
-                    AddLine($"{GetColorString("To ", ChatTextColor.System)}{targetName}{GetColorString(": ", ChatTextColor.System)}{message}",
-                        ChatTextColor.Default, false, DateTime.UtcNow.AddSeconds(-Util.GetPhotonTimestampDifference(info.SentServerTime, PhotonNetwork.Time)),
+                    AddLine($"{GetColorString($"[{senderID}]", ChatTextColor.ID)} {senderName}: {GetColorString(message, ChatTextColor.PrivateMessage)}",
+                        ChatTextColor.Default, false, timestamp,
                         senderID, false, true, targetID);
                     var panel = GetChatPanel();
                     if (panel != null && !panel.IsInPMMode())
@@ -1631,8 +1661,8 @@ namespace GameManagers
             }
             else if (localID == targetID)
             {
-                AddLine($"{GetColorString("From ", ChatTextColor.System)}{senderName}{GetColorString(": ", ChatTextColor.System)}{message}",
-                    ChatTextColor.Default, false, DateTime.UtcNow.AddSeconds(-Util.GetPhotonTimestampDifference(info.SentServerTime, PhotonNetwork.Time)),
+                AddLine($"{GetColorString($"[{senderID}]", ChatTextColor.ID)} {senderName}: {GetColorString(message, ChatTextColor.PrivateMessage)}",
+                    ChatTextColor.Default, false, timestamp,
                     senderID, false, true, senderID);
 
                 var panel = GetChatPanel();
@@ -1719,17 +1749,18 @@ namespace GameManagers
         {
             if (senderPlayer == null) return;
             int senderID = senderPlayer.ActorNumber;
-            if (NotifiedPMs.Contains(senderID))
-                return;
-            NotifiedPMs.Add(senderID);
-            if (ActivePMNotifications.Contains(senderID))
-                return;
-            ActivePMNotifications.Add(senderID);
-            DateTime currentTime = DateTime.UtcNow;
-            var chatPanel = GetChatPanel();
-            string prompt = " (Tab)";
-            string notificationText = $"{GetColorString("New message from ", ChatTextColor.System)}{GetPlayerIdentifier(senderPlayer)}{GetColorString(prompt, ChatTextColor.System)}";
-            AddLine(notificationText, ChatTextColor.MyPlayer, true, currentTime, senderID, false, false, -1, true);
+
+            if (!ActivePMNotifications.Contains(senderID))
+                ActivePMNotifications.Add(senderID);
+
+            if (!NotifiedPMs.Contains(senderID))
+            {
+                NotifiedPMs.Add(senderID);
+                DateTime currentTime = DateTime.UtcNow;
+                string prompt = " (Tab)";
+                string notificationText = $"{GetColorString("New message from ", ChatTextColor.System)}{GetPlayerIdentifier(senderPlayer)}{GetColorString(prompt, ChatTextColor.System)}";
+                AddLine(notificationText, ChatTextColor.Default, true, currentTime, senderID, false, false, -1, true);
+            }
         }
 
         public static bool HasActivePlayerSuggestions()
@@ -1790,11 +1821,17 @@ namespace GameManagers
             {
                 ActivePMNotifications.Remove(playerID);
             }
+            ClearPMNotificationFromChat(playerID);
         }
 
         public static bool HasActivePMNotification(int playerID)
         {
             return ActivePMNotifications.Contains(playerID);
+        }
+
+        public static bool HasAnyActivePMNotification()
+        {
+            return ActivePMNotifications.Count > 0;
         }
 
         private static void UpdatePartialTextAfterCompletion(string newText, string chosen)
@@ -1830,7 +1867,8 @@ namespace GameManagers
         System,
         Error,
         TeamRed,
-        TeamBlue
+        TeamBlue,
+        PrivateMessage
     }
 
     public enum AutofillType

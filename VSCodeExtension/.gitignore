@@ -1,0 +1,32 @@
+# Compiled output
+out/
+*.vsix
+
+# Dependencies
+node_modules/
+
+# npm
+package-lock.json
+npm-debug.log*
+yarn-error.log*
+
+# IDE
+.vscode-test/
+.vscode/.ropeproject
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Temporary files
+*.tmp
+*.temp
+.cache/

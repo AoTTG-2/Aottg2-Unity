@@ -33,7 +33,7 @@ namespace Projectiles
                 _force = gameObject.AddComponent<ConstantForce>();
                 _force.force = gravity;
             }
-            photonView.RPC("SetupRPC", RpcTarget.All, new object[] { charViewId, settings });
+            photonView.RPC(nameof(SetupRPC), RpcTarget.All, new object[] { charViewId, settings });
         }
 
         [PunRPC]
@@ -101,7 +101,7 @@ namespace Projectiles
         {
             if (photonView.IsMine && !Disabled)
             {
-                photonView.RPC("DisableRPC", RpcTarget.All, new object[0]);
+                photonView.RPC(nameof(DisableRPC), RpcTarget.All, new object[0]);
                 StartCoroutine(WaitAndFinishDestroyCoroutine(DestroyDelay));
             }
         }

@@ -182,11 +182,11 @@ namespace Characters
                 _lastWorldHookPosition = position;
                 HookCharacter = transform.root.GetComponent<BaseCharacter>();
 
-                if (SettingsManager.InGameCurrent.Misc.RealismMode.Value)
+                if (SettingsManager.InGameCurrent.Misc.HookDamageMultiplier.Value > 0)
                 {
                     if (HookCharacter != null && HookCharacter is Human && !TeamInfo.SameTeam(HookCharacter, _owner) && _owner.IsMine())
                     {
-                        var damage = Math.Max(10, (int)(_owner.CurrentSpeed * CharacterData.HumanWeaponInfo["Hook"]["DamageMultiplier"]));
+                        var damage = Math.Max(10, (int)(_owner.CurrentSpeed * SettingsManager.InGameCurrent.Misc.HookDamageMultiplier.Value));
                         ((InGameMenu)UIManager.CurrentMenu).ShowKillScore(damage);
                         HookCharacter.GetHit(_owner, damage, "Hook", "");
                     }
@@ -206,17 +206,17 @@ namespace Characters
 
         public void SetHookState(HookState state)
         {
-            _owner.Cache.PhotonView.RPC("SetHookStateRPC", RpcTarget.All, new object[] { _left, _id, (int)state });
+            _owner.Cache.PhotonView.RPC(nameof(_owner.SetHookStateRPC), RpcTarget.All, new object[] { _left, _id, (int)state });
         }
 
         public void SetHooking(Vector3 baseVelocity, Vector3 relativeVelocity)
         {
-            _owner.Cache.PhotonView.RPC("SetHookingRPC", RpcTarget.All, new object[] { _left, _id, baseVelocity, relativeVelocity });
+            _owner.Cache.PhotonView.RPC(nameof(_owner.SetHookingRPC), RpcTarget.All, new object[] { _left, _id, baseVelocity, relativeVelocity });
         }
 
         public void SetHooked(Vector3 position, Transform t = null, int viewId = -1, int objectId = -1)
         {
-            _owner.Cache.PhotonView.RPC("SetHookedRPC", RpcTarget.Others, new object[] { _left, _id, position, viewId, objectId });
+            _owner.Cache.PhotonView.RPC(nameof(_owner.SetHookedRPC), RpcTarget.Others, new object[] { _left, _id, position, viewId, objectId });
             OnSetHooked(position, t);
             _owner.OnHooked(_left, position);
             if (t != null && t.GetComponent<Human>() != null)

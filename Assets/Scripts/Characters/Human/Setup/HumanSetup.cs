@@ -65,6 +65,19 @@ namespace Characters
         public GameObject _part_head_decor;
         public GameObject _part_hat;
 
+        // Blade Effects
+        public string[] TierEffects = new string[]
+        {
+            "Fire1",
+            "Fire2",
+            "Lightning1",
+        };
+        public Transform[] LeftTierEffects;
+        public Transform[] RightTierEffects;
+
+        public ParticleSystem LeftShingEffect;
+        public ParticleSystem RightShingEffect;
+
         // loaded settings from player spawning
         public HumanCustomSet CustomSet;
         public HumanWeapon Weapon;

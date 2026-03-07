@@ -1,8 +1,6 @@
-﻿using UnityEngine;
-
-namespace Settings
+﻿namespace Settings
 {
-    class GeneralInputSettings: SaveableSettingsContainer
+    class GeneralInputSettings : SaveableSettingsContainer
     {
         protected override string FileName { get { return "GeneralInput.json"; } }
         public KeybindSetting Forward = new KeybindSetting(new string[] { "W", "None" });
@@ -29,5 +27,6 @@ namespace Settings
         public BoolSetting TapScoreboard = new BoolSetting(true);
         public BoolSetting TapMap = new BoolSetting(true);
         public KeybindSetting HideUI = new KeybindSetting(new string[] { "F6", "None" });
+        public KeybindSetting DebugWindow = new KeybindSetting(new string[] { "F11", "None" });
     }
 }

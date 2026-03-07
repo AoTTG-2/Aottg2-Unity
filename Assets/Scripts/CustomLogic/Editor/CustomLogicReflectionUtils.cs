@@ -34,14 +34,20 @@ namespace CustomLogic.Editor
         public static string GetObsoleteMessage(Type type)
         {
             if (IsObsolete(type))
-                return GetAttribute<ObsoleteAttribute>(type).Message;
+            {
+                var message = GetAttribute<ObsoleteAttribute>(type).Message;
+                return string.IsNullOrEmpty(message) ? "Obsolete" : message;
+            }
             return string.Empty;
         }
 
         public static string GetObsoleteMessage(MemberInfo member)
         {
             if (IsObsolete(member))
-                return GetAttribute<ObsoleteAttribute>(member).Message;
+            {
+                var message = GetAttribute<ObsoleteAttribute>(member).Message;
+                return string.IsNullOrEmpty(message) ? "Obsolete" : message;
+            }
             return string.Empty;
         }
 
@@ -86,6 +92,11 @@ namespace CustomLogic.Editor
                     return "null";
             }
             return string.Empty;
+        }
+
+        public static bool IsVariadicParameter(ParameterInfo parameterInfo)
+        {
+            return parameterInfo.IsDefined(typeof(ParamArrayAttribute), false);
         }
     }
 }

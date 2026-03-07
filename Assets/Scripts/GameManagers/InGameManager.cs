@@ -29,8 +29,6 @@ namespace GameManagers
         private static readonly List<string> HumanSpawnTags = new List<string> { MapTags.HumanSpawnPoint, MapTags.HumanSpawnPointBlue, MapTags.HumanSpawnPointRed };
 
         private SkyboxCustomSkinLoader _skyboxCustomSkinLoader;
-        //private ForestCustomSkinLoader _forestCustomSkinLoader;
-        //private CityCustomSkinLoader _cityCustomSkinLoader;
         private GeneralInputSettings _generalInputSettings;
         private InGameMenu _inGameMenu;
         public HashSet<Human> Humans = new HashSet<Human>();
@@ -121,7 +119,7 @@ namespace GameManagers
         {
             if (!PhotonNetwork.IsMasterClient || GlobalPause)
                 return;
-            RPCManager.PhotonView.RPC("PauseGameRPC", RpcTarget.All, new object[0]);
+            RPCManager.PhotonView.RPC(nameof(RPCManager.PauseGameRPC), RpcTarget.All, new object[0]);
         }
 
         public void OnPauseGameRPC(PhotonMessageInfo info)
@@ -137,7 +135,7 @@ namespace GameManagers
         {
             if (!PhotonNetwork.IsMasterClient || !GlobalPause)
                 return;
-            RPCManager.PhotonView.RPC("UnpauseGameRPC", RpcTarget.All, new object[0]);
+            RPCManager.PhotonView.RPC(nameof(RPCManager.UnpauseGameRPC), RpcTarget.All, new object[0]);
         }
 
         public void OnUnpauseGameRPC(PhotonMessageInfo info)
@@ -153,7 +151,7 @@ namespace GameManagers
         {
             if (!PhotonNetwork.IsMasterClient || !GlobalPause)
                 return;
-            RPCManager.PhotonView.RPC("StartUnpauseGameRPC", RpcTarget.All, new object[0]);
+            RPCManager.PhotonView.RPC(nameof(RPCManager.StartUnpauseGameRPC), RpcTarget.All, new object[0]);
         }
 
         public void OnStartUnpauseGameRPC(PhotonMessageInfo info)
@@ -182,7 +180,7 @@ namespace GameManagers
             if (!PhotonNetwork.IsMasterClient)
                 return;
             var manager = (InGameManager)SceneLoader.CurrentGameManager;
-            RPCManager.PhotonView.RPC("PreRestartGameRPC", RpcTarget.All, new object[] { !SettingsManager.UISettings.FadeLoadscreen.Value });
+            RPCManager.PhotonView.RPC(nameof(RPCManager.PreRestartGameRPC), RpcTarget.All, new object[] { !SettingsManager.UISettings.FadeLoadscreen.Value });
             Time.timeScale = 1f;
             manager.StartCoroutine(manager.FinishRestartGame());
         }
@@ -194,7 +192,7 @@ namespace GameManagers
             else
                 yield return new WaitForEndOfFrame();
             PhotonNetwork.DestroyAll();
-            RPCManager.PhotonView.RPC("RestartGameRPC", RpcTarget.All, new object[0]);
+            RPCManager.PhotonView.RPC(nameof(RPCManager.RestartGameRPC), RpcTarget.All, new object[0]);
         }
 
         public static void OnRestartGameRPC(PhotonMessageInfo info)
@@ -212,12 +210,14 @@ namespace GameManagers
             if (!info.Sender.IsMasterClient)
                 return;
             ((InGameManager)SceneLoader.CurrentGameManager).Restarting = true;
+            ChatManager.PreserveInputOnRestart = true;
             UIManager.CurrentMenu.gameObject.SetActive(false);
             UIManager.LoadingMenu.Show(immediate);
         }
 
         public static void LeaveRoom()
         {
+            ChatManager.PreserveInputOnRestart = false;
             ChatManager.ResetAllPMState();
             ResetPersistentPlayerProperties();
             if (PhotonNetwork.IsMasterClient)
@@ -254,12 +254,13 @@ namespace GameManagers
 
             // Add this line to sync PM state
             ChatManager.SyncPMPartnersOnJoin();
+            string roomName = "single player";
+            if (!PhotonNetwork.OfflineMode)
+                roomName = PhotonNetwork.CurrentRoom.GetStringProperty(RoomProperty.Name).Trim().HexColor();
 
-            if (PhotonNetwork.OfflineMode)
-                ChatManager.AddLine("Welcome to single player. \nType /help for a list of commands.", ChatTextColor.System);
-            else
-                ChatManager.AddLine("Welcome to " + PhotonNetwork.CurrentRoom.GetStringProperty(RoomProperty.Name).Trim().HexColor() + ". \nType /help for a list of commands.",
-                    ChatTextColor.System);
+            string message = UIManager.GetLocaleFormatted("InGame", "Chat", "Motd", roomName);
+            message += "\n" + UIManager.GetLocaleFormatted("InGame", "Chat", "Help", roomName);
+            ChatManager.AddLine(message, ChatTextColor.System);
             SceneLoader.LoadScene(SceneName.InGame);
         }
 
@@ -339,12 +340,12 @@ namespace GameManagers
         {
             if (!AllPlayerInfo.ContainsKey(player.ActorNumber))
                 AllPlayerInfo.Add(player.ActorNumber, new PlayerInfo());
-            RPCManager.PhotonView.RPC("PlayerInfoRPC", player, new object[] { StringCompression.Compress(MyPlayerInfo.SerializeToJsonString()) });
+            RPCManager.PhotonView.RPC(nameof(RPCManager.PlayerInfoRPC), player, new object[] { StringCompression.Compress(MyPlayerInfo.SerializeToJsonString()) });
             if (PhotonNetwork.IsMasterClient)
             {
-                RPCManager.PhotonView.RPC("GameSettingsRPC", player, new object[] { StringCompression.Compress(SettingsManager.InGameCurrent.SerializeToJsonString()) });
+                RPCManager.PhotonView.RPC(nameof(RPCManager.GameSettingsRPC), player, new object[] { StringCompression.Compress(SettingsManager.InGameCurrent.SerializeToJsonString()) });
                 if (GlobalPause)
-                    RPCManager.PhotonView.RPC("PauseGameRPC", player, new object[0]);
+                    RPCManager.PhotonView.RPC(nameof(RPCManager.PauseGameRPC), player, new object[0]);
             }
             if (ChatManager.HasActivePlayerSuggestions())
                 ChatManager.RefreshPlayerSuggestions();
@@ -398,7 +399,9 @@ namespace GameManagers
 
         public override void OnMasterClientSwitched(Player newMasterClient)
         {
-            ChatManager.AddLine("Master client has switched to " + newMasterClient.GetCustomProperty(PlayerProperty.Name) + ".", ChatTextColor.System);
+            var message = UIManager.GetLocaleFormatted("InGame", "Chat", "MasterclientChangeTo", newMasterClient.GetCustomProperty(PlayerProperty.Name));
+            ChatManager.AddLine(message, ChatTextColor.System);
+            CustomLogicManager.WaitForRestart();
             if (PhotonNetwork.IsMasterClient)
             {
                 RestartGame();
@@ -412,6 +415,8 @@ namespace GameManagers
             if (data.Length > 1000)
                 return;
             AllPlayerInfo[info.Sender.ActorNumber].DeserializeFromJsonString(StringCompression.Decompress(data));
+            if (AnticheatManager.BanList.Contains(AllPlayerInfo[info.Sender.ActorNumber].Profile.ID.Value))
+                AnticheatManager.KickPlayer(info.Sender, false);
         }
 
         public static void OnGameSettingsRPC(byte[] data, PhotonMessageInfo info)
@@ -488,11 +493,11 @@ namespace GameManagers
         {
             var rotation = Quaternion.Euler(0f, rotationY, 0f);
             BaseShifter shifter = null;
-            if (shifterName == "Annie")
+            if (shifterName == ShifterType.Annie)
                 shifter = (BaseShifter)CharacterSpawner.Spawn(CharacterPrefabs.AnnieShifter, position, rotation);
-            else if (shifterName == "Eren")
+            else if (shifterName == ShifterType.Eren)
                 shifter = (BaseShifter)CharacterSpawner.Spawn(CharacterPrefabs.ErenShifter, position, rotation);
-            else if (shifterName == "Armored")
+            else if (shifterName == ShifterType.Armored)
                 shifter = (BaseShifter)CharacterSpawner.Spawn(CharacterPrefabs.ArmoredShifter, position, rotation);
             if (shifter != null)
             {
@@ -624,13 +629,21 @@ namespace GameManagers
                 }
                 forced = CustomLogicManager.Evaluator.ForcedLoadout;
                 if (forced != string.Empty)
+                {
                     settings.Loadout.Value = forced;
-                if (settings.Loadout.Value == "Small")
-                    titan.SetSize(smallSize);
-                else if (settings.Loadout.Value == "Medium")
-                    titan.SetSize(mediumSize);
-                else if (settings.Loadout.Value == "Large")
-                    titan.SetSize(largeSize);
+                }
+                switch (settings.Loadout.Value)
+                {
+                    case TitanLoadout.Small:
+                        titan.SetSize(smallSize);
+                        break;
+                    case TitanLoadout.Medium:
+                        titan.SetSize(mediumSize);
+                        break;
+                    case TitanLoadout.Large:
+                        titan.SetSize(largeSize);
+                        break;
+                }
                 CurrentCharacter = titan;
             }
             HasSpawned = true;
@@ -740,22 +753,22 @@ namespace GameManagers
                     float thrower = crawler + settings.TitanSpawnThrower.Value / 100f;
                     float punk = thrower + settings.TitanSpawnPunk.Value / 100f;
                     if (roll < normal)
-                        type = "Normal";
+                        type = TitanType.Normal;
                     else if (roll < abnormal)
-                        type = "Abnormal";
+                        type = TitanType.Abnormal;
                     else if (roll < jumper)
-                        type = "Jumper";
+                        type = TitanType.Jumper;
                     else if (roll < crawler)
-                        type = "Crawler";
+                        type = TitanType.Crawler;
                     else if (roll < thrower)
-                        type = "Thrower";
+                        type = TitanType.Thrower;
                     else if (roll < punk)
-                        type = "Punk";
+                        type = TitanType.Punk;
                 }
             }
-            else if (type == "Random")
+            else if (type == TitanType.Random)
             {
-                string[] types = new string[] { "Normal", "Abnormal", "Jumper", "Crawler", "Thrower" };
+                string[] types = new string[]{ TitanType.Normal, TitanType.Abnormal, TitanType.Jumper, TitanType.Crawler, TitanType.Thrower };
                 type = types[UnityEngine.Random.Range(0, types.Length)];
             }
             var data = CharacterData.GetTitanAI((GameDifficulty)SettingsManager.InGameCurrent.General.Difficulty.Value, type);
@@ -825,13 +838,13 @@ namespace GameManagers
             var rotation = Quaternion.Euler(0f, rotationY, 0f);
 
             string prefab = "";
-            if (type == "Annie")
+            if (type == ShifterType.Annie)
                 prefab = CharacterPrefabs.AnnieShifter;
-            else if (type == "Armored")
+            else if (type == ShifterType.Armored)
                 prefab = CharacterPrefabs.ArmoredShifter;
-            else if (type == "Eren")
+            else if (type == ShifterType.Eren)
                 prefab = CharacterPrefabs.ErenShifter;
-            else if (type == "WallColossal")
+            else if (type == ShifterType.WallColossal)
                 prefab = CharacterPrefabs.WallColossal;
             if (prefab == "")
                 return null;
@@ -1066,7 +1079,7 @@ namespace GameManagers
             _inGameMenu = (InGameMenu)UIManager.CurrentMenu;
             if (PhotonNetwork.IsMasterClient)
             {
-                RPCManager.PhotonView.RPC("GameSettingsRPC", RpcTarget.All, new object[] { StringCompression.Compress(SettingsManager.InGameCurrent.SerializeToJsonString()) });
+                RPCManager.PhotonView.RPC(nameof(RPCManager.GameSettingsRPC), RpcTarget.All, new object[] { StringCompression.Compress(SettingsManager.InGameCurrent.SerializeToJsonString()) });
                 var settings = SettingsManager.InGameCurrent;
                 string mapName = settings.General.MapName.Value;
                 string gameMode = settings.General.GameMode.Value;
@@ -1122,9 +1135,9 @@ namespace GameManagers
             CustomLogicManager.StartLogic(SettingsManager.InGameCurrent.Mode.Current);
             if (_needSendPlayerInfo)
             {
-                RPCManager.PhotonView.RPC("PlayerInfoRPC", RpcTarget.Others, new object[] { StringCompression.Compress(MyPlayerInfo.SerializeToJsonString()) });
+                RPCManager.PhotonView.RPC(nameof(RPCManager.PlayerInfoRPC), RpcTarget.Others, new object[] { StringCompression.Compress(MyPlayerInfo.SerializeToJsonString()) });
                 if (!PhotonNetwork.IsMasterClient)
-                    RPCManager.PhotonView.RPC("NotifyPlayerJoinedRPC", RpcTarget.Others, new object[0]);
+                    RPCManager.PhotonView.RPC(nameof(RPCManager.NotifyPlayerJoinedRPC), RpcTarget.Others, new object[0]);
                 _needSendPlayerInfo = false;
             }
             SpawnPlayer(false);
@@ -1184,7 +1197,11 @@ namespace GameManagers
                 // TakePreviewScreenshot();
             }
         }
-
+        public void OnSongChange()
+        {
+            if (_inGameMenu != null && _inGameMenu._songPopup != null)
+                StartCoroutine(((SongPopup)_inGameMenu._songPopup).ShowNextSongPopup());
+        }
         private void TakePreviewScreenshot()
         {
             Texture2D texture = new Texture2D((int)1024, (int)1024, TextureFormat.RGB24, false);
@@ -1219,14 +1236,14 @@ namespace GameManagers
                 var set = (SkyboxCustomSkinSet)SettingsManager.CustomSkinSettings.Skybox.GetSelectedSet();
                 string urls = string.Join(",", new string[] {set.Front.Value, set.Back.Value , set.Left.Value , set.Right.Value ,
                                               set.Up.Value, set.Down.Value});
-                RPCManager.PhotonView.RPC("LoadSkyboxRPC", RpcTarget.AllBuffered, new object[] { urls });
+                RPCManager.PhotonView.RPC(nameof(RPCManager.LoadSkyboxRPC), RpcTarget.AllBuffered, new object[] { urls });
             }
             else if (PhotonNetwork.IsMasterClient)
             {
                 // send empty strings for the values
                 string urls = string.Join(",", new string[] {string.Empty, string.Empty, string.Empty , string.Empty ,
                                               string.Empty, string.Empty});
-                RPCManager.PhotonView.RPC("LoadSkyboxRPC", RpcTarget.AllBuffered, new object[] { urls });
+                RPCManager.PhotonView.RPC(nameof(RPCManager.LoadSkyboxRPC), RpcTarget.AllBuffered, new object[] { urls });
             }
         }
 

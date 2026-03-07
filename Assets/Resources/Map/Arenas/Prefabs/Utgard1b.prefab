@@ -1062,7 +1062,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 118648752923d01488834fcc535b5438, type: 3}
       propertyPath: m_Name
-      value: Utgard3
+      value: Utgard1b
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 118648752923d01488834fcc535b5438, type: 3}
       propertyPath: m_Layer

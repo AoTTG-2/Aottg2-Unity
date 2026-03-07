@@ -1256,7 +1256,7 @@ class Main
         label = UI.WrapStyleTag(label, "color", "#FF0000");
         label = "Titans Left: " + Convert.ToString(self._titans) + "  " + "Wave: " + Convert.ToString(self._currentWave) + String.Newline + label;
 
-        UI.SetLabelAll("TopCenter", label);
+        UI.SetLabelAll(UILabelEnum.TopCenter, label);
     }
 
     function OnCharacterSpawn(character)
@@ -1328,7 +1328,7 @@ class Main
             }
             if (self._titans == 0 && self._currentWave > self._MaxWaves)
             {
-                    UI.SetLabelAll("MiddleCenter", "Humanity wins!");
+                    UI.SetLabelAll(UILabelEnum.MiddleCenter, "Humanity wins!");
                     Game.End(10.0);
                     return; 
             }
@@ -1338,7 +1338,7 @@ class Main
             }
             if (self._humans == 0 && self._playerShifters == 0 && self._hasSpawned)
             {
-                UI.SetLabelAll("MiddleCenter", "Humanity has failed to defend Christmas!");
+                UI.SetLabelAll(UILabelEnum.MiddleCenter, "Humanity has failed to defend Christmas!");
                 Game.End(10.0);
                 return;
             }
@@ -1351,7 +1351,7 @@ class Main
         amount = self.AddTitansPerWave * (self._currentWave - 1) + self.StartTitans;
         if (self._currentWave > self._MaxWaves)
         {
-            UI.SetLabelAll("MiddleCenter", "All waves cleared, humanity wins!");
+            UI.SetLabelAll(UILabelEnum.MiddleCenter, "All waves cleared, humanity wins!");
             Game.End(10.0);
             return;
         }
@@ -1441,11 +1441,11 @@ class Main
     {
         if (self.GradualSpawn)
         {
-            Game.SpawnTitansAsync("Default", amount);
+            Game.SpawnTitansAsync(TitanTypeEnum.Default, amount);
         }
         else
         {
-            Game.SpawnTitans("Default", amount);
+            Game.SpawnTitans(TitanTypeEnum.Default, amount);
         }
     }
 
@@ -1607,7 +1607,7 @@ class Main
     coroutine SpawnCandyCanedPunk()
     {
         wait 0.16;
-        CandyPunk = Game.SpawnTitan("Punk");
+        CandyPunk = Game.SpawnTitan(TitanTypeEnum.Punk);
         CandyPunk.Size = 3.0;
 
         # TO DO ---> Move this to be netcoded for ALL players
@@ -1624,7 +1624,7 @@ class Main
     coroutine SpawnReindeerTitan()
     {
         wait 0.16;
-        reindeer = Game.SpawnTitan("Punk");      
+        reindeer = Game.SpawnTitan(TitanTypeEnum.Punk);      
         reindeer.Size = 3.0;
         wait 0.16;
 
@@ -1640,13 +1640,13 @@ class Main
         hornyPivot.Rotation = reindeer.Rotation;
 
         wait 0.16;
-        horn1 = Game.SpawnTitan("Thrower");
+        horn1 = Game.SpawnTitan(TitanTypeEnum.Thrower);
         self.stackHorn1(horn1, reindeer, hornyPivot, h_r);
         wait 0.16;
         horn1.Size = 1.0;
         horn1.DetectRange = 2500;
         horn1.FocusRange = 1250;
-        horn2 = Game.SpawnTitan("Thrower");
+        horn2 = Game.SpawnTitan(TitanTypeEnum.Thrower);
         self.stackHorn2(horn2, reindeer, hornyPivot, h_l);
         wait 0.16;
         horn2.Size = 1.0;
@@ -1663,7 +1663,7 @@ class Main
             horn1.Rotation.Y = hornyPivot.Rotation.Y;
             wait 0.002;
         }
-        horn1_r = Game.SpawnTitanAt("Thrower", horn1.Position);
+        horn1_r = Game.SpawnTitanAt(TitanTypeEnum.Thrower, horn1.Position);
         horn1_r.Size = 1.0;
         wait 0.16;
         horn1.GetKilled("Dehorned");
@@ -1680,7 +1680,7 @@ class Main
             horn2.Rotation.Y = hornyPivot.Rotation.Y;
             wait 0.002;
         }
-        horn2_r = Game.SpawnTitanAt("Thrower", horn2.Position);
+        horn2_r = Game.SpawnTitanAt(TitanTypeEnum.Thrower, horn2.Position);
         horn2_r.Size = 1.0;
         wait 0.16;
         horn2.GetKilled("Dehorned");
@@ -1694,7 +1694,7 @@ class Main
         wait 5.0;
         self._T_override = true;
 
-        reindeer = Game.SpawnTitan("Crawler");
+        reindeer = Game.SpawnTitan(TitanTypeEnum.Crawler);
         reindeer.Size = 3.0;
         #wait 0.16;
         reindeer.Wander(0.14);
@@ -1745,7 +1745,7 @@ class Main
 
         # Reindeer dead, move independently - Check if networking this hat change is actually needed.
 
-        santa = Game.SpawnTitanAt("Thrower", lastReindeerPos);
+        santa = Game.SpawnTitanAt(TitanTypeEnum.Thrower, lastReindeerPos);
         santa.Size = 2.0;
         #wait 0.16;
         self._T_override = false;
@@ -1977,7 +1977,7 @@ component TheChristmasTree
         self._isHostDestroyed = true;
         self.NetworkSync(null);
 
-        UI.SetLabelAll("MiddleCenter", "Humanity has failed to defend the tree!");
+        UI.SetLabelAll(UILabelEnum.MiddleCenter, "Humanity has failed to defend the tree!");
         Game.End(10.0);
     }
 

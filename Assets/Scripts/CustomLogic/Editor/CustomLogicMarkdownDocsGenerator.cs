@@ -27,6 +27,12 @@ namespace CustomLogic.Editor
 
         public override string GetRelativeFilePath(CLType type)
         {
+            // If the type has a category, use it; otherwise fall back to static/objects
+            if (!string.IsNullOrEmpty(type.Category))
+            {
+                return $"md/{type.Category}/{type.Name}.md";
+            }
+            
             if (type.IsStatic && type.IsAbstract)
                 return $"md/static/{type.Name}.md";
 
@@ -166,12 +172,29 @@ namespace CustomLogic.Editor
             var rows = new List<List<string>>();
             foreach (var property in properties)
             {
+                var description = TrimAndCleanLines(property.Info?.Summary ?? "").Replace("\r\n", " ").Replace('\n', ' ').Replace('\t', ' ');
+                
+                if (property.EnumNames != null && property.EnumNames.Length > 0)
+                {
+                    if (!string.IsNullOrEmpty(description))
+                        description += " ";
+                    var enumRefs = property.EnumNames.Select(e => GetEnumReference(e)).ToArray();
+                    if (enumRefs.Length == 1)
+                    {
+                        description += $"Refer to {enumRefs[0]}";
+                    }
+                    else
+                    {
+                        description += $"Refer to {string.Join(", ", enumRefs)}";
+                    }
+                }
+                
                 var row = new List<string>
                     {
                         property.Name,
                         GetTypeReferenceStr(property.Type, TypeLinkKind.Absolute),
                         property.IsReadonly.ToString(),
-                        TrimAndCleanLines(property.Info.Summary).Replace("\r\n", " ").Replace('\n', ' ').Replace('\t', ' ')
+                        description
                     };
 
                 rows.Add(row);
@@ -218,14 +241,32 @@ namespace CustomLogic.Editor
                         _sb.AppendLine("> ");
                     }
 
-                    if (method.Info.Parameters != null && method.Info.Parameters.Count > 0)
+                    var hasParameterDocs = method.Parameters != null && method.Parameters.Any(p => (!string.IsNullOrEmpty(p.Description)) || (p.EnumNames != null && p.EnumNames.Length > 0));
+                    if (hasParameterDocs)
                     {
                         _sb.AppendLine("> **Parameters**:");
                         foreach (var parameter in method.Parameters)
                         {
-                            if (method.Info.Parameters.TryGetValue(parameter.Name, out var parameterInfo) == false)
+                            var paramDescription = !string.IsNullOrEmpty(parameter.Description) ? TrimAndCleanLines(parameter.Description) : "";
+                            
+                            if (parameter.EnumNames != null && parameter.EnumNames.Length > 0)
+                            {
+                                if (!string.IsNullOrEmpty(paramDescription))
+                                    paramDescription += " ";
+                                var enumRefs = parameter.EnumNames.Select(e => GetEnumReference(e)).ToArray();
+                                if (enumRefs.Length == 1)
+                                {
+                                    paramDescription += $"Refer to {enumRefs[0]}";
+                                }
+                                else
+                                {
+                                    paramDescription += $"Refer to {string.Join(", ", enumRefs)}";
+                                }
+                            }
+                            
+                            if (string.IsNullOrEmpty(paramDescription))
                                 continue;
-                            _sb.AppendLine($"> - `{parameter.Name}`: {TrimAndCleanLines(parameterInfo)}");
+                            _sb.AppendLine($"> - `{parameter.Name}`: {paramDescription}");
                         }
                         _sb.AppendLine("> ");
                     }
@@ -285,6 +326,17 @@ namespace CustomLogic.Editor
                 return $"{name}<{string.Join(",", typeReference.Arguments.Select(x => GetTypeReferenceStr(x, linkKind)))}>";
 
             return name;
+        }
+
+        private string GetEnumReference(string enumName)
+        {
+            if (_typeNameMap.ContainsKey(enumName))
+            {
+                var enumType = _typeNameMap[enumName];
+                var path = GetRelativeRefPath(enumType);
+                return $"[{enumName}](../{path})";
+            }
+            return enumName;
         }
 
         private static string CreateTable(List<string> headers, List<List<string>> rows)

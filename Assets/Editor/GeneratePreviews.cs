@@ -32,28 +32,48 @@ public class GeneratePreviews
         }
     }
 
-    static void GeneratePrefabs(string assetPath, string previewPath)
+    static int GeneratePrefabs(string assetPath, string previewPath)
     {
         string[] prefabs = Directory.GetFiles(assetPath, "*.prefab", SearchOption.TopDirectoryOnly);
+        int generated = 0;
+        
         foreach (string prefab in prefabs)
         {
             var asset = AssetDatabase.LoadAssetAtPath(prefab, typeof(GameObject));
+            if (asset == null)
+            {
+                Debug.LogWarning($"Could not load prefab: {prefab}");
+                continue;
+            }
+            
             string filePath = previewPath + "/" + asset.name + "Preview.png";
             if (File.Exists(filePath))
                 continue;
+            
+            int instanceID = asset.GetInstanceID();
             Texture2D tex = AssetPreview.GetAssetPreview(asset);
-            int maxTries = 30;
-            while (tex == null)
+            int maxTries = 100;
+            
+            while ((tex == null || AssetPreview.IsLoadingAssetPreview(instanceID)) && maxTries > 0)
             {
                 System.Threading.Thread.Sleep(100);
                 tex = AssetPreview.GetAssetPreview(asset);
                 maxTries--;
-                if (maxTries <= 0)
-                    break;
             }
+            
             if (tex != null)
+            {
                 File.WriteAllBytes(filePath, tex.EncodeToPNG());
+                generated++;
+                Debug.Log($"Generated preview: {asset.name}");
+            }
+            else
+            {
+                Debug.LogWarning("Failed to generate preview for prefab: " + prefab + " (timeout after 10 seconds)");
+            }
         }
+        
+        return generated;
     }
 
     static void GenerateTextures(string assetPath, string previewPath)
@@ -66,18 +86,26 @@ public class GeneratePreviews
             string filePath = previewPath + "/" + asset.name + "Preview.png";
             if (File.Exists(filePath))
                 continue;
+            
+            int instanceID = asset.GetInstanceID();
             Texture2D tex = AssetPreview.GetAssetPreview(asset);
-            int maxTries = 30;
-            while (tex == null)
+            int maxTries = 100;
+            
+            while ((tex == null || AssetPreview.IsLoadingAssetPreview(instanceID)) && maxTries > 0)
             {
                 System.Threading.Thread.Sleep(100);
                 tex = AssetPreview.GetAssetPreview(asset);
                 maxTries--;
-                if (maxTries <= 0)
-                    break;
             }
+            
             if (tex != null)
+            {
                 File.WriteAllBytes(previewPath + "/" + asset.name + "Preview.png", tex.EncodeToPNG());
+            }
+            else
+            {
+                Debug.LogWarning("Failed to generate preview for texture: " + texture + " (timeout after 10 seconds)");
+            }
         }
     }
 }

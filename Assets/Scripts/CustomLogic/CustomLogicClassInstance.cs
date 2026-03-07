@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CustomLogic
 {
-    abstract class CustomLogicClassInstance
+    public abstract class CustomLogicClassInstance
     {
         // Always true for class instances, but for components it can be toggled
         // The reason this is here instead of in CustomLogicComponentInstance is to
@@ -13,6 +13,20 @@ namespace CustomLogic
         public bool Inited = false;
 
         public readonly Dictionary<string, object> Variables;
+
+        // Legacy support for scripts that used "Type" variable as a name.
+        // Only used to control if the Type variable is visualized.
+        protected bool _containsTypeOverride = false;
+        public void SetContainsTypeOverride(bool contains)
+        {
+            _containsTypeOverride = contains;
+        }
+
+        /// <summary>
+        /// The namespace (source file type) where this instance's class was defined.
+        /// Used for namespace-aware class resolution.
+        /// </summary>
+        public CustomLogicSourceType? Namespace { get; set; }
 
         protected CustomLogicClassInstance()
         {
@@ -117,6 +131,13 @@ namespace CustomLogic
             }
 
             return false;
+        }
+
+        public bool ShowVariableInInspector(string name)
+        {
+            if (name == "Type" && !_containsTypeOverride)
+                return false;
+            return true;
         }
     }
 }

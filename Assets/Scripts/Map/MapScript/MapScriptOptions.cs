@@ -3,7 +3,7 @@ using Utility;
 
 namespace Map
 {
-    class MapScriptOptions: BaseCSVRow
+    public class MapScriptOptions: BaseCSVRow
     {
         protected override bool NamedParams => true;
         public override char Delimiter => '|';

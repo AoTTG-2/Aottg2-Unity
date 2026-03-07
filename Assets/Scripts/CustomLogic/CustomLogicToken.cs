@@ -1,6 +1,6 @@
 ﻿namespace CustomLogic
 {
-    class CustomLogicToken
+    public class CustomLogicToken
     {
         public CustomLogicTokenType Type;
         public object Value;

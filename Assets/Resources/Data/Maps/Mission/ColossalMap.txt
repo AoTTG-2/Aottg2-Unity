@@ -1,5 +1,5 @@
 /// Options
-EditorVersion:1.0|Description:A colossal titan appears at the wall.|HasWeather:0
+EditorVersion:1.0|Description:A colossal titan appears at the wall.|HasWeather:1
 /// CustomAssets
 
 /// Objects
@@ -391,8 +391,6 @@ Scene,Arenas/HQ1e,3227,0,1,1,1,0,HQ1e,0,10.09244,-35.7602,0,0,0,0.66,0.8,0.66,Ph
 Scene,Decor/Lantern3,3229,0,1,1,1,0,Lantern3,-20.14282,10.70968,-40.52946,0,270,0,1.2,1.2,1.5,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Fence1,1748,0,1,1,1,0,Fence1,-40.30188,10.3923,-42.96869,0,0,0,0.7,0.7,0.7,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Geometry/Sphere,1749,0,1,1,1,0,Sphere,0,8.525489,19.33145,0,0,0,1.5,0.5,1.5,Physical,Entities,Default,Basic|255/255/255/255|Brick/Brick6|1/1|0/0,;
-Scene,Decor/Lantern3,3184,0,1,1,1,0,Lantern3,19.51591,25.59702,-318.9729,0,180,0,1.2,1.2,1.5,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Lantern3,3187,0,1,1,1,0,Lantern3,-25.48948,25.59702,-319.6041,0,0,0,1.2,1.2,1.5,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Lantern3,3212,0,1,1,1,0,Lantern3,-610.9818,41.00599,-126.9541,0,0,0,1.2,1.2,1.5,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Lantern5,3222,0,1,1,1,0,Lantern5,-145,10.33425,-129,0,0,0,2,1.5,2,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Lantern5,3221,0,1,1,1,0,Lantern5,136,10.33425,-129,0,0,0,2,1.5,2,Physical,Entities,Default,Default|255/255/255/255,;
@@ -477,25 +475,6 @@ Scene,Decor/Box1,2767,0,1,1,1,0,Box1,603,10.45856,53,0,299.3333,0,0.75,0.75,0.75
 Scene,Decor/Box1,2768,0,1,1,1,0,Box1,604.2816,10.45856,84.18816,0,299.3333,0,0.75,0.75,0.75,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Barrel4,2769,0,1,1,1,0,Barrel4,483.6082,10.27209,-61.77251,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Barrel4,2770,0,1,1,1,0,Barrel4,477.1974,12.62389,-53.61294,292.0137,45.26635,274.1263,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Geometry/Cuboid,2779,0,1,1,1,0,Cuboid,-3.700378,19.518,-408.3779,0,0,0,1.948371,1.36248,13.25029,Physical,Entities,Default,Basic|255/255/255/255|Brick/Brick7|1.5/3|0/0,;
-Scene,Geometry/Cuboid,2772,0,1,1,1,0,Cuboid,-3.700378,19.77507,-408.3779,0,0,0,1.843331,1.36248,13.16654,Physical,Entities,Default,Basic|255/255/255/255|Nature/Grass4|0.5/2|0/0,;
-Scene,Nature/Tree18,2773,0,1,1,1,0,Tree18,-4.679422,26.49871,-458.855,0,0,0,0.1,0.1,0.1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Tree18,2774,0,1,1,1,0,Tree18,-4.679422,26.49871,-428.3138,0,0,0,0.1,0.1,0.1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Tree18,2775,0,1,1,1,0,Tree18,-4.679422,26.49871,-388.9454,0,0,0,0.1,0.1,0.1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Tree18,2776,0,1,1,1,0,Tree18,-4.679422,26.49871,-357.7726,0,0,0,0.1,0.1,0.1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Field3,2786,0,1,1,1,0,Field3,-4.121251,26.50008,-405.4602,0,270,0,0.25,0.2,0.25,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Field3,2785,0,1,1,1,0,Field3,-4.121251,26.50008,-423.0572,0,270,0,0.25,0.2,0.25,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Field3,2784,0,1,1,1,0,Field3,-4.121251,26.50008,-442.6237,0,270,0,0.25,0.2,0.25,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Field3,2783,0,1,1,1,0,Field3,-4.121251,26.50008,-463.3177,0,270,0,0.25,0.2,0.25,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Field3,2787,0,1,1,1,0,Field3,-4.121251,26.50008,-388.6117,0,270,0,0.25,0.2,0.25,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Field3,2788,0,1,1,1,0,Field3,-4.121251,26.50008,-371.2019,0,270,0,0.25,0.2,0.25,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Field3,2789,0,1,1,1,0,Field3,-4.121251,26.50008,-354.6767,0,270,0,0.25,0.2,0.25,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Field3,2790,0,1,1,1,0,Field3,-4.121251,26.50008,-365.0645,0,0,0,0.2,0.2,0.2,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Field3,2791,0,1,1,1,0,Field3,-3.608257,26.50008,-379.1835,0,180,0,0.2,0.2,0.2,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Field3,2792,0,1,1,1,0,Field3,-3.608257,26.50008,-414.4652,0,180,0,0.2,0.2,0.2,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Field3,2793,0,1,1,1,0,Field3,-3.608257,26.50008,-451.5694,0,180,0,0.2,0.2,0.2,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Field3,2794,0,1,1,1,0,Field3,-3.608257,26.50008,-433.897,0,0,0,0.2,0.2,0.2,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Field3,2795,0,1,1,1,0,Field3,-3.608257,26.50008,-395.1432,0,0,0,0.2,0.2,0.2,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Tree12,2810,0,1,1,1,0,Tree12,-396.7007,42.04031,-84.24413,0,0,0,0.2,0.33,0.2,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Tree12,2811,0,1,1,1,0,Tree12,-334.1427,41.58248,28.27917,0,0,0,0.2,0.33,0.2,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Bell1b,2926,0,1,0,1,1,Bell1b,482,111,-505,0,0,0,1.5,1.5,1.5,Physical,Entities,Default,Default|255/255/255/255,Bell|ResetDelay:0.3|LureTitans:false|LureRadius:100|LureDuration:5|VelocityHitThreshold:30;
@@ -697,8 +676,6 @@ Scene,Decor/Lantern3,3286,0,1,1,1,0,Lantern3,-498.4291,25.59702,-510.1408,0,315,
 Scene,Decor/Lantern3,3287,0,1,1,1,0,Lantern3,-447.0175,41.00599,-101.8779,0,90,0,1.2,1.2,1.5,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Lantern3,3288,0,1,1,1,0,Lantern3,-447.0175,41.00599,-51.23034,0,270,0,1.2,1.2,1.5,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Lantern3,3289,0,1,1,1,0,Lantern3,-391.8122,41.00599,99.10932,0,90,0,1.2,1.2,1.5,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Lantern3,3182,0,1,1,1,0,Lantern3,19.51591,25.59702,-498.7387,0,180,0,1.2,1.2,1.5,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Lantern3,3185,0,1,1,1,0,Lantern3,-25.48948,25.59702,-498.7387,0,0,0,1.2,1.2,1.5,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House20,3338,0,1,1,1,0,House20,605.272,10.16118,223.8205,0,75,0,0.6,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Barrel4,3339,0,1,1,1,0,Barrel4,607.7386,12.80368,312.6742,334.838,298.7407,92.26942,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Box2,3340,0,1,1,1,0,Box2,615.4288,10.40578,133.505,0,83.18136,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
@@ -1098,10 +1075,6 @@ Scene,FX/NPCFX1,4018,0,1,0,1,0,NPCFX1,511.2346,13.17021,-4.762982,0,0,0,1,1,1,No
 Scene,FX/NPCFX1,4020,0,1,0,1,0,NPCFX1,-1.221117,26.39638,-582.4167,0,0,0,1,1,1,Physical,Entities,Default,DefaultNoTint|255/255/255/255,;
 Scene,FX/NPCFX1,4021,0,1,0,1,0,NPCFX1,-360.4993,10.84813,358.1537,0,0,0,1,1,1,Physical,Entities,Default,DefaultNoTint|255/255/255/255,;
 Scene,General/EditorDaylight,4024,0,1,1,0,0,Daylight,0,412.5718,0,0,0,0,1,1,1,None,Entities,Default,DefaultNoTint|255/255/255/255,Daylight|Color:200/140/0/255|Intensity:1|WeatherControlled:true;
-Scene,Geometry/Capsule1,4025,0,1,1,0,0,Capsule1,-145,26,-129,0,0,0,5,15,5,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Geometry/Capsule1,4026,0,1,1,0,0,Capsule1,136,26,-129,0,0,0,5,15,5,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Geometry/Capsule1,4027,0,1,1,0,0,Capsule1,116,26,141,0,0,0,5,15,5,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Geometry/Capsule1,4028,0,1,1,0,0,Capsule1,-116,26,141,0,0,0,5,15,5,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Geometry/Capsule1,4029,0,1,1,0,0,Capsule1,416,26,142,0,0,0,5,15,5,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Geometry/Capsule1,4030,0,1,1,0,0,Capsule1,416,26,-120,0,0,0,5,15,5,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Geometry/Capsule1,4031,0,1,1,0,0,Capsule1,39,26,495,0,0,0,5,15,5,Physical,Entities,Default,Default|255/255/255/255,;
@@ -1116,55 +1089,94 @@ Scene,General/EditorTitanSpawnPoint,4057,0,1,1,0,0,Titan SpawnPoint,-5.94364,10.
 Scene,General/EditorTitanSpawnPoint,4058,0,1,1,0,0,Titan SpawnPoint,0.1203972,10.46042,701.9404,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
 Scene,General/EditorTitanSpawnPoint,4059,0,1,1,0,0,Titan SpawnPoint,0.1203972,10.46042,695.9642,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
 Scene,General/EditorTitanSpawnPoint,4060,0,1,1,0,0,Titan SpawnPoint,5.76397,10.46042,695.9642,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,4061,0,1,1,0,0,Titan SpawnPoint,-6.606063,10.46042,695.9642,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint
+Scene,General/EditorTitanSpawnPoint,4061,0,1,1,0,0,Titan SpawnPoint,-6.606063,10.46042,695.9642,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,Geometry/Cuboid,4064,0,1,1,0,0,RouteObject,0,20,333,0,0,0,6,2,3,Region,Titans,Default,Default|255/255/255/255,MoveTo|ObjectIDs:4078 4073 4072 4077;
+Scene,Geometry/Cuboid,4066,0,1,1,0,0,RouteObject,248.2481,35,-576,0,0,0,6,2,6,Region,Titans,Default,Default|255/255/255/255,MoveTo|ObjectIDs:4076;
+Scene,Geometry/Cuboid,4068,0,1,1,0,0,RouteObject,96.10249,35,-280.0023,0,0,0,4,2,5,Region,Titans,Default,Default|255/255/255/255,MoveTo|ObjectIDs:4076;
+Scene,Geometry/Cuboid,4091,0,1,1,0,0,Cuboid,-232.1539,30,-221.1823,0,0,0,5,4,6,Region,Titans,Default,Default|255/255/255/255,MoveTo|ObjectIDs:4083;
+Scene,Geometry/Cuboid,4072,0,1,1,0,0,RouteObject,-147.54,20,5.395798,0,0,0,4,2,18,Region,Titans,Default,Default|255/255/255/255,MoveTo|ObjectIDs:4076;
+Scene,Geometry/Cuboid,4073,0,1,1,0,0,RouteObject,149.0442,20,-1.385605,0,0,0,4,2,18,Region,Titans,Default,Default|255/255/255/255,MoveTo|ObjectIDs:4076;
+Scene,Geometry/Cuboid,4077,0,1,1,0,0,RouteObject,-229,21,175,0,0,0,6,2,6,Region,Titans,Default,Default|255/255/255/255,MoveTo|ObjectIDs:4091;
+Scene,Geometry/Cuboid,4078,0,1,1,0,0,RouteObject,242,20,175,0,0,0,6,2,6,Region,Titans,Default,Default|255/255/255/255,MoveTo|ObjectIDs:4090;
+Scene,Geometry/Cuboid,4083,0,1,1,0,0,RouteObject,-93.93251,35,-280.0023,0,0,0,4,2,5,Region,Titans,Default,Default|255/255/255/255,MoveTo|ObjectIDs:4076;
+Scene,Geometry/Cuboid,4090,0,1,1,0,0,Cuboid,241.6227,30,-221.1823,0,0,0,6,4,6,Region,Titans,Default,Default|255/255/255/255,MoveTo|ObjectIDs:4068 4066;
+Scene,Geometry/NavMeshObstacle,4080,0,1,1,0,0,NavMeshObstacle,0.08309117,25,10.41486,0,0,0,250,200,170,None,Characters,Default,Default|255/255/255/255,;
+Scene,Geometry/Cuboid,4076,0,1,1,0,1,Civilians,0,30,-563.901,0,0,0,10,3,10,Region,Hitboxes,Default,Default|255/255/255/255,TitanTarget|EnabledByDefault:true|PlayerPriorityRange:0,Civilians|;
+Scene,Geometry/Cuboid,4088,0,1,1,0,0,TitanWarning,2.162543E-05,110,-374.3165,0,0,0,70,20,50,Region,Titans,Default,Default|255/255/255/255,TitanWarning|;
+Scene,Geometry/Cuboid,4094,0,1,1,0,0,RouteObject,0,20,610.2009,0,0,0,6,2,6,Region,Titans,Default,Default|255/255/255/255,MoveTo|ObjectIDs:4064
 /// Logic
 class Main
 {
 	MaxTitans = 20;
 	MaxTitansTooltip = "Max number of titans to spawn at gate.";
-	TitanSpawnTime = 5.0;
-	TitanSpawnTimeTooltip = "Time between each titan spawn.";
+	CiviliansHealth = 1000;
 	_hasSpawned = false;
 	_hasSpawnedEnemy = false;
+	_titanSpawnTime = 10.0;
 	_titanSpawnTimeLeft = 10.0;
 	_colossal = null;
 	_handMode = false;
-	_handCooldown = 5.0;
+	_handCooldown = 7.0;
 	_handCooldownLeft = 0.0;
 	_hasKicked = false;
 	_wallGateStart = null;
 	_wallGateDestroyed = null;
 	_hasFinalDialogue = false;
+	_bossHealthBar = null;
+	_difficulty = 1;
+	_civilians = null;
+	_startAttackCooldown = 5.0;
 
 	function OnGameStart()
 	{
 		Game.SetPlaylist("Battle");
-		difficulty = Game.GetGeneralSetting("Difficulty");
-		if (difficulty == 0)
+		self._difficulty = Game.GetGeneralSetting("Difficulty");
+		if (self._difficulty == 0) # Training
 		{
 			self._handCooldown = 1000.0;
+			self._titanSpawnTime = 99999;
 		}
-		elif (difficulty == 1)
+		elif (self._difficulty == 1) # Easy
 		{
 			self._handCooldown = 10.0;
+			self._titanSpawnTime = 15.0;
 		}
-		elif (difficulty == 2)
+		elif (self._difficulty == 2) # Normal
 		{
-			self._handCooldown = 6.0;
+			self._handCooldown = 7.0;
+			self._titanSpawnTime = 11.5;
 		}
-		elif (difficulty == 3)
+		elif (self._difficulty == 3) # Hard
 		{
-			self._handCooldown = 4.5;
+			self._handCooldown = 5.5;
+			self._titanSpawnTime = 8.0;
 		}
-		elif (difficulty == 4)
+		elif (self._difficulty == 4) # Abnormal
 		{
-			self._handCooldown = 3.0;
+			self._handCooldown = 4.0;
+			self._titanSpawnTime = 7.0;
 		}
+		self._bossHealthBar = BossHealthBar("Colossal Titan", 1000.0, "Top", true);
 		self._wallGateStart = Map.FindMapObjectByName("WallGateStart");
 		self._wallGateDestroyed = Map.FindMapObjectByName("WallGateDestroyed");
+		self._civilians = Map.FindMapObjectByName("Civilians").GetComponent("Civilians");
+
 		if (Network.IsMasterClient)
 		{
+			self.ColossalCutscene();
 			Network.SendMessageAll("StartCutscene");
+		}
+	}
+
+	function OnPlayerJoin(player)
+	{
+		if (self._colossal != null)
+		{
+			Network.SendMessage(player, "SetColossal " + self._colossal.ViewID);
+			if (self._hasKicked)
+			{
+				Network.SendMessage(player, "DestroyGate");
+			}
 		}
 	}
 
@@ -1178,111 +1190,222 @@ class Main
 			}
 			elif (message == "DestroyGate")
 			{
-				self._wallGateStart.Active = false;
-				self._wallGateDestroyed.Active = true;
+				self.SetDestroyedGate();
 			}
 			elif (message == "FinalDialogue")
 			{
 				self.FinalDialogue();
 			}
+			elif (String.StartsWith(message, "SetColossal "))
+			{
+				viewID = Convert.ToInt(String.Substring(message, 12));
+				self._colossal = Game.FindCharacterByViewID(viewID);
+				self.SetHealthBar();
+			}
 		}
+	}
+
+	coroutine ColossalCutscene()
+	{
+		spawnPosition = Vector3(0, 8, 755);
+		startRotation = Vector3(0, 180, 0);
+		Game.SpawnEffect(EffectNameEnum.ColossalSpawn, Vector3(0, 150, 765), Vector3(-90, 0, 0), 5.0);
+		wait 2.5;
+		colossal = Game.SpawnShifterAt(ShifterTypeEnum.WallColossal, spawnPosition, -180);
+		colossal.Size = 0.945;
+		colossal.CanDamageLeftHand = false;
+		colossal.CanDamageRightHand = false;
+		rb = colossal.Rigidbody;
+		rb.FreezeAllPositions = true;
+		rb.FreezeAllRotations = true;
+		Network.SendMessageAll("SetColossal " + colossal.ViewID);
+		self._colossal = colossal;
+		wait 1.0;
+		colossal.Attack("AttackKick");
+		colossal.WallAttackCooldownLeft = 999;
+		wait 1.0;
+		Network.SendMessageAll("DestroyGate");
+		position = Vector3(0, 50, 650);
+		velocity = Vector3(0, 200, -200);
+		gravity = Vector3(0, -135000, 0);
+		Game.SpawnUnscaledEffect(EffectNameEnum.ColossalKick, position, Vector3(0,180,0));
+		Game.SpawnProjectile(ProjectileNameEnum.Rock2, position, Vector3.Zero, velocity, gravity, 10000, TeamEnum.Titan, 15.0);
+		wait 3.5;
+		colossal.CanDamageLeftHand = true;
+		colossal.CanDamageRightHand = true;
+		if (self._hasSpawned)
+		{
+			colossal.WallAttackCooldownLeft = self._startAttackCooldown;
+		}
+		Main._titanSpawnTimeLeft = 5.0;
 	}
 
 	function FinalDialogue()
 	{
-		Cutscene.ShowDialogueForTime("Armin1", "Armin", "The Colossal titan has vanished, but some titans have broken through the gate!", 5.0);
+		Cutscene.ShowDialogueForTime(ProfileIconEnum.Armin1, "Armin", "The Colossal titan has vanished, but some titans have broken through the gate!", 5.0);
 	}
 
 	function OnTick()
 	{
-		if (Network.IsMasterClient && !Game.IsEnding)
+		if (!Game.IsEnding)
 		{
-			self._titanSpawnTimeLeft -= Time.TickTime;
-			titans = Game.Titans.Count;
-			humans = Game.Humans.Count;
-			aiShifters = Game.AIShifters.Count;
-			playerShifters = Game.PlayerShifters.Count;
-			if (humans > 0 || playerShifters > 0)
+			if (Network.IsMasterClient)
 			{
-				self._hasSpawned = true;
-			}
-			if (aiShifters > 0)
-			{
-				self._hasSpawnedEnemy = true;
-			}
-			if (aiShifters == 0 && self._hasSpawnedEnemy)
-			{
-				if (titans > 0 && !self._hasFinalDialogue)
+				self._titanSpawnTimeLeft -= Time.TickTime;
+				titans = Game.Titans.Count;
+				humans = Game.Humans.Count;
+				aiShifters = Game.AIShifters.Count;
+				playerShifters = Game.PlayerShifters.Count;
+				if (!self._hasSpawned && (humans > 0 || playerShifters > 0))
 				{
-					self._hasFinalDialogue = true;
-					Network.SendMessageAll("FinalDialogue");
-					return;
+					self._hasSpawned = true;
+					if (self._colossal != null)
+					{
+						self._colossal.WallAttackCooldownLeft = self._startAttackCooldown;
+					}
 				}
-				if (titans <= 0)
+				if (aiShifters > 0)
 				{
-					UI.SetLabelAll("TopCenter", "");
-					UI.SetLabelAll("MiddleCenter", "Humanity wins!");
+					self._hasSpawnedEnemy = true;
+				}
+				if (aiShifters == 0 && self._hasSpawnedEnemy)
+				{
+					if (titans > 0 && !self._hasFinalDialogue)
+					{
+						self._hasFinalDialogue = true;
+						Network.SendMessageAll("FinalDialogue");
+						return;
+					}
+					if (titans <= 0)
+					{
+						UI.SetLabelAll(UILabelEnum.TopCenter, "");
+						UI.SetLabelAll(UILabelEnum.MiddleCenter, "Humanity wins!");
+						Game.End(10.0);
+						return;
+					}
+				}
+				if (humans == 0 && playerShifters == 0 && self._hasSpawned)
+				{
+					UI.SetLabelAll(UILabelEnum.MiddleCenter, "Humanity failed!");
 					Game.End(10.0);
 					return;
 				}
-			}
-			if (humans == 0 && playerShifters == 0 && self._hasSpawned)
-			{
-				UI.SetLabelAll("MiddleCenter", "Humanity failed!");
-				Game.End(10.0);
-				return;
-			}
-			if (self._colossal != null && self._hasKicked)
-			{
-				if (self._handMode)
-				{
-					UI.SetLabelAll("TopCenter", "<b><size=28><color=#008000>Colossal Hand: </color>" + self._colossal.HandHealth + "</size></b>");
-					if (self._colossal.HandHealth <= 0)
-					{
-						self._handMode = false;
-						self._colossal.StopSteam();
-						self._handCooldownLeft = self._handCooldown;
-					}
-				}
 				else
 				{
-					UI.SetLabelAll("TopCenter", "<b><size=28><color=#ff0000>Colossal Nape: </color>" + self._colossal.Health + "</size></b>");
-					self._handCooldownLeft -= Time.TickTime;
-					if (self._handCooldownLeft <= 0)
+					UI.SetLabelAll(UILabelEnum.TopCenter, "");
+				}
+
+				if (self._colossal != null && self._hasKicked)
+				{
+					if (Network.IsMasterClient)
 					{
-						if (self._colossal.SteamState == "Off")
+						if (self._handMode)
 						{
-							self._colossal.AttackSteam();
+							if (self._colossal.LeftHandHealth <= 0 && self._colossal.RightHandHealth <= 0)
+							{
+								self._handMode = false;
+								self._colossal.StopSteam();
+								self._handCooldownLeft = self._handCooldown;
+							}
 						}
 						else
 						{
-							self._handMode = true;
-							self._colossal.HandHealth = self._colossal.MaxHandHealth;
+							self._handCooldownLeft -= Time.TickTime;
+							if (self._handCooldownLeft <= 0)
+							{
+								if (self._colossal.SteamState == SteamStateEnum.Off)
+								{
+									self._colossal.AttackSteam();
+								}
+								else
+								{
+									self._handMode = true;
+									self._colossal.LeftHandHealth = self._colossal.MaxLeftHandHealth;
+									self._colossal.RightHandHealth = self._colossal.MaxRightHandHealth;
+								}
+							}
 						}
 					}
 				}
+				if (self._difficulty > 0 && self._titanSpawnTimeLeft <= 0 && titans < self.MaxTitans && aiShifters > 0)
+				{
+					self._titanSpawnTimeLeft = self._titanSpawnTime;
+					self.SpawnTitan();
+				}
+
+				self.UpdateTopLabel();
 			}
-			elif (titans > 0)
+		}
+
+		if (self._colossal != null && self._bossHealthBar != null)
+		{
+			self._bossHealthBar.SetCurrentHealth(self._colossal.Health);
+			self._bossHealthBar.SetLeftHandHealth(self._colossal.LeftHandHealth);
+			self._bossHealthBar.SetRightHandHealth(self._colossal.RightHandHealth);
+			self._bossHealthBar.SetLeftHandState(self._colossal.LeftHandState);
+			self._bossHealthBar.SetRightHandState(self._colossal.RightHandState);
+			self._bossHealthBar.SetLeftHandRegen(self._colossal.LeftHandSeverTimeLeft);
+			self._bossHealthBar.SetRightHandRegen(self._colossal.RightHandSeverTimeLeft);
+
+			if (self._bossHealthBar.IsDead())
 			{
-				UI.SetLabelAll("TopCenter", "Titans Left: " + titans);
-			}
-			else
-			{
-				UI.SetLabelAll("TopCenter", "");
-			}
-			if (self._titanSpawnTimeLeft <= 0 && titans < self.MaxTitans && self._colossal != null)
-			{
-				self._titanSpawnTimeLeft = self.TitanSpawnTime;
-				self.SpawnTitan();
+				self._bossHealthBar.Hide();
 			}
 		}
 	}
 
 	function SpawnTitan()
 	{
-		titan = Game.SpawnTitan("Default");
+		type = TitanTypeEnum.Normal;
+		if (Random.RandomInt(0, 10) > 2)
+		{
+			if (Random.RandomInt(0, 5-self._difficulty) == 0)
+			{
+				list = List(TitanTypeEnum.Punk,TitanTypeEnum.Jumper,TitanTypeEnum.Thrower).Randomize();
+				type = list.Get(0);
+			}
+			else
+			{
+				type = TitanTypeEnum.Abnormal;
+			}
+		}
+
+		titan = Game.SpawnTitan(type);
 		titan.Rotation = Vector3(0, 180, 0);
 		titan.MoveTo(Vector3(0, 0, 400), 20, false);
+		titan.UsePathfinding = true;
+		titan.DetectRange = 150;
+		titan.FocusRange = 300;
+	}
+
+	function SetHealthBar()
+	{
+		self._bossHealthBar.SetMaxHealth(self._colossal.MaxHealth);
+		self._bossHealthBar.SetCurrentHealth(self._colossal.Health);
+		self._bossHealthBar.SetLeftHandMaxHealth(self._colossal.MaxLeftHandHealth);
+		self._bossHealthBar.SetLeftHandHealth(self._colossal.LeftHandHealth);
+		self._bossHealthBar.SetRightHandMaxHealth(self._colossal.MaxRightHandHealth);
+		self._bossHealthBar.SetRightHandHealth(self._colossal.RightHandHealth);
+		self._bossHealthBar.SetLeftHandRegen(self._colossal.LeftHandSeverTimeLeft);
+		self._bossHealthBar.SetRightHandRegen(self._colossal.RightHandSeverTimeLeft);
+		self._bossHealthBar.SetLeftHandMaxRegen(self._colossal.HandSeverWindow);
+		self._bossHealthBar.SetRightHandMaxRegen(self._colossal.HandSeverWindow);
+		self._bossHealthBar.Show();
+	}
+
+	function SetDestroyedGate()
+	{
+		self._wallGateStart.Active = false;
+		self._wallGateDestroyed.Active = true;
+		self._hasKicked = true;
+	}
+
+	function UpdateTopLabel()
+	{
+		if (!Game.IsEnding)
+		{
+			UI.SetLabelAll(UILabelEnum.TopCenter, "Titans: " + Convert.ToString(Game.Titans.Count) + "    Civilians health: " + Convert.ToString(self._civilians.GetHealthPercentage()) + "%");
+		}
 	}
 }
 
@@ -1296,82 +1419,1132 @@ cutscene MainCutscene
 		Camera.SetPosition(Vector3(0, 200, 1200));
 		Camera.SetRotation(startRotation);
 		Camera.SetVelocity(velocity);
-		Cutscene.ShowDialogue("Armin1", "Armin", "The colossal titan is coming, prepare yourselves!");
-		Game.SpawnEffect("ColossalSpawn", Vector3(0, 150, 765), Vector3(-90, 0, 0), 5.0);
-		wait 2.5;
-		human = Network.MyPlayer.Character;
-		if (human != null && human.Type == "Human")
-		{
-			human.IsInvincible = true;
-			human.InvincibleTimeLeft = 100.0;
-		}
-		if (Network.IsMasterClient)
-		{
-			colossal = Game.SpawnShifterAt("WallColossal", spawnPosition);
-			colossal.Rotation = Vector3(0, -180, 0);
-			colossal.Size = 0.945;
-			Main._colossal = colossal;
-		}
-		wait 1.0;
-		if (Network.IsMasterClient)
-		{
-			colossal.Attack("AttackKick");
-			colossal.WallAttackCooldownLeft = 2.0;
-			Main._hasKicked = true;
-		}
-		wait 0.5;
+		Cutscene.ShowDialogue(ProfileIconEnum.Armin1, "Armin", "The colossal titan is coming, prepare yourselves!");
+		wait 4.0;
 		Camera.SetPosition(Vector3(200, 120, 400));
 		Camera.SetRotation(Vector3(0, -50, 0));
 		Camera.SetVelocity(velocity * -1.0);
-		wait 0.5;
-		if (Network.IsMasterClient)
-		{
-			Network.SendMessageAll("DestroyGate");
-			position = Vector3(0, 50, 650);
-			velocity = Vector3(0, 200, -200);
-			gravity = Vector3(0, -9000, 0);
-			Game.SpawnProjectile("Rock2", position, Vector3.Zero, velocity, gravity, 10000, "Titan", 15.0);
-		}
-		wait 2.0;
+		wait 2.5;
+		Cutscene.ShowDialogue(ProfileIconEnum.Armin1, "Armin", "We can't get close to the Colossal titan with all the steam. Attack his hands first to distract him!");
 		Camera.SetPosition(Vector3(-150, 340, 630));
 		Camera.SetRotation(Vector3(0, 70, 0));
 		Camera.SetVelocity(Vector3.Zero);
+		wait 2.5;
 		Cutscene.HideDialogue();
-		wait 1.5;
-		Cutscene.ShowDialogue("Armin1", "Armin", "We can't get close to the Colossal titan with all the steam. Attack his hands first to distract him!");
-		wait 6.0;
-		if (human != null && human.Type == "Human")
-		{
-			human.InvincibleTimeLeft = 1.0;
-		}
-		Main._titanSpawnTimeLeft = 5.0;
 	}
 }
+
+component MoveTo
+{
+	ObjectIDs = "";
+	_nextPoints = List();
+
+	function OnGameStart()
+	{
+		ids = String.Split(self.ObjectIDs, " ", true);
+		for (strId in ids)
+		{
+			obj = Map.FindMapObjectByID(Convert.ToInt(strId));
+			self._nextPoints.Add(obj);
+		}
+	}
+
+	function OnCollisionEnter(character)
+	{
+		if (character.Type == "Titan")
+		{
+			obj = self._nextPoints.Get(Random.RandomInt(0, self._nextPoints.Count));
+			character.MoveTo(obj.Position, 20, false);
+		}
+	}
+}
+
+component Civilians
+{
+	_health = 1000;
+	_maxHealth = 1000;
+	_isColliding = false;
+	_warning = null;
+
+	function Init()
+	{
+		self.MapObject.AddBoxCollider(CollideModeEnum.Region, CollideWithEnum.Titans, Vector3(), self.MapObject.Scale);
+		self._warning = TextWarning(20, "The civilians are under attack!", "Icons/Quests/Skull2Icon", Color(255,0,0));
+	}
+
+	function OnGameStart()
+	{
+		self.SetHealth(Main.CiviliansHealth);
+	}
+
+	function OnGetHit(character, name, damage, type, position)
+	{
+		if (character.Type == CharacterTypeEnum.Titan && Network.IsMasterClient)
+		{
+			Game.ShowKillFeedAll(name, "Civilians", damage, type);
+			Game.SpawnEffect(EffectNameEnum.Blood2, position, Vector3(), 5.0);
+
+			if (!Game.IsEnding)
+			{
+				self.TakeDamage(damage);
+			}
+		}
+	}
+
+	function OnCollisionStay(obj)
+	{
+		if (obj.Type == "Titan" && obj.IsAI)
+		{
+			self._isColliding = true;
+		}
+	}
+
+	function OnTick()
+	{
+		if (self._isColliding && !Game.IsEnding)
+		{
+			self._warning.Show();
+		}
+		else
+		{
+			self._warning.Hide();
+		}
+		self._isColliding = false;
+	}
+
+	function TakeDamage(damage)
+	{
+		self._health -= damage;
+
+		if (self._health <= 0)
+		{
+			self._health = 0;
+
+			UI.SetLabelAll(UILabelEnum.MiddleCenter, "<size=30><b>The civilians have been killed.</b></size>" + String.Newline + "Humanity failed.");
+			UI.SetLabelAll(UILabelEnum.TopCenter, "");
+			UI.SetLabelAll(UILabelEnum.BottomCenter, "");
+			Game.End(10.0);
+		}
+	}
+
+	function GetHealthPercentage()
+	{
+		return Math.Ceil(Convert.ToFloat(self._health) / self._maxHealth * 100);
+	}
+
+	function SetHealth(health)
+	{
+		self._maxHealth = health;
+		self._health    = health;
+	}
+}
+
+component TitanWarning
+{
+	_isColliding = false;
+	_warning = null;
+
+	function Init()
+	{
+		self._warning = TextWarning(80, "The titans are approaching the north gate!", "Icons/Game/DangerIcon", Color("#A8FF24"));
+	}
+
+	function OnCollisionStay(obj)
+	{
+		if (obj.Type == "Titan" && obj.IsAI)
+		{
+			self._isColliding = true;
+		}
+	}
+
+	function OnTick()
+	{
+		if (self._isColliding && !Game.IsEnding && !Main._civilians._warning._isVisible)
+		{
+			self._warning.Show();
+		}
+		else
+		{
+			self._warning.Hide();
+		}
+		self._isColliding = false;
+	}
+}
+
+class BossHealthBar
+{
+    # Configuration (set via Init)
+    _bossName = "Boss";
+    _maxHealth = 100.0;
+    _currentHealth = 100.0;
+    _labelPosition = "Top";
+    _showPercentage = true;
+
+    # Color thresholds (percent -> color)
+    _colorThresholds = null;
+    _regenColor = Color(255, 124, 0, 255);
+
+    # UI Elements
+    _rootContainer = null;
+    _healthBarContainer = null;
+    _healthBarFill = null;
+    _nameLabel = null;
+    _healthLabel = null;
+    _isVisible = true;
+
+    # Left hand health bars and icons
+    _leftHandContainer = null;
+    _leftHandFill = null;
+    _leftHandHealthyIcon = null;
+    _leftHandDamagedIcon = null;
+    _leftHandSeveredIcon = null;
+    _leftHandRecoveringIcon = null;
+    _leftHandHealth = 100.0;
+    _leftHandMaxHealth = 100.0;
+    _leftHandRegen = 0.0;
+    _leftHandMaxRegen = 0.0;
+    _leftHandState = HandStateEnum.Healthy;
+
+    # Right hand health bars and icons
+    _rightHandContainer = null;
+    _rightHandFill = null;
+    _rightHandHealthyIcon = null;
+    _rightHandDamagedIcon = null;
+    _rightHandSeveredIcon = null;
+    _rightHandRecoveringIcon = null;
+    _rightHandHealth = 100.0;
+    _rightHandMaxHealth = 100.0;
+    _rightHandRegen = 0.0;
+    _rightHandMaxRegen = 0.0;
+    _rightHandState = HandStateEnum.Healthy;
+
+    # Icon paths for hand states
+    _handHealthyIconPath = "Icons/Game/HandHealthyIcon";
+    _handDamagedIconPath = "Icons/Game/HandDamagedIcon";
+    _handSeveredIconPath = "Icons/Game/HandSeveredIcon";
+    _handRecoveringIconPath = "Icons/Game/HandSmokeIcon";
+
+    function Init(bossName, maxHealth, labelPosition, showPercentage)
+    {
+        self._bossName = bossName;
+        self._maxHealth = maxHealth;
+        self._currentHealth = maxHealth;
+        self._labelPosition = labelPosition;
+        self._showPercentage = showPercentage;
+
+        self._colorThresholds = List();
+
+        self.AddColorThreshold(75.0, Color(100, 200, 100));
+        self.AddColorThreshold(50.0, Color(200, 200, 100));
+        self.AddColorThreshold(25.0, Color(200, 150, 50));
+        self.AddColorThreshold(0.0, Color(200, 50, 50));
+
+        self.CreateUI();
+    }
+
+    function DestroyUI()
+    {
+        if (self._rootContainer == null)
+        {
+            return;
+        }
+        root = UI.GetRootVisualElement();
+        root.Remove(self._rootContainer);
+    }
+
+    function CreateUI()
+    {
+        root = UI.GetRootVisualElement();
+
+        self._rootContainer = UI.VisualElement()
+            .Absolute(true)
+            .Width(40, true)
+            .Height(8, true)
+            .Top(4, true)
+            .Left(30, true)
+            .Right(30, true)
+            .Padding(0.5, true)
+            .BorderRadius(3)
+            .BackgroundColor(Color(20, 20, 20, 200));
+
+        if (self._labelPosition == "Before")
+        {
+            self.CreateBeforeLabelLayout();
+        }
+        else
+        {
+            self.CreateTopLabelLayout();
+        }
+
+        root.Add(self._rootContainer);
+
+        self.Hide();
+    }
+
+    function CreateTopLabelLayout()
+    {
+        mainRow = UI.VisualElement()
+            .FlexDirection(FlexDirectionEnum.Row)
+            .Width(100, true)
+            .Height(100, true)
+            .AlignItems(AlignEnum.Center)
+            .JustifyContent(JustifyEnum.SpaceBetween);
+
+        self.CreateHandBar(false);
+
+        centerContainer = UI.VisualElement()
+            .FlexDirection(FlexDirectionEnum.Column)
+            .FlexGrow(1)
+            .FlexShrink(1)
+            .Height(100, true)
+            .MarginLeft(15, false)
+            .MarginRight(15, false);
+
+        self._nameLabel = UI.Label(self._bossName)
+            .Height(55,true)
+            .FontSize(70, true, FontScaleModeEnum.Height)
+            .FontStyle(FontStyleEnum.Bold)
+            .Color(Color(255, 255, 255))
+            .AlignSelf(AlignEnum.Center);
+
+        self.CreateHealthBar();
+
+        healthContainer = UI.VisualElement()
+            .Width(100, true)
+            .Height(100, true)
+            .Absolute(true)
+            .AlignItems(AlignEnum.Center)
+            .JustifyContent(JustifyEnum.SpaceBetween);
+
+        self._healthLabel = UI.Label(self.GetHealthText())
+            .Absolute(true)
+            .Height(100,true)
+            .FontSize(75, true, FontScaleModeEnum.Height)
+            .FontStyle(FontStyleEnum.Bold)
+            .Padding(0,true)
+            .Margin(0,true)
+            .Color(Color(255, 255, 255));
+
+        self.CreateHandBar(true);
+
+        centerContainer.Add(self._nameLabel);
+        centerContainer.Add(self._healthBarContainer);
+
+        mainRow.Add(self._rightHandContainer);
+        mainRow.Add(centerContainer);
+        mainRow.Add(self._leftHandContainer);
+
+        healthContainer.Add(self._healthLabel);
+
+        self._healthBarContainer.Add(healthContainer);
+
+
+
+        self._rootContainer.Add(mainRow);
+    }
+
+    function CreateBeforeLabelLayout()
+    {
+        container = UI.VisualElement()
+            .FlexDirection(FlexDirectionEnum.Row)
+            .AlignItems(AlignEnum.Center)
+            .Width(100, true);
+
+        self._nameLabel = UI.Label(self._bossName)
+            .FontSize(65, true, FontScaleModeEnum.Height)
+            .FontStyle(FontStyleEnum.Bold)
+            .Color(Color(255, 255, 255))
+            .FlexShrink(0)
+            .MarginRight(1, true);
+
+        rightContainer = UI.VisualElement()
+            .FlexDirection(FlexDirectionEnum.Column)
+            .FlexGrow(1)
+            .FlexShrink(1);
+
+        self.CreateHealthBar();
+
+        self._healthLabel = UI.Label(self.GetHealthText())
+            .FontSize(50, true, FontScaleModeEnum.Height)
+            .FontStyle(FontStyleEnum.Bold)
+            .Color(Color(255, 255, 255))
+            .AlignSelf(AlignEnum.Center)
+            .MarginTop(0.3, true);
+
+        rightContainer.Add(self._healthBarContainer);
+        rightContainer.Add(self._healthLabel);
+
+        container.Add(self._nameLabel);
+        container.Add(rightContainer);
+
+        self._rootContainer.Add(container);
+    }
+
+    function CreateHandBar(isLeftHand)
+    {
+        container = UI.VisualElement()
+            .AspectRatio(1.0)
+            .Height(100, true)
+            .FlexDirection(FlexDirectionEnum.Column)
+            .AlignItems(AlignEnum.Center)
+            .FlexShrink(0);
+
+        barBackground = UI.VisualElement()
+            .Width(100, true)
+            .Height(100, true)
+            .BackgroundColor(Color(40, 40, 40, 200))
+            .BorderRadius(4, false)
+            .BorderWidth(2, false)
+            .BorderColor(Color(80, 80, 80, 255))
+            .FlexDirection(FlexDirectionEnum.Column)
+            .JustifyContent(JustifyEnum.FlexEnd)
+            .Absolute(true)
+            .Top(0, false)
+            .Left(0, false);
+
+        fill = UI.VisualElement()
+            .Width(100, true)
+            .Height(100, true)
+            .BackgroundColor(Color(100, 200, 100, 255))
+            .TransitionDuration(300, false);
+
+        barBackground.Add(fill);
+        container.Add(barBackground);
+
+        if (isLeftHand)
+        {
+            self._leftHandContainer = container;
+            self._leftHandFill = fill;
+
+            self.CreateLeftHandIcons();
+        }
+        else
+        {
+            self._rightHandContainer = container;
+            self._rightHandFill = fill;
+
+            self.CreateRightHandIcons();
+        }
+    }
+
+    function CreateLeftHandIcons()
+    {
+        handIconScale = -1;
+
+        self._leftHandHealthyIcon = UI.Icon(self._handHealthyIconPath)
+            .Width(100, true)
+            .Height(100, true)
+            .TransformScale(handIconScale, 1)
+            .Absolute(true)
+            .Padding(5, true)
+            .Top(0, false)
+            .Left(0, false)
+            .Active(true);
+
+        self._leftHandDamagedIcon = UI.Icon(self._handDamagedIconPath)
+            .Width(100, true)
+            .Height(100, true)
+            .TransformScale(handIconScale, 1)
+            .Absolute(true)
+            .Padding(5, true)
+            .Top(0, false)
+            .Left(0, false)
+            .Active(false);
+
+        self._leftHandSeveredIcon = UI.Icon(self._handSeveredIconPath)
+            .Width(100, true)
+            .Height(100, true)
+            .TransformScale(handIconScale, 1)
+            .Absolute(true)
+            .Padding(5, true)
+            .Top(0, false)
+            .Left(0, false)
+            .Active(false);
+
+        self._leftHandRecoveringIcon = UI.Icon(self._handRecoveringIconPath)
+            .Width(100, true)
+            .Height(100, true)
+            .TransformScale(handIconScale, 1)
+            .Absolute(true)
+            .Padding(5, true)
+            .Top(0, false)
+            .Left(0, false)
+            .Active(false);
+
+        self._leftHandContainer.Add(self._leftHandHealthyIcon);
+        self._leftHandContainer.Add(self._leftHandDamagedIcon);
+        self._leftHandContainer.Add(self._leftHandSeveredIcon);
+        self._leftHandContainer.Add(self._leftHandRecoveringIcon);
+    }
+
+    function CreateRightHandIcons()
+    {
+        handIconScale = 1;
+
+        self._rightHandHealthyIcon = UI.Icon(self._handHealthyIconPath)
+            .Width(100, true)
+            .Height(100, true)
+            .TransformScale(handIconScale, 1)
+            .Absolute(true)
+            .Padding(5, true)
+            .Top(0, false)
+            .Left(0, false)
+            .Active(true);
+
+        self._rightHandDamagedIcon = UI.Icon(self._handDamagedIconPath)
+            .Width(100, true)
+            .Height(100, true)
+            .TransformScale(handIconScale, 1)
+            .Absolute(true)
+            .Padding(5, true)
+            .Top(0, false)
+            .Left(0, false)
+            .Active(false);
+
+        self._rightHandSeveredIcon = UI.Icon(self._handSeveredIconPath)
+            .Width(100, true)
+            .Height(100, true)
+            .TransformScale(handIconScale, 1)
+            .Absolute(true)
+            .Padding(5, true)
+            .Top(0, false)
+            .Left(0, false)
+            .Active(false);
+
+        self._rightHandRecoveringIcon = UI.Icon(self._handRecoveringIconPath)
+            .Width(100, true)
+            .Height(100, true)
+            .TransformScale(handIconScale, 1)
+            .Absolute(true)
+            .Padding(5, true)
+            .Top(0, false)
+            .Left(0, false)
+            .Active(false);
+
+        self._rightHandContainer.Add(self._rightHandHealthyIcon);
+        self._rightHandContainer.Add(self._rightHandDamagedIcon);
+        self._rightHandContainer.Add(self._rightHandSeveredIcon);
+        self._rightHandContainer.Add(self._rightHandRecoveringIcon);
+    }
+
+    function CreateHealthBar()
+    {
+        self._healthBarContainer = UI.VisualElement()
+            .BackgroundColor(Color(40, 40, 40, 255))
+            .Height(25)
+            .BorderRadius(4, false)
+            .BorderWidth(2, false)
+            .BorderColor(Color(80, 80, 80, 255))
+            .FlexDirection(FlexDirectionEnum.Row);
+
+        self._healthBarFill = UI.VisualElement()
+            .Width(100, true)
+            .Height(100, true)
+            .BackgroundColor(Color(100, 200, 100, 255))
+            .BorderRadius(4, false)
+            .TransitionDuration(300, false);
+
+        self._healthBarContainer.Add(self._healthBarFill);
+    }
+
+    function GetHealthText()
+    {
+        healthText = Convert.ToString(Convert.ToInt(self._currentHealth)) + " / " + Convert.ToString(Convert.ToInt(self._maxHealth));
+
+        if (self._showPercentage)
+        {
+            percentage = self.GetHealthPercentage();
+            healthText = healthText + " (" + Convert.ToString(Convert.ToInt(percentage)) + "%)";
+        }
+
+        return healthText;
+    }
+
+    function GetHealthPercentage()
+    {
+        if (self._maxHealth <= 0.0)
+        {
+            return 0.0;
+        }
+        return (self._currentHealth / self._maxHealth) * 100.0;
+    }
+
+    function UpdateHealthBar()
+    {
+        if (self._healthBarFill == null || self._healthLabel == null)
+        {
+            return;
+        }
+
+        percentage = self.GetHealthPercentage();
+
+        self._healthBarFill.Width(percentage, true);
+
+        self._healthLabel.Text = self.GetHealthText();
+
+        self.UpdateBarColor(percentage);
+
+        self.UpdateHandHealthBars();
+    }
+
+    function UpdateHandHealthBars()
+    {
+        if (self._leftHandFill != null)
+        {
+            if (self._leftHandState == HandStateEnum.Healthy || self._leftHandState == HandStateEnum.Damaged)
+            {
+                leftPercentage = (Convert.ToFloat(self._leftHandHealth) / self._leftHandMaxHealth) * 100.0;
+                self._leftHandFill.Height(leftPercentage, true);
+                self.UpdateHandBarColor(self._leftHandFill, leftPercentage);
+            }
+            elif (self._leftHandState == HandStateEnum.Severed)
+            {
+                leftRegenPercentage = (1.0 - Convert.ToFloat(self._leftHandRegen) / self._leftHandMaxRegen) * 100.0;
+                self._leftHandFill.Height(leftRegenPercentage, true);
+                self._leftHandFill.BackgroundColor(self._regenColor);
+            }
+            else
+            {
+                self._leftHandFill.Height(0.0, true);
+                self._leftHandFill.BackgroundColor(self._regenColor);
+            }
+        }
+
+        if (self._rightHandFill != null)
+        {
+            if (self._rightHandState == HandStateEnum.Healthy || self._rightHandState == HandStateEnum.Damaged)
+            {
+                rightPercentage = (Convert.ToFloat(self._rightHandHealth) / self._rightHandMaxHealth) * 100.0;
+                self._rightHandFill.Height(rightPercentage, true);
+                self.UpdateHandBarColor(self._rightHandFill, rightPercentage);
+            }
+            elif (self._rightHandState == HandStateEnum.Severed)
+            {
+                rightRegenPercentage = (1.0 - Convert.ToFloat(self._rightHandRegen) / self._rightHandMaxRegen) * 100.0;
+                self._rightHandFill.Height(rightRegenPercentage, true);
+                self._rightHandFill.BackgroundColor(self._regenColor);
+            }
+            else
+            {
+                self._rightHandFill.Height(0.0, true);
+                self._rightHandFill.BackgroundColor(self._regenColor);
+            }
+        }
+
+        self.UpdateHandIcons();
+    }
+
+    function UpdateHandIcons()
+    {
+        self.UpdateLeftHandIcon();
+        self.UpdateRightHandIcon();
+    }
+
+    function UpdateLeftHandIcon()
+    {
+        if (self._leftHandHealthyIcon == null)
+        {
+            return;
+        }
+
+        self._leftHandHealthyIcon.Active(false);
+        self._leftHandDamagedIcon.Active(false);
+        self._leftHandSeveredIcon.Active(false);
+        self._leftHandRecoveringIcon.Active(false);
+
+        if (self._leftHandState == HandStateEnum.Healthy)
+        {
+            self._leftHandHealthyIcon.Active(true);
+        }
+        elif (self._leftHandState == HandStateEnum.Damaged)
+        {
+            self._leftHandDamagedIcon.Active(true);
+        }
+        elif (self._leftHandState == HandStateEnum.Severed)
+        {
+            self._leftHandSeveredIcon.Active(true);
+        }
+        elif (self._leftHandState == HandStateEnum.Recovering)
+        {
+            self._leftHandRecoveringIcon.Active(true);
+        }
+        else
+        {
+            self._leftHandHealthyIcon.Active(true);
+        }
+    }
+
+    function UpdateRightHandIcon()
+    {
+        if (self._rightHandHealthyIcon == null)
+        {
+            return;
+        }
+
+        self._rightHandHealthyIcon.Active(false);
+        self._rightHandDamagedIcon.Active(false);
+        self._rightHandSeveredIcon.Active(false);
+        self._rightHandRecoveringIcon.Active(false);
+
+        if (self._rightHandState == HandStateEnum.Healthy)
+        {
+            self._rightHandHealthyIcon.Active(true);
+        }
+        elif (self._rightHandState == HandStateEnum.Damaged)
+        {
+            self._rightHandDamagedIcon.Active(true);
+        }
+        elif (self._rightHandState == HandStateEnum.Severed)
+        {
+            self._rightHandSeveredIcon.Active(true);
+        }
+        elif (self._rightHandState == HandStateEnum.Recovering)
+        {
+            self._rightHandRecoveringIcon.Active(true);
+        }
+        else
+        {
+            self._rightHandHealthyIcon.Active(true);
+        }
+    }
+
+    function UpdateHandBarColor(barElement, percentage)
+    {
+        color = Color(200, 200, 200);
+
+        if (self._colorThresholds != null && self._colorThresholds.Count > 0)
+        {
+            i = 0;
+            while (i < self._colorThresholds.Count)
+            {
+                threshold = self._colorThresholds.Get(i);
+                if (percentage >= threshold.Get("Percent"))
+                {
+                    color = threshold.Get("Color");
+                    break;
+                }
+                i = i + 1;
+            }
+        }
+
+        barElement.BackgroundColor(color);
+    }
+
+    function UpdateBarColor(percentage)
+    {
+        color = Color(200, 200, 200);
+
+        if (self._colorThresholds != null && self._colorThresholds.Count > 0)
+        {
+            i = 0;
+            while (i < self._colorThresholds.Count)
+            {
+                threshold = self._colorThresholds.Get(i);
+                if (percentage >= threshold.Get("Percent"))
+                {
+                    color = threshold.Get("Color");
+                    i = self._colorThresholds.Count + 1;
+                    break;
+                }
+                i = i + 1;
+            }
+        }
+
+        self._healthBarFill.BackgroundColor(color);
+    }
+
+    function Show()
+    {
+        if (!self._isVisible)
+        {
+            self._isVisible = true;
+            self._rootContainer.Active(true);
+        }
+    }
+
+    function Hide()
+    {
+        if (self._isVisible)
+        {
+            self._isVisible = false;
+            self._rootContainer.Active(false);
+        }
+    }
+
+    function SetMaxHealth(maxHealth)
+    {
+        self._maxHealth = maxHealth;
+        self._currentHealth = Math.Min(self._currentHealth,self._maxHealth);
+        self.UpdateHealthBar();
+    }
+
+    function SetCurrentHealth(currentHealth)
+    {
+        self._currentHealth = Math.Clamp(currentHealth, 0.0, self._maxHealth);
+        self.UpdateHealthBar();
+    }
+
+    function AddHealth(amount)
+    {
+        self.SetCurrentHealth(self._currentHealth + amount);
+    }
+
+    function RemoveHealth(amount)
+    {
+        self.SetCurrentHealth(self._currentHealth - amount);
+    }
+
+    function SetBossName(name)
+    {
+        self._bossName = name;
+        self._nameLabel.Text = name;
+    }
+
+    function SetShowPercentage(show)
+    {
+        self._showPercentage = show;
+        self.UpdateHealthBar();
+    }
+
+    function AddColorThreshold(percent, color)
+    {
+        threshold = Dict();
+        threshold.Set("Percent", percent);
+        threshold.Set("Color", color);
+
+        self._colorThresholds.Add(threshold);
+
+        self.SortThresholds();
+
+        if (self._healthBarFill != null)
+        {
+            self.UpdateHealthBar();
+        }
+    }
+
+    function ClearColorThresholds()
+    {
+        self._colorThresholds = List();
+    }
+
+    function SortThresholds()
+    {
+        n = self._colorThresholds.Count;
+        i = 0;
+        while (i < n - 1)
+        {
+            j = 0;
+            while (j < n - i - 1)
+            {
+                current = self._colorThresholds.Get(j);
+                next = self._colorThresholds.Get(j + 1);
+
+                if (current.Get("Percent") < next.Get("Percent"))
+                {
+                    temp = self._colorThresholds.Get(j);
+                    self._colorThresholds.Set(j, self._colorThresholds.Get(j + 1));
+                    self._colorThresholds.Set(j + 1, temp);
+                }
+                j = j + 1;
+            }
+            i = i + 1;
+        }
+    }
+
+    function GetCurrentHealth()
+    {
+        return self._currentHealth;
+    }
+
+    function GetMaxHealth()
+    {
+        return self._maxHealth;
+    }
+
+    function IsDead()
+    {
+        return self._currentHealth <= 0.0;
+    }
+
+    function IsFull()
+    {
+        return self._currentHealth >= self._maxHealth;
+    }
+
+    function Reset()
+    {
+        self._currentHealth = self._maxHealth;
+        self._leftHandHealth = self._leftHandMaxHealth;
+        self._rightHandHealth = self._rightHandMaxHealth;
+        self._leftHandState = HandStateEnum.Healthy;
+        self._rightHandState = HandStateEnum.Healthy;
+        self._leftHandRegen = 0.0;
+        self._rightHandRegen = 0.0;
+        self.UpdateHealthBar();
+    }
+
+    function SetLeftHandMaxHealth(maxHealth)
+    {
+        self._leftHandMaxHealth = maxHealth;
+        self._leftHandHealth = Math.Min(self._leftHandHealth, self._leftHandMaxHealth);
+        self.UpdateHandHealthBars();
+    }
+
+    function SetLeftHandHealth(health)
+    {
+        self._leftHandHealth = Math.Clamp(health, 0.0, self._leftHandMaxHealth);
+        self.UpdateHandHealthBars();
+    }
+
+    function SetLeftHandRegen(regenAmount)
+    {
+        regenAmount = Math.Clamp(regenAmount, 0.0, self._leftHandMaxRegen);
+        self._leftHandRegen = regenAmount;
+        self.UpdateHandHealthBars();
+    }
+
+    function SetLeftHandMaxRegen(regenAmount)
+    {
+        self._leftHandMaxRegen = regenAmount;
+        self._leftHandRegen = Math.Min(self._leftHandRegen, self._leftHandMaxRegen);
+        self.UpdateHandHealthBars();
+    }
+
+    function SetLeftHandState(state)
+    {
+        self._leftHandState = state;
+        self.UpdateHandIcons();
+    }
+
+    function AddLeftHandHealth(amount)
+    {
+        self.SetLeftHandHealth(self._leftHandHealth + amount);
+    }
+
+    function RemoveLeftHandHealth(amount)
+    {
+        self.SetLeftHandHealth(self._leftHandHealth - amount);
+    }
+
+    function GetLeftHandHealth()
+    {
+        return self._leftHandHealth;
+    }
+
+    function IsLeftHandDestroyed()
+    {
+        return self._leftHandHealth <= 0.0;
+    }
+
+    function SetRightHandMaxHealth(maxHealth)
+    {
+        self._rightHandMaxHealth = maxHealth;
+        self._rightHandHealth = Math.Min(self._rightHandHealth, self._rightHandMaxHealth);
+        self.UpdateHandHealthBars();
+    }
+
+    function SetRightHandHealth(health)
+    {
+        self._rightHandHealth = Math.Clamp(health, 0.0, self._rightHandMaxHealth);
+        self.UpdateHandHealthBars();
+    }
+
+    function SetRightHandRegen(regenAmount)
+    {
+        regenAmount = Math.Clamp(regenAmount, 0.0, self._rightHandMaxRegen);
+        self._rightHandRegen = regenAmount;
+        self.UpdateHandHealthBars();
+    }
+
+    function SetRightHandMaxRegen(regenAmount)
+    {
+        self._rightHandMaxRegen = regenAmount;
+        self._rightHandRegen = Math.Min(self._rightHandRegen, self._rightHandMaxRegen);
+        self.UpdateHandHealthBars();
+    }
+
+    function SetRightHandState(state)
+    {
+        self._rightHandState = state;
+        self.UpdateHandIcons();
+    }
+
+    function AddRightHandHealth(amount)
+    {
+        self.SetRightHandHealth(self._rightHandHealth + amount);
+    }
+
+    function RemoveRightHandHealth(amount)
+    {
+        self.SetRightHandHealth(self._rightHandHealth - amount);
+    }
+
+    function GetRightHandHealth()
+    {
+        return self._rightHandHealth;
+    }
+
+    function IsRightHandDestroyed()
+    {
+        return self._rightHandHealth <= 0.0;
+    }
+}
+
+class TextWarning
+{
+	_rootContainer = null;
+	_label = null;
+	_leftIcon = null;
+	_rightIcon = null;
+	_text = "";
+	_icon = "";
+	_color = Color();
+	_yPosition = 50;
+	_isVisible = false;
+	_defaultWidth = 45;
+
+	function Init(yPosition, text, icon, color)
+	{
+		self._yPosition = yPosition;
+		self._text = text;
+		self._icon = icon;
+		color.A = 100;
+		self._color = color;
+
+
+		self.CreateUI();
+	}
+
+	function DestroyUI()
+	{
+		if (self._rootContainer == null)
+		{
+			return;
+		}
+		root = UI.GetRootVisualElement();
+		root.Remove(self._rootContainer);
+	}
+
+	function CreateUI()
+	{
+		root = UI.GetRootVisualElement();
+
+		self._rootContainer = UI.VisualElement()
+			.Absolute(true)
+			.Width(0, true)
+			.Height(5, true)
+			.Top(self._yPosition, true)
+			.PaddingTop(0.5, true)
+			.PaddingBottom(0.5, true)
+			.BorderRadius(6)
+			.AlignSelf(AlignEnum.Center)
+			.FlexDirection(FlexDirectionEnum.Row)
+			.JustifyContent(JustifyEnum.Center)
+			.AlignItems(AlignEnum.Center)
+			.OverflowX(OverflowEnum.Hidden)
+			.TransitionDuration(500)
+			.BackgroundColor(self._color);
+		root.Add(self._rootContainer);
+
+
+		self._leftIcon = self.CreateIcon();
+		self._rootContainer.Add(self._leftIcon);
+
+		self._label = UI.Label(self._text)
+			.Color(Color(255, 255, 255))
+			.FlexGrow(3)
+			.FontSize(100, true, FontScaleModeEnum.Height)
+			.TextOverflow(TextOverflowEnum.Clip)
+			.FontStyle(FontStyleEnum.Bold)
+			.TextAlign(TextAlignEnum.MiddleCenter);
+		self._rootContainer.Add(self._label);d
+
+		self._rightIcon = self.CreateIcon();
+		self._rootContainer.Add(self._rightIcon);
+
+	}
+
+	function CreateIcon()
+	{
+		container = UI.Icon(self._icon)
+			.AspectRatio(1.0)
+			.Height(100, true)
+			.FlexDirection(FlexDirectionEnum.Column)
+			.AlignItems(AlignEnum.Center);
+
+		return container;
+	}
+
+	coroutine Show()
+	{
+		if (!self._isVisible)
+		{
+			self._isVisible = true;
+			self._rootContainer
+				.Width(self._defaultWidth, true)
+				.PaddingLeft(0.5, true)
+				.PaddingRight(0.5, true);
+		}
+	}
+
+	function Hide()
+	{
+		if (self._isVisible)
+		{
+			self._isVisible = false;
+			self._rootContainer
+				.Width(0, true)
+				.PaddingLeft(0, true)
+				.PaddingRight(0, true);
+		}
+	}
+
+	function SetIcon(icon)
+	{
+		self._icon = icon;
+		self._leftIcon.SetIcon(icon);
+		self._rightIcon.SetIcon(icon);
+	}
+
+	function SetText(text)
+	{
+		self._text = text;
+		self._label.Text = text;
+	}
+
+	function SetColor(color)
+	{
+		color.A = 100;
+		self._color = color;
+		self._rootContainer.BackgroundColor(self._color);
+	}
+}
+
 /// Weather
 {
-    "Skybox" : "Day1",
+    "Skybox" : "Dawn1",
     "SkyboxColor" : [
-        128,
-        128,
-        128,
+        0,
+        164,
+        255,
         255
     ],
     "Daylight" : [
         255,
-        255,
-        255,
+        250,
+        250,
         255
     ],
-    "DaylightIntensity" : 1,
+    "DaylightIntensity" : 1.68259847164154,
     "DaylightDirection" : [
         45,
         45,
         0
     ],
     "AmbientLight" : [
-        126,
-        122,
-        114,
+        115,
+        123,
+        157,
         255
     ],
     "Flashlight" : [
@@ -1380,11 +2553,11 @@ cutscene MainCutscene
         255,
         0
     ],
-    "FogDensity" : 0,
+    "FogDensity" : 0.00800000037997961,
     "FogColor" : [
-        128,
-        128,
-        128,
+        157,
+        178,
+        200,
         255
     ],
     "Rain" : 0,

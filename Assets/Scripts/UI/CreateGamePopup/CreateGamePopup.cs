@@ -1,5 +1,6 @@
 ﻿using ApplicationManagers;
 using CustomLogic;
+using Events;
 using GameManagers;
 using Map;
 using Settings;
@@ -25,6 +26,8 @@ namespace UI
         protected override bool UseSound => true;
 
         protected FileWatcherExtension _watcher;
+        private string _cachedLogicSource;
+        private Dictionary<string, BaseSetting> _cachedModeSettings;
 
 
         public override void Setup(BasePanel parent = null)
@@ -46,6 +49,9 @@ namespace UI
 
         void RefreshList(object source, FileSystemEventArgs e)
         {
+            // Clear cache when custom logic files change
+            _cachedLogicSource = null;
+            _cachedModeSettings = null;
             RebuildCategoryPanel();
         }
 
@@ -54,7 +60,22 @@ namespace UI
             string logic = BuiltinLevels.LoadLogic(SettingsManager.InGameUI.General.GameMode.Value);
             if (logic == BuiltinLevels.UseMapLogic)
                 logic = script.Logic;
-            Dictionary<string, BaseSetting> settings = CustomLogicManager.GetModeSettings(logic);
+            
+            // Check if we can use cached mode settings
+            Dictionary<string, BaseSetting> settings;
+            if (_cachedLogicSource == logic && _cachedModeSettings != null)
+            {
+                // Use cached settings
+                settings = _cachedModeSettings;
+            }
+            else
+            {
+                // Logic changed, recompute and cache
+                settings = CustomLogicManager.GetModeSettings(logic);
+                _cachedLogicSource = logic;
+                _cachedModeSettings = settings;
+            }
+            
             Dictionary<string, BaseSetting> current = SettingsManager.InGameUI.Mode.Current;
             foreach (string key in new List<string>(settings.Keys))
             {
@@ -127,7 +148,7 @@ namespace UI
         {
             base.Hide();
         }
-
+        
         private void OnBottomBarButtonClick(string name)
         {
             switch (name)
@@ -214,6 +235,9 @@ namespace UI
                 if (set.Name.Value == name)
                 {
                     SettingsManager.InGameUI.Copy(set);
+                    // Clear cache since game mode may have changed
+                    _cachedLogicSource = null;
+                    _cachedModeSettings = null;
                     RebuildCategoryPanel();
                     return;
                 }
@@ -257,6 +281,9 @@ namespace UI
                 set.DeserializeFromJsonString(preset);
                 set.Preset.Value = false;
                 SettingsManager.InGameUI.Copy(set);
+                // Clear cache since game mode may have changed
+                _cachedLogicSource = null;
+                _cachedModeSettings = null;
                 RebuildCategoryPanel();
                 importPopup.Hide();
             }

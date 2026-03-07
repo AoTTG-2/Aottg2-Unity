@@ -9,7 +9,7 @@ Contributing: join our discord server for more details on how to contribute. We 
 ### Required installs
 1. Install git: https://git-scm.com/book/en/v2/Getting-Started-Installing-Git
 2. Install git lfs: https://git-lfs.github.com/
-3. Install Unity 2023.1.17f1 from Unity Hub
+3. Install Unity 2023.1.22f1 from Unity Hub
 
 ### Downloading the project
 1. Open command prompt and [navigate](https://www.howtogeek.com/659411/how-to-change-directories-in-command-prompt-on-windows-10/) to your preferred installation folder
@@ -34,3 +34,9 @@ Contributing: join our discord server for more details on how to contribute. We 
 ### Building and testing
 1. You can test the game by opening Scenes/Startup and using Unity play mode
 2. You can build the game by clicking File -> Build Settings -> Build. Only build to the Aottg2-Unity/Aottg2 folder
+
+> [!NOTE]
+> If you need to test multiplayer changes, you can build a version of the game
+> on the branch you want to test, and also run the game in the Unity play mode.
+> Create a lobby and it'll show up only available to clients on that version.
+> Connect both of them and you can test your changes.

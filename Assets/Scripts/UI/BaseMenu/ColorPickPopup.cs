@@ -7,7 +7,7 @@ using Utility;
 
 namespace UI
 {
-    class ColorPickPopup: PromptPopup
+    class ColorPickPopup : PromptPopup
     {
         protected override string Title => UIManager.GetLocale("SettingsPopup", "ColorPickPopup", "Title");
         protected override float Width => 440f;
@@ -38,8 +38,9 @@ namespace UI
             _preview = preview.transform.Find("Image").GetComponent<Image>();
         }
 
-        private void Update()
+        private new void Update()
         {
+            base.Update();
             if (_preview != null)
             {
                 _preview.color = GetColorFromSliders().ToColor();
@@ -70,7 +71,7 @@ namespace UI
                 Destroy(obj);
             }
             ElementStyle style = new ElementStyle(titleWidth: 85f, themePanel: ThemePanel);
-            _sliders.Add(ElementFactory.CreateSliderInputSetting(SinglePanel, style,_red, "Red", decimalPlaces: 3));
+            _sliders.Add(ElementFactory.CreateSliderInputSetting(SinglePanel, style, _red, "Red", decimalPlaces: 3));
             _sliders.Add(ElementFactory.CreateSliderInputSetting(SinglePanel, style, _green, "Green", decimalPlaces: 3));
             _sliders.Add(ElementFactory.CreateSliderInputSetting(SinglePanel, style, _blue, "Blue", decimalPlaces: 3));
             _sliders.Add(ElementFactory.CreateSliderInputSetting(SinglePanel, style, _alpha, "Alpha", decimalPlaces: 3));

@@ -2,13 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.UI;
-using System.Collections;
 
 namespace UI
 {
-    class SettingsSkinsPanel: SettingsCategoryPanel
+    class SettingsSkinsPanel : SettingsCategoryPanel
     {
         protected override bool CategoryPanel => true;
         protected override string DefaultCategoryPanel => "Human";
@@ -32,7 +29,7 @@ namespace UI
             {
                 var humanSettings = (HumanCustomSkinSettings)settings;
                 string[] modes = new string[] { "Global", "Character" };
-                ElementFactory.CreateDropdownSetting(panelLeft, dropdownStyle, humanSettings.SkinMode, UIManager.GetLocale(cat, "Skins.Human", "SkinMode"), 
+                ElementFactory.CreateDropdownSetting(panelLeft, dropdownStyle, humanSettings.SkinMode, UIManager.GetLocale(cat, "Skins.Human", "SkinMode"),
                     modes, elementWidth: 260f, onDropdownOptionSelect: () => RebuildCategoryPanel());
                 if (humanSettings.SkinMode.Value == 0) // Global mode
                 {
@@ -59,8 +56,8 @@ namespace UI
                     }
                     _lastFilteredSetIndex = filteredSetIndex;
                     _lastFilteredOriginalIndices = originalIndices;
-                    ElementFactory.CreateDropdownSetting(panelLeft, dropdownStyle, filteredSetIndex, UIManager.GetLocale(cat, "Skins.Common", "Set"), 
-                        filteredSetNames.ToArray(), elementWidth: 260f, 
+                    ElementFactory.CreateDropdownSetting(panelLeft, dropdownStyle, filteredSetIndex, UIManager.GetLocale(cat, "Skins.Common", "Set"),
+                        filteredSetNames.ToArray(), elementWidth: 260f,
                         onDropdownOptionSelect: () => OnGlobalPresetSelected(filteredSetIndex.Value, originalIndices, settings, humanSettings));
                     GameObject group = ElementFactory.CreateHorizontalGroup(panelLeft, 10f, TextAnchor.UpperRight);
                     foreach (string button in new string[] { "Create", "Delete", "Rename", "Copy" })
@@ -76,8 +73,8 @@ namespace UI
             }
             else
             {
-                ElementFactory.CreateDropdownSetting(panelLeft, dropdownStyle, settings.GetSelectedSetIndex(), "Set", 
-                    settings.GetSetNames(), elementWidth: 260f, 
+                ElementFactory.CreateDropdownSetting(panelLeft, dropdownStyle, settings.GetSelectedSetIndex(), "Set",
+                    settings.GetSetNames(), elementWidth: 260f,
                     onDropdownOptionSelect: () => RebuildCategoryPanel());
                 GameObject group = ElementFactory.CreateHorizontalGroup(panelLeft, 10f, TextAnchor.UpperRight);
                 foreach (string button in new string[] { "Create", "Delete", "Rename", "Copy" })
@@ -89,20 +86,20 @@ namespace UI
             if (category == "Human")
             {
                 var humanSettings = (HumanCustomSkinSettings)settings;
-                ElementFactory.CreateToggleSetting(panelRight, toggleStyle, settings.GetSkinsEnabled(), 
+                ElementFactory.CreateToggleSetting(panelRight, toggleStyle, settings.GetSkinsEnabled(),
                     category + " " + UIManager.GetLocale(cat, "Skins.Common", "SkinsEnabled"));
-                ElementFactory.CreateToggleSetting(panelRight, toggleStyle, settings.GetSkinsLocal(), 
+                ElementFactory.CreateToggleSetting(panelRight, toggleStyle, settings.GetSkinsLocal(),
                     category + " " + UIManager.GetLocale(cat, "Skins.Common", "SkinsLocal"), tooltip: UIManager.GetLocale(cat, "Skins.Common", "SkinsLocalTooltip"));
-                ElementFactory.CreateToggleSetting(panelRight, toggleStyle, humanSettings.GlobalSkinOverridesEnabled, 
+                ElementFactory.CreateToggleSetting(panelRight, toggleStyle, humanSettings.GlobalSkinOverridesEnabled,
                     UIManager.GetLocale(cat, "Skins.Human", "GlobalSkinOverridesEnabled"), tooltip: UIManager.GetLocale(cat, "Skins.Human", "GlobalSkinOverridesEnabledTooltip"));
-                ElementFactory.CreateToggleSetting(panelRight, toggleStyle, humanSettings.SetSpecificSkinsEnabled, 
+                ElementFactory.CreateToggleSetting(panelRight, toggleStyle, humanSettings.SetSpecificSkinsEnabled,
                     UIManager.GetLocale(cat, "Skins.Human", "SetSpecificSkinsEnabled"), tooltip: UIManager.GetLocale(cat, "Skins.Human", "SetSpecificSkinsEnabledTooltip"));
             }
             else
             {
-                ElementFactory.CreateToggleSetting(panelRight, toggleStyle, settings.GetSkinsEnabled(), 
+                ElementFactory.CreateToggleSetting(panelRight, toggleStyle, settings.GetSkinsEnabled(),
                     category + " " + UIManager.GetLocale(cat, "Skins.Common", "SkinsEnabled"));
-                ElementFactory.CreateToggleSetting(panelRight, toggleStyle, settings.GetSkinsLocal(), 
+                ElementFactory.CreateToggleSetting(panelRight, toggleStyle, settings.GetSkinsLocal(),
                     category + " " + UIManager.GetLocale(cat, "Skins.Common", "SkinsLocal"), tooltip: UIManager.GetLocale(cat, "Skins.Common", "SkinsLocalTooltip"));
             }
         }
@@ -181,7 +178,7 @@ namespace UI
             }
         }
 
-        public void CreateSkinStringSettings(Transform panelLeft, Transform panelRight, float titleWidth = 140f, float elementWidth = 260f, 
+        public void CreateSkinStringSettings(Transform panelLeft, Transform panelRight, float titleWidth = 140f, float elementWidth = 260f,
             int leftCount = 0)
         {
             ElementStyle style = new ElementStyle(titleWidth: titleWidth, themePanel: ThemePanel);
@@ -211,7 +208,7 @@ namespace UI
             {
                 container = GetCurrentSettings().GetSelectedSet();
             }
-            
+
             string cat = ((SettingsPopup)Parent).LocaleCategory;
             string sub = "Skins." + _currentCategoryPanelName.Value;
             int count = 1;
@@ -250,7 +247,7 @@ namespace UI
         {
             return _settings[_currentCategoryPanelName.Value];
         }
-        
+
         private void CreateCharacterSelectorDropdown(Transform panel, ElementStyle style, HumanCustomSkinSettings humanSettings)
         {
             var customSets = SettingsManager.HumanCustomSettings.CustomSets.GetSets().GetItems();
@@ -260,16 +257,16 @@ namespace UI
                 var customSet = (HumanCustomSet)customSets[i];
                 characterNames[i] = customSet.Name.Value;
             }
-            ElementFactory.CreateDropdownSetting(panel, style, humanSettings.SelectedCharacterIndex, "Character", 
+            ElementFactory.CreateDropdownSetting(panel, style, humanSettings.SelectedCharacterIndex, "Character",
                 characterNames, elementWidth: 260f, onDropdownOptionSelect: () => OnCharacterSelected(humanSettings));
         }
-        
+
         private void OnCharacterSelected(HumanCustomSkinSettings humanSettings)
         {
             SettingsManager.CustomSkinSettings.Save();
             RebuildCategoryPanel();
         }
-        
+
         private void OnGlobalPresetSelected(int filteredIndex, List<int> originalIndices, ICustomSkinSettings settings, HumanCustomSkinSettings humanSettings)
         {
             if (filteredIndex >= 0 && filteredIndex < originalIndices.Count)

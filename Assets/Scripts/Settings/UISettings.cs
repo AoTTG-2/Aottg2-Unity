@@ -1,15 +1,9 @@
-﻿using System;
-using UnityEngine;
+﻿using ApplicationManagers;
 using UI;
-using ApplicationManagers;
-using GameManagers;
-using System.Collections.Generic;
-using UnityEngine.Events;
-using UnityEngine.UI;
 
 namespace Settings
 {
-    class UISettings: SaveableSettingsContainer
+    class UISettings : SaveableSettingsContainer
     {
         protected override string FileName { get { return "UI.json"; } }
         public StringSetting UITheme = new StringSetting("Dark");
@@ -35,6 +29,7 @@ namespace Settings
         public BoolSetting ShowEmotes = new BoolSetting(true);
         public BoolSetting ShowKeybindTip = new BoolSetting(true);
         public BoolSetting ShowGameTime = new BoolSetting(false);
+        public BoolSetting ShowSongPopup = new BoolSetting(true);
         public IntSetting ShowNames = new IntSetting(0);
         public IntSetting ShowHealthbars = new IntSetting(0);
         public IntSetting HumanNameDistance = new IntSetting(500, minValue: 0, maxValue: 100000);
@@ -56,6 +51,7 @@ namespace Settings
         public IntSetting Coordinates = new IntSetting((int)CoordinateMode.Off);
         public BoolSetting ShowChatTimestamp = new BoolSetting(false);
         public ColorSetting ChatBackgroundColor = new ColorSetting(new Utility.Color255(38, 38, 38, 0));
+        public BoolSetting ChatCLErrors = new BoolSetting(false);
 
 
         public override void Apply()

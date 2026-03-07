@@ -11,6 +11,9 @@
 					"Name": "Forest2"
 				},
 				{
+					"Name": "Forest2-optimized"
+				},
+				{
 					"Name": "Forest3"
 				},
 				{
@@ -207,6 +210,10 @@
 				},
 				{
 					"Category": "General",
+					"Name": "Forest2-optimized"
+				},
+				{
+					"Category": "General",
 					"Name": "City1"
 				},
 				{
@@ -328,7 +335,7 @@
 					"Name": "ELOR 3"
 				},
 				{
-					"Name": "Makina ZYX + ZYX"
+					"Name": "Makina ABC"
 				},
 				{
 					"Name": "Future Trax 3"

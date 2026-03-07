@@ -207,6 +207,19 @@ namespace UI
             return dropdownSetting;
         }
 
+        public static GameObject CreateMultiSelectDropdown(Transform parent, ElementStyle style, HashSetSetting<int> setting, string title, string[] options,
+            string tooltip = "", float elementWidth = 140f, float elementHeight = 40f, float maxScrollHeight = 300f, float? optionsWidth = null,
+            UnityAction onSelectionChanged = null)
+        {
+            GameObject dropdownSetting = InstantiateAndBind(parent, "Prefabs/Elements/DropdownSetting");
+            MultiSelectDropdownElement element = dropdownSetting.AddComponent<MultiSelectDropdownElement>();
+            if (optionsWidth == null)
+                optionsWidth = elementWidth;
+            element.Setup(setting, style, title, options, tooltip, elementWidth, elementHeight, optionsWidth.Value,
+                maxScrollHeight, onSelectionChanged);
+            return dropdownSetting;
+        }
+
         public static GameObject CreateIncrementSetting(Transform parent, ElementStyle style, BaseSetting setting, string title, string tooltip = "",
             float elementWidth = 33f, float elementHeight = 30f, string[] options = null,
             UnityAction onValueChanged = null, Func<bool> validation = null)

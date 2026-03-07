@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace CustomLogic
 {
@@ -11,11 +10,26 @@ namespace CustomLogic
         public static Dictionary<int, int> BinopSymbolPriorities = new Dictionary<int, int>();
         public static HashSet<int> ClassSymbols = new HashSet<int>();
         public static HashSet<int> ConditionalSymbols = new HashSet<int>();
+        private static bool _loaded = false;
 
         public static void Init()
         {
+            if (_loaded)
+                return;
+            ClearSymbols();
             AddSymbols();
             CategorizeSymbols();
+            _loaded = true;
+        }
+
+        private static void ClearSymbols()
+        {
+            Symbols.Clear();
+            SpecialSymbolNames.Clear();
+            AlphaSymbolNames.Clear();
+            BinopSymbolPriorities.Clear();
+            ClassSymbols.Clear();
+            ConditionalSymbols.Clear();
         }
 
         private static void AddSymbols()
@@ -56,6 +70,7 @@ namespace CustomLogic
             Symbols.Add("-", (int)CustomLogicSymbol.Minus);
             Symbols.Add("*", (int)CustomLogicSymbol.Times);
             Symbols.Add("/", (int)CustomLogicSymbol.Divide);
+            Symbols.Add("%", (int)CustomLogicSymbol.Modulo);
             Symbols.Add("==", (int)CustomLogicSymbol.Equals);
             Symbols.Add("!=", (int)CustomLogicSymbol.NotEquals);
             Symbols.Add("<", (int)CustomLogicSymbol.LessThan);
@@ -67,7 +82,7 @@ namespace CustomLogic
 
         private static void CategorizeSymbols()
         {
-            foreach (string symbolName in new string[] { "class", "component", "extension", "cutscene", "function", "coroutine", "wait", "null", 
+            foreach (string symbolName in new string[] { "class", "component", "extension", "cutscene", "function", "coroutine", "wait", "null",
                 "return", "break", "continue", "if", "else", "for", "while", "elif", "in" })
                 AlphaSymbolNames.Add(symbolName);
             foreach (string symbolName in Symbols.Keys)
@@ -85,7 +100,7 @@ namespace CustomLogic
                 BinopSymbolPriorities.Add((int)symbol, 2);
             foreach (CustomLogicSymbol symbol in new CustomLogicSymbol[] { CustomLogicSymbol.Plus, CustomLogicSymbol.Minus })
                 BinopSymbolPriorities.Add((int)symbol, 3);
-            foreach (CustomLogicSymbol symbol in new CustomLogicSymbol[] { CustomLogicSymbol.Times, CustomLogicSymbol.Divide })
+            foreach (CustomLogicSymbol symbol in new CustomLogicSymbol[] { CustomLogicSymbol.Times, CustomLogicSymbol.Divide, CustomLogicSymbol.Modulo })
                 BinopSymbolPriorities.Add((int)symbol, 4);
             foreach (CustomLogicSymbol symbol in new CustomLogicSymbol[] { CustomLogicSymbol.Class, CustomLogicSymbol.Component, CustomLogicSymbol.Extension,
             CustomLogicSymbol.Cutscene})
@@ -130,6 +145,7 @@ namespace CustomLogic
         Minus,
         Times,
         Divide,
+        Modulo,
         Semicolon,
         DoubleQuote,
         Comma,

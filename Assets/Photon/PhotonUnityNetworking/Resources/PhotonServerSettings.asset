@@ -139,6 +139,21 @@ MonoBehaviour:
   - SetAnimationSpeedRPC
   - SetHandHealthRPC
   - FadeSoundRPC
+  - InitDynamic
+  - InitDynamicRPC
+  - ToggleSteam
+  - ToggleSteamRPC
+  - SetLeftHandHealthRPC
+  - SetRightHandHealthRPC
+  - SetLeftHandStateRPC
+  - SetRightHandStateRPC
+  - ToggleBuff1RPC
+  - ToggleBuff2RPC
+  - ToggleFire1RPC
+  - SetSteamStateRPC
+  - SetStunStateRPC
+  - SetHandSeverTimesRPC
+  - SetStunRecoveryTimesRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

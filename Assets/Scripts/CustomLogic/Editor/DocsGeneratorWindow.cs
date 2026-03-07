@@ -3,7 +3,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Threading;
 using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
@@ -11,11 +10,13 @@ using UnityEngine.UIElements;
 
 namespace CustomLogic.Editor
 {
+#if UNITY_EDITOR
     public class DocsGeneratorWindow : EditorWindow
     {
         private bool _runBuildCommand = true;
         private bool _generateJson;
         private bool _generateMarkdown;
+        private bool _generateVSCExtensionJson;
         private bool _resolveInheritDoc = true;
 
         private Button _generateButton;
@@ -40,16 +41,19 @@ namespace CustomLogic.Editor
             var runBuildCommandToggle = CreateOption("Run build command", "Run `dotnet build` before generating the docs which will generate Scripts.xml. Only enable this if this is the first time running docs generator (since unity startup) or the docs comments (xml) have changed.");
             var generateJsonToggle = CreateOption("Generate JSON", "Generate docs in JSON format");
             var generateMarkdownToggle = CreateOption("Generate Markdown", "Generate docs in Markdown format");
+            var generateVSCExtensionJsonToggle = CreateOption("Generate VSCExtension JSON", "Generate docs in JSON format for VSCode Extension");
             var resolveInheritDocToggle = CreateOption("Resolve <inheritdoc />", "Slow process. Can be disabled when debugging.");
 
             runBuildCommandToggle.SetValueWithoutNotify(_runBuildCommand);
             generateJsonToggle.SetValueWithoutNotify(_generateJson);
             generateMarkdownToggle.SetValueWithoutNotify(_generateMarkdown);
+            generateVSCExtensionJsonToggle.SetValueWithoutNotify(_generateVSCExtensionJson);
             resolveInheritDocToggle.SetValueWithoutNotify(_resolveInheritDoc);
 
             runBuildCommandToggle.RegisterValueChangedCallback(e => _runBuildCommand = e.newValue);
             generateJsonToggle.RegisterValueChangedCallback(e => _generateJson = e.newValue);
             generateMarkdownToggle.RegisterValueChangedCallback(e => _generateMarkdown = e.newValue);
+            generateVSCExtensionJsonToggle.RegisterValueChangedCallback(e => _generateVSCExtensionJson = e.newValue);
             resolveInheritDocToggle.RegisterValueChangedCallback(e => _resolveInheritDoc = e.newValue);
 
             _generateButton = new Button(() => _ = Generate())
@@ -126,7 +130,7 @@ namespace CustomLogic.Editor
             _logs.Clear();
             _logsView.Clear();
 
-            if (!_generateJson && !_generateMarkdown)
+            if (!_generateJson && !_generateMarkdown && !_generateVSCExtensionJson)
             {
                 LogError("At least one format must be selected.");
                 return;
@@ -137,13 +141,13 @@ namespace CustomLogic.Editor
             LogInfo("Generating docs...");
             if (_runBuildCommand)
             {
-                LogInfo("Running `dotnet build ./Aottg2-Unity.sln`...");
+                LogInfo("Running `dotnet build -p:GenerateDocumentationFile=true ./Aottg2-Unity.sln`...");
                 _logsConcurrent.Clear();
                 var process = new Process()
                 {
                     StartInfo = {
                             FileName = "dotnet",
-                            Arguments = "build ./Aottg2-Unity.sln",
+                            Arguments = "build -p:GenerateDocumentationFile=true ./Aottg2-Unity.sln",
                             UseShellExecute = false,
                             RedirectStandardOutput = true,
                             RedirectStandardError = true,
@@ -192,9 +196,10 @@ namespace CustomLogic.Editor
                 var clTypeProvider = new CLTypeProvider();
                 var clTypes = clTypeProvider.GetCLTypes(xmlDocument);
 
-                var generators = new List<BaseCustomLogicDocsGenerator>(2);
+                var generators = new List<BaseCustomLogicDocsGenerator>(3);
                 if (_generateJson) generators.Add(new CustomLogicJsonDocsGenerator(clTypes));
                 if (_generateMarkdown) generators.Add(new CustomLogicMarkdownDocsGenerator(clTypes));
+                if (_generateVSCExtensionJson) generators.Add(new CustomLogicVSCExtensionJsonDocsGenerator(clTypes));
 
                 LogInfo("Running generators...");
 
@@ -244,4 +249,5 @@ namespace CustomLogic.Editor
         private static string FormatSuccess(string msg) => $"<color=#b5ff2b><b>OK</b></color>: {msg}";
         private static string FormatInfo(string msg) => $"<color=#f5f5f5><b>INFO</b></color>: {msg}";
     }
+#endif
 }

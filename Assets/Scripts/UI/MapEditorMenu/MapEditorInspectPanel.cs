@@ -278,10 +278,29 @@ namespace UI
             OnChange();
         }
 
+        private string SanitizeName(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+                return string.Empty;
+            
+            // Remove characters used in MapScript CSV parsing
+            char[] invalidChars = new char[] { ',', ';', '/', '\\', '\n', '\r', '|', ':' };
+            foreach (char c in invalidChars)
+            {
+                name = name.Replace(c.ToString(), string.Empty);
+            }
+            
+            // Limit to 255 characters
+            if (name.Length > 255)
+                name = name.Substring(0, 255);
+            
+            return name.Trim();
+        }
+
         public void SyncSettings()
         {
             var script = (MapScriptSceneObject)_mapObject.ScriptObject;
-            _name.Value = script.Name;
+            _name.Value = SanitizeName(script.Name);
             _active.Value = script.Active;
             _static.Value = script.Static;
             _networked.Value = script.Networked;

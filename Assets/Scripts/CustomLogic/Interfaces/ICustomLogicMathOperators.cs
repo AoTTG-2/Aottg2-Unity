@@ -33,5 +33,13 @@
         /// <param name="other">Reference to other</param>
         /// <returns>The division of self and other</returns>
         object __Div__(object self, object other);
+
+        /// <summary>
+        /// Overrides division, used for / operator. Ex: a / b is equivalent to a.__Div__(a, b)
+        /// </summary>
+        /// <param name="self">Reference to self</param>
+        /// <param name="other">Reference to other</param>
+        /// <returns>The division of self and other</returns>
+        object __Mod__(object self, object other);
     }
 }
