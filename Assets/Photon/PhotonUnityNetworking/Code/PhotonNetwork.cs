@@ -63,6 +63,18 @@ namespace Photon.Pun
     /// \ingroup publicApi
     public static partial class PhotonNetwork
     {
+        /// <summary>Callback invoked when an RPC is sent. Parameters: viewId, methodName, parameters.</summary>
+        public static Action<int, string, object[]> OnRpcSent;
+
+        /// <summary>Callback invoked when an RPC is received. Parameters: viewId, methodName, parameters.</summary>
+        public static Action<int, string, object[]> OnRpcReceived;
+
+        /// <summary>Callback invoked when a serialize write occurs. Parameters: viewId, dataCount.</summary>
+        public static Action<int, int> OnSerializeWriteCallback;
+
+        /// <summary>Callback invoked when a serialize read occurs. Parameters: viewId, dataCount.</summary>
+        public static Action<int, int> OnSerializeReadCallback;
+
         /// <summary>Version number of PUN. Used in the AppVersion, which separates your playerbase in matchmaking.</summary>
         public const string PunVersion = "2.43";
 
@@ -2979,6 +2991,7 @@ namespace Photon.Pun
         /// </summary>
         internal static void RPC(PhotonView view, string methodName, RpcTarget target, bool encrypt, params object[] parameters)
         {
+            OnRpcSent?.Invoke(view.ViewID, methodName, parameters);
             if (string.IsNullOrEmpty(methodName))
             {
                 Debug.LogError("RPC method name cannot be null or empty.");
@@ -3011,6 +3024,7 @@ namespace Photon.Pun
         /// </summary>
         internal static void RPC(PhotonView view, string methodName, Player targetPlayer, bool encrypt, params object[] parameters)
         {
+            OnRpcSent?.Invoke(view.ViewID, methodName, parameters);
             if (!VerifyCanUseNetwork())
             {
                 return;

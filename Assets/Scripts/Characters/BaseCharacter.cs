@@ -61,6 +61,12 @@ namespace Characters
         public BaseDetection Detection;
         public float CurrentSpeed;
 
+        // Animation sync via serialization stream
+        public int SyncAnimationId;
+        public byte SyncAnimationSeq;
+        public float SyncAnimationFadeTime;
+        public float SyncAnimationStartTime;
+
         // movement
         public bool Grounded;
         public bool JustGrounded;
@@ -326,22 +332,39 @@ namespace Characters
             {
                 Cache.PhotonView.RPC(nameof(SetHealthRPC), player, new object[] { CurrentHealth, MaxHealth });
                 Cache.PhotonView.RPC(nameof(SetTeamRPC), player, new object[] { Team });
-                string currentAnimation = GetCurrentAnimation();
-                if (currentAnimation != "")
-                    Cache.PhotonView.RPC(nameof(PlayAnimationRPC), player, new object[] { currentAnimation, Animation.GetCurrentNormalizedTime() });
             }
         }
 
         public void PlayAnimation(string animation, float startTime = 0f)
         {
             if (IsMine())
-                Cache.PhotonView.RPC(nameof(PlayAnimationRPC), RpcTarget.All, new object[] { animation, startTime });
+            {
+                _lastCrossFadeAnimation = null;
+                if (NetworkAnimationId.TryGetId(animation, out int id))
+                {
+                    SyncAnimationId = id;
+                    SyncAnimationSeq++;
+                    SyncAnimationFadeTime = 0f;
+                    SyncAnimationStartTime = startTime;
+                }
+                Animation.Play(animation, startTime);
+            }
         }
 
         public void PlayAnimationReset(string animation)
         {
             if (IsMine())
-                Cache.PhotonView.RPC(nameof(PlayAnimationResetRPC), RpcTarget.All, new object[] { animation });
+            {
+                _lastCrossFadeAnimation = null;
+                if (NetworkAnimationId.TryGetId(animation, out int id))
+                {
+                    SyncAnimationId = id;
+                    SyncAnimationSeq++;
+                    SyncAnimationFadeTime = 0f;
+                    SyncAnimationStartTime = 0f;
+                }
+                Animation.Play(animation, 0f, true);
+            }
         }
 
         [PunRPC]
@@ -353,11 +376,29 @@ namespace Characters
         }
 
         [PunRPC]
+        public void PlayAnimationIdRPC(int animationId, float startTime, PhotonMessageInfo info)
+        {
+            if (info.Sender != Cache.PhotonView.Owner)
+                return;
+            if (NetworkAnimationId.TryGetName(animationId, out string animation))
+                Animation.Play(animation, startTime);
+        }
+
+        [PunRPC]
         public void PlayAnimationResetRPC(string animation, PhotonMessageInfo info)
         {
             if (info.Sender != Cache.PhotonView.Owner)
                 return;
             Animation.Play(animation, 0f, true);
+        }
+
+        [PunRPC]
+        public void PlayAnimationResetIdRPC(int animationId, PhotonMessageInfo info)
+        {
+            if (info.Sender != Cache.PhotonView.Owner)
+                return;
+            if (NetworkAnimationId.TryGetName(animationId, out string animation))
+                Animation.Play(animation, 0f, true);
         }
 
         public void PlayAnimationIfNotPlaying(string animation, float startTime = 0f)
@@ -367,21 +408,41 @@ namespace Characters
         }
 
         private object[] crossfadeCache = new object[3];
+        private object[] crossfadeIdCache = new object[3];
+        private string _lastCrossFadeAnimation;
         public void CrossFade(string animation, float fadeTime = 0f, float startTime = 0f)
         {
             if (IsMine())
             {
-                crossfadeCache[0] = animation;
-                crossfadeCache[1] = fadeTime;
-                crossfadeCache[2] = startTime;
-                Cache.PhotonView.RPC(nameof(CrossFadeRPC), RpcTarget.All, crossfadeCache);
+                if (animation == _lastCrossFadeAnimation)
+                    return;
+                _lastCrossFadeAnimation = animation;
+                if (NetworkAnimationId.TryGetId(animation, out int id))
+                {
+                    SyncAnimationId = id;
+                    SyncAnimationSeq++;
+                    SyncAnimationFadeTime = fadeTime;
+                    SyncAnimationStartTime = startTime;
+                }
+                Animation.CrossFade(animation, fadeTime, startTime);
             }
         }
 
         public void CrossFadeWithSpeed(string animation, float speed, float fadeTime = 0f, float startTime = 0f)
         {
             if (IsMine())
-                Cache.PhotonView.RPC(nameof(CrossFadeWithSpeedRPC), RpcTarget.All, new object[] { animation, speed, fadeTime, startTime });
+            {
+                _lastCrossFadeAnimation = animation;
+                if (NetworkAnimationId.TryGetId(animation, out int id))
+                {
+                    SyncAnimationId = id;
+                    SyncAnimationSeq++;
+                    SyncAnimationFadeTime = fadeTime;
+                    SyncAnimationStartTime = startTime;
+                }
+                Animation.SetSpeed(animation, speed);
+                Animation.CrossFade(animation, fadeTime, startTime);
+            }
         }
 
         public void CrossFadeIfNotPlaying(string animation, float fadeTime = 0f, float startTime = 0f)
@@ -434,7 +495,10 @@ namespace Characters
 
         public void SetAnimationSpeed(string animation, float speed)
         {
-            Cache.PhotonView.RPC(nameof(SetAnimationSpeedRPC), RpcTarget.All, new object[2] { animation, speed });
+            if (NetworkAnimationId.TryGetId(animation, out int id))
+                Cache.PhotonView.RPC(nameof(SetAnimationSpeedIdRPC), RpcTarget.All, new object[] { id, speed });
+            else
+                Cache.PhotonView.RPC(nameof(SetAnimationSpeedRPC), RpcTarget.All, new object[2] { animation, speed });
         }
 
         public void SetAnimationSpeedNonRPC(string animation, float speed)
@@ -451,11 +515,29 @@ namespace Characters
         }
 
         [PunRPC]
+        public void SetAnimationSpeedIdRPC(int animationId, float speed, PhotonMessageInfo info)
+        {
+            if (info.Sender != Cache.PhotonView.Owner)
+                return;
+            if (NetworkAnimationId.TryGetName(animationId, out string animation))
+                Animation.SetSpeed(animation, speed);
+        }
+
+        [PunRPC]
         public void CrossFadeRPC(string animation, float fadeTime, float startTime, PhotonMessageInfo info)
         {
             if (info.Sender != Cache.PhotonView.Owner)
                 return;
             Animation.CrossFade(animation, fadeTime, startTime);
+        }
+
+        [PunRPC]
+        public void CrossFadeIdRPC(int animationId, float fadeTime, float startTime, PhotonMessageInfo info)
+        {
+            if (info.Sender != Cache.PhotonView.Owner)
+                return;
+            if (NetworkAnimationId.TryGetName(animationId, out string animation))
+                Animation.CrossFade(animation, fadeTime, startTime);
         }
 
         [PunRPC]
@@ -467,10 +549,27 @@ namespace Characters
             Animation.CrossFade(animation, fadeTime, startTime);
         }
 
+        [PunRPC]
+        public void CrossFadeWithSpeedIdRPC(int animationId, float speed, float fadeTime, float startTime, PhotonMessageInfo info)
+        {
+            if (info.Sender != Cache.PhotonView.Owner)
+                return;
+            if (NetworkAnimationId.TryGetName(animationId, out string animation))
+            {
+                Animation.SetSpeed(animation, speed);
+                Animation.CrossFade(animation, fadeTime, startTime);
+            }
+        }
+
         public void PlaySound(string sound)
         {
             if (IsMine())
-                Cache.PhotonView.RPC(nameof(PlaySoundRPC), RpcTarget.All, new object[] { sound });
+            {
+                if (NetworkAnimationId.TryGetId(sound, out int id))
+                    Cache.PhotonView.RPC(nameof(PlaySoundIdRPC), RpcTarget.All, new object[] { id });
+                else
+                    Cache.PhotonView.RPC(nameof(PlaySoundRPC), RpcTarget.All, new object[] { sound });
+            }
         }
 
         public bool IsPlayingSound(string sound)
@@ -497,10 +596,26 @@ namespace Characters
             }
         }
 
+        [PunRPC]
+        public void PlaySoundIdRPC(int soundId, PhotonMessageInfo info)
+        {
+            if (info.Sender != null && info.Sender != Cache.PhotonView.Owner)
+                return;
+            if (!SoundsEnabled)
+                return;
+            if (NetworkAnimationId.TryGetName(soundId, out string sound) && Cache.AudioSources.ContainsKey(sound))
+                Cache.AudioSources[sound].Play();
+        }
+
         public void StopSound(string sound)
         {
             if (IsMine())
-                Cache.PhotonView.RPC(nameof(StopSoundRPC), RpcTarget.All, new object[] { sound });
+            {
+                if (NetworkAnimationId.TryGetId(sound, out int id))
+                    Cache.PhotonView.RPC(nameof(StopSoundIdRPC), RpcTarget.All, new object[] { id });
+                else
+                    Cache.PhotonView.RPC(nameof(StopSoundRPC), RpcTarget.All, new object[] { sound });
+            }
         }
 
         public void FadeSound(string sound, float volume, float time)
@@ -545,6 +660,15 @@ namespace Characters
             if (info.Sender != null && info.Sender != Cache.PhotonView.Owner)
                 return;
             if (Cache.AudioSources.ContainsKey(sound))
+                Cache.AudioSources[sound].Stop();
+        }
+
+        [PunRPC]
+        public void StopSoundIdRPC(int soundId, PhotonMessageInfo info)
+        {
+            if (info.Sender != null && info.Sender != Cache.PhotonView.Owner)
+                return;
+            if (NetworkAnimationId.TryGetName(soundId, out string sound) && Cache.AudioSources.ContainsKey(sound))
                 Cache.AudioSources[sound].Stop();
         }
 

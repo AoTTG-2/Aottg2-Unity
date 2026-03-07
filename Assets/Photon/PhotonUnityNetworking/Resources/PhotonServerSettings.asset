@@ -154,6 +154,14 @@ MonoBehaviour:
   - SetStunStateRPC
   - SetHandSeverTimesRPC
   - SetStunRecoveryTimesRPC
+  - CrossFadeIdRPC
+  - CrossFadeWithSpeedIdRPC
+  - PlayAnimationIdRPC
+  - PlayAnimationResetIdRPC
+  - PlaySoundIdRPC
+  - SetAnimationSpeedIdRPC
+  - StopSoundIdRPC
+  - SpawnEffectIdRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

@@ -79,6 +79,14 @@ namespace Characters
         private bool _buff2Active;
         private bool _fire1Active;
 
+        // Visual state synced via serialization stream (replaces individual RPCs)
+        public byte VisualFlags;
+        private byte _lastRemoteVisualFlags;
+        public const byte FlagSmoke = 1;
+        public const byte FlagBladeTrails = 2;
+        public const byte FlagSparks = 4;
+        public const byte FlagAnimationPaused = 8;
+
         // physics
         public float ReelInAxis = 0f;
         public float ReelOutAxis = 0f;
@@ -502,7 +510,8 @@ namespace Characters
             FalseAttack();
             Grabber = grabber;
             GrabHand = hand;
-            Cache.PhotonView.RPC(nameof(SetSmokeRPC), RpcTarget.All, new object[] { false });
+            VisualFlags &= unchecked((byte)~FlagSmoke);
+            ApplyVisualFlags(VisualFlags);
             PlayAnimation(HumanAnimations.Grabbed);
             ToggleSparks(false);
             var windEmission = HumanCache.Wind.emission;
@@ -540,7 +549,8 @@ namespace Characters
             Carrier = carrier;
             CarryBack = back;
             SetCarrierTriggerCollider(true);
-            Cache.PhotonView.RPC(nameof(SetSmokeRPC), RpcTarget.All, new object[] { false });
+            VisualFlags &= unchecked((byte)~FlagSmoke);
+            ApplyVisualFlags(VisualFlags);
             ToggleSparks(false);
             State = HumanState.Idle;
             CrossFade(StandAnimation, 0.01f);
@@ -1906,15 +1916,21 @@ namespace Characters
                     if (pivot)
                     {
                         Stats.UseFrameGas();
-                        if (!HumanCache.Smoke.emission.enabled)
-                            Cache.PhotonView.RPC(nameof(SetSmokeRPC), RpcTarget.All, new object[] { true });
+                        if ((VisualFlags & FlagSmoke) == 0)
+                        {
+                            VisualFlags |= FlagSmoke;
+                            ApplyVisualFlags(VisualFlags);
+                        }
                         if (!IsPlayingSound(HumanSounds.GasLoop) && SettingsManager.SoundSettings.GasEffect.Value)
                             PlaySound(HumanSounds.GasLoop);
                     }
                     else
                     {
-                        if (HumanCache.Smoke.emission.enabled)
-                            Cache.PhotonView.RPC(nameof(SetSmokeRPC), RpcTarget.All, new object[] { false });
+                        if ((VisualFlags & FlagSmoke) != 0)
+                        {
+                            VisualFlags &= unchecked((byte)~FlagSmoke);
+                            ApplyVisualFlags(VisualFlags);
+                        }
                         if (IsPlayingSound(HumanSounds.GasLoop))
                         {
                             StopSound(HumanSounds.GasLoop);
@@ -3104,8 +3120,14 @@ namespace Characters
             if (!IsMine())
                 return;
             ToggleSound(HumanSounds.Slide, toggle);
-            if (toggle != HumanCache.Sparks.emission.enabled)
-                Cache.PhotonView.RPC(nameof(ToggleSparksRPC), RpcTarget.All, new object[] { toggle });
+            if (toggle != ((VisualFlags & FlagSparks) != 0))
+            {
+                if (toggle)
+                    VisualFlags |= FlagSparks;
+                else
+                    VisualFlags &= unchecked((byte)~FlagSparks);
+                ApplyVisualFlags(VisualFlags);
+            }
         }
 
         [PunRPC]
@@ -3510,7 +3532,12 @@ namespace Characters
             if (!_animationStopped)
                 return;
             _animationStopped = false;
-            Cache.PhotonView.RPC(nameof(ContinueAnimationRPC), RpcTarget.All, new object[0]);
+            VisualFlags &= unchecked((byte)~FlagAnimationPaused);
+            Animation.SetSpeedAll(1f);
+            CustomAnimationSpeed();
+            string animationName = GetCurrentAnimation();
+            if (animationName != "")
+                PlayAnimation(animationName);
         }
 
         [PunRPC]
@@ -3522,7 +3549,7 @@ namespace Characters
             CustomAnimationSpeed();
             string animationName = GetCurrentAnimation();
             if (animationName != "")
-                PlayAnimation(animationName);
+                Animation.Play(animationName, 0f);
         }
 
         public void PauseAnimation()
@@ -3530,7 +3557,8 @@ namespace Characters
             if (_animationStopped)
                 return;
             _animationStopped = true;
-            Cache.PhotonView.RPC(nameof(PauseAnimationRPC), RpcTarget.All, new object[0]);
+            VisualFlags |= FlagAnimationPaused;
+            Animation.SetSpeedAll(0f);
         }
 
         [PunRPC]
@@ -3624,7 +3652,13 @@ namespace Characters
             if (IsMine())
             {
                 if (toggle != _bladeTrailActive)
-                    Cache.PhotonView.RPC(nameof(ToggleBladeTrailsRPC), RpcTarget.All, new object[] { toggle });
+                {
+                    if (toggle)
+                        VisualFlags |= FlagBladeTrails;
+                    else
+                        VisualFlags &= unchecked((byte)~FlagBladeTrails);
+                    ApplyVisualFlags(VisualFlags);
+                }
                 _bladeTrailActive = toggle;
             }
         }
@@ -3837,6 +3871,47 @@ namespace Characters
                     }
                 }
             }
+        }
+
+        public void ApplyVisualFlags(byte flags)
+        {
+            if (!FinishSetup)
+                return;
+            bool smoke = (flags & FlagSmoke) != 0;
+            bool trails = (flags & FlagBladeTrails) != 0;
+            bool sparks = (flags & FlagSparks) != 0;
+            var smokeEmission = HumanCache.Smoke.emission;
+            smokeEmission.enabled = smoke;
+            if (Setup != null && Setup.LeftTrail != null && Setup.RightTrail != null)
+            {
+                bool canShowTrail = SettingsManager.GraphicsSettings.WeaponTrail.Value == (int)WeaponTrailMode.All
+                                    || (SettingsManager.GraphicsSettings.WeaponTrail.Value == (int)WeaponTrailMode.Mine && IsMine());
+                if (trails && canShowTrail)
+                {
+                    Setup.LeftTrail.Emit = true;
+                    Setup.RightTrail.Emit = true;
+                    Setup.LeftTrail._emitTime = 0f;
+                    Setup.RightTrail._emitTime = 0f;
+                    if (!Setup.LeftTrail.isActiveAndEnabled)
+                        Setup.LeftTrail.enabled = true;
+                    if (!Setup.RightTrail.isActiveAndEnabled)
+                        Setup.RightTrail.enabled = true;
+                }
+                else
+                {
+                    Setup.LeftTrail._emitTime = 0.1f;
+                    Setup.RightTrail._emitTime = 0.1f;
+                    if (!canShowTrail)
+                    {
+                        Setup.LeftTrail.enabled = false;
+                        Setup.RightTrail.enabled = false;
+                    }
+                }
+            }
+            var sparkEmission = HumanCache.Sparks.emission;
+            sparkEmission.enabled = sparks;
+            bool paused = (flags & FlagAnimationPaused) != 0;
+            Animation.SetSpeedAll(paused ? 0f : 1f);
         }
 
         /// <summary>

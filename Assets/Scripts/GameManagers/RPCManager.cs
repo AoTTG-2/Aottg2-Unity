@@ -158,6 +158,13 @@ namespace GameManagers
         }
 
         [PunRPC]
+        public void SpawnEffectIdRPC(int effectId, Vector3 position, Quaternion rotation, float scale, bool scaleSize, object[] settings, PhotonMessageInfo info)
+        {
+            if (NetworkEffectId.TryGetName(effectId, out string name))
+                EffectSpawner.OnSpawnEffectRPC(name, position, rotation, scale, scaleSize, settings, info);
+        }
+
+        [PunRPC]
         public void SpawnSpawnableRPC(string name, Vector3 position, Quaternion rotation, float scale, object[] settings, PhotonMessageInfo info)
         {
             SpawnableSpawner.OnSpawnSpawnableRPC(name, position, rotation, scale, settings, info);

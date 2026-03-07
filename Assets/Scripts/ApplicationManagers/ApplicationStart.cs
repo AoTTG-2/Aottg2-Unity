@@ -74,6 +74,7 @@ namespace ApplicationManagers
 
             // debug
             DebugConsole.Init();
+            DebugRPCPanel.Init();
             DebugLagSim.Init();
             CustomDebug.Init();
             if (ApplicationConfig.DevelopmentMode)

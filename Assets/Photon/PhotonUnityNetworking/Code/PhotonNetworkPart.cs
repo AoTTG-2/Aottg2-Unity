@@ -396,6 +396,8 @@ namespace Photon.Pun
                 arguments = (object[])rpcData[keyByteFour];
             }
 
+            OnRpcReceived?.Invoke(netViewID, inMethodName, arguments);
+
             PhotonView photonNetview = GetPhotonView(netViewID);
             if (photonNetview == null)
             {
@@ -1738,6 +1740,7 @@ namespace Photon.Pun
 
             if (view.Synchronization == ViewSynchronization.Unreliable)
             {
+                OnSerializeWriteCallback?.Invoke(view.ViewID, currentValues.Count - SyncFirstValue);
                 return currentValues;
             }
 
@@ -1766,6 +1769,7 @@ namespace Photon.Pun
                 }
 
 
+                OnSerializeWriteCallback?.Invoke(view.ViewID, currentValues.Count - SyncFirstValue);
                 return currentValues;
             }
 
@@ -1782,6 +1786,8 @@ namespace Photon.Pun
                 view.lastOnSerializeDataSent = currentValues;
                 view.syncValues = temp;
 
+                if (dataToSend != null)
+                    OnSerializeWriteCallback?.Invoke(view.ViewID, currentValues.Count - SyncFirstValue);
                 return dataToSend;
             }
 
@@ -1860,6 +1866,7 @@ namespace Photon.Pun
             serializeStreamIn.SetReadStream(data, 3);
             PhotonMessageInfo info = new PhotonMessageInfo(sender, networkTime, view);
 
+            OnSerializeReadCallback?.Invoke(viewID, data.Length - SyncFirstValue);
             view.DeserializeView(serializeStreamIn, info);
         }
 

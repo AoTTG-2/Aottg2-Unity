@@ -11,6 +11,10 @@ namespace Characters
     class HumanMovementSync : BaseMovementSync
     {
         protected Human _human;
+        private byte _lastVisualFlags;
+        private int _lastAnimationId;
+        private byte _lastAnimationSeq;
+
         protected override void Awake()
         {
             base.Awake();
@@ -26,6 +30,9 @@ namespace Characters
             }
             else
                 stream.SendNext(null);
+            stream.SendNext(_human.VisualFlags);
+            stream.SendNext(_human.SyncAnimationId);
+            stream.SendNext(_human.SyncAnimationSeq);
         }
 
         protected override void ReceiveCustomStream(PhotonStream stream)
@@ -39,6 +46,21 @@ namespace Characters
             }
             else
                 _human.LateUpdateHeadRotationRecv = null;
+            byte flags = (byte)stream.ReceiveNext();
+            if (flags != _lastVisualFlags)
+            {
+                _lastVisualFlags = flags;
+                _human.ApplyVisualFlags(flags);
+            }
+            int animId = (int)stream.ReceiveNext();
+            byte animSeq = (byte)stream.ReceiveNext();
+            if (animSeq != _lastAnimationSeq && animId != 0)
+            {
+                _lastAnimationId = animId;
+                _lastAnimationSeq = animSeq;
+                if (NetworkAnimationId.TryGetName(animId, out string animation))
+                    _human.Animation.CrossFade(animation, 0.1f, 0f);
+            }
         }
 
         protected override void Update()

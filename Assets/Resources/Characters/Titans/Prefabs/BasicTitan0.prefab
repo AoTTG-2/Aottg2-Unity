@@ -199,6 +199,7 @@ MonoBehaviour:
   Team: 
   MovementSync: {fileID: 0}
   CurrentSpeed: 0
+  SyncAnimationId: 0
   Grounded: 0
   JustGrounded: 0
   TargetAngle: 0

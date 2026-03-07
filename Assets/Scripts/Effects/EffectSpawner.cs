@@ -11,7 +11,10 @@ namespace Effects
     {
         public static void Spawn(string name, Vector3 position, Quaternion rotation, float scale = 1f, bool scaleSize = true, object[] settings = null)
         {
-            RPCManager.PhotonView.RPC(nameof(RPCManager.SpawnEffectRPC), RpcTarget.All, new object[] { name, position, rotation, scale, scaleSize, settings });
+            if (NetworkEffectId.TryGetId(name, out int id))
+                RPCManager.PhotonView.RPC(nameof(RPCManager.SpawnEffectIdRPC), RpcTarget.All, new object[] { id, position, rotation, scale, scaleSize, settings });
+            else
+                RPCManager.PhotonView.RPC(nameof(RPCManager.SpawnEffectRPC), RpcTarget.All, new object[] { name, position, rotation, scale, scaleSize, settings });
         }
 
         public static void OnSpawnEffectRPC(string name, Vector3 position, Quaternion rotation, float scale, bool scaleSize, object[] settings, PhotonMessageInfo info)

@@ -7,6 +7,8 @@ namespace Characters
     class BasicTitanMovementSync : BaseMovementSync
     {
         protected BasicTitan _titan;
+        private int _lastAnimationId;
+        private byte _lastAnimationSeq;
 
         protected override void Awake()
         {
@@ -32,6 +34,10 @@ namespace Characters
                 else
                     stream.SendNext(null);
             }
+            stream.SendNext(_titan.SyncAnimationId);
+            stream.SendNext(_titan.SyncAnimationSeq);
+            stream.SendNext(_titan.SyncAnimationFadeTime);
+            stream.SendNext(_titan.SyncAnimationStartTime);
         }
 
         protected override void ReceiveCustomStream(PhotonStream stream)
@@ -52,6 +58,22 @@ namespace Characters
                 }
                 else
                     _titan.LateUpdateHeadRotationRecv = null;
+            }
+            int animId = (int)stream.ReceiveNext();
+            byte animSeq = (byte)stream.ReceiveNext();
+            float fadeTime = (float)stream.ReceiveNext();
+            float startTime = (float)stream.ReceiveNext();
+            if (animSeq != _lastAnimationSeq && animId != 0)
+            {
+                _lastAnimationId = animId;
+                _lastAnimationSeq = animSeq;
+                if (NetworkAnimationId.TryGetName(animId, out string animation))
+                {
+                    if (fadeTime > 0f)
+                        _titan.Animation.CrossFade(animation, fadeTime, startTime);
+                    else
+                        _titan.Animation.Play(animation, startTime);
+                }
             }
         }
     }
