@@ -464,6 +464,8 @@ namespace ApplicationManagers
         {
             if (Enabled)
             {
+                bool chatActive = ChatManager.IsChatActive();
+
                 // draw debug console over everything else
                 GUI.depth = 1;
 
@@ -484,9 +486,22 @@ namespace ApplicationManagers
                 GUI.Box(new Rect(_windowX, _windowY, _windowWidth, _windowHeight), "");
 
                 DrawTabs();
+
+                // Disable text controls when chat is active to prevent stealing keyboard events
+                if (chatActive)
+                    GUI.enabled = false;
                 DrawMessageWindow();
                 DrawInputWindow();
-                HandleInput();
+                if (chatActive)
+                {
+                    GUI.enabled = true;
+                    if (GUI.GetNameOfFocusedControl() == InputControlName)
+                        GUI.FocusControl(string.Empty);
+                }
+                else
+                {
+                    HandleInput();
+                }
 
                 // Draw resize handle
                 DrawResizeHandle();

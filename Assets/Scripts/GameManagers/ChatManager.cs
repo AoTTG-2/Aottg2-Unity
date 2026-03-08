@@ -979,7 +979,7 @@ namespace GameManagers
 
         private void Update()
         {
-            if (IsChatAvailable() && !InGameMenu.InMenu() && !DebugConsole.Enabled)
+            if (IsChatAvailable() && !InGameMenu.InMenu())
             {
                 var chatPanel = GetChatPanel();
                 var key = SettingsManager.InputSettings.General.Chat;
