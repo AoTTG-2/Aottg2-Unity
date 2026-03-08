@@ -582,7 +582,10 @@ namespace CustomLogic
             return null;
         }
 
-        [CLMethod(description: "Spawn a human")]
+        /// <summary>
+        /// Spawn an AI human.
+        /// </summary>
+        [CLMethod]
         public CustomLogicHumanBuiltin SpawnHuman(int costume, string costumeName, string loadout)
         {
             if (PhotonNetwork.IsMasterClient)
@@ -593,7 +596,10 @@ namespace CustomLogic
             return null;
         }
 
-        [CLMethod(description: "Spawn a human at a position")]
+        /// <summary>
+        /// Spawn an AI human at a position.
+        /// </summary>
+        [CLMethod]
         public CustomLogicHumanBuiltin SpawnHumanAt(int costume, string costumeName, string loadout, CustomLogicVector3Builtin position, float rotationY = 0f)
         {
             if (PhotonNetwork.IsMasterClient)

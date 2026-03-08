@@ -185,6 +185,9 @@ namespace CustomLogic
             }
         }
 
+        /// <summary>
+        /// Whether horse follow is enabled.
+        /// </summary>
         [CLProperty]
         public bool HorseFollowEnabled
         {
@@ -424,7 +427,10 @@ namespace CustomLogic
         [CLProperty]
         public bool IsMounted => Human.MountState == HumanMountState.MapObject;
 
-        [CLProperty(description: "The mount state of human. 0: None, 1: Horse, 2:MapObject")]
+        /// <summary>
+        /// The mount state of human. 0: None, 1: Horse, 2: MapObject.
+        /// </summary>
+        [CLProperty]
         public int MountState => (int)Human.MountState;
 
         /// <summary>
@@ -511,47 +517,89 @@ namespace CustomLogic
         [CLProperty]
         public bool IsCarried => Human.CarryState == HumanCarryState.Carry;
 
-        [CLProperty(description: "If the human is on the ground.")]
+        /// <summary>
+        /// If the human is on the ground.
+        /// </summary>
+        [CLProperty]
         public bool Grounded => Human.Grounded;
 
-        [CLProperty(description: "If the human can hold reel in/out.")]
+        /// <summary>
+        /// If the human can hold reel in/out.
+        /// </summary>
+        [CLProperty]
         public bool Pivot => Human.Pivot;
 
-        [CLProperty(description: "The position of the pivot when the human hold reel in/out.")]
+        /// <summary>
+        /// The position of the pivot when the human holds reel in/out.
+        /// </summary>
+        [CLProperty]
         public CustomLogicVector3Builtin PivotPosition => Human.PivotPosition();
 
-        [CLProperty(description: "If left hook is hooked.")]
+        /// <summary>
+        /// If the left hook is hooked.
+        /// </summary>
+        [CLProperty]
         public bool IsHookedLeft => Human.HookLeft.IsHooked();
 
-        [CLProperty(description: "If right hook is hooked.")]
+        /// <summary>
+        /// If the right hook is hooked.
+        /// </summary>
+        [CLProperty]
         public bool IsHookedRight => Human.HookRight.IsHooked();
 
-        [CLProperty(description: "If left hook is in the air.")]
+        /// <summary>
+        /// If the left hook is in the air.
+        /// </summary>
+        [CLProperty]
         public bool IsHookingLeft => Human.HookLeft.IsHooking();
 
-        [CLProperty(description: "If right hook is in the air.")]
+        /// <summary>
+        /// If the right hook is in the air.
+        /// </summary>
+        [CLProperty]
         public bool IsHookingRight => Human.HookRight.IsHooking();
 
-        [CLProperty(description: "If left hook is used.")]
+        /// <summary>
+        /// If the left hook is used.
+        /// </summary>
+        [CLProperty]
         public bool HasHookLeft => Human.HookLeft.HasHook();
 
-        [CLProperty(description: "If right hook is used.")]
+        /// <summary>
+        /// If the right hook is used.
+        /// </summary>
+        [CLProperty]
         public bool HasHookRight => Human.HookRight.HasHook();
 
-        [CLProperty(description: "If left hook is ready.")]
+        /// <summary>
+        /// If the left hook is ready.
+        /// </summary>
+        [CLProperty]
         public bool LeftHookReady => Human.HookLeft.IsReady();
 
-        [CLProperty(description: "If right hook is ready.")]
+        /// <summary>
+        /// If the right hook is ready.
+        /// </summary>
+        [CLProperty]
         public bool RightHookReady => Human.HookRight.IsReady();
 
-        [CLProperty(description: "Position of the left hook, null if there is no hook.")]
+        /// <summary>
+        /// Position of the left hook. Returns null if there is no hook.
+        /// </summary>
+        [CLProperty]
         public CustomLogicVector3Builtin LeftHookPosition => Human.HookLeft.GetCLHookPosition();
 
-        [CLProperty(description: "Position of the right hook, null if there is no hook.")]
+        /// <summary>
+        /// Position of the right hook. Returns null if there is no hook.
+        /// </summary>
+        [CLProperty]
         public CustomLogicVector3Builtin RightHookPosition => Human.HookRight.GetCLHookPosition();
 
 
-        [CLProperty("The target currently focused by this character. Returns null if no target is set.")]
+        /// <summary>
+        /// The target currently focused by this character. Returns null if no target is set.
+        /// </summary>
+        [CLProperty]
         public object Target
         {
             get
@@ -596,24 +644,36 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("The target position of the (AI) human.")]
+        /// <summary>
+        /// The target position of the (AI) human.
+        /// </summary>
+        [CLProperty]
         public CustomLogicVector3Builtin TargetPosition
         {
             get => Controller.TargetPosition;
             set => Controller.TargetPosition = value.Value;
         }
 
-        [CLProperty("The target velocity of the (AI) human.")]
+        /// <summary>
+        /// The target velocity of the (AI) human.
+        /// </summary>
+        [CLProperty]
         public CustomLogicVector3Builtin TargetVelocity => Controller.TargetVelocity;
 
-        [CLProperty("Allow the (AI) human to have horse.")]
+        /// <summary>
+        /// Allow the (AI) human to have horse.
+        /// </summary>
+        [CLProperty]
         public bool AllowHorse
         {
             get => Human.AllowHorse;
             set => Human.AllowHorse = value;
         }
 
-        [CLProperty("Allow the (AI) human to use the skin. (preset skin only)")]
+        /// <summary>
+        /// Allow the (AI) human to use the skin. (preset skin only)
+        /// </summary>
+        [CLProperty]
         public bool AllowSkin
         {
             get => Human.AllowSkin;
@@ -673,42 +733,6 @@ namespace CustomLogic
         {
             if (Human.IsMine())
                 Human.HookRight.DisableAnyHook();
-        }
-
-        /// <summary>
-        /// Position of the left hook, null if there is no hook.
-        /// </summary>
-        /// <returns>The position of the left hook, or null if there is no hook.</returns>
-        [CLMethod]
-        public CustomLogicVector3Builtin LeftHookPosition()
-        {
-            if (Human.IsMine())
-            {
-                Vector3 hook = Human.HookLeft.GetHookPosition();
-                if (hook != null)
-                {
-                    return new CustomLogicVector3Builtin(hook);
-                }
-            }
-            return null;
-        }
-
-        /// <summary>
-        /// Position of the right hook, null if there is no hook.
-        /// </summary>
-        /// <returns>The position of the right hook, or null if there is no hook.</returns>
-        [CLMethod]
-        public CustomLogicVector3Builtin RightHookPosition()
-        {
-            if (Human.IsMine())
-            {
-                Vector3 hook = Human.HookRight.GetHookPosition();
-                if (hook != null)
-                {
-                    return new CustomLogicVector3Builtin(hook);
-                }
-            }
-            return null;
         }
 
         /// <summary>
@@ -843,14 +867,24 @@ namespace CustomLogic
         }
 
 
-        [CLMethod(description: "Causes the (AI) human to move towards a position and stopping when within specified range")]
+        /// <summary>
+        /// Causes the (AI) human to move towards a position and stopping when within specified range.
+        /// </summary>
+        /// <param name="position">The target position to move towards.</param>
+        /// <param name="range">The stopping range from the target position.</param>
+        [CLMethod]
         public void MoveTo(CustomLogicVector3Builtin position, float range)
         {
             if (Human.IsMine() && Human.AI)
                 Controller.MoveTo(position.Value, range);
         }
 
-        [CLMethod(description: "Causes the (AI) human to move towards a target and stopping when within specified range")]
+        /// <summary>
+        /// Causes the (AI) human to move towards a target and stopping when within specified range.
+        /// </summary>
+        /// <param name="target">The target to move towards.</param>
+        /// <param name="range">The stopping range from the target.</param>
+        [CLMethod]
         public void MoveToTarget(object target, float range)
         {
             if (Human.IsMine() && Human.AI)
@@ -862,14 +896,21 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod(description: "Causes the (AI) human to idle.")]
+        /// <summary>
+        /// Causes the (AI) human to idle.
+        /// </summary>
+        [CLMethod]
         public void Idle()
         {
             if (Human.IsMine() && Human.AI)
                 Controller.Idle();
         }
 
-        [CLMethod(description: "Determine whether an AIState exists for the (AI) humans")]
+        /// <summary>
+        /// Determine whether an AIState exists for the (AI) human.
+        /// </summary>
+        /// <param name="name">The name of the AI state.</param>
+        [CLMethod]
         public bool HasAIState(string name)
         {
             if (Human.IsMine() && Human.AI)
@@ -879,7 +920,12 @@ namespace CustomLogic
             return false;
         }
 
-        [CLMethod(description: "Set the custom ai states for the (AI) humans")]
+        /// <summary>
+        /// Set the custom AI states for the (AI) human.
+        /// </summary>
+        /// <param name="name">The name of the AI state.</param>
+        /// <param name="classInstance">The class instance for the AI state.</param>
+        [CLMethod]
         public void SetAIState(string name, UserClassInstance classInstance = null)
         {
             if (Human.IsMine() && Human.AI)
@@ -897,7 +943,10 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod(description: "Get the name of the ai state of the (AI) human.")]
+        /// <summary>
+        /// Get the name of the AI state of the (AI) human.
+        /// </summary>
+        [CLMethod]
         public string GetAIState()
         {
             if (Human.IsMine() && Human.AI)
@@ -907,7 +956,11 @@ namespace CustomLogic
             return null;
         }
 
-        [CLMethod(description: "Switch the ai state of the (AI) human.")]
+        /// <summary>
+        /// Switch the AI state of the (AI) human.
+        /// </summary>
+        /// <param name="name">The name of the AI state to switch to.</param>
+        [CLMethod]
         public void SwitchAIState(string name)
         {
             if (Human.IsMine() && Human.AI)
@@ -916,7 +969,12 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod(description: "Reset the callbacks for the (AI) humans. Optional: OnIdle, PreAction, PostAction, MoveToCallback.")]
+        /// <summary>
+        /// Reset the callbacks for the (AI) human. Optional: OnIdle, PreAction, PostAction, MoveToCallback.
+        /// </summary>
+        /// <param name="callback">The callback name to reset.</param>
+        /// <param name="method">The method to set as the callback.</param>
+        [CLMethod]
         public void ResetCallback(string callback, UserMethod method = null)
         {
             if (Human.IsMine() && Human.AI)
@@ -932,7 +990,11 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod(description: "Causes the (AI) humans to Move")]
+        /// <summary>
+        /// Causes the (AI) human to move.
+        /// </summary>
+        /// <param name="direction">The direction to move in.</param>
+        [CLMethod]
         public void Move(CustomLogicVector3Builtin direction)
         {
             if (Human.IsMine() && Human.AI)
@@ -941,7 +1003,11 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod(description: "Causes the (AI) humans to aim at the specific position.")]
+        /// <summary>
+        /// Causes the (AI) human to aim at the specific position.
+        /// </summary>
+        /// <param name="position">The position to aim at.</param>
+        [CLMethod]
         public void AimAt(CustomLogicVector3Builtin position)
         {
             if (Human.IsMine() && Human.AI)
@@ -950,7 +1016,10 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod(description: "Causes the (AI) humans to Jump")]
+        /// <summary>
+        /// Causes the (AI) human to jump.
+        /// </summary>
+        [CLMethod]
         public void Jump()
         {
             if (Human.IsMine() && Human.AI)
@@ -959,7 +1028,11 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod(description: "Causes the (AI) humans to mount on their horse")]
+        /// <summary>
+        /// Causes the (AI) human to mount on their horse.
+        /// </summary>
+        /// <param name="mount">True to mount, false to dismount.</param>
+        [CLMethod]
         public void HorseMount(bool mount = true)
         {
             if (Human.IsMine() && Human.AI)
@@ -968,7 +1041,10 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod(description: "Causes the (AI) humans to Dodge")]
+        /// <summary>
+        /// Causes the (AI) human to dodge.
+        /// </summary>
+        [CLMethod]
         public void Dodge()
         {
             if (Human.IsMine() && Human.AI)
@@ -977,7 +1053,10 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod(description: "Causes the (AI) humans to Reload")]
+        /// <summary>
+        /// Causes the (AI) human to reload.
+        /// </summary>
+        [CLMethod]
         public void Reload()
         {
             if (Human.IsMine() && Human.AI)
@@ -987,7 +1066,11 @@ namespace CustomLogic
         }
 
 
-        [CLMethod(description: "Causes the (AI) humans to use gas")]
+        /// <summary>
+        /// Causes the (AI) human to use gas.
+        /// </summary>
+        /// <param name="useGas">True to use gas, false to stop.</param>
+        [CLMethod]
         public void UseGas(bool useGas)
         {
             if (Human.IsMine() && Human.AI)
@@ -996,7 +1079,11 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod(description: "Causes the (AI) humans mounted on the horse to walk")]
+        /// <summary>
+        /// Causes the (AI) human mounted on the horse to walk.
+        /// </summary>
+        /// <param name="isWalk">True to walk, false to stop walking.</param>
+        [CLMethod]
         public void HorseWalk(bool isWalk)
         {
             if (Human.IsMine() && Human.AI)
@@ -1005,7 +1092,11 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod(description: "Causes the (AI) humans mounted on the horse to walk")]
+        /// <summary>
+        /// Causes the (AI) human to dash.
+        /// </summary>
+        /// <param name="direction">The direction to dash in.</param>
+        [CLMethod]
         public void Dash(CustomLogicVector3Builtin direction)
         {
             if (Human.IsMine() && Human.AI)
@@ -1014,7 +1105,11 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod(description: "Causes the (AI) humans to reel, -1 is reel in, 1 is reel out, 0 is not reel")]
+        /// <summary>
+        /// Causes the (AI) human to reel. -1 is reel in, 1 is reel out, 0 is not reel.
+        /// </summary>
+        /// <param name="reelAxis">The reel axis value.</param>
+        [CLMethod]
         public void Reel(int reelAxis)
         {
             if (Human.IsMine() && Human.AI)
@@ -1023,7 +1118,11 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod(description: "Causes the (AI) humans to launch left hook.")]
+        /// <summary>
+        /// Causes the (AI) human to launch the left hook.
+        /// </summary>
+        /// <param name="aimPoint">The aim point for the hook.</param>
+        [CLMethod]
         public void LaunchHookLeft(CustomLogicVector3Builtin aimPoint)
         {
             if (Human.IsMine() && Human.AI)
@@ -1032,7 +1131,11 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod(description: "Causes the (AI) humans to launch right hook.")]
+        /// <summary>
+        /// Causes the (AI) human to launch the right hook.
+        /// </summary>
+        /// <param name="aimPoint">The aim point for the hook.</param>
+        [CLMethod]
         public void LaunchHookRight(CustomLogicVector3Builtin aimPoint)
         {
             if (Human.IsMine() && Human.AI)
@@ -1041,7 +1144,10 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod(description: "Causes the (AI) humans to release left hook.")]
+        /// <summary>
+        /// Causes the (AI) human to release the left hook.
+        /// </summary>
+        [CLMethod]
         public void ReleaseHookLeft()
         {
             if (Human.IsMine() && Human.AI)
@@ -1050,7 +1156,10 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod(description: "Causes the (AI) humans to release right hook.")]
+        /// <summary>
+        /// Causes the (AI) human to release the right hook.
+        /// </summary>
+        [CLMethod]
         public void ReleaseHookRight()
         {
             if (Human.IsMine() && Human.AI)
@@ -1059,7 +1168,10 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod(description: "Causes the (AI) humans to release all hooks.")]
+        /// <summary>
+        /// Causes the (AI) human to release all hooks.
+        /// </summary>
+        [CLMethod]
         public void ReleaseHookAll()
         {
             if (Human.IsMine() && Human.AI)
@@ -1068,7 +1180,11 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod(description: "Causes the (AI) humans to attack.")]
+        /// <summary>
+        /// Causes the (AI) human to attack.
+        /// </summary>
+        /// <param name="attackOn">True to start attacking, false to stop.</param>
+        [CLMethod]
         public void Attack(bool attackOn)
         {
             if (Human.IsMine() && Human.AI)
@@ -1077,7 +1193,10 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod(description: "Causes the (AI) humans to find the nearest enemy")]
+        /// <summary>
+        /// Causes the (AI) human to find the nearest enemy.
+        /// </summary>
+        [CLMethod]
         public void FindNearestEnemy()
         {
             if (Human.IsMine() && Human.AI)
@@ -1086,7 +1205,10 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod(description: "Correct the direction of (AI) humans for moving to the target.")]
+        /// <summary>
+        /// Correct the direction of the (AI) human for moving to the target.
+        /// </summary>
+        [CLMethod]
         public void Navigation()
         {
             if (Human.IsMine() && Human.AI)
