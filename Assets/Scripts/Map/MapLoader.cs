@@ -455,6 +455,8 @@ namespace Map
 
         private void Batch()
         {
+            const int INSTANCING_THRESHOLD = 5;
+
             GameObject staticRoot = new GameObject("Static Objects");
             GameObject dynamicRoot = new GameObject("Dynamic Objects");
 
@@ -481,8 +483,56 @@ namespace Map
                 CollectEligibleGameObjects(mapObject.GameObject, batchCandidates);
             }
 
-            if (batchCandidates.Count > 0)
-                StaticBatchingUtility.Combine(batchCandidates.ToArray(), staticRoot);
+            // Group candidates by (Mesh, Material) to detect repeated instances
+            var groups = new Dictionary<long, List<GameObject>>();
+            var groupMaterials = new Dictionary<long, Material>();
+            foreach (var go in batchCandidates)
+            {
+                var filter = go.GetComponent<MeshFilter>();
+                var renderer = go.GetComponent<MeshRenderer>();
+                if (filter == null || filter.sharedMesh == null || renderer == null || renderer.sharedMaterial == null)
+                    continue;
+                long key = ((long)filter.sharedMesh.GetInstanceID() << 32) | (uint)renderer.sharedMaterial.GetInstanceID();
+                if (!groups.ContainsKey(key))
+                {
+                    groups[key] = new List<GameObject>();
+                    groupMaterials[key] = renderer.sharedMaterial;
+                }
+                groups[key].Add(go);
+            }
+
+            // Enable GPU instancing for groups that exceed the threshold
+            var instancedObjects = new HashSet<GameObject>();
+            foreach (var kvp in groups)
+            {
+                if (kvp.Value.Count >= INSTANCING_THRESHOLD)
+                {
+                    var mat = groupMaterials[kvp.Key];
+                    if (mat != null && mat.shader != null)
+                        mat.enableInstancing = true;
+                    foreach (var go in kvp.Value)
+                        instancedObjects.Add(go);
+                }
+            }
+
+            // Static batch remaining candidates that are not GPU instanced
+            var staticBatchCandidates = new List<GameObject>();
+            foreach (var go in batchCandidates)
+            {
+                if (!instancedObjects.Contains(go))
+                    staticBatchCandidates.Add(go);
+            }
+
+            if (staticBatchCandidates.Count > 0)
+                StaticBatchingUtility.Combine(staticBatchCandidates.ToArray(), staticRoot);
+
+            // Enable GPU instancing for dynamic objects
+            foreach (var renderer in dynamicRoot.GetComponentsInChildren<MeshRenderer>())
+            {
+                var mat = renderer.sharedMaterial;
+                if (mat != null && mat.shader != null && !mat.enableInstancing)
+                    mat.enableInstancing = true;
+            }
         }
 
         private static bool AreAllParentsStatic(MapObject mapObject)
@@ -727,7 +777,7 @@ namespace Map
                 var assetMats = new List<Material>();
                 foreach (Renderer renderer in renderers)
                 {
-                    assetMats.Add(renderer.material);
+                    assetMats.Add(renderer.sharedMaterial);
                 }
                 _assetMaterialCache.Add(asset, assetMats);
             }
@@ -740,6 +790,11 @@ namespace Map
                     var defaultMats = new List<Material>();
                     foreach (var assetMat in assetMats)
                     {
+                        if (assetMat == null)
+                        {
+                            defaultMats.Add(null);
+                            continue;
+                        }
                         var mat = new Material(assetMat);
                         if (material.Shader != MapObjectShader.DefaultNoTint)
                             mat.color = material.Color.ToColor();
@@ -752,7 +807,8 @@ namespace Map
                 var mats = _defaultMaterialCache[materialHash];
                 for (int i = 0; i < renderers.Count; i++)
                 {
-                    renderers[i].material = mats[i];
+                    if (i < mats.Count && mats[i] != null)
+                        renderers[i].sharedMaterial = mats[i];
                     renderers[i].enabled = visible;
                 }
             }
@@ -810,7 +866,7 @@ namespace Map
                 foreach (Renderer renderer in renderers)
                 {
                     if (mat != null)
-                        renderer.material = mat;
+                        renderer.sharedMaterial = mat;
                     renderer.enabled = visible;
                 }
             }

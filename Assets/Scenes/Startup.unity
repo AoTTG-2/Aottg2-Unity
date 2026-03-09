@@ -209,6 +209,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d146c2ebdb05b224289243c806647950, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  postProcessingVolume: {fileID: 98788607}
+  disable: 0
+  postProfileMain: {fileID: 11400000, guid: 58943589da649b2448f05e2717529753, type: 2}
+  underwaterProfile: {fileID: 0}
+  rainyProfile: {fileID: 0}
+  snowyProfile: {fileID: 0}
+  nightProfile: {fileID: 0}
+--- !u!114 &98788607 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4179914240534355358, guid: 443b002075a9ebd43bae8fad6d9ed68f, type: 3}
+  m_PrefabInstance: {fileID: 79530972}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 98788603}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &121881042
 GameObject:
   m_ObjectHideFlags: 0

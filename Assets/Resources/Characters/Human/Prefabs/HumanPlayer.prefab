@@ -16570,6 +16570,8 @@ MonoBehaviour:
   MountState: 0
   CarryState: 0
   Horse: {fileID: 0}
+  AllowHorse: 0
+  AllowSkin: 0
   Setup: {fileID: 0}
   FinishSetup: 0
   CurrentSpecial: 
