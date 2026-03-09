@@ -1,3 +1,5 @@
+using GameManagers;
+
 namespace CustomLogic
 {
     /// <summary>
@@ -13,24 +15,24 @@ namespace CustomLogic
         /// Blade weapon type.
         /// </summary>
         [CLProperty]
-        public static string Blade => "Blade";
+        public static string Blade => HumanLoadout.Blade;
 
         /// <summary>
         /// AHSS weapon type.
         /// </summary>
         [CLProperty]
-        public static string AHSS => "AHSS";
+        public static string AHSS => HumanLoadout.AHSS;
 
         /// <summary>
         /// APG weapon type.
         /// </summary>
         [CLProperty]
-        public static string APG => "APG";
+        public static string APG => HumanLoadout.APG;
 
         /// <summary>
         /// Thunderspear weapon type.
         /// </summary>
         [CLProperty]
-        public static string Thunderspear => "Thunderspear";
+        public static string Thunderspear => HumanLoadout.Thunderspear;
     }
 }

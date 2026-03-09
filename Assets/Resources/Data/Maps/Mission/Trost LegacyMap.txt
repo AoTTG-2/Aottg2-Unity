@@ -252,45 +252,45 @@ Scene,Buildings/House1,247,0,1,1,1,0,House1,-288.2834,126.2601,414.4238,0,359.90
 Scene,Buildings/House1,248,0,1,1,1,0,House1,-337.1049,131.8652,119.8937,0,179.741,0,1.5,0.9,1.2,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House1,249,0,1,1,1,0,House1,-494.0628,126.19,84.40763,0,180.1134,0,1,0.6,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House1,250,0,1,1,1,0,House1,-255.9945,126.2123,-430.3184,0,180.017,0,1,0.6,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,General/EditorTitanSpawnPoint,251,0,1,1,0,0,Titan SpawnPoint,-0.9394906,118,-259.7739,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,252,0,1,1,0,0,Titan SpawnPoint,-69.62139,118,43.73843,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,253,0,1,1,0,0,Titan SpawnPoint,-167.126,118,-6.512352,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,254,0,1,1,0,0,Titan SpawnPoint,-39.62257,118,-236.1127,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,255,0,1,1,0,0,Titan SpawnPoint,67.9489,118,89.0145,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,256,0,1,1,0,0,Titan SpawnPoint,172.101,118,-8.184544,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,257,0,1,1,0,0,Titan SpawnPoint,-142.8271,118,267.5121,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,258,0,1,1,0,0,Titan SpawnPoint,1.568989,118,277.7758,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,259,0,1,1,0,0,Titan SpawnPoint,200.3878,118,254.4868,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,260,0,1,1,0,0,Titan SpawnPoint,-377.8481,164.8882,109.1207,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,261,0,1,1,0,0,Titan SpawnPoint,-208.5553,118,421.7258,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,262,0,1,1,0,0,Titan SpawnPoint,-273.8312,118,570.3094,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,263,0,1,1,0,0,Titan SpawnPoint,-481.252,118,383.1521,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,264,0,1,1,0,0,Titan SpawnPoint,-3.092647,118,533.4126,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,265,0,1,1,0,0,Titan SpawnPoint,-0.4774712,118,615.559,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,266,0,1,1,0,0,Titan SpawnPoint,361.0801,118,507.9611,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,267,0,1,1,0,0,Titan SpawnPoint,459.2102,118,537.4586,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,268,0,1,1,0,0,Titan SpawnPoint,392.4635,118,403.8609,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,269,0,1,1,0,0,Titan SpawnPoint,388.9539,118,197.2674,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,270,0,1,1,0,0,Titan SpawnPoint,319.5822,118,280.3834,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,271,0,1,1,0,0,Titan SpawnPoint,467.4715,118,58.70765,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,272,0,1,1,0,0,Titan SpawnPoint,468.6282,118,24.59393,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,273,0,1,1,0,0,Titan SpawnPoint,422.8264,118,190.3936,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,274,0,1,1,0,0,Titan SpawnPoint,382.0954,118,-283.3909,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,275,0,1,1,0,0,Titan SpawnPoint,469.6884,118,-473.7144,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,276,0,1,1,0,0,Titan SpawnPoint,117.072,118,-176.8245,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,277,0,1,1,0,0,Titan SpawnPoint,-2.146477,118,69.27122,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,278,0,1,1,0,0,Titan SpawnPoint,292.4528,118,-445.3923,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,279,0,1,1,0,0,Titan SpawnPoint,-356.6053,118,-564.4414,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,280,0,1,1,0,0,Titan SpawnPoint,-329.9554,118,-336.394,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,281,0,1,1,0,0,Titan SpawnPoint,-381.2267,118,-392.1897,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,282,0,1,1,0,0,Titan SpawnPoint,-429.7804,118,-445.1651,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,283,0,1,1,0,0,Titan SpawnPoint,-103.6278,118,-269.3556,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,284,0,1,1,0,0,Titan SpawnPoint,-344.0847,167.313,-93.03623,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,285,0,1,1,0,0,Titan SpawnPoint,-375.8711,118,-247.6967,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,286,0,1,1,0,0,Titan SpawnPoint,-545.8197,118,310.7743,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,287,0,1,1,0,0,Titan SpawnPoint,-323.9818,164.8882,108.0129,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,288,0,1,1,0,0,Titan SpawnPoint,-460.5862,118,368.1019,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,289,0,1,1,0,0,Titan SpawnPoint,201.512,118,526.5078,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,251,0,1,1,0,0,Titan SpawnPoint,-0.9394906,118,-259.7739,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,252,0,1,1,0,0,Titan SpawnPoint,-69.62139,118,43.73843,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,253,0,1,1,0,0,Titan SpawnPoint,-167.126,118,-6.512352,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,254,0,1,1,0,0,Titan SpawnPoint,-39.62257,118,-236.1127,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,255,0,1,1,0,0,Titan SpawnPoint,67.9489,118,89.0145,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,256,0,1,1,0,0,Titan SpawnPoint,172.101,118,-8.184544,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,257,0,1,1,0,0,Titan SpawnPoint,-142.8271,118,267.5121,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,258,0,1,1,0,0,Titan SpawnPoint,1.568989,118,277.7758,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,259,0,1,1,0,0,Titan SpawnPoint,200.3878,118,254.4868,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,260,0,1,1,0,0,Titan SpawnPoint,-377.8481,164.8882,109.1207,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,261,0,1,1,0,0,Titan SpawnPoint,-208.5553,118,421.7258,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,262,0,1,1,0,0,Titan SpawnPoint,-273.8312,118,570.3094,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,263,0,1,1,0,0,Titan SpawnPoint,-481.252,118,383.1521,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,264,0,1,1,0,0,Titan SpawnPoint,-3.092647,118,533.4126,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,265,0,1,1,0,0,Titan SpawnPoint,-0.4774712,118,615.559,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,266,0,1,1,0,0,Titan SpawnPoint,361.0801,118,507.9611,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,267,0,1,1,0,0,Titan SpawnPoint,459.2102,118,537.4586,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,268,0,1,1,0,0,Titan SpawnPoint,392.4635,118,403.8609,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,269,0,1,1,0,0,Titan SpawnPoint,388.9539,118,197.2674,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,270,0,1,1,0,0,Titan SpawnPoint,319.5822,118,280.3834,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,271,0,1,1,0,0,Titan SpawnPoint,467.4715,118,58.70765,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,272,0,1,1,0,0,Titan SpawnPoint,468.6282,118,24.59393,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,273,0,1,1,0,0,Titan SpawnPoint,422.8264,118,190.3936,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,274,0,1,1,0,0,Titan SpawnPoint,382.0954,118,-283.3909,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,275,0,1,1,0,0,Titan SpawnPoint,469.6884,118,-473.7144,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,276,0,1,1,0,0,Titan SpawnPoint,117.072,118,-176.8245,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,277,0,1,1,0,0,Titan SpawnPoint,-2.146477,118,69.27122,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,278,0,1,1,0,0,Titan SpawnPoint,292.4528,118,-445.3923,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,279,0,1,1,0,0,Titan SpawnPoint,-356.6053,118,-564.4414,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,280,0,1,1,0,0,Titan SpawnPoint,-329.9554,118,-336.394,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,281,0,1,1,0,0,Titan SpawnPoint,-381.2267,118,-392.1897,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,282,0,1,1,0,0,Titan SpawnPoint,-429.7804,118,-445.1651,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,283,0,1,1,0,0,Titan SpawnPoint,-103.6278,118,-269.3556,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,284,0,1,1,0,0,Titan SpawnPoint,-344.0847,167.313,-93.03623,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,285,0,1,1,0,0,Titan SpawnPoint,-375.8711,118,-247.6967,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,286,0,1,1,0,0,Titan SpawnPoint,-545.8197,118,310.7743,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,287,0,1,1,0,0,Titan SpawnPoint,-323.9818,164.8882,108.0129,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,288,0,1,1,0,0,Titan SpawnPoint,-460.5862,118,368.1019,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,289,0,1,1,0,0,Titan SpawnPoint,201.512,118,526.5078,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
 Scene,General/EditorHumanSpawnPoint,568,0,1,1,0,0,Human SpawnPoint,-164.5809,156.8339,-184.2946,0,35.90915,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:HumanSpawnPoint;
 Scene,General/EditorHumanSpawnPoint,567,0,1,1,0,0,Human SpawnPoint,-156.9111,156.8339,-189.8484,0,35.90915,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:HumanSpawnPoint;
 Scene,General/EditorHumanSpawnPoint,566,0,1,1,0,0,Human SpawnPoint,-149.5074,156.8339,-195.2097,0,35.90915,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:HumanSpawnPoint;
@@ -555,17 +555,17 @@ Scene,General/EditorCameraSpawnPoint,559,0,1,1,0,0,Camera SpawnPoint,-114.5232,2
 Scene,General/EditorHumanSpawnPoint,569,0,1,1,0,0,Human SpawnPoint,-171.6566,156.8339,-179.1708,0,35.90915,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:HumanSpawnPoint;
 Scene,Interact/Supply2,571,0,1,1,1,0,Supply2,2.817069,117.0824,-73.04965,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,SupplyStation|Type:SupplyStation|UnlimitedRefills:true|MaxRefills:0|LoadoutChange:true;
 Scene,Geometry/Sphere1,572,543,0,0,0,0,BoulderThrowKill,-224.0053,141.5054,-276.9409,0,0,0,73,73,73,Physical,All,Default,Basic|255/255/255/255|Stone/Rock3|1/1|0/0,KillRegion|Type:KillRegion|Team:None|KillHumans:true|KillTitans:false|KillShifters:false|KillMessage:Reduced to a shape...;
-Scene,General/EditorTitanSpawnPoint,573,0,1,1,0,0,Titan SpawnPoint,-323.9818,164.8882,11.89947,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,574,0,1,1,0,0,Titan SpawnPoint,-377.8481,164.8882,13.00727,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,575,0,1,1,0,0,Titan SpawnPoint,-2.146477,118,180.5285,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,576,0,1,1,0,0,Titan SpawnPoint,-338.0371,118,267.3255,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,577,0,1,1,0,0,Titan SpawnPoint,-358.7029,118,282.3757,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,578,0,1,1,0,0,Titan SpawnPoint,-182.8543,118,363.7435,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,579,0,1,1,0,0,Titan SpawnPoint,80.40378,118,278.5453,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,580,0,1,1,0,0,Titan SpawnPoint,55.16016,118,398.6927,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,581,0,1,1,0,0,Titan SpawnPoint,112.4423,118,593.9601,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,582,0,1,1,0,0,Titan SpawnPoint,-96.65392,118,590.4827,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,583,0,1,1,0,0,Titan SpawnPoint,-145.8421,118,513.6457,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint
+Scene,General/EditorTitanSpawnPoint,573,0,1,1,0,0,Titan SpawnPoint,-323.9818,164.8882,11.89947,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,574,0,1,1,0,0,Titan SpawnPoint,-377.8481,164.8882,13.00727,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,575,0,1,1,0,0,Titan SpawnPoint,-2.146477,118,180.5285,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,576,0,1,1,0,0,Titan SpawnPoint,-338.0371,118,267.3255,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,577,0,1,1,0,0,Titan SpawnPoint,-358.7029,118,282.3757,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,578,0,1,1,0,0,Titan SpawnPoint,-182.8543,118,363.7435,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,579,0,1,1,0,0,Titan SpawnPoint,80.40378,118,278.5453,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,580,0,1,1,0,0,Titan SpawnPoint,55.16016,118,398.6927,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,581,0,1,1,0,0,Titan SpawnPoint,112.4423,118,593.9601,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,582,0,1,1,0,0,Titan SpawnPoint,-96.65392,118,590.4827,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,583,0,1,1,0,0,Titan SpawnPoint,-145.8421,118,513.6457,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint
 /// Logic
 class Main
 {
@@ -575,6 +575,13 @@ class Main
     # Synced State
     _isHoldingRock = false;
     _phase = 0;
+
+    # UI State
+    _bossHealthBar = null;
+    _damageWarning = null;
+    _lastErenHealth = 0;
+    _damageWarningTimer = 0.0;
+    _damageWarningDuration = 3.0;
 
     # Masterclient State
     # @type Shifter
@@ -605,7 +612,7 @@ class Main
 
     # @type MapObject
     _rockPickupLocation = null;
-    
+
     # @type MapObject
     _theRock = null;
 
@@ -613,12 +620,6 @@ class Main
     _rpcs = Dict();
 
     _rock_t_path = "ErenRig_VER2/Core/Rock";
-    _rock_lift = "ErenRig_VER2|et_rock_lift";
-    _rock_walk = "ErenRig_VER2|et_rock_walk";
-    _rock_fix_hole = "ErenRig_VER2|et_rock_fix_hole";
-    _run = "ErenRig_VER2|et_run";
-    _die = "ErenRig_VER2|et_die";
-    _idle = "ErenRig_VER2|et_idle";
     _sound_footstep1 = "Footstep1";
     _sound_footstep2 = "Footstep2";
     _soundPhase = 1;
@@ -658,6 +659,10 @@ class Main
         self._goal = Map.FindMapObjectByName("TheGoal");
 
         self._start_scale = self._theRock.Scale.X;
+
+        # Initialize UI elements
+        self._bossHealthBar = SimpleBossHealthBar("Eren", 100.0, false);
+        self._damageWarning = TextWarning(20, "Eren is under attack!", "Icons/Quests/Skull2Icon", Color(255, 100, 0));
 
         difficulty = Game.GetGeneralSetting("Difficulty");
         if (difficulty == 0) # Training
@@ -716,7 +721,7 @@ class Main
             {
                 Game.Print("Must have at least 2 MapObjects with the name pattern 'Checkpoint*' in the map. (Ex: Checkpoint1, ..., CheckpointN)");
             }
-            
+
             if (self._erenSpawnPoint == null)
             {
                 Game.Print("Must have a MapObject called ErenSpawnPoint in the map.");
@@ -737,7 +742,7 @@ class Main
 
             if (!valid)
             {
-                UI.SetLabel("MiddleCenter", UI.WrapStyleTag(UI.WrapStyleTag("Map Not Supported!" + String.Newline + "Please add the listed dependencies to the map in order to use this mode.", "color", "red"), "size", "25"));
+                UI.SetLabel(UILabelEnum.MiddleCenter, UI.WrapStyleTag(UI.WrapStyleTag("Map Not Supported!" + String.Newline + "Please add the listed dependencies to the map in order to use this mode.", "color", "red"), "size", "25"));
                 Time.TimeScale = 0;
                 return;
             }
@@ -745,7 +750,7 @@ class Main
             # Calculate Path Distance for Game Progress Stat
             self._completion_distance = self.CalcCompletionDistance(self._checkpoints_copy.Get(self._checkpoints_copy.Count-1));
         }
-        
+
         # Look into why usermethod here isn't returned correctly.
         # _rpcs = Dict();
         # _rpcs.Set("StartMovingRockRPC", self.StartMovingRockRPC);
@@ -774,8 +779,8 @@ class Main
     {
         if (Network.IsMasterClient)
         {
-            self._eren = Game.SpawnShifterAt("Eren", self._erenSpawnPoint.Position);
-            self._eren.Team = "Human";
+            self._eren = Game.SpawnShifterAt(ShifterTypeEnum.Eren, self._erenSpawnPoint.Position);
+            self._eren.Team = TeamEnum.Human;
             self._eren.AIEnabled = false;
             self._eren.UsePathfinding = false;
             self._erenRockT = self._eren.Transform.GetTransform(self._rock_t_path);
@@ -811,6 +816,15 @@ class Main
         }
 
         Cutscene.Start("MainCutscene", true);
+
+        # Setup health bar after eren is spawned
+        if (Network.IsMasterClient && self._eren != null)
+        {
+            self._bossHealthBar.SetMaxHealth(self._eren.MaxHealth);
+            self._bossHealthBar.SetCurrentHealth(self._eren.Health);
+            self._lastErenHealth = self._eren.Health;
+            self._bossHealthBar.Show();
+        }
     }
 
     function OnCharacterSpawn(character)
@@ -828,6 +842,15 @@ class Main
             {
                 self.StartMovingRockRPC(null, null);
             }
+
+            # Setup health bar for clients who join late
+            if (self._bossHealthBar != null)
+            {
+                self._bossHealthBar.SetMaxHealth(self._eren.MaxHealth);
+                self._bossHealthBar.SetCurrentHealth(self._eren.Health);
+                self._lastErenHealth = self._eren.Health;
+                self._bossHealthBar.Show();
+            }
         }
     }
 
@@ -842,7 +865,7 @@ class Main
         self._checkpoints.RemoveAt(0);
     }
 
-    
+
     function MoveTowardsCheckpoint()
     {
         speed = self._runSpeed;
@@ -878,10 +901,10 @@ class Main
 
     function StepSound()
     {
-        #.PlaySound("Footstep1");
-        if (self._eren.CurrentAnimation == self._rock_walk)
+        #.PlaySound(HumanSoundEnum.Footstep1);
+        if (self._eren.CurrentAnimation == ErenAnimationEnum.RockWalk)
         {
-            normTime = self._eren.GetAnimationNormalizedTime(self._rock_walk);
+            normTime = self._eren.GetAnimationNormalizedTime(ErenAnimationEnum.RockWalk);
             normTime = Math.Repeat(normTime, 1);
             if (normTime >= 0.5 && self._soundPhase == 1)
             {
@@ -896,9 +919,9 @@ class Main
                 self._soundPhase = 1;
             }
         }
-        elif (self._eren.CurrentAnimation == self._run)
+        elif (self._eren.CurrentAnimation == ErenAnimationEnum.Run)
         {
-            normTime = self._eren.GetAnimationNormalizedTime(self._run);
+            normTime = self._eren.GetAnimationNormalizedTime(ErenAnimationEnum.Run);
             normTime = Math.Repeat(normTime, 1);
             if (normTime > 0.75 && self._soundPhase == 1)
             {
@@ -930,7 +953,7 @@ class Main
         return filteredZones;
     }
 
-    function SpawnTitansAroundEren(count, min, max, targetsEren, detectRange)
+    function SpawnTitansAroundEren(count, min, max, targetsEren, detectRange, titanType, outline)
     {
         zones = self.GetSpawnZones(self._eren.Position, min, max);
 
@@ -939,7 +962,11 @@ class Main
             for (i in Range(count))
             {
                 position = self._eren.Position + self._eren.Transform.Forward * 100 + Vector3(0, 80, 0);
-                titan = Game.SpawnTitanAt("Default", position);
+                titan = Game.SpawnTitanAt(titanType, position);
+                if (outline)
+                {
+                    titan.AddOutline(null, OutlineModeEnum.OutlineAll);
+                }
                 if (targetsEren && !titan.IsCrawler && titan.Name != "Thrower")
                 {
                     titan.Target(self._eren, 100000.0);
@@ -953,7 +980,11 @@ class Main
         for (i in Range(count))
         {
             zone = Random.RandomInt(0, zones.Count);
-            titan = Game.SpawnTitanAt("Default", zones.Get(zone).Position);
+            titan = Game.SpawnTitanAt(titanType, zones.Get(zone).Position);
+            if (outline)
+            {
+                titan.AddOutline(null, OutlineModeEnum.OutlineAll);
+            }
             if (targetsEren && !titan.IsCrawler && titan.Name != "Thrower")
             {
                 titan.Target(self._eren, 100000.0);
@@ -970,7 +1001,7 @@ class Main
         for (i in Range(count))
         {
             zone = Random.RandomInt(0, zones.Count);
-            titan = Game.SpawnTitanAt("Default", zones.Get(zone).Position);
+            titan = Game.SpawnTitanAt(TitanTypeEnum.Default, zones.Get(zone).Position);
             if (targetsEren && !titan.IsCrawler && titan.Name != "Thrower")
             {
                 titan.Target(self._eren, 100000.0);
@@ -997,8 +1028,8 @@ class Main
             aggro_count = Math.Floor(self._wave_titans_base + (self._max_aggro_titans * progress_ratio));
             non_aggro_count = Math.Floor(self._wave_titans_base + (self._max_non_aggro_titans * progress_ratio));
 
-            self.SpawnTitansAroundEren(aggro_count, 100, 300, true, 10000);
-            self.SpawnTitansAroundEren(non_aggro_count, 100, 400, false, 300);
+            self.SpawnTitansAroundEren(aggro_count, 100, 300, true, 10000, TitanTypeEnum.Default, false);
+            self.SpawnTitansAroundEren(non_aggro_count, 100, 400, false, 300, TitanTypeEnum.Default, false);
         }
     }
 
@@ -1013,16 +1044,7 @@ class Main
         {
             UI.SetLabelForTimeAll("TopCenter", "Clear out the titans around eren!", 1);
         }
-        elif (self._eren != null && self._phase > self._phase_1_wait_clear)
-        {
-            healthLeft = Math.Floor(100 * self._eren.Health / self._eren.MaxHealth);
-            label = "Eren Health: " + Convert.ToString(healthLeft) + "%";
-            if (healthLeft < 0.3)
-            {
-                label = UI.WrapStyleTag(label, "color", "red");
-            }
-            UI.SetLabelForTimeAll("TopCenter", label, 1);
-        }
+        # Health is now shown in the boss health bar UI
     }
 
     function SyncPhase()
@@ -1036,25 +1058,54 @@ class Main
         {
             return;
         }
+
+        # Update health bar and check for damage
+        if (self._eren != null && self._bossHealthBar != null)
+        {
+            self._bossHealthBar.SetCurrentHealth(self._eren.Health);
+
+            # Show warning if Eren just took damage, reset timer
+            if (self._eren.Health < self._lastErenHealth)
+            {
+                self._damageWarningTimer = self._damageWarningDuration;
+                self._damageWarning.Show();
+            }
+            self._lastErenHealth = self._eren.Health;
+
+            # Count down warning timer and hide when expired
+            if (self._damageWarningTimer > 0)
+            {
+                self._damageWarningTimer -= Time.TickTime;
+                if (self._damageWarningTimer <= 0)
+                {
+                    self._damageWarning.Hide();
+                }
+            }
+
+            if (self._bossHealthBar.IsDead())
+            {
+                self._bossHealthBar.Hide();
+            }
+        }
         if (Network.IsMasterClient == false) {
             # Sync animation loop locally due to low duration of loop.
             if (self._phase == self._phase_1_wait_clear && self._eren != null)
             {
-                if (self._eren.GetAnimationNormalizedTime(self._die) >= 0.99)
+                if (self._eren.GetAnimationNormalizedTime(ErenAnimationEnum.Die) >= 0.99)
                 {
                     # Bounce between 1.75 and 1.93
-                    self._eren.SetAnimationSpeed(self._die, -1, false);
+                    self._eren.SetAnimationSpeed(ErenAnimationEnum.Die, -1, false);
                 }
-                elif (self._eren.GetAnimationNormalizedTime(self._die) <= 0.9)
+                elif (self._eren.GetAnimationNormalizedTime(ErenAnimationEnum.Die) <= 0.9)
                 {
-                    self._eren.SetAnimationSpeed(self._die, 1, false);
+                    self._eren.SetAnimationSpeed(ErenAnimationEnum.Die, 1, false);
                 }
             }
-            if (self._phase == self._phase_2_to_rock && self._eren.GetAnimationSpeed(self._die) != 1)
+            if (self._phase == self._phase_2_to_rock && self._eren.GetAnimationSpeed(ErenAnimationEnum.Die) != 1)
             {
-                self._eren.SetAnimationSpeed(self._die, 1, false);
+                self._eren.SetAnimationSpeed(ErenAnimationEnum.Die, 1, false);
             }
-            
+
             return;
         }
 
@@ -1065,29 +1116,29 @@ class Main
             self._bs_state_timer_garbage_thx = self._bs_state_timer_garbage_thx - Time.TickTime;
             if (self._bs_state_timer_garbage_thx <= 0)
             {
-                self.SpawnTitansAroundEren(self._start_titans, 80, 200, true, 100000);
-                self._eren.ForceAnimation(self._die, 1);
+                self.SpawnTitansAroundEren(self._start_titans, 150, 300, false, 100000, TitanTypeEnum.Normal, true);
+                self._eren.ForceAnimation(ErenAnimationEnum.Die, 1);
                 self._phase = self._phase_1_wait_clear;
                 self.SyncPhase();
             }
         }
-        
+
         elif (self._phase == self._phase_1_wait_clear)
         {
             # Need this bounce logic to be rpc'd or handled by all players. (TG1 just let the born animation play for 20s which is what allowed it to look synced)
-            if (self._eren.GetAnimationNormalizedTime(self._die) >= 0.99)
+            if (self._eren.GetAnimationNormalizedTime(ErenAnimationEnum.Die) >= 0.99)
             {
                 # Bounce between 1.75 and 1.93
-                self._eren.SetAnimationSpeed(self._die, -1, false);
+                self._eren.SetAnimationSpeed(ErenAnimationEnum.Die, -1, false);
             }
-            elif (self._eren.GetAnimationNormalizedTime(self._die) <= 0.9)
+            elif (self._eren.GetAnimationNormalizedTime(ErenAnimationEnum.Die) <= 0.9)
             {
-                self._eren.SetAnimationSpeed(self._die, 1, false);
+                self._eren.SetAnimationSpeed(ErenAnimationEnum.Die, 1, false);
             }
             if (Game.AITitans.Count == 0)
             {
-                self._eren.SetAnimationSpeed(self._die, 1, false);
-                self._eren.PlayAnimation(self._idle, 0.1);
+                self._eren.SetAnimationSpeed(ErenAnimationEnum.Die, 1, false);
+                self._eren.PlayAnimation(ErenAnimationEnum.Idle, 0.1);
                 self._phase = self._phase_2_to_rock;
                 self.SyncPhase();
                 self._lerp_progress = 0;
@@ -1099,10 +1150,10 @@ class Main
         elif (self._phase == self._phase_2_to_rock)
         {
             atRock = self.MoveTowardsCheckpoint();
-            self._eren.PlayAnimation(self._run, 0.1);
+            self._eren.PlayAnimation(ErenAnimationEnum.Run, 0.1);
             if (atRock)
             {
-                self._eren.PlayAnimation(self._rock_lift, 0.1);
+                self._eren.PlayAnimation(ErenAnimationEnum.RockLift, 0.1);
                 #self.RPC("StartMovingRockRPC", "all", List());
                 self._phase = self._phase_3_pickup_rock;
                 self.SyncPhase();
@@ -1115,11 +1166,11 @@ class Main
 
         elif (self._phase == self._phase_3_pickup_rock)
         {
-            if (self._eren.GetAnimationNormalizedTime(self._rock_lift) > 0.5 && self._isHoldingRock == false)
+            if (self._eren.GetAnimationNormalizedTime(ErenAnimationEnum.RockLift) > 0.5 && self._isHoldingRock == false)
             {
                 self.RPC("StartMovingRockRPC", "all", List());
             }
-            if (self._eren.GetAnimationNormalizedTime(self._rock_lift) > 0.9)
+            if (self._eren.GetAnimationNormalizedTime(ErenAnimationEnum.RockLift) > 0.9)
             {
                 if (self.SpawnExtraTitans > 0)
                 {
@@ -1133,8 +1184,7 @@ class Main
         elif (self._phase == self._phase_4_pathfind)
         {
             self.UpdateWaves();
-            self._eren.PlayAnimation(self._rock_walk, 0);
-            #self._eren.Transform.SetAnimationSpeed(self.Speed / 10); Funny but not synced
+            self._eren.PlayAnimation(ErenAnimationEnum.RockWalk, 0);
             atNextCheckpoint = self.MoveTowardsCheckpoint();
 
             if (atNextCheckpoint)
@@ -1160,16 +1210,16 @@ class Main
         {
             self._phase = self._phase_6_wait_spawn_effect;
             self.SyncPhase();
-            self._eren.PlayAnimation(self._rock_fix_hole, 0);
+            self._eren.PlayAnimation(ErenAnimationEnum.RockFixHole, 0);
         }
 
         elif (self._phase == self._phase_6_wait_spawn_effect)
         {
-            if (self._eren.GetAnimationNormalizedTime(self._rock_fix_hole) >= 0.69)
+            if (self._eren.GetAnimationNormalizedTime(ErenAnimationEnum.RockFixHole) >= 0.69)
             {
                 self._phase = self._phase_7_no_transition;
                 self.SyncPhase();
-                #Game.SpawnEffect("Boom2", self._eren.Transform.Position + (self._eren.Transform.Forward * 65) + Vector3(0, 11, 0), Quaternion.Identity.Euler, 10);
+                #Game.SpawnEffect(EffectNameEnum.Boom2, self._eren.Transform.Position + (self._eren.Transform.Forward * 65) + Vector3(0, 11, 0), Quaternion.Identity.Euler, 10);
                 self.RPC("EndMovingRockRPC", "all", List());
                 # self.WaitAndDie();
             }
@@ -1221,7 +1271,7 @@ class Main
         {
             Network.SendMessage(target, message);
         }
-        
+
     }
 
     # @param sender Player
@@ -1293,7 +1343,7 @@ class Main
             pushForce = Math.Clamp(1 - distance / maxDistance, 0, 1) * force;
             if (distance < maxDistance)
             {
-                character.Velocity += (character.Position - position).Normalized * pushForce; 
+                character.Velocity += (character.Position - position).Normalized * pushForce;
             }
         }
     }
@@ -1350,12 +1400,12 @@ class Main
                 }
             }
 
-            Game.SpawnEffect("GasBurst", end + Vector3.Forward * -40.0 + Vector3.Up * 10.0, Vector3(0.0, 0.0, 0.0), 100.0);
-            Game.SpawnEffect("Boom2", end + Vector3.Forward * -20.0 + Vector3.Up * 0.0, Vector3(90.0, 0.0, 0.0), 30);
+            Game.SpawnEffect(EffectNameEnum.GasBurst, end + Vector3.Forward * -40.0 + Vector3.Up * 10.0, Vector3(0.0, 0.0, 0.0), 100.0);
+            Game.SpawnEffect(EffectNameEnum.Boom2, end + Vector3.Forward * -20.0 + Vector3.Up * 0.0, Vector3(90.0, 0.0, 0.0), 30);
         }
         if (Network.IsMasterClient)
         {
-            UI.SetLabelForTimeAll("MiddleCenter", "You've successfully defended Eren and the hole has been plugged." + String.Newline + "This is the first time humanity has won against the Titans.", 5.0);
+            UI.SetLabelForTimeAll("MiddleCenter", "The hole's been plugged!" + String.Newline + "We’ve taken one step back from the Titans!", 8.0);
             Game.End(10);
             self._eren.GetKilled("Exhaustion");
         }
@@ -1365,7 +1415,7 @@ class Main
     {
         self._eren.Idle(3);
         wait 2;
-        self._eren.PlayAnimation(self._die, 2);
+        self._eren.PlayAnimation(ErenAnimationEnum.Die, 2);
     }
 
     function ChangePhaseRPC(sender, params)
@@ -1391,13 +1441,28 @@ class Main
 
     function OnCharacterDie(victim, killer, killerName)
     {
-        if (victim.Type == "Shifter" && (victim.Name == "" || victim.Name == "Eren") && !Game.IsEnding)
+        if (victim.Type == "Shifter" && (victim.Name == "" || victim.Name == "Eren"))
         {
-            if (Network.IsMasterClient)
+            if (!Game.IsEnding)
             {
-                UI.SetLabelAll("MiddleCenter", "All hope is now lost ...");
-                Game.End(10.0);
+                # Update health bar to show 0 health
+                if (self._bossHealthBar != null)
+                {
+                    self._bossHealthBar.SetCurrentHealth(0);
+                    self._bossHealthBar.Hide();
+                }
+                if (self._damageWarning != null)
+                {
+                    self._damageWarning.Hide();
+                }
+
+                if (Network.IsMasterClient)
+                {
+                    UI.SetLabelAll(UILabelEnum.MiddleCenter, "All hope is now lost ...");
+                    Game.End(10.0);
+                }
             }
+
             if (self._isHoldingRock)
             {
                 self._isHoldingRock = false;
@@ -1410,9 +1475,360 @@ class Main
         {
             if (Network.IsMasterClient)
             {
-                UI.SetLabelAll("MiddleCenter", "All hope is now lost ...");
+                UI.SetLabelAll(UILabelEnum.MiddleCenter, "All hope is now lost ...");
                 Game.End(10.0);
             }
+        }
+    }
+}
+
+class SimpleBossHealthBar
+{
+    # Configuration
+    _bossName = "Boss";
+    _maxHealth = 100.0;
+    _currentHealth = 100.0;
+    _showPercentage = true;
+
+    # Color thresholds
+    _colorThresholds = null;
+
+    # UI Elements
+    _rootContainer = null;
+    _healthBarContainer = null;
+    _healthBarFill = null;
+    _nameLabel = null;
+    _healthLabel = null;
+    _isVisible = true;
+
+    function Init(bossName, maxHealth, showPercentage)
+    {
+        self._bossName = bossName;
+        self._maxHealth = maxHealth;
+        self._currentHealth = maxHealth;
+        self._showPercentage = showPercentage;
+
+        self._colorThresholds = List();
+        self.AddColorThreshold(75.0, Color(100, 200, 100));
+        self.AddColorThreshold(50.0, Color(200, 200, 100));
+        self.AddColorThreshold(25.0, Color(200, 150, 50));
+        self.AddColorThreshold(0.0, Color(200, 50, 50));
+
+        self.CreateUI();
+    }
+
+    function CreateUI()
+    {
+        root = UI.GetRootVisualElement();
+
+        self._rootContainer = UI.VisualElement()
+            .Absolute(true)
+            .Width(40, true)
+            .Height(8, true)
+            .Top(4, true)
+            .Left(30, true)
+            .Right(30, true)
+            .Padding(0.5, true)
+            .BorderRadius(3)
+            .BackgroundColor(Color(20, 20, 20, 200));
+
+        self.CreateTopLabelLayout();
+        root.Add(self._rootContainer);
+        self.Hide();
+    }
+
+    function CreateTopLabelLayout()
+    {
+        centerContainer = UI.VisualElement()
+            .FlexDirection(FlexDirectionEnum.Column)
+            .FlexGrow(1)
+            .FlexShrink(1)
+            .Height(100, true);
+
+        self._nameLabel = UI.Label(self._bossName)
+            .Height(55, true)
+            .FontSize(70, true, FontScaleModeEnum.Height)
+            .FontStyle(FontStyleEnum.Bold)
+            .Color(Color(255, 255, 255))
+            .AlignSelf(AlignEnum.Center);
+
+        self.CreateHealthBar();
+
+        healthContainer = UI.VisualElement()
+            .Width(100, true)
+            .Height(100, true)
+            .Absolute(true)
+            .AlignItems(AlignEnum.Center)
+            .JustifyContent(JustifyEnum.SpaceBetween);
+
+        self._healthLabel = UI.Label(self.GetHealthText())
+            .Absolute(true)
+            .Height(100, true)
+            .FontSize(75, true, FontScaleModeEnum.Height)
+            .FontStyle(FontStyleEnum.Bold)
+            .Padding(0, true)
+            .Margin(0, true)
+            .Color(Color(255, 255, 255));
+
+        healthContainer.Add(self._healthLabel);
+        self._healthBarContainer.Add(healthContainer);
+
+        centerContainer.Add(self._nameLabel);
+        centerContainer.Add(self._healthBarContainer);
+
+        self._rootContainer.Add(centerContainer);
+    }
+
+    function CreateHealthBar()
+    {
+        self._healthBarContainer = UI.VisualElement()
+            .BackgroundColor(Color(40, 40, 40, 255))
+            .Height(25)
+            .BorderRadius(4, false)
+            .BorderWidth(2, false)
+            .BorderColor(Color(80, 80, 80, 255))
+            .FlexDirection(FlexDirectionEnum.Row);
+
+        self._healthBarFill = UI.VisualElement()
+            .Width(100, true)
+            .Height(100, true)
+            .BackgroundColor(Color(100, 200, 100, 255))
+            .BorderRadius(4, false)
+            .TransitionDuration(300, false);
+
+        self._healthBarContainer.Add(self._healthBarFill);
+    }
+
+    function GetHealthText()
+    {
+        healthText = Convert.ToString(Convert.ToInt(self._currentHealth)) + " / " + Convert.ToString(Convert.ToInt(self._maxHealth));
+
+        if (self._showPercentage)
+        {
+            percentage = self.GetHealthPercentage();
+            healthText = healthText + " (" + Convert.ToString(Convert.ToInt(percentage)) + "%)";
+        }
+
+        return healthText;
+    }
+
+    function GetHealthPercentage()
+    {
+        if (self._maxHealth <= 0.0)
+        {
+            return 0.0;
+        }
+        return (self._currentHealth / self._maxHealth) * 100.0;
+    }
+
+    function UpdateHealthBar()
+    {
+        if (self._healthBarFill == null || self._healthLabel == null)
+        {
+            return;
+        }
+
+        percentage = self.GetHealthPercentage();
+        self.UpdateBarColor(percentage);
+        self._healthBarFill.Width(percentage, true);
+        self._healthLabel.Text = self.GetHealthText();
+    }
+
+    function UpdateBarColor(percentage)
+    {
+        color = Color(200, 200, 200);
+
+        if (self._colorThresholds != null && self._colorThresholds.Count > 0)
+        {
+            i = 0;
+            while (i < self._colorThresholds.Count)
+            {
+                threshold = self._colorThresholds.Get(i);
+                if (percentage >= threshold.Get("Percent"))
+                {
+                    color = threshold.Get("Color");
+                    break;
+                }
+                i = i + 1;
+            }
+        }
+
+        self._healthBarFill.BackgroundColor(color);
+    }
+
+    function Show()
+    {
+        if (!self._isVisible)
+        {
+            self._isVisible = true;
+            self._rootContainer.Active(true);
+        }
+    }
+
+    function Hide()
+    {
+        if (self._isVisible)
+        {
+            self._isVisible = false;
+            self._rootContainer.Active(false);
+        }
+    }
+
+    function SetMaxHealth(maxHealth)
+    {
+        self._maxHealth = maxHealth;
+        if (self._currentHealth > self._maxHealth)
+        {
+            self._currentHealth = self._maxHealth;
+        }
+        self.UpdateHealthBar();
+    }
+
+    function SetCurrentHealth(currentHealth)
+    {
+        if (currentHealth < 0.0)
+        {
+            currentHealth = 0.0;
+        }
+        if (currentHealth > self._maxHealth)
+        {
+            currentHealth = self._maxHealth;
+        }
+        self._currentHealth = currentHealth;
+        self.UpdateHealthBar();
+    }
+
+    function AddColorThreshold(percent, color)
+    {
+        threshold = Dict();
+        threshold.Set("Percent", percent);
+        threshold.Set("Color", color);
+        self._colorThresholds.Add(threshold);
+        self.SortThresholds();
+    }
+
+    function SortThresholds()
+    {
+        n = self._colorThresholds.Count;
+        i = 0;
+        while (i < n - 1)
+        {
+            j = 0;
+            while (j < n - i - 1)
+            {
+                current = self._colorThresholds.Get(j);
+                next = self._colorThresholds.Get(j + 1);
+
+                if (current.Get("Percent") < next.Get("Percent"))
+                {
+                    temp = self._colorThresholds.Get(j);
+                    self._colorThresholds.Set(j, self._colorThresholds.Get(j + 1));
+                    self._colorThresholds.Set(j + 1, temp);
+                }
+                j = j + 1;
+            }
+            i = i + 1;
+        }
+    }
+
+    function IsDead()
+    {
+        return self._currentHealth <= 0.0;
+    }
+}
+
+class TextWarning
+{
+    _rootContainer = null;
+    _label = null;
+    _leftIcon = null;
+    _rightIcon = null;
+    _text = "";
+    _icon = "";
+    _color = Color();
+    _yPosition = 50;
+    _isVisible = false;
+    _defaultWidth = 45;
+
+    function Init(yPosition, text, icon, color)
+    {
+        self._yPosition = yPosition;
+        self._text = text;
+        self._icon = icon;
+        color.A = 100;
+        self._color = color;
+        self.CreateUI();
+    }
+
+    function CreateUI()
+    {
+        root = UI.GetRootVisualElement();
+
+        self._rootContainer = UI.VisualElement()
+            .Absolute(true)
+            .Width(0, true)
+            .Height(5, true)
+            .Top(self._yPosition, true)
+            .PaddingTop(0.5, true)
+            .PaddingBottom(0.5, true)
+            .BorderRadius(6)
+            .AlignSelf(AlignEnum.Center)
+            .FlexDirection(FlexDirectionEnum.Row)
+            .JustifyContent(JustifyEnum.Center)
+            .AlignItems(AlignEnum.Center)
+            .OverflowX(OverflowEnum.Hidden)
+            .TransitionDuration(500)
+            .BackgroundColor(self._color);
+        root.Add(self._rootContainer);
+
+        self._leftIcon = self.CreateIcon();
+        self._rootContainer.Add(self._leftIcon);
+
+        self._label = UI.Label(self._text)
+            .Color(Color(255, 255, 255))
+            .FlexGrow(3)
+            .FontSize(100, true, FontScaleModeEnum.Height)
+            .TextOverflow(TextOverflowEnum.Clip)
+            .FontStyle(FontStyleEnum.Bold)
+            .TextAlign(TextAlignEnum.MiddleCenter);
+        self._rootContainer.Add(self._label);
+
+        self._rightIcon = self.CreateIcon();
+        self._rootContainer.Add(self._rightIcon);
+    }
+
+    function CreateIcon()
+    {
+        container = UI.Icon(self._icon)
+            .AspectRatio(1.0)
+            .Height(100, true)
+            .FlexDirection(FlexDirectionEnum.Column)
+            .AlignItems(AlignEnum.Center);
+
+        return container;
+    }
+
+    coroutine Show()
+    {
+        if (!self._isVisible)
+        {
+            self._isVisible = true;
+            self._rootContainer
+                .Width(self._defaultWidth, true)
+                .PaddingLeft(0.5, true)
+                .PaddingRight(0.5, true);
+        }
+    }
+
+    function Hide()
+    {
+        if (self._isVisible)
+        {
+            self._isVisible = false;
+            self._rootContainer
+                .Width(0, true)
+                .PaddingLeft(0, true)
+                .PaddingRight(0, true);
         }
     }
 }
@@ -1431,11 +1847,9 @@ cutscene MainCutscene
         }
 
         # To Do: Add translations.
-        Cutscene.ShowDialogueForTime("Ian1", "Commander", "Defend him at all costs!", 2.0);
-        wait 2.0;
-        Cutscene.ShowDialogueForTime("Ian1", "Commander", "Protect Eren until he reaches the gates, even if it costs your lifes!", 4.0);
+        Cutscene.ShowDialogueForTime(ProfileIconEnum.Ian1, "Commander", "Protect Eren until he reaches the gate, even if it costs you your lives!", 4.0);
         wait 4.0;
-        Cutscene.ShowDialogueForTime("Ian1", "Commander", "Don't let titan near him!", 2.0);
+        Cutscene.ShowDialogueForTime(ProfileIconEnum.Ian1, "Commander", "Don't let any Titans near him!", 2.0);
         wait 2.0;
         return;
     }

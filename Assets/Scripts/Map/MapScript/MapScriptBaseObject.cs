@@ -4,7 +4,7 @@ using Utility;
 
 namespace Map
 {
-    class MapScriptBaseObject: BaseCSVRow
+    public class MapScriptBaseObject: BaseCSVRow
     {
         // info
         [Order(1)] public string Type;

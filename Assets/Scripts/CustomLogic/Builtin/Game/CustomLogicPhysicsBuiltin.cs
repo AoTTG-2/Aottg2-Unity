@@ -1,4 +1,6 @@
 using Map;
+using System;
+using System.Linq;
 using UnityEngine;
 using Utility;
 
@@ -26,6 +28,15 @@ namespace CustomLogic
         public CustomLogicPhysicsBuiltin(){}
 
         /// <summary>
+        /// Get a physics layer mask with several layer id.
+        /// </summary>
+        [CLMethod]
+        public static int GetPhysicsLayerMask(CustomLogicListBuiltin layers)
+        {
+            return PhysicsLayer.GetMask(layers.List.Select(v => (int)v).ToArray()).value;
+        }
+
+        /// <summary>
         /// Performs a line cast between two points.
         /// </summary>
         /// <param name="start">The start position of the line cast.</param>
@@ -36,7 +47,7 @@ namespace CustomLogic
         public static CustomLogicLineCastHitResultBuiltin LineCast(
             CustomLogicVector3Builtin start,
             CustomLogicVector3Builtin end,
-            [CLParam(Enum = typeof(CustomLogicCollideWithEnum))]
+            [CLParam(Enum = new Type[] { typeof(CustomLogicCollideWithEnum) })]
             string collideWith)
         {
             RaycastHit hit;
@@ -64,6 +75,33 @@ namespace CustomLogic
         }
 
         /// <summary>
+        /// Performs a line cast between two points, specify what to detect with a physics layer mask, returns a LineCastHitResult object
+        /// </summary>
+        [CLMethod]
+        public static CustomLogicLineCastHitResultBuiltin LineCastWithMask(CustomLogicVector3Builtin start, CustomLogicVector3Builtin end, int mask)
+        {
+            var startPosition = start.Value;
+            var endPosition = end.Value;
+            if (Physics.Linecast(startPosition, endPosition, out RaycastHit hit, mask))
+            {
+                var collider = CustomLogicCollisionHandler.GetBuiltin(hit.collider);
+                if (collider != null)
+                {
+                    return new CustomLogicLineCastHitResultBuiltin
+                    {
+                        IsCharacter = collider is CustomLogicCharacterBuiltin,
+                        IsMapObject = collider is CustomLogicMapObjectBuiltin,
+                        Point = new CustomLogicVector3Builtin(hit.point),
+                        Normal = new CustomLogicVector3Builtin(hit.normal),
+                        Distance = hit.distance,
+                        Collider = new CustomLogicColliderBuiltin(new object[] { hit.collider })
+                    };
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
         /// Performs a line cast between two points and returns a LineCastHitResult object for each element hit.
         /// </summary>
         /// <param name="start">The start position of the line cast.</param>
@@ -74,7 +112,7 @@ namespace CustomLogic
         public static CustomLogicListBuiltin LineCastAll(
             CustomLogicVector3Builtin start,
             CustomLogicVector3Builtin end,
-            [CLParam(Enum = typeof(CustomLogicCollideWithEnum))]
+            [CLParam(Enum = new Type[] { typeof(CustomLogicCollideWithEnum) })]
             string collideWith)
         {
             var startPosition = start.Value;
@@ -118,7 +156,7 @@ namespace CustomLogic
             CustomLogicVector3Builtin start,
             CustomLogicVector3Builtin end,
             float radius,
-            [CLParam(Enum = typeof(CustomLogicCollideWithEnum))]
+            [CLParam(Enum = new Type[] { typeof(CustomLogicCollideWithEnum) })]
             string collideWith)
         {
             RaycastHit hit;
@@ -127,6 +165,22 @@ namespace CustomLogic
             int layer = MapLoader.GetColliderLayer(collideWith);
             var diff = (endPosition - startPosition);
             if (Physics.SphereCast(startPosition, radius, diff.normalized, out hit, diff.magnitude, PhysicsLayer.CopyMask(layer).value))
+            {
+                return CustomLogicCollisionHandler.GetBuiltin(hit.collider);
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Performs a sphere cast between two points, specify what to detect with a physics layer mask, returns the object hit (Human, Titan, etc...).
+        /// </summary>
+        [CLMethod]
+        public static object SphereCastWithMask(CustomLogicVector3Builtin start, CustomLogicVector3Builtin end, float radius, int mask)
+        {
+            var startPosition = start.Value;
+            var endPosition = end.Value;
+            var diff = endPosition - startPosition;
+            if (Physics.SphereCast(startPosition, radius, diff.normalized, out RaycastHit hit, diff.magnitude, mask))
             {
                 return CustomLogicCollisionHandler.GetBuiltin(hit.collider);
             }
@@ -146,7 +200,7 @@ namespace CustomLogic
             CustomLogicVector3Builtin start,
             CustomLogicVector3Builtin end,
             float radius,
-            [CLParam(Enum = typeof(CustomLogicCollideWithEnum))]
+            [CLParam(Enum = new Type[] { typeof(CustomLogicCollideWithEnum) })]
             string collideWith)
         {
             var startPosition = start.Value;
@@ -192,7 +246,7 @@ namespace CustomLogic
             CustomLogicVector3Builtin end,
             CustomLogicVector3Builtin dimensions,
             CustomLogicQuaternionBuiltin orientation,
-            [CLParam(Enum = typeof(CustomLogicCollideWithEnum))]
+            [CLParam(Enum = new Type[] { typeof(CustomLogicCollideWithEnum) })]
             string collideWith)
         {
             var startPosition = start.Value;
@@ -222,7 +276,7 @@ namespace CustomLogic
             CustomLogicVector3Builtin end,
             CustomLogicVector3Builtin dimensions,
             CustomLogicQuaternionBuiltin orientation,
-            [CLParam(Enum = typeof(CustomLogicCollideWithEnum))]
+            [CLParam(Enum = new Type[] { typeof(CustomLogicCollideWithEnum) })]
             string collideWith)
         {
             var startPosition = start.Value;

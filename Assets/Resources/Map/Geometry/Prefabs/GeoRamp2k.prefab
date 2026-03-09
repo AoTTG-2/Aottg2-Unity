@@ -18,7 +18,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 100002, guid: 075ae7d13d917fd42a20182531c11e36, type: 3}
       propertyPath: m_Name
-      value: GeoTent1
+      value: GeoRamp2k
       objectReference: {fileID: 0}
     - target: {fileID: 100002, guid: 075ae7d13d917fd42a20182531c11e36, type: 3}
       propertyPath: m_Layer

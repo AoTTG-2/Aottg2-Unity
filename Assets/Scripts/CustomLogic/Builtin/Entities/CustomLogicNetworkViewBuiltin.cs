@@ -132,7 +132,7 @@ namespace CustomLogic
             OwnerId = sync.photonView.Owner.ActorNumber;
             Sync.SyncTransforms = _isTransformSynced;
 
-            var linkedMapObjectClass = CustomLogicManager.Evaluator.IdToMapObjectBuiltin[this.MapObject.ScriptObject.Id];
+            var linkedMapObjectClass = CustomLogicManager.Evaluator.GetOrCreateMapObjectBuiltin(this.MapObject);
             if (linkedMapObjectClass != null)
             {
                 linkedMapObjectClass.NetworkView = this;
@@ -160,7 +160,7 @@ namespace CustomLogic
                 }
             }
 
-            var linkedMapObjectClass = CustomLogicManager.Evaluator.IdToMapObjectBuiltin[this.MapObject.ScriptObject.Id];
+            var linkedMapObjectClass = CustomLogicManager.Evaluator.GetOrCreateMapObjectBuiltin(this.MapObject);
             if (linkedMapObjectClass != null)
             {
                 linkedMapObjectClass.NetworkView = this;

@@ -3,8 +3,6 @@ using Map;
 using Settings;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using System.Linq;
 using Utility;
 using ApplicationManagers;
 using System.IO;
@@ -24,7 +22,7 @@ namespace UI
             InGameCharacterSettings lastCharSettings = SettingsManager.InGameSettings.LastCharacter;
             charSettings.CharacterType.Value = PlayerCharacter.Titan;
             ElementStyle dropdownStyle = new ElementStyle(titleWidth: 200f, themePanel: ThemePanel);
-            List<string> loadouts = new List<string>() { "Small", "Medium", "Large" };
+            List<string> loadouts = new List<string>() { TitanLoadout.Small, TitanLoadout.Medium, TitanLoadout.Large };
             if (lastCharSettings.CharacterType.Value == PlayerCharacter.Titan)
             {
                 charSettings.CustomSet.Value = lastCharSettings.CustomSet.Value;
@@ -42,7 +40,7 @@ namespace UI
             if (miscSettings.PVP.Value == (int)PVPMode.Team)
             {
                 ElementFactory.CreateDropdownSetting(DoublePanelRight, new ElementStyle(titleWidth: 100f, themePanel: ThemePanel), charSettings.Team, UIManager.GetLocaleCommon("Team"),
-               new string[] { "Blue", "Red" }, elementWidth: 180f, optionsWidth: 180f);
+               new string[] { TeamInfo.Blue, TeamInfo.Red }, elementWidth: 180f, optionsWidth: 180f);
             }
         }
 

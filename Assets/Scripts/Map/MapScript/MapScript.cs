@@ -6,14 +6,14 @@ using Utility;
 
 namespace Map
 {
-    class MapScript
+    public class MapScript
     {
         protected string HeaderPrefix = "/// ";
         protected char Delimiter = '\n';
         public MapScriptOptions Options = new MapScriptOptions();
         public MapScriptCustomAssets CustomAssets = new MapScriptCustomAssets();
         public MapScriptObjects Objects = new MapScriptObjects();
-        public WeatherSet Weather = new WeatherSet();
+        internal WeatherSet Weather = new WeatherSet();
         public string Logic = string.Empty;
         public string MapHash = string.Empty;
         public int LogicStart = 0;

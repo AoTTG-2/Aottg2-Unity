@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace Utility
 {
-    class BaseCSVRow: BaseCSVObject
+    public class BaseCSVRow: BaseCSVObject
     {
     }
 }

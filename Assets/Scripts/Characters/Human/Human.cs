@@ -14,6 +14,7 @@ using SimpleJSONFixed;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UI;
 using UnityEngine;
 using Utility;
@@ -32,6 +33,8 @@ namespace Characters
         public HumanMountState MountState = HumanMountState.None;
         public HumanCarryState CarryState = HumanCarryState.None;
         public Horse Horse;
+        public bool AllowHorse = false; // only for ai, players dep on that in the misc setting.
+        public bool AllowSkin = false; // only for ai, players dep on that in the misc setting.
         public HumanSetup Setup;
         public HumanStats Stats;
         public bool FinishSetup;
@@ -84,6 +87,11 @@ namespace Characters
         public float ReelOutScrollTimeLeft = 0f;
         public float TargetMagnitude = 0f;
         public bool IsWalk;
+
+        public bool Pivot => _pivot; // expose pivot for judging if human can hold reelin/out
+        private bool _pivot;
+        private bool _pivotLeft;
+        private bool _pivotRight;
         private const float MaxVelocityChange = 10f;
         private float _originalDashSpeed;
         public Quaternion _targetRotation;
@@ -138,9 +146,23 @@ namespace Characters
         private Dictionary<BaseTitan, float> _lastNapeHitTimes = new Dictionary<BaseTitan, float>();
         private Material _originalSmokeMaterial;
 
+
+        // Decoupling keyboard operations
+        public IHumanController Controller;
+
+        // Keep the character setting for ai human to reload
+        public InGameCharacterSettings Settings;
+
         protected override void CreateDetection()
         {
-            Detection = new HumanDetection(this);
+            if (AI)
+            {
+                Detection = new AIHumanDetection(this, true, false);
+            }
+            else
+            {
+                Detection = new HumanDetection(this);;
+            }
         }
 
         public void DieChangeCharacter()
@@ -217,6 +239,10 @@ namespace Characters
 
         public override Vector3 GetAimPoint()
         {
+            if (AI)
+            {
+                return Controller.GetAimPoint();
+            }
             RaycastHit hit;
             Ray ray = GetAimRayAfterHumanCheap(); // SceneLoader.CurrentCamera.Camera.ScreenPointToRay(Input.mousePosition);
             Vector3 target = ray.origin + ray.direction * 1000f;
@@ -436,11 +462,12 @@ namespace Characters
                 FalseAttack();
                 Cache.Rigidbody.AddForce(direction * 40f, ForceMode.VelocityChange);
                 _dashCooldownLeft = 0.2f;
-                ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.ShakeGas();
+                if (!AI)
+                    ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.ShakeGas();
             }
         }
 
-        public void DashVertical(float targetAngle, Vector3 direction)
+        public bool DashVertical(float targetAngle, Vector3 direction, Vector3? percentPower = null)
         {
             if (_dashTimeLeft <= 0f && Stats.CurrentGas > 0 && MountState == HumanMountState.None &&
                 State != HumanState.Grab && CarryState != HumanCarryState.Carry && _dashCooldownLeft <= 0f)
@@ -456,10 +483,21 @@ namespace Characters
                 CrossFade(HumanAnimations.Dash, 0.1f, 0.1f);
                 State = HumanState.AirDodge;
                 FalseAttack();
-                Cache.Rigidbody.AddForce(direction * 40f, ForceMode.VelocityChange);
+                Vector3 force = direction * 40f;
+                if (percentPower != null)
+                {
+                    force.x *= percentPower.Value.x;
+                    force.y *= percentPower.Value.y;
+                    force.z *= percentPower.Value.x;
+                }
+                    
+                Cache.Rigidbody.AddForce(force, ForceMode.VelocityChange);
                 _dashCooldownLeft = 0.2f;
-                ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.ShakeGas();
+                if (!AI)
+                    ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.ShakeGas();
+                return true;
             }
+            return false;
         }
 
         public void Idle()
@@ -503,10 +541,8 @@ namespace Characters
         {
             if (notifyTitan && Grabber != null)
             {
-                if (breakArm) Grabber.DisableArm(Grabber.HoldHumanLeft);
-                else Grabber.Cache.PhotonView.RPC(nameof(Grabber.UngrabRPC), RpcTarget.All, new object[] { Cache.PhotonView.ViewID });
+                Grabber.Cache.PhotonView.RPC(nameof(Grabber.UngrabRPC), RpcTarget.All, new object[] { Cache.PhotonView.ViewID });
             }
-
             Grabber = null;
             GrabHand = null;
             SetTriggerCollider(false);
@@ -762,7 +798,8 @@ namespace Characters
             {
                 if (previousHumanWeapon is AHSSWeapon)
                 {
-                    ((AHSSWeapon)previousHumanWeapon).HandleUI();
+                    if (!AI)
+                        ((AHSSWeapon)previousHumanWeapon).HandleUI();
                 }
                 AmmoWeapon previousAmmoWeapon = (AmmoWeapon)previousHumanWeapon;
                 AmmoWeapon weapon = (AmmoWeapon)Weapon;
@@ -829,7 +866,8 @@ namespace Characters
             _needFinishReload = true;
             _reloadTimeLeft = _stateTimeLeft;
             _reloadCooldownLeft = _reloadTimeLeft + 0.5f;
-            ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.Reload();
+            if (!AI)
+                ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.Reload();
         }
 
         protected void FinishReload()
@@ -987,14 +1025,18 @@ namespace Characters
         public void Init(bool ai, string team, InGameCharacterSettings settings)
         {
             base.Init(ai, team);
+            Settings = settings; // keep the setting for ai human to reload
             Setup.Copy(settings);
             if (!ai)
-                gameObject.AddComponent<HumanPlayerController>();
+                Controller = gameObject.AddComponent<HumanPlayerController>();
+            else
+                Controller = gameObject.AddComponent<HumanAIController>();
         }
 
         public void ReloadHuman(InGameCharacterSettings settings)
         {
             FinishSetup = false;
+            Settings = settings;
             Setup.Copy(settings);
             Setup.Load(Setup.CustomSet, Setup.Weapon, false);
             Transform smokeTransform = transform.Find("3dmg_smoke");
@@ -1016,7 +1058,8 @@ namespace Characters
                 LoadSkin();
                 _cameraFPS = false;
             }
-            ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.SetBottomHUD(this);
+            if (!AI)
+                ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.SetBottomHUD(this);
         }
 
 
@@ -1068,7 +1111,9 @@ namespace Characters
                 InvincibleTimeLeft = SettingsManager.InGameCurrent.Misc.InvincibilityTime.Value;
                 TargetAngle = Cache.Transform.eulerAngles.y;
                 Cache.PhotonView.RPC(nameof(SetupRPC), RpcTarget.All, Setup.CustomSet.SerializeToJsonString(), (int)Setup.Weapon);
-                if (SettingsManager.InGameCurrent.Misc.Horses.Value)
+                
+                
+                if (AI ? AllowHorse : SettingsManager.InGameCurrent.Misc.Horses.Value)
                 {
                     Horse = (Horse)CharacterSpawner.Spawn(CharacterPrefabs.Horse, Cache.Transform.position + Vector3.right * 2f, Quaternion.Euler(0f, TargetAngle, 0f));
                     Horse.Init(this);
@@ -1208,9 +1253,12 @@ namespace Characters
                             return;
                         if (type != "APG" && _lastNapeHitTimes.ContainsKey(titan) && (_lastNapeHitTimes[titan] + 0.2f) > Time.time)
                             return;
-                        ((InGameMenu)UIManager.CurrentMenu).ShowKillScore(damage);
-                        ((InGameCamera)SceneLoader.CurrentCamera).TakeSnapshot(titan.BaseTitanCache.Neck.position, damage);
-                        if (type == "Blade" && SettingsManager.GraphicsSettings.BloodSplatterEnabled.Value)
+                        if (!AI)
+                        {
+                            ((InGameMenu)UIManager.CurrentMenu).ShowKillScore(damage);
+                            ((InGameCamera)SceneLoader.CurrentCamera).TakeSnapshot(titan.BaseTitanCache.Neck.position, damage);
+                        }
+                        if (!AI && type == "Blade" && SettingsManager.GraphicsSettings.BloodSplatterEnabled.Value)
                             ((InGameMenu)UIManager.CurrentMenu).ShowBlood();
                         if (type == "Blade" || type == "AHSS" || type == "APG")
                         {
@@ -1268,8 +1316,11 @@ namespace Characters
                 }
                 else
                 {
-                    ((InGameMenu)UIManager.CurrentMenu).ShowKillScore(damage);
-                    ((InGameCamera)SceneLoader.CurrentCamera).TakeSnapshot(victimChar.Cache.Transform.position, damage);
+                    if (!AI)
+                    {
+                        ((InGameMenu)UIManager.CurrentMenu).ShowKillScore(damage);
+                        ((InGameCamera)SceneLoader.CurrentCamera).TakeSnapshot(victimChar.Cache.Transform.position, damage);
+                    }
                     victimChar.GetHit(this, damage, type, collider.name);
                 }
             }
@@ -1501,13 +1552,18 @@ namespace Characters
 
         protected override void FixedUpdate()
         {
-            HookLeft.FixedUpdateMock();
-            HookRight.FixedUpdateMock();
-            base.FixedUpdate();
             if (IsMine())
             {
                 FixedUpdateLookTitan();
                 FixedUpdateUseables();
+            }
+            if (HookLeft != null)
+                HookLeft.FixedUpdateMock();
+            if (HookRight != null)
+                HookRight.FixedUpdateMock();
+            base.FixedUpdate();
+            if (IsMine())
+            {
                 _isReelingOut = false;
                 if (State == HumanState.Grab || Dead)
                 {
@@ -1580,8 +1636,13 @@ namespace Characters
                 bool pivotLeft = FixedUpdateLaunch(true);
                 bool pivotRight = FixedUpdateLaunch(false);
                 bool pivot = pivotLeft || pivotRight;
+                _pivot = pivot;
+                _pivotLeft = pivotLeft;
+                _pivotRight = pivotRight;
                 if (Grounded)
                 {
+                    ClearDashPerkCDs();
+
                     Vector3 newVelocity = Vector3.zero;
                     if (JustGrounded)
                     {
@@ -1795,13 +1856,15 @@ namespace Characters
                             PlayAnimation(HumanAnimations.AirRise);
                         }
                     }
-                    else if (!(State != HumanState.Idle || !IsPressDirectionTowardsHero() || SettingsManager.InputSettings.Human.Jump.GetKey() || SettingsManager.InputSettings.Human.HookLeft.GetKey() || SettingsManager.InputSettings.Human.HookRight.GetKey() || SettingsManager.InputSettings.Human.HookBoth.GetKey() || !IsFrontGrounded() || Animation.IsPlaying(HumanAnimations.WallRun) || Animation.IsPlaying(HumanAnimations.Dodge)))
+                    else if (!(State != HumanState.Idle || !IsPressDirectionTowardsHero() || Controller.UsingGas() || Controller.HookingLeft() || Controller.HookingRight() || Controller.HookingBoth() || !IsFrontGrounded() || Animation.IsPlaying(HumanAnimations.WallRun) || Animation.IsPlaying(HumanAnimations.Dodge)))
                     {
                         CrossFade(HumanAnimations.WallRun, 0.1f);
                         _wallRunTime = 0f;
                     }
                     else if (Animation.IsPlaying(HumanAnimations.WallRun))
                     {
+                        ClearDashPerkCDs();
+
                         Cache.Rigidbody.AddForce(Vector3.up * Stats.RunSpeed - Cache.Rigidbody.velocity, ForceMode.VelocityChange);
                         _wallRunTime += Time.deltaTime;
                         if (!HasDirection)
@@ -1827,8 +1890,8 @@ namespace Characters
                         }
                         else
                             _targetRotation = GetTargetRotation();
-                        bool isUsingGas = SettingsManager.InputSettings.Human.Jump.GetKey() ^ SettingsManager.InputSettings.Human.AutoUseGas.Value;
-                        if (((!pivotLeft && !pivotRight) && (MountState == HumanMountState.None && isUsingGas)) && (Stats.CurrentGas > 0f))
+                        bool isUsingGas = AI ? Controller.UsingGas() : Controller.UsingGas() ^ SettingsManager.InputSettings.Human.AutoUseGas.Value;
+                        if (!pivotLeft && !pivotRight && MountState == HumanMountState.None && isUsingGas && (Stats.CurrentGas > 0f))
                         {
                             if (HasDirection)
                             {
@@ -2004,10 +2067,12 @@ namespace Characters
 
         private void UpdateBladeFire()
         {
-            if (Setup == null || Setup.Weapon != HumanWeapon.Blade)
+            if (AI || Setup == null || Setup.Weapon != HumanWeapon.Blade)
                 return;
             int rank = ((InGameMenu)UIManager.CurrentMenu).GetStylebarRank();
-            if (rank >= 6)
+            if (rank >= 7)
+                ToggleBladeFire(3);
+            else if (rank >= 6)
                 ToggleBladeFire(2);
             else if (rank >= 4)
                 ToggleBladeFire(1);
@@ -2352,7 +2417,9 @@ namespace Characters
                     Vector3 v = (hook.GetHookPosition() - Cache.Transform.position).normalized * 10f;
                     if (!(_launchLeft && _launchRight))
                         v *= 2f;
-                    if ((Vector3.Angle(Cache.Rigidbody.velocity, v) > 90f) && (SettingsManager.InputSettings.Human.Jump.GetKey() ^ SettingsManager.InputSettings.Human.AutoUseGas.Value))
+
+                    bool usingGas = AI ? Controller.UsingGas() : Controller.UsingGas() ^ SettingsManager.InputSettings.Human.AutoUseGas.Value;
+                    if ((Vector3.Angle(Cache.Rigidbody.velocity, v) > 90f) && usingGas)
                     {
                         pivot = true;
                     }
@@ -2881,18 +2948,19 @@ namespace Characters
         {
             CurrentSpecial = special;
             Special = HumanSpecials.GetSpecialUseable(this, special);
-            ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.SetSpecialIcon(HumanSpecials.GetSpecialIcon(special));
+            if (!AI)
+                ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.SetSpecialIcon(HumanSpecials.GetSpecialIcon(special));
         }
 
         protected void LoadSkin(Player player = null)
         {
             if (IsMine())
             {
-                if (SettingsManager.CustomSkinSettings.Human.SkinsEnabled.Value)
+                if (AI ? AllowSkin : SettingsManager.CustomSkinSettings.Human.SkinsEnabled.Value)
                 {
                     try
                     {
-                        bool useGlobalOverrides = SettingsManager.CustomSkinSettings.Human.GlobalSkinOverridesEnabled.Value;
+                        bool useGlobalOverrides = SettingsManager.CustomSkinSettings.Human.GlobalSkinOverridesEnabled.Value && !AI; // force ai to use character skin.
                         bool usePresetSkins = SettingsManager.CustomSkinSettings.Human.SetSpecificSkinsEnabled.Value;
                         HumanCustomSet presetSet = null;
                         if (Setup?.CustomSet != null)
@@ -3035,6 +3103,8 @@ namespace Characters
         [PunRPC]
         public void SetHookStateRPC(bool left, int hookId, int state, PhotonMessageInfo info)
         {
+            if (info.Sender != photonView.Owner)
+                return;
             if (!FinishSetup)
                 return;
             if (left)
@@ -3046,6 +3116,8 @@ namespace Characters
         [PunRPC]
         public void SetHookingRPC(bool left, int hookId, Vector3 baseVelocity, Vector3 relativeVelocity, PhotonMessageInfo info)
         {
+            if (info.Sender != photonView.Owner)
+                return;
             if (!FinishSetup)
                 return;
             if (left)
@@ -3057,6 +3129,8 @@ namespace Characters
         [PunRPC]
         public void SetHookedRPC(bool left, int hookId, Vector3 position, int viewId, int objectId, PhotonMessageInfo info)
         {
+            if (info.Sender != photonView.Owner)
+                return;
             if (!FinishSetup)
                 return;
             if (left)
@@ -3110,11 +3184,20 @@ namespace Characters
                 Setup._part_blade_r.SetActive(hasRight);
         }
 
+        public void ClearDashPerkCDs()
+        {
+            if (Stats.OmniDashPerk.PerkEnabled)
+                Stats.OmniDashPerk.Reset();
+            else if (Stats.VerticalDashPerk.PerkEnabled)
+                Stats.VerticalDashPerk.Reset();
+        }
+
         public void OnHooked(bool left, Vector3 position)
         {
             // If reel in holding is disabled, when the user launches a new hook, reset the wait for release flag.
             if (!SettingsManager.InputSettings.Human.ReelInHolding.Value)
                 _reelInWaitForRelease = false;
+            ClearDashPerkCDs();
             if (left)
             {
                 _launchLeft = true;
@@ -3251,10 +3334,12 @@ namespace Characters
             _targetRotation = quaternion;
             TargetAngle = facingDirection;
             Stats.UseTSGas();
-            ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.ShakeGas();
+            if (!AI)
+                ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.ShakeGas();
             EffectSpawner.Spawn(EffectPrefabs.GasBurst, Cache.Transform.position, Cache.Transform.rotation);
             PlaySound(HumanSounds.GasBurst);
-            ((InGameCamera)SceneLoader.CurrentCamera).StartShake();
+            if (!AI)
+                ((InGameCamera)SceneLoader.CurrentCamera).StartShake();
         }
 
         public void SetInterpolation(bool interpolate)
@@ -3344,18 +3429,18 @@ namespace Characters
         {
             if (!Grounded && (HookLeft.IsHooked() || HookRight.IsHooked() || MountState != HumanMountState.None))
             {
-                if (SettingsManager.InputSettings.General.Left.GetKey())
+                if (Controller.MovingLeft())
                     AttackAnimation = (UnityEngine.Random.Range(0, 100) >= 50) ? HumanAnimations.Attack1HookL1 : HumanAnimations.Attack1HookL2;
-                else if (SettingsManager.InputSettings.General.Right.GetKey())
+                else if (Controller.MovingRight())
                     AttackAnimation = (UnityEngine.Random.Range(0, 100) >= 50) ? HumanAnimations.Attack1HookR1 : HumanAnimations.Attack1HookR2;
                 else if (_leanLeft)
                     AttackAnimation = (UnityEngine.Random.Range(0, 100) >= 50) ? HumanAnimations.Attack1HookL1 : HumanAnimations.Attack1HookL2;
                 else
                     AttackAnimation = (UnityEngine.Random.Range(0, 100) >= 50) ? HumanAnimations.Attack1HookR1 : HumanAnimations.Attack1HookR2;
             }
-            else if (SettingsManager.InputSettings.General.Left.GetKey())
+            else if (Controller.MovingLeft())
                 AttackAnimation = HumanAnimations.Attack2;
-            else if (SettingsManager.InputSettings.General.Right.GetKey())
+            else if (Controller.MovingRight())
                 AttackAnimation = HumanAnimations.Attack1;
             else
             {
@@ -3667,31 +3752,34 @@ namespace Characters
                 return;
             if (Setup == null || Setup.Weapon != HumanWeapon.Blade || Setup._part_blade_l == null || Setup._part_blade_r == null)
                 return;
-            var leftFire1 = Setup._part_blade_l.transform.Find("Fire1");
-            var leftFire2 = Setup._part_blade_l.transform.Find("Fire2");
-            var rightFire1 = Setup._part_blade_r.transform.Find("Fire1");
-            var rightFire2 = Setup._part_blade_r.transform.Find("Fire2");
+
+            // Clear FX
+            foreach (var effect in Setup.TierEffects)
+            {
+                var left = Setup._part_blade_l.transform.Find(effect);
+                var right = Setup._part_blade_r.transform.Find(effect);
+                if (left != null)
+                    left.gameObject.SetActive(false);
+                if (right != null)
+                    right.gameObject.SetActive(false);
+            }
+
             if (state == 0 || !SettingsManager.GraphicsSettings.WeaponFireEffect.Value)
-            {
-                leftFire1.gameObject.SetActive(false);
-                rightFire1.gameObject.SetActive(false);
-                leftFire2.gameObject.SetActive(false);
-                rightFire2.gameObject.SetActive(false);
-            }
-            else if (state == 1)
-            {
-                leftFire1.gameObject.SetActive(true);
-                rightFire1.gameObject.SetActive(true);
-                leftFire2.gameObject.SetActive(false);
-                rightFire2.gameObject.SetActive(false);
-            }
-            else if (state == 2)
-            {
-                leftFire1.gameObject.SetActive(false);
-                rightFire1.gameObject.SetActive(false);
-                leftFire2.gameObject.SetActive(true);
-                rightFire2.gameObject.SetActive(true);
-            }
+                return;
+
+            int index = state - 1;
+            if (index < 0 || index >= Setup.TierEffects.Length)
+                return;
+
+            string targetEffect = Setup.TierEffects[index];
+            var leftEffect = Setup._part_blade_l.transform.Find(targetEffect);
+            var rightEffect = Setup._part_blade_r.transform.Find(targetEffect);
+
+            if (leftEffect != null)
+                leftEffect.gameObject.SetActive(true);
+
+            if (rightEffect != null)
+                rightEffect.gameObject.SetActive(true);
         }
 
         /// <summary>
@@ -3918,6 +4006,17 @@ namespace Characters
             if (mapObject != null && MapLoader.HasTag(mapObject, "HumanIgnoreGround"))
                 return false;
             return true;
+        }
+
+        public Vector3? PivotPosition()
+        {
+            if (_pivotLeft && _pivotRight)
+                return (HookRight.GetHookPosition() + HookLeft.GetHookPosition()) * 0.5f;
+            else if (_pivotLeft)
+                return HookLeft.GetHookPosition();
+            else if (_pivotRight)
+                return HookRight.GetHookPosition();
+            return null;
         }
 
         protected override List<Renderer> GetFPSDisabledRenderers()

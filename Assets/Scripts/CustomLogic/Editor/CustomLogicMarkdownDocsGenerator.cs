@@ -27,6 +27,12 @@ namespace CustomLogic.Editor
 
         public override string GetRelativeFilePath(CLType type)
         {
+            // If the type has a category, use it; otherwise fall back to static/objects
+            if (!string.IsNullOrEmpty(type.Category))
+            {
+                return $"md/{type.Category}/{type.Name}.md";
+            }
+            
             if (type.IsStatic && type.IsAbstract)
                 return $"md/static/{type.Name}.md";
 
@@ -168,12 +174,19 @@ namespace CustomLogic.Editor
             {
                 var description = TrimAndCleanLines(property.Info?.Summary ?? "").Replace("\r\n", " ").Replace('\n', ' ').Replace('\t', ' ');
                 
-                if (!string.IsNullOrEmpty(property.EnumName))
+                if (property.EnumNames != null && property.EnumNames.Length > 0)
                 {
-                    var enumRef = GetEnumReference(property.EnumName);
                     if (!string.IsNullOrEmpty(description))
                         description += " ";
-                    description += $"Refer to {enumRef}";
+                    var enumRefs = property.EnumNames.Select(e => GetEnumReference(e)).ToArray();
+                    if (enumRefs.Length == 1)
+                    {
+                        description += $"Refer to {enumRefs[0]}";
+                    }
+                    else
+                    {
+                        description += $"Refer to {string.Join(", ", enumRefs)}";
+                    }
                 }
                 
                 var row = new List<string>
@@ -228,7 +241,7 @@ namespace CustomLogic.Editor
                         _sb.AppendLine("> ");
                     }
 
-                    var hasParameterDocs = method.Parameters != null && method.Parameters.Any(p => (!string.IsNullOrEmpty(p.Description)) || !string.IsNullOrEmpty(p.EnumName));
+                    var hasParameterDocs = method.Parameters != null && method.Parameters.Any(p => (!string.IsNullOrEmpty(p.Description)) || (p.EnumNames != null && p.EnumNames.Length > 0));
                     if (hasParameterDocs)
                     {
                         _sb.AppendLine("> **Parameters**:");
@@ -236,12 +249,19 @@ namespace CustomLogic.Editor
                         {
                             var paramDescription = !string.IsNullOrEmpty(parameter.Description) ? TrimAndCleanLines(parameter.Description) : "";
                             
-                            if (!string.IsNullOrEmpty(parameter.EnumName))
+                            if (parameter.EnumNames != null && parameter.EnumNames.Length > 0)
                             {
-                                var enumRef = GetEnumReference(parameter.EnumName);
                                 if (!string.IsNullOrEmpty(paramDescription))
                                     paramDescription += " ";
-                                paramDescription += $"Refer to {enumRef}";
+                                var enumRefs = parameter.EnumNames.Select(e => GetEnumReference(e)).ToArray();
+                                if (enumRefs.Length == 1)
+                                {
+                                    paramDescription += $"Refer to {enumRefs[0]}";
+                                }
+                                else
+                                {
+                                    paramDescription += $"Refer to {string.Join(", ", enumRefs)}";
+                                }
                             }
                             
                             if (string.IsNullOrEmpty(paramDescription))

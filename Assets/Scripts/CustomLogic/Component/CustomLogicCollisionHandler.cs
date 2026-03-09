@@ -120,7 +120,7 @@ namespace CustomLogic
             else if (MapLoader.GoToMapObject.ContainsKey(root.gameObject))
             {
                 var mapObject = MapLoader.GoToMapObject[root.gameObject];
-                var builtin = new CustomLogicMapObjectBuiltin(mapObject);
+                var builtin = CustomLogicManager.Evaluator?.GetOrCreateMapObjectBuiltin(mapObject);
                 return builtin;
             }
             return null;

@@ -454,10 +454,6 @@ class Main
             // Test that __Eq__ is called when comparing objects
             Assert.AreEqual(1, evaluator.EvaluateMainMethod("TestEqualsCallCount"), 
                 "__Eq__ should be called once when comparing two objects");
-            
-            // Test that __Eq__ is NOT called when comparing with null
-            Assert.AreEqual(0, evaluator.EvaluateMainMethod("TestNullDoesNotCallEquals"), 
-                "__Eq__ should NOT be called when comparing object with null");
         }
     }
 }

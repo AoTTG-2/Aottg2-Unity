@@ -12,6 +12,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using Utility;
+using Photon.Realtime;
 
 namespace Characters
 {
@@ -20,31 +21,59 @@ namespace Characters
         public ColossalSteamState SteamState => _steamState;
         public ColossalHandState LeftHandState => _leftHandState;
         public ColossalHandState RightHandState => _rightHandState;
+        public ColossalStunState StunState => _stunState;
 
         public WallColossalComponentCache ColossalCache;
         protected WallColossalAnimations ColossalAnimations;
         protected float _steamTimeLeft;
         protected float _steamBlowAwayTimeLeft;
+        protected float _steamDamageTimeLeft;
         protected ColossalSteamState _steamState;
         public float WarningSteamTime = 3f;
+        public float SteamDamageInterval = 0.2f;
+        public int SteamDamagePerSecond = 100;
         protected override float SizeMultiplier => 22f;
 
         public int MaxLeftHandHealth = 1000;
         public int MaxRightHandHealth = 1000;
         public int CurrentLeftHandHealth = 1000;
         public int CurrentRightHandHealth = 1000;
+        public bool CanDamageLeftHand = true;
+        public bool CanDamageRightHand = true;
 
         protected ColossalHandState _leftHandState = ColossalHandState.Healthy;
         protected ColossalHandState _rightHandState = ColossalHandState.Healthy;
-        public float LeftHandRecoveryTimeLeft = 0f;
-        public float RightHandRecoveryTimeLeft = 0f;
-        public float HandRecoveryTime = 15f;
+        protected ColossalStunState _stunState = ColossalStunState.None;
 
-        public float SteamBlowAwayForce = 30f;
+        public float LeftHandSeverTimeLeft = 0f;
+        public float RightHandSeverTimeLeft = 0f;
+        public float HandSeverWindow = 10f;
+
+        public float StunDuration = 3f;
+        public float StunTimeLeft = 0f;
+        protected float _stunAnimationTimeLeft = 0f;
+
+        public float RecoveryDuration = 10f;
+        public float RecoveryTimeLeft = 0f;
+
+        public float SteamBlowAwayForce = 50f;
         public float DefaultBlowAwayForce = 50f;
         public float BlowAwayMaxDistance = 60f;
-        public float BlowAwaySteamTime = 0.5f;
+        public float BlowAwaySteamTime = 0.3f;
 
+        public override void OnPlayerEnteredRoom(Player player)
+        {
+            base.OnPlayerEnteredRoom(player);
+            if (IsMine())
+            {
+                Cache.PhotonView.RPC(nameof(SetLeftHandStateRPC), player, new object[] { (byte)_leftHandState });
+                Cache.PhotonView.RPC(nameof(SetRightHandStateRPC), player, new object[] { (byte)_rightHandState });
+                Cache.PhotonView.RPC(nameof(SetSteamStateRPC), player, new object[] { (byte)_steamState });
+                Cache.PhotonView.RPC(nameof(SetStunStateRPC), player, new object[] { (byte)_stunState });
+                Cache.PhotonView.RPC(nameof(SetHandSeverTimesRPC), player, new object[] { LeftHandSeverTimeLeft, RightHandSeverTimeLeft });
+                Cache.PhotonView.RPC(nameof(SetStunRecoveryTimesRPC), player, new object[] { StunTimeLeft, RecoveryTimeLeft });
+            }
+        }
 
         public override bool CheckNapeAngle(Vector3 hitPosition, float maxAngle)
         {
@@ -53,7 +82,7 @@ namespace Characters
 
         public void SteamAttack()
         {
-            if (CanAttack())
+            if (CanAttack() && _stunState == ColossalStunState.None)
             {
                 Attack("AttackSteam");
             }
@@ -97,13 +126,43 @@ namespace Characters
 
         protected virtual void OnLeftHandHealthChange()
         {
-            
             if (CurrentLeftHandHealth <= 0 && _leftHandState == ColossalHandState.Healthy)
             {
-                ApplyLeftHandState(ColossalHandState.Broken);
-                LeftHandRecoveryTimeLeft = HandRecoveryTime;
                 if (IsMine())
-                    photonView.RPC(nameof(SetLeftHandStateRPC), RpcTarget.Others, new object[] { (byte)ColossalHandState.Broken });
+                {
+                    //DebugConsole.Log($"[WallColossal] Left Hand: Healthy -> Severed (Health: {CurrentLeftHandHealth}/{MaxLeftHandHealth})", false);
+                    LeftHandSeverTimeLeft = HandSeverWindow;
+                    photonView.RPC(nameof(SetLeftHandStateRPC), RpcTarget.All, new object[] { (byte)ColossalHandState.Severed });
+                    photonView.RPC(nameof(SetHandSeverTimesRPC), RpcTarget.All, new object[] { LeftHandSeverTimeLeft, RightHandSeverTimeLeft });
+                    CheckStunCondition();
+                }
+            }
+            else if (CurrentLeftHandHealth <= 0 && _leftHandState == ColossalHandState.Damaged)
+            {
+                if (IsMine())
+                {
+                    //DebugConsole.Log($"[WallColossal] Left Hand: Damaged -> Severed (Health: {CurrentLeftHandHealth}/{MaxLeftHandHealth})", false);
+                    LeftHandSeverTimeLeft = HandSeverWindow;
+                    photonView.RPC(nameof(SetLeftHandStateRPC), RpcTarget.All, new object[] { (byte)ColossalHandState.Severed });
+                    photonView.RPC(nameof(SetHandSeverTimesRPC), RpcTarget.All, new object[] { LeftHandSeverTimeLeft, RightHandSeverTimeLeft });
+                    CheckStunCondition();
+                }
+            }
+            else if (CurrentLeftHandHealth > 0 && CurrentLeftHandHealth < MaxLeftHandHealth && _leftHandState == ColossalHandState.Healthy)
+            {
+                if (IsMine())
+                {
+                    //DebugConsole.Log($"[WallColossal] Left Hand: Healthy -> Damaged (Health: {CurrentLeftHandHealth}/{MaxLeftHandHealth})", false);
+                    photonView.RPC(nameof(SetLeftHandStateRPC), RpcTarget.All, new object[] { (byte)ColossalHandState.Damaged });
+                }
+            }
+            else if (CurrentLeftHandHealth >= MaxLeftHandHealth && _leftHandState == ColossalHandState.Damaged)
+            {
+                if (IsMine())
+                {
+                    //DebugConsole.Log($"[WallColossal] Left Hand: Damaged -> Healthy (Health: {CurrentLeftHandHealth}/{MaxLeftHandHealth})", false);
+                    photonView.RPC(nameof(SetLeftHandStateRPC), RpcTarget.All, new object[] { (byte)ColossalHandState.Healthy });
+                }
             }
 
             if (IsMine())
@@ -112,17 +171,75 @@ namespace Characters
 
         protected virtual void OnRightHandHealthChange()
         {
-            
             if (CurrentRightHandHealth <= 0 && _rightHandState == ColossalHandState.Healthy)
             {
-                ApplyRightHandState(ColossalHandState.Broken);
-                RightHandRecoveryTimeLeft = HandRecoveryTime;
                 if (IsMine())
-                    photonView.RPC(nameof(SetRightHandStateRPC), RpcTarget.Others, new object[] { (byte)ColossalHandState.Broken });
+                {
+                    //DebugConsole.Log($"[WallColossal] Right Hand: Healthy -> Severed (Health: {CurrentRightHandHealth}/{MaxRightHandHealth})", false);
+                    RightHandSeverTimeLeft = HandSeverWindow;
+                    photonView.RPC(nameof(SetRightHandStateRPC), RpcTarget.All, new object[] { (byte)ColossalHandState.Severed });
+                    photonView.RPC(nameof(SetHandSeverTimesRPC), RpcTarget.All, new object[] { LeftHandSeverTimeLeft, RightHandSeverTimeLeft });
+                    CheckStunCondition();
+                }
+            }
+            else if (CurrentRightHandHealth <= 0 && _rightHandState == ColossalHandState.Damaged)
+            {
+                if (IsMine())
+                {
+                    //DebugConsole.Log($"[WallColossal] Right Hand: Damaged -> Severed (Health: {CurrentRightHandHealth}/{MaxRightHandHealth})", false);
+                    RightHandSeverTimeLeft = HandSeverWindow;
+                    photonView.RPC(nameof(SetRightHandStateRPC), RpcTarget.All, new object[] { (byte)ColossalHandState.Severed });
+                    photonView.RPC(nameof(SetHandSeverTimesRPC), RpcTarget.All, new object[] { LeftHandSeverTimeLeft, RightHandSeverTimeLeft });
+                    CheckStunCondition();
+                }
+            }
+            else if (CurrentRightHandHealth > 0 && CurrentRightHandHealth < MaxRightHandHealth && _rightHandState == ColossalHandState.Healthy)
+            {
+                if (IsMine())
+                {
+                    //DebugConsole.Log($"[WallColossal] Right Hand: Healthy -> Damaged (Health: {CurrentRightHandHealth}/{MaxRightHandHealth})", false);
+                    photonView.RPC(nameof(SetRightHandStateRPC), RpcTarget.All, new object[] { (byte)ColossalHandState.Damaged });
+                }
+            }
+            else if (CurrentRightHandHealth >= MaxRightHandHealth && _rightHandState == ColossalHandState.Damaged)
+            {
+                if (IsMine())
+                {
+                    //DebugConsole.Log($"[WallColossal] Right Hand: Damaged -> Healthy (Health: {CurrentRightHandHealth}/{MaxRightHandHealth})", false);
+                    photonView.RPC(nameof(SetRightHandStateRPC), RpcTarget.All, new object[] { (byte)ColossalHandState.Healthy });
+                }
             }
 
             if (IsMine())
                 photonView.RPC(nameof(SetRightHandHealthRPC), RpcTarget.All, new object[] { CurrentRightHandHealth, MaxRightHandHealth });
+        }
+
+        protected void CheckStunCondition()
+        {
+            if (_leftHandState == ColossalHandState.Severed && _rightHandState == ColossalHandState.Severed)
+            {
+                //DebugConsole.Log($"[WallColossal] Both hands severed - Entering stun state", false);
+                EnterStunState();
+            }
+        }
+
+        protected void EnterStunState()
+        {
+            if (_stunState != ColossalStunState.None)
+                return;
+
+            //DebugConsole.Log($"[WallColossal] Stun State: None -> Stunned (Duration: {StunDuration}s)", false);
+            StopSteam();
+            
+            float animationLength = Animation.GetTotalTime(ColossalAnimations.StunFallFaceAnim);
+            StunTimeLeft = Mathf.Max(StunDuration, animationLength);
+            _stunAnimationTimeLeft = animationLength * 0.85f;
+            
+            if (IsMine())
+            {
+                photonView.RPC(nameof(SetStunStateRPC), RpcTarget.All, new object[] { (byte)ColossalStunState.Stunned });
+                photonView.RPC(nameof(SetStunRecoveryTimesRPC), RpcTarget.All, new object[] { StunTimeLeft, 0f });
+            }
         }
 
         [PunRPC]
@@ -130,6 +247,7 @@ namespace Characters
         {
             if (info.Sender == photonView.Owner)
             {
+                //DebugConsole.Log($"[WallColossal] SetLeftHandHealthRPC: {CurrentLeftHandHealth} -> {currentHealth} (Max: {maxHealth})", false);
                 CurrentLeftHandHealth = currentHealth;
                 MaxLeftHandHealth = maxHealth;
             }
@@ -140,6 +258,7 @@ namespace Characters
         {
             if (info.Sender == photonView.Owner)
             {
+                //DebugConsole.Log($"[WallColossal] SetRightHandHealthRPC: {CurrentRightHandHealth} -> {currentHealth} (Max: {maxHealth})", false);
                 CurrentRightHandHealth = currentHealth;
                 MaxRightHandHealth = maxHealth;
             }
@@ -163,6 +282,44 @@ namespace Characters
             }
         }
 
+        [PunRPC]
+        public void SetSteamStateRPC(byte state, PhotonMessageInfo info)
+        {
+            if (info.Sender == photonView.Owner)
+            {
+                ApplySteamState((ColossalSteamState)state);
+            }
+        }
+
+        [PunRPC]
+        public void SetStunStateRPC(byte state, PhotonMessageInfo info)
+        {
+            if (info.Sender == photonView.Owner)
+            {
+                ApplyStunState((ColossalStunState)state);
+            }
+        }
+
+        [PunRPC]
+        public void SetHandSeverTimesRPC(float leftTime, float rightTime, PhotonMessageInfo info)
+        {
+            if (info.Sender == photonView.Owner)
+            {
+                LeftHandSeverTimeLeft = leftTime;
+                RightHandSeverTimeLeft = rightTime;
+            }
+        }
+
+        [PunRPC]
+        public void SetStunRecoveryTimesRPC(float stunTime, float recoveryTime, PhotonMessageInfo info)
+        {
+            if (info.Sender == photonView.Owner)
+            {
+                StunTimeLeft = stunTime;
+                RecoveryTimeLeft = recoveryTime;
+            }
+        }
+
         public override void Init(bool ai, string team, JSONNode data, float liveTime)
         {
             if (ai)
@@ -177,8 +334,12 @@ namespace Characters
                     SetLeftHandHealth(data["LeftHandHealth"].AsInt);
                 if (data.HasKey("RightHandHealth"))
                     SetRightHandHealth(data["RightHandHealth"].AsInt);
-                if (data.HasKey("HandRecoveryTime"))
-                    HandRecoveryTime = data["HandRecoveryTime"].AsFloat;
+                if (data.HasKey("HandSeverWindow"))
+                    HandSeverWindow = data["HandSeverWindow"].AsFloat;
+                if (data.HasKey("StunDuration"))
+                    StunDuration = data["StunDuration"].AsFloat;
+                if (data.HasKey("RecoveryDuration"))
+                    RecoveryDuration = data["RecoveryDuration"].AsFloat;
                 if (data.HasKey("WarningSteamTime"))
                     WarningSteamTime = data["WarningSteamTime"].AsFloat;
             }
@@ -221,9 +382,9 @@ namespace Characters
         }
 
         public void ApplySteamState(ColossalSteamState newState)
-        {            
+        {
             _steamState = newState;
-            
+
             switch (newState)
             {
                 case ColossalSteamState.Off:
@@ -231,28 +392,26 @@ namespace Characters
                     ToggleParticleSystem(ColossalCache.ColossalSteam2, false);
                     FadeSound(ShifterSounds.ColossalSteam1, 0f, 1f);
                     FadeSound(ShifterSounds.ColossalSteam2, 0f, 1f);
-                    
+
                     if (ColossalCache?.SteamHitbox != null)
                         ColossalCache.SteamHitbox.Deactivate();
-                    
-                    // Disable warning zone
+
                     if (ColossalCache?.SteamWarningZone != null)
                     {
                         ColossalCache.SteamWarningZone.SetActive(false);
                         ColossalCache.SteamWarningZoneComponent?.SetActive(false);
                     }
                     break;
-                    
+
                 case ColossalSteamState.Warning:
                     ToggleParticleSystem(ColossalCache.ColossalSteam1, true);
                     ToggleParticleSystem(ColossalCache.ColossalSteam2, false);
                     FadeSound(ShifterSounds.ColossalSteam1, 0.6f, 0f);
                     PlaySound(ShifterSounds.ColossalSteam1);
-                    
+
                     if (ColossalCache?.SteamHitbox != null)
                         ColossalCache.SteamHitbox.Deactivate();
-                    
-                    // Enable warning zone
+
                     if (ColossalCache?.SteamWarningZone != null)
                     {
                         ColossalCache.SteamWarningZone.SetActive(true);
@@ -263,19 +422,17 @@ namespace Characters
                         }
                     }
                     break;
-                    
+
                 case ColossalSteamState.Damage:
                     ToggleParticleSystem(ColossalCache.ColossalSteam1, false);
                     ToggleParticleSystem(ColossalCache.ColossalSteam2, true);
                     FadeSound(ShifterSounds.ColossalSteam1, 0f, 1f);
                     FadeSound(ShifterSounds.ColossalSteam2, 1f, 0f);
                     PlaySound(ShifterSounds.ColossalSteam2);
-                    
+
                     if (ColossalCache?.SteamHitbox != null)
                         ColossalCache.SteamHitbox.Activate();
-                    
-                    // Keep warning zone active during damage phase
-                    // (players already in the zone should still see the warning effect)
+
                     if (ColossalCache?.SteamWarningZone != null)
                     {
                         ColossalCache.SteamWarningZone.SetActive(true);
@@ -291,26 +448,100 @@ namespace Characters
 
         public void ApplyLeftHandState(ColossalHandState newState)
         {
+            var oldState = _leftHandState;
             _leftHandState = newState;
-            
+
+            if (oldState != newState)
+            {
+                //DebugConsole.Log($"[WallColossal] ApplyLeftHandState: {oldState} -> {newState}", false);
+            }
+
             switch (newState)
             {
                 case ColossalHandState.Healthy:
                     ToggleParticleSystem(ColossalCache.LeftHandSteam, false);
                     break;
-                    
-                case ColossalHandState.Broken:
-                    EffectSpawner.Spawn(EffectPrefabs.Blood1, ColossalCache.HandLHitbox.transform.position, 
+
+                case ColossalHandState.Damaged:
+                    ToggleParticleSystem(ColossalCache.LeftHandSteam, false);
+                    break;
+
+                case ColossalHandState.Severed:
+                    EffectSpawner.Spawn(EffectPrefabs.Blood1, ColossalCache.HandLHitbox.transform.position,
                         Quaternion.Euler(-90f, 0f, 0f), Size * 100);
                     ToggleParticleSystem(ColossalCache.LeftHandSteam, true);
+                    break;
+
+                case ColossalHandState.Recovering:
+                    ToggleParticleSystem(ColossalCache.LeftHandSteam, true);
+                    break;
+            }
+        }
+
+        public void ApplyRightHandState(ColossalHandState newState)
+        {
+            var oldState = _rightHandState;
+            _rightHandState = newState;
+
+            if (oldState != newState)
+            {
+                //DebugConsole.Log($"[WallColossal] ApplyRightHandState: {oldState} -> {newState}", false);
+            }
+
+            switch (newState)
+            {
+                case ColossalHandState.Healthy:
+                    ToggleParticleSystem(ColossalCache.RightHandSteam, false);
+                    break;
+
+                case ColossalHandState.Damaged:
+                    ToggleParticleSystem(ColossalCache.RightHandSteam, false);
+                    break;
+
+                case ColossalHandState.Severed:
+                    EffectSpawner.Spawn(EffectPrefabs.Blood1, ColossalCache.HandRHitbox.transform.position,
+                        Quaternion.Euler(-90f, 0f, 0f), Size * 100);
+                    ToggleParticleSystem(ColossalCache.RightHandSteam, true);
+                    break;
+
+                case ColossalHandState.Recovering:
+                    ToggleParticleSystem(ColossalCache.RightHandSteam, true);
+                    break;
+            }
+        }
+
+        public void ApplyStunState(ColossalStunState newState)
+        {
+            var oldState = _stunState;
+            _stunState = newState;
+
+            if (oldState != newState)
+            {
+                //DebugConsole.Log($"[WallColossal] ApplyStunState: {oldState} -> {newState}", false);
+            }
+
+            switch (newState)
+            {
+                case ColossalStunState.None:
+                    if (oldState == ColossalStunState.Stunned || oldState == ColossalStunState.Recovering)
+                    {
+                        SetAnimationSpeed(ColossalAnimations.StunFallFaceAnim, 1f);
+                    }
+                    break;
+
+                case ColossalStunState.Stunned:
+                    PlayAnimation(ColossalAnimations.StunFallFaceAnim, 0f);
+                    SetAnimationSpeed(ColossalAnimations.StunFallFaceAnim, 1f);
+                    break;
+
+                case ColossalStunState.Recovering:
                     break;
             }
         }
 
         public void LateUpdate()
         {
-            // Apply hand scaling based on state (must be done in LateUpdate as animations override transforms)
-            if (LeftHandState == ColossalHandState.Broken)
+            if (LeftHandState == ColossalHandState.Severed || LeftHandState == ColossalHandState.Recovering)
             {
                 ColossalCache.LeftHand.localScale = Vector3.zero;
                 ColossalCache.HandLHitbox.transform.localRotation = Quaternion.Euler(0f, 0f, UnityEngine.Random.Range(-10f, 10f));
@@ -321,7 +552,7 @@ namespace Characters
                 ColossalCache.HandLHitbox.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
             }
 
-            if (RightHandState == ColossalHandState.Broken)
+            if (RightHandState == ColossalHandState.Severed || RightHandState == ColossalHandState.Recovering)
             {
                 ColossalCache.RightHand.localScale = Vector3.zero;
                 ColossalCache.HandRHitbox.transform.localRotation = Quaternion.Euler(0f, 0f, UnityEngine.Random.Range(-10f, 10f));
@@ -333,29 +564,13 @@ namespace Characters
             }
         }
 
-        public void ApplyRightHandState(ColossalHandState newState)
-        {
-            _rightHandState = newState;
-            
-            switch (newState)
-            {
-                case ColossalHandState.Healthy:
-                    ToggleParticleSystem(ColossalCache.RightHandSteam, false);
-                    break;
-                    
-                case ColossalHandState.Broken:
-                    EffectSpawner.Spawn(EffectPrefabs.Blood1, ColossalCache.HandRHitbox.transform.position, 
-                        Quaternion.Euler(-90f, 0f, 0f), 100);
-                    ToggleParticleSystem(ColossalCache.RightHandSteam, true);
-                    break;
-            }
-        }
-
         public void Update()
         {
             base.Update();
             UpdateSteam();
-            UpdateHandRecovery();
+            UpdateHandSeverWindows();
+            UpdateStunRecovery();
+            UpdateStunAnimation();
         }
 
         protected void ToggleParticleSystem(ParticleSystem system, bool enabled)
@@ -376,7 +591,7 @@ namespace Characters
         {
             if (_steamState != ColossalSteamState.Off && IsMine())
             {
-                ApplySteamState(ColossalSteamState.Off);
+                photonView.RPC(nameof(SetSteamStateRPC), RpcTarget.All, new object[] { (byte)ColossalSteamState.Off });
             }
         }
 
@@ -384,62 +599,139 @@ namespace Characters
         {
             _steamTimeLeft = WarningSteamTime;
             _steamBlowAwayTimeLeft = BlowAwaySteamTime;
-            
+            _steamDamageTimeLeft = SteamDamageInterval;
+
             if (IsMine())
-                ApplySteamState(ColossalSteamState.Warning);
+            {
+                photonView.RPC(nameof(SetSteamStateRPC), RpcTarget.All, new object[] { (byte)ColossalSteamState.Warning });
+            }
         }
 
         protected void UpdateSteam()
         {
             if (_steamState == ColossalSteamState.Off)
                 return;
-                
+
             _steamTimeLeft -= Time.deltaTime;
             _steamBlowAwayTimeLeft -= Time.deltaTime;
-            
+            _steamDamageTimeLeft -= Time.deltaTime;
+
             if (_steamBlowAwayTimeLeft <= 0f)
             {
-                // BlowAwayHumans(ColossalCache.NapeHurtbox.transform.position, SteamBlowAwayForce);
+                BlowAwayHumans(ColossalCache.NapeHurtbox.transform, 100, SteamBlowAwayForce);
                 _steamBlowAwayTimeLeft = BlowAwaySteamTime;
             }
-            
+
+            if (_steamState == ColossalSteamState.Damage && _steamDamageTimeLeft <= 0f)
+            {
+                BlowAwayHumans(ColossalCache.NapeHurtbox.transform, 100, SteamBlowAwayForce);
+                _steamDamageTimeLeft = SteamDamageInterval;
+            }
+
             if (_steamTimeLeft <= 0f && _steamState == ColossalSteamState.Warning)
             {
                 if (IsMine())
                 {
-                    ApplySteamState(ColossalSteamState.Damage);
+                    photonView.RPC(nameof(SetSteamStateRPC), RpcTarget.All, new object[] { (byte)ColossalSteamState.Damage });
                 }
             }
         }
 
-        protected void UpdateHandRecovery()
+        protected void UpdateHandSeverWindows()
         {
-            if (!IsMine())
+            if (_stunState != ColossalStunState.None)
                 return;
 
-            // Update left hand recovery
-            if (_leftHandState == ColossalHandState.Broken)
+            if (_leftHandState == ColossalHandState.Severed && LeftHandSeverTimeLeft > 0f)
             {
-                LeftHandRecoveryTimeLeft -= Time.deltaTime;
-                
-                if (LeftHandRecoveryTimeLeft <= 0f)
+                LeftHandSeverTimeLeft -= Time.deltaTime;
+
+                if (LeftHandSeverTimeLeft <= 0f)
                 {
-                    ApplyLeftHandState(ColossalHandState.Healthy);
-                    SetCurrentLeftHandHealth(MaxLeftHandHealth);
-                    photonView.RPC(nameof(SetLeftHandStateRPC), RpcTarget.Others, new object[] { (byte)ColossalHandState.Healthy });
+                    LeftHandSeverTimeLeft = 0f;
+                    
+                    if (IsMine())
+                    {
+                        //DebugConsole.Log($"[WallColossal] Left Hand sever window expired - recovering independently", false);
+                        SetCurrentLeftHandHealth(MaxLeftHandHealth);
+                        photonView.RPC(nameof(SetLeftHandStateRPC), RpcTarget.All, new object[] { (byte)ColossalHandState.Healthy });
+                    }
                 }
             }
 
-            // Update right hand recovery
-            if (_rightHandState == ColossalHandState.Broken)
+            if (_rightHandState == ColossalHandState.Severed && RightHandSeverTimeLeft > 0f)
             {
-                RightHandRecoveryTimeLeft -= Time.deltaTime;
-                
-                if (RightHandRecoveryTimeLeft <= 0f)
+                RightHandSeverTimeLeft -= Time.deltaTime;
+
+                if (RightHandSeverTimeLeft <= 0f)
                 {
-                    ApplyRightHandState(ColossalHandState.Healthy);
-                    SetCurrentRightHandHealth(MaxRightHandHealth);
-                    photonView.RPC(nameof(SetRightHandStateRPC), RpcTarget.Others, new object[] { (byte)ColossalHandState.Healthy });
+                    RightHandSeverTimeLeft = 0f;
+                    
+                    if (IsMine())
+                    {
+                        //DebugConsole.Log($"[WallColossal] Right Hand sever window expired - recovering independently", false);
+                        SetCurrentRightHandHealth(MaxRightHandHealth);
+                        photonView.RPC(nameof(SetRightHandStateRPC), RpcTarget.All, new object[] { (byte)ColossalHandState.Healthy });
+                    }
+                }
+            }
+        }
+
+        protected void UpdateStunRecovery()
+        {
+            if (_stunState == ColossalStunState.Stunned && StunTimeLeft > 0f)
+            {
+                StunTimeLeft -= Time.deltaTime;
+
+                if (StunTimeLeft <= 0f)
+                {
+                    StunTimeLeft = 0f;
+                    
+                    if (IsMine())
+                    {
+                        //DebugConsole.Log($"[WallColossal] Stun State: Stunned -> Recovering (Duration: {RecoveryDuration}s)", false);
+                        RecoveryTimeLeft = RecoveryDuration;
+                        photonView.RPC(nameof(SetStunStateRPC), RpcTarget.All, new object[] { (byte)ColossalStunState.Recovering });
+                        photonView.RPC(nameof(SetLeftHandStateRPC), RpcTarget.All, new object[] { (byte)ColossalHandState.Recovering });
+                        photonView.RPC(nameof(SetRightHandStateRPC), RpcTarget.All, new object[] { (byte)ColossalHandState.Recovering });
+                        photonView.RPC(nameof(SetStunRecoveryTimesRPC), RpcTarget.All, new object[] { 0f, RecoveryTimeLeft });
+                    }
+                }
+            }
+            else if (_stunState == ColossalStunState.Recovering && RecoveryTimeLeft > 0f)
+            {
+                RecoveryTimeLeft -= Time.deltaTime;
+
+                if (RecoveryTimeLeft <= 0f)
+                {
+                    RecoveryTimeLeft = 0f;
+                    
+                    if (IsMine())
+                    {
+                        //DebugConsole.Log($"[WallColossal] Recovery complete - returning to normal state", false);
+                        SetCurrentLeftHandHealth(MaxLeftHandHealth);
+                        SetCurrentRightHandHealth(MaxRightHandHealth);
+                        photonView.RPC(nameof(SetStunStateRPC), RpcTarget.All, new object[] { (byte)ColossalStunState.None });
+                        photonView.RPC(nameof(SetLeftHandStateRPC), RpcTarget.All, new object[] { (byte)ColossalHandState.Healthy });
+                        photonView.RPC(nameof(SetRightHandStateRPC), RpcTarget.All, new object[] { (byte)ColossalHandState.Healthy });
+                        LeftHandSeverTimeLeft = 0f;
+                        RightHandSeverTimeLeft = 0f;
+                        photonView.RPC(nameof(SetHandSeverTimesRPC), RpcTarget.All, new object[] { 0f, 0f });
+                    }
+                }
+            }
+        }
+
+        protected void UpdateStunAnimation()
+        {
+            if (_stunState == ColossalStunState.Stunned && _stunAnimationTimeLeft > 0f)
+            {
+                _stunAnimationTimeLeft -= Time.deltaTime;
+                
+                if (_stunAnimationTimeLeft <= 0f)
+                {
+                    SetAnimationSpeed(ColossalAnimations.StunFallFaceAnim, 0f);
+                    _stunAnimationTimeLeft = 0f;
                 }
             }
         }
@@ -471,7 +763,7 @@ namespace Characters
                 {
                     _currentAttackStage = 1;
                     ColossalCache.FootRHitbox.Activate(0f, GetHitboxTime(0.1f));
-                    EffectSpawner.Spawn(EffectPrefabs.Boom2, ColossalCache.FootRHitbox.transform.position, BaseTitanCache.Transform.rotation, 
+                    EffectSpawner.Spawn(EffectPrefabs.Boom2, ColossalCache.FootRHitbox.transform.position, BaseTitanCache.Transform.rotation,
                         Size * 5f);
                 }
             }
@@ -493,7 +785,7 @@ namespace Characters
                 if (_currentAttackStage == 0 && animationTime > 0.34f)
                 {
                     _currentAttackStage = 1;
-                    if (_leftHandState == ColossalHandState.Healthy)
+                    if (_leftHandState == ColossalHandState.Healthy || _leftHandState == ColossalHandState.Damaged)
                     {
                         ColossalCache.HandLHitbox.Activate(0f, GetHitboxTime(0.02f));
                         EffectSpawner.Spawn(EffectPrefabs.Boom8, ColossalCache.HandLHitbox.transform.position + Vector3.down * 8f, Quaternion.Euler(-90f, 0f, 0f),
@@ -507,12 +799,30 @@ namespace Characters
                 if (_currentAttackStage == 0 && animationTime > 0.34f)
                 {
                     _currentAttackStage = 1;
-                    if (_rightHandState == ColossalHandState.Healthy)
+                    if (_rightHandState == ColossalHandState.Healthy || _rightHandState == ColossalHandState.Damaged)
                     {
                         ColossalCache.HandRHitbox.Activate(0f, GetHitboxTime(0.02f));
                         EffectSpawner.Spawn(EffectPrefabs.Boom8, ColossalCache.HandRHitbox.transform.position + Vector3.down * 8f, Quaternion.Euler(-90f, 0f, 0f),
                             Size * 4f);
                         BlowAwayHumans(ColossalCache.HandRHitbox.transform.position + Vector3.down * 10f, DefaultBlowAwayForce);
+                    }
+                }
+            }
+        }
+
+        protected void BlowAwayHumans(Transform source, float angle, float force)
+        {
+            foreach (var human in _inGameManager.Humans)
+            {
+                Vector3 directionToHuman = human.Cache.Transform.position - source.position;
+                float distance = directionToHuman.magnitude;
+                
+                if (distance < BlowAwayMaxDistance)
+                {
+                    float angleToHuman = Vector3.Angle(source.forward, directionToHuman);
+                    if (angleToHuman <= angle / 2f)
+                    {
+                        human.BlowAway(source.position, force, BlowAwayMaxDistance);
                     }
                 }
             }
@@ -544,14 +854,20 @@ namespace Characters
             }
             else if (collider == ColossalCache.HandLHurtbox.name)
             {
-                if (_leftHandState == ColossalHandState.Healthy)
+                if (!CanDamageLeftHand)
+                    return;
+
+                if (_leftHandState == ColossalHandState.Healthy || _leftHandState == ColossalHandState.Damaged)
                 {
                     SetCurrentLeftHandHealth(CurrentLeftHandHealth - damage);
                 }
             }
             else if (collider == ColossalCache.HandRHurtbox.name)
             {
-                if (_rightHandState == ColossalHandState.Healthy)
+                if (!CanDamageRightHand)
+                    return;
+
+                if (_rightHandState == ColossalHandState.Healthy || _rightHandState == ColossalHandState.Damaged)
                 {
                     SetCurrentRightHandHealth(CurrentRightHandHealth - damage);
                 }
@@ -569,6 +885,15 @@ namespace Characters
     public enum ColossalHandState
     {
         Healthy,
-        Broken
+        Damaged,
+        Severed,
+        Recovering
+    }
+
+    public enum ColossalStunState
+    {
+        None,
+        Stunned,
+        Recovering
     }
 }

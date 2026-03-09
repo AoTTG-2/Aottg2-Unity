@@ -1,3 +1,4 @@
+using System;
 using UnityEngine.UIElements;
 
 namespace CustomLogic
@@ -172,26 +173,19 @@ namespace CustomLogic
         /// <summary>
         /// The direction of the slider.
         /// </summary>
-        [CLProperty(Enum = typeof(CustomLogicSliderDirectionEnum))]
-        public string Direction
+        [CLProperty(Enum = new Type[] { typeof(CustomLogicSliderDirectionEnum) })]
+        public int Direction
         {
-            get => _isIntSlider ? _intSlider.direction.ToString() : _floatSlider.direction.ToString();
+            get => _isIntSlider ? (int)_intSlider.direction : (int)_floatSlider.direction;
             set
             {
-                if (value == "Horizontal")
-                {
-                    if (_isIntSlider)
-                        _intSlider.direction = SliderDirection.Horizontal;
-                    else
-                        _floatSlider.direction = SliderDirection.Horizontal;
-                }
-                else if (value == "Vertical")
-                {
-                    if (_isIntSlider)
-                        _intSlider.direction = SliderDirection.Vertical;
-                    else
-                        _floatSlider.direction = SliderDirection.Vertical;
-                }
+                if (!System.Enum.IsDefined(typeof(SliderDirection), value))
+                    throw new System.ArgumentException($"Invalid slider direction: {value}");
+
+                if (_isIntSlider)
+                    _intSlider.direction = (SliderDirection)value;
+                else
+                    _floatSlider.direction = (SliderDirection)value;
             }
         }
 

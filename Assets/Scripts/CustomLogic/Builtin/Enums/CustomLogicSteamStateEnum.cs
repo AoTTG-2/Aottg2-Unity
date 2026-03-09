@@ -1,3 +1,5 @@
+using Characters;
+
 namespace CustomLogic
 {
     /// <summary>
@@ -13,18 +15,18 @@ namespace CustomLogic
         /// Steam is off.
         /// </summary>
         [CLProperty]
-        public static string Off => "Off";
+        public static int Off => (int)ColossalSteamState.Off;
 
         /// <summary>
         /// Steam warning state.
         /// </summary>
         [CLProperty]
-        public static string Warning => "Warning";
+        public static int Warning => (int)ColossalSteamState.Warning;
 
         /// <summary>
         /// Steam damage state.
         /// </summary>
         [CLProperty]
-        public static string Damage => "Damage";
+        public static int Damage => (int)ColossalSteamState.Damage;
     }
 }

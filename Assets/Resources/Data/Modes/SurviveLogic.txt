@@ -8,7 +8,7 @@ class Main
     {
         if (Network.IsMasterClient)
         {
-            Game.SpawnTitans("Default", self.Titans);
+            Game.SpawnTitans(TitanTypeEnum.Default, self.Titans);
         }
     }
 
@@ -25,17 +25,17 @@ class Main
             }
             if (titans == 0)
             {
-                UI.SetLabelAll("MiddleCenter", "Humanity wins!");
+                UI.SetLabelAll(UILabelEnum.MiddleCenter, "Humanity wins!");
                 Game.End(10.0);
                 return;
             }
             if (humans == 0 && playerShifters == 0 && self._hasSpawned)
             {
-                UI.SetLabelAll("MiddleCenter", "Humanity failed!");
+                UI.SetLabelAll(UILabelEnum.MiddleCenter, "Humanity failed!");
                 Game.End(10.0);
                 return;
             }
-            UI.SetLabelAll("TopCenter", "Titans Left: " + Convert.ToString(titans));
+            UI.SetLabelAll(UILabelEnum.TopCenter, "Titans Left: " + Convert.ToString(titans));
         }
     }
 }

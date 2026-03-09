@@ -1237,7 +1237,7 @@ self._startBarriers = Map.FindMapObjectsByTag("RacingStartBarrier");
 Network.MyPlayer.SetCustomProperty("Finished", false);
 if (Network.IsMasterClient)
 {
-Game.SpawnTitans("Crawler", self.Titans);
+Game.SpawnTitans(TitanTypeEnum.Crawler, self.Titans);
 }
 }
 
@@ -1248,7 +1248,7 @@ if (character.IsMine && character.Type == "Human")
 character.CurrentGas = 0;
 character.MaxGas = 0;
 character.Speed = 80;
-character.SetSpecial("SmokeBomb");
+character.SetSpecial(SpecialEnum.SmokeBomb);
 }
 }
 
@@ -1278,7 +1278,7 @@ else
 {
 human.CanDodge = false;
 }
-if (human.State == "GroundDodge")
+if (human.State == HumanStateEnum.GroundDodge)
 {
 if (!self._isDodging)
 {
@@ -1295,16 +1295,16 @@ for (i in Range(0, 4, 1))
 {
 text = text + String.Newline;
 }
-UI.SetLabel("BottomCenter", text);
+UI.SetLabel(UILabelEnum.BottomCenter, text);
 }
 else
 {
-UI.SetLabel("BottomCenter", "");
+UI.SetLabel(UILabelEnum.BottomCenter, "");
 }
 if (!self._started)
 {
 Game.SpawnPlayer(Network.MyPlayer, false);
-UI.SetLabel("TopCenter", "Race Starts In: " + String.FormatFloat(self.StartDelay - Time.GameTime, 2));
+UI.SetLabel(UILabelEnum.TopCenter, "Race Starts In: " + String.FormatFloat(self.StartDelay - Time.GameTime, 2));
 if (Time.GameTime > self.StartDelay)
 {
 self._started = true;
@@ -1312,7 +1312,7 @@ for (barrier in self._startBarriers)
 {
 barrier.Active = false;
 }
-if (Network.MyPlayer.Status == "Alive")
+if (Network.MyPlayer.Status == PlayerStatusEnum.Alive)
 {
 self._hasSpawned = true;
 }
@@ -1320,13 +1320,13 @@ self._hasSpawned = true;
 }
 else
 {
-UI.SetLabel("TopCenter", "Racing Time: " + String.FormatFloat(Time.GameTime - self.StartDelay, 2));
-if (!self._hasSpawned && Network.MyPlayer.Status == "Dead")
+UI.SetLabel(UILabelEnum.TopCenter, "Racing Time: " + String.FormatFloat(Time.GameTime - self.StartDelay, 2));
+if (!self._hasSpawned && Network.MyPlayer.Status == PlayerStatusEnum.Dead)
 {
 Game.SpawnPlayer(Network.MyPlayer, false);
 self._hasSpawned = true;
 }
-elif (Network.MyPlayer.Status == "Dead")
+elif (Network.MyPlayer.Status == PlayerStatusEnum.Dead)
 {
 Network.MyPlayer.SetCustomProperty("Finished", true);
 }
@@ -1336,11 +1336,11 @@ anyPlayerAlive = false;
 anyPlayerSpawned = false;
 for (player in Network.Players)
 {
-if (player.Status != "Spectating")
+if (player.Status != PlayerStatusEnum.Spectating)
 {
 anyPlayerSpawned = true;
 finished = player.GetCustomProperty("Finished");
-if (player.Status == "Alive" && (finished == null || !finished))
+if (player.Status == PlayerStatusEnum.Alive && (finished == null || !finished))
 {
 anyPlayerAlive = true;
 }
@@ -1348,7 +1348,7 @@ anyPlayerAlive = true;
 }
 if (anyPlayerSpawned && !anyPlayerAlive)
 {
-UI.SetLabelAll("MiddleCenter", "All players have either escaped or perished.");
+UI.SetLabelAll(UILabelEnum.MiddleCenter, "All players have either escaped or perished.");
 Game.End(10);
 }
 }

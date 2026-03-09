@@ -12,6 +12,7 @@ namespace Characters
         Human _owner;
         HorseComponentCache HorseCache;
         public HorseState State;
+        public bool FollowingEnabled = true;
         private float WalkSpeed = 15f;
         private float RunCloseSpeed = 20f;
         private float TeleportTime = 10f;
@@ -21,6 +22,7 @@ namespace Characters
         private float _idleTimeLeft;
         private float _teleportTimeLeft;
         private float _jumpCooldownLeft;
+        
 
         public void Init(Human human)
         {
@@ -143,6 +145,10 @@ namespace Characters
                 }
                 else
                 {
+                    if (!FollowingEnabled)
+                    {
+                        return;
+                    }
                     _teleportTimeLeft -= Time.deltaTime;
                     float distance = Vector3.Distance(_owner.Cache.Transform.position, Cache.Transform.position);
                     float flatDistance = Util.DistanceIgnoreY(_owner.Cache.Transform.position, Cache.Transform.position);

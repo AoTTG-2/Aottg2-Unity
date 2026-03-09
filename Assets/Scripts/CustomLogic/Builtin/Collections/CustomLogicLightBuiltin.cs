@@ -9,7 +9,7 @@ namespace CustomLogic
     [CLType(Name = "LightBuiltin", Static = true, Abstract = true)]
     partial class CustomLogicLightBuiltin : BuiltinComponentInstance
     {
-        public Light Value;
+        public MapLight Value;
         public CustomLogicMapObjectBuiltin OwnerMapObject;
         public GameObject Owner;
 
@@ -23,13 +23,21 @@ namespace CustomLogic
         {
             OwnerMapObject = owner;
             Owner = owner.Value.GameObject;
-            Value = (Light)Component;
-            Value.type = type;
-            Value.shadowBias = 0.2f;
-            Value.intensity = 1f;
-            Value.shadows = LightShadows.Soft;
-            Value.shadowStrength = 0.8f;
-            MapLoader.RegisterMapLight(Value, type == LightType.Directional);
+            Value = MapLoader.RegisterMapLight((Light)Component, type == LightType.Directional);
+            Value.MaxIntensity = 1f;
+            Value.Light.type = type;
+            if (type == LightType.Directional)
+            {
+                Value.Light.shadows = LightShadows.Soft;
+                Value.Light.shadowStrength = 0.8f;
+                Value.Light.shadowBias = 0.2f;
+            }
+            else
+            {
+                Value.Light.shadows = LightShadows.None;
+                Value.Light.renderMode = LightRenderMode.ForcePixel;
+                Value.Light.bounceIntensity = 0f;
+            }
         }
 
         /// <summary>
@@ -74,8 +82,8 @@ namespace CustomLogic
         [CLProperty]
         public int TypeOfLight
         {
-            get => (int)Value.type;
-            set => Value.type = (LightType)value;
+            get => (int)Value.Light.type;
+            set => Value.Light.type = (LightType)value;
         }
 
         /// <summary>
@@ -84,8 +92,8 @@ namespace CustomLogic
         [CLProperty]
         public float Range
         {
-            get => Value.range;
-            set => Value.range = value;
+            get => Value.Light.range;
+            set => Value.Light.range = value;
         }
 
         /// <summary>
@@ -94,8 +102,8 @@ namespace CustomLogic
         [CLProperty]
         public float SpotAngle
         {
-            get => Value.spotAngle;
-            set => Value.spotAngle = value;
+            get => Value.Light.spotAngle;
+            set => Value.Light.spotAngle = value;
         }
 
         /// <summary>
@@ -104,8 +112,8 @@ namespace CustomLogic
         [CLProperty]
         public CustomLogicColorBuiltin Color
         {
-            get => new CustomLogicColorBuiltin(Value.color);
-            set => Value.color = value.Value.ToColor();
+            get => new CustomLogicColorBuiltin(Value.Light.color);
+            set => Value.Light.color = value.Value.ToColor();
         }
 
         /// <summary>
@@ -114,8 +122,8 @@ namespace CustomLogic
         [CLProperty]
         public float Intensity
         {
-            get => Value.intensity;
-            set => Value.intensity = value;
+            get => Value.MaxIntensity;
+            set => Value.MaxIntensity = value;
         }
 
         /// <summary>
@@ -124,8 +132,8 @@ namespace CustomLogic
         [CLProperty]
         public float BounceIntensity
         {
-            get => Value.bounceIntensity;
-            set => Value.bounceIntensity = value;
+            get => Value.Light.bounceIntensity;
+            set => Value.Light.bounceIntensity = value;
         }
 
         /// <summary>
@@ -134,8 +142,8 @@ namespace CustomLogic
         [CLProperty]
         public int ShadowType
         {
-            get => (int)Value.shadows;
-            set => Value.shadows = (LightShadows)value;
+            get => (int)Value.Light.shadows;
+            set => Value.Light.shadows = (LightShadows)value;
         }
 
         /// <summary>
@@ -144,8 +152,8 @@ namespace CustomLogic
         [CLProperty]
         public float ShadowStrength
         {
-            get => Value.shadowStrength;
-            set => Value.shadowStrength = value;
+            get => Value.Light.shadowStrength;
+            set => Value.Light.shadowStrength = value;
         }
 
         private bool _weatherControlled = false;
@@ -160,13 +168,13 @@ namespace CustomLogic
             set
             {
                 _weatherControlled = value;
-                if (value && !MapLoader.Daylight.Contains(Value))
+                if (value && !MapLoader.Daylight.Contains(Value.Light))
                 {
-                    MapLoader.Daylight.Add(Value);
+                    MapLoader.Daylight.Add(Value.Light);
                 }
                 else if (!value)
                 {
-                    MapLoader.Daylight.Remove(Value);
+                    MapLoader.Daylight.Remove(Value.Light);
                 }
             }
         }

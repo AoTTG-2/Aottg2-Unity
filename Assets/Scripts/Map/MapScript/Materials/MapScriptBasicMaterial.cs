@@ -6,7 +6,7 @@ using Utility;
 
 namespace Map
 {
-    class MapScriptBasicMaterial: MapScriptBaseMaterial
+    public class MapScriptBasicMaterial: MapScriptBaseMaterial
     {
         [Order(3)] public string Texture = "Misc/None";
         [Order(4)] public Vector2 Tiling = Vector2.one;

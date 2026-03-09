@@ -16,19 +16,19 @@ namespace CustomLogic
     ///         # Character is owned (network-wise) by the person running this script.
     ///         # Ex: If user is host, this could either be their actual player character or AI titans/shifters.
     ///     }
-    ///     
+    ///
     ///     if (character.IsMainCharacter)
     ///     {
     ///         # Character is the main character (the camera-followed player).
     ///     }
-    ///     
+    ///
     ///     if (character.IsAI)
     ///     {
     ///         # Character is AI and likely controlled via MasterClient.
-    ///         
+    ///
     ///         if (character.Player.ID == Network.MasterClient.ID)
     ///         {
-    ///             # Character is owned by masterclient, if we're not masterclient, we cannot modify props.    
+    ///             # Character is owned by masterclient, if we're not masterclient, we cannot modify props.
     ///         }
     ///     }
     /// }
@@ -83,6 +83,13 @@ namespace CustomLogic
         public bool IsAI => Character.AI;
 
         /// <summary>
+        /// Is this character alive?
+        /// Value is set to false before despawn.
+        /// </summary>
+        [CLProperty]
+        public bool IsAlive => Character != null ? !Character.Dead : false;
+
+        /// <summary>
         /// Network view ID of the character.
         /// </summary>
         [CLProperty]
@@ -110,7 +117,7 @@ namespace CustomLogic
         /// Position of the character.
         /// </summary>
         [CLProperty]
-        public CustomLogicVector3Builtin Position
+        public virtual CustomLogicVector3Builtin Position
         {
             get => new CustomLogicVector3Builtin(Character.Cache.Transform.position);
             set
@@ -155,7 +162,7 @@ namespace CustomLogic
         [CLProperty]
         public CustomLogicVector3Builtin Velocity
         {
-            get => new CustomLogicVector3Builtin(Character.Cache.Rigidbody.velocity);
+            get => new CustomLogicVector3Builtin(Character.GetVelocity());
             set
             {
                 if (!Character.IsMine()) return;
@@ -216,12 +223,16 @@ namespace CustomLogic
         /// The character's target direction.
         /// </summary>
         [CLProperty]
-        public CustomLogicVector3Builtin TargetDirection => new CustomLogicVector3Builtin(Character.GetTargetDirection());
+        public CustomLogicVector3Builtin TargetDirection
+        {
+            get => new CustomLogicVector3Builtin(Character.GetTargetDirection());
+            set => Character.TargetAngle = Quaternion.LookRotation(value.Value).eulerAngles.y;
+        }
 
         /// <summary>
-        /// Team character belongs to.
+        /// Team character belongs to. Using enum is not mandatory, value can be any string.
         /// </summary>
-        [CLProperty(Enum = typeof(CustomLogicTeamEnum))]
+        [CLProperty(Enum = new Type[] { typeof(CustomLogicTeamEnum) })]
         public string Team
         {
             get => Character.Team;
@@ -339,7 +350,7 @@ namespace CustomLogic
         /// <param name="animation">Name of the animation.</param>
         /// <param name="fade">Fade time. If provided, will crossfade the animation by this timestep.</param>
         [CLMethod]
-        public void PlayAnimation(string animation, float fade = 0.1f)
+        public void PlayAnimation([CLParam(Enum = new Type[] { typeof(CustomLogicHumanAnimationEnum), typeof(CustomLogicTitanAnimationEnum), typeof(CustomLogicAnnieAnimationEnum), typeof(CustomLogicErenAnimationEnum), typeof(CustomLogicWallColossalAnimationEnum), typeof(CustomLogicDummyAnimationEnum), typeof(CustomLogicHorseAnimationEnum) })] string animation, float fade = 0.1f)
         {
             if (Character.IsMine() && !Character.Dead)
                 Character.CrossFadeIfNotPlaying(animation, fade);
@@ -353,7 +364,7 @@ namespace CustomLogic
         /// <param name="fade">Fade time.</param>
         /// <param name="force">Whether to force the animation even if it's already playing.</param>
         [CLMethod]
-        public void PlayAnimationAt(string animation, float t, float fade = 0.1f, bool force = false)
+        public void PlayAnimationAt([CLParam(Enum = new Type[] { typeof(CustomLogicHumanAnimationEnum), typeof(CustomLogicTitanAnimationEnum), typeof(CustomLogicAnnieAnimationEnum), typeof(CustomLogicErenAnimationEnum), typeof(CustomLogicWallColossalAnimationEnum), typeof(CustomLogicDummyAnimationEnum), typeof(CustomLogicHorseAnimationEnum) })] string animation, float t, float fade = 0.1f, bool force = false)
         {
             if (Character.IsMine() && !Character.Dead)
             {
@@ -370,7 +381,7 @@ namespace CustomLogic
         /// <param name="animation">Name of the animation.</param>
         /// <returns>1.0 if the character is not owned by the player or is dead, otherwise the animation speed.</returns>
         [CLMethod]
-        public float GetAnimationSpeed(string animation)
+        public float GetAnimationSpeed([CLParam(Enum = new Type[] { typeof(CustomLogicHumanAnimationEnum), typeof(CustomLogicTitanAnimationEnum), typeof(CustomLogicAnnieAnimationEnum), typeof(CustomLogicErenAnimationEnum), typeof(CustomLogicWallColossalAnimationEnum), typeof(CustomLogicDummyAnimationEnum), typeof(CustomLogicHorseAnimationEnum) })] string animation)
         {
             if (Character.IsMine() && !Character.Dead)
                 return Character.GetAnimationSpeed(animation);
@@ -384,7 +395,7 @@ namespace CustomLogic
         /// <param name="speed">The animation speed multiplier.</param>
         /// <param name="synced">Whether to sync the speed across the network.</param>
         [CLMethod]
-        public void SetAnimationSpeed(string animation, float speed, bool synced = true)
+        public void SetAnimationSpeed([CLParam(Enum = new Type[] { typeof(CustomLogicHumanAnimationEnum), typeof(CustomLogicTitanAnimationEnum), typeof(CustomLogicAnnieAnimationEnum), typeof(CustomLogicErenAnimationEnum), typeof(CustomLogicWallColossalAnimationEnum), typeof(CustomLogicDummyAnimationEnum), typeof(CustomLogicHorseAnimationEnum) })] string animation, float speed, bool synced = true)
         {
             if (Character.IsMine() && !Character.Dead)
             {
@@ -420,7 +431,7 @@ namespace CustomLogic
         /// <param name="animation">Name of the animation.</param>
         /// <returns>True if the animation is playing, false otherwise.</returns>
         [CLMethod]
-        public bool IsPlayingAnimation(string animation)
+        public bool IsPlayingAnimation([CLParam(Enum = new Type[] { typeof(CustomLogicHumanAnimationEnum), typeof(CustomLogicTitanAnimationEnum), typeof(CustomLogicAnnieAnimationEnum), typeof(CustomLogicErenAnimationEnum), typeof(CustomLogicWallColossalAnimationEnum), typeof(CustomLogicDummyAnimationEnum), typeof(CustomLogicHorseAnimationEnum) })] string animation)
         {
             return Character.Animation.IsPlaying(animation);
         }
@@ -431,7 +442,7 @@ namespace CustomLogic
         /// <param name="animation">Name of the animation.</param>
         /// <returns>The normalized time (0-1) of the animation.</returns>
         [CLMethod]
-        public float GetAnimationNormalizedTime(string animation)
+        public float GetAnimationNormalizedTime([CLParam(Enum = new Type[] { typeof(CustomLogicHumanAnimationEnum), typeof(CustomLogicTitanAnimationEnum), typeof(CustomLogicAnnieAnimationEnum), typeof(CustomLogicErenAnimationEnum), typeof(CustomLogicWallColossalAnimationEnum), typeof(CustomLogicDummyAnimationEnum), typeof(CustomLogicHorseAnimationEnum) })] string animation)
         {
             if (!Character.Animation.IsPlaying(animation))
                 return 1f;
@@ -446,7 +457,7 @@ namespace CustomLogic
         /// <param name="animation">Name of the animation.</param>
         /// <param name="fade">Fade time. If provided, will crossfade the animation by this timestep.</param>
         [CLMethod]
-        public void ForceAnimation(string animation, float fade = 0.1f)
+        public void ForceAnimation([CLParam(Enum = new Type[] { typeof(CustomLogicHumanAnimationEnum), typeof(CustomLogicTitanAnimationEnum), typeof(CustomLogicAnnieAnimationEnum), typeof(CustomLogicErenAnimationEnum), typeof(CustomLogicWallColossalAnimationEnum), typeof(CustomLogicDummyAnimationEnum), typeof(CustomLogicHorseAnimationEnum) })] string animation, float fade = 0.1f)
         {
             if (Character.IsMine() && !Character.Dead)
                 Character.ForceAnimation(animation, fade);
@@ -458,7 +469,7 @@ namespace CustomLogic
         /// <param name="animation">Name of the animation.</param>
         /// <returns>The length of the animation in seconds.</returns>
         [CLMethod]
-        public float GetAnimationLength(string animation)
+        public float GetAnimationLength([CLParam(Enum = new Type[] { typeof(CustomLogicHumanAnimationEnum), typeof(CustomLogicTitanAnimationEnum), typeof(CustomLogicAnnieAnimationEnum), typeof(CustomLogicErenAnimationEnum), typeof(CustomLogicWallColossalAnimationEnum), typeof(CustomLogicDummyAnimationEnum), typeof(CustomLogicHorseAnimationEnum) })] string animation)
         {
             return Character.Animation.GetLength(animation);
         }
@@ -471,7 +482,7 @@ namespace CustomLogic
         /// <param name="sound">Name of the sound.</param>
         /// <returns>True if the sound is playing, false otherwise.</returns>
         [CLMethod]
-        public bool IsPlayingSound(string sound)
+        public bool IsPlayingSound([CLParam(Enum = new Type[] { typeof(CustomLogicHumanSoundEnum), typeof(CustomLogicTitanSoundEnum), typeof(CustomLogicShifterSoundEnum) })] string sound)
         {
             return Character.IsPlayingSound(sound);
         }
@@ -483,7 +494,7 @@ namespace CustomLogic
         /// </summary>
         /// <param name="sound">Name of the sound to play.</param>
         [CLMethod]
-        public void PlaySound(string sound)
+        public void PlaySound([CLParam(Enum = new Type[] { typeof(CustomLogicHumanSoundEnum), typeof(CustomLogicTitanSoundEnum), typeof(CustomLogicShifterSoundEnum) })] string sound)
         {
             if (Character.IsMine() && !Character.Dead && !Character.IsPlayingSound(sound))
                 Character.PlaySound(sound);
@@ -494,7 +505,7 @@ namespace CustomLogic
         /// </summary>
         /// <param name="sound">Name of the sound to stop.</param>
         [CLMethod]
-        public void StopSound(string sound)
+        public void StopSound([CLParam(Enum = new Type[] { typeof(CustomLogicHumanSoundEnum), typeof(CustomLogicTitanSoundEnum), typeof(CustomLogicShifterSoundEnum) })] string sound)
         {
             if (Character.IsMine() && !Character.Dead && Character.IsPlayingSound(sound))
                 Character.StopSound(sound);
@@ -508,7 +519,11 @@ namespace CustomLogic
         /// <param name="volume">Target volume (0.0 to 1.0).</param>
         /// <param name="time">Time in seconds to fade over.</param>
         [CLMethod]
-        public void FadeSound(string sound, float volume, float time)
+        public void FadeSound(
+            [CLParam(Enum = new Type[] { typeof(CustomLogicHumanSoundEnum), typeof(CustomLogicTitanSoundEnum), typeof(CustomLogicShifterSoundEnum) })]
+            string sound,
+            float volume,
+            float time)
         {
             if (Character.IsMine() && !Character.Dead)
                 Character.FadeSound(sound, volume, time);
@@ -533,12 +548,28 @@ namespace CustomLogic
         [CLMethod]
         public void AddForce(
             CustomLogicVector3Builtin force,
-            [CLParam(Enum = typeof(CustomLogicForceModeEnum))] string mode = "Acceleration")
+            // TODO: Migrate to int on the next update when CL developers will migrate to the new enum.
+            [CLParam(Enum = new Type[] { typeof(CustomLogicForceModeEnum) }, Type = "int")] object mode)
         {
             if (!Character.IsMine()) return;
+
             Character.SetKinematic(false, 1f);
-            var useForceMode = Enum.TryParse(mode, out ForceMode forceMode) ? forceMode : ForceMode.Acceleration;
-            Character.Cache.Rigidbody.AddForce(force.Value, useForceMode);
+            if (mode is int forceModeInt)
+            {
+                if (!Enum.IsDefined(typeof(ForceMode), forceModeInt))
+                    throw new ArgumentException($"Unknown force mode: {forceModeInt}");
+                Character.Cache.Rigidbody.AddForce(force.Value, (ForceMode)forceModeInt);
+            }
+            else if (mode is string forceModeString)
+            {
+                if (!Enum.TryParse<ForceMode>(forceModeString, out var forceMode))
+                    throw new ArgumentException($"Unknown force mode: {forceModeString}");
+                Character.Cache.Rigidbody.AddForce(force.Value, forceMode);
+            }
+            else
+            {
+                throw new ArgumentException($"Invalid force mode: {mode}");
+            }
         }
 
         /// <summary>
@@ -559,13 +590,15 @@ namespace CustomLogic
         [CLMethod]
         public void AddOutline(
             CustomLogicColorBuiltin color = null,
-            [CLParam(Enum = typeof(CustomLogicOutlineModeEnum))] string mode = "OutlineAll")
+            [CLParam(Enum = new Type[] { typeof(CustomLogicOutlineModeEnum) })] string mode = "OutlineAll")
         {
             Color outlineColor = Color.white;
             if (color != null)
                 outlineColor = color.Value.ToColor();
 
-            Outline.Mode outlineMode = (Outline.Mode)Enum.Parse(typeof(Outline.Mode), mode);
+            // TODO: Migrate from string to int on the next update when CL developers will migrate to the new enum.
+            if (!Enum.TryParse<Outline.Mode>(mode, out var outlineMode))
+                throw new ArgumentException($"Unknown outline mode: {mode}");
 
             Character.AddOutlineWithColor(outlineColor, outlineMode);
         }
@@ -581,14 +614,8 @@ namespace CustomLogic
 
         public override bool Equals(object other)
         {
-            if (other == null)
-                return Character == null;
-            if (!(other is CustomLogicCharacterBuiltin))
-                return false;
-            var otherCharacter = ((CustomLogicCharacterBuiltin)other).Character;
-            if (Character == null)
-                return otherCharacter == null;
-            return Character == otherCharacter;
+            // Delegate to __Eq__ for consistency
+            return __Eq__(this, other);
         }
 
         /// <summary>
@@ -600,7 +627,21 @@ namespace CustomLogic
         [CLMethod]
         public bool __Eq__(object self, object other)
         {
-            return self.Equals(other);
+            // Extract character wrappers
+            var selfChar = self as CustomLogicCharacterBuiltin;
+            var otherChar = other as CustomLogicCharacterBuiltin;
+
+            // Get underlying Character references (may be null if destroyed)
+            var selfCharacter = selfChar?.Character;
+            var otherCharacter = otherChar?.Character;
+
+            // Compare underlying Characters
+            if (selfCharacter == null && otherCharacter == null)
+                return true;
+            if (selfCharacter == null || otherCharacter == null)
+                return false;
+
+            return selfCharacter == otherCharacter;
         }
 
         /// <summary>

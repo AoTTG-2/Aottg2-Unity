@@ -29,6 +29,7 @@ namespace Settings
         public BoolSetting ShowEmotes = new BoolSetting(true);
         public BoolSetting ShowKeybindTip = new BoolSetting(true);
         public BoolSetting ShowGameTime = new BoolSetting(false);
+        public BoolSetting ShowSongPopup = new BoolSetting(true);
         public IntSetting ShowNames = new IntSetting(0);
         public IntSetting ShowHealthbars = new IntSetting(0);
         public IntSetting HumanNameDistance = new IntSetting(500, minValue: 0, maxValue: 100000);

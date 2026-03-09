@@ -517,8 +517,8 @@ function OnNetworkMessage(sender, message)
 if (sender == Network.MasterClient)
 {
 pair = String.Split(message, ",");
-self.FloodSpeed = Convert.ToFloat(pair.get(0));
-height = Convert.ToFloat(pair.get(1));
+self.FloodSpeed = Convert.ToFloat(pair.Get(0));
+height = Convert.ToFloat(pair.Get(1));
 scale = self._water.Scale;
 scale.Y = height;
 self._water.Scale = scale;
@@ -541,17 +541,17 @@ self._hasSpawned = true;
 }
 if (titans == 0)
 {
-UI.SetLabelAll("MiddleCenter", "Humanity wins!");
+UI.SetLabelAll(UILabelEnum.MiddleCenter, "Humanity wins!");
 Game.End(10.0);
 return;
 }
 if (humans == 0 && playerShifters == 0 && self._hasSpawned)
 {
-UI.SetLabelAll("MiddleCenter", "Humanity failed!");
+UI.SetLabelAll(UILabelEnum.MiddleCenter, "Humanity failed!");
 Game.End(10.0);
 return;
 }
-UI.SetLabelAll("TopCenter", "Titans Left: " + Convert.ToString(titans));
+UI.SetLabelAll(UILabelEnum.TopCenter, "Titans Left: " + Convert.ToString(titans));
 }
 }
 

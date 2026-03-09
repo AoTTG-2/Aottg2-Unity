@@ -72,7 +72,7 @@ class Main
             finishTime = sender.GetCustomProperty("FinishTime");
             if (self.EndAfterWin)
             {
-                UI.SetLabelAll("MiddleCenter", sender.Name + " has won the race in " + finishTime + " seconds!");
+                UI.SetLabelAll(UILabelEnum.MiddleCenter, sender.Name + " has won the race in " + finishTime + " seconds!");
                 Game.End(10);
             }
             else
@@ -96,7 +96,7 @@ class Main
         if (!self._started)
         {
             Game.SpawnPlayer(Network.MyPlayer, false);
-            UI.SetLabel("TopCenter", "Race Starts In: " + String.FormatFloat(self.StartDelay - Time.GameTime, 2));
+            UI.SetLabel(UILabelEnum.TopCenter, "Race Starts In: " + String.FormatFloat(self.StartDelay - Time.GameTime, 2));
             if (Time.GameTime > self.StartDelay)
             {
                 self._started = true;
@@ -104,7 +104,7 @@ class Main
                 {
                     barrier.Active = false;
                 }
-                if (Network.MyPlayer.Status == "Alive")
+                if (Network.MyPlayer.Status == PlayerStatusEnum.Alive)
                 {
                     self._hasSpawned = true;
                 }
@@ -114,20 +114,20 @@ class Main
         {
             if (!self.InfiniteLives)
             {
-                UI.SetLabel("TopCenter", "Racing Time: " + String.FormatFloat(Time.GameTime - self.StartDelay, 2) + ", Lives: " + Convert.ToString(self._livesLeft)
+                UI.SetLabel(UILabelEnum.TopCenter, "Racing Time: " + String.FormatFloat(Time.GameTime - self.StartDelay, 2) + ", Lives: " + Convert.ToString(self._livesLeft)
                 + String.Newline + self._lapText);
             }
             else
             {
-                UI.SetLabel("TopCenter", "Racing Time: " + String.FormatFloat(Time.GameTime - self.StartDelay, 2) + String.Newline + self._lapText);
+                UI.SetLabel(UILabelEnum.TopCenter, "Racing Time: " + String.FormatFloat(Time.GameTime - self.StartDelay, 2) + String.Newline + self._lapText);
             }
             self._dieTimeLeft = self._dieTimeLeft - Time.TickTime;
-            if (!self._hasSpawned && Network.MyPlayer.Status == "Dead")
+            if (!self._hasSpawned && Network.MyPlayer.Status == PlayerStatusEnum.Dead)
             {
                 Game.SpawnPlayer(Network.MyPlayer, false);
                 self._hasSpawned = true;
             }
-            elif (Network.MyPlayer.Status == "Dead" && self._dieTimeLeft <= 0.0)
+            elif (Network.MyPlayer.Status == PlayerStatusEnum.Dead && self._dieTimeLeft <= 0.0)
             {
                 if (self._livesLeft > 0 || self.InfiniteLives)
                 {
@@ -145,11 +145,11 @@ class Main
                 anyPlayerSpawned = false;
                 for (player in Network.Players)
                 {
-                    if (player.Status != "Spectating")
+                    if (player.Status != PlayerStatusEnum.Spectating)
                     {
                         anyPlayerSpawned = true;
                         noLivesLeft = player.GetCustomProperty("NoLivesLeft");
-                        if (player.Status == "Alive" || (noLivesLeft != null && !noLivesLeft))
+                        if (player.Status == PlayerStatusEnum.Alive || (noLivesLeft != null && !noLivesLeft))
                         {
                             anyPlayerAlive = true;
                         }
@@ -157,7 +157,7 @@ class Main
                 }
                 if (anyPlayerSpawned && !anyPlayerAlive)
                 {
-                    UI.SetLabelAll("MiddleCenter", "All players have no lives left.");
+                    UI.SetLabelAll(UILabelEnum.MiddleCenter, "All players have no lives left.");
                     Game.End(10);
                 }
             }

@@ -1204,7 +1204,7 @@ namespace Characters
             base.LateUpdate();
             if (IsMine())
             {
-                bool canLook = State == TitanState.Idle || State == TitanState.Run || State == TitanState.Walk || State == TitanState.Turn;
+                bool canLook = State == TitanState.Idle || State == TitanState.Run || State == TitanState.Walk/* || State == TitanState.Turn*/; // revert if there are issues.
                 if (AI)
                 {
                     var canTarget = false;

@@ -18,7 +18,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 100002, guid: 65f80e69e179f1e4a9ccc6c6e5f17093, type: 3}
       propertyPath: m_Name
-      value: Triangle1
+      value: Plane1b
       objectReference: {fileID: 0}
     - target: {fileID: 100002, guid: 65f80e69e179f1e4a9ccc6c6e5f17093, type: 3}
       propertyPath: m_Layer

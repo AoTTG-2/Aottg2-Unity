@@ -101,7 +101,7 @@
 					"Name": "Outside The Walls",
 					"MiscSettings": {
 						"Horses": true,
-						"HorsebackCombat": false,
+						"HorsebackCombat": true,
 						"AllowPlayerTitans": false,
 						"AllowShifters": false
 					}
@@ -335,7 +335,7 @@
 					"Name": "ELOR 3"
 				},
 				{
-					"Name": "Makina ZYX + ZYX"
+					"Name": "Makina ABC"
 				},
 				{
 					"Name": "Future Trax 3"

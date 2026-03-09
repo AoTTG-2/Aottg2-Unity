@@ -56,7 +56,7 @@ namespace UI
             CreateHorizontalDivider(SinglePanel);
             _pageLabel = ElementFactory.CreateDefaultLabel(_topGroup, style, "0/0").GetComponent<Text>();
             Sync();
-        }
+        } 
 
         public override void Show()
         {
@@ -104,12 +104,15 @@ namespace UI
             _idToIndex.Add(obj.ScriptObject.Id, _items.Count - 1);
             _indexToId.Add(_items.Count - 1, obj.ScriptObject.Id);
             go.transform.Find("Highlight").gameObject.SetActive(false);
-            go.transform.Find("Text").GetComponent<Text>().text = name;
-            go.transform.Find("Text").GetComponent<LayoutElement>().preferredWidth = Width;
-            go.transform.Find("Text").GetComponent<Text>().color = UIManager.GetThemeColor("DefaultPanel", "DefaultLabel", "TextColor");
+            var label = go.transform.Find("Text").GetComponent<Text>();
+            label.text = name;
+            label.horizontalOverflow = HorizontalWrapMode.Overflow;
+            label.color = UIManager.GetThemeColor("DefaultPanel", "DefaultLabel", "TextColor");
+            go.transform.Find("Text").GetComponent<LayoutElement>().preferredWidth = Width - 40f;
             go.GetComponent<HorizontalLayoutGroup>().padding = new RectOffset(10 * (level + 1), 0, 0, 0);
             go.GetComponent<LayoutElement>().minWidth = Width;
             go.GetComponent<LayoutElement>().preferredWidth = Width;
+            go.AddComponent<RectMask2D>();
             var button = go.AddComponent<MapEditorHirarchyButton>();
             button.Setup(() => OnButtonClick(obj.ScriptObject.Id), () => OnButtonRelease(obj.ScriptObject.Id));
             go.transform.Find("ArrowRightButton").gameObject.SetActive(false);

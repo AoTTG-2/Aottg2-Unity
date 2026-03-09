@@ -1,9 +1,13 @@
+using System;
 using System.Collections.Generic;
 using ApplicationManagers;
 using Characters;
+using Controllers;
 using GameManagers;
 using Settings;
+using System;
 using UnityEngine;
+using Map;
 
 namespace CustomLogic
 {
@@ -15,8 +19,8 @@ namespace CustomLogic
     /// {
     ///     if (character.IsMainCharacter &amp;&amp; character.Type == "Human")
     ///     {
-    ///         character.SetWeapon("Blade");
-    ///         character.SetSpecial("Potato");
+    ///         character.SetWeapon(WeaponEnum.Blade);
+    ///         character.SetSpecial(SpecialEnum.Potato);
     ///         character.CurrentGas = character.MaxGas / 2;
     ///     }
     /// }
@@ -26,15 +30,38 @@ namespace CustomLogic
     {
         public Human Human;
 
+        public HumanAIController Controller;
+
         public CustomLogicHumanBuiltin(Human human) : base(human)
         {
             Human = human;
+            if (Human.AI)
+            {
+                Controller = (HumanAIController)Human.Controller;
+            }
+        }
+
+        /// <summary>
+        /// Position of the character.
+        /// </summary>
+        [CLProperty]
+        public override CustomLogicVector3Builtin Position
+        {
+            get => base.Position;
+            set
+            {
+                if (Human.IsMine())
+                {
+                    Human.IsChangingPosition();
+                    base.Position = value;
+                }
+            }
         }
 
         /// <summary>
         /// The weapon the human is using.
         /// </summary>
-        [CLProperty(Enum = typeof(CustomLogicWeaponEnum))]
+        [CLProperty(Enum = new Type[] { typeof(CustomLogicWeaponEnum) })]
         public string Weapon
         {
             get => Human.Setup.Weapon.ToString();
@@ -44,7 +71,7 @@ namespace CustomLogic
         /// <summary>
         /// The current special the human is using.
         /// </summary>
-        [CLProperty]
+        [CLProperty(Enum = new Type[] { typeof(CustomLogicSpecialEnum) })]
         public string CurrentSpecial
         {
             get => Human.CurrentSpecial;
@@ -123,7 +150,11 @@ namespace CustomLogic
         public float MaxGas
         {
             get => Human.Stats.MaxGas;
-            set => Human.Stats.MaxGas = value;
+            set
+            {
+                Human.Stats.MaxGas = value;
+                Human.Stats.UpdateStats();
+            }
         }
 
         /// <summary>
@@ -133,7 +164,11 @@ namespace CustomLogic
         public int Acceleration
         {
             get => Human.Stats.Acceleration;
-            set => Human.Stats.Acceleration = value;
+            set
+            {
+                Human.Stats.Acceleration = value;
+                Human.Stats.UpdateStats();
+            }
         }
 
         /// <summary>
@@ -143,7 +178,32 @@ namespace CustomLogic
         public int Speed
         {
             get => Human.Stats.Speed;
-            set => Human.Stats.Speed = value;
+            set
+            {
+                Human.Stats.Speed = value;
+                Human.Stats.UpdateStats();
+            }
+        }
+
+        /// <summary>
+        /// Whether horse follow is enabled.
+        /// </summary>
+        [CLProperty]
+        public bool HorseFollowEnabled
+        {
+            get
+            {
+                Horse horse = Human.Horse;
+                if (horse != null)
+                    return horse.FollowingEnabled;
+                return false;
+            }
+            set
+            {
+                Horse horse = Human.Horse;
+                if (horse != null)
+                    horse.FollowingEnabled = value;
+            }
         }
 
         /// <summary>
@@ -188,12 +248,21 @@ namespace CustomLogic
                 if (Human.Weapon is BladeWeapon bladeWeapon)
                 {
                     bool bladeWasEnabled = bladeWeapon.CurrentDurability > 0f;
-                    bladeWeapon.CurrentDurability = Mathf.Max(Mathf.Min(bladeWeapon.MaxDurability, value.UnboxToFloat()), 0);
-                    if (bladeWeapon.CurrentDurability >= 0f)
+                    float NewCurrentDurability = Mathf.Clamp(value, 0f, bladeWeapon.MaxDurability);
+
+                    bladeWeapon.CurrentDurability = NewCurrentDurability;
+
+                    if (bladeWasEnabled && NewCurrentDurability <= 0f)
                     {
+                        // Only break blade if CurrentDurability > 0 and then be set to 0
                         Human.ToggleBlades(false);
-                        if (bladeWasEnabled)
-                            Human.PlaySound(HumanSounds.BladeBreak);
+                        Human.PlaySound(HumanSounds.BladeBreak);
+                    }
+                    else if(!bladeWasEnabled && NewCurrentDurability > 0f)
+                    {
+                        // Only enable blade if CurrentDurability <= 0 and then be set to greater 0
+                        Human.ToggleBlades(true);
+                        Human.PlaySound(HumanSounds.BladeReloadGround);
                     }
                 }
             }
@@ -359,6 +428,12 @@ namespace CustomLogic
         public bool IsMounted => Human.MountState == HumanMountState.MapObject;
 
         /// <summary>
+        /// The mount state of human. 0: None, 1: Horse, 2: MapObject.
+        /// </summary>
+        [CLProperty]
+        public int MountState => (int)Human.MountState;
+
+        /// <summary>
         /// The map object the human is mounted on.
         /// </summary>
         [CLProperty]
@@ -368,7 +443,7 @@ namespace CustomLogic
             {
                 if (Human.MountedMapObject == null)
                     return null;
-                return new CustomLogicMapObjectBuiltin(Human.MountedMapObject);
+                return CustomLogicManager.Evaluator.GetOrCreateMapObjectBuiltin(Human.MountedMapObject);
             }
         }
 
@@ -403,7 +478,7 @@ namespace CustomLogic
         /// <summary>
         /// The state of the human.
         /// </summary>
-        [CLProperty]
+        [CLProperty(Enum = new Type[] { typeof(CustomLogicHumanStateEnum) })]
         public string State => Human.State.ToString();
 
         /// <summary>
@@ -441,6 +516,169 @@ namespace CustomLogic
         /// </summary>
         [CLProperty]
         public bool IsCarried => Human.CarryState == HumanCarryState.Carry;
+
+        /// <summary>
+        /// If the human is on the ground.
+        /// </summary>
+        [CLProperty]
+        public bool Grounded => Human.Grounded;
+
+        /// <summary>
+        /// If the human can hold reel in/out.
+        /// </summary>
+        [CLProperty]
+        public bool Pivot => Human.Pivot;
+
+        /// <summary>
+        /// The position of the pivot when the human holds reel in/out.
+        /// </summary>
+        [CLProperty]
+        public CustomLogicVector3Builtin PivotPosition => Human.PivotPosition();
+
+        /// <summary>
+        /// If the left hook is hooked.
+        /// </summary>
+        [CLProperty]
+        public bool IsHookedLeft => Human.HookLeft.IsHooked();
+
+        /// <summary>
+        /// If the right hook is hooked.
+        /// </summary>
+        [CLProperty]
+        public bool IsHookedRight => Human.HookRight.IsHooked();
+
+        /// <summary>
+        /// If the left hook is in the air.
+        /// </summary>
+        [CLProperty]
+        public bool IsHookingLeft => Human.HookLeft.IsHooking();
+
+        /// <summary>
+        /// If the right hook is in the air.
+        /// </summary>
+        [CLProperty]
+        public bool IsHookingRight => Human.HookRight.IsHooking();
+
+        /// <summary>
+        /// If the left hook is used.
+        /// </summary>
+        [CLProperty]
+        public bool HasHookLeft => Human.HookLeft.HasHook();
+
+        /// <summary>
+        /// If the right hook is used.
+        /// </summary>
+        [CLProperty]
+        public bool HasHookRight => Human.HookRight.HasHook();
+
+        /// <summary>
+        /// If the left hook is ready.
+        /// </summary>
+        [CLProperty]
+        public bool LeftHookReady => Human.HookLeft.IsReady();
+
+        /// <summary>
+        /// If the right hook is ready.
+        /// </summary>
+        [CLProperty]
+        public bool RightHookReady => Human.HookRight.IsReady();
+
+        /// <summary>
+        /// Position of the left hook. Returns null if there is no hook.
+        /// </summary>
+        [CLProperty]
+        public CustomLogicVector3Builtin LeftHookPosition => Human.HookLeft.GetCLHookPosition();
+
+        /// <summary>
+        /// Position of the right hook. Returns null if there is no hook.
+        /// </summary>
+        [CLProperty]
+        public CustomLogicVector3Builtin RightHookPosition => Human.HookRight.GetCLHookPosition();
+
+
+        /// <summary>
+        /// The target currently focused by this character. Returns null if no target is set.
+        /// </summary>
+        [CLProperty]
+        public object Target
+        {
+            get
+            {
+                if (!Human.IsMine() || !Human.AI)
+                    return null;
+
+                ITargetable enemy = Controller.Target;
+
+                if (enemy == null)
+                    return null;
+
+                if (enemy is MapTargetable mapTargetable1)
+                {
+                    return new CustomLogicMapTargetableBuiltin(mapTargetable1.GameObject, mapTargetable1);
+                }
+                else if (enemy is Human human)
+                {
+                    return new CustomLogicHumanBuiltin(human);
+                }
+                else if (enemy is BaseShifter shifter)
+                {
+                    return new CustomLogicShifterBuiltin(shifter);
+                }
+                else if (enemy is BasicTitan titan)
+                {
+                    return new CustomLogicTitanBuiltin(titan);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            set
+            {
+                if (!Human.IsMine() || !Human.AI)
+                    return;
+                ITargetable itarget = value is CustomLogicMapTargetableBuiltin mapTargetable
+                                    ? mapTargetable.Value
+                                    : ((CustomLogicCharacterBuiltin)value).Character;
+                Controller.Target = itarget;
+            }
+        }
+
+        /// <summary>
+        /// The target position of the (AI) human.
+        /// </summary>
+        [CLProperty]
+        public CustomLogicVector3Builtin TargetPosition
+        {
+            get => Controller.TargetPosition;
+            set => Controller.TargetPosition = value.Value;
+        }
+
+        /// <summary>
+        /// The target velocity of the (AI) human.
+        /// </summary>
+        [CLProperty]
+        public CustomLogicVector3Builtin TargetVelocity => Controller.TargetVelocity;
+
+        /// <summary>
+        /// Allow the (AI) human to have horse.
+        /// </summary>
+        [CLProperty]
+        public bool AllowHorse
+        {
+            get => Human.AllowHorse;
+            set => Human.AllowHorse = value;
+        }
+
+        /// <summary>
+        /// Allow the (AI) human to use the skin. (preset skin only)
+        /// </summary>
+        [CLProperty]
+        public bool AllowSkin
+        {
+            get => Human.AllowSkin;
+            set => Human.AllowSkin = value;
+        }
 
         /// <summary>
         /// Refills the gas of the human.
@@ -498,42 +736,6 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// Position of the left hook, null if there is no hook.
-        /// </summary>
-        /// <returns>The position of the left hook, or null if there is no hook.</returns>
-        [CLMethod]
-        public CustomLogicVector3Builtin LeftHookPosition()
-        {
-            if (Human.IsMine())
-            {
-                Vector3 hook = Human.HookLeft.GetHookPosition();
-                if (hook != null)
-                {
-                    return new CustomLogicVector3Builtin(hook);
-                }
-            }
-            return null;
-        }
-
-        /// <summary>
-        /// Position of the right hook, null if there is no hook.
-        /// </summary>
-        /// <returns>The position of the right hook, or null if there is no hook.</returns>
-        [CLMethod]
-        public CustomLogicVector3Builtin RightHookPosition()
-        {
-            if (Human.IsMine())
-            {
-                Vector3 hook = Human.HookRight.GetHookPosition();
-                if (hook != null)
-                {
-                    return new CustomLogicVector3Builtin(hook);
-                }
-            }
-            return null;
-        }
-
-        /// <summary>
         /// Mounts the human on a map object.
         /// </summary>
         /// <param name="mapObject">The map object to mount on.</param>
@@ -585,7 +787,7 @@ namespace CustomLogic
         /// </summary>
         /// <param name="special">The name of the special to set.</param>
         [CLMethod]
-        public void SetSpecial(string special)
+        public void SetSpecial([CLParam(Enum = new Type[] { typeof(CustomLogicSpecialEnum) })] string special)
         {
             if (Human.IsMine())
                 Human.SetSpecial(special);
@@ -609,18 +811,25 @@ namespace CustomLogic
         /// </summary>
         /// <param name="weapon">Name of the weapon.</param>
         [CLMethod]
-        public void SetWeapon([CLParam(Enum = typeof(CustomLogicWeaponEnum))] string weapon)
+        public void SetWeapon([CLParam(Enum = new Type[] { typeof(CustomLogicWeaponEnum) })] string weapon)
         {
             if (!Human.IsMine())
                 return;
+            if (Human.AI)
+            {
+                var settings = Human.Settings;
+                settings.Loadout.Value = weapon;
+                Human.ReloadHuman(settings);
+                return;
+            }
             var gameManager = (InGameManager)SceneLoader.CurrentGameManager;
             if (gameManager.CurrentCharacter != null && gameManager.CurrentCharacter is Human && Human.IsMine())
             {
-
+                // TODO: Remove on the next update when CL developers will migrate to the new enum.
                 if (weapon == "Blades")
-                    weapon = "Blade"; // Normalize to Blade for compatibility
+                    weapon = CustomLogicWeaponEnum.Blade; // Normalize to Blade for compatibility
                 else if (weapon == "Thunderspears")
-                    weapon = "Thunderspear"; // Normalize to Thunderspear for compatibility
+                    weapon = CustomLogicWeaponEnum.Thunderspear; // Normalize to Thunderspear for compatibility
 
                 var miscSettings = SettingsManager.InGameCurrent.Misc;
                 if (!Human.Dead)
@@ -657,6 +866,357 @@ namespace CustomLogic
                 Human.Stats.DisablePerks();
         }
 
+
+        /// <summary>
+        /// Causes the (AI) human to move towards a position and stopping when within specified range.
+        /// </summary>
+        /// <param name="position">The target position to move towards.</param>
+        /// <param name="range">The stopping range from the target position.</param>
+        [CLMethod]
+        public void MoveTo(CustomLogicVector3Builtin position, float range)
+        {
+            if (Human.IsMine() && Human.AI)
+                Controller.MoveTo(position.Value, range);
+        }
+
+        /// <summary>
+        /// Causes the (AI) human to move towards a target and stopping when within specified range.
+        /// </summary>
+        /// <param name="target">The target to move towards.</param>
+        /// <param name="range">The stopping range from the target.</param>
+        [CLMethod]
+        public void MoveToTarget(object target, float range)
+        {
+            if (Human.IsMine() && Human.AI)
+            {
+                ITargetable itarget = target is CustomLogicMapTargetableBuiltin mapTargetable
+                                    ? mapTargetable.Value
+                                    : ((CustomLogicCharacterBuiltin)target).Character;
+                Controller.MoveToTarget(itarget, range);
+            }
+        }
+
+        /// <summary>
+        /// Causes the (AI) human to idle.
+        /// </summary>
+        [CLMethod]
+        public void Idle()
+        {
+            if (Human.IsMine() && Human.AI)
+                Controller.Idle();
+        }
+
+        /// <summary>
+        /// Determine whether an AIState exists for the (AI) human.
+        /// </summary>
+        /// <param name="name">The name of the AI state.</param>
+        [CLMethod]
+        public bool HasAIState(string name)
+        {
+            if (Human.IsMine() && Human.AI)
+            {
+                return Controller.HasAIState(name);
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Set the custom AI states for the (AI) human.
+        /// </summary>
+        /// <param name="name">The name of the AI state.</param>
+        /// <param name="classInstance">The class instance for the AI state.</param>
+        [CLMethod]
+        public void SetAIState(string name, UserClassInstance classInstance = null)
+        {
+            if (Human.IsMine() && Human.AI)
+            {
+                if (classInstance is not null)
+                {
+                    Controllers.HumanAIStates.Custom state = new();
+                    state.Init(name, classInstance);
+                    Controller.SetAIState(name, state);
+                }
+                else
+                {
+                    Controller.AIStates.Remove(name);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Get the name of the AI state of the (AI) human.
+        /// </summary>
+        [CLMethod]
+        public string GetAIState()
+        {
+            if (Human.IsMine() && Human.AI)
+            {
+                return Controller.AIState?.Name;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Switch the AI state of the (AI) human.
+        /// </summary>
+        /// <param name="name">The name of the AI state to switch to.</param>
+        [CLMethod]
+        public void SwitchAIState(string name)
+        {
+            if (Human.IsMine() && Human.AI)
+            {
+                Controller.SwitchAIState(Controller.AIStates[name]);
+            }
+        }
+
+        /// <summary>
+        /// Reset the callbacks for the (AI) human. Optional: OnIdle, PreAction, PostAction, MoveToCallback.
+        /// </summary>
+        /// <param name="callback">The callback name to reset.</param>
+        /// <param name="method">The method to set as the callback.</param>
+        [CLMethod]
+        public void ResetCallback(string callback, UserMethod method = null)
+        {
+            if (Human.IsMine() && Human.AI)
+            {
+                if (method is null)
+                {
+                    Controller.Callbacks.GetType().GetField(callback).SetValue(Controller.Callbacks, null);
+                }
+                else
+                {
+                    Controller.Callbacks.GetType().GetField(callback).SetValue(Controller.Callbacks, new Action(() => CustomLogicManager.Evaluator.EvaluateMethod(method, new object[] { })));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Causes the (AI) human to move.
+        /// </summary>
+        /// <param name="direction">The direction to move in.</param>
+        [CLMethod]
+        public void Move(CustomLogicVector3Builtin direction)
+        {
+            if (Human.IsMine() && Human.AI)
+            {
+                Controller.Move(direction?.Value);
+            }
+        }
+
+        /// <summary>
+        /// Causes the (AI) human to aim at the specific position.
+        /// </summary>
+        /// <param name="position">The position to aim at.</param>
+        [CLMethod]
+        public void AimAt(CustomLogicVector3Builtin position)
+        {
+            if (Human.IsMine() && Human.AI)
+            {
+                Controller.AimAt(position?.Value);
+            }
+        }
+
+        /// <summary>
+        /// Causes the (AI) human to jump.
+        /// </summary>
+        [CLMethod]
+        public void Jump()
+        {
+            if (Human.IsMine() && Human.AI)
+            {
+                Controller.Jump();
+            }
+        }
+
+        /// <summary>
+        /// Causes the (AI) human to mount on their horse.
+        /// </summary>
+        /// <param name="mount">True to mount, false to dismount.</param>
+        [CLMethod]
+        public void HorseMount(bool mount = true)
+        {
+            if (Human.IsMine() && Human.AI)
+            {
+                Controller.HorseMount(mount);
+            }
+        }
+
+        /// <summary>
+        /// Causes the (AI) human to dodge.
+        /// </summary>
+        [CLMethod]
+        public void Dodge()
+        {
+            if (Human.IsMine() && Human.AI)
+            {
+                Controller.Dodge();
+            }
+        }
+
+        /// <summary>
+        /// Causes the (AI) human to reload.
+        /// </summary>
+        [CLMethod]
+        public void Reload()
+        {
+            if (Human.IsMine() && Human.AI)
+            {
+                Controller.Reload();
+            }
+        }
+
+
+        /// <summary>
+        /// Causes the (AI) human to use gas.
+        /// </summary>
+        /// <param name="useGas">True to use gas, false to stop.</param>
+        [CLMethod]
+        public void UseGas(bool useGas)
+        {
+            if (Human.IsMine() && Human.AI)
+            {
+                Controller.UseGas(useGas);
+            }
+        }
+
+        /// <summary>
+        /// Causes the (AI) human mounted on the horse to walk.
+        /// </summary>
+        /// <param name="isWalk">True to walk, false to stop walking.</param>
+        [CLMethod]
+        public void HorseWalk(bool isWalk)
+        {
+            if (Human.IsMine() && Human.AI)
+            {
+                Controller.HorseWalk(isWalk);
+            }
+        }
+
+        /// <summary>
+        /// Causes the (AI) human to dash.
+        /// </summary>
+        /// <param name="direction">The direction to dash in.</param>
+        [CLMethod]
+        public void Dash(CustomLogicVector3Builtin direction)
+        {
+            if (Human.IsMine() && Human.AI)
+            {
+                Controller.Dash(direction.Value);
+            }
+        }
+
+        /// <summary>
+        /// Causes the (AI) human to reel. -1 is reel in, 1 is reel out, 0 is not reel.
+        /// </summary>
+        /// <param name="reelAxis">The reel axis value.</param>
+        [CLMethod]
+        public void Reel(int reelAxis)
+        {
+            if (Human.IsMine() && Human.AI)
+            {
+                Controller.Reel(reelAxis);
+            }
+        }
+
+        /// <summary>
+        /// Causes the (AI) human to launch the left hook.
+        /// </summary>
+        /// <param name="aimPoint">The aim point for the hook.</param>
+        [CLMethod]
+        public void LaunchHookLeft(CustomLogicVector3Builtin aimPoint)
+        {
+            if (Human.IsMine() && Human.AI)
+            {
+                Controller.LaunchHookLeft(aimPoint.Value);
+            }
+        }
+
+        /// <summary>
+        /// Causes the (AI) human to launch the right hook.
+        /// </summary>
+        /// <param name="aimPoint">The aim point for the hook.</param>
+        [CLMethod]
+        public void LaunchHookRight(CustomLogicVector3Builtin aimPoint)
+        {
+            if (Human.IsMine() && Human.AI)
+            {
+                Controller.LaunchHookRight(aimPoint.Value);
+            }
+        }
+
+        /// <summary>
+        /// Causes the (AI) human to release the left hook.
+        /// </summary>
+        [CLMethod]
+        public void ReleaseHookLeft()
+        {
+            if (Human.IsMine() && Human.AI)
+            {
+                Controller.ReleaseHookLeft();
+            }
+        }
+
+        /// <summary>
+        /// Causes the (AI) human to release the right hook.
+        /// </summary>
+        [CLMethod]
+        public void ReleaseHookRight()
+        {
+            if (Human.IsMine() && Human.AI)
+            {
+                Controller.ReleaseHookRight();
+            }
+        }
+
+        /// <summary>
+        /// Causes the (AI) human to release all hooks.
+        /// </summary>
+        [CLMethod]
+        public void ReleaseHookAll()
+        {
+            if (Human.IsMine() && Human.AI)
+            {
+                Controller.ReleaseHookAll();
+            }
+        }
+
+        /// <summary>
+        /// Causes the (AI) human to attack.
+        /// </summary>
+        /// <param name="attackOn">True to start attacking, false to stop.</param>
+        [CLMethod]
+        public void Attack(bool attackOn)
+        {
+            if (Human.IsMine() && Human.AI)
+            {
+                Controller.Attack(attackOn);
+            }
+        }
+
+        /// <summary>
+        /// Causes the (AI) human to find the nearest enemy.
+        /// </summary>
+        [CLMethod]
+        public void FindNearestEnemy()
+        {
+            if (Human.IsMine() && Human.AI)
+            {
+                Controller.Target = Controller.FindNearestEnemy();
+            }
+        }
+
+        /// <summary>
+        /// Correct the direction of the (AI) human for moving to the target.
+        /// </summary>
+        [CLMethod]
+        public void Navigation()
+        {
+            if (Human.IsMine() && Human.AI)
+            {
+                Controller.MoveToPosition();
+            }
+        }
+        
         /// <summary>
         /// Enables or disables a particle effect.
         /// </summary>
@@ -664,7 +1224,7 @@ namespace CustomLogic
         /// <param name="enabled">True to enable, false to disable.</param>
         [CLMethod]
         public void SetParticleEffect(
-            [CLParam(Enum = typeof(CustomLogicHumanParticleEffectEnum))] string effectName,
+            [CLParam(Enum = new Type[] { typeof(CustomLogicHumanParticleEffectEnum) })] string effectName,
             bool enabled)
         {
             if (!Human.IsMine())
@@ -672,13 +1232,13 @@ namespace CustomLogic
 
             switch (effectName)
             {
-                case "Buff1":
+                case CustomLogicHumanParticleEffectEnum.Buff1Value:
                     Human.ToggleBuff1(enabled);
                     break;
-                case "Buff2":
+                case CustomLogicHumanParticleEffectEnum.Buff2Value:
                     Human.ToggleBuff2(enabled);
                     break;
-                case "Fire1":
+                case CustomLogicHumanParticleEffectEnum.Fire1Value:
                     Human.ToggleFire1(enabled);
                     break;
                 default:

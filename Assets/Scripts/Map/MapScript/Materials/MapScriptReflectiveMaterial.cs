@@ -6,7 +6,7 @@ using Utility;
 
 namespace Map
 {
-    class MapScriptReflectiveMaterial: MapScriptBasicMaterial
+    public class MapScriptReflectiveMaterial: MapScriptBasicMaterial
     {
         [Order(6)] public Color255 ReflectColor = new Color255();
     }
