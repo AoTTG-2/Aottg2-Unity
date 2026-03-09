@@ -1557,8 +1557,10 @@ namespace Characters
                 FixedUpdateLookTitan();
                 FixedUpdateUseables();
             }
-            HookLeft.FixedUpdateMock();
-            HookRight.FixedUpdateMock();
+            if (HookLeft != null)
+                HookLeft.FixedUpdateMock();
+            if (HookRight != null)
+                HookRight.FixedUpdateMock();
             base.FixedUpdate();
             if (IsMine())
             {

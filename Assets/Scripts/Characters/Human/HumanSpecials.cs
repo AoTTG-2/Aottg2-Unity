@@ -7,11 +7,11 @@ namespace Characters
 {
     class HumanSpecials
     {
-        public static string[] AnySpecials = new string[] {HumanSpecial.Potato, HumanSpecial.Escape, HumanSpecial.Dance, HumanSpecial.Distract, HumanSpecial.Smell, HumanSpecial.Supply, HumanSpecial.SmokeBomb, HumanSpecial.Carry, HumanSpecial.Switchback, HumanSpecial.Confuse};
+        public static string[] AnySpecials = new string[] { HumanSpecial.Potato, HumanSpecial.Escape, HumanSpecial.Dance, HumanSpecial.Distract, HumanSpecial.Smell, HumanSpecial.Supply, HumanSpecial.SmokeBomb, HumanSpecial.Carry, HumanSpecial.Switchback, HumanSpecial.Confuse};
         public static string[] AHSSSpecials = new string[] { HumanSpecial.AHSSTwinShot };
         public static string[] BladeSpecials = new string[] { HumanSpecial.DownStrike, HumanSpecial.Spin1, HumanSpecial.Spin2, HumanSpecial.Spin3, HumanSpecial.BladeThrow };
         public static string[] ShifterSpecials = new string[] { HumanSpecial.Eren, HumanSpecial.Annie };
-        public static readonly string DefaultSpecial = HumanSpecial.Potato;
+        public static readonly string DefaultSpecial = HumanSpecial.Switchback;
 
         public static List<string> GetSpecialNames(string loadout, bool includeShifters)
         {
