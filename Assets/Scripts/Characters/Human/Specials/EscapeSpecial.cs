@@ -60,6 +60,7 @@ namespace Characters
                     hurtbox = "ForearmRHurtbox";
                 }
                 human.Grabber.Cache.PhotonView.RPC(nameof(human.Grabber.GetHitRPC), RpcTarget.All, new object[] { human.Cache.PhotonView.ViewID, "", 0, "", hurtbox });
+                human.Ungrab(true, false);
                 if (human.Weapon is BladeWeapon)
                 {
                     EffectSpawner.Spawn(EffectPrefabs.Blood1, human.HumanCache.BladeHitLeft.transform.position, Quaternion.Euler(270f, 0f, 0f));

@@ -27,7 +27,7 @@ namespace GameManagers
         private static readonly List<string> BlueSpawnTags = new List<string> { MapTags.HumanSpawnPointBlue, MapTags.HumanSpawnPoint, MapTags.HumanSpawnPointRed };
         private static readonly List<string> RedSpawnTags = new List<string> { MapTags.HumanSpawnPointRed, MapTags.HumanSpawnPoint, MapTags.HumanSpawnPointBlue };
         private static readonly List<string> HumanSpawnTags = new List<string> { MapTags.HumanSpawnPoint, MapTags.HumanSpawnPointBlue, MapTags.HumanSpawnPointRed };
-        
+
         private SkyboxCustomSkinLoader _skyboxCustomSkinLoader;
         private GeneralInputSettings _generalInputSettings;
         private InGameMenu _inGameMenu;
@@ -251,7 +251,7 @@ namespace GameManagers
             ResetPlayerInfo();
             ResetPersistentPlayerProperties();
             _needSendPlayerInfo = true;
-            
+
             // Add this line to sync PM state
             ChatManager.SyncPMPartnersOnJoin();
             string roomName = "single player";
@@ -457,7 +457,7 @@ namespace GameManagers
                 RespawnTimeLeft -= 1;
                 if (RespawnTimeLeft <= 0)
                 {
-            SpawnPlayer(false);
+                    SpawnPlayer(false);
                     RespawnTimeLeft = delay;
                 }
                 yield return new WaitForSeconds(1);
@@ -631,18 +631,18 @@ namespace GameManagers
                 if (forced != string.Empty)
                 {
                     settings.Loadout.Value = forced;
-                    switch (forced)
-                    {
-                        case TitanLoadout.Small:
-                            titan.SetSize(smallSize);
-                            break;
-                        case TitanLoadout.Medium:
-                            titan.SetSize(mediumSize);
-                            break;
-                        case TitanLoadout.Large:
-                            titan.SetSize(largeSize);
-                            break;
-                    }
+                }
+                switch (settings.Loadout.Value)
+                {
+                    case TitanLoadout.Small:
+                        titan.SetSize(smallSize);
+                        break;
+                    case TitanLoadout.Medium:
+                        titan.SetSize(mediumSize);
+                        break;
+                    case TitanLoadout.Large:
+                        titan.SetSize(largeSize);
+                        break;
                 }
                 CurrentCharacter = titan;
             }
@@ -650,7 +650,7 @@ namespace GameManagers
             PhotonNetwork.LocalPlayer.SetCustomProperty(PlayerProperty.CharacterViewId, CurrentCharacter.Cache.PhotonView.ViewID);
             UpdateRoundPlayerProperties();
         }
-        
+
         private (Vector3, Quaternion) GetHumanSpawnPoint()
         {
             var tags = HumanSpawnTags;
@@ -722,7 +722,7 @@ namespace GameManagers
                 yield return new WaitForEndOfFrame();
             }
         }
-        
+
         /// <returns><paramref name="count"/> number of positions, from the list of spawn points, or Vector3.zero if no spawn points were found.</returns>
         private IEnumerable<(Vector3 position, Quaternion rotation)> GetTitanSpawnPositions(int count)
         {
@@ -733,13 +733,13 @@ namespace GameManagers
 
             return MapManager.TryGetRandomTagXforms(MapTags.TitanSpawnPoint, avoidPosition, avoidRadius, count, out List<Transform> xforms)
                 ? xforms.Select(xform => (xform.position, xform.rotation))
-                : Enumerable.Repeat((Vector3.zero,  Quaternion.identity), count);
+                : Enumerable.Repeat((Vector3.zero, Quaternion.identity), count);
         }
 
         public BasicTitan SpawnAITitanAt(string type, Vector3 position, float rotationY)
         {
             var rotation = Quaternion.Euler(0f, rotationY, 0f);
-            
+
             if (type == "Default")
             {
                 var settings = SettingsManager.InGameCurrent.Titan;
@@ -780,7 +780,7 @@ namespace GameManagers
             return titan;
         }
 
-        public void SetupTitan(BasicTitan titan, bool ai=true)
+        public void SetupTitan(BasicTitan titan, bool ai = true)
         {
             var settings = SettingsManager.InGameCurrent.Titan;
             if (settings.TitanSizeEnabled.Value)
@@ -836,7 +836,7 @@ namespace GameManagers
         public BaseShifter SpawnAIShifterAt(string type, Vector3 position, float rotationY)
         {
             var rotation = Quaternion.Euler(0f, rotationY, 0f);
-            
+
             string prefab = "";
             if (type == ShifterType.Annie)
                 prefab = CharacterPrefabs.AnnieShifter;
@@ -852,6 +852,63 @@ namespace GameManagers
             var data = CharacterData.GetShifterAI((GameDifficulty)SettingsManager.InGameCurrent.General.Difficulty.Value, type);
             shifter.Init(true, TeamInfo.Titan, data, 0f);
             return shifter;
+        }
+
+        public Human SpawnAIHuman(int costume, string costumeName, string loadout)
+        {
+            var spawn = GetHumanSpawnPoint();
+            return SpawnAIHumanAt(costume, costumeName, loadout, spawn.Item1, spawn.Item2.eulerAngles.y);
+        }
+
+        public Human SpawnAIHumanAt(int costume, string costumeName, string loadout, Vector3 position, float rotationY)
+        {
+            var sets = SettingsManager.HumanCustomSettings.CustomSets.Sets;
+            int preCount = 0;
+            if (costume == 1)
+            {
+                sets = SettingsManager.HumanCustomSettings.Costume1Sets.Sets;
+            }
+            else if (costume == 2)
+            {
+                sets = SettingsManager.HumanCustomSettings.Costume2Sets.Sets;
+            }
+            else if (costume == 3)
+            {
+                sets = SettingsManager.HumanCustomSettings.Costume3Sets.Sets;
+            }
+            else
+            {
+                costume = 0;
+                preCount = SettingsManager.HumanCustomSettings.Costume1Sets.Sets.GetCount();
+            }
+            int idx = 0;
+            bool finded = false;
+            foreach (var h in sets.Value)
+            {
+                if (h.Name.Value == costumeName)
+                {
+                    finded = true;
+                    break;
+                }
+                idx += 1;
+            }
+
+            if (!finded)
+            {
+                return null;
+            }
+
+            var settings = new InGameCharacterSettings();
+            settings.Loadout.Value = loadout;
+            settings.CustomSet.Value = preCount + idx;
+            settings.Costume.Value = costume - 1;
+            var rotation = Quaternion.Euler(0f, rotationY, 0f);
+            settings.Special.Value = HumanSpecials.DefaultSpecial;
+            var human = (Human)CharacterSpawner.Spawn(CharacterPrefabs.Human, position, rotation);
+            human.Init(true, TeamInfo.Human, settings);
+            if (SettingsManager.InGameCurrent.Misc.HumanHealth.Value > 1)
+                human.SetHealth(SettingsManager.InGameCurrent.Misc.HumanHealth.Value);
+            return human;
         }
 
         public static void OnSetLabelRPC(string label, string message, float time, PhotonMessageInfo info)
@@ -971,7 +1028,7 @@ namespace GameManagers
                 status = PlayerStatus.Alive;
             else
                 status = PlayerStatus.Dead;
-           
+
             var properties = new Dictionary<string, object>
             {
                 { PlayerProperty.Status, status },
