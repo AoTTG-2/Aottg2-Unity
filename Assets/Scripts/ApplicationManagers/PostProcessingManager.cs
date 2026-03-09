@@ -5,35 +5,44 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
-using UnityEngine.Rendering.PostProcessing;
+using UnityEngine.Rendering.Universal;
 using Utility;
 
 public class PostProcessingManager : MonoBehaviour
 {
-    private PostProcessVolume _postProcessingVolume;
-    private AmbientOcclusion _ambientOcclusion;
+    [SerializeField] private Volume postProcessingVolume;
+    [SerializeField] private bool disable;
+
+    [Header("Post Processing Profiles")]
+    [SerializeField] private VolumeProfile postProfileMain;
+    [SerializeField] private VolumeProfile underwaterProfile;
+    [SerializeField] private VolumeProfile rainyProfile;
+    [SerializeField] private VolumeProfile snowyProfile;
+    [SerializeField] private VolumeProfile nightProfile;
+
+
     private Bloom _bloom;
     private ChromaticAberration _chromaticAberration;
-    private ColorGrading _colorGrading;
+    private ColorAdjustments _colorAdjustments;
     private DepthOfField _depthOfField;
     private MotionBlur _motionBlur;
-    private AutoExposure _autoExposure;
 
     public void Awake()
     {
-        _postProcessingVolume = GetComponent<PostProcessVolume>();
-        if (_postProcessingVolume == null)
+        postProcessingVolume = GetComponent<Volume>();
+        if (postProcessingVolume == null)
         {
             Debug.LogError("PostProcessingManager: No PostProcessVolume component found on this object.");
             return;
         }
-        _postProcessingVolume.profile.TryGetSettings(out _ambientOcclusion);
-        _postProcessingVolume.profile.TryGetSettings(out _bloom);
-        _postProcessingVolume.profile.TryGetSettings(out _chromaticAberration);
-        _postProcessingVolume.profile.TryGetSettings(out _colorGrading);
-        _postProcessingVolume.profile.TryGetSettings(out _depthOfField);
-        _postProcessingVolume.profile.TryGetSettings(out _motionBlur);
-        _postProcessingVolume.profile.TryGetSettings(out _autoExposure);
+
+        postProcessingVolume.profile = postProfileMain;
+
+        postProcessingVolume.profile.TryGet(out _bloom);
+        postProcessingVolume.profile.TryGet(out _chromaticAberration);
+        postProcessingVolume.profile.TryGet(out _colorAdjustments);
+        postProcessingVolume.profile.TryGet(out _depthOfField);
+        postProcessingVolume.profile.TryGet(out _motionBlur);
 
         Settings.GraphicsSettings settings = SettingsManager.GraphicsSettings;
 
@@ -54,12 +63,12 @@ public class PostProcessingManager : MonoBehaviour
     public void SetState(bool state)
     {
         // disable volume
-        if (_postProcessingVolume == null)
+        if (postProcessingVolume == null)
         {
             Debug.LogError("PostProcessingManager: No PostProcessVolume component found on this object.");
             return;
         }
-        _postProcessingVolume.enabled = state;
+        postProcessingVolume.enabled = state;
     }
 
     public void ApplySettings(
@@ -72,7 +81,7 @@ public class PostProcessingManager : MonoBehaviour
         MotionBlurLevel mbl,
         WaterFXLevel wfxl)
     {
-        if (_postProcessingVolume == null)
+        if (postProcessingVolume == null)
         {
             Debug.LogError("PostProcessingManager: No PostProcessVolume component found on this object.");
             return;
@@ -96,14 +105,7 @@ public class PostProcessingManager : MonoBehaviour
 
     public void SetAmbientOcclusionQuality(AmbientOcclusionLevel quality)
     {
-        if (quality == AmbientOcclusionLevel.Off)
-        {
-            _ambientOcclusion.enabled.value = false;
-            return;
-        }
-
-        _ambientOcclusion.enabled.value = true; 
-        _ambientOcclusion.quality.value = (AmbientOcclusionQuality)((int)quality - 1);
+        // AmbientOcclusion is a renderer feature in URP, not a volume component
     }
 
     public void SetBloomQuality(BloomLevel quality)
@@ -111,45 +113,32 @@ public class PostProcessingManager : MonoBehaviour
         switch (quality)
         {
             case BloomLevel.Off:
-                _bloom.enabled.value = false;
+                _bloom.active = false;
                 break;
             case BloomLevel.Low:
-                _bloom.enabled.value = true;
-                _bloom.fastMode.value = true;
+                _bloom.active = true;
+                _bloom.highQualityFiltering.value = false;
                 break;
             case BloomLevel.High:
-                _bloom.enabled.value = true;
-                _bloom.fastMode.value = false;
+                _bloom.active = true;
+                _bloom.highQualityFiltering.value = true;
                 break;
         }
     }
 
     public void SetChromaticAberrationQuality(ChromaticAberrationLevel quality)
     {
-        switch (quality)
-        {
-            case ChromaticAberrationLevel.Off:
-                _chromaticAberration.enabled.value = false;
-                break;
-            case ChromaticAberrationLevel.Low:
-                _chromaticAberration.enabled.value = true;
-                _chromaticAberration.fastMode.value = true;
-                break;
-            case ChromaticAberrationLevel.High:
-                _chromaticAberration.enabled.value = true;
-                _chromaticAberration.fastMode.value = false;
-                break;
-        }
+        _chromaticAberration.active = quality != ChromaticAberrationLevel.Off;
     }
 
     public void SetColorGradingQuality(ColorGradingLevel quality)
     {
-        _colorGrading.enabled.value = quality != ColorGradingLevel.Off;
+        _colorAdjustments.active = quality != ColorGradingLevel.Off;
     }
 
     public void SetAutoExposureQuality(AutoExposureLevel quality)
     {
-        _autoExposure.enabled.value = quality != AutoExposureLevel.Off;
+        // AutoExposure is not available as a volume component in URP
     }
     
     public void SetDepthOfFieldQuality(DepthOfFieldLevel quality)
@@ -157,10 +146,10 @@ public class PostProcessingManager : MonoBehaviour
         switch (quality)
         {
             case DepthOfFieldLevel.Off:
-                _depthOfField.enabled.value = false;
+                _depthOfField.active = false;
                 break;
             default:
-                _depthOfField.enabled.value = true; // MaxBlurSize setting not exposed?
+                _depthOfField.active = true;
                 break;
         }
     }
@@ -170,19 +159,19 @@ public class PostProcessingManager : MonoBehaviour
         switch (quality)
         {
             case MotionBlurLevel.Off:
-                _motionBlur.enabled.value = false;
+                _motionBlur.active = false;
                 break;
             case MotionBlurLevel.Low:
-                _motionBlur.enabled.value = true;
-                _motionBlur.sampleCount.value = 4;
+                _motionBlur.active = true;
+                _motionBlur.quality.value = MotionBlurQuality.Low;
                 break;
             case MotionBlurLevel.Medium:
-                _motionBlur.enabled.value = true;
-                _motionBlur.sampleCount.value = 8;
+                _motionBlur.active = true;
+                _motionBlur.quality.value = MotionBlurQuality.Medium;
                 break;
             case MotionBlurLevel.High:
-                _motionBlur.enabled.value = true;
-                _motionBlur.sampleCount.value = 16;
+                _motionBlur.active = true;
+                _motionBlur.quality.value = MotionBlurQuality.High;
                 break;
         }
     }

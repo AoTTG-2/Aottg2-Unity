@@ -3,8 +3,8 @@ using Settings;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering.PostProcessing;
-using UnityEngine.UIElements;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 using UnityStandardAssets.ImageEffects;
 using Utility;
 
@@ -12,8 +12,8 @@ public class WaterEffect : MonoBehaviour
 {
     [SerializeField] GameObject PostProcessingVolume;
     private PostProcessingManager _postProcessingManager;
-    private PostProcessVolume _volume;
-    private ColorGrading _colorGrading;
+    private Volume _volume;
+    private ColorAdjustments _colorGrading;
     private GlobalFog _globalFog;
     private BoxCollider _boxCollider;
     private bool _fogEnabled;
@@ -32,8 +32,8 @@ public class WaterEffect : MonoBehaviour
             this.enabled = false;
             return;
         }
-        _volume = PostProcessingVolume.GetComponent<PostProcessVolume>();
-        _volume.profile.TryGetSettings(out _colorGrading);
+        _volume = PostProcessingVolume.GetComponent<Volume>();
+        _volume.profile.TryGet(out _colorGrading);
         Settings.GraphicsSettings settings = SettingsManager.GraphicsSettings;
 
         if (settings != null)
@@ -59,20 +59,20 @@ public class WaterEffect : MonoBehaviour
             case WaterFXLevel.Off:
                 _fogEnabled = false;
                 _globalFog.enabled = false;
-                _colorGrading.enabled.value = false;
+                _colorGrading.active = false;
                 break;
             case WaterFXLevel.Low:
                 _fogEnabled = false;
                 _globalFog.enabled = false;
-                _colorGrading.enabled.value = true;
+                _colorGrading.active = true;
                 break;
             case WaterFXLevel.Medium:
                 _fogEnabled = true;
-                _colorGrading.enabled.value = true;
+                _colorGrading.active = true;
                 break;
             case WaterFXLevel.High:
                 _fogEnabled = true;
-                _colorGrading.enabled.value = true;
+                _colorGrading.active = true;
                 break;
         }
     }

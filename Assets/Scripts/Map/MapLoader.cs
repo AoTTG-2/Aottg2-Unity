@@ -455,98 +455,85 @@ namespace Map
 
         private void Batch()
         {
-            Dictionary<string, GameObject> roots = new Dictionary<string, GameObject>();
-            Dictionary<string, List<GameObject>> shared = new Dictionary<string, List<GameObject>>();
-            Dictionary<GameObject, Transform> oldParents = new Dictionary<GameObject, Transform>();
-            Dictionary<string, int> hashCounts = new Dictionary<string, int>();
-            GameObject batchRoot = new GameObject("Batched Meshes");
+            GameObject staticRoot = new GameObject("Static Objects");
+            GameObject dynamicRoot = new GameObject("Dynamic Objects");
+
             foreach (int id in IdToMapObject.Keys)
             {
                 var mapObject = IdToMapObject[id];
-                if (mapObject.ScriptObject.Parent > 0 || !mapObject.ScriptObject.Static)
+                if (mapObject.ScriptObject.Parent > 0)
                     continue;
 
-                var shader = ((MapScriptSceneObject)mapObject.ScriptObject).Material.Shader;
-                if (MapObjectShader.IsLegacyShader(shader) || shader == MapObjectShader.Transparent)
-                    continue;
-                var position = mapObject.GameObject.transform.position;
-
-                string positionHash = ((int)(position.x / 1000f)).ToString() + "-" + ((int)(position.y / 1000f)).ToString() + "-" + ((int)(position.z / 1000f)).ToString();
-                foreach (MeshFilter filter in mapObject.GameObject.GetComponentsInChildren<MeshFilter>())
-                {
-                    var renderer = filter.GetComponent<Renderer>();
-                    if (renderer == null || renderer.sharedMaterials.Length > 1)
-                        continue;
-                    if (filter?.sharedMesh == null)
-                    {
-                        DebugConsole.Log($"Map load error: object {mapObject.ScriptObject.Name} with missing mesh", true);
-                        Errors.Add("Failed to load static object with no MeshFilter or SharedMesh: " + mapObject.ScriptObject.Name);
-                        continue;
-                    }
-                    string hash = filter.sharedMesh.GetHashCode().ToString();
-                    hash += positionHash;
-                    if (renderer.enabled)
-                        hash += renderer.sharedMaterial.GetHashCode().ToString();
-                    else
-                        hash += "disabled";
-                    if (!hashCounts.ContainsKey(hash))
-                        hashCounts.Add(hash, 0);
-                    int meshPerHash = 65000 / filter.sharedMesh.vertexCount;
-                    hashCounts[hash] += 1;
-                    hash += (hashCounts[hash] / meshPerHash).ToString();
-                    if (!roots.ContainsKey(hash))
-                    {
-                        var go = new GameObject();
-                        go.name = mapObject.ScriptObject.Name + " (Batched)";
-                        go.layer = PhysicsLayer.MapObjectEntities;
-                        go.transform.parent = batchRoot.transform;
-                        roots.Add(hash, go);
-                        shared.Add(hash, new List<GameObject>());
-                    }
-                    shared[hash].Add(filter.gameObject);
-                    oldParents.Add(filter.gameObject, filter.transform.parent);
-                    filter.transform.SetParent(roots[hash].transform);
-                }
+                if (mapObject.ScriptObject.Static)
+                    mapObject.GameObject.transform.SetParent(staticRoot.transform);
+                else
+                    mapObject.GameObject.transform.SetParent(dynamicRoot.transform);
             }
-            foreach (string hash in roots.Keys)
-                CombineMeshes(roots[hash]);
-            foreach (string hash in shared.Keys)
+
+            List<GameObject> batchCandidates = new List<GameObject>();
+            foreach (int id in IdToMapObject.Keys)
             {
-                foreach (GameObject go in shared[hash])
-                    go.transform.SetParent(oldParents[go]);
+                var mapObject = IdToMapObject[id];
+                if (!mapObject.ScriptObject.Static)
+                    continue;
+                if (mapObject.ScriptObject.Parent > 0 && !AreAllParentsStatic(mapObject))
+                    continue;
+                CollectEligibleGameObjects(mapObject.GameObject, batchCandidates);
+            }
+
+            if (batchCandidates.Count > 0)
+                StaticBatchingUtility.Combine(batchCandidates.ToArray(), staticRoot);
+        }
+
+        private static bool AreAllParentsStatic(MapObject mapObject)
+        {
+            int parentId = mapObject.ScriptObject.Parent;
+            while (parentId > 0)
+            {
+                if (!IdToMapObject.ContainsKey(parentId))
+                    return false;
+                var parent = IdToMapObject[parentId];
+                if (!parent.ScriptObject.Static)
+                    return false;
+                parentId = parent.ScriptObject.Parent;
+            }
+            return true;
+        }
+
+        private static void CollectEligibleGameObjects(GameObject root, List<GameObject> candidates)
+        {
+            foreach (var renderer in root.GetComponentsInChildren<MeshRenderer>())
+            {
+                var filter = renderer.GetComponent<MeshFilter>();
+                if (IsEligibleForStaticBatching(renderer.gameObject, renderer, filter))
+                {
+                    renderer.gameObject.isStatic = true;
+                    candidates.Add(renderer.gameObject);
+                }
             }
         }
 
-        void CombineMeshes(GameObject obj)
+        private static bool IsEligibleForStaticBatching(GameObject go, MeshRenderer renderer, MeshFilter filter)
         {
-            MeshFilter[] meshFilters = obj.GetComponentsInChildren<MeshFilter>();
-            if (meshFilters.Length == 0)
-                return;
-            var validFilters = new List<MeshFilter>();
-            foreach (var filter in meshFilters)
+            if (!go.activeInHierarchy)
+                return false;
+            if (filter == null)
+                return false;
+            var mesh = filter.sharedMesh;
+            if (mesh == null)
+                return false;
+            if (mesh.vertexCount == 0)
+                return false;
+            if (!mesh.isReadable)
+                return false;
+            if (!renderer.enabled)
+                return false;
+            foreach (var mat in renderer.sharedMaterials)
             {
-                var renderer = filter.GetComponent<Renderer>();
-                if (renderer != null)
-                    validFilters.Add(filter);
+                if (mat != null && mat.GetTag("DisableBatching", false) == "True")
+                    return false;
             }
-            if (validFilters.Count == 0)
-                return;
-            CombineInstance[] combine = new CombineInstance[validFilters.Count];
-            bool rendererEnabled = validFilters[0].GetComponent<Renderer>().enabled;
-            for (int i = 0; i < validFilters.Count; i++)
-            {
-                combine[i].mesh = validFilters[i].sharedMesh;
-                combine[i].transform = validFilters[i].transform.localToWorldMatrix;
-                validFilters[i].GetComponent<Renderer>().enabled = false;
-            }
-            var meshFilter = obj.AddComponent<MeshFilter>();
-            obj.AddComponent<MeshRenderer>();
-            meshFilter.mesh = new Mesh();
-            meshFilter.mesh.CombineMeshes(combine, true, true);
-            if (rendererEnabled)
-                obj.GetComponent<Renderer>().material = validFilters[0].GetComponent<Renderer>().sharedMaterial;
-            else
-                obj.GetComponent<Renderer>().enabled = false;
+            return true;
         }
 
         public static void RegisterTag(string tag, MapObject obj)
