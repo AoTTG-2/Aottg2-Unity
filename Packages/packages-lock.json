@@ -1,13 +1,5 @@
 {
   "dependencies": {
-    "com.jiaozi158.unityssgiurp": {
-      "version": "file:C:/Users/Tony/Desktop/UnitySSGIURP-main",
-      "depth": 0,
-      "source": "local",
-      "dependencies": {
-        "com.unity.render-pipelines.universal": "14.0.11"
-      }
-    },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
       "depth": 0,

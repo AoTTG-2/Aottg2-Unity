@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 6f21e9b582e2daa45a3966c1699bd9c9
+ShaderIncludeImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 277702
+  packageName: Volumetric Fog (URP)
+  packageVersion: 1.0
+  assetPath: Assets/Mirza Beig/Volumetric Fog (Lite)/Shaders/Includes/VolumetricFogLite.cginc
+  uploadId: 666516

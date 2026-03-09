@@ -97,6 +97,7 @@ Material:
     - _Alpha: 1
     - _AlphaClip: 0
     - _AlphaToMask: 0
+    - _Alpha_Map_Overblow: 28.47
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BumpScale: 1
@@ -120,9 +121,10 @@ Material:
     - _GlossyReflections: 0
     - _MAOS: 1
     - _Metallic: 0
-    - _Normal_Alpha: 0.4
-    - _Normal_Strength: -3.07
+    - _Normal_Alpha: 212.5
+    - _Normal_Strength: -0.11
     - _OcclusionStrength: 1
+    - _Overall_Alpha: 0.6
     - _Parallax: 0.005
     - _QueueOffset: 0
     - _ReceiveShadows: 1

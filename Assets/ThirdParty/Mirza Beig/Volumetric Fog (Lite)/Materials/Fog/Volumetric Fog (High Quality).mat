@@ -1,0 +1,277 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Volumetric Fog (High Quality)
+  m_Shader: {fileID: -6465566751694194690, guid: b41208ea9fa867440be4a9ec08db6e2a, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords:
+  - _MAIN_LIGHT_ENABLED
+  - _MAIN_LIGHT_SHADOWS_CASCADE
+  m_InvalidKeywords:
+  - PROBE_VOLUMES_OFF
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BaseMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SpecGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - INDIRECT_LIGHT: 2
+    - INDIRECT_LIGHTING_ENABLED: 1
+    - PROBE: 2
+    - PROBE_VOLUMES: 1
+    - PROBE_VOLUMES_L1: 1
+    - PROBE_VOLUMES_L2: 0
+    - SAMPLE_PROBE_VOLUMES: 0
+    - _ADAPTIVE_PROBE_VOLUMES: 0
+    - _ADDITIONAL_LIGHTS: 1
+    - _ADDITIONAL_LIGHTS_ENABLED: 1
+    - _ADDITIONAL_LIGHTS_PROCEDURAL_DENSITY: 1
+    - _ADDITIONAL_LIGHTS_SELF_SHADOW: 1
+    - _ADDITIONAL_LIGHTS_SELF_SHADOWS: 1
+    - _ADDITIONAL_LIGHTS_SELF_SHADOW_PROCEDURAL_DENSITY: 1
+    - _ADDITIONAL_LIGHTS_SHADOWS: 1
+    - _ADDITIONAL_LIGHT_SELF_SHADOW: 1
+    - _ADDITIONAL_LIGHT_SHADOWS: 1
+    - _Absorption_Coefficient: 1
+    - _Additional_Light_Absorption_Coefficient: -1
+    - _Additional_Light_Intensity: 0.002
+    - _Additional_Light_Self_Shadow_Absorption_Coefficient: 3
+    - _Additional_Light_Smooth_Falloff: 1
+    - _Additional_Lights_Self_Shadow_Absorption_Coefficient: 1
+    - _Additional_Lights_Self_Shadow_Raymarch_Distance: 1
+    - _Additional_Lights_Self_Shadow_Raymarch_Distance_Limit: 1e+9
+    - _Additional_Lights_Self_Shadow_Raymarch_Steps: 8
+    - _Additional_Lights_Self_Shadow_Steps: 8
+    - _Additional_Lights_Self_Shadow_Strength: 1
+    - _AlphaClip: 0
+    - _AlphaToMask: 0
+    - _Animation_Scale: 1
+    - _Blend: 0
+    - _BlendModePreserveSpecular: 1
+    - _BlurAmount: 0.00019
+    - _BumpScale: 1
+    - _CLOUD_NOISE_ENABLED: 0
+    - _CURL_ENABLED: 0
+    - _ClearCoatMask: 0
+    - _ClearCoatSmoothness: 0
+    - _Cloud_Noise_Simplex_Invert: 0
+    - _Cloud_Noise_Simplex_Octaves: 2
+    - _Cloud_Noise_Simplex_Power: 1.2
+    - _Cloud_Noise_Simplex_Scale: 0.6666667
+    - _Cloud_Noise_Voronoi_Invert: 0
+    - _Cloud_Noise_Voronoi_Octaves: 2
+    - _Cloud_Noise_Voronoi_Power: 1.4
+    - _Cloud_Noise_Voronoi_Scale: 0.6666667
+    - _Cloud_Noise_Voronoi_Simplex_Blend: 0.5
+    - _ColourMultiplier: 1.079
+    - _Cull: 2
+    - _Curl_Epsilon_1: 0.2
+    - _Curl_Epsilon_2: 2
+    - _Curl_Scale: 0.5
+    - _Curl_Strength: 4
+    - _Curl_Strength_Depth_Fade_Raymarch_Offset: 1.2
+    - _Curl_Strength_Depth_Fade_Remap_Max_Raymarch_Offset: 1
+    - _Curl_Strength_Depth_Fade_Remap_Min_Raymarch_Offset: 0.2
+    - _Curl_Strength_Raymarch_Offset: 2
+    - _Curl_Strength_Raymarch_Sample: 0.2
+    - _Cutoff: 0.5
+    - _Density: 1
+    - _DetailAlbedoMapScale: 1
+    - _DetailNormalMapScale: 1
+    - _DstBlend: 0
+    - _DstBlendAlpha: 0
+    - _EnvironmentReflections: 1
+    - _Float: 0
+    - _Float_1: 0
+    - _Fog_Density: 0.673
+    - _GlossMapScale: 0
+    - _Glossiness: 0
+    - _GlossyReflections: 0
+    - _Height_Fog_Decay: 0.25
+    - _Height_Fog_Offset: 0
+    - _Height_Fog_Power: 1.5
+    - _Height_Fog_Remap_Max: 1
+    - _Height_Fog_Remap_Min: 0
+    - _INDIRECT_LIGHTING_ENABLED: 1
+    - _Indirect_Light_Flip_Normals: 0
+    - _Indirect_Light_Intensity: 1
+    - _Indirect_Light_Strength: 0.6
+    - _Invert_Noise: 0
+    - _MAIN_LIGHT: 1
+    - _MAIN_LIGHT_ENABLED: 1
+    - _MAIN_LIGHT_HIGH_QUALITY_ANISOTROPY: 1
+    - _MAIN_LIGHT_LERP_BLEND: 0
+    - _MAIN_LIGHT_SELF_SHADOWS_ENABLED: 1
+    - _MAIN_LIGHT_SHADOWS: 0
+    - _MAIN_LIGHT_SHADOWS_1: 0
+    - _MAIN_LIGHT_SHADOWS_2: 0
+    - _MAIN_LIGHT_SHADOWS_3: 0
+    - _MAIN_LIGHT_SHADOWS_4: 0
+    - _MAIN_LIGHT_SHADOWS_5: 0
+    - _MAIN_LIGHT_SHADOWS_ENABLED: 1
+    - _Main_Light_Anisotropic_Blend: 0.8
+    - _Main_Light_Anisotropy: 0.6
+    - _Main_Light_Anisotropy_Blend: 0.8
+    - _Main_Light_Intensity: 0.7
+    - _Main_Light_Self_Shadow_Absorption_Coefficient: 0.5
+    - _Main_Light_Self_Shadow_Raymarch_Distance: 5
+    - _Main_Light_Self_Shadow_Raymarch_Steps: 8
+    - _Main_Light_Self_Shadow_Sample_Offset: 0.2
+    - _Main_Light_Self_Shadow_Steps: 1
+    - _Main_Light_Self_Shadow_Strength: 1
+    - _Main_Light_Shadow_Strength: 0.9
+    - _Metallic: 0
+    - _Noise_Blend: 0.5
+    - _OcclusionStrength: 1
+    - _PROBE_VOLUMES: 2
+    - _PROCEDURAL_DENSITY: 0
+    - _Parallax: 0.005
+    - _Power: 1
+    - _QueueOffset: 0
+    - _RAYMARCH_CLAMP_TO_SURFACE: 0
+    - _RaymarchSteps: 2.29
+    - _Raymarch_Additional_Light_Self_Shadow_Steps: 8
+    - _Raymarch_Depth_Fade: 0
+    - _Raymarch_Depth_Fade_Power: 2
+    - _Raymarch_Distance: 14
+    - _Raymarch_Distance_Bias: 1
+    - _Raymarch_Height_Falloff: 0.456
+    - _Raymarch_Height_Offset: 0
+    - _Raymarch_Max_Depth: 0
+    - _Raymarch_Noise: 0
+    - _Raymarch_Self_Shadow_Steps: 4
+    - _Raymarch_Steps: 12
+    - _ReceiveShadows: 1
+    - _Remap_Max: 0.9
+    - _Remap_Min: 0
+    - _SIMPLEX_NOISE_ENABLED: 1
+    - _SOFT_SHADOWS: 1
+    - _Scale: 1.8
+    - _Self_Shadow_Strength: 1
+    - _Shadow_Blur_Quality: 2
+    - _Shadow_Blur_Radius: 0
+    - _Shadow_Falloff: 0
+    - _Shadow_Falloff_Power: 1
+    - _Shadow_Falloff_Remap_Max: 1
+    - _Shadow_Falloff_Remap_Min: 0
+    - _Shadow_Strength: 0.85
+    - _Simplex_Noise_Animation_Scale: 0.5
+    - _Simplex_Noise_Invert: 1
+    - _Simplex_Noise_Octaves: 1
+    - _Simplex_Noise_Power: 0.65
+    - _Simplex_Noise_Scale: 0.5
+    - _Smoothness: 0.5
+    - _SmoothnessTextureChannel: 0
+    - _SpecularHighlights: 1
+    - _SrcBlend: 1
+    - _SrcBlendAlpha: 1
+    - _Surface: 0
+    - _VORONOI_NOISE_ENABLED: 0
+    - _Voronoi_Noise_Animation_Scale: 1
+    - _Voronoi_Noise_Invert: 0
+    - _Voronoi_Noise_Octaves: 1
+    - _Voronoi_Noise_Power: 1.4
+    - _Voronoi_Noise_Scale: 1.5
+    - _WorkflowMode: 1
+    - _ZWrite: 1
+    m_Colors:
+    - _Animation: {r: 0.08, g: 0.2, b: -0.2, a: 1}
+    - _BaseColor: {r: 1, g: 0.36933857, b: 0, a: 1}
+    - _Cloud_Noise_Simplex_Animation: {r: 0.1, g: 0.4, b: -0.25, a: -0.5}
+    - _Cloud_Noise_Simplex_Offset: {r: -0.2, g: 0, b: 0, a: 0}
+    - _Cloud_Noise_Voronoi_Animation: {r: 0, g: 0, b: 0.5, a: 0.5}
+    - _Cloud_Noise_Voronoi_Offset: {r: 0, g: 0, b: 0, a: 0}
+    - _Color: {r: 1, g: 0.36933854, b: 0, a: 1}
+    - _Colour: {r: 0.05490196, g: 0.09411765, b: 0.20784314, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _Offset: {r: 0, g: 0, b: 0, a: 45}
+    - _Raymarch_Vertical_Range: {r: 0, g: 0.1, b: 0, a: 0}
+    - _Simplex_Noise_Animation: {r: 0.2, g: 0.2, b: -0.25, a: -0.5}
+    - _Simplex_Noise_Offset: {r: 0, g: 0, b: 0, a: 0}
+    - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+    - _Tint: {r: 1, g: 1, b: 1, a: 1}
+    - _Voronoi_Noise_Animation: {r: -0.08, g: 0.2, b: -0.2, a: 1}
+    - _Voronoi_Noise_Offset: {r: 0, g: 0, b: 0, a: 45}
+  m_BuildTextureStacks: []
+--- !u!114 &1214869843804668540
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 7

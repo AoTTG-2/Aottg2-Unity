@@ -219,7 +219,7 @@ MonoBehaviour:
   - {fileID: 1736856603352312394}
   - {fileID: 8541236173919928976}
   - {fileID: -3603671717885856348}
-  - {fileID: 6098060857290421348}
+  - {fileID: 6460545463216258951}
 --- !u!114 &160011179311096334
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -610,6 +610,73 @@ MonoBehaviour:
   indirectDiffuseLightingMultiplier:
     m_OverrideState: 0
     m_Value: 1
+--- !u!114 &6460545463216258951
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06437c1ff663d574d9447842ba0a72e4, type: 3}
+  m_Name: ScreenSpaceLensFlare
+  m_EditorClassIdentifier: 
+  active: 1
+  intensity:
+    m_OverrideState: 1
+    m_Value: 3.16
+  tintColor:
+    m_OverrideState: 0
+    m_Value: {r: 0, g: 0.94610643, b: 1, a: 1}
+  bloomMip:
+    m_OverrideState: 0
+    m_Value: 1
+  firstFlareIntensity:
+    m_OverrideState: 1
+    m_Value: 1
+  secondaryFlareIntensity:
+    m_OverrideState: 1
+    m_Value: 0
+  warpedFlareIntensity:
+    m_OverrideState: 1
+    m_Value: 0
+  warpedFlareScale:
+    m_OverrideState: 0
+    m_Value: {x: 1, y: 1}
+  samples:
+    m_OverrideState: 0
+    m_Value: 1
+  sampleDimmer:
+    m_OverrideState: 0
+    m_Value: 0.5
+  vignetteEffect:
+    m_OverrideState: 1
+    m_Value: 1
+  startingPosition:
+    m_OverrideState: 1
+    m_Value: 1.17
+  scale:
+    m_OverrideState: 1
+    m_Value: 1.15
+  streaksIntensity:
+    m_OverrideState: 0
+    m_Value: 0.06
+  streaksLength:
+    m_OverrideState: 0
+    m_Value: 0.5
+  streaksOrientation:
+    m_OverrideState: 1
+    m_Value: -90
+  streaksThreshold:
+    m_OverrideState: 1
+    m_Value: 1
+  resolution:
+    m_OverrideState: 0
+    m_Value: 4
+  chromaticAbberationIntensity:
+    m_OverrideState: 1
+    m_Value: 0.587
 --- !u!114 &8541236173919928976
 MonoBehaviour:
   m_ObjectHideFlags: 3

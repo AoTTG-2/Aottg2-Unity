@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b00045f12942b46c698459096c89274e, type: 3}
-  m_Name: FullScreenPassRendererFeature
+  m_Name: CelShadingFeature
   m_EditorClassIdentifier: 
   m_Active: 0
   passMaterial: {fileID: 2100000, guid: 552616de50f9b10479d2a090c4809137, type: 2}
@@ -88,8 +88,8 @@ MonoBehaviour:
   - {fileID: -3032082438349848282}
   - {fileID: 8421820262385613538}
   - {fileID: 7011631666305814487}
-  - {fileID: -1514413829563467510}
-  m_RendererFeatureMap: d682c23e69100c252601754416e1ebd5e27aae6de850e074d7cf09eed9514e610a39ee4da5b8fbea
+  - {fileID: 5584740332563029124}
+  m_RendererFeatureMap: d682c23e69100c252601754416e1ebd5e27aae6de850e074d7cf09eed9514e61845c3745befb804d
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
@@ -143,7 +143,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Active: 1
   m_Settings:
-    technique: 0
+    technique: 2
     maxDrawDistance: 1000
     decalLayers: 1
     dBufferSettings:
@@ -152,6 +152,30 @@ MonoBehaviour:
       normalBlend: 0
   m_CopyDepthPS: {fileID: 4800000, guid: d6dae50ee9e1bfa4db75f19f99355220, type: 3}
   m_DBufferClear: {fileID: 4800000, guid: f056d8bd2a1c7e44e9729144b4c70395, type: 3}
+--- !u!114 &5584740332563029124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a01d188a26328b4b920cdfdfa2d0def, type: 3}
+  m_Name: VolumetricFogRendererFeatureLite
+  m_EditorClassIdentifier: 
+  m_Active: 0
+  renderInSceneView: 1
+  renderPassEvent: 400
+  settings:
+    fogDownsampleLevel: 8
+    fogMaterial: {fileID: 2100000, guid: 10d77fea58680bd4497eec1c177490b2, type: 2}
+    depthMaterial: {fileID: 2100000, guid: 1d99b61e891acf84683aee11f0e05a8b, type: 2}
+    compositeMaterial: {fileID: 2100000, guid: 03b06fe23c18b44479459d11dc405c49, type: 2}
+    compositeMaterialColourTextureName: _ColourTexture
+    compositeMaterialFogTextureName: _FogTexture
+    compositeMaterialDepthTextureName: _DepthTexture
+    renderTextureQuality: 1
 --- !u!114 &7011631666305814487
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -165,12 +189,12 @@ MonoBehaviour:
   m_Name: TiltShiftRenderFeature
   m_EditorClassIdentifier: 
   m_Active: 0
-  blurAmount: 50
+  blurAmount: 100
   blurRadiusScale: 0.53
-  blurSamples: 8
+  blurSamples: 16
   focusDistance: 0.5
   focusHeight: 0.32
-  blurFalloff: 1.35
+  blurFalloff: 5.85
   minDepth: 0.1
   maxDepth: 1.46
   focusObjectYOffset: 0
