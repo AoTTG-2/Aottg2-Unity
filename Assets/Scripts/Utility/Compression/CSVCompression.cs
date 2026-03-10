@@ -25,7 +25,7 @@ namespace Utility
             List<string> outputList = new List<string>();
             foreach (string[] strArray in outputArr)
                 outputList.Add(string.Join(rowDelimiter.ToString(), strArray));
-            byte[] compressed = StringCompression.Compress(string.Join(containerDelimiter.ToString(), outputList.ToArray()));
+            byte[] compressed = DataCompressors.Brotli.CompressString(string.Join(containerDelimiter.ToString(), outputList.ToArray()));
             JSONNode symbolTableAsJson = new JSONObject();
             foreach (string key in symbolTable.Keys)
                 symbolTableAsJson.Add(key, symbolTable[key]);
@@ -34,7 +34,7 @@ namespace Utility
 
         public static string Decompress(byte[] source, JSONNode symbolTable, int deltaRows, char containerDelimiter = ';', char rowDelimiter = ',')
         {
-            string uncompressed = StringCompression.Decompress(source);
+            string uncompressed = DataCompressors.Brotli.DecompressString(source);
             List<string[]> list = new List<string[]>();
             foreach (string row in uncompressed.Split(containerDelimiter))
                 list.Add(row.Split(rowDelimiter));

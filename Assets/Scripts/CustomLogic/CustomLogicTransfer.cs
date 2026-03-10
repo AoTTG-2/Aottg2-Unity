@@ -62,7 +62,7 @@ namespace Map
         private static void CreateTransferData()
         {
             LogicHash = Util.CreateMD5(CustomLogicManager.Logic);
-            byte[] compress = StringCompression.Compress(CustomLogicManager.Logic);
+            byte[] compress = DataCompressors.Brotli.CompressString(CustomLogicManager.Logic);
             _logicScriptCompressed = new List<byte>(compress);
             _logicTransferData = new List<byte[][]>();
             int chunkSize = 10000;
@@ -99,7 +99,7 @@ namespace Map
             _logicScriptCompressed.AddRange(byteArr[1]);
             if (msgType == MsgLogicEnd)
             {
-                CustomLogicManager.Logic = StringCompression.Decompress(_logicScriptCompressed.ToArray());
+                CustomLogicManager.Logic = DataCompressors.Brotli.DecompressString(_logicScriptCompressed.ToArray());
                 LogicHash = Encoding.UTF8.GetString(byteArr[2]);
                 CustomLogicManager.LogicHash = LogicHash;
                 CustomLogicManager.FinishLoadLogic();

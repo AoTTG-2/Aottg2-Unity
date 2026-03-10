@@ -340,10 +340,10 @@ namespace GameManagers
         {
             if (!AllPlayerInfo.ContainsKey(player.ActorNumber))
                 AllPlayerInfo.Add(player.ActorNumber, new PlayerInfo());
-            RPCManager.PhotonView.RPC(nameof(RPCManager.PlayerInfoRPC), player, new object[] { StringCompression.Compress(MyPlayerInfo.SerializeToJsonString()) });
+            RPCManager.PhotonView.RPC(nameof(RPCManager.PlayerInfoRPC), player, new object[] { DataCompressors.Brotli.CompressString(MyPlayerInfo.SerializeToJsonString()) });
             if (PhotonNetwork.IsMasterClient)
             {
-                RPCManager.PhotonView.RPC(nameof(RPCManager.GameSettingsRPC), player, new object[] { StringCompression.Compress(SettingsManager.InGameCurrent.SerializeToJsonString()) });
+                RPCManager.PhotonView.RPC(nameof(RPCManager.GameSettingsRPC), player, new object[] { DataCompressors.Brotli.CompressString(SettingsManager.InGameCurrent.SerializeToJsonString()) });
                 if (GlobalPause)
                     RPCManager.PhotonView.RPC(nameof(RPCManager.PauseGameRPC), player, new object[0]);
             }
@@ -414,7 +414,7 @@ namespace GameManagers
                 AllPlayerInfo.Add(info.Sender.ActorNumber, new PlayerInfo());
             if (data.Length > 1000)
                 return;
-            AllPlayerInfo[info.Sender.ActorNumber].DeserializeFromJsonString(StringCompression.Decompress(data));
+            AllPlayerInfo[info.Sender.ActorNumber].DeserializeFromJsonString(DataCompressors.Brotli.DecompressString(data));
             if (AnticheatManager.BanList.Contains(AllPlayerInfo[info.Sender.ActorNumber].Profile.ID.Value))
                 AnticheatManager.KickPlayer(info.Sender, false);
         }
@@ -424,7 +424,7 @@ namespace GameManagers
             if (!info.Sender.IsMasterClient)
                 return;
             string original = SettingsManager.InGameCurrent.Misc.Motd.Value;
-            SettingsManager.InGameCurrent.DeserializeFromJsonString(StringCompression.Decompress(data));
+            SettingsManager.InGameCurrent.DeserializeFromJsonString(DataCompressors.Brotli.DecompressString(data));
             ((InGameManager)SceneLoader.CurrentGameManager)._gameSettingsLoaded = true;
             PrintMOTD(original);
             VoiceChatManager.ApplySoundSettings();
@@ -1079,7 +1079,7 @@ namespace GameManagers
             _inGameMenu = (InGameMenu)UIManager.CurrentMenu;
             if (PhotonNetwork.IsMasterClient)
             {
-                RPCManager.PhotonView.RPC(nameof(RPCManager.GameSettingsRPC), RpcTarget.All, new object[] { StringCompression.Compress(SettingsManager.InGameCurrent.SerializeToJsonString()) });
+                RPCManager.PhotonView.RPC(nameof(RPCManager.GameSettingsRPC), RpcTarget.All, new object[] { DataCompressors.Brotli.CompressString(SettingsManager.InGameCurrent.SerializeToJsonString()) });
                 var settings = SettingsManager.InGameCurrent;
                 string mapName = settings.General.MapName.Value;
                 string gameMode = settings.General.GameMode.Value;
@@ -1135,7 +1135,7 @@ namespace GameManagers
             CustomLogicManager.StartLogic(SettingsManager.InGameCurrent.Mode.Current);
             if (_needSendPlayerInfo)
             {
-                RPCManager.PhotonView.RPC(nameof(RPCManager.PlayerInfoRPC), RpcTarget.Others, new object[] { StringCompression.Compress(MyPlayerInfo.SerializeToJsonString()) });
+                RPCManager.PhotonView.RPC(nameof(RPCManager.PlayerInfoRPC), RpcTarget.Others, new object[] { DataCompressors.Brotli.CompressString(MyPlayerInfo.SerializeToJsonString()) });
                 if (!PhotonNetwork.IsMasterClient)
                     RPCManager.PhotonView.RPC(nameof(RPCManager.NotifyPlayerJoinedRPC), RpcTarget.Others, new object[0]);
                 _needSendPlayerInfo = false;
