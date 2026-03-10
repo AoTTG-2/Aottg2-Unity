@@ -75,10 +75,10 @@ namespace Map
             _mapScriptSymbolTable = (JSONNode)compress[1];
             _mapTransferData = new List<byte[][]>();
             _mapTransferData.Add(new byte[][] { new byte[] { MsgMapStart }, 
-                StringCompression.Compress(MapManager.MapScript.Options.Serialize()),
-                StringCompression.Compress(MapManager.MapScript.CustomAssets.Serialize()),
-                StringCompression.Compress(MapManager.MapScript.Weather.SerializeToJsonString()),
-                StringCompression.Compress(_mapScriptSymbolTable.ToString())
+                DataCompressors.Brotli.CompressString(MapManager.MapScript.Options.Serialize()),
+                DataCompressors.Brotli.CompressString(MapManager.MapScript.CustomAssets.Serialize()),
+                DataCompressors.Brotli.CompressString(MapManager.MapScript.Weather.SerializeToJsonString()),
+                DataCompressors.Brotli.CompressString(_mapScriptSymbolTable.ToString())
             });
             int chunkSize = 10000;
             int totalSize = _mapScriptCompressed.Count;
@@ -96,7 +96,7 @@ namespace Map
             }
             if (logic.Trim() != string.Empty)
             {
-                byte[] logicCompress = StringCompression.Compress(logic);
+                byte[] logicCompress = DataCompressors.Brotli.CompressString(logic);
                 _logicScriptCompressed = new List<byte>(logicCompress);
                 totalSize = _logicScriptCompressed.Count;
                 chunks = new List<byte[]>();
@@ -123,10 +123,10 @@ namespace Map
             if (msgType == MsgMapStart)
             {
                 MapManager.MapScript = new MapScript();
-                MapManager.MapScript.Options.Deserialize(StringCompression.Decompress(byteArr[1]));
-                MapManager.MapScript.CustomAssets.Deserialize(StringCompression.Decompress(byteArr[2]));
-                MapManager.MapScript.Weather.DeserializeFromJsonString(StringCompression.Decompress(byteArr[3]));
-                _mapScriptSymbolTable = JSON.Parse(StringCompression.Decompress(byteArr[4]));
+                MapManager.MapScript.Options.Deserialize(DataCompressors.Brotli.DecompressString(byteArr[1]));
+                MapManager.MapScript.CustomAssets.Deserialize(DataCompressors.Brotli.DecompressString(byteArr[2]));
+                MapManager.MapScript.Weather.DeserializeFromJsonString(DataCompressors.Brotli.DecompressString(byteArr[3]));
+                _mapScriptSymbolTable = JSON.Parse(DataCompressors.Brotli.DecompressString(byteArr[4]));
                 _mapScriptCompressed = new List<byte>();
                 _logicScriptCompressed = new List<byte>();
             }
@@ -147,7 +147,7 @@ namespace Map
                 }
                 if (_logicScriptCompressed.Count > 0)
                 {
-                    string decompress = StringCompression.Decompress(_logicScriptCompressed.ToArray());
+                    string decompress = DataCompressors.Brotli.DecompressString(_logicScriptCompressed.ToArray());
                     MapManager.MapScript.Logic = decompress;
                 }
                 MapHash = Encoding.UTF8.GetString(byteArr[1]);

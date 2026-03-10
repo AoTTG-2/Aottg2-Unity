@@ -322,8 +322,8 @@ namespace Weather
             ApplyCurrentWeather(firstStart: false, applyAll: true);
             if (PhotonNetwork.IsMasterClient)
             {
-                RPCManager.PhotonView.RPC(nameof(RPCManager.SetWeatherRPC), RpcTarget.Others, new object[]{ StringCompression.Compress(_currentWeather.SerializeToJsonString()),
-                    StringCompression.Compress(_startWeather.SerializeToJsonString()), StringCompression.Compress(_targetWeather.SerializeToJsonString()), 
+                RPCManager.PhotonView.RPC(nameof(RPCManager.SetWeatherRPC), RpcTarget.Others, new object[]{ DataCompressors.Brotli.CompressString(_currentWeather.SerializeToJsonString()),
+                    DataCompressors.Brotli.CompressString(_startWeather.SerializeToJsonString()), DataCompressors.Brotli.CompressString(_targetWeather.SerializeToJsonString()), 
                     _targetWeatherStartTimes, _targetWeatherEndTimes, _currentTime });
             }
         }
@@ -332,8 +332,8 @@ namespace Weather
         {
             if (PhotonNetwork.IsMasterClient)
             {
-                RPCManager.PhotonView.RPC(nameof(RPCManager.SetWeatherRPC), player, new object[]{ StringCompression.Compress(_currentWeather.SerializeToJsonString()),
-                    StringCompression.Compress(_startWeather.SerializeToJsonString()), StringCompression.Compress(_targetWeather.SerializeToJsonString()),
+                RPCManager.PhotonView.RPC(nameof(RPCManager.SetWeatherRPC), player, new object[]{ DataCompressors.Brotli.CompressString(_currentWeather.SerializeToJsonString()),
+                    DataCompressors.Brotli.CompressString(_startWeather.SerializeToJsonString()), DataCompressors.Brotli.CompressString(_targetWeather.SerializeToJsonString()),
                     _targetWeatherStartTimes, _targetWeatherEndTimes, _currentTime });
             }
         }
@@ -559,9 +559,9 @@ namespace Weather
         {
             while (!_finishedLoading)
                 yield return null;
-            _currentWeather.DeserializeFromJsonString(StringCompression.Decompress(currentWeatherJson));
-            _startWeather.DeserializeFromJsonString(StringCompression.Decompress(startWeatherJson));
-            _targetWeather.DeserializeFromJsonString(StringCompression.Decompress(targetWeatherJson));
+            _currentWeather.DeserializeFromJsonString(DataCompressors.Brotli.DecompressString(currentWeatherJson));
+            _startWeather.DeserializeFromJsonString(DataCompressors.Brotli.DecompressString(startWeatherJson));
+            _targetWeather.DeserializeFromJsonString(DataCompressors.Brotli.DecompressString(targetWeatherJson));
             _targetWeatherStartTimes = targetWeatherStartTimes;
             _targetWeatherEndTimes = targetWeatherEndTimes;
             _currentTime = currentTime;
