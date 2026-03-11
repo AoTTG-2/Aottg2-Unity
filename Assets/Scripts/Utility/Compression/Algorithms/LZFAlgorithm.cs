@@ -1,4 +1,5 @@
-﻿using System.IO.Compression;
+﻿using System;
+using System.IO.Compression;
 
 namespace Utility.Algorithms
 {
@@ -9,12 +10,51 @@ namespace Utility.Algorithms
     {
         public override byte[] Compress(byte[] data, CompressionLevel level = CompressionLevel.Fastest)
         {
-            return CLZF2.Compress(data);
+            // Starting guess, increase it later if needed
+            int sizeGuess = data.Length * 2;
+            byte[] buffer = new byte[sizeGuess];
+            int size = CLZF2.lzf_compress(data, ref buffer);
+
+            // If byteCount is 0, then increase buffer and try again
+            while (size == 0)
+            {
+                sizeGuess *= 2;
+                buffer = new byte[sizeGuess];
+                size = CLZF2.lzf_compress(data, ref buffer);
+            }
+
+            byte[] output = new byte[size];
+            Buffer.BlockCopy(buffer, 0, output, 0, size);
+            return output;
         }
 
         public override byte[] Decompress(byte[] data, int bufferSize = DefaultBufferSize, long maxSize = DefaultMaxSize)
         {
-            return CLZF2.Decompress(data);
+            // Starting guess, increase it later if needed
+            int sizeGuess = data.Length * 2;
+            byte[] buffer = new byte[sizeGuess];
+            int size = CLZF2.lzf_decompress(data, ref buffer);
+
+            // If byteCount is 0, then increase buffer and try again
+            while (size == 0)
+            {
+                sizeGuess += bufferSize;
+                if (sizeGuess > maxSize)
+                {
+                    return Array.Empty<byte>();
+                }
+
+                buffer = new byte[sizeGuess];
+                size = CLZF2.lzf_decompress(data, ref buffer);
+                if (size < -100) // return code < -100 = error
+                {
+                    return Array.Empty<byte>();
+                }
+            }
+
+            byte[] output = new byte[size];
+            Buffer.BlockCopy(buffer, 0, output, 0, size);
+            return output;
         }
     }
 }
