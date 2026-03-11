@@ -18,7 +18,7 @@ namespace Utility.Algorithms
         /// The default maximum allowed length of bytes to be processed during decompression, in scale of bytes.
         /// This value is currently set to 10MB
         /// </summary>
-        public const long DefaultMaxSize = 1024 * 100; // Remember to update documentation above if you change this value!
+        public const long DefaultMaxSize = 1024 * 1024 * 10; // Remember to update documentation above if you change this value!
 
         /// <summary>
         /// Returns a new byte array constructed by compressing <paramref name="data"/>
