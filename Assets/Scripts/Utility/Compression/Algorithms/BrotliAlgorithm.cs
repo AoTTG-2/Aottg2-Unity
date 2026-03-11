@@ -11,6 +11,12 @@ namespace Utility.Algorithms
     {
         public override byte[] Compress(byte[] data, CompressionLevel level = CompressionLevel.Fastest)
         {
+            byte[] test = DataCompressors.LZF.Compress(data);
+            //UnityEngine.MonoBehaviour.print(test.Length);
+
+            byte[] dec = DataCompressors.LZF.Decompress(test);
+            UnityEngine.MonoBehaviour.print(dec.Length);
+
             try
             {
                 using (MemoryStream memory = new MemoryStream())

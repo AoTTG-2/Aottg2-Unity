@@ -31,12 +31,12 @@ namespace Utility.Algorithms
         public override byte[] Decompress(byte[] data, int bufferSize = DefaultBufferSize, long maxSize = DefaultMaxSize)
         {
             // Starting guess, increase it later if needed
-            int sizeGuess = data.Length * 2;
+            int sizeGuess = data.Length + bufferSize;
             byte[] buffer = new byte[sizeGuess];
             int size = CLZF2.lzf_decompress(data, ref buffer);
 
             // If byteCount is 0, then increase buffer and try again
-            while (size == 0)
+            while (size <= 0)
             {
                 sizeGuess += bufferSize;
                 if (sizeGuess > maxSize)
@@ -46,10 +46,6 @@ namespace Utility.Algorithms
 
                 buffer = new byte[sizeGuess];
                 size = CLZF2.lzf_decompress(data, ref buffer);
-                if (size < -100) // return code < -100 = error
-                {
-                    return Array.Empty<byte>();
-                }
             }
 
             byte[] output = new byte[size];

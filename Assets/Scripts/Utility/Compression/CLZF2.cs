@@ -292,8 +292,8 @@ namespace Utility
 
                     if (oidx + ctrl > outputLength)
                     {
-                        //SET_ERRNO (E2BIG);
-                        return -101; // return 0;
+                        // SET_ERRNO (E2BIG);
+                        return 0;
                     }
 
                     do
@@ -313,14 +313,14 @@ namespace Utility
 
                     if (oidx + len + 2 > outputLength)
                     {
-                        //SET_ERRNO (E2BIG);
-                        return -101; // return 0;
+                        // SET_ERRNO (E2BIG);
+                        return 0;
                     }
 
                     if (reference < 0)
                     {
-                        //SET_ERRNO (EINVAL);
-                        return -102; // return 0;
+                        // SET_ERRNO (EINVAL);
+                        return 0;
                     }
 
                     output[oidx++] = output[reference++];
