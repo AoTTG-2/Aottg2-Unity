@@ -455,8 +455,6 @@ namespace Map
 
         private void Batch()
         {
-            const int INSTANCING_THRESHOLD = 5;
-
             GameObject staticRoot = new GameObject("Static Objects");
             GameObject dynamicRoot = new GameObject("Dynamic Objects");
 
@@ -472,6 +470,7 @@ namespace Map
                     mapObject.GameObject.transform.SetParent(dynamicRoot.transform);
             }
 
+            // Collect all eligible static objects for static batching
             List<GameObject> batchCandidates = new List<GameObject>();
             foreach (int id in IdToMapObject.Keys)
             {
@@ -483,56 +482,9 @@ namespace Map
                 CollectEligibleGameObjects(mapObject.GameObject, batchCandidates);
             }
 
-            // Group candidates by (Mesh, Material) to detect repeated instances
-            var groups = new Dictionary<long, List<GameObject>>();
-            var groupMaterials = new Dictionary<long, Material>();
-            foreach (var go in batchCandidates)
-            {
-                var filter = go.GetComponent<MeshFilter>();
-                var renderer = go.GetComponent<MeshRenderer>();
-                if (filter == null || filter.sharedMesh == null || renderer == null || renderer.sharedMaterial == null)
-                    continue;
-                long key = ((long)filter.sharedMesh.GetInstanceID() << 32) | (uint)renderer.sharedMaterial.GetInstanceID();
-                if (!groups.ContainsKey(key))
-                {
-                    groups[key] = new List<GameObject>();
-                    groupMaterials[key] = renderer.sharedMaterial;
-                }
-                groups[key].Add(go);
-            }
-
-            // Enable GPU instancing for groups that exceed the threshold
-            var instancedObjects = new HashSet<GameObject>();
-            foreach (var kvp in groups)
-            {
-                if (kvp.Value.Count >= INSTANCING_THRESHOLD)
-                {
-                    var mat = groupMaterials[kvp.Key];
-                    if (mat != null && mat.shader != null)
-                        mat.enableInstancing = true;
-                    foreach (var go in kvp.Value)
-                        instancedObjects.Add(go);
-                }
-            }
-
-            // Static batch remaining candidates that are not GPU instanced
-            var staticBatchCandidates = new List<GameObject>();
-            foreach (var go in batchCandidates)
-            {
-                if (!instancedObjects.Contains(go))
-                    staticBatchCandidates.Add(go);
-            }
-
-            if (staticBatchCandidates.Count > 0)
-                StaticBatchingUtility.Combine(staticBatchCandidates.ToArray(), staticRoot);
-
-            // Enable GPU instancing for dynamic objects
-            foreach (var renderer in dynamicRoot.GetComponentsInChildren<MeshRenderer>())
-            {
-                var mat = renderer.sharedMaterial;
-                if (mat != null && mat.shader != null && !mat.enableInstancing)
-                    mat.enableInstancing = true;
-            }
+            // Static batch all eligible static objects
+            if (batchCandidates.Count > 0)
+                StaticBatchingUtility.Combine(batchCandidates.ToArray(), staticRoot);
         }
 
         private static bool AreAllParentsStatic(MapObject mapObject)

@@ -39,18 +39,18 @@ MonoBehaviour:
   m_ProbeVolumeSHBands: 1
   m_MainLightRenderingMode: 1
   m_MainLightShadowsSupported: 1
-  m_MainLightShadowmapResolution: 4096
+  m_MainLightShadowmapResolution: 2048
   m_AdditionalLightsRenderingMode: 1
   m_AdditionalLightsPerObjectLimit: 4
   m_AdditionalLightShadowsSupported: 1
-  m_AdditionalLightsShadowmapResolution: 4096
+  m_AdditionalLightsShadowmapResolution: 2048
   m_AdditionalLightsShadowResolutionTierLow: 256
   m_AdditionalLightsShadowResolutionTierMedium: 512
   m_AdditionalLightsShadowResolutionTierHigh: 1024
   m_ReflectionProbeBlending: 1
   m_ReflectionProbeBoxProjection: 1
-  m_ShadowDistance: 600
-  m_ShadowCascadeCount: 4
+  m_ShadowDistance: 100
+  m_ShadowCascadeCount: 2
   m_Cascade2Split: 0.33333334
   m_Cascade3Split: {x: 0.1, y: 0.3}
   m_Cascade4Split: {x: 0.06666667, y: 0.2, z: 0.46666667}
@@ -61,7 +61,7 @@ MonoBehaviour:
   m_SoftShadowsSupported: 1
   m_ConservativeEnclosingSphere: 0
   m_NumIterationsEnclosingSphere: 64
-  m_SoftShadowQuality: 2
+  m_SoftShadowQuality: 1
   m_AdditionalLightsCookieResolution: 2048
   m_AdditionalLightsCookieFormat: 3
   m_UseSRPBatcher: 1
@@ -73,7 +73,7 @@ MonoBehaviour:
   m_StoreActionsOptimization: 0
   m_EnableRenderGraph: 0
   m_UseAdaptivePerformance: 1
-  m_ColorGradingMode: 1
+  m_ColorGradingMode: 0
   m_ColorGradingLutSize: 32
   m_UseFastSRGBLinearConversion: 0
   m_SupportDataDrivenLensFlare: 1
@@ -93,33 +93,33 @@ MonoBehaviour:
     serializedHasVolumes: []
     bakingSets: []
     m_LightingScenario: Default
-  m_PrefilteringModeMainLightShadows: 1
-  m_PrefilteringModeAdditionalLight: 4
-  m_PrefilteringModeAdditionalLightShadows: 1
-  m_PrefilterXRKeywords: 0
-  m_PrefilteringModeForwardPlus: 1
-  m_PrefilteringModeDeferredRendering: 1
-  m_PrefilteringModeScreenSpaceOcclusion: 1
-  m_PrefilterDebugKeywords: 0
+  m_PrefilteringModeMainLightShadows: 3
+  m_PrefilteringModeAdditionalLight: 0
+  m_PrefilteringModeAdditionalLightShadows: 2
+  m_PrefilterXRKeywords: 1
+  m_PrefilteringModeForwardPlus: 2
+  m_PrefilteringModeDeferredRendering: 0
+  m_PrefilteringModeScreenSpaceOcclusion: 0
+  m_PrefilterDebugKeywords: 1
   m_PrefilterWriteRenderingLayers: 0
-  m_PrefilterHDROutput: 0
-  m_PrefilterSSAODepthNormals: 0
-  m_PrefilterSSAOSourceDepthLow: 0
-  m_PrefilterSSAOSourceDepthMedium: 0
-  m_PrefilterSSAOSourceDepthHigh: 0
-  m_PrefilterSSAOInterleaved: 0
-  m_PrefilterSSAOBlueNoise: 0
-  m_PrefilterSSAOSampleCountLow: 0
-  m_PrefilterSSAOSampleCountMedium: 0
-  m_PrefilterSSAOSampleCountHigh: 0
-  m_PrefilterDBufferMRT1: 0
-  m_PrefilterDBufferMRT2: 0
-  m_PrefilterDBufferMRT3: 0
-  m_PrefilterSoftShadowsQualityLow: 0
-  m_PrefilterSoftShadowsQualityMedium: 0
-  m_PrefilterSoftShadowsQualityHigh: 0
+  m_PrefilterHDROutput: 1
+  m_PrefilterSSAODepthNormals: 1
+  m_PrefilterSSAOSourceDepthLow: 1
+  m_PrefilterSSAOSourceDepthMedium: 1
+  m_PrefilterSSAOSourceDepthHigh: 1
+  m_PrefilterSSAOInterleaved: 1
+  m_PrefilterSSAOBlueNoise: 1
+  m_PrefilterSSAOSampleCountLow: 1
+  m_PrefilterSSAOSampleCountMedium: 1
+  m_PrefilterSSAOSampleCountHigh: 1
+  m_PrefilterDBufferMRT1: 1
+  m_PrefilterDBufferMRT2: 1
+  m_PrefilterDBufferMRT3: 1
+  m_PrefilterSoftShadowsQualityLow: 1
+  m_PrefilterSoftShadowsQualityMedium: 1
+  m_PrefilterSoftShadowsQualityHigh: 1
   m_PrefilterSoftShadows: 0
-  m_PrefilterScreenCoord: 0
-  m_PrefilterNativeRenderPass: 0
+  m_PrefilterScreenCoord: 1
+  m_PrefilterNativeRenderPass: 1
   m_ShaderVariantLogLevel: 0
   m_ShadowCascades: 0
