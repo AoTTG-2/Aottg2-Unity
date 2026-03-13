@@ -46,8 +46,12 @@ namespace UI
                 UIManager.GetLocaleArray(cat, sub, "ShadowQualityOptions"), elementWidth: 200f);
             ElementFactory.CreateSliderSetting(DoublePanelRight, style, settings.ShadowDistance, UIManager.GetLocale(cat, sub, "ShadowDistance"),
                elementWidth: 130f);
+            ElementFactory.CreateDropdownSetting(DoublePanelRight, style, settings.ShadowCascades, UIManager.GetLocale(cat, sub, "ShadowCascades"),
+               UIManager.GetLocaleArray(cat, sub, "ShadowCascadesOptions"), elementWidth: 200f);
             ElementFactory.CreateSliderSetting(DoublePanelRight, style, settings.LightDistance, UIManager.GetLocale(cat, sub, "LightDistance"),
                elementWidth: 130f);
+            ElementFactory.CreateDropdownSetting(DoublePanelRight, style, settings.AdditionalLightsMode, UIManager.GetLocale(cat, sub, "AdditionalLightsMode"),
+               UIManager.GetLocaleArray(cat, sub, "AdditionalLightsModeOptions"), elementWidth: 200f);
             ElementFactory.CreateDropdownSetting(DoublePanelRight, style, settings.AntiAliasing, UIManager.GetLocale(cat, sub, "AntiAliasing"),
                UIManager.GetLocaleArray(cat, sub, "AntiAliasingOptions"), elementWidth: 200f);
             ElementFactory.CreateDropdownSetting(DoublePanelRight, style, settings.AnisotropicFiltering, UIManager.GetLocale(cat, sub, "Anisotropic"),
@@ -73,6 +77,7 @@ namespace UI
             ElementFactory.CreateDropdownSetting(DoublePanelRight, style, settings.WaterFX, UIManager.GetLocale(cat, sub, "WaterFX"),
                UIManager.GetLocaleArray(cat, sub, "WaterFXOptions"), elementWidth: 200f);
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.HDR, UIManager.GetLocale(cat, sub, "HDR"), UIManager.GetLocale(cat, sub, "HDRTooltip"));
+            ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.VolumeUpdateEveryFrame, UIManager.GetLocale(cat, sub, "VolumeUpdateEveryFrame"));
         }
 
         protected void OnSelectPreset()

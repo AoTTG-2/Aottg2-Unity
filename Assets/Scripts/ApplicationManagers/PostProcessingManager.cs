@@ -1,6 +1,7 @@
 using ApplicationManagers;
 using Settings;
 using System;
+using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,6 +21,8 @@ public class PostProcessingManager : MonoBehaviour
     [SerializeField] private VolumeProfile snowyProfile;
     [SerializeField] private VolumeProfile nightProfile;
 
+    [Header("SSAO")]
+    [SerializeField] private ScriptableRendererData rendererData;
 
     private Bloom _bloom;
     private ChromaticAberration _chromaticAberration;
@@ -105,7 +108,52 @@ public class PostProcessingManager : MonoBehaviour
 
     public void SetAmbientOcclusionQuality(AmbientOcclusionLevel quality)
     {
-        // AmbientOcclusion is a renderer feature in URP, not a volume component
+        if (rendererData == null)
+            return;
+        ScriptableRendererFeature ssaoFeature = null;
+        foreach (var feature in rendererData.rendererFeatures)
+        {
+            if (feature != null && feature.GetType().Name == "ScreenSpaceAmbientOcclusion")
+            {
+                ssaoFeature = feature;
+                break;
+            }
+        }
+        if (ssaoFeature == null)
+            return;
+        ssaoFeature.SetActive(quality != AmbientOcclusionLevel.Off);
+        if (quality == AmbientOcclusionLevel.Off)
+            return;
+        var settingsField = ssaoFeature.GetType().GetField("m_Settings", BindingFlags.NonPublic | BindingFlags.Instance);
+        if (settingsField == null)
+            return;
+        object settings = settingsField.GetValue(ssaoFeature);
+        Type settingsType = settings.GetType();
+        // AOSampleOption: High=0 (12 samples), Medium=1 (8 samples), Low=2 (4 samples)
+        float intensity;
+        float radius;
+        bool downsample;
+        int sampleOption;
+        switch (quality)
+        {
+            case AmbientOcclusionLevel.Lowest:
+                intensity = 1.0f; radius = 0.025f; downsample = true; sampleOption = 2; break;
+            case AmbientOcclusionLevel.Low:
+                intensity = 2.0f; radius = 0.03f; downsample = true; sampleOption = 2; break;
+            case AmbientOcclusionLevel.Medium:
+                intensity = 2.5f; radius = 0.035f; downsample = false; sampleOption = 1; break;
+            case AmbientOcclusionLevel.High:
+                intensity = 3.0f; radius = 0.05f; downsample = false; sampleOption = 0; break;
+            default: // Ultra
+                intensity = 3.5f; radius = 0.075f; downsample = false; sampleOption = 0; break;
+        }
+        settingsType.GetField("Intensity", BindingFlags.Instance | BindingFlags.NonPublic)?.SetValue(settings, intensity);
+        settingsType.GetField("Radius", BindingFlags.Instance | BindingFlags.NonPublic)?.SetValue(settings, radius);
+        settingsType.GetField("Downsample", BindingFlags.Instance | BindingFlags.NonPublic)?.SetValue(settings, downsample);
+        var samplesField = settingsType.GetField("Samples", BindingFlags.Instance | BindingFlags.NonPublic);
+        if (samplesField != null)
+            samplesField.SetValue(settings, Enum.ToObject(samplesField.FieldType, sampleOption));
+        settingsField.SetValue(ssaoFeature, settings);
     }
 
     public void SetBloomQuality(BloomLevel quality)

@@ -455,88 +455,238 @@ namespace Map
 
         private void Batch()
         {
-            GameObject staticRoot = new GameObject("Static Objects");
-            GameObject dynamicRoot = new GameObject("Dynamic Objects");
+            const int gridSize = 1000;
+
+            Dictionary<string, GameObject> roots = new Dictionary<string, GameObject>();
+            Dictionary<string, List<GameObject>> shared = new Dictionary<string, List<GameObject>>();
+            Dictionary<GameObject, Transform> oldParents = new Dictionary<GameObject, Transform>();
+            Dictionary<string, int> hashCounts = new Dictionary<string, int>();
+
+            GameObject batchRoot = new GameObject("Batched Scene");
+
+            GameObject originalRoot = new GameObject("Original Objects");
+            originalRoot.transform.SetParent(batchRoot.transform);
+
+            GameObject combinedRoot = new GameObject("Combined Meshes");
+            combinedRoot.transform.SetParent(batchRoot.transform);
 
             foreach (int id in IdToMapObject.Keys)
             {
                 var mapObject = IdToMapObject[id];
-                if (mapObject.ScriptObject.Parent > 0)
+
+                if (mapObject.ScriptObject.Parent > 0 || !mapObject.ScriptObject.Static)
                     continue;
 
-                if (mapObject.ScriptObject.Static)
-                    mapObject.GameObject.transform.SetParent(staticRoot.transform);
-                else
-                    mapObject.GameObject.transform.SetParent(dynamicRoot.transform);
-            }
+                var shader = ((MapScriptSceneObject)mapObject.ScriptObject).Material.Shader;
 
-            // Collect all eligible static objects for static batching
-            List<GameObject> batchCandidates = new List<GameObject>();
-            foreach (int id in IdToMapObject.Keys)
-            {
-                var mapObject = IdToMapObject[id];
-                if (!mapObject.ScriptObject.Static)
+                if (MapObjectShader.IsLegacyShader(shader) || shader == MapObjectShader.Transparent)
                     continue;
-                if (mapObject.ScriptObject.Parent > 0 && !AreAllParentsStatic(mapObject))
-                    continue;
-                CollectEligibleGameObjects(mapObject.GameObject, batchCandidates);
-            }
 
-            // Static batch all eligible static objects
-            if (batchCandidates.Count > 0)
-                StaticBatchingUtility.Combine(batchCandidates.ToArray(), staticRoot);
-        }
+                var position = mapObject.GameObject.transform.position;
 
-        private static bool AreAllParentsStatic(MapObject mapObject)
-        {
-            int parentId = mapObject.ScriptObject.Parent;
-            while (parentId > 0)
-            {
-                if (!IdToMapObject.ContainsKey(parentId))
-                    return false;
-                var parent = IdToMapObject[parentId];
-                if (!parent.ScriptObject.Static)
-                    return false;
-                parentId = parent.ScriptObject.Parent;
-            }
-            return true;
-        }
+                string positionHash =
+                    Mathf.FloorToInt(position.x / gridSize) + "-" +
+                    Mathf.FloorToInt(position.y / gridSize) + "-" +
+                    Mathf.FloorToInt(position.z / gridSize);
 
-        private static void CollectEligibleGameObjects(GameObject root, List<GameObject> candidates)
-        {
-            foreach (var renderer in root.GetComponentsInChildren<MeshRenderer>())
-            {
-                var filter = renderer.GetComponent<MeshFilter>();
-                if (IsEligibleForStaticBatching(renderer.gameObject, renderer, filter))
+                foreach (MeshFilter filter in mapObject.GameObject.GetComponentsInChildren<MeshFilter>())
                 {
-                    renderer.gameObject.isStatic = true;
-                    candidates.Add(renderer.gameObject);
+                    var renderer = filter.GetComponent<Renderer>();
+
+                    if (renderer == null || renderer.sharedMaterials.Length > 1)
+                        continue;
+
+                    if (filter.sharedMesh == null)
+                    {
+                        DebugConsole.Log($"Map load error: object {mapObject.ScriptObject.Name} with missing mesh", true);
+                        Errors.Add("Failed to load static object with no MeshFilter or SharedMesh: " + mapObject.ScriptObject.Name);
+                        continue;
+                    }
+
+                    // Skip GPU instanced materials
+                    if (renderer.sharedMaterial != null && renderer.sharedMaterial.enableInstancing)
+                        continue;
+
+                    string hash = filter.sharedMesh.GetHashCode().ToString();
+                    hash += positionHash;
+
+                    if (renderer.enabled)
+                        hash += renderer.sharedMaterial.GetHashCode().ToString();
+                    else
+                        hash += "disabled";
+
+                    if (!hashCounts.ContainsKey(hash))
+                        hashCounts.Add(hash, 0);
+
+                    int meshPerHash = Mathf.Max(1, 65000 / filter.sharedMesh.vertexCount);
+
+                    hashCounts[hash] += 1;
+
+                    hash += (hashCounts[hash] / meshPerHash).ToString();
+
+                    if (!roots.ContainsKey(hash))
+                    {
+                        GameObject go = new GameObject();
+
+                        go.name = mapObject.ScriptObject.Name + " (Batched)";
+                        go.layer = PhysicsLayer.MapObjectEntities;
+
+                        go.transform.SetParent(combinedRoot.transform);
+
+                        roots.Add(hash, go);
+                        shared.Add(hash, new List<GameObject>());
+                    }
+
+                    shared[hash].Add(filter.gameObject);
+                    oldParents.Add(filter.gameObject, filter.transform.parent);
+
+                    filter.transform.SetParent(roots[hash].transform);
                 }
+
+                // Move original object under organized root
+                mapObject.GameObject.transform.SetParent(originalRoot.transform);
+            }
+
+            foreach (string hash in roots.Keys)
+                CombineMeshes(roots[hash]);
+
+            foreach (string hash in shared.Keys)
+            {
+                foreach (GameObject go in shared[hash])
+                    go.transform.SetParent(oldParents[go]);
             }
         }
 
-        private static bool IsEligibleForStaticBatching(GameObject go, MeshRenderer renderer, MeshFilter filter)
+        void CombineMeshes(GameObject obj)
         {
-            if (!go.activeInHierarchy)
-                return false;
-            if (filter == null)
-                return false;
-            var mesh = filter.sharedMesh;
-            if (mesh == null)
-                return false;
-            if (mesh.vertexCount == 0)
-                return false;
-            if (!mesh.isReadable)
-                return false;
-            if (!renderer.enabled)
-                return false;
-            foreach (var mat in renderer.sharedMaterials)
+            MeshFilter[] meshFilters = obj.GetComponentsInChildren<MeshFilter>();
+
+            if (meshFilters.Length == 0)
+                return;
+
+            List<MeshFilter> validFilters = new List<MeshFilter>();
+
+            foreach (var filter in meshFilters)
             {
-                if (mat != null && mat.GetTag("DisableBatching", false) == "True")
-                    return false;
+                var renderer = filter.GetComponent<Renderer>();
+
+                if (renderer != null)
+                    validFilters.Add(filter);
             }
-            return true;
+
+            if (validFilters.Count == 0)
+                return;
+
+            CombineInstance[] combine = new CombineInstance[validFilters.Count];
+
+            bool rendererEnabled = validFilters[0].GetComponent<Renderer>().enabled;
+
+            for (int i = 0; i < validFilters.Count; i++)
+            {
+                combine[i].mesh = validFilters[i].sharedMesh;
+                combine[i].transform = validFilters[i].transform.localToWorldMatrix;
+
+                validFilters[i].GetComponent<Renderer>().enabled = false;
+            }
+
+            MeshFilter meshFilter = obj.AddComponent<MeshFilter>();
+            MeshRenderer meshRenderer = obj.AddComponent<MeshRenderer>();
+
+            meshFilter.mesh = new Mesh();
+            meshFilter.mesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
+
+            meshFilter.mesh.CombineMeshes(combine, true, true);
+
+            if (rendererEnabled)
+                meshRenderer.material = validFilters[0].GetComponent<Renderer>().sharedMaterial;
+            else
+                meshRenderer.enabled = false;
         }
+
+        //private void Batch()
+        //{
+        //    GameObject staticRoot = new GameObject("Static Objects");
+        //    GameObject dynamicRoot = new GameObject("Dynamic Objects");
+
+        //    foreach (int id in IdToMapObject.Keys)
+        //    {
+        //        var mapObject = IdToMapObject[id];
+        //        if (mapObject.ScriptObject.Parent > 0)
+        //            continue;
+
+        //        if (mapObject.ScriptObject.Static)
+        //            mapObject.GameObject.transform.SetParent(staticRoot.transform);
+        //        else
+        //            mapObject.GameObject.transform.SetParent(dynamicRoot.transform);
+        //    }
+
+        //    // Collect all eligible static objects for static batching
+        //    List<GameObject> batchCandidates = new List<GameObject>();
+        //    foreach (int id in IdToMapObject.Keys)
+        //    {
+        //        var mapObject = IdToMapObject[id];
+        //        if (!mapObject.ScriptObject.Static)
+        //            continue;
+        //        if (mapObject.ScriptObject.Parent > 0 && !AreAllParentsStatic(mapObject))
+        //            continue;
+        //        CollectEligibleGameObjects(mapObject.GameObject, batchCandidates);
+        //    }
+
+        //    // Static batch all eligible static objects
+        //    if (batchCandidates.Count > 0)
+        //        StaticBatchingUtility.Combine(batchCandidates.ToArray(), staticRoot);
+        //}
+
+        //private static bool AreAllParentsStatic(MapObject mapObject)
+        //{
+        //    int parentId = mapObject.ScriptObject.Parent;
+        //    while (parentId > 0)
+        //    {
+        //        if (!IdToMapObject.ContainsKey(parentId))
+        //            return false;
+        //        var parent = IdToMapObject[parentId];
+        //        if (!parent.ScriptObject.Static)
+        //            return false;
+        //        parentId = parent.ScriptObject.Parent;
+        //    }
+        //    return true;
+        //}
+
+        //private static void CollectEligibleGameObjects(GameObject root, List<GameObject> candidates)
+        //{
+        //    foreach (var renderer in root.GetComponentsInChildren<MeshRenderer>())
+        //    {
+        //        var filter = renderer.GetComponent<MeshFilter>();
+        //        if (IsEligibleForStaticBatching(renderer.gameObject, renderer, filter))
+        //        {
+        //            renderer.gameObject.isStatic = true;
+        //            candidates.Add(renderer.gameObject);
+        //        }
+        //    }
+        //}
+
+        //private static bool IsEligibleForStaticBatching(GameObject go, MeshRenderer renderer, MeshFilter filter)
+        //{
+        //    if (!go.activeInHierarchy)
+        //        return false;
+        //    if (filter == null)
+        //        return false;
+        //    var mesh = filter.sharedMesh;
+        //    if (mesh == null)
+        //        return false;
+        //    if (mesh.vertexCount == 0)
+        //        return false;
+        //    if (!mesh.isReadable)
+        //        return false;
+        //    if (!renderer.enabled)
+        //        return false;
+        //    foreach (var mat in renderer.sharedMaterials)
+        //    {
+        //        if (mat != null && mat.GetTag("DisableBatching", false) == "True")
+        //            return false;
+        //    }
+        //    return true;
+        //}
 
         public static void RegisterTag(string tag, MapObject obj)
         {
