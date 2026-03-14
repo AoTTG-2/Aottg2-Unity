@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 49e99d847b7dd3a42901ace7b8e41be2
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 277702
+  packageName: Volumetric Fog (URP)
+  packageVersion: 1.0
+  assetPath: Assets/Mirza Beig/Volumetric Fog (Lite)/Scripts/FPSTest.cs
+  uploadId: 666516

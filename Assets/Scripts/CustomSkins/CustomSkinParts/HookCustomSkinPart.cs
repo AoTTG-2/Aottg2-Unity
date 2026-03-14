@@ -25,7 +25,7 @@ namespace CustomSkins
 
         protected override Material SetNewTexture(Texture2D texture)
         {
-            Material material = new Material(Shader.Find("Transparent/Diffuse"));
+            Material material = new Material(Shader.Find("Universal Render Pipeline/Simple Lit"));
             material.mainTexture = texture;
             SetMaterial(material);
             return material;

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 4edfa58d36c8c8745a9c69162f2f35a7
+ShaderIncludeImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 277702
+  packageName: Volumetric Fog (URP)
+  packageVersion: 1.0
+  assetPath: Assets/Mirza Beig/Volumetric Fog (Lite)/Shaders/Includes/CustomLighting.cginc
+  uploadId: 666516

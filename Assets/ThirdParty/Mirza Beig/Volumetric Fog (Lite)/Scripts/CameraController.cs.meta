@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 5dc8d0d55429e594ebb831debe904ae9
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 277702
+  packageName: Volumetric Fog (URP)
+  packageVersion: 1.0
+  assetPath: Assets/Mirza Beig/Volumetric Fog (Lite)/Scripts/CameraController.cs
+  uploadId: 666516

@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 59432b8f83767bd469b7fd33ee404dbe
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: 625f186215c104763be7675aa2d941aa, type: 3}
+AssetOrigin:
+  serializedVersion: 1
+  productId: 277702
+  packageName: Volumetric Fog (URP)
+  packageVersion: 1.0
+  assetPath: Assets/Mirza Beig/Volumetric Fog (Lite)/Shaders/Composite (Lite).shadergraph
+  uploadId: 666516

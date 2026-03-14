@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 55b101722199e204d8cd3f05eff436c8
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 4890085278179872738
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 277702
+  packageName: Volumetric Fog (URP)
+  packageVersion: 1.0
+  assetPath: Assets/Mirza Beig/Volumetric Fog (Lite)/Settings/Lighting Settings.lighting
+  uploadId: 666516

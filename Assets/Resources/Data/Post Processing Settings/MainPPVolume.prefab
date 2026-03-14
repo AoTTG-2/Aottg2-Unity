@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6003641754467535902}
-  - component: {fileID: -3501475053071111579}
+  - component: {fileID: 4179914240534355358}
   m_Layer: 28
   m_Name: MainPPVolume
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-3501475053071111579
+--- !u!114 &4179914240534355358
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,11 +41,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 2917358069394398583}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b9a305e18de0c04dbd257a21cd47087, type: 3}
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sharedProfile: {fileID: 11400000, guid: 5f3a173bc035ab847b11c2d36cdb2671, type: 2}
-  isGlobal: 1
+  m_IsGlobal: 1
+  priority: 1
   blendDistance: 0
   weight: 1
-  priority: 1
+  sharedProfile: {fileID: 11400000, guid: 58943589da649b2448f05e2717529753, type: 2}
