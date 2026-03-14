@@ -507,11 +507,11 @@ namespace Map
                     if (renderer.sharedMaterial != null && renderer.sharedMaterial.enableInstancing)
                         continue;
 
-                    string hash = filter.sharedMesh.GetHashCode().ToString();
+                    string hash = filter.sharedMesh.GetInstanceID().ToString();
                     hash += positionHash;
 
                     if (renderer.enabled)
-                        hash += renderer.sharedMaterial.GetHashCode().ToString();
+                        hash += renderer.sharedMaterial.GetInstanceID().ToString();
                     else
                         hash += "disabled";
 
@@ -528,7 +528,7 @@ namespace Map
                     {
                         GameObject go = new GameObject();
 
-                        go.name = mapObject.ScriptObject.Name + " (Batched)";
+                        go.name = mapObject.ScriptObject.Name + " (Batched) " + hash;
                         go.layer = PhysicsLayer.MapObjectEntities;
 
                         go.transform.SetParent(combinedRoot.transform);
@@ -596,6 +596,8 @@ namespace Map
             meshFilter.mesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
 
             meshFilter.mesh.CombineMeshes(combine, true, true);
+
+            meshRenderer.staticShadowCaster = true;
 
             if (rendererEnabled)
                 meshRenderer.material = validFilters[0].GetComponent<Renderer>().sharedMaterial;
@@ -890,6 +892,7 @@ namespace Map
                 {
                     var assetMats = _assetMaterialCache[asset];
                     var defaultMats = new List<Material>();
+                    var createdMats = new Dictionary<Material, Material>();
                     foreach (var assetMat in assetMats)
                     {
                         if (assetMat == null)
@@ -897,11 +900,15 @@ namespace Map
                             defaultMats.Add(null);
                             continue;
                         }
-                        var mat = new Material(assetMat);
-                        if (material.Shader != MapObjectShader.DefaultNoTint)
-                            mat.color = material.Color.ToColor();
-                        if (material.Shader == MapObjectShader.DefaultTiled)
-                            SetDefaultTiling(asset, mat, ((MapScriptDefaultTiledMaterial)material).Tiling);
+                        if (!createdMats.TryGetValue(assetMat, out var mat))
+                        {
+                            mat = new Material(assetMat);
+                            if (material.Shader != MapObjectShader.DefaultNoTint)
+                                mat.color = material.Color.ToColor();
+                            if (material.Shader == MapObjectShader.DefaultTiled)
+                                SetDefaultTiling(asset, mat, ((MapScriptDefaultTiledMaterial)material).Tiling);
+                            createdMats.Add(assetMat, mat);
+                        }
                         defaultMats.Add(mat);
                     }
                     _defaultMaterialCache.Add(materialHash, defaultMats);
