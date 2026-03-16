@@ -1,8 +1,11 @@
 ﻿using ApplicationManagers;
 using Cameras;
 using System;
+using System.Reflection;
 using UI;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 using Utility;
 
 namespace Settings
@@ -33,6 +36,9 @@ namespace Settings
         public BoolSetting BloodSplatterEnabled = new BoolSetting(true);
         public BoolSetting NapeBloodEnabled = new BoolSetting(true);
         public BoolSetting MipmapEnabled = new BoolSetting(true);
+        public IntSetting ShadowCascades = new IntSetting((int)ShadowCascadesLevel.Four, minValue: 0, maxValue: (int)Util.EnumMaxValue<ShadowCascadesLevel>());
+        public IntSetting AdditionalLightsMode = new IntSetting((int)AdditionalLightingMode.Default, minValue: 0, maxValue: (int)Util.EnumMaxValue<AdditionalLightingMode>());
+        public BoolSetting VolumeUpdateEveryFrame = new BoolSetting(true);
 
         // Post Processing
         public IntSetting AmbientOcclusion = new IntSetting((int)AmbientOcclusionLevel.Off, minValue: 0, maxValue: (int)Util.EnumMaxValue<AmbientOcclusionLevel>());
@@ -47,25 +53,40 @@ namespace Settings
 
         public override void Apply()
         {
-            if (ShadowQuality.Value == (int)ShadowQualityLevel.Off)
-                QualitySettings.shadows = UnityEngine.ShadowQuality.Disable;
-            else if (ShadowQuality.Value == (int)ShadowQualityLevel.Low)
+            UniversalRenderPipelineAsset urpAsset = QualitySettings.renderPipeline as UniversalRenderPipelineAsset;
+            if (urpAsset == null)
+                urpAsset = UnityEngine.Rendering.GraphicsSettings.renderPipelineAsset as UniversalRenderPipelineAsset;
+            if (urpAsset != null)
             {
-                QualitySettings.shadows = UnityEngine.ShadowQuality.HardOnly;
-                QualitySettings.shadowResolution = ShadowResolution.Medium;
-                QualitySettings.shadowCascades = 0;
-            }
-            else if (ShadowQuality.Value == (int)ShadowQualityLevel.Medium)
-            {
-                QualitySettings.shadows = UnityEngine.ShadowQuality.All;
-                QualitySettings.shadowResolution = ShadowResolution.High;
-                QualitySettings.shadowCascades = 2;
-            }
-            else if (ShadowQuality.Value == (int)ShadowQualityLevel.High)
-            {
-                QualitySettings.shadows = UnityEngine.ShadowQuality.All;
-                QualitySettings.shadowResolution = ShadowResolution.VeryHigh;
-                QualitySettings.shadowCascades = 4;
+                if (ShadowQuality.Value == (int)ShadowQualityLevel.Off)
+                {
+                    urpAsset.shadowDistance = 0f;
+                }
+                else
+                {
+                    urpAsset.shadowDistance = ShadowDistance.Value;
+                    var shadowResField = typeof(UniversalRenderPipelineAsset).GetField("m_MainLightShadowmapResolution", BindingFlags.NonPublic | BindingFlags.Instance);
+                    int shadowResolution = ShadowQuality.Value == (int)ShadowQualityLevel.Low ? 512
+                        : ShadowQuality.Value == (int)ShadowQualityLevel.Medium ? 1024 : 2048;
+                    shadowResField?.SetValue(urpAsset, (UnityEngine.Rendering.Universal.ShadowResolution)shadowResolution);
+                    switch (ShadowCascades.Value)
+                    {
+                        case (int)ShadowCascadesLevel.One:
+                            urpAsset.shadowCascadeCount = 1;
+                            break;
+                        case (int)ShadowCascadesLevel.Two:
+                            urpAsset.shadowCascadeCount = 2;
+                            break;
+                        case (int)ShadowCascadesLevel.Four:
+                            urpAsset.shadowCascadeCount = 4;
+                            break;
+                    }
+                }
+                var additionalLightsField = typeof(UniversalRenderPipelineAsset).GetField("m_AdditionalLightsRenderingMode", BindingFlags.NonPublic | BindingFlags.Instance);
+                LightRenderingMode lightMode = AdditionalLightsMode.Value == (int)AdditionalLightingMode.PerVertex ? LightRenderingMode.PerVertex
+                    : AdditionalLightsMode.Value == (int)AdditionalLightingMode.Disabled ? LightRenderingMode.Disabled
+                    : LightRenderingMode.PerPixel;
+                additionalLightsField?.SetValue(urpAsset, lightMode);
             }
             QualitySettings.vSyncCount = Convert.ToInt32(VSync.Value);
             if (SceneLoader.SceneName == SceneName.InGame || SceneLoader.SceneName == SceneName.MapEditor)
@@ -75,7 +96,8 @@ namespace Settings
             QualitySettings.globalTextureMipmapLimit = 3 - TextureQuality.Value;
             QualitySettings.anisotropicFiltering = (AnisotropicFiltering)AnisotropicFiltering.Value;
             QualitySettings.antiAliasing = 0;
-            QualitySettings.shadowDistance = ShadowDistance.Value;
+            if (Camera.main != null)
+                Camera.main.SetVolumeFrameworkUpdateMode(VolumeUpdateEveryFrame.Value ? VolumeFrameworkUpdateMode.EveryFrame : VolumeFrameworkUpdateMode.ViaScripting);
             if (SceneLoader.CurrentCamera is InGameCamera)
                 ((InGameCamera)SceneLoader.CurrentCamera).ApplyGraphicsSettings();
             ScreenResolution.Value = FullscreenHandler.SanitizeResolutionSetting(ScreenResolution.Value);
@@ -124,6 +146,9 @@ namespace Settings
                 AutoExposure.Value = (int)AutoExposureLevel.Off;
                 HDR.Value = false;
                 RenderDistance.Value = 1000;
+                ShadowCascades.Value = (int)ShadowCascadesLevel.One;
+                AdditionalLightsMode.Value = (int)AdditionalLightingMode.Disabled;
+                VolumeUpdateEveryFrame.Value = false;
             }
             else if (PresetQuality.Value == (int)PresetQualityLevel.Low)
             {
@@ -144,6 +169,9 @@ namespace Settings
                 AutoExposure.Value = (int)AutoExposureLevel.On;
                 HDR.Value = false;
                 RenderDistance.Value = 2000;
+                ShadowCascades.Value = (int)ShadowCascadesLevel.One;
+                AdditionalLightsMode.Value = (int)AdditionalLightingMode.PerVertex;
+                VolumeUpdateEveryFrame.Value = false;
             }
             else if (PresetQuality.Value == (int)PresetQualityLevel.Medium)
             {
@@ -164,6 +192,9 @@ namespace Settings
                 AutoExposure.Value = (int)AutoExposureLevel.On;
                 HDR.Value = false;
                 RenderDistance.Value = 5000;
+                ShadowCascades.Value = (int)ShadowCascadesLevel.Two;
+                AdditionalLightsMode.Value = (int)AdditionalLightingMode.PerVertex;
+                VolumeUpdateEveryFrame.Value = true;
             }
             else if (PresetQuality.Value == (int)PresetQualityLevel.High)
             {
@@ -184,6 +215,9 @@ namespace Settings
                 AutoExposure.Value = (int)AutoExposureLevel.On;
                 HDR.Value = false;
                 RenderDistance.Value = 10000;
+                ShadowCascades.Value = (int)ShadowCascadesLevel.Four;
+                AdditionalLightsMode.Value = (int)AdditionalLightingMode.Default;
+                VolumeUpdateEveryFrame.Value = true;
             }
             else if (PresetQuality.Value == (int)PresetQualityLevel.VeryHigh)
             {
@@ -204,6 +238,9 @@ namespace Settings
                 AutoExposure.Value = (int)AutoExposureLevel.On;
                 HDR.Value = false;
                 RenderDistance.Value = 10000;
+                ShadowCascades.Value = (int)ShadowCascadesLevel.Four;
+                AdditionalLightsMode.Value = (int)AdditionalLightingMode.Default;
+                VolumeUpdateEveryFrame.Value = true;
             }
         }
     }
@@ -334,5 +371,19 @@ namespace Settings
         Off,
         Mine,
         All
+    }
+
+    public enum ShadowCascadesLevel
+    {
+        One,
+        Two,
+        Four
+    }
+
+    public enum AdditionalLightingMode
+    {
+        Default,
+        PerVertex,
+        Disabled
     }
 }

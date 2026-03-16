@@ -47,15 +47,21 @@ namespace CustomLogic
         [CLMethod]
         public void Destroy()
         {
-            GameObject.Destroy(Value.gameObject);
+            if (Value != null)
+            {
+                GameObject.Destroy(Value.gameObject);
+            }
         }
 
         ~CustomLogicLineRendererBuiltin()
         {
             // Remove object when reference is lost
-            if (Value.gameObject != null)
+            if (Value != null)
             {
-                GameObject.Destroy(Value.gameObject);
+                if (Value.gameObject != null)
+                {
+                    GameObject.Destroy(Value.gameObject);
+                }
             }
         }
 

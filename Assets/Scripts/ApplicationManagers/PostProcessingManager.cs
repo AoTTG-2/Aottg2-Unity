@@ -1,39 +1,51 @@
 using ApplicationManagers;
 using Settings;
 using System;
+using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
-using UnityEngine.Rendering.PostProcessing;
+using UnityEngine.Rendering.Universal;
 using Utility;
 
 public class PostProcessingManager : MonoBehaviour
 {
-    private PostProcessVolume _postProcessingVolume;
-    private AmbientOcclusion _ambientOcclusion;
+    [SerializeField] private Volume postProcessingVolume;
+    [SerializeField] private bool disable;
+
+    [Header("Post Processing Profiles")]
+    [SerializeField] private VolumeProfile postProfileMain;
+    [SerializeField] private VolumeProfile underwaterProfile;
+    [SerializeField] private VolumeProfile rainyProfile;
+    [SerializeField] private VolumeProfile snowyProfile;
+    [SerializeField] private VolumeProfile nightProfile;
+
+    [Header("SSAO")]
+    [SerializeField] private ScriptableRendererData rendererData;
+
     private Bloom _bloom;
     private ChromaticAberration _chromaticAberration;
-    private ColorGrading _colorGrading;
+    private ColorAdjustments _colorAdjustments;
     private DepthOfField _depthOfField;
     private MotionBlur _motionBlur;
-    private AutoExposure _autoExposure;
 
     public void Awake()
     {
-        _postProcessingVolume = GetComponent<PostProcessVolume>();
-        if (_postProcessingVolume == null)
+        postProcessingVolume = GetComponent<Volume>();
+        if (postProcessingVolume == null)
         {
             Debug.LogError("PostProcessingManager: No PostProcessVolume component found on this object.");
             return;
         }
-        _postProcessingVolume.profile.TryGetSettings(out _ambientOcclusion);
-        _postProcessingVolume.profile.TryGetSettings(out _bloom);
-        _postProcessingVolume.profile.TryGetSettings(out _chromaticAberration);
-        _postProcessingVolume.profile.TryGetSettings(out _colorGrading);
-        _postProcessingVolume.profile.TryGetSettings(out _depthOfField);
-        _postProcessingVolume.profile.TryGetSettings(out _motionBlur);
-        _postProcessingVolume.profile.TryGetSettings(out _autoExposure);
+
+        postProcessingVolume.profile = postProfileMain;
+
+        postProcessingVolume.profile.TryGet(out _bloom);
+        postProcessingVolume.profile.TryGet(out _chromaticAberration);
+        postProcessingVolume.profile.TryGet(out _colorAdjustments);
+        postProcessingVolume.profile.TryGet(out _depthOfField);
+        postProcessingVolume.profile.TryGet(out _motionBlur);
 
         Settings.GraphicsSettings settings = SettingsManager.GraphicsSettings;
 
@@ -54,12 +66,12 @@ public class PostProcessingManager : MonoBehaviour
     public void SetState(bool state)
     {
         // disable volume
-        if (_postProcessingVolume == null)
+        if (postProcessingVolume == null)
         {
             Debug.LogError("PostProcessingManager: No PostProcessVolume component found on this object.");
             return;
         }
-        _postProcessingVolume.enabled = state;
+        postProcessingVolume.enabled = state;
     }
 
     public void ApplySettings(
@@ -72,7 +84,7 @@ public class PostProcessingManager : MonoBehaviour
         MotionBlurLevel mbl,
         WaterFXLevel wfxl)
     {
-        if (_postProcessingVolume == null)
+        if (postProcessingVolume == null)
         {
             Debug.LogError("PostProcessingManager: No PostProcessVolume component found on this object.");
             return;
@@ -96,14 +108,52 @@ public class PostProcessingManager : MonoBehaviour
 
     public void SetAmbientOcclusionQuality(AmbientOcclusionLevel quality)
     {
-        if (quality == AmbientOcclusionLevel.Off)
-        {
-            _ambientOcclusion.enabled.value = false;
+        if (rendererData == null)
             return;
+        ScriptableRendererFeature ssaoFeature = null;
+        foreach (var feature in rendererData.rendererFeatures)
+        {
+            if (feature != null && feature.GetType().Name == "ScreenSpaceAmbientOcclusion")
+            {
+                ssaoFeature = feature;
+                break;
+            }
         }
-
-        _ambientOcclusion.enabled.value = true; 
-        _ambientOcclusion.quality.value = (AmbientOcclusionQuality)((int)quality - 1);
+        if (ssaoFeature == null)
+            return;
+        ssaoFeature.SetActive(quality != AmbientOcclusionLevel.Off);
+        if (quality == AmbientOcclusionLevel.Off)
+            return;
+        var settingsField = ssaoFeature.GetType().GetField("m_Settings", BindingFlags.NonPublic | BindingFlags.Instance);
+        if (settingsField == null)
+            return;
+        object settings = settingsField.GetValue(ssaoFeature);
+        Type settingsType = settings.GetType();
+        // AOSampleOption: High=0 (12 samples), Medium=1 (8 samples), Low=2 (4 samples)
+        float intensity;
+        float radius;
+        bool downsample;
+        int sampleOption;
+        switch (quality)
+        {
+            case AmbientOcclusionLevel.Lowest:
+                intensity = 1.0f; radius = 0.025f; downsample = true; sampleOption = 2; break;
+            case AmbientOcclusionLevel.Low:
+                intensity = 2.0f; radius = 0.03f; downsample = true; sampleOption = 2; break;
+            case AmbientOcclusionLevel.Medium:
+                intensity = 2.5f; radius = 0.035f; downsample = false; sampleOption = 1; break;
+            case AmbientOcclusionLevel.High:
+                intensity = 3.0f; radius = 0.05f; downsample = false; sampleOption = 0; break;
+            default: // Ultra
+                intensity = 3.5f; radius = 0.075f; downsample = false; sampleOption = 0; break;
+        }
+        settingsType.GetField("Intensity", BindingFlags.Instance | BindingFlags.NonPublic)?.SetValue(settings, intensity);
+        settingsType.GetField("Radius", BindingFlags.Instance | BindingFlags.NonPublic)?.SetValue(settings, radius);
+        settingsType.GetField("Downsample", BindingFlags.Instance | BindingFlags.NonPublic)?.SetValue(settings, downsample);
+        var samplesField = settingsType.GetField("Samples", BindingFlags.Instance | BindingFlags.NonPublic);
+        if (samplesField != null)
+            samplesField.SetValue(settings, Enum.ToObject(samplesField.FieldType, sampleOption));
+        settingsField.SetValue(ssaoFeature, settings);
     }
 
     public void SetBloomQuality(BloomLevel quality)
@@ -111,45 +161,32 @@ public class PostProcessingManager : MonoBehaviour
         switch (quality)
         {
             case BloomLevel.Off:
-                _bloom.enabled.value = false;
+                _bloom.active = false;
                 break;
             case BloomLevel.Low:
-                _bloom.enabled.value = true;
-                _bloom.fastMode.value = true;
+                _bloom.active = true;
+                _bloom.highQualityFiltering.value = false;
                 break;
             case BloomLevel.High:
-                _bloom.enabled.value = true;
-                _bloom.fastMode.value = false;
+                _bloom.active = true;
+                _bloom.highQualityFiltering.value = true;
                 break;
         }
     }
 
     public void SetChromaticAberrationQuality(ChromaticAberrationLevel quality)
     {
-        switch (quality)
-        {
-            case ChromaticAberrationLevel.Off:
-                _chromaticAberration.enabled.value = false;
-                break;
-            case ChromaticAberrationLevel.Low:
-                _chromaticAberration.enabled.value = true;
-                _chromaticAberration.fastMode.value = true;
-                break;
-            case ChromaticAberrationLevel.High:
-                _chromaticAberration.enabled.value = true;
-                _chromaticAberration.fastMode.value = false;
-                break;
-        }
+        _chromaticAberration.active = quality != ChromaticAberrationLevel.Off;
     }
 
     public void SetColorGradingQuality(ColorGradingLevel quality)
     {
-        _colorGrading.enabled.value = quality != ColorGradingLevel.Off;
+        _colorAdjustments.active = quality != ColorGradingLevel.Off;
     }
 
     public void SetAutoExposureQuality(AutoExposureLevel quality)
     {
-        _autoExposure.enabled.value = quality != AutoExposureLevel.Off;
+        // AutoExposure is not available as a volume component in URP
     }
     
     public void SetDepthOfFieldQuality(DepthOfFieldLevel quality)
@@ -157,10 +194,10 @@ public class PostProcessingManager : MonoBehaviour
         switch (quality)
         {
             case DepthOfFieldLevel.Off:
-                _depthOfField.enabled.value = false;
+                _depthOfField.active = false;
                 break;
             default:
-                _depthOfField.enabled.value = true; // MaxBlurSize setting not exposed?
+                _depthOfField.active = true;
                 break;
         }
     }
@@ -170,19 +207,19 @@ public class PostProcessingManager : MonoBehaviour
         switch (quality)
         {
             case MotionBlurLevel.Off:
-                _motionBlur.enabled.value = false;
+                _motionBlur.active = false;
                 break;
             case MotionBlurLevel.Low:
-                _motionBlur.enabled.value = true;
-                _motionBlur.sampleCount.value = 4;
+                _motionBlur.active = true;
+                _motionBlur.quality.value = MotionBlurQuality.Low;
                 break;
             case MotionBlurLevel.Medium:
-                _motionBlur.enabled.value = true;
-                _motionBlur.sampleCount.value = 8;
+                _motionBlur.active = true;
+                _motionBlur.quality.value = MotionBlurQuality.Medium;
                 break;
             case MotionBlurLevel.High:
-                _motionBlur.enabled.value = true;
-                _motionBlur.sampleCount.value = 16;
+                _motionBlur.active = true;
+                _motionBlur.quality.value = MotionBlurQuality.High;
                 break;
         }
     }

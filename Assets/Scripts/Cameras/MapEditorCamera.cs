@@ -25,6 +25,9 @@ namespace Cameras
         private bool _startDrag;
         private Vector3 _lastDragPosition;
 
+        private const float ExperimentalPitchClamp = 90f;
+        private const float LagSpikeThresholdSeconds = 0.1f;
+
         protected override void Awake()
         {
             base.Awake();
@@ -60,6 +63,8 @@ namespace Cameras
             if (!_menu.IsInputFocused)
                 UpdateMovement();
             UpdateRotation();
+
+            CorrectUpsideDownCamera();
         }
 
         private void UpdateMovement()
@@ -153,9 +158,16 @@ namespace Cameras
             {
                 float inputX = Input.GetAxis("Mouse X");
                 float inputY = Input.GetAxis("Mouse Y");
-                float speed = _settings.CameraRotateSpeed.Value;
-                Cache.Transform.RotateAround(Cache.Transform.position, Vector3.up, inputX * Time.deltaTime * speed);
-                Cache.Transform.RotateAround(Cache.Transform.position, Cache.Transform.right, -inputY * Time.deltaTime * speed);
+                if (Time.deltaTime <= LagSpikeThresholdSeconds)
+                {
+                    float speed = _settings.CameraRotateSpeed.Value;
+                    Cache.Transform.RotateAround(Cache.Transform.position, Vector3.up, inputX * Time.deltaTime * speed);
+                    float pitchDelta = -inputY * Time.deltaTime * speed;
+                    if (pitchDelta != 0f)
+                    {
+                        ApplyClampedPitch(pitchDelta);
+                    }
+                }
                 _wasRotating = true;
             }
             
@@ -168,6 +180,34 @@ namespace Cameras
                 SnapCameraToAxis(Vector3.right);
             else if (_input.SnapCameraDown.GetKeyDown())
                 SnapCameraToAxis(Vector3.left);
+        }
+
+        private void ApplyClampedPitch(float pitchDelta)
+        {
+            float currentPitch = Mathf.Asin(Mathf.Clamp(Cache.Transform.forward.y, -1f, 1f)) * Mathf.Rad2Deg;
+            // Rotation around +right uses opposite sign from our pitch convention:
+            // +pitchDelta means looking down, which decreases forward.y (pitch).
+            float desiredPitch = currentPitch - pitchDelta;
+            // Only apply if result stays within limits—prohibit crossing, don't correct
+            if (desiredPitch >= -ExperimentalPitchClamp && desiredPitch <= ExperimentalPitchClamp)
+            {
+                if (Mathf.Abs(pitchDelta) > 0.0001f)
+                    Cache.Transform.RotateAround(Cache.Transform.position, Cache.Transform.right, pitchDelta);
+            }
+        }
+
+        private void CorrectUpsideDownCamera()
+        {
+            Vector3 forward = Cache.Transform.forward;
+            // Near straight up/down, forward + Vector3.up is a degenerate pair for LookRotation and can jitter.
+            if (Mathf.Abs(forward.y) > 0.999f)
+                return;
+
+            // Use a small threshold so tiny floating-point noise around 0 does not trigger correction every frame.
+            if (Cache.Transform.up.y < -0.01f)
+            {
+                Cache.Transform.rotation = Quaternion.LookRotation(forward, Vector3.up);
+            }
         }
 
         private bool AlignedWithWorldAxis()
@@ -259,8 +299,13 @@ namespace Cameras
             // Set position to the same distance from the target
             Cache.Transform.position = position - Cache.Transform.forward * distance;
 
-            // Ensure the camera is facing the right direction
-            Cache.Transform.LookAt(position);
+            // Ensure the camera is facing the target. Use a non-degenerate worldUp when looking
+            // straight up/down to avoid LookAt producing an upside-down orientation.
+            Vector3 toTarget = (position - Cache.Transform.position).normalized;
+            Vector3 worldUp = Mathf.Abs(Vector3.Dot(toTarget, Vector3.up)) > 0.999f ? Vector3.forward : Vector3.up;
+            Cache.Transform.LookAt(position, worldUp);
+
+            CorrectUpsideDownCamera();
         }
 
         protected override void SetDefaultCameraPosition()
