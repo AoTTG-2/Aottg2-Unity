@@ -14,6 +14,8 @@ namespace UI
         protected int _inputFontSizeOffset = -4;
         protected UnityAction _onValueChanged;
         protected UnityAction _onEndEdit;
+        protected Func<string, bool> _onValidate;
+        protected Func<string, string> _onCleanup;
         protected Transform _caret;
         protected bool _finishedSetup;
         protected object[] _setupParams;
@@ -26,12 +28,14 @@ namespace UI
         };
 
         public void Setup(BaseSetting setting, ElementStyle style, string title, string tooltip, float elementWidth, float elementHeight,
-            bool multiLine, UnityAction onValueChanged, UnityAction onEndEdit)
+            bool multiLine, UnityAction onValueChanged, UnityAction onEndEdit, Func<string, bool> onValidate = null, Func<string, string> onCleanup = null)
         {
             if (style.FontSize <= 18)
                 _inputFontSizeOffset = -2;
             _onValueChanged = onValueChanged;
             _onEndEdit = onEndEdit;
+            _onValidate = onValidate;
+            _onCleanup = onCleanup;
             _inputField = transform.Find("InputField").gameObject.GetComponent<InputField>();
             if (_inputField == null)
             {
@@ -79,20 +83,23 @@ namespace UI
         {
             if (!_finishedSetup)
                 return;
+            if (_onValidate != null && !_onValidate(value))
+                return;
+            string cleanedValue = _onCleanup != null ? _onCleanup(value) : value;
             if (_settingType == SettingType.String)
-                ((StringSetting)_setting).Value = _inputField.text;
-            else if (value != string.Empty)
+                ((StringSetting)_setting).Value = cleanedValue;
+            else if (cleanedValue != string.Empty)
             {
                 if (_settingType == SettingType.Float)
                 {
                     float parsedValue;
-                    if (float.TryParse(value, out parsedValue))
+                    if (float.TryParse(cleanedValue, out parsedValue))
                         ((FloatSetting)_setting).Value = parsedValue;
                 }
                 else if (_settingType == SettingType.Int)
                 {
                     int parsedValue;
-                    if (int.TryParse(value, out parsedValue))
+                    if (int.TryParse(cleanedValue, out parsedValue))
                         ((IntSetting)_setting).Value = parsedValue;
                 }
             }

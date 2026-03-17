@@ -259,11 +259,11 @@ namespace UI
 
         public static GameObject CreateInputSetting(Transform parent, ElementStyle style, BaseSetting setting, string title, string tooltip = "",
             float elementWidth = 140f, float elementHeight = 40f, bool multiLine = false,
-            UnityAction onValueChanged = null, UnityAction onEndEdit = null)
+            UnityAction onValueChanged = null, UnityAction onEndEdit = null, Func<string, bool> onValidate = null, Func<string, string> onCleanup = null)
         {
             GameObject inputSetting = InstantiateAndBind(parent, "Prefabs/Elements/InputSetting");
             InputSettingElement element = inputSetting.AddComponent<InputSettingElement>();
-            element.Setup(setting, style, title, tooltip, elementWidth, elementHeight, multiLine, onValueChanged, onEndEdit);
+            element.Setup(setting, style, title, tooltip, elementWidth, elementHeight, multiLine, onValueChanged, onEndEdit, onValidate, onCleanup);
             element.GetComponent<HorizontalLayoutGroup>().spacing = style.Spacing;
             return inputSetting;
         }
