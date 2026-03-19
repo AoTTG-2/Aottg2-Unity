@@ -198,7 +198,7 @@ Scene,None,196,0,1,1,1,0,Titan SpawnPoint,28.945,2.874381,45.855,0,0,0,1,1,1,Phy
 Scene,None,197,0,1,1,1,0,Titan SpawnPoint,398.648,2.874381,193.9648,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
 Scene,Nature/Tree12,198,0,1,1,1,0,Tree12,281.613,2.240254,508.079,0,0,0,0.702,0.702,0.702,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,None,199,0,1,1,1,0,Titan SpawnPoint,-218.686,2.874381,476.3722,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,Interact/Supply2,122023,0,1,1,1,0,Supply2,381.9559,0.451143,321.25,0,99.83605,0,0.9,0.9,0.9,Physical,Entities,Default,Default|199/199/199/255,SupplyStation|UnlimitedRefills:true|MaxRefills:0|LoadoutChange:true;
+Scene,Interact/Supply2,122023,0,1,1,1,0,Supply2,382.7754,0.4269862,323.1875,0,103.5073,0,0.8,0.8,0.8,Physical,Entities,Default,Default|255/255/255/255,SupplyStation|UnlimitedRefills:true|MaxRefills:0|LoadoutChange:true;
 Scene,None,201,0,1,1,1,0,Titan SpawnPoint,-334.88,2.874381,-340.3966,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
 Scene,None,202,0,1,1,1,0,Titan SpawnPoint,388.108,2.874381,378.549,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
 Scene,Nature/Tree12,203,0,1,1,1,0,Tree12,-493.994,3.079363,-17.637,0,0,0,0.91,0.909,0.91,Physical,Entities,Default,Default|255/255/255/255,;
@@ -206,11 +206,11 @@ Scene,General/EditorTitanSpawnPoint,1719,0,1,1,0,0,Titan SpawnPoint,-504.414,2.8
 Scene,Nature/Tree12,205,0,1,1,1,0,Tree12,-78.50987,4.010212,-153.155,0,221.2194,0,1.272,1.272,1.272,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Tree12,207,0,1,1,1,0,Tree12,409.558,2.674873,88.672,0,173.2334,0,0.91,0.91,0.91,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,None,208,0,1,1,1,0,Titan SpawnPoint,-384.662,2.874381,68.101,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,Geometry/Cuboid,209,0,1,1,0,0,Barrier,-1000,759.4111,0.01,0,0,0,10,160,200,Physical,Characters,Default,Default|255/255/255/255,;
-Scene,Geometry/Cuboid,210,0,1,1,0,0,Barrier,0,759.4111,-1000,0,0,0,200,160,10,Physical,Characters,Default,Default|255/255/255/255,;
-Scene,Geometry/Cuboid,211,0,1,1,0,0,Barrier,0,759.4111,1000,0,0,0,200,160,10,Physical,Characters,Default,Default|255/255/255/255,;
-Scene,Geometry/Cuboid,212,0,1,1,0,0,Barrier,1000,759.4111,0.01,0,0,0,10,160,200,Physical,Characters,Default,Default|255/255/255/255,;
-Scene,Geometry/Cuboid,213,0,1,1,0,0,Barrier,-2.23,1460,17.889,0,0,0,200,10,200,Physical,Characters,Default,Default|255/255/255/255,;
+Scene,Geometry/Cuboid,209,0,1,1,0,0,Barrier,-1000,282.5789,0.01,0,0,0,10,100,200,Physical,Characters,Default,Default|255/255/255/255,Tag|Name:HumanIgnoreGround;
+Scene,Geometry/Cuboid,210,0,1,1,0,0,Barrier,0,282.5789,-1000,0,0,0,200,100,10,Physical,Characters,Default,Default|255/255/255/255,Tag|Name:HumanIgnoreGround;
+Scene,Geometry/Cuboid,211,0,1,1,0,0,Barrier,0,282.5789,1000,0,0,0,200,100,10,Physical,Characters,Default,Default|255/255/255/255,Tag|Name:HumanIgnoreGround;
+Scene,Geometry/Cuboid,212,0,1,1,0,0,Barrier,1000,282.5789,0.01,0,0,0,10,100,200,Physical,Characters,Default,Default|255/255/255/255,Tag|Name:HumanIgnoreGround;
+Scene,Geometry/Cuboid,213,0,1,1,0,0,Barrier,-2.23,712.4235,17.889,0,0,0,200,10,200,Physical,Characters,Default,Default|255/255/255/255,;
 Scene,Nature/Tree12,214,0,1,1,1,0,Tree12,278.9854,3.613098,225.331,0,62.2872,0,0.8,1.025666,0.8,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,General/EditorTitanSpawnPoint,1717,0,1,1,0,0,Titan SpawnPoint,329.4504,2.874381,553.1445,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
 Scene,Nature/Boulder3,216,0,1,1,1,0,Boulder3,-47.89099,9.070457,-609.0004,270,0,0,1.8,1.8,2.2,Physical,Entities,Default,Basic|150/140/130/255|Stone/Stone15|1/1|0/0,;
@@ -240,18 +240,18 @@ Scene,Nature/Tree12,239,0,1,1,1,0,Tree12,601.9376,2.897816,621.0717,0,173.2334,0
 Scene,Nature/Tree9,241,0,1,1,1,0,Tree9,-158.7471,10.58287,-629.219,-8.537737E-07,33.73962,320.7422,0.5,0.5,0.5,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Tree9,242,0,1,1,1,0,Tree9,605.5734,12.16585,-407.0908,358.2924,299.5313,320.7422,0.6,0.6,0.6,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Boulder2,284,0,1,1,1,0,Boulder2,-257.5592,4.484303,500.7526,0,0,0,1.5,1,2,Physical,Entities,Default,Basic|150/140/130/255|Stone/Stone15|1/1|0/0,;
-Scene,Nature/Boulder2,285,0,1,1,1,0,Boulder2,-258.2926,-2.381672,502.3601,0,0,0,2,0.25,2.5,Physical,Entities,Default,Basic|255/255/255/255|Nature/Dirt1|2/2|0/0,;
+Scene,Nature/Boulder2,285,0,1,1,1,0,Boulder2,-258.2926,-2.381672,502.3601,0,0,0,2,0.25,2.5,Physical,Humans,Default,Basic|255/255/255/255|Nature/Dirt1|2/2|0/0,;
 Scene,Nature/Boulder2,286,0,1,1,1,0,Boulder2,-261.4409,2.868026,520.7191,0,0,0,0.3,0.3,0.3,Physical,Entities,Default,Basic|150/140/130/255|Stone/Stone15|1/1|0/0,;
 Scene,Nature/Boulder3,287,0,1,1,1,0,Boulder3,-239.4178,1.418367,508.0109,270,152.1964,0,0.35,0.35,0.4,Physical,Entities,Default,Basic|150/140/130/255|Stone/Stone15|1/1|0/0,;
 Scene,Nature/Boulder2,288,0,1,1,1,0,Boulder2,-266.46,4.254234,477.1329,353.7015,180,180,0.3,0.4,0.35,Physical,Entities,Default,Basic|150/140/130/255|Stone/Stone15|1/1|0/0,;
-Scene,Nature/Boulder2,289,0,1,1,1,0,Boulder2,-47.34384,-2.330141,-610.2651,0,0,0,2,0.25,2.5,Physical,Entities,Default,Basic|255/255/255/255|Nature/Dirt1|2/2|0/0,;
+Scene,Nature/Boulder2,289,0,1,1,1,0,Boulder2,-47.34384,-2.330141,-610.2651,0,0,0,2,0.25,2.5,Physical,Humans,Default,Basic|255/255/255/255|Nature/Dirt1|2/2|0/0,;
 Scene,Interact/Wagon2,290,0,1,0,1,1,Wagon2,-74.42384,1.281085,-604.0032,29.19818,180,353.8872,1,1,1,Physical,All,Default,Default|255/255/255/255,;
 Scene,Nature/Boulder3,291,0,1,1,1,0,Boulder3,-51.708,0.6230954,-592.0938,270,295.1555,0,0.05,0.05,0.05,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Tree9,296,0,1,1,1,0,Tree9,-416.8637,11.99658,605.2084,358.2924,299.5313,320.7422,0.6,0.6,0.6,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Tree9,297,0,1,1,1,0,Tree9,-642.021,5.447444,-356.7841,346.3474,217.1032,339.2845,0.6,0.6,0.6,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Tree12,301,0,1,1,1,0,Tree12,-113.0481,1.027215,612.6912,0,0,0,0.702,0.702,0.702,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Buildings/Windmill2,304,0,1,0,1,0,Windmill2,157.83,0.461537,-578.0326,0,90,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Buildings/House32c,305,0,1,1,1,0,House32c,183.1402,-0.666595,-577.9618,0,180,0,0.8,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/Windmill2,304,0,1,0,1,0,Windmill2,161.1516,0.461537,-578.0326,0,90,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/House32c,305,0,1,1,1,0,House32c,170.7941,-0.0700485,-577.9618,0,180,0,0.8,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/Stable1,307,0,1,1,1,0,Stable1,110.3883,0.6178588,-577.9312,0,270,0,0.5,0.5,0.5,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Leaf0,308,0,1,1,1,0,Leaf0,110.2471,0.6451701,-566.3773,0,0,0,0.27,0.3,0.25,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Leaf0,309,0,1,1,1,0,Leaf0,110.2471,0.6451701,-590.1062,0,0,0,0.27,0.3,0.25,Physical,Entities,Default,Default|255/255/255/255,;
@@ -393,25 +393,21 @@ Scene,Decor/TreeSupport2,2320,0,1,1,1,0,TreeSupport2,56.08129,47.79482,-303.526,
 Scene,General/EditorHumanSpawnPoint,122007,0,1,1,0,0,Human SpawnPoint,-76.51305,76.8712,-80.26368,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:HumanSpawnPoint;
 Scene,General/EditorHumanSpawnPoint,122006,0,1,1,0,0,Human SpawnPoint,-81.49055,76.8712,-87.11523,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:HumanSpawnPoint;
 Scene,General/EditorHumanSpawnPoint,122001,0,1,1,0,0,Human SpawnPoint,40.70276,64.86261,-303.0735,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:HumanSpawnPoint;
-Scene,Decor/Box3,2325,0,1,1,1,0,Box3,111.8663,2.662003,-601.6194,342.7833,0,0,0.1,0.1,0.1,Physical,Entities,Default,Default|200/180/180/255,;
-Scene,Decor/Box3,2326,0,1,1,1,0,Box3,98.16888,2.662003,-601.6194,342.7833,0,0,0.1,0.1,0.1,Physical,Entities,Default,Default|200/200/200/255,;
-Scene,Decor/Box3,2327,0,1,1,1,0,Box3,89.22851,2.662003,-601.6194,342.7833,0,0,0.1,0.1,0.1,Physical,Entities,Default,Default|200/180/180/255,;
 Scene,Nature/Tree12,5,0,1,1,1,0,Tree12,-231.4178,3.306126,86.20852,0,0,0,0.8,1.026,0.8,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Trunk1,3342,0,1,1,1,0,Trunk1,-336.1703,-5.377498,220.1812,0,19.07737,0,1,1,1,Physical,Entities,Default,Default|255/255/171/105,;
 Scene,General/EditorHumanSpawnPoint,122002,0,1,1,0,0,Human SpawnPoint,43.77225,64.86261,-310.411,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:HumanSpawnPoint;
 Scene,Decor/Table1,121781,0,1,1,1,0,Table1,230.6001,56,310,0,0,0,0.2,0.2,0.2,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Book1c,121782,0,1,1,1,0,Book1c,230.262,57.1848,310,0,0,0,0.3,0.3,0.3,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Book1c,121782,0,1,1,1,0,Book1c,230.262,57.1848,310,0,0,0,0.3,0.3,0.3,None,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Ivy1c,121787,0,1,1,1,0,Ivy1c,-72.04237,68.80781,-55.77751,0,67.10444,0,2,2,2,None,Entities,Default,Default|212/218/218/255,;
 Scene,Nature/RiverRock2,121788,0,1,1,1,0,RiverRock2,407.5956,0.4387802,313.4271,0,0,0,1.732584,1,1.482672,None,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Barrel2,121790,0,1,1,1,0,Barrel2,412.5236,36.11088,323.9065,0,59.80844,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Fork1,121792,0,1,1,1,0,Fork1,398.9812,62.62106,303.4241,73.69145,26.28905,0.0001216158,1.151477,1.232559,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Fork1,121793,0,1,1,1,0,Fork1,398.3193,62.62106,303.98,73.69145,35.8169,6.080786E-05,1.151477,1.232559,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Fork1,121794,0,1,1,1,0,Fork1,397.9235,62.62106,304.2239,73.69147,1.973473,7.144938E-05,1.151477,1.232559,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Fork1,121795,0,1,1,1,0,Fork1,399.3517,62.62106,303.1225,73.69145,50.70764,6.080791E-05,1.151477,1.232559,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Flag2,121796,0,1,1,1,0,Flag2,413.7835,129.8321,312.9093,0,313.2539,0,0.6015562,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Fork1,121793,0,1,1,1,0,Fork1,398.3193,62.62106,303.98,73.69145,35.8169,6.080786E-05,1.151477,1.232559,1,Physical,Humans,Default,Default|255/255/255/255,;
+Scene,Decor/Fork1,121792,0,1,1,1,0,Fork1,398.9812,62.62106,303.4241,73.69145,26.28905,0.0001216158,1.151477,1.232559,1,Physical,Humans,Default,Default|255/255/255/255,;
+Scene,Decor/Fork1,121795,0,1,1,1,0,Fork1,399.3517,62.62106,303.1225,73.69145,50.70764,6.080791E-05,1.151477,1.232559,1,Physical,Humans,Default,Default|255/255/255/255,;
+Scene,Decor/Fork1,121794,0,1,1,1,0,Fork1,397.9235,62.62106,304.2239,73.69147,1.973473,7.144938E-05,1.151477,1.232559,1,Physical,Humans,Default,Default|255/255/255/255,;
 Scene,Decor/Table1,121797,0,1,1,1,0,Table1,405.3711,114.5009,314.9778,0,0,0,0.2999999,0.1999999,0.2999999,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Teapot1,121798,0,1,1,1,0,Teapot1,405.9207,115.6743,315.1361,0,0,0,0.2,0.2,0.2,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Bread1,121799,0,1,1,1,0,Bread1,405.5114,115.8253,314.5026,0.3404391,43.7984,326.6414,0.2,0.2,0.2,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Teapot1,121798,0,1,1,1,0,Teapot1,405.9207,115.6743,315.1361,0,0,0,0.2,0.2,0.2,None,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Bread1,121799,0,1,1,1,0,Bread1,405.5114,115.8253,314.5026,0.3404391,43.7984,326.6414,0.2,0.2,0.2,None,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Gore3,121801,0,1,1,1,0,Gore3,83.63709,0.6989327,-561.7087,279.7047,325.8828,85.65248,2,2,2,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Bell1,121804,0,1,1,1,0,Bell1,83.11096,0.9164452,-561.5697,0,0,180,0.1,0.05,0.1,Physical,Entities,Default,Basic|255/255/255/255|Wood/Wood5|1/1|0/0,;
 Scene,Geometry/Cylinder,121805,0,1,1,1,0,Cylinder,83.09605,0.8835452,-561.5521,0,0,0,0.05,-0.000170781,0.05,Physical,Entities,Default,Transparent|96/94/255/255|Misc/Glass1|1/1|0/0,;
@@ -431,14 +427,11 @@ Scene,General/EditorHumanSpawnPoint,121993,0,1,1,0,0,Human SpawnPoint,-74.29925,
 Scene,General/EditorHumanSpawnPoint,121992,0,1,1,0,0,Human SpawnPoint,-74.29925,64.19974,-356.9818,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:HumanSpawnPoint;
 Scene,General/EditorHumanSpawnPoint,121991,0,1,1,0,0,Human SpawnPoint,-71.52688,64.19974,-347.5287,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:HumanSpawnPoint;
 Scene,Geometry/Frame1,121986,0,1,1,1,0,Frame1,0,0.557978,0,0,0,0,2533,1,2533,None,Entities,Default,Transparent|255/255/255/2|Misc/None|1/1|0/0,;
-Scene,Geometry/Cuboid,122018,0,1,1,0,0,Cuboid,0,-1907.023,0,0,0,0,1500,16,1500,Physical,Entities,Default,Basic|255/255/255/255|Nature/Grass5|40/40|0/0,KillRegion|Team:None|KillHumans:true|KillTitans:true|KillShifters:true|KillMessage:killzone bottom;
-Scene,Geometry/Cuboid,121988,0,1,1,0,0,Cuboid,0,2580.458,0,0,0,0,500,16,500,Physical,Entities,Default,Basic|255/255/255/255|Nature/Grass5|40/40|0/0,KillRegion|Team:None|KillHumans:true|KillTitans:true|KillShifters:true|KillMessage:killzone top;
-Scene,Geometry/Cube1a,121989,0,1,1,0,0,Cube1a,0,799.1276,0,0,0,0,5200,3600,5200,Physical,Entities,Default,Default|255/255/255/255,KillRegion|Team:None|KillHumans:true|KillTitans:true|KillShifters:true|KillMessage:killzone side;
 Scene,Geometry/Cuboid,122014,0,1,1,1,0,Cuboid,0,-26,0,0,0,0,253.4,5,253.4,Physical,Entities,Default,Basic|80/90/90/255|Misc/Rust1|40/40|0/0,;
 Scene,Decor/Paper1,122019,0,1,1,1,0,Paper1,77.73473,9.407497,-584.283,0,180,0,0.6841685,0.4691722,0.66,None,Entities,Default,Default|196/173/135/255,;
 Scene,Geometry/Cuboid,122017,0,1,1,0,0,Cuboid,0,-975.3615,0,0,0,0,500,16,500,Physical,Entities,Default,Basic|255/255/255/255|Nature/Grass5|40/40|0/0,KillRegion|Team:None|KillHumans:true|KillTitans:true|KillShifters:true|KillMessage:killzone bottom;
 Scene,General/EditorHumanSpawnPoint,122021,0,1,1,1,0,Human SpawnPoint,77.76928,10.11714,-584.2806,83.7,265.1468,85.18215,0.1631861,0.2,0.211056,None,Entities,Default,Default|188/188/188/255,;
-Scene,Interact/Supply2,122022,0,1,1,1,0,Supply2,79.1086,0.451143,-570.774,0,90,0,0.9,0.9,0.9,Physical,Entities,Default,Default|222/222/222/255,SupplyStation|UnlimitedRefills:true|MaxRefills:0|LoadoutChange:true;
+Scene,Interact/Supply2,122022,0,1,1,1,0,Supply2,79.03393,0.4267451,-569.9586,0,90,0,0.8,0.8,0.8,Physical,Entities,Default,Default|255/255/255/255,SupplyStation|UnlimitedRefills:true|MaxRefills:0|LoadoutChange:true;
 Scene,Geometry/Cylinder1b,122024,0,1,1,0,0,Cylinder1b,409.1726,59.49931,315.865,0,0,0,38,166,38,Physical,Titans,Default,Default|255/255/255/255,;
 Scene,Geometry/Cube1,122025,0,1,1,0,0,Cube1,135.2925,6.020872,-566.4049,0,0,0,110,25,50,Physical,Titans,Default,Default|255/255/255/255,;
 Scene,Geometry/Cube1,122026,0,1,1,0,0,Cube1,428.95,4.990219,322.3147,352.1251,70.39256,0,7,15,2,Physical,Titans,Default,Default|255/255/255/255,
@@ -500,5 +493,6 @@ Scene,Geometry/Cube1,122026,0,1,1,0,0,Cube1,428.95,4.990219,322.3147,352.1251,70
     "ScheduleLoop" : false,
     "Schedule" : "",
     "Name" : "dark",
-    "Preset" : false
+    "Preset" : false,
+    "UniqueId" : "843bcef9-2be9-4c29-9163-d9da5dbbefa4"
 }
