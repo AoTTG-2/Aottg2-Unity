@@ -12,7 +12,11 @@ jobs:
 
     steps:
       - name: Checkout source repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
+        with:
+          sparse-checkout: |
+            .github
+            Docs
 
       - name: Filter and copy .md files
         run: |
@@ -26,7 +30,7 @@ jobs:
           done
 
       - name: Checkout target repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           repository: AoTTG-2/CustomLogicDocumentation
           token: ${{ secrets.CLDOC }}
